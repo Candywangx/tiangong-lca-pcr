@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.natural-one-piece-cork-stopper-blanks"
-  classification_refs: "CPC 3.0 31922; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  classification_refs: "CPC 3.0:31922; narrower; classification context only; mapping decision belongs to controller"
   covered_products: "Unwashed uncoated punched and dry-sized one-piece natural cork stopper blanks"
   excluded_products: "Turned, agglomerated, disc-bonded, colmated/coated finished stoppers and cork boards"
   representative_product: "Cylindrical Quercus suber one-piece blank; dimensions and grade declared from actual order"
@@ -512,15 +512,6 @@ dataset_production:
         - cp_air
       output: "three disjoint emitted masses"
       source_ids: []
-    - id: complete_period_normalization
-      applies_to: "all inventory rows"
-      rule: "Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity."
-      inputs:
-        - "all linked raw collection protocols"
-        - "accepted reference-product pool"
-        - "stock and rework links"
-      output: "native exchange unit per declared reference quantity; zero-output pool remains unnormalized"
-      source_ids: []
   data_quality_requirements:
     - id: dq_route
       applies_to: "conversion"
@@ -572,7 +563,7 @@ published_dataset_profile:
 data_sources:
   - id: "jrc-cork-chain-2017"
     type: "official_guidance"
-    reference: "European Commission JRC: Non-harmonised food contact materials in the EU, JRC104198 (2017), printed pp.172–173; https://publications.jrc.ec.europa.eu/repository/handle/JRC104198"
+    reference: "European Commission JRC: Non-harmonised food contact materials in the EU, JRC104198 / EUR 28357 EN (document citation 2016; repository release 17 January 2017), printed pp.172–173; https://publications.jrc.ec.europa.eu/repository/handle/JRC104198"
     used_for: "Manufacturing versus washing/colmation/coating gate; plank preparation versus granulation. Official summary of an earlier industry code, not contemporary certification or quantitative factors"
   - id: "spanish-natural-stopper-2022"
     type: "literature"
@@ -580,18 +571,18 @@ data_sources:
     used_for: "Spanish case punching/turning, sizing/grading versus later treatment, offcuts and economic-allocation example. Qualitative process/allocation rationale only; no transferred sizes, quantities, material recipes or bag atmosphere"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:2092a4a9380d892bac646ebe3535b54e4d10e684cba1d80a77a0d4f56717670c"
+  source_sha256: "sha256:bc2ca728cf41927206c75edd3e4a0b84a43e08aded82d42579ca3dbcd5b9f431"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5281"
+    - unit_id: "normative_5248"
       family: "system_boundary"
       span:
         start:
-          offset: 5281
+          offset: 5248
           line: 59
           column: 1
         end:
-          offset: 8556
+          offset: 8523
           line: 80
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Boiled stabilized selected unbonded Quercus suber planks received at manufacturer; moisture, thickness, quality grade, supplier and inbound transport declared |\n| starting_condition_role | Foreground starting point; not burden-free bark |\n| product_classification_scope | Punched one-piece blanks within natural articles of 31922; incoming planks and outgoing offcuts are adjacent categories, not reference articles |\n| recursive_input_rule | If same-category blanks are purchased for further sizing, distinguish prior supplier production from added processing; do not recursively expand the same site record. The provider route must still satisfy these qualifiers |\n| upstream_dataset_requirement | Link bark origin/management, stripping, forest handling, stabilization, boiling and heat supply, water reuse/discharge, post-boil stabilization/selection and plank delivery; missing scope is an upstream coverage gap and bars complete cradle-to-gate claims |\n| disclosure | Foreground from received planks to accepted blank handover; washing/disinfection, colmation, bonding, coating, bottling, use and end of life are outside this gate; measure packaging and disclose period stocks and co-products |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| sb_start | all inventory rows | Retain bark and boiling upstream burdens. Prepared-plank background must match treatment, moisture, heat, water and effluent boundaries. If supplier data end at raw bark, add boiling/stabilization; do not count the same boiling twice. | jrc-cork-chain-2017; spanish-natural-stopper-2022 |\n| sb_route | conversion | Include receipt, strip cutting, punching, dry sizing, grading, extraction and pack-out only. No foreground boiler, steam, combustion, granulation/bonding or washing/coating; a facility performing them needs an expanded, evidenced atomic inventory and cannot conceal them inside this route. | jrc-cork-chain-2017; spanish-natural-stopper-2022 |\n| sb_stages | conversion | Aggregate conversion and handover into one foreground unit while retaining separate stage mass, electricity and loss ledgers. Actual internal transfers must agree at both ends and are not extra external outputs; only one accepted reference output is allowed. |  |\n| sb_chemicals | conversion | Do not substitute generic glue or coating for unknown formulations. Actual wash chemicals, colmation agents, silicone, paraffin, ink or preserving gas are outside this route and require actual substances, concentration/wet-dry basis and doses for a separate assessment. Purchased belt binder and box glue stay in their manufactured-consumable backgrounds, not invented foreground dosing. | jrc-cork-chain-2017; spanish-natural-stopper-2022 |\n| sb_carbon | all inventory rows | Keep separate physical dry-cork, water and biogenic-carbon ledgers. Absence of site combustion does not permit deleting biogenic CO2 from LCI: retain upstream heat-source biogenic/fossil emissions and any actual foreground oxidation, resolving correct species and compartment, regardless of GHG reporting convention. Stocked carbon is not automatically negative emission or permanent storage. |  |\n\n"
@@ -611,11 +602,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5281
+              offset: 5248
               line: 59
               column: 1
             end:
-              offset: 5302
+              offset: 5269
               line: 59
               column: 22
           text: "## 5. System Boundary"
@@ -631,15 +622,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_24744"
+    - unit_id: "normative_24711"
       family: "allocation"
       span:
         start:
-          offset: 24744
+          offset: 24711
           line: 299
           column: 1
         end:
-          offset: 26572
+          offset: 26539
           line: 308
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| alloc_separate | conversion | First avoid allocation by stage metering or defensible unit subdivision. Keep physical process/stock/water/carbon ledgers separate from allocated environmental-burden accounts; trace plank cost/burdens to output grades and sold offcuts. | spanish-natural-stopper-2022 |\n| alloc_basis | conversion | When allocation cannot be avoided, assess physical causality and use measured physical relationships where valid; otherwise use economic shares from same-period factory-gate quantity×unit price, recording all outputs with economic function, currency, price window and sensitivity. Never default to case quantities or allocation percentages. | spanish-natural-stopper-2022 |\n| alloc_physical | all inventory rows | Apply allocation shares to burdens, never to physical co-product outputs. Divide reference-product burdens by Q; offcut/dust physical rows retain actual total amounts/Q and cannot disappear into yield or negative inputs. Record only actual external net exchanges once for internal reuse. |  |\n| alloc_residues | offcut_out; dust_out | Outputs with payment revenue and economic function participate in the selected allocation; waste without economic function gains no share merely from recyclability, and treatment-burden ownership must be transparent. dust_out is currently a waste exchange; if records establish an economic co-product, change flow type and resolve a compatible identity before rechecking. Document applicable by-product/product or waste status and customer acceptance specifications separately; payment alone does not establish Product status or compatible treatment. Do not combine economic allocation with undeclared fuel-substitution credits. |  |\n\n"
@@ -659,11 +650,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 24744
+              offset: 24711
               line: 299
               column: 1
             end:
-              offset: 24784
+              offset: 24751
               line: 299
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -679,16 +670,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35572"
+    - unit_id: "normative_34150"
       family: "validation"
       span:
         start:
-          offset: 35572
-          line: 339
+          offset: 34150
+          line: 338
           column: 1
         end:
-          offset: 37018
-          line: 349
+          offset: 35596
+          line: 348
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| val_reference | stopper_out | Check exactly one reference output, 1 kg net mass, Q and all qualifiers defining this subset of the broad UUID; do not add a packaging-stage output with the same reference UUID. |  |\n| val_denominator | all inventory rows | EN/ZH reference, all 13 inventory bases, collection aggregation and calculations use per 1 kg accepted net blanks; align unit conversion and time windows. |  |\n| val_route | conversion | Do not merge agglomerated stoppers, turning, disc bonding, boards or finished-closure washing/coating into this route; disclose missing purchased-plank upstream boiling heat/water/effluent. | jrc-cork-chain-2017; spanish-natural-stopper-2022 |\n| val_air | pm25_out; pmcoarse_out; pmover10_out; vapour_out | Check elementary species, air/unspecified subcompartment, Mass/kg, disjoint size intervals and sampling coverage. Workplace dust, captured waste and water-compartment vapour cannot stand in for outdoor releases; actual biogenic CO2 cannot be deleted for reporting convention. |  |\n| val_completeness | all inventory rows | Report specific unresolved/skipped scope for missing consumable identity, background chains, emission measurements or unexplained balances; do not claim complete LCI or cradle-to-gate. Method is available for independent review; actual site data still require collection. |  |\n\n"
       headings:
@@ -707,12 +698,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35572
-              line: 339
+              offset: 34150
+              line: 338
               column: 1
             end:
-              offset: 35594
-              line: 339
+              offset: 34172
+              line: 338
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -731,233 +722,233 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "sb_start"
       identity_kind: "explicit"
-      unit_id: "normative_5281"
+      unit_id: "normative_5248"
       source_span:
         start:
-          offset: 6666
+          offset: 6633
           line: 74
           column: 1
         end:
-          offset: 6988
+          offset: 6955
           line: 74
           column: 323
     - pointer: "/system_boundary/rules/1"
       rule_id: "sb_route"
       identity_kind: "explicit"
-      unit_id: "normative_5281"
+      unit_id: "normative_5248"
       source_span:
         start:
-          offset: 6989
+          offset: 6956
           line: 75
           column: 1
         end:
-          offset: 7358
+          offset: 7325
           line: 75
           column: 370
     - pointer: "/system_boundary/rules/2"
       rule_id: "sb_stages"
       identity_kind: "explicit"
-      unit_id: "normative_5281"
+      unit_id: "normative_5248"
       source_span:
         start:
-          offset: 7359
+          offset: 7326
           line: 76
           column: 1
         end:
-          offset: 7649
+          offset: 7616
           line: 76
           column: 291
     - pointer: "/system_boundary/rules/3"
       rule_id: "sb_chemicals"
       identity_kind: "explicit"
-      unit_id: "normative_5281"
+      unit_id: "normative_5248"
       source_span:
         start:
-          offset: 7650
+          offset: 7617
           line: 77
           column: 1
         end:
-          offset: 8121
+          offset: 8088
           line: 77
           column: 472
     - pointer: "/system_boundary/rules/4"
       rule_id: "sb_carbon"
       identity_kind: "explicit"
-      unit_id: "normative_5281"
+      unit_id: "normative_5248"
       source_span:
         start:
-          offset: 8122
+          offset: 8089
           line: 78
           column: 1
         end:
-          offset: 8554
+          offset: 8521
           line: 78
           column: 433
     - pointer: "/allocation_rules/0"
       rule_id: "alloc_separate"
       identity_kind: "explicit"
-      unit_id: "normative_24744"
+      unit_id: "normative_24711"
       source_span:
         start:
-          offset: 24857
+          offset: 24824
           line: 303
           column: 1
         end:
-          offset: 25158
+          offset: 25125
           line: 303
           column: 302
     - pointer: "/allocation_rules/1"
       rule_id: "alloc_basis"
       identity_kind: "explicit"
-      unit_id: "normative_24744"
+      unit_id: "normative_24711"
       source_span:
         start:
-          offset: 25159
+          offset: 25126
           line: 304
           column: 1
         end:
-          offset: 25561
+          offset: 25528
           line: 304
           column: 403
     - pointer: "/allocation_rules/2"
       rule_id: "alloc_physical"
       identity_kind: "explicit"
-      unit_id: "normative_24744"
+      unit_id: "normative_24711"
       source_span:
         start:
-          offset: 25562
+          offset: 25529
           line: 305
           column: 1
         end:
-          offset: 25894
+          offset: 25861
           line: 305
           column: 333
     - pointer: "/allocation_rules/3"
       rule_id: "alloc_residues"
       identity_kind: "explicit"
-      unit_id: "normative_24744"
+      unit_id: "normative_24711"
       source_span:
         start:
-          offset: 25895
+          offset: 25862
           line: 306
           column: 1
         end:
-          offset: 26570
+          offset: 26537
           line: 306
           column: 676
     - pointer: "/validation_rules/0"
       rule_id: "val_reference"
       identity_kind: "explicit"
-      unit_id: "normative_35572"
+      unit_id: "normative_34150"
       source_span:
         start:
-          offset: 35667
-          line: 343
+          offset: 34245
+          line: 342
           column: 1
         end:
-          offset: 35881
-          line: 343
+          offset: 34459
+          line: 342
           column: 215
     - pointer: "/validation_rules/1"
       rule_id: "val_denominator"
       identity_kind: "explicit"
-      unit_id: "normative_35572"
+      unit_id: "normative_34150"
       source_span:
         start:
-          offset: 35882
-          line: 344
+          offset: 34460
+          line: 343
           column: 1
         end:
-          offset: 36082
-          line: 344
+          offset: 34660
+          line: 343
           column: 201
     - pointer: "/validation_rules/2"
       rule_id: "val_route"
       identity_kind: "explicit"
-      unit_id: "normative_35572"
+      unit_id: "normative_34150"
       source_span:
         start:
-          offset: 36083
-          line: 345
+          offset: 34661
+          line: 344
           column: 1
         end:
-          offset: 36353
-          line: 345
+          offset: 34931
+          line: 344
           column: 271
     - pointer: "/validation_rules/3"
       rule_id: "val_air"
       identity_kind: "explicit"
-      unit_id: "normative_35572"
+      unit_id: "normative_34150"
       source_span:
         start:
-          offset: 36354
-          line: 346
+          offset: 34932
+          line: 345
           column: 1
         end:
-          offset: 36697
-          line: 346
+          offset: 35275
+          line: 345
           column: 344
     - pointer: "/validation_rules/4"
       rule_id: "val_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_35572"
+      unit_id: "normative_34150"
       source_span:
         start:
-          offset: 36698
-          line: 347
+          offset: 35276
+          line: 346
           column: 1
         end:
-          offset: 37016
-          line: 347
+          offset: 35594
+          line: 346
           column: 319
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5281"
+      unit_id: "normative_5248"
       source_span:
         start:
-          offset: 5281
+          offset: 5248
           line: 59
           column: 1
         end:
-          offset: 5302
+          offset: 5269
           line: 59
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5281"
+      unit_id: "normative_5248"
       source_span:
         start:
-          offset: 5330
+          offset: 5297
           line: 63
           column: 1
         end:
-          offset: 6593
+          offset: 6560
           line: 70
           column: 242
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_24744"
+      unit_id: "normative_24711"
       source_span:
         start:
-          offset: 24744
+          offset: 24711
           line: 299
           column: 1
         end:
-          offset: 24784
+          offset: 24751
           line: 299
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35572"
+      unit_id: "normative_34150"
       source_span:
         start:
-          offset: 35572
-          line: 339
+          offset: 34150
+          line: 338
           column: 1
         end:
-          offset: 35594
-          line: 339
+          offset: 34172
+          line: 338
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -966,5 +957,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:2092a4a9380d892bac646ebe3535b54e4d10e684cba1d80a77a0d4f56717670c"
-  generated_content_sha256: "sha256:fb581d491942f23eb32e139d06dad7dd0f8ff346e4d40452c712f463f21c5813"
+    sha256: "sha256:bc2ca728cf41927206c75edd3e4a0b84a43e08aded82d42579ca3dbcd5b9f431"
+  generated_content_sha256: "sha256:1c774edac013adfd67ad37b712fbfc35361334a7ee70b64c9eb9fef9fd4b739c"

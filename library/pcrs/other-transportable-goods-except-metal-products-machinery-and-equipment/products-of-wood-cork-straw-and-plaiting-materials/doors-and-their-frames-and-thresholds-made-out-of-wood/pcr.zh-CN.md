@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.doors-and-their-frames-and-thresholds-made-out-of-wood |
-| classification_refs | CPC 3.0 31622; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0 31622; narrower |
 | covered_products | 未涂装、无玻璃的实木硬木榫接门扇 |
 | excluded_products | 填芯门扇；门框；门槛；整套门；空芯板半成品；贴面/工程木或涂装门扇 |
 | representative_product | 一扇已打磨验收、不带安装五金的实木硬木镶板门扇 |
@@ -53,7 +53,7 @@ translation_status: aligned
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
 | reference_mass | reference product | Mass | kg | 采用1 kg验收未涂装门扇净质量，不含任何包装。按cp_mass使用经校准的秤逐扇称量完整验收门扇，核对配置和验收记录，再汇总同配置批次净质量。不给每门默认重量，不用面积乘假定密度替代。 |
-| wood_moisture | hardwood, clean_offcut, clean_sawdust, glued_dust | Mass | kg | 分别记录收到状态质量和干基含水率。仅对木材，干质量 = 湿质量 / (1 + 干基含水率 / 100)。按cp_material用树种校准水分仪并以代表性烘干试样核对；胶和磨料部分不属于木材。 |
+| wood_moisture | hardwood, clean_offcut, clean_sawdust, glued_dust | Mass | kg | 分别记录收到状态质量和干基含水率。仅对木材，干质量 = 湿质量 / (1 + 以百分数记录的干基含水率 / 100)。按cp_material用树种校准水分仪并以代表性烘干试样核对；胶和磨料部分不属于木材。 |
 | electricity_basis | electricity | 净热值 | MJ | 将实测kWh乘3.6转换为MJ，与已核实单位组一致；核对外购中压供电及厂内损耗。 |
 | geometry | reference product | Mass | kg | 保留实际测量门扇面积和厚度作为配置描述，不替代质量。声学/耐火声明须对应受测门扇/组件、五金、密封和安装；缺少组件证据不得建立等级。 |
 
@@ -429,7 +429,7 @@ translation_status: aligned
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | campaign_normalization | all inventory rows | 各非参考行归一化交换量 = 归属的实物批次总量 / S；S为各实测验收门扇净质量之和，单位kg。accepted_leaf = 1 kg。全清单采用同一批次与配置。 | cp_mass; cp_material; cp_energy; cp_pack; cp_waste; cp_air; cp_water | 每1 kg参考流交换量 |  |
-| wood_balance | hardwood, clean_offcut, clean_sawdust, glued_dust | 木材干质量 = 湿木材质量 / (1 + 干基含水率 / 100)；复合流只对木材部分应用。保留包含库存变化的未分配干木材/水/碳平衡；碳比例须有实际树种/组成证据，不采用通用默认值。 | cp_material; cp_waste; cp_water | 干木材质量及实物平衡 | usda-wood-handbook-2021 |
+| wood_balance | hardwood, clean_offcut, clean_sawdust, glued_dust | 木材干质量 = 湿木材质量 / (1 + 以百分数记录的干基含水率 / 100)；复合流只对木材部分应用。保留包含库存变化的未分配干木材/水/碳平衡；碳比例须有实际树种/组成证据，不采用通用默认值。 | cp_material; cp_waste; cp_water | 干木材质量及实物平衡 | usda-wood-handbook-2021 |
 | particle_partition | pmfine, pmmid, pmcoarse | 同一有效样本报告累计量时，中间级分 = PM10 − PM2.5，粗级分 = 总悬浮颗粒物 − PM10；须非负、采样/治理基准相同且记录不确定性。只加不重叠级分，不把PM10与其PM2.5子集合相加。 | cp_air | 批次归一化前不重叠粒径总量 |  |
 
 ### 数据质量要求

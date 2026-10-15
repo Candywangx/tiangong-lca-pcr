@@ -20,14 +20,14 @@ The base route is uncoated, without preservative/fire-retardant treatment, on-si
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.factory-assembled-mdf-timber-straight-stair-set |
-| classification_refs | CPC 3.0 31629; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
+| classification_refs | CPC 3.0:31629; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/. |
 | covered_products | The single configured factory-assembled MDF-string straight stair delivery set defined above |
 | excluded_products | Windows 31621; doors 31622; shuttering 31623; shingles/shakes 31624; standalone posts/beams 31625; flooring panels 31626; engineered structural timber 31627; bamboo; curved/winder/spiral stairs; loose stair parts sold individually; all-solid-wood stairs; coated/treated stairs; installed works |
 | representative_product | Straight MDF-string flight with its specified rake/newel set; complete factory dispatch configuration |
 | production_route | Receipt/storage → CNC machining/cross-cutting → glue/fixing/jig assembly → acceptance → wrapping/banding |
 | market_state | Net accepted factory dispatch set, with fitted/loose state disclosed; packaging mass excluded |
 
-Existing sawnwood, continuously shaped timber/bamboo and MDF PCRs stop at their own input-product gates. They can support upstream manufacture where their route applies; they do not cover stair BOM completeness, assembly, mixed-material mass or the dispatch-set configuration. CPC 31629 is a residual class; sibling exclusions support only the narrower boundary, not full class coverage. The published CPC note itself does not explicitly enumerate staircases. Sources: `un-cpc-3-2025`; `staircraft-stairs-2023`.
+Existing sawnwood, continuously shaped timber/bamboo and MDF PCRs stop at their own input-product gates. They can support upstream manufacture where their route applies; they do not cover stair BOM completeness, assembly, mixed-material mass or the dispatch-set configuration. CPC 31629 is a residual class; sibling exclusions support only a proposed narrower boundary, not full class coverage. The published CPC note itself does not explicitly enumerate staircases. Sources: `un-cpc-3-2025`; `staircraft-stairs-2023`.
 
 ## 3. Reference Flow
 
@@ -67,7 +67,7 @@ All required qualifiers must be declared in dataset metadata or equivalent field
 | --- | --- |
 | declared_starting_condition | Purchased dried timber, MDF, actual assembly and packaging supplies at factory receipt |
 | starting_condition_role | foreground production |
-| product_classification_scope | One configured straight timber/MDF stair-set subset within 31629 |
+| product_classification_scope | One configured straight timber/MDF stair-set subset proposed under 31629 |
 | recursive_input_rule | No purchased finished stair re-labelled as this manufacture. Retain rework internally; purchased replacement components require their own verified upstream state. |
 | upstream_dataset_requirement | Link compatible actual timber/MDF, adhesive, fixings, power, packaging, inbound transport and waste treatment; identity alone is not background qualification |
 | disclosure | Plant/period, set configuration, stage meters, stocks, assembly state, exclusions, waste destinations, upstream gates and unresolved links |
@@ -437,7 +437,6 @@ CAS 7732-18-5; outdoor air, unspecified. Include measured net water released dur
 | calc_electric | electricity | q_electricity = 3.6 × kWh | Attributed metered kWh | MJ | `staircraft-stairs-2023` |
 | calc_moisture | wood and board | dry_mass = wet_mass / (1 + u); water_mass = wet_mass - dry_mass; w = u / (1 + u) | Validated dry-basis fraction u; resin/volatile correction where needed | Separate solids and water ledgers | `usda-wood-handbook-2021` |
 | calc_air | PM bins; formaldehyde | q_i = integral(C_i × Vdot × dt) in matched kg/m3, m3/time and time; use exclusive measured particle bins | cp_air discharge sampling and controls | Actual kg leaving to outdoor air; unmeasured bins remain missing |  |
-| complete_period_normalization | all inventory rows | Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity. | all linked raw collection protocols; accepted reference-product pool; stock and rework links | native exchange unit per declared reference quantity; zero-output pool remains unnormalized |  |
 
 ### Data Quality Requirements
 
@@ -474,4 +473,4 @@ CAS 7732-18-5; outdoor air, unspecified. Include measured net water released dur
 | --- | --- | --- | --- |
 | `staircraft-stairs-2023` | literature | [Staircraft Timber Staircases with Balustrades, HUB-0834](https://staircraftgroup.com/wp-content/uploads/2024/06/EPD_Staircraft_Group_Ltd_Timber_staircases_HUB-0834_2024-06-19.pdf); pp. 2–7; 10 November 2023 | Actual timber/MDF product, factory assembly and wrapped loose newels, 1 kg scaling, gate and allocation case. UK 2021–2022 multiple-factory evidence; no transferred BOM ratios, energy, 60-year life, carbon factor or landfill scenario. EPD route does not verify the narrower uncoated/PVAc/all-electric admission conditions. |
 | `usda-wood-handbook-2021` | handbook | [Wood handbook, FPL-GTR-282](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf); Chapter 13, pp. 13–1 to 13–2, eq. 13–1 | Moisture measurement, dry/wet basis and resin/volatile/electrical-method limitations. No staircase emission factor, fixed density, universal moisture or inventory range. Air-flux and balance protocols are explicit foreground requirements, not USDA emissions prescriptions. |
-| `un-cpc-3-2025` | official_guidance | [CPC 3.0 Explanatory Notes, 30 June 2025](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf); pp. 142–143, subclasses 31621–31629 | Sibling exclusions and residual joinery context only. The stair-set narrower relation is a classification interpretation governed by the canonical mapping and its ADR; the note gives no stair factory method or reference UUID. |
+| `un-cpc-3-2025` | official_guidance | [CPC 3.0 Explanatory Notes, 30 June 2025](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf); pp. 142–143, subclasses 31621–31629 | Sibling exclusions and residual joinery context only. Stair-set narrower mapping is author interpretation, subject to independent acceptance; the note gives no stair factory method or reference UUID. |

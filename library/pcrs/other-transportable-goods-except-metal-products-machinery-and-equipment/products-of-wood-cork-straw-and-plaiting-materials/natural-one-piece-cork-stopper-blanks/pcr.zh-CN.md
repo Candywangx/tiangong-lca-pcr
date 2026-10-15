@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.natural-one-piece-cork-stopper-blanks |
-| classification_refs | CPC 3.0 31922; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0:31922; narrower; 仅分类语义背景，映射由主控裁定 |
 | covered_products | 未洗涤未涂饰、冲切及干式修整的天然单件软木塞坯 |
 | excluded_products | 车削塞、胶结塞、粘接圆片塞、填孔涂饰成品、软木板材 |
 | representative_product | 圆柱栓皮栎单件塞坯，尺寸与等级按实际订单声明 |
@@ -325,7 +325,6 @@ translation_status: aligned
 | electricity_conversion | electricity_in | E_MJ=3.6×E_kWh；相同用户侧计量边界。 | E_kWh; cp_energy | E_MJ |  |
 | water_reconciliation | vapour_out | 始终采用软木携带的水分，另行核算非软木或磨料携带水分。软木净蒸发水=输入板坯水+期初软木库存水−输出塞坯/边角料/捕集粉尘/附着废砂带软木中的水−期末软木库存水−实际测得的释放软木颗粒携带水。颗粒携水与水蒸气及非软木／磨料携水分账；干颗粒计量不虚构水分比例。先核对无其他水流和非水挥发损失。负值不得强行归零，查明吸湿或其他流并补表征。 | wet mass; wet-basis moisture; stock water; cp_material | evaporated kg water |  |
 | pm_intervals | pm25_out; pmcoarse_out; pmover10_out | 在同一采样体系下，细颗粒为 PM2.5，粗颗粒为 PM10−PM2.5，超大颗粒为可比总粒子−PM10；只有完整覆盖及非负才可用差值。mg×10^-6=kg；浓度×同基准气量得到质量。累计 PM10/总量仅是核对项，不另加到 LCI。 | size-resolved concentrations; air volume; operating hours; cp_air | three disjoint emitted masses |  |
-| complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
 
@@ -362,5 +361,5 @@ translation_status: aligned
 
 | 来源标识 | 类型 | 参考文献 | 用途 |
 | --- | --- | --- | --- |
-| jrc-cork-chain-2017 | official_guidance | 欧盟 JRC：Non-harmonised food contact materials in the EU，JRC104198（2017），纸页 172–173；https://publications.jrc.ec.europa.eu/repository/handle/JRC104198 | 制造与洗涤/填孔/涂覆阶段分界，板坯制备与造粒的区分；较早行业守则的官方摘要，不是当代认证或定量因子 |
+| jrc-cork-chain-2017 | official_guidance | 欧盟 JRC：Non-harmonised food contact materials in the EU，JRC104198 / EUR 28357 EN（文档推荐引用年2016；官方库发布日2017年1月17日），纸页172–173；https://publications.jrc.ec.europa.eu/repository/handle/JRC104198 | 制造与洗涤/填孔/涂覆阶段分界，板坯制备与造粒的区分；较早行业守则的官方摘要，不是当代认证或定量因子 |
 | spanish-natural-stopper-2022 | literature | Environmental Impact Analysis of Natural Cork Stopper Manufacturing（2022），2.1–2.5.3、3.1；DOI 10.3390/agriculture12050636；https://www.mdpi.com/2077-0472/12/5/636 | 西班牙场址冲切与车削工艺、修整分选与后续处理、边角料及经济分配案例。仅定性过程与分配论证；不移用其尺寸、数值、物料配方或包装气氛 |

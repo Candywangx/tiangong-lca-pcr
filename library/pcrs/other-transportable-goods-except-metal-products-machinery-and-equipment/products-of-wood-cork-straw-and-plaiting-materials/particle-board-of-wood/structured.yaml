@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.particle-board-of-wood"
-  classification_refs: "CPC 3.0 31431; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  classification_refs: "CPC 3.0:31431; narrower"
   covered_products: "Uncoated flat hot-pressed wood particleboard with ingredient-audited unmodified UF binder"
   excluded_products: "OSB; waferboard; non-wood panels; fiberboard; faced/coated panels; molded products; unidentified or other binder recipes"
   representative_product: "One accepted wood species/source, particle geometry, UF recipe, density, thickness and moisture cohort"
@@ -96,14 +96,14 @@ measurement_rules:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Dry-basis u = water mass / oven-dry mass; wet mass = dry mass × (1+u). Wet-basis w = u/(1+u). Use same-sample oven-dry or validated meter records, and separate wood water from resin reaction/dilution water. [usda-handbook-2021]"
+    rule: "Dry-basis u = water mass / oven-dry mass; wet mass = dry mass × (1+u). Wet-basis w = u/(1+u). Use same-sample oven-dry or validated meter records, and separate wood water from resin reaction/dilution water. [usda-handbook-2021] Keep the operational oven-test result and method distinct from true water content: validate the method for the wood/UF panel matrix, disclose and correct evidenced non-water volatile or continuing-cure loss, and retain unresolved interference. Water-specific or matrix-validated measurements are required for the H2O ledger; no guessed correction factor. Dry panel solids include retained cured UF/additives and are not pure dry wood."
   - id: volume_conversion
     applies_to: "volume-based chips, gas and panel metadata"
     required_property_ref:
       name: "Volume and measured Mass"
       uuid: ""
     required_unit: "m3; kg"
-    rule: "Panel volume = sum(actual length × width × thickness); panel density uses matching net mass and moisture. Wood-chip UUID 3fa2a6a7-224c-4d99-bd55-a214f0a83161 confirms material identity and Volume/m3 only, not bulk volume. Separate measured wet kg, loose bulk volume Vb, the fixed supplier/background reference amount A_provider with its unit and solid/bulk convention, and measured period demand volume V_provider expressed in that convention. Obtain the supplier/background solid-versus-bulk definition, moisture/state and packing convention; measure same-lot solid volume Vs, wet bulk density rho_b, solid density rho_s and packing k = Vs/Vb on compatible definitions. Obtain V_provider only through a validated matched-state conversion; provider-process scaling is n_provider = V_provider/A_provider and the native Volume exchange is V_provider/Q in m3/kg, each scaled/normalized once. A_provider remains the fixed provider reference amount, not measured demand or a per-kg quantity; database secondary mass/volume coefficients are not measured density or packing. Unknown A_provider/definition/conversion means an incomplete quantity link, even with a correct UUID. Gas volume likewise requires supplier/background reference conditions and matched state. [fao-ubet-volume; usda-handbook-2021]"
+    rule: "Panel volume = sum(actual length × width × thickness); panel density uses matching net mass and moisture. Wood-chip UUID 3fa2a6a7-224c-4d99-bd55-a214f0a83161 confirms material identity and Volume/m3 only, not bulk volume. Separate measured wet kg, loose bulk volume Vb and supplier/background actual reference quantity A. Obtain the supplier/background solid-versus-bulk definition, moisture/state and packing convention; measure same-lot solid volume Vs, wet bulk density rho_b, solid density rho_s and packing k = Vs/Vb on compatible definitions. Map to A only through a validated matched-state conversion; database secondary mass/volume coefficients are not measured density or packing. Unknown A/definition/conversion means an incomplete quantity link, even with a correct UUID. Gas volume likewise requires supplier/background reference conditions and matched state. [fao-ubet-volume; usda-handbook-2021]"
   - id: recipe_basis
     applies_to: "resin and additives"
     required_property_ref:
@@ -137,9 +137,9 @@ process_inventory:
           flow_ref:
             uuid: "3fa2a6a7-224c-4d99-bd55-a214f0a83161"
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
-          description: "Quantity-basis condition for every wood-chip exchange: the Volume identity is retained, but measured bulk Vb, wet mass and the fixed supplier/background reference amount A_provider and converted period volume V_provider are distinct. Record the actual upstream dataset solid/bulk convention, same-batch species, moisture/state and measured packing k = Vs/Vb. Convert measured demand to V_provider only after definition/state matching, then scale the provider process by V_provider/A_provider; the native exchange is V_provider/Q. A_provider does not change with demand; unknown conversion leaves quantity linkage unresolved. Do not treat a database secondary mass coefficient as density. [fao-ubet-volume] Purchased untreated wood chips deliberately produced from timber for this board; retain tree species, source forestry and full chipping burden. Measure loose volume and same-lot wet bulk density and moisture; no zero-burden residue assumption."
+          description: "Quantity-basis condition for every wood-chip exchange: the Volume identity is retained, but measured bulk Vb, wet mass and the supplier/background reference amount A are distinct. Record the actual upstream dataset solid/bulk convention, same-batch species, moisture/state and measured packing k = Vs/Vb. Convert to A only after definition/state matching; unknown conversion leaves quantity linkage unresolved. Do not treat a database secondary mass coefficient as density. [fao-ubet-volume] Purchased untreated wood chips deliberately produced from timber for this board; retain tree species, source forestry and full chipping burden. Measure loose volume and same-lot wet bulk density and moisture; no zero-burden residue assumption."
           amount:
-            expression: "After cohort attribution and matched solid/bulk and moisture/state conversion, obtain same-period V_provider; the native exchange is V_provider/Q (m3/kg), normalized once. Provider-process scaling is separately V_provider/A_provider; A_provider is the fixed provider reference amount/convention, not demand volume. Physical bulk volume alone does not prove the provider convention; missing conversion evidence leaves the link unresolved."
+            expression: "Recorded matched supplier/background reference volume A per 1 kg reference flow after cohort attribution; physical bulk volume alone does not establish A. Quantity remains unresolved until the documented conversion is complete."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -158,9 +158,9 @@ process_inventory:
           flow_ref:
             uuid: "3fa2a6a7-224c-4d99-bd55-a214f0a83161"
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
-          description: "Quantity-basis condition for every wood-chip exchange: the Volume identity is retained, but measured bulk Vb, wet mass and the fixed supplier/background reference amount A_provider and converted period volume V_provider are distinct. Record the actual upstream dataset solid/bulk convention, same-batch species, moisture/state and measured packing k = Vs/Vb. Convert measured demand to V_provider only after definition/state matching, then scale the provider process by V_provider/A_provider; the native exchange is V_provider/Q. A_provider does not change with demand; unknown conversion leaves quantity linkage unresolved. Do not treat a database secondary mass coefficient as density. [fao-ubet-volume] Purchased untreated chips sold by a multi-output sawmill or veneer mill. Keep this origin separate from dedicated chips even with the same physical flow UUID; obtain documented source-stage allocation."
+          description: "Quantity-basis condition for every wood-chip exchange: the Volume identity is retained, but measured bulk Vb, wet mass and the supplier/background reference amount A are distinct. Record the actual upstream dataset solid/bulk convention, same-batch species, moisture/state and measured packing k = Vs/Vb. Convert to A only after definition/state matching; unknown conversion leaves quantity linkage unresolved. Do not treat a database secondary mass coefficient as density. [fao-ubet-volume] Purchased untreated chips sold by a multi-output sawmill or veneer mill. Keep this origin separate from dedicated chips even with the same physical flow UUID; obtain documented source-stage allocation."
           amount:
-            expression: "After cohort attribution and matched solid/bulk and moisture/state conversion, obtain same-period V_provider; the native exchange is V_provider/Q (m3/kg), normalized once. Provider-process scaling is separately V_provider/A_provider; A_provider is the fixed provider reference amount/convention, not demand volume. Physical bulk volume alone does not prove the provider convention; missing conversion evidence leaves the link unresolved."
+            expression: "Recorded matched supplier/background reference volume A per 1 kg reference flow after cohort attribution; physical bulk volume alone does not establish A. Quantity remains unresolved until the documented conversion is complete."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -403,9 +403,9 @@ process_inventory:
           flow_ref:
             uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
-          description: "Gas quantity-basis condition: preserve the gaseous natural-gas identity, but distinguish meter volume Vm, fixed supplier/background reference amount A_provider and converted period demand volume V_provider. Obtain absolute T and P, dry/wet convention, water content, gas composition and compressibility Z for both states; use calibrated matched-state conversion and the actual background m3 definition. Conversion determines V_provider only; provider scaling is V_provider/A_provider and the native exchange is V_provider/Q, with A_provider fixed. Unknown composition, Z or reference condition keeps the quantity link unresolved, not zero. Pipeline gaseous natural gas for direct dryer, owned boiler or oxidizer, when present. Keep separate stage meters; record pressure, temperature, compressibility, volume reference conditions and supplier energy basis."
+          description: "Gas quantity-basis condition: preserve the gaseous natural-gas identity, but distinguish meter volume Vm from supplier/background volume A. Obtain absolute T and P, dry/wet convention, water content, gas composition and compressibility Z for both states; use calibrated matched-state conversion and the actual background m3 definition. Unknown composition, Z or reference condition keeps the quantity link unresolved, not zero. Pipeline gaseous natural gas for direct dryer, owned boiler or oxidizer, when present. Keep separate stage meters; record pressure, temperature, compressibility, volume reference conditions and supplier energy basis."
           amount:
-            expression: "Convert the attributable same-period meter amount to V_provider on matched T/P, composition, wet/dry and Z conditions; the native exchange is V_provider/Q (m3/kg), normalized once. Provider-process scaling is separately V_provider/A_provider; A_provider is the fixed provider reference amount/convention, not demand volume. Unknown state/definition leaves the quantity link unresolved."
+            expression: "Recorded supplier/background reference volume A per 1 kg reference flow after matched T/P, composition, wet/dry and Z conversion; if these conditions are unknown the quantity is unresolved."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -424,9 +424,9 @@ process_inventory:
           flow_ref:
             uuid: "3fa2a6a7-224c-4d99-bd55-a214f0a83161"
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
-          description: "Quantity-basis condition for every wood-chip exchange: the Volume identity is retained, but measured bulk Vb, wet mass and the fixed supplier/background reference amount A_provider and converted period volume V_provider are distinct. Record the actual upstream dataset solid/bulk convention, same-batch species, moisture/state and measured packing k = Vs/Vb. Convert measured demand to V_provider only after definition/state matching, then scale the provider process by V_provider/A_provider; the native exchange is V_provider/Q. A_provider does not change with demand; unknown conversion leaves quantity linkage unresolved. Do not treat a database secondary mass coefficient as density. [fao-ubet-volume] Externally purchased clean unresinated wood-chip fuel only. Record species, origin and upstream burden, wet bulk density, moisture and actual LHV. Internal fines already in incoming feed are tracked in the internal fuel ledger, not purchased again."
+          description: "Quantity-basis condition for every wood-chip exchange: the Volume identity is retained, but measured bulk Vb, wet mass and the supplier/background reference amount A are distinct. Record the actual upstream dataset solid/bulk convention, same-batch species, moisture/state and measured packing k = Vs/Vb. Convert to A only after definition/state matching; unknown conversion leaves quantity linkage unresolved. Do not treat a database secondary mass coefficient as density. [fao-ubet-volume] Externally purchased clean unresinated wood-chip fuel only. Record species, origin and upstream burden, wet bulk density, moisture and actual LHV. Internal fines already in incoming feed are tracked in the internal fuel ledger, not purchased again."
           amount:
-            expression: "After cohort attribution and matched solid/bulk and moisture/state conversion, obtain same-period V_provider; the native exchange is V_provider/Q (m3/kg), normalized once. Provider-process scaling is separately V_provider/A_provider; A_provider is the fixed provider reference amount/convention, not demand volume. Physical bulk volume alone does not prove the provider convention; missing conversion evidence leaves the link unresolved."
+            expression: "Recorded matched supplier/background reference volume A per 1 kg reference flow after cohort attribution; physical bulk volume alone does not establish A. Quantity remains unresolved until the documented conversion is complete."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -1227,7 +1227,7 @@ dataset_production:
       flow_role: "accepted net panel"
       record_type: "measurement and traceable records"
       raw_fields: "cohort; species/source; grade; thickness/length/width; net mass Q; release moisture; packaging tare; reject/return/opening/closing stocks"
-      collection_method: "Calibrated net weighing; acceptance and thickness measurements; moisture sampling by oven-dry method or oven-validated calibrated meter. Preparation: Q is same-period inventory-adjusted accepted panel mass, excluding rejects and packaging."
+      collection_method: "Calibrated net weighing; acceptance and thickness measurements; moisture sampling by oven-dry method or oven-validated calibrated meter. Preparation: Q is same-period inventory-adjusted accepted panel mass, excluding rejects and packaging. Keep the operational oven-test result and method distinct from true water content: validate the method for the wood/UF panel matrix, disclose and correct evidenced non-water volatile or continuing-cure loss, and retain unresolved interference. Water-specific or matrix-validated measurements are required for the H2O ledger; no guessed correction factor. Dry panel solids include retained cured UF/additives and are not pure dry wood."
       unit: "kg; m; moisture fraction"
       frequency: "each batch/lot and meter interval; period endpoints"
       temporal_coverage: "complete declared accounting period including seasonal and start/stop variation"
@@ -1238,8 +1238,8 @@ dataset_production:
       process_id: "uf_board"
       flow_role: "each wood origin and geometry"
       record_type: "measurement and traceable records"
-      raw_fields: "delivery; supplier process/gate; species; dedicated/co-product/recovered status; wet mass; loose bulk Vb; independently measured solid Vs on supplier definition; wet bulk rho_b; solid rho_s; packing k = Vs/Vb; supplier/background reference quantity A_provider and unit/solid/bulk convention; converted period demand V_provider; provider scaling n_provider; source and reference moisture/state; contaminants; stocks; source allocation; recovery yield; loss destination"
-      collection_method: "Weigh/sample each segregated lot; supplier forestry/chipping/sawmill stage records; recovered-wood contaminant acceptance and sorting mass balance. Inventory-adjust each source and preserve face/core and recycle links. Obtain the actual supplier/background reference A_provider and definition before volume linkage; measure same-lot densities/packing and matched moisture/state, using calibrated volume and mass methods. No database coefficient is a density; derive V_provider from matched measurements, scale the provider by V_provider/A_provider and normalize the native exchange V_provider/Q once. A_provider remains fixed; unknown conversion remains unresolved."
+      raw_fields: "delivery; supplier process/gate; species; dedicated/co-product/recovered status; wet mass; loose bulk Vb; independently measured solid Vs on supplier definition; wet bulk rho_b; solid rho_s; packing k = Vs/Vb; supplier/background reference quantity A and solid/bulk convention; source and reference moisture/state; contaminants; stocks; source allocation; recovery yield; loss destination"
+      collection_method: "Weigh/sample each segregated lot; supplier forestry/chipping/sawmill stage records; recovered-wood contaminant acceptance and sorting mass balance. Inventory-adjust each source and preserve face/core and recycle links. Obtain the actual supplier/background reference A and definition before volume linkage; measure same-lot densities/packing and matched moisture/state, using calibrated volume and mass methods. No database coefficient is a density; unknown conversion remains unresolved."
       unit: "kg; m3; moisture fraction"
       frequency: "each batch/lot and meter interval; period endpoints"
       temporal_coverage: "complete declared accounting period including seasonal and start/stop variation"
@@ -1286,8 +1286,8 @@ dataset_production:
       process_id: "uf_board"
       flow_role: "each external and internal fuel"
       record_type: "measurement and traceable records"
-      raw_fields: "fuel id/species/origin; grade/blend; supplier; meter; wet mass; volume; density; moisture; carbon; LHV; absolute T/P; dry/wet convention; water content; gas composition; Z; meter Vm; background reference A_provider and unit/m3 definition; converted period demand V_provider; provider scaling n_provider; chip Vs/Vb/rho_b/rho_s/k and supplier definition; dryer/boiler/oxidizer/mobile equipment; stocks; internal clean-fines diversion"
-      collection_method: "Meter/weigh separately by combustion equipment; supplier/background gas T/P, composition, dry/wet and Z definitions with actual reference A_provider; site wood volume/mass/moisture/LHV assays and matching solid/bulk A_provider definition. Keep physical measurements separate from resolved supply quantities; A_provider remains fixed; matched conversion yields V_provider, provider scaling is V_provider/A_provider and the native exchange is V_provider/Q once. Unknown definition/conversion remains unresolved. Reconcile external wood feed, internally diverted clean fuel and ash. Never use resin-bonded residues as clean untreated fuel."
+      raw_fields: "fuel id/species/origin; grade/blend; supplier; meter; wet mass; volume; density; moisture; carbon; LHV; absolute T/P; dry/wet convention; water content; gas composition; Z; meter Vm; background reference A and m3 definition; chip Vs/Vb/rho_b/rho_s/k and supplier definition; dryer/boiler/oxidizer/mobile equipment; stocks; internal clean-fines diversion"
+      collection_method: "Meter/weigh separately by combustion equipment; supplier/background gas T/P, composition, dry/wet and Z definitions with actual reference A; site wood volume/mass/moisture/LHV assays and matching solid/bulk A definition. Keep physical measurements separate from resolved supply quantities; unknown A conversions remain unresolved. Reconcile external wood feed, internally diverted clean fuel and ash. Never use resin-bonded residues as clean untreated fuel."
       unit: "kg; m3; MJ"
       frequency: "each batch/lot and meter interval; period endpoints"
       temporal_coverage: "complete declared accounting period including seasonal and start/stop variation"
@@ -1366,30 +1366,28 @@ dataset_production:
         - corrim-pb-2024
     - id: calc_chip_supply_volume
       applies_to: "dedicated_chips; coproduct_chips; wood_fuel"
-      rule: "At the same batch/state and matched solid/bulk definitions, k = Vs/Vb, m_wet = rho_b × Vb = rho_s × Vs. If the reference convention of A_provider is that same bulk basis, V_provider = Vb; if it is the compatible solid basis, V_provider = Vs = k × Vb. When reference moisture/state differs, first bridge conserved dry wood mass to the supplier reference moisture and measured corresponding density/packing; do not reuse source k or density across states. Declare fixed A_provider, unit, definition and evidence explicitly and retain converted period V_provider. Provider scaling is n_provider = V_provider/A_provider; normalize the native exchange V_provider/Q once without changing A_provider. Unknown A_provider/k/state leaves linkage incomplete; no FAO typical factor or database secondary property coefficient is a measured conversion."
+      rule: "At the same batch/state and matched solid/bulk definitions, k = Vs/Vb, m_wet = rho_b × Vb = rho_s × Vs. If A is that same bulk basis use Vb; if A is the compatible solid basis use Vs = k × Vb. When reference moisture/state differs, first bridge conserved dry wood mass to the supplier reference moisture and measured corresponding density/packing; do not reuse source k or density across states. Declare A, definition and evidence explicitly. Unknown A/k/state leaves linkage incomplete; no FAO typical factor or database secondary property coefficient is a measured conversion."
       inputs:
         - cp_feed
         - cp_fuel
-        - "fixed supplier/background A_provider and definition"
+        - "supplier/background A definition"
         - "matched measurements"
-        - Q
-      output: "fixed provider reference, raw/matched period volumes, process scaling and native per-kg exchange separately"
+      output: "supply-reference volume and physical amount separately"
       source_ids:
         - fao-ubet-volume
         - usda-handbook-2021
     - id: calc_gas_supply_volume
       applies_to: "natural_gas"
-      rule: "For conserved gas amount with identical dry composition, V_provider = Vm × (Pm/Pb) × (Tb/Tm) × (Zb/Zm), using absolute temperatures/pressures and background reference b. The wet meter volume Vm requires measured water-vapour fraction and a validated dry/wet correction before this expression; differing composition or unsupported Z/reference conditions requires further supplier verification, not an assumed ideal-gas conversion. Keep actual Vm, converted period V_provider and fixed A_provider separately; n_provider = V_provider/A_provider and the native exchange V_provider/Q is normalized once."
+      rule: "For conserved gas amount with identical dry composition, A = Vm × (Pm/Pb) × (Tb/Tm) × (Zb/Zm), using absolute temperatures/pressures and background reference b. A wet meter needs measured water-vapour fraction and a validated dry/wet correction before this expression; differing composition or unsupported Z/reference conditions requires further supplier verification, not an assumed ideal-gas conversion. Keep actual Vm and resolved A separately."
       inputs:
         - cp_fuel
-        - "fixed supplier/background A_provider and T/P/composition/wet-dry/Z"
-        - Q
-      output: "matched period V_provider, fixed A_provider, process scaling and native m3/kg separately"
+        - "supplier/background reference A and T/P/composition/wet-dry/Z"
+      output: "matched background reference volume"
       source_ids:
         - epa-pb-2002
     - id: calc_wood_water
       applies_to: "wood and panel ledgers"
-      rule: "m_dry = m_wet/(1+u); u = (m_wet-m_dry)/m_dry; w = u/(1+u). Reconcile dry wood, retained resin/additives, water carried in/added/generated, finished panel, external waste/emissions and stock changes; internal returns cancel only in aggregate and retain matched stage transfers."
+      rule: "m_dry = m_wet/(1+u); u = (m_wet-m_dry)/m_dry; w = u/(1+u). Reconcile dry wood, retained resin/additives, water carried in/added/generated, finished panel, external waste/emissions and stock changes; internal returns cancel only in aggregate and retain matched stage transfers. Keep the operational oven-test result and method distinct from true water content: validate the method for the wood/UF panel matrix, disclose and correct evidenced non-water volatile or continuing-cure loss, and retain unresolved interference. Water-specific or matrix-validated measurements are required for the H2O ledger; no guessed correction factor. Dry panel solids include retained cured UF/additives and are not pure dry wood."
       inputs:
         - cp_reference
         - cp_feed
@@ -1423,7 +1421,7 @@ dataset_production:
         - epa-boiler-2022
     - id: calc_air
       applies_to: "species emissions"
-      rule: "Integrate same-basis measured species concentration × dry gas volume over actual operating time; add separately measured fugitive sources once. Use consistent moisture/oxygen/temperature corrections and uncertainty. Do not infer site kg from a product chamber-test concentration, LCIA CO2-equivalent or VOC-as-carbon total."
+      rule: "Integrate same-basis measured species concentration × dry volumetric gas flow rate over actual operating time, with concentration converted to kg/m3 and flow/time in compatible units; alternatively sum interval flow-weighted concentration × measured interval gas volume without another time factor; add separately measured fugitive sources once. Use consistent moisture/oxygen/temperature corrections and uncertainty. Do not infer site kg from a product chamber-test concentration, LCIA CO2-equivalent or VOC-as-carbon total."
       inputs:
         - cp_air
       output: "single-species net outdoor-air mass"
@@ -1463,15 +1461,6 @@ dataset_production:
       output: "allocated environmental burden account"
       source_ids:
         - corrim-pb-2024
-    - id: complete_period_normalization
-      applies_to: "all inventory rows"
-      rule: "Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity."
-      inputs:
-        - "all linked raw collection protocols"
-        - "accepted reference-product pool"
-        - "stock and rework links"
-      output: "native exchange unit per declared reference quantity; zero-output pool remains unnormalized"
-      source_ids: []
   data_quality_requirements:
     - id: quality_cohort
       applies_to: "all rows"
@@ -1487,7 +1476,7 @@ dataset_production:
       evidence: "original records and source applicability"
     - id: quality_identity
       applies_to: "all UUIDs and gaps"
-      requirement: "Flow UUID is identity only; verify type, media, formulation, delivery state/route, reference property and unit against actual exchange. Verified Volume/m3 does not establish the actual supplier/background reference quantity A_provider; solid/bulk chip definitions, same-lot packing/moisture and gas T/P/composition/wet-dry/Z must support the linkage. Blank UUID is unresolved, not proof of zero or database absence. No correction flow or unrelated stereoisomer/species is a substitute."
+      requirement: "Flow UUID is identity only; verify type, media, formulation, delivery state/route, reference property and unit against actual exchange. Verified Volume/m3 does not establish the actual supplier/background reference quantity A; solid/bulk chip definitions, same-lot packing/moisture and gas T/P/composition/wet-dry/Z must support the linkage. Blank UUID is unresolved, not proof of zero or database absence. No correction flow or unrelated stereoisomer/species is a substitute."
       evidence: "identity and support evidence"
 validation_rules:
   - rule_id: validate_scope
@@ -1509,7 +1498,7 @@ validation_rules:
       - epa-boiler-2022
   - rule_id: validate_release
     applies_to: "data package"
-    rule: "Before a usable dataset claim, resolve all applicable UUID/unit, supplier/background reference-quantity A_provider and chip/gas conversion, recipe, heat and emissions gaps, justify absent rows, add missing atomic exchanges and provide original records plus allocation sensitivity. Candidate methodology and software checks are not independent scientific approval."
+    rule: "Before a usable dataset claim, resolve all applicable UUID/unit, supplier/background reference-quantity A and chip/gas conversion, recipe, heat and emissions gaps, justify absent rows, add missing atomic exchanges and provide original records plus allocation sensitivity. Candidate methodology and software checks are not independent scientific approval."
     source_ids:
       - corrim-pb-2024
 published_dataset_profile:
@@ -1523,7 +1512,7 @@ published_dataset_profile:
 data_sources:
   - id: "usda-handbook-2021"
     type: "handbook"
-    reference: "USDA Forest Products Laboratory, Wood handbook—wood as an engineering material, FPL-GTR-282 (2021), chapters 4 (moisture), 10 (adhesives), 11 pp. 11–11 to 11–12 (particleboard). https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf"
+    reference: "USDA Forest Products Laboratory, Wood handbook—wood as an engineering material, FPL-GTR-282 (2021), chapters 4 (moisture), 10 (adhesives), 11 pp. 11–11 to 11–12 (particleboard), and 13 pp.13–1–13–2 (oven-loss and volatile-extractive bias; applicability to resin-containing engineered products). https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf"
     used_for: "Particle versus OSB/fiber architecture, dry forming and moisture definition; qualitative scope only, no generic recipe/density adoption"
   - id: "corrim-pb-2024"
     type: "literature"
@@ -1544,21 +1533,21 @@ data_sources:
   - id: "fao-ubet-volume"
     type: "official_guidance"
     reference: "FAO, Unified Bioenergy Terminology (UBET), Section 5.1.3 Mass, Volume and Density. https://www.fao.org/4/j4504e/j4504e08.htm"
-    used_for: "Distinguish solid/bulk volume and moisture-dependent density; definitions only, actual supplier/background A_provider and same-batch measured conversion required; no typical tabulated factor/density adopted"
+    used_for: "Distinguish solid/bulk volume and moisture-dependent density; definitions only, actual supplier/background A and same-batch measured conversion required; no typical tabulated factor/density adopted"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ec8c3adca597cee40cad2b30a214b679cfa171f738be7e067c919f846ce7208b"
+  source_sha256: "sha256:e83fdb95bafe636b7078c80c526dbe19d2d578fef99618fd3745f17a1e7ff6fd"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7475"
+    - unit_id: "normative_7421"
       family: "system_boundary"
       span:
         start:
-          offset: 7475
+          offset: 7421
           line: 62
           column: 1
         end:
-          offset: 10200
+          offset: 10146
           line: 82
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified purchased wood feed at board mill and batch-assayed aqueous formaldehyde/urea at identified UF reactor; supply chains before these gates are linked backgrounds |\n| starting_condition_role | Collected gate conditions, not burden-free origin |\n| product_classification_scope | CPC 3.0:31431; narrower |\n| recursive_input_rule | Same-category external board is not an allowed raw-wood shortcut; this route excludes resin-bonded recovered panel. Internal trim return is an internal ledger, not a new purchased reference flow |\n| upstream_dataset_requirement | Source-specific wood forestry/chipping and co-product allocation; chemical manufacture; fuel and electricity supply; recovery operations; transport; waste treatment. No simultaneous purchased UF background when synthesis is expanded in foreground |\n| disclosure | Board and resin sites, all gates and ownership, source species, prior material status, included heat/abatement, upstream stages, stock changes, excluded stages, allocation and uncertainty |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route` | all datasets | Only declared flat UF-bonded uncoated wood panels conform. Audit each ingredient and preparation stage; raw dedicated chips carry forestry and preparation; co-products carry justified source-stage burdens. Supplier resin expansion must retain its actual yield and transfer quantity. | `usda-handbook-2021`; `wilson-resins-2010`; `corrim-pb-2024` |\n| `boundary_heat` | heat and emissions | Include actual dryer fuel/direct combustion, separate owned boiler, press heating, oxidizer fuel, wet controls and auxiliary electricity. One meter interval or emission stream is counted once. AP42 boiler evidence does not turn boiler emissions into dryer factors. Imported heat is outside the present enumerated fuel-owned route and needs separately verified supply and net heat basis. | `epa-pb-2002`; `epa-boiler-2022` |\n| `boundary_recovery` | recovered wood | Require prior use/treatment, contamination testing, legal waste/product status, collection/sorting/cleaning/transport and loss records. Recycled is not evidence for zero burden; declare the recycling convention and sensitivity, and retain actual recovery burdens. | `corrim-pb-2024` |\n| `boundary_downstream` | all datasets | Stop at accepted packaged board factory gate, with packaging exchanges separate from panel mass. Construction, use-phase formaldehyde exposure, service life, disposal and Module D credits require separate scenarios; no 75-year assumption or report end-of-life average is imported. | `corrim-pb-2024` |\n\n"
@@ -1578,11 +1567,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7475
+              offset: 7421
               line: 62
               column: 1
             end:
-              offset: 7496
+              offset: 7442
               line: 62
               column: 22
           text: "## 5. System Boundary"
@@ -1598,15 +1587,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_59023"
+    - unit_id: "normative_57289"
       family: "allocation"
       span:
         start:
-          offset: 59023
+          offset: 57289
           line: 885
           column: 1
         end:
-          offset: 60460
+          offset: 58726
           line: 893
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_separation` | wood inputs and outputs | First subdivide or use measured causal drivers to separate dedicated wood, resin, heat and abatement burdens. Purchased sawmill co-products require documented supplier allocation; dry-mass allocation of joint source burdens is a declared baseline consistent with the cited study, not proof of zero price or zero burden. Retain a price/alternative-allocation sensitivity when economically different outputs make mass attribution uncertain. | `corrim-pb-2024` |\n| `allocation_physical` | all physical exchanges | Preserve unallocated mass, water, carbon and internal heat/wood/resin transfers. Allocation shares apply to the separate environmental-burden account, not to physical co-product output, stock or internal-link quantity. Returned trim/fines are not independent sold products. Packaging and dedicated treatment remain attributable to the appropriate product. | `corrim-pb-2024` |\n| `allocation_heat` | shared heat equipment | Use measured net useful heat delivered to each receiver to allocate shared boiler/resin heat burden; no fuel-only guessed efficiency or steam mass-only share. Disclose exports and losses. Exclude CHP from this route unless separately reviewed allocation and electricity exchanges are added. | `epa-boiler-2022`; `wilson-resins-2010` |\n\n"
@@ -1626,11 +1615,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 59023
+              offset: 57289
               line: 885
               column: 1
             end:
-              offset: 59063
+              offset: 57329
               line: 885
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1646,18 +1635,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_81146"
+    - unit_id: "normative_78025"
       family: "validation"
       span:
         start:
-          offset: 81146
-          line: 938
+          offset: 78025
+          line: 937
           column: 1
         end:
-          offset: 82632
-          line: 947
+          offset: 79502
+          line: 946
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | reference product | Declare all qualifiers and one same-cohort reference output. Uncoated wood particleboard identity cannot be established by CPC label alone; supplier recipe expansion and finished state must agree. | `usda-handbook-2021` |\n| `validate_balance` | all physical exchanges | Use Q excluding packaging/rejects. Reconcile physical mass/water/carbon, actual wood losses, UF reaction/transfer yield and full internal-link equality; keep environmental allocation separate. Missing measurements or negative PM residuals remain unresolved. | `corrim-pb-2024`; `wilson-resins-2010` |\n| `validate_emissions` | air and heat | Identify species, outdoor-air subcompartment, origin and units; no nested PM addition, total VOC proxy, guessed NOx split or suppressed biogenic CO2. Owned boiler and dryer boundaries remain separate in raw logs. Steam MJ without verified net supply/return basis is unresolved. | `epa-pb-2002`; `epa-boiler-2022` |\n| `validate_release` | data package | Before a usable dataset claim, resolve all applicable UUID/unit, supplier/background reference-quantity A_provider and chip/gas conversion, recipe, heat and emissions gaps, justify absent rows, add missing atomic exchanges and provide original records plus allocation sensitivity. Candidate methodology and software checks are not independent scientific approval. | `corrim-pb-2024` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | reference product | Declare all qualifiers and one same-cohort reference output. Uncoated wood particleboard identity cannot be established by CPC label alone; supplier recipe expansion and finished state must agree. | `usda-handbook-2021` |\n| `validate_balance` | all physical exchanges | Use Q excluding packaging/rejects. Reconcile physical mass/water/carbon, actual wood losses, UF reaction/transfer yield and full internal-link equality; keep environmental allocation separate. Missing measurements or negative PM residuals remain unresolved. | `corrim-pb-2024`; `wilson-resins-2010` |\n| `validate_emissions` | air and heat | Identify species, outdoor-air subcompartment, origin and units; no nested PM addition, total VOC proxy, guessed NOx split or suppressed biogenic CO2. Owned boiler and dryer boundaries remain separate in raw logs. Steam MJ without verified net supply/return basis is unresolved. | `epa-pb-2002`; `epa-boiler-2022` |\n| `validate_release` | data package | Before a usable dataset claim, resolve all applicable UUID/unit, supplier/background reference-quantity A and chip/gas conversion, recipe, heat and emissions gaps, justify absent rows, add missing atomic exchanges and provide original records plus allocation sensitivity. Candidate methodology and software checks are not independent scientific approval. | `corrim-pb-2024` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1674,12 +1663,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 81146
-              line: 938
+              offset: 78025
+              line: 937
               column: 1
             end:
-              offset: 81168
-              line: 938
+              offset: 78047
+              line: 937
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1698,194 +1687,194 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_7475"
+      unit_id: "normative_7421"
       source_span:
         start:
-          offset: 8681
+          offset: 8627
           line: 77
           column: 1
         end:
-          offset: 9064
+          offset: 9010
           line: 77
           column: 384
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_heat"
       identity_kind: "explicit"
-      unit_id: "normative_7475"
+      unit_id: "normative_7421"
       source_span:
         start:
-          offset: 9065
+          offset: 9011
           line: 78
           column: 1
         end:
-          offset: 9529
+          offset: 9475
           line: 78
           column: 465
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_7475"
+      unit_id: "normative_7421"
       source_span:
         start:
-          offset: 9530
+          offset: 9476
           line: 79
           column: 1
         end:
-          offset: 9855
+          offset: 9801
           line: 79
           column: 326
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_downstream"
       identity_kind: "explicit"
-      unit_id: "normative_7475"
+      unit_id: "normative_7421"
       source_span:
         start:
-          offset: 9856
+          offset: 9802
           line: 80
           column: 1
         end:
-          offset: 10198
+          offset: 10144
           line: 80
           column: 343
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_separation"
       identity_kind: "explicit"
-      unit_id: "normative_59023"
+      unit_id: "normative_57289"
       source_span:
         start:
-          offset: 59136
+          offset: 57402
           line: 889
           column: 1
         end:
-          offset: 59649
+          offset: 57915
           line: 889
           column: 514
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_59023"
+      unit_id: "normative_57289"
       source_span:
         start:
-          offset: 59650
+          offset: 57916
           line: 890
           column: 1
         end:
-          offset: 60077
+          offset: 58343
           line: 890
           column: 428
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_heat"
       identity_kind: "explicit"
-      unit_id: "normative_59023"
+      unit_id: "normative_57289"
       source_span:
         start:
-          offset: 60078
+          offset: 58344
           line: 891
           column: 1
         end:
-          offset: 60458
+          offset: 58724
           line: 891
           column: 381
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_81146"
+      unit_id: "normative_78025"
       source_span:
         start:
-          offset: 81241
-          line: 942
+          offset: 78120
+          line: 941
           column: 1
         end:
-          offset: 81503
-          line: 942
+          offset: 78382
+          line: 941
           column: 263
     - pointer: "/validation_rules/1"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_81146"
+      unit_id: "normative_78025"
       source_span:
         start:
-          offset: 81504
-          line: 943
+          offset: 78383
+          line: 942
           column: 1
         end:
-          offset: 81852
-          line: 943
+          offset: 78731
+          line: 942
           column: 349
     - pointer: "/validation_rules/2"
       rule_id: "validate_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_81146"
+      unit_id: "normative_78025"
       source_span:
         start:
-          offset: 81853
-          line: 944
+          offset: 78732
+          line: 943
           column: 1
         end:
-          offset: 82207
-          line: 944
+          offset: 79086
+          line: 943
           column: 355
     - pointer: "/validation_rules/3"
       rule_id: "validate_release"
       identity_kind: "explicit"
-      unit_id: "normative_81146"
+      unit_id: "normative_78025"
       source_span:
         start:
-          offset: 82208
-          line: 945
+          offset: 79087
+          line: 944
           column: 1
         end:
-          offset: 82630
-          line: 945
-          column: 423
+          offset: 79500
+          line: 944
+          column: 414
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7475"
+      unit_id: "normative_7421"
       source_span:
         start:
-          offset: 7475
+          offset: 7421
           line: 62
           column: 1
         end:
-          offset: 7496
+          offset: 7442
           line: 62
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7475"
+      unit_id: "normative_7421"
       source_span:
         start:
-          offset: 7524
+          offset: 7470
           line: 66
           column: 1
         end:
-          offset: 8608
+          offset: 8554
           line: 73
           column: 205
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_59023"
+      unit_id: "normative_57289"
       source_span:
         start:
-          offset: 59023
+          offset: 57289
           line: 885
           column: 1
         end:
-          offset: 59063
+          offset: 57329
           line: 885
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_81146"
+      unit_id: "normative_78025"
       source_span:
         start:
-          offset: 81146
-          line: 938
+          offset: 78025
+          line: 937
           column: 1
         end:
-          offset: 81168
-          line: 938
+          offset: 78047
+          line: 937
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1894,5 +1883,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ec8c3adca597cee40cad2b30a214b679cfa171f738be7e067c919f846ce7208b"
-  generated_content_sha256: "sha256:21d2156b8d97f2c4eebc58cfc26597aaec1e08320c623726dca352c019d8854e"
+    sha256: "sha256:e83fdb95bafe636b7078c80c526dbe19d2d578fef99618fd3745f17a1e7ff6fd"
+  generated_content_sha256: "sha256:66133c1319070c1a3f9de3913096a9997e6ffc895e77fb1cde71903d86b9dade"

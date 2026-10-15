@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.natural-cork-debacked-or-roughly-squared-or-in-blocks-plates-sheets-or-strip-crushed-gr-6a65ac8e"
-  classification_refs: "CPC 3.0 31921; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  classification_refs: "CPC 3.0: 31921; narrower proposed relation; accepted mapping subject to independent controller decision"
   covered_products: "Boiled, ambient-stabilized, graded and edge-trimmed unagglomerated Quercus suber natural cork planks under the declared single-product electric profile"
   excluded_products: "Raw/simply prepared bark as final product; granules/powder; waste cork as reference product; industrial debacking; stoppers/discs; adhesive-bonded/expanded/laminated cork"
   representative_product: "Accepted prepared natural cork planks, net mass at measured dispatch moisture, at preparation-plant gate"
@@ -240,7 +240,7 @@ process_inventory:
           name: "Rejected Quercus suber cork planks for external waste treatment"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record rejected planks at their actual pre/post-boiling rejection stage, net mass, moisture, defect and disposal destination. Separate these intact rejects from edge waste and dust. Supplier returns retain traceable whole mass, stage, state, moisture and receiver movements. Only returns compatible with the unboiled raw_cork input and not boiled/processed at this plant may net against unboiled receipts on the same stock basis. Boiled/processed returns require their own actual-state output/handover identity and receiver, retaining an explicit identity gap if needed; they are not negative raw_cork inputs. Already-incurred storage, boiling, handling, cleaning and other preparation burdens remain attributable and do not disappear on return."
+          description: "Record rejected planks at their actual pre/post-boiling rejection stage, net mass, moisture, defect and disposal destination. Separate these intact rejects from edge waste and dust. Supplier returns remain traceable gross physical movements and are reconciled before calculating net accepted input."
           amount:
             expression: "Use cp_waste to divide the matched physical exchange total by accepted net dispatch kg of the same cohort; unknown quantities remain unresolved."
             value_mode: "foreground_record"
@@ -431,8 +431,8 @@ dataset_production:
       process_id: "preparation"
       flow_role: "raw cork and stage ledger"
       record_type: "receipts, sampling and stock ledger"
-      raw_fields: "origin; species; previous treatment; gross receipts; whole supplier returns/stage/boiled-or-processed state/moisture/receiver; opening/closing stock; stage wet/dry masses"
-      collection_method: "Weigh receipts, returns and stocks; sample moisture at receipt, post-boiling and dispatch; retain stage transfers. Net only compatible unboiled unprocessed returns against raw_cork receipts; processed returns retain their own actual output state/receiver and incurred work, not negative raw input wet mass"
+      raw_fields: "origin; species; previous treatment; gross receipts; supplier returns; opening/closing stock; stage wet/dry masses"
+      collection_method: "Weigh receipts, returns and stocks; sample moisture at receipt, post-boiling and dispatch; retain stage transfers"
       unit: "kg"
       frequency: "each lot and period stock close"
       temporal_coverage: "Same cohorts as cp_reference; storage time stated"
@@ -557,15 +557,6 @@ dataset_production:
       output: "Physical carbon ledger and independently measured conditional biogenic CO2"
       source_ids:
         - cork-boiling-wastewater-2022
-    - id: complete_period_normalization
-      applies_to: "all inventory rows"
-      rule: "Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity."
-      inputs:
-        - "all linked raw collection protocols"
-        - "accepted reference-product pool"
-        - "stock and rework links"
-      output: "native exchange unit per declared reference quantity; zero-output pool remains unnormalized"
-      source_ids: []
   data_quality_requirements:
     - id: quality_identity
       applies_to: "each exchange"
@@ -626,18 +617,18 @@ data_sources:
     used_for: "Cork effluent complexity and analytical characterization; one Alentejo effluent and laboratory treatment, not a universal influent composition or removal model"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:d5c4d0cc20f5f2d2958c63902cd8e59c63e2a72c9781f99bc2443cca01f05e46"
+  source_sha256: "sha256:359b68817754223c8d2825ea350736022f6f321c4b88baa2494a81f80ad2ac85"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6828"
+    - unit_id: "normative_6806"
       family: "system_boundary"
       span:
         start:
-          offset: 6828
+          offset: 6806
           line: 63
           column: 1
         end:
-          offset: 9267
+          offset: 9245
           line: 82
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Unboiled harvested Quercus suber bark planks delivered at preparation plant; prior storage and transport disclosed |\n| starting_condition_role | Upstream delivered input; not a burden-free raw material |\n| product_classification_scope | Prepared plank subset of CPC 31921; raw harvesting input context CPC03220; finished articles context CPC31922 excluded |\n| recursive_input_rule | Already-boiled/finished planks are outside the intake profile. Do not recurse into the same preparation dataset or count previous boiling twice. Internal bath reuse and handling are ledger movements, not purchased exchanges. |\n| upstream_dataset_requirement | Use origin-matched forestry/harvest, pre-storage and transport to gate plus compatible electricity, water, packaging and waste-treatment backgrounds; document any missing upstream stage |\n| disclosure | Factory gate starting and ending states; original unallocated material/water/carbon ledger; stage metering; zero/absent evidence; unresolved identities/providers; waste destinations and complete treatment boundary |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_preparation` | preparation | Include receiving/storage, water-only electric boiling, stabilization, selection, edge trimming, dust control and dispatch in one foreground unit with stage records. Leaching, purge, evaporation and rejects remain explicit. Exclude cutting/punching/turning stoppers and granulation. | `jrc-cork-preparation-2016`; `spanish-cork-manufacturing-2022` |\n| `boundary_treatment` | waste outputs | Foreground ends at waste transfer; link actual downstream treatment burdens exactly once in the combined model. No untreated direct discharge is authorized. On-site treatment requires its own chemical/energy/sludge and species/compartment-resolved discharge inventory before application. Do not double-count transfer chemistry as direct emissions. | `cork-boiling-wastewater-2022` |\n| `boundary_energy_carbon` | electric route | No on-site fuel, combustion or purchased steam in this profile. Do not import wood boiler/sawmill factors. Upstream forest carbon uptake stays upstream; product/waste carbon stocks are not a second negative CO2 input. Retain measured biogenic releases regardless of impact-method convention. | `spanish-cork-manufacturing-2022` |\n\n"
@@ -657,11 +648,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6828
+              offset: 6806
               line: 63
               column: 1
             end:
-              offset: 6849
+              offset: 6827
               line: 63
               column: 22
           text: "## 5. System Boundary"
@@ -677,15 +668,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_24773"
+    - unit_id: "normative_24304"
       family: "allocation"
       span:
         start:
-          offset: 24773
+          offset: 24304
           line: 316
           column: 1
         end:
-          offset: 25876
+          offset: 25407
           line: 323
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_single_product` | preparation | This profile has one accepted product and no saleable coproducts. Assign measured preparation and required waste-treatment burdens to the accepted planks; product reference remains 1 kg. Document residue waste status with receiver and payment/acceptance records. Do not allocate to water content or discarded waste. | `jrc-cork-preparation-2016` |\n| `allocation_scope_change` | saleable side output or shared operation | Subdivision and causal stage metering come first. If trimmings, rejects, dust or heat are saleable coproducts, this single-product profile is insufficient: establish complete output identities, dry-matter/carbon balances and a reviewed allocation basis rather than imposing wood-board recipes or a universal mass/economic share. Preserve physical output and internal-transfer quantities; allocate environmental burdens only in a separate account. No automatic avoided-product credit. | `spanish-cork-manufacturing-2022` |\n\n"
@@ -705,11 +696,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 24773
+              offset: 24304
               line: 316
               column: 1
             end:
-              offset: 24813
+              offset: 24344
               line: 316
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -725,16 +716,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_38064"
+    - unit_id: "normative_35732"
       family: "validation"
       span:
         start:
-          offset: 38064
-          line: 359
+          offset: 35732
+          line: 358
           column: 1
         end:
-          offset: 39578
-          line: 368
+          offset: 37246
+          line: 367
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference and outputs | Require exactly one accepted prepared-plank reference output of 1 kg net dispatch mass, matching the functional-unit link and all qualifiers. Reject granule/waste inclusion in P or another internal output using the reference UUID. | `jrc-cork-preparation-2016` |\n| `validate_route` | all processes | Prove single-product electric water-only profile, actual waste destinations and absence of saleable coproducts; a conflicting chemical/thermal/manufacturing route requires method adaptation and fresh inventory check. Upstream datasets are mandatory for a combined model. | `spanish-cork-manufacturing-2022` |\n| `validate_environment` | wastewater, dust and carbon | Require untreated bath liquor transfer to compatible treatment, not direct receiving-water emissions. Check disjoint air-particle fractions and separate captured dust; matched water/dry-solids/carbon ledgers; retain conditional measured biogenic CO2. Identity success alone does not establish complete LCI or suitable background. | `cork-boiling-wastewater-2022` |\n| `validate_measurement` | all inventory rows | Require per 1 kg reference flow in both languages and matched protocol aggregation. P must be actual accepted net dispatch kg; no mixture with raw input, stock, rejects or packing. Missing identity, amount, measurement split or provider is an explicit unresolved data-package finding. |  |\n\n"
       headings:
@@ -753,12 +744,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 38064
-              line: 359
+              offset: 35732
+              line: 358
               column: 1
             end:
-              offset: 38086
-              line: 359
+              offset: 35754
+              line: 358
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -777,168 +768,168 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_preparation"
       identity_kind: "explicit"
-      unit_id: "normative_6828"
+      unit_id: "normative_6806"
       source_span:
         start:
-          offset: 8075
+          offset: 8053
           line: 78
           column: 1
         end:
-          offset: 8465
+          offset: 8443
           line: 78
           column: 391
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_treatment"
       identity_kind: "explicit"
-      unit_id: "normative_6828"
+      unit_id: "normative_6806"
       source_span:
         start:
-          offset: 8466
+          offset: 8444
           line: 79
           column: 1
         end:
-          offset: 8889
+          offset: 8867
           line: 79
           column: 424
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_energy_carbon"
       identity_kind: "explicit"
-      unit_id: "normative_6828"
+      unit_id: "normative_6806"
       source_span:
         start:
-          offset: 8890
+          offset: 8868
           line: 80
           column: 1
         end:
-          offset: 9265
+          offset: 9243
           line: 80
           column: 376
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_single_product"
       identity_kind: "explicit"
-      unit_id: "normative_24773"
+      unit_id: "normative_24304"
       source_span:
         start:
-          offset: 24886
+          offset: 24417
           line: 320
           column: 1
         end:
-          offset: 25279
+          offset: 24810
           line: 320
           column: 394
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_scope_change"
       identity_kind: "explicit"
-      unit_id: "normative_24773"
+      unit_id: "normative_24304"
       source_span:
         start:
-          offset: 25280
+          offset: 24811
           line: 321
           column: 1
         end:
-          offset: 25874
+          offset: 25405
           line: 321
           column: 595
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_38064"
+      unit_id: "normative_35732"
       source_span:
         start:
-          offset: 38159
-          line: 363
+          offset: 35827
+          line: 362
           column: 1
         end:
-          offset: 38470
-          line: 363
+          offset: 36138
+          line: 362
           column: 312
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_38064"
+      unit_id: "normative_35732"
       source_span:
         start:
-          offset: 38471
-          line: 364
+          offset: 36139
+          line: 363
           column: 1
         end:
-          offset: 38816
-          line: 364
+          offset: 36484
+          line: 363
           column: 346
     - pointer: "/validation_rules/2"
       rule_id: "validate_environment"
       identity_kind: "explicit"
-      unit_id: "normative_38064"
+      unit_id: "normative_35732"
       source_span:
         start:
-          offset: 38817
-          line: 365
+          offset: 36485
+          line: 364
           column: 1
         end:
-          offset: 39238
-          line: 365
+          offset: 36906
+          line: 364
           column: 422
     - pointer: "/validation_rules/3"
       rule_id: "validate_measurement"
       identity_kind: "explicit"
-      unit_id: "normative_38064"
+      unit_id: "normative_35732"
       source_span:
         start:
-          offset: 39239
-          line: 366
+          offset: 36907
+          line: 365
           column: 1
         end:
-          offset: 39576
-          line: 366
+          offset: 37244
+          line: 365
           column: 338
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6828"
+      unit_id: "normative_6806"
       source_span:
         start:
-          offset: 6828
+          offset: 6806
           line: 63
           column: 1
         end:
-          offset: 6849
+          offset: 6827
           line: 63
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6828"
+      unit_id: "normative_6806"
       source_span:
         start:
-          offset: 6877
+          offset: 6855
           line: 67
           column: 1
         end:
-          offset: 8002
+          offset: 7980
           line: 74
           column: 231
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_24773"
+      unit_id: "normative_24304"
       source_span:
         start:
-          offset: 24773
+          offset: 24304
           line: 316
           column: 1
         end:
-          offset: 24813
+          offset: 24344
           line: 316
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_38064"
+      unit_id: "normative_35732"
       source_span:
         start:
-          offset: 38064
-          line: 359
+          offset: 35732
+          line: 358
           column: 1
         end:
-          offset: 38086
-          line: 359
+          offset: 35754
+          line: 358
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -947,5 +938,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:d5c4d0cc20f5f2d2958c63902cd8e59c63e2a72c9781f99bc2443cca01f05e46"
-  generated_content_sha256: "sha256:a37c8d159269706aa747c01543540825df07b2c918b80f66d7c91fb76b022fe9"
+    sha256: "sha256:359b68817754223c8d2825ea350736022f6f321c4b88baa2494a81f80ad2ac85"
+  generated_content_sha256: "sha256:447fddf6f12453cd45d9ccdfdf4a9025f8d0f011a81860f4450566af21d04b7d"

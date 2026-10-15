@@ -20,7 +20,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.tableware-and-kitchenware-of-wood |
-| classification_refs | CPC 3.0 31912; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC:3.0:31912; narrower |
 | covered_products | 无涂层无胶黏剂单块面纹糖枫实木砧板 |
 | excluded_products | 勺；碗；竹；胶合/端纹拼装砧板；涂层/涂油/涂蜡砧板；浸渍或热改性坯料 |
 | representative_product | 一件声明尺寸及含水状态的完整验收糖枫砧板 |
@@ -65,7 +65,7 @@ content_maturity: authored_methodology
 | --- | --- |
 | declared_starting_condition | 加工厂接收的未处理窑干单块糖枫木坯 |
 | starting_condition_role | foreground_input |
-| product_classification_scope | 木制厨具中的具体砧板子集；仅为 CPC 31912 narrower 候选 |
+| product_classification_scope | 木制厨具中的本砧板子集；CPC 3.0:31912的narrower范围；映射接受决策由classifications/mappings/另行维护。 |
 | recursive_input_rule | 成品砧板不是正常外购投入。内部返工留在本单元内；任何外购同类别砧板均须另审起点，不得无披露复用本初次制造结果。 |
 | upstream_dataset_requirement | 木料须匹配林业、锯切及真实窑干直至接收交付；电力、整条砂带、实际适用油品及纸盒供货均须匹配。经核实的到厂投入背景若未含入厂运输，应另列实际路线、方式、载重及距离。不得重复计入运输或干燥。 |
 | disclosure | 供方/场址/年份/树种/含水率、真实配方及起点状态、前景过程图、上游交付范围、废物接收方、遗漏及不确定性 |
@@ -420,7 +420,6 @@ content_maturity: authored_methodology
 | particulate_bins | pm25; pmcoarse; pmover10 | 每个兼容测量范围：fine = PM2.5；coarse = PM10 - PM2.5；over10 = total_particulate - PM10。在不确定性内要求 total_particulate >= PM10 >= PM2.5 >= 0。各出口互斥段与另有证据的逸散只求和一次。拒绝不兼容干湿气、平均期间、可凝结物定义或检测截点；重新测量，不强行生成粒径段。 | cp_air | 互斥空气排放 kg，然后每 1 kg 参考流 | epa-sawmill-pte-2014 |
 | joint_burdens | p_board | 每一不可分联合阶段，f_board = dry_board_equivalent / sum(该阶段离开的真实木质共产品绝干当量，含砧板前体)。全部份额和为 1。砧板负荷 = f_board * joint_stage_burden + direct_board_stage_burden。保留真实实物输出；分配仅改变联合负荷归属。使用逐阶段实测绝干质量，不使用最终阶段湿质量。 | cp_material; cp_residue; cp_energy | 与实物账分开的分配负荷账 | corrim-northern-lumber-2025 |
 | wood_carbon | p_board | 逐一实际流的木质碳 = 实测绝干木质质量 * 供方/现场实测碳质量分数。投入碳与验收板、残料、库存木质、空气木颗粒及任何实测含碳气体排放核对。涉及结合剂/油时区分生物与化石碳。不设默认木质碳分数、负碳抵扣，也不删除上游生物 CO2。 | cp_material; cp_residue; cp_air | 含残差及证据的实物碳账 | usda-wood-handbook-2021 |
-| complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
 

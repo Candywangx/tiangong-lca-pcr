@@ -1,10 +1,1974 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33349"
-  title: "Other kerosene"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.other-kerosene"
+  classification_refs: "CPC 3.0: 33349 Other kerosene; narrower manufacturing/quality subset, proposed only"
+  covered_products: "Petroleum kerosene-range liquid, distilled and hydrotreated, released to a declared non-aviation specification"
+  excluded_products: "Untreated finished kerosene; jet fuel; gas oil; naphtha; white spirit/SBP; sulfonated kerosene; synthesis/biogenic routes; stand-alone terminal blending"
+  representative_product: "An accepted homogeneous hydrotreated non-aviation kerosene batch, bulk liquid at the refinery dispatch gate"
+  production_route: "Crude/feed receipt; desalting and distillation; kerosene hydrotreating; conditional blending; quality release; storage/loading; operated utilities and abatement"
+  market_state: "Bulk liquid before downstream transport/use; batch and supply-quality subset declared"
+functional_unit:
+  what: "Supply of accepted hydrotreated non-aviation kerosene at the refinery dispatch gate"
+  how_much: "1 kg net accepted kerosene"
+  how_well: "Actual declared non-aviation supply specification and batch acceptance; grade and use do not alone establish identity"
+  how_long_or_cycle: "One declared production period or batch; no combustion service or duration is implied"
+  reference_flow_link: "reference_product_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacture
+      applies_to: "kerosene_manufacture"
+      rule: "Include all operated contributing separation, hydrotreatment, finishing, tank/loading, hydrogen/utility and abatement operations. The declared refinery boundary retains its actual co-product slate."
+      source_ids:
+        - eu-jrc-ref-bref-2015
+        - us-epa-ap42-5-1-2015
+    - rule_id: boundary_internal
+      applies_to: "internal interfaces"
+      rule: "Aggregate this foreground as one manufacturing unit; retain stage-specific metering and internal source/destination links with equal quantities. Internal kerosene transfers are not additional finished outputs."
+      source_ids:
+        - eu-jrc-ref-bref-2015
+    - rule_id: boundary_use
+      applies_to: "downstream use"
+      rule: "Exclude customer combustion, distribution after the declared gate and user storage. Model actual site combustion/flaring only; any extension is a separate downstream process."
+      source_ids:
+        - eu-jrc-ref-bref-2015
+        - us-epa-ap42-5-1-2015
+    - rule_id: boundary_completeness
+      applies_to: "actual site exchanges"
+      rule: "Inventory cards are atomic templates, not a universal plant recipe. Include only applicable rows with supporting records and extend with one row per other actual feed, additive, fuel, co-product, waste or emitted species. Missing observations are unknown, not zero; no unlisted stream may be silently cut off."
+      source_ids:
+        - eu-jrc-ref-bref-2015
+        - us-epa-ap42-5-1-2015
+boundary_abstraction:
+  declared_starting_condition: "Crude petroleum and actual unfinished refinery feed received by the operated refinery; purchased inputs carry upstream datasets"
+  starting_condition_role: "Foreground manufacturing supply boundary"
+  product_classification_scope: "Hydrotreated non-aviation petroleum kerosene, proposed narrower subset of CPC 3.0 33349, not every kerosene route"
+  recursive_input_rule: "Already finished kerosene received for commingling/rework remains a product input with its original upstream burden; identify its actual prior treatment and any genuinely operated additional treatment separately. Never relabel a hydrotreated finished input as untreated distillate, hide repeated treatment, or reattribute its completed upstream manufacture. Stand-alone finishing of purchased finished fuel is outside this PCR"
+  upstream_dataset_requirement: "Link actual crude/feed, hydrogen, grid electricity, natural gas, steam, water, chemicals and waste-treatment providers; match technology, geography, period and quantity basis"
+  disclosure: "Retain a full unallocated site/unit physical ledger and a separate allocated environmental-burden ledger; record all internal paired transfers and receiving boundaries"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Kerosene"
+    uuid: "4489ad5c-84f0-440f-9e21-82e4e109495f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Crude/feed origin"
+    - "actual distillation and hydrotreatment"
+    - "batch/SKU"
+    - "non-aviation specification"
+    - "quality test results"
+    - "petroleum composition"
+    - "density and temperature"
+    - "reporting period/geography"
+    - gate
+    - "co-product slate"
+    - allocation
+    - "utility/provider bases"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference_product_output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use net mass of the actually dispatched and accepted finished kerosene mixture, including its measured retained water and incorporated additives, excluding container tare and separately removed water/sediment or rejected material. No universal water, additive or hydrocarbon proportion is prescribed. Convert a custody volume only with the matching whole-batch density at the same temperature and documented volume correction."
+  - id: gas_volume
+    applies_to: "natural_gas_input"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Retain the declared Volume/m3 collection basis. Match meter and provider temperature, absolute pressure, wet/dry composition and compressibility; record gauge-to-absolute pressure conversion where applicable. A gas-volume unit alone defines no normal/standard reference conditions, purity or density. Identity ambiguity and incompatible background quantity bases remain pending."
+  - id: electrical_energy
+    applies_to: "electricity_input"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the verified flow-property label; use metered electrical energy, with 1 kWh = 3.6 MJ from the verified energy unit group. This is a unit conversion, not fuel heating value."
+  - id: steam_basis
+    applies_to: "steam_input, steam_export"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Collect actual steam mass, absolute/gauge pressure distinction, temperature, dryness, inlet/return states and enthalpy on one documented datum. Reconcile delivered enthalpy, actual condensate/steam returns and losses to net delivered energy in MJ. Preserve a selected record's native mass or energy property; kg and MJ are not interchangeable without this state-dependent bridge. Do not choose a pressure-specific identity from its short name or infer usable heat from MJ alone; never count one supply again as both physical steam and purchased heat burden."
+process_map:
+  - id: kerosene_manufacture
+    name: "Integrated distillation, hydrotreatment, finishing and refinery dispatch"
+    inclusion: "required"
+    inclusion_condition: "Distillation and kerosene hydrotreatment are operated within the declared refinery boundary"
+    role: "One aggregated foreground unit with stage-level metering, actual utilities and environmental controls"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: kerosene_manufacture
+    label: "Integrated distillation, hydrotreatment, finishing and refinery dispatch"
+    inputs:
+      product:
+        - row_id: crude_input
+          role: "Crude oil"
+          name: "Crude oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e8186909-07ca-41ef-9f5f-0ba05982720a"
+          property_unit: "Mass / kg"
+          description: "Crude petroleum supplied to the operated refinery. Measure net oil mass separately from free water and sediment; disclose crude assay and supplier. The database nominal calorific-value qualifier is not a site default; verify provider compatibility independently."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: straight_run_component
+          role: "Untreated straight-run kerosene cut"
+          name: "Untreated straight-run kerosene cut"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased untreated straight-run kerosene cut, only when subsequently hydrotreated inside this foreground. Declare distillation range and contaminants; do not identify this untreated input with the finished hydrotreated reference flow."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: hydrogen_input
+          role: "Hydrogen make-up gas mixture"
+          name: "Hydrogen make-up gas mixture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This exchange measures the whole actual hydrogen make-up gas mixture entering operated hydrotreatment; record whole-gas mass and composition, H2 fraction/purity, source route, pressure, temperature, wet/dry meter basis and net make-up separately from recycle hydrogen. A pure-H2 quantity and whole hydrogen-rich gas quantity are separate bases; reconcile impurities and purge without counting the same gas twice. No default purity or pressure is assumed. Coal-to-methanol/ethylene hydrogen is not a generic refinery hydrogen identity. On-site hydrogen manufacture requires its actual atomic feeds, products and emissions in the site ledger."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: electricity_input
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased alternating current, conditional on the verified CN, 1–35 kV customer-side grid-average supply interface. Record voltage, geography, period and provider losses; use a separately verified flow for other voltages or generation routes. Internal generation is balanced separately."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: steam_input
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased process steam at the actual pressure and temperature, including steam used for stripping. Collect mass, pressure, temperature, dryness, inlet enthalpy and condensate/return state. Neither a mass nor an MJ property alone establishes net delivered heat; the provider basis must match the measured enthalpy balance."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Pipeline natural-gas mixture"
+          name: "Pipeline natural-gas mixture"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Actual pipeline natural-gas mixture for operated furnaces, boilers or hydrogen production, when used. The collection basis is Volume/m3, with measured composition, moisture, temperature, absolute pressure, compressibility and supplier volume conditions; purity, standard conditions and energy content are not defaults. Reconcile whole-gas mass and carbon from actual composition/density. A methane CAS or high-pressure CH4 synonym cannot establish the identity of this variable gas mixture. An unresolved identity must not inherit another record's secondary mass/energy factors as measured density or heating value."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ec205030-248c-496f-9cf2-06d9d26dc6ff"
+          property_unit: "Mass / kg"
+          description: "Purchased process water used as reaction/solution or wash medium; distinguish supplied water from direct abstraction, other actual water grades, and internally recovered condensate or stripped sour water. Record quality and mass, with measured density for volume conversion. This identity is not a default for all cooling, drinking or demineralised water."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: caustic_input
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Solid industrial sodium hydroxide only for actual caustic preparation or pH control, matching the record’s 95–98% supplied grade. Collect assay and as-delivered mass; an aqueous caustic purchase requires its own concentration-specific atomic flow, not this solid identity."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: amine_input
+          role: "N-methyldiethanolamine"
+          name: "N-methyldiethanolamine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "N-methyldiethanolamine supplied for actual acid-gas scrubbing, only if that solvent is used. Record formulation, active fraction and make-up; another amine or formulated solvent requires a separate atomic row."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: catalyst_input
+          role: "Cobalt–molybdenum on alumina hydrotreating catalyst"
+          name: "Cobalt–molybdenum on alumina hydrotreating catalyst"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fresh cobalt–molybdenum hydrotreating catalyst on alumina, conditional on actual catalyst identity. Record grade, support, metal loading, sulfiding state, change-out dates and campaign throughput; do not model the full catalyst as pure cobalt or molybdenum."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: nitrogen_input
+          role: "Nitrogen"
+          name: "Nitrogen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67bb2ea6-2fd8-43c5-b227-bca12040b773"
+          property_unit: "Mass / kg"
+          description: "Air-separation gaseous nitrogen make-up for actual purging or tank inerting. Verify supplier purity, gas/liquid state and mass basis; do not transplant bottled-beverage inerting or liquid-nitrogen datasets."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: ferric_chloride_input
+          role: "ferric chloride"
+          name: "ferric chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d29463c7-fbbf-4811-b122-a651f205d603"
+          property_unit: "Mass / kg"
+          description: "Anhydrous ferric chloride supplied for actual wastewater coagulation. Measure solid supplied mass and assay; aqueous or hydrated grades require their own flow and documented concentration conversion."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: drum_input
+          role: "Reusable steel chemical drum"
+          name: "Reusable steel chemical drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One reusable steel drum entering the boundary only if actually used for feed or chemical supply. Record its own tare mass, material/coating, identifier, condition, ownership, opening/closing stock, actual service records, washing and repair. Contents are separate exchanges; no assumed drum capacity, weight or lifetime. This conditional card does not convert bulk kerosene dispatch into a packaged-product scope."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_containers
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: river_water_input
+          role: "river water"
+          name: "river water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume / m3"
+          description: "Direct river-water abstraction, only when physically performed by the foreground site. Record catchment/location, volume and return destination; purchased water must not also be counted as foreground abstraction."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Kerosene"
+          name: "Kerosene"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4489ad5c-84f0-440f-9e21-82e4e109495f"
+          property_unit: "Mass / kg"
+          description: "Net accepted non-aviation kerosene mixture dispatched after refinery distillation, hydrotreating and specification finishing, including actual retained water and incorporated additives. Reconcile dispatch meter, batch certificate, tank inventory, samples, recirculation, off-spec rework and loss; this is the sole reference-product output."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_reference
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: naphtha_output
+          role: "naphtha"
+          name: "naphtha"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0d-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Saleable naphtha co-product leaving the same declared refinery boundary. Retain its full physical mass, grade and destination; internal reformer or blending transfers remain internal links."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: gasoline_output
+          role: "Gasoline"
+          name: "Gasoline"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e6677cd5-b574-4e00-a3bd-c373ac796135"
+          property_unit: "Mass / kg"
+          description: "Saleable gasoline co-product; record actual octane, specification and component slate. Keep physical output before environmental-burden allocation, without assuming a default gasoline formulation."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: jet_fuel_output
+          role: "Kerosene-type jet fuel"
+          name: "Kerosene-type jet fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e1ede47a-b840-45e6-b711-98cb547902cf"
+          property_unit: "Mass / kg"
+          description: "Aviation-specification-certified kerosene-type jet fuel produced alongside the reference product. Keep its separate certified batch mass; its stricter aviation product quality is not inferred for the non-aviation kerosene."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: gas_oil_output
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Saleable diesel/gas-oil co-product with actual specification, sulphur, density and treatment declared. Hydrotreated kerosene blended into diesel is assigned to this finished physical output, not also to dispatched kerosene."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: propane_output
+          role: "Separated propane"
+          name: "Separated propane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separated propane co-product only when separately sold; record purity, liquefied/gas state and custody quantity. Do not split a sold mixed LPG batch into fictitious pure propane and butane outputs."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: butane_output
+          role: "Butane"
+          name: "Butane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e02e31b8-818f-44b7-af25-f32f1e923965"
+          property_unit: "Mass / kg"
+          description: "Separated n-butane co-product only when sold separately and consistent with CAS 106-97-8. Confirm purity, isomer composition and state; mixed butanes or isobutane require their own identity. Butane internally dosed to gasoline is an internal transfer; exclude quantities already counted in mixed LPG."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: refinery_gas_output
+          role: "Treated refinery fuel-gas mixture"
+          name: "Treated refinery fuel-gas mixture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Exported treated refinery fuel-gas mixture, only when crossing the site boundary. Record species composition, sulphur, pressure and energy basis. Gas burned or recycled on site remains in the internal gas and carbon/sulphur ledgers, not an exported co-product."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: residual_fuel_output
+          role: "Residual heavy fuel oil"
+          name: "Residual heavy fuel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Saleable residual heavy fuel oil, with actual viscosity, sulphur, density and cutter-stock composition. Neither internal furnace consumption nor a polymer-chain input dataset represents this export quantity."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: sulfur_output
+          role: "Recovered elemental sulphur, crude"
+          name: "Recovered elemental sulphur, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "93f4a22b-b419-48ec-8068-ededf8684dfc"
+          property_unit: "Mass / kg"
+          description: "Crude elemental sulphur recovered from the refinery Claus sulphur recovery unit and sold. Record moisture, hydrocarbon contamination, purity and physical output; converted H2S is an internal transfer, not an additional direct sulphur emission."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: coke_output
+          role: "Green petroleum coke"
+          name: "Green petroleum coke"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Green petroleum coke co-product only if an operated refinery coker belongs to the shared boundary. Declare green/calcined state, sulphur, metals, moisture and receiver; coal coke, calcined coke and Bayer-process records are not substitutes."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: bitumen_output
+          role: "Unmodified petroleum bitumen"
+          name: "Unmodified petroleum bitumen"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Unmodified refinery petroleum bitumen sold as such, conditional on actual production. Record grade and state; preserve product identity separately from road-aggregate asphalt mixtures or natural asphalt."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: steam_export
+          role: "Exported process steam"
+          name: "Exported process steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Exported process steam as one physical utility co-product, only when sold across the site boundary. Collect pressure, temperature, quality, mass and return enthalpy; net exported heat and allocation are separate from physical steam quantity."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: electricity_export
+          role: "Exported electricity"
+          name: "Exported electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Exported electricity as one utility co-product, only when sold across the site boundary. Record meter, voltage and provider interface; internal electricity consumed by the refinery is not export."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: lpg_output
+          role: "Liquefied petroleum gas"
+          name: "Saleable refinery liquefied petroleum gas mixture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Mixed refinery liquefied petroleum gas sold as one mixture, with propane/butane and impurity composition measured. Use this row instead of, not in addition to, pure constituent rows for the same sold batch."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: drum_return
+          role: "Empty reusable steel chemical drum"
+          name: "Empty reusable steel chemical drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One empty reusable steel chemical drum returned to its actual owner/receiver for reuse. Record tare and residual contents separately, return condition, inventory and paired receipt/return identifiers. Keep cleaning and repair material/energy/wastes explicit. Return is not disposal or an automatic credit, and no same drum is counted again as retired waste."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_containers
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+      waste:
+        - row_id: oily_sludge_output
+          role: "refinery sludge"
+          name: "refinery sludge"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b8bb8aa8-3170-4476-b9cb-4e42642b5da0"
+          property_unit: "Mass / kg"
+          description: "One outgoing oily refinery sludge stream from the declared collection point. Record wet mass, oil, water, solids, hazardous constituents and receiver; keep distinct sources as separate exchanges where treatment conditions differ. Preserve whole as-transferred wet carrier quantity and contained water, solids and species separately, on the actual receiver's acceptance basis. Do not add those components again to total mass or duplicate a stream under multiple sludge/wastewater cards; internal treatment is represented by paired links."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: spent_catalyst_output
+          role: "Spent cobalt–molybdenum/alumina hydrotreating catalyst"
+          name: "Spent cobalt–molybdenum/alumina hydrotreating catalyst"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent cobalt–molybdenum/alumina hydrotreating catalyst, separated from fresh catalyst. Record residual oil, sulphur, metals, support, wet/dry mass and regeneration/recovery receiver; do not substitute a power-plant SCR catalyst or pure nickel catalyst."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: spent_caustic_output
+          role: "Sulphidic spent sodium-caustic liquor"
+          name: "Sulphidic spent sodium-caustic liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One outgoing sulphidic spent sodium-caustic liquor, only when exported rather than internally regenerated. Record water, free caustic, sulphide, phenols, hydrocarbons, mass and accepted treatment route. Preserve whole as-transferred wet carrier quantity and contained water, solids and species separately, on the actual receiver's acceptance basis. Do not add those components again to total mass or duplicate a stream under multiple sludge/wastewater cards; internal treatment is represented by paired links."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: wastewater_output
+          role: "Untreated refinery oily/sour wastewater"
+          name: "Untreated refinery oily/sour wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Untreated refinery oily/sour wastewater sent to an external treatment provider. Preserve actual oil, dissolved sulphur/nitrogen, salinity and volume/mass; this technosphere transfer is not direct receiving-water discharge and not manganese-slag wash water. Preserve whole as-transferred wet carrier quantity and contained water, solids and species separately, on the actual receiver's acceptance basis. Do not add those components again to total mass or duplicate a stream under multiple sludge/wastewater cards; internal treatment is represented by paired links."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: primary_sludge_output
+          role: "Primary oil-separation/DAF sludge"
+          name: "Primary oil-separation/DAF sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One primary oil-separation/DAF sludge stream exported from on-site wastewater treatment, separate from tank-bottom sludge and biological sludge. Record oil, solids, water, metals and receiver. Preserve whole as-transferred wet carrier quantity and contained water, solids and species separately, on the actual receiver's acceptance basis. Do not add those components again to total mass or duplicate a stream under multiple sludge/wastewater cards; internal treatment is represented by paired links."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: bio_sludge_output
+          role: "Excess refinery biological sludge"
+          name: "Excess refinery biological sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One excess biological wastewater sludge stream exported after declared dewatering. Record dry solids, moisture, oil, hazardous contaminants and receiver; municipal sewage-sludge or return-activated-sludge identities do not establish this exported refinery waste. Preserve whole as-transferred wet carrier quantity and contained water, solids and species separately, on the actual receiver's acceptance basis. Do not add those components again to total mass or duplicate a stream under multiple sludge/wastewater cards; internal treatment is represented by paired links."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: sour_gas_output
+          role: "Untreated refinery acid-gas mixture"
+          name: "Untreated refinery acid-gas mixture"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One whole untreated refinery acid-gas mixture transferred to an external treatment/SRU receiver only when crossing the declared boundary. Collect whole-gas mass, H2S/CO2/NH3/hydrocarbon/water composition, pressure, temperature and accepted receiving process. H2S component mass alone is not the whole mixture. Inside-boundary amine/SRU/flare links remain paired internal transfers; only measured residual species reaching air belong to elementary emissions. Do not copy pure-H2S, H2S-in-SRU-feed or water-treatment-chemical identity onto the whole exported waste."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: drum_waste
+          role: "Retired contaminated steel chemical drum"
+          name: "Retired contaminated steel chemical drum"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One retired contaminated steel chemical drum transferred as waste to an actual licensed receiver, conditional on actual retirement. Record steel/coating tare, residual chemicals/water, wet shipped mass, hazard classification and recovery/disposal acceptance. Distinguish recyclable clean steel, reusable returns and separately removed contents; none is a default treatment route or a duplicate mass."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_containers
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+      elementary:
+        - row_id: co2_air
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fossil carbon dioxide released to outdoor air from operated process/utility combustion, flaring and process vents. Reconcile with fossil carbon in feeds, products and wastes; do not burn the entire sold kerosene in the production inventory."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: methane_air
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fossil methane reaching outdoor air from leaks, tanks, wastewater or incomplete combustion. Use methane-specific measurements/composition; do not equate total hydrocarbons or all vented gas with methane."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: nox_air
+          role: "Nitrogen oxides as NO and NO2 aggregate"
+          name: "Nitrogen oxides as NO and NO2 aggregate"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual NO and NO2 aggregate reported as NOx, excluding N2O. A kg reference does not prove NO2-equivalent mass: confirm monitoring, selected flow and LCIA quantity definitions before linking an UUID. Use separate NO/NO2 exchanges instead when species-resolved; never count both representations."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: so2_air
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measured sulphur dioxide reaching outdoor air after operated furnace, flare or sulphur-recovery controls. Quantity is SO2 mass, not elemental-S mass or undifferentiated SOx. Retain other actual sulphur species as separate atomic exchanges."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: co_air
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fossil carbon monoxide released to outdoor air after combustion/control. Record species mass and distinguish it from CO2 and bulk carbon; reconcile carbon conservation without creating a default combustion factor."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: n2o_air
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual nitrous oxide released to outdoor air where supported by monitoring or an applicable source-specific estimation method. Keep separate from NOx and record missing measurement as unknown, not automatic zero."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: h2s_air
+          role: "hydrogen sulfide"
+          name: "hydrogen sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Hydrogen sulphide actually released to outdoor air after controls. Sour gas transferred to amine/SRU/flare inside the refinery is an internal link; only residual release is an elementary exchange."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: benzene_air
+          role: "benzene"
+          name: "benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9202-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual benzene released to outdoor air from storage, loading, equipment leakage or wastewater. Measure whole kerosene-vapour loss and its actual vapour composition separately from benzene or other VOC species; liquid-batch composition does not automatically describe evaporated vapour. Whole vapour mass is not benzene mass. Reconcile species with whole hydrocarbon/carrier totals; represent other actual species in separate atomic rows and keep uncharacterised remainder explicit. No duplicate species burden inside a total-VOC exchange."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: pm25_air
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor particulate emission in the PM2.5 size class after capture; include actual utility/catalyst/coke sources within the boundary. Captured solids are wastes, not air emissions."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: pm_coarse_air
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor particulate emission strictly in the PM2.5–PM10 interval. Derive only from compatible simultaneous size measurements; do not add cumulative PM10 to PM2.5."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: pm_large_air
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor particles larger than PM10 where actual emissions and size evidence exist. Retain independently of smaller size intervals; missing size data requires review rather than an invented residual."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: effluent_water
+          role: "Water"
+          name: "Water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume / m3"
+          description: "Actual liquid water component discharged directly to fresh water after on-site treatment, on the verified Volume/m3 basis. Retain the whole effluent carrier volume/mass, measured water fraction/density and contained pollutants separately; whole effluent volume is not automatically pure-water volume. Species releases are contained in that carrier and are not additional whole-stream mass. Sewered wastewater is a technosphere transfer; sea-water discharge requires a different verified elementary flow."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: benzene_water
+          role: "benzene"
+          name: "benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9207-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Benzene actually discharged to fresh water, as species mass. Use matched flow and concentration intervals at the final outfall; pre-treatment concentrations do not describe final discharge."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: phenol_water
+          role: "phenol"
+          name: "phenol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-975b-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Phenol actually discharged to fresh water, specifically CAS 108-95-2. A total-phenols assay does not prove pure-phenol mass; speciate or leave the quantity-definition gap unresolved."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: sulfide_water
+          role: "sulfide"
+          name: "sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-9066-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Sulfide ion actually discharged to fresh water. Confirm assay basis and speciation; a result reported as total sulphur or dissolved H2S cannot be copied as sulfide-ion mass."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: ammonium_water
+          role: "ammonium"
+          name: "ammonium"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aaa5-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Ammonium ion actually discharged to fresh water. Convert an assay expressed as nitrogen only with a documented molecular-mass relation and compatible speciation; do not duplicate total nitrogen."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: nitrate_water
+          role: "nitrate"
+          name: "nitrate"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-8d68-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Nitrate ion actually discharged to fresh water when present in treated wastewater. Declare ion versus nitrate-nitrogen basis and use documented conversion; do not infer nitrate from total nitrogen."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: phosphate_water
+          role: "phosphate"
+          name: "phosphate"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9787-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Phosphate ion actually discharged to fresh water when present. Declare orthophosphate speciation and ion versus P basis; total phosphorus cannot be assigned wholesale to this species."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: ammonia_air
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual ammonia reaching outdoor air from sour-water handling or other operated sources. Record NH3 mass, not ammoniacal nitrogen mass; internally recovered ammonia is a product transfer."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: co2_bio
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Biogenic carbon dioxide released to outdoor air only where actual utility fuel or wastewater carbon contains biogenic carbon. Require separately identified actual biogenic-carbon-bearing source inputs and source-fraction evidence. Require an atomic biogenic fuel input only when actual fuel is the carbon source; for wastewater-origin carbon, trace the actual incoming wastewater feed and its carbon-bearing sources through the physical ledger and paired internal links, without inventing a fuel input or assuming a biogenic fraction. Retain this LCI exchange even if a GHG indicator reports it separately."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+        - row_id: vapor_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual water vapour from cooling, process steam losses and operated combustion released to outdoor air. Reconcile evaporation with water ingress, condensate return, effluent and inventory change; growing-plant evapotranspiration is not this flow."
+          amount:
+            expression: "Measured applicable physical exchange divided by net accepted reference-product mass for the same period; retain the full unallocated quantity in the source ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-ref-bref-2015
+                - us-epa-ap42-5-1-2015
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared units"
+    rule: "Avoid allocation where feasible by subdivision with actual unit meters and causally attributable operations. System expansion may be used only with explicit equivalent function, substitution evidence and separate sensitivity; it is not an automatic credit."
+    source_ids:
+      - eu-jrc-ref-bref-2015
+  - rule_id: allocation_burdens
+    applies_to: "shared environmental burdens"
+    rule: "For remaining shared burdens, justify a physical relationship for the actual unit and output slate. Mass or energy shares are not automatically causal. If no defensible physical relationship exists, disclose economic allocation with matched period, prices, currency, output states and sensitivity. Retain factors and source workbooks, and verify factor sum equals 1. Container manufacture, actual repeated use, washing, repair, loss and end-of-life are assigned separately from the full physical container return ledger; no default reuse count or substitution credit."
+    source_ids:
+      - eu-jrc-ref-bref-2015
+  - rule_id: allocation_physical
+    applies_to: "all physical exchanges"
+    rule: "Maintain full measured gas/liquid/solid products and mass/water/carbon/sulphur/energy balances before allocation. Apply allocation only to attributable environmental burdens in a separate ledger; do not mechanically multiply physical co-product outputs or internal paired flows by allocation shares. Do not delete co-products to make a reference-output check pass."
+    source_ids:
+      - eu-jrc-ref-bref-2015
+  - rule_id: allocation_rule_4
+    applies_to: "foreground_burden_allocation"
+    rule: "The allocation hierarchy and audit safeguards above are this PCR’s declared modelling rules, informed by the BREF’s actual multifunctional refinery structure; the BREF is not represented as prescribing a numerical allocation formula."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_reference
+      process_id: "kerosene_manufacture"
+      flow_role: "reference product"
+      record_type: "quality/dispatch/tank records"
+      raw_fields: "batch; SKU; specification; distillation curve; sulphur; aromatics; flash point; actual retained water/additives; separated water/sediment; density; temperature; accepted whole-mixture net dispatched mass; tank change; rework; rejected material"
+      collection_method: "Use calibrated custody mass metering or traceable volume and same-batch density/temperature correction; reconcile release certificate, tank change, rework and loss; normalization operation: net accepted reference mass; per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each batch and dispatch"
+      temporal_coverage: "all accepted production"
+      site_scope: "full declared dispatch boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; density test; certificate; reconciliation"
+    - protocol_id: cp_inputs
+      process_id: "kerosene_manufacture"
+      flow_role: "purchased materials/utilities"
+      record_type: "meter and supplier records"
+      raw_fields: "flow; supplier; batch/SKU; route; grade; composition/purity; concentration; state; amount; unit; pressure absolute/gauge; temperature; wet/dry; compressibility; density; enthalpy datum; condensate; provider reference basis; containers/maintenance materials"
+      collection_method: "Meter actual receipts and stock change; retain invoices and supplier reference definitions; verify each conversion and exclude internally recycled amounts; normalization operation: physical input totals divided by accepted reference mass; per 1 kg reference flow"
+      unit: "row unit"
+      frequency: "each receipt; continuous utilities"
+      temporal_coverage: "same production period"
+      site_scope: "all contributing refinery stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; supplier declarations; composition tests; provider checks"
+    - protocol_id: cp_products
+      process_id: "kerosene_manufacture"
+      flow_role: "co-products"
+      record_type: "unit/tank/dispatch ledgers"
+      raw_fields: "output; grade; phase; mass; density; water; C; S; energy; destination; internal transfer; stock change"
+      collection_method: "Meter each actual co-product separately before allocation; reconcile internal transfer endpoints and sold batches; prevent LPG/constituent overlap; normalization operation: physical output totals divided by accepted reference mass; per 1 kg reference flow"
+      unit: "row unit"
+      frequency: "each batch and continuous unit totals"
+      temporal_coverage: "same production period"
+      site_scope: "full shared gas/liquid/solid slate and utility exports"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "output certificates; meter calibration; paired-flow reconciliation"
+    - protocol_id: cp_wastes
+      process_id: "kerosene_manufacture"
+      flow_role: "outgoing wastes"
+      record_type: "weighbridge and receiver records"
+      raw_fields: "stream; source; mass; volume; moisture; dry solids; oil; metals; S; N; hazardous constituents; receiver; route"
+      collection_method: "Weigh or meter each exported stream and sample composition; distinguish primary sludge, biological sludge, catalyst and spent liquor; record actual treatment acceptance; normalization operation: physical waste totals divided by accepted reference mass; per 1 kg reference flow"
+      unit: "row unit"
+      frequency: "each shipment and representative composite sampling"
+      temporal_coverage: "same production period including catalyst campaigns"
+      site_scope: "all outgoing site waste boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "receiver acceptance; manifests; weighing; lab results"
+    - protocol_id: cp_air
+      process_id: "kerosene_manufacture"
+      flow_role: "direct air emissions"
+      record_type: "monitoring and control records"
+      raw_fields: "source; species; origin; concentration; whole carrier/kerosene-vapour mass and vapour composition; gas flow; time; T; P; oxygen; wet/dry; capture; flare events; size class; detection limit; method"
+      collection_method: "Use actual stack/vent monitoring or justified source-specific calculations and leak/tank measurements; match gas and concentration bases; retain raw and post-control values, including abnormal operation; normalization operation: species release totals divided by accepted reference mass; per 1 kg reference flow"
+      unit: "kg"
+      frequency: "continuous where available; representative runs and all events"
+      temporal_coverage: "same production period"
+      site_scope: "actual operated utility/process/tank/wastewater/flare sources"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "monitoring method; calibration; detection limits; carbon/sulphur checks"
+    - protocol_id: cp_water
+      process_id: "kerosene_manufacture"
+      flow_role: "water/resource exchanges"
+      record_type: "water meters and laboratory records"
+      raw_fields: "abstraction; outfall; actual receiving medium/receiver; location; whole effluent carrier volume/mass; water fraction; density; time; species; concentration; ion/element basis; temperature; reuse; evaporation; inventory change"
+      collection_method: "Meter abstraction and final outfall separately; use time-matched flow-weighted species sampling, declare freshwater/sea/sewer receiving boundary and record actual water reuse; normalization operation: water/species totals divided by accepted reference mass; per 1 kg reference flow"
+      unit: "m3; kg"
+      frequency: "continuous volume; matched composite sampling"
+      temporal_coverage: "same production period"
+      site_scope: "direct resource and environmental boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; lab speciation; water reconciliation"
+    - protocol_id: cp_balances
+      process_id: "kerosene_manufacture"
+      flow_role: "physical and burden reconciliation"
+      record_type: "unit balance and allocation workbook"
+      raw_fields: "unit; whole feed/carriers/combustion air; gas/liquid/solid output; internal endpoints; water; C fossil/bio; H; O; S; N; other relevant elements; reaction species changes; heat/enthalpy datum; electricity; returns; losses; inventories; containers/maintenance; error; allocation driver; prices; factors"
+      collection_method: "Retain the complete physical process map and unallocated ledgers; reconcile each conserved component with measured composition and inventories; calculate burden allocation separately; normalization operation: retain unallocated balances and allocated burdens; per 1 kg reference flow"
+      unit: "kg; m3; MJ; dimensionless"
+      frequency: "each period and route/grade change"
+      temporal_coverage: "same production period"
+      site_scope: "all shared contributing units and their receiving systems"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "balance residual explanation; factor-sum check; workbook reproduction"
+    - protocol_id: cp_containers
+      process_id: "kerosene_manufacture"
+      flow_role: "container movements/maintenance"
+      record_type: "custody and maintenance ledger"
+      raw_fields: "material; container id; actual SKU; tare; contents; owner; receiver; stock; receipt; return; reuse; repair; cleaning materials/energy/water; residues; loss; retirement; actual services"
+      collection_method: "Weigh container and contents separately and reconcile paired returns and stock; add each actual cleaning/repair material, utility and waste as an atomic row; normalization operation: physical exchange totals divided by accepted reference mass; per 1 kg reference flow"
+      unit: "kg; row unit"
+      frequency: "each movement and service"
+      temporal_coverage: "same production period with documented reuse history"
+      site_scope: "actual feed/chemical containers and receiving systems"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighing; custody; service logs; receiver acceptance; separate burden ledger"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all physical inventory rows"
+      rule: "For the same period define R as net accepted kerosene mass in kg. Physical normalized exchange = measured exchange total / R; R must be positive. Keep co-products unallocated."
+      inputs:
+        - cp_reference
+        - cp_inputs
+        - cp_products
+        - cp_wastes
+        - cp_containers
+      output: "physical exchange per 1 kg reference flow"
+      source_ids:
+        - eu-jrc-ref-bref-2015
+    - id: species_release
+      applies_to: "air and water species"
+      rule: "Integrate matched concentration × carrier flow × duration over measured intervals after controls; convert units explicitly, or use measured species mass directly. Ion/element and NOx definitions must match; no default factor."
+      inputs:
+        - cp_air
+        - cp_water
+      output: "species totals for period_normalization"
+      source_ids:
+        - eu-jrc-ref-bref-2015
+        - us-epa-ap42-5-1-2015
+    - id: physical_balance
+      applies_to: "shared physical process map"
+      rule: "For each unit, total mass and each conserved element: inputs = outputs + inventory change + explained residual. Include actual whole carriers and combustion/process air; reconcile C fossil/biogenic, H, O, S, N and other relevant elements from actual composition. Reactions redistribute species but are never an extra source/sink of total mass or elements. Water-species generation/consumption may be recorded only through documented reaction stoichiometry consistent with H/O conservation; track all liquid, vapour, product-bound, solution/sludge and return water. Reconcile energy on a declared enthalpy/heating-value datum, including chemical/thermal/electrical inputs, actual exports, returns, losses and inventory; avoid adding reaction heat again when included in the selected energy convention. Internal transfers cancel only in aggregation and retain both endpoints."
+      inputs:
+        - cp_balances
+      output: "unallocated physical balance and unexplained gap register"
+      source_ids:
+        - eu-jrc-ref-bref-2015
+    - id: burden_allocation
+      applies_to: "remaining shared environmental burdens"
+      rule: "Product burden = dedicated attributable burden + sum of each shared burden × its justified product factor. Reconcile factor sum to 1 per shared burden; keep physical flows unchanged and divide the product burden by R."
+      inputs:
+        - cp_balances
+        - cp_reference
+      output: "separate allocated product environmental-burden ledger"
+      source_ids:
+        - eu-jrc-ref-bref-2015
+  data_quality_requirements:
+    - id: dq_scope
+      applies_to: "reference product"
+      requirement: "Verify the exact distillation/hydrotreatment route and non-aviation supply subset; no aviation/specification or untreated route substitution."
+      evidence: "route diagram; batch certificate; actual quality tests"
+    - id: dq_quantity
+      applies_to: "all exchanges"
+      requirement: "Separate flow identity from provider/reference-basis compatibility. Unknown pressure, composition, concentration, receiving medium or NOx definition remains pending and blocks a claim of complete dataset linkage."
+      evidence: "original flow metadata; supplier documentation; raw meters and lab results"
+    - id: dq_coverage
+      applies_to: "site ledger"
+      requirement: "Cover normal, start-up, shutdown, abnormal, flare, catalyst-change and waste-treatment activity for the declared period; disclose missing data, uncertainty and detection-limit treatment."
+      evidence: "operations log; monitoring coverage; receiver records"
+    - id: dq_balance
+      applies_to: "co-products and internal transfers"
+      requirement: "Retain every actual co-product and paired internal transfer before burden allocation; explain mass/water/C/S/energy residuals."
+      evidence: "full physical graph; unallocated balances; separate burden workbook"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Reject an untreated, aviation-certified, sulfonated, synthetic/biogenic or other excluded product offered under the generic kerosene name; require the declared release quality and route."
+    source_ids:
+      - unsd-kerosene-definitions
+      - eu-jrc-ref-bref-2015
+  - rule_id: validate_reference
+    applies_to: "all outputs"
+    rule: "Require exactly one finished reference-product output and 1 kg net accepted basis. Preserve co-products and combine physically identical kerosene inter-stage transfers inside the aggregated unit; never fabricate an extra UUID or hide an identity to pass checking."
+    source_ids:
+      - eu-jrc-ref-bref-2015
+  - rule_id: validate_balances
+    applies_to: "physical and allocated ledgers"
+    rule: "Require physical co-product quality/quantity, whole-carrier/species non-overlap, complete paired transfers, container/maintenance/return/inventory coverage, total mass/water/element/energy checks and a separately reproducible allocation ledger. Chemical reaction is never an extra total-mass or elemental source/sink. Absence is incomplete evidence, not proof of zero."
+    source_ids:
+      - eu-jrc-ref-bref-2015
+  - rule_id: validate_emissions
+    applies_to: "direct releases"
+    rule: "Require correct species, origin and receiving compartment; exclude customer combustion from site emissions. Keep N2O separate from NOx, PM size classes disjoint, captured dust separate, VOC totals non-duplicated and biogenic CO2 visible where applicable."
+    source_ids:
+      - eu-jrc-ref-bref-2015
+      - us-epa-ap42-5-1-2015
+  - rule_id: validate_providers
+    applies_to: "upstream linkage"
+    rule: "A verified UUID alone is insufficient. Unresolved identity or supplier steam/gas/electricity/concentration basis must be disclosed and prevents calling that exchange fully linked; no incompatible nearby identity or correction flow substitution."
+    source_ids:
+      - eu-jrc-ref-bref-2015
+      - us-epa-ap42-5-1-2015
+published_dataset_profile:
+  dataset_role: "Unallocated multi-output foreground refinery manufacturing dataset with one kerosene reference output and a separate product-specific allocated burden ledger"
+  downstream_use: "secondary_dataset; background_dataset only after complete actual provider linkage and disclosed allocation"
+  allowed_use: "Declared refinery-gate kerosene supply; cradle-to-gate models with upstream links; downstream use models adding distribution/combustion separately"
+  excluded_use: "Generic all-route/all-grade kerosene factors; fuel combustion service; aviation qualification; unverified terminal manufacture"
+  required_metadata: "Batch/specification/quality; actual route; geography/period; gate; composition; atomic flows/providers; co-products; balances; allocation hierarchy and drivers"
+  required_quality_disclosure: "Unresolved identities and quantity bases; missing coverage; uncertainty; historical/external factors and their actual scope; separately reported allocation sensitivity"
+  update_trigger: "Material change in crude/feed, quality subset, hydrotreatment, blend slate, utilities, control, provider, gate, co-products, allocation or monitoring"
+data_sources:
+  - id: "eu-jrc-ref-bref-2015"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Refining of Mineral Oil and Gas (2015), https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/REF_BREF_2015.pdf"
+    used_for: "Sections 1.4.1–1.4.3 (printed 29–33/PDF 63–67), 2.13 (78–86/PDF 112–120), 2.19 (101–102/PDF 135–136), 2.21 (107–108/PDF 141–142), 2.25 (115/PDF 149), 4.24.1–4.24.2 (540–542/PDF 574–576): actual refinery process interfaces, co-products, utilities, air/water/waste coverage; no universal historical quantity reuse"
+  - id: "us-epa-ap42-5-1-2015"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 5.1 Petroleum Refining (April 2015), https://www.epa.gov/sites/default/files/2020-09/documents/5.1_petroleum_refining.pdf"
+    used_for: "5.1.1, printed 5.1-1 and 5.1-3/PDF 1 and 3: refinery manufacture, separation/treating/handling and auxiliary boundaries. Emission factors are not adopted; apply only actual source-specific methods if separately verified"
+  - id: "unsd-kerosene-definitions"
+    type: "official_guidance"
+    reference: "UNSD Energy Yearbook Definitions, Kerosene and kerosene-type jet fuel, https://unstats.un.org/unsd/energy/yearbook/def_english_print.htm"
+    used_for: "Qualitative petroleum kerosene versus aviation fuel distinction only; historical numeric descriptors are not a contemporary universal supply specification"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d4b5c4fd245b2fb4729bf959ccd5d7cfead4c0f707b34fa8b3981a6ba9da9d80"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6767"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6767
+          line: 60
+          column: 1
+        end:
+          offset: 9401
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Crude petroleum and actual unfinished refinery feed received by the operated refinery; purchased inputs carry upstream datasets |\n| starting_condition_role | Foreground manufacturing supply boundary |\n| product_classification_scope | Hydrotreated non-aviation petroleum kerosene, proposed narrower subset of CPC 3.0 33349, not every kerosene route |\n| recursive_input_rule | Already finished kerosene received for commingling/rework remains a product input with its original upstream burden; identify its actual prior treatment and any genuinely operated additional treatment separately. Never relabel a hydrotreated finished input as untreated distillate, hide repeated treatment, or reattribute its completed upstream manufacture. Stand-alone finishing of purchased finished fuel is outside this PCR |\n| upstream_dataset_requirement | Link actual crude/feed, hydrogen, grid electricity, natural gas, steam, water, chemicals and waste-treatment providers; match technology, geography, period and quantity basis |\n| disclosure | Retain a full unallocated site/unit physical ledger and a separate allocated environmental-burden ledger; record all internal paired transfers and receiving boundaries |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_manufacture | kerosene_manufacture | Include all operated contributing separation, hydrotreatment, finishing, tank/loading, hydrogen/utility and abatement operations. The declared refinery boundary retains its actual co-product slate. | `eu-jrc-ref-bref-2015`; `us-epa-ap42-5-1-2015` |\n| boundary_internal | internal interfaces | Aggregate this foreground as one manufacturing unit; retain stage-specific metering and internal source/destination links with equal quantities. Internal kerosene transfers are not additional finished outputs. | `eu-jrc-ref-bref-2015` |\n| boundary_use | downstream use | Exclude customer combustion, distribution after the declared gate and user storage. Model actual site combustion/flaring only; any extension is a separate downstream process. | `eu-jrc-ref-bref-2015`; `us-epa-ap42-5-1-2015` |\n| boundary_completeness | actual site exchanges | Inventory cards are atomic templates, not a universal plant recipe. Include only applicable rows with supporting records and extend with one row per other actual feed, additive, fuel, co-product, waste or emitted species. Missing observations are unknown, not zero; no unlisted stream may be silently cut off. | `eu-jrc-ref-bref-2015`; `us-epa-ap42-5-1-2015` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 294
+              line: 10
+              column: 1
+            end:
+              offset: 330
+              line: 10
+              column: 37
+          text: "# Hydrotreated non-aviation kerosene"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6767
+              line: 60
+              column: 1
+            end:
+              offset: 6788
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_64890"
+      family: "allocation"
+      span:
+        start:
+          offset: 64890
+          line: 997
+          column: 1
+        end:
+          offset: 66653
+          line: 1007
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | shared units | Avoid allocation where feasible by subdivision with actual unit meters and causally attributable operations. System expansion may be used only with explicit equivalent function, substitution evidence and separate sensitivity; it is not an automatic credit. | `eu-jrc-ref-bref-2015` |\n| allocation_burdens | shared environmental burdens | For remaining shared burdens, justify a physical relationship for the actual unit and output slate. Mass or energy shares are not automatically causal. If no defensible physical relationship exists, disclose economic allocation with matched period, prices, currency, output states and sensitivity. Retain factors and source workbooks, and verify factor sum equals 1. Container manufacture, actual repeated use, washing, repair, loss and end-of-life are assigned separately from the full physical container return ledger; no default reuse count or substitution credit. | `eu-jrc-ref-bref-2015` |\n| allocation_physical | all physical exchanges | Maintain full measured gas/liquid/solid products and mass/water/carbon/sulphur/energy balances before allocation. Apply allocation only to attributable environmental burdens in a separate ledger; do not mechanically multiply physical co-product outputs or internal paired flows by allocation shares. Do not delete co-products to make a reference-output check pass. | `eu-jrc-ref-bref-2015` |\n\nThe allocation hierarchy and audit safeguards above are this PCR’s declared modelling rules, informed by the BREF’s actual multifunctional refinery structure; the BREF is not represented as prescribing a numerical allocation formula.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 294
+              line: 10
+              column: 1
+            end:
+              offset: 330
+              line: 10
+              column: 37
+          text: "# Hydrotreated non-aviation kerosene"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 64890
+              line: 997
+              column: 1
+            end:
+              offset: 64930
+              line: 997
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_76955"
+      family: "validation"
+      span:
+        start:
+          offset: 76955
+          line: 1040
+          column: 1
+        end:
+          offset: 78800
+          line: 1050
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference product | Reject an untreated, aviation-certified, sulfonated, synthetic/biogenic or other excluded product offered under the generic kerosene name; require the declared release quality and route. | `unsd-kerosene-definitions`; `eu-jrc-ref-bref-2015` |\n| validate_reference | all outputs | Require exactly one finished reference-product output and 1 kg net accepted basis. Preserve co-products and combine physically identical kerosene inter-stage transfers inside the aggregated unit; never fabricate an extra UUID or hide an identity to pass checking. | `eu-jrc-ref-bref-2015` |\n| validate_balances | physical and allocated ledgers | Require physical co-product quality/quantity, whole-carrier/species non-overlap, complete paired transfers, container/maintenance/return/inventory coverage, total mass/water/element/energy checks and a separately reproducible allocation ledger. Chemical reaction is never an extra total-mass or elemental source/sink. Absence is incomplete evidence, not proof of zero. | `eu-jrc-ref-bref-2015` |\n| validate_emissions | direct releases | Require correct species, origin and receiving compartment; exclude customer combustion from site emissions. Keep N2O separate from NOx, PM size classes disjoint, captured dust separate, VOC totals non-duplicated and biogenic CO2 visible where applicable. | `eu-jrc-ref-bref-2015`; `us-epa-ap42-5-1-2015` |\n| validate_providers | upstream linkage | A verified UUID alone is insufficient. Unresolved identity or supplier steam/gas/electricity/concentration basis must be disclosed and prevents calling that exchange fully linked; no incompatible nearby identity or correction flow substitution. | `eu-jrc-ref-bref-2015`; `us-epa-ap42-5-1-2015` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 294
+              line: 10
+              column: 1
+            end:
+              offset: 330
+              line: 10
+              column: 37
+          text: "# Hydrotreated non-aviation kerosene"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 76955
+              line: 1040
+              column: 1
+            end:
+              offset: 76977
+              line: 1040
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_manufacture"
+      identity_kind: "explicit"
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 8151
+          line: 75
+          column: 1
+        end:
+          offset: 8447
+          line: 75
+          column: 297
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_internal"
+      identity_kind: "explicit"
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 8448
+          line: 76
+          column: 1
+        end:
+          offset: 8728
+          line: 76
+          column: 281
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_use"
+      identity_kind: "explicit"
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 8729
+          line: 77
+          column: 1
+        end:
+          offset: 8988
+          line: 77
+          column: 260
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 8989
+          line: 78
+          column: 1
+        end:
+          offset: 9399
+          line: 78
+          column: 411
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_64890"
+      source_span:
+        start:
+          offset: 65003
+          line: 1001
+          column: 1
+        end:
+          offset: 65326
+          line: 1001
+          column: 324
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_burdens"
+      identity_kind: "explicit"
+      unit_id: "normative_64890"
+      source_span:
+        start:
+          offset: 65327
+          line: 1002
+          column: 1
+        end:
+          offset: 65975
+          line: 1002
+          column: 649
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_64890"
+      source_span:
+        start:
+          offset: 65976
+          line: 1003
+          column: 1
+        end:
+          offset: 66416
+          line: 1003
+          column: 441
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_rule_4"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_64890"
+      source_span:
+        start:
+          offset: 66418
+          line: 1005
+          column: 1
+        end:
+          offset: 66651
+          line: 1005
+          column: 234
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_76955"
+      source_span:
+        start:
+          offset: 77050
+          line: 1044
+          column: 1
+        end:
+          offset: 77334
+          line: 1044
+          column: 285
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_76955"
+      source_span:
+        start:
+          offset: 77335
+          line: 1045
+          column: 1
+        end:
+          offset: 77662
+          line: 1045
+          column: 328
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_76955"
+      source_span:
+        start:
+          offset: 77663
+          line: 1046
+          column: 1
+        end:
+          offset: 78113
+          line: 1046
+          column: 451
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_76955"
+      source_span:
+        start:
+          offset: 78114
+          line: 1047
+          column: 1
+        end:
+          offset: 78460
+          line: 1047
+          column: 347
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_providers"
+      identity_kind: "explicit"
+      unit_id: "normative_76955"
+      source_span:
+        start:
+          offset: 78461
+          line: 1048
+          column: 1
+        end:
+          offset: 78798
+          line: 1048
+          column: 338
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 6767
+          line: 60
+          column: 1
+        end:
+          offset: 6788
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 6816
+          line: 64
+          column: 1
+        end:
+          offset: 8078
+          line: 71
+          column: 185
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_64890"
+      source_span:
+        start:
+          offset: 64890
+          line: 997
+          column: 1
+        end:
+          offset: 64930
+          line: 997
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_76955"
+      source_span:
+        start:
+          offset: 76955
+          line: 1040
+          column: 1
+        end:
+          offset: 76977
+          line: 1040
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d4b5c4fd245b2fb4729bf959ccd5d7cfead4c0f707b34fa8b3981a6ba9da9d80"
+  generated_content_sha256: "sha256:ec0a3c3e9ca5304fa4c9dd61fe3378b7be0942838804341c2f2676b66f2bb780"
