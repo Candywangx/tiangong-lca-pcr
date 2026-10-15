@@ -1,10 +1,1040 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "32122"
-  title: "Hand-made paper and paperboard"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.hand-made-paper-and-paperboard"
+  classification_refs: "CPC 3.0 32122; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  covered_products: "Unprinted hand-formed pure-cotton-cutting sheets with hydraulic pressing, loft drying and gelatin surface sizing; declared ketene-dimer internal sizing when used"
+  excluded_products: "Continuous-machine/mould-machine papers; other fibre furnishes; onsite bleaching/dyeing; laminates; packaging board; converted articles; combustion/steam-heated or onsite-biological-treatment routes without reviewed extension"
+  representative_product: "A conditioned, accepted cotton-rag sheet with declared grammage, dimensions, texture and gelatin sizing"
+  production_route: "Pre-cut cotton receipts → wetting and electric Hollander beating → individual mould/deckle forming → felt couching and hydraulic press → loft drying → electrically heated gelatin tub sizing → loft redrying/conditioning → acceptance and optional paper wrapping; internal water/fibre recovery and external residual treatment"
+  market_state: "Net accepted finished sheets at gate, conditioned to declared moisture; packaging separately inventoried"
+functional_unit:
+  what: "Accepted individually hand-formed cotton-rag paper for the declared drawing/watercolour use"
+  how_much: "1 kg"
+  how_well: "Declared sheet dimensions, grammage, thickness, surface texture, cotton purity, sizing formulation, moisture, and batch acceptance tests; no unsupported archival or acid-free performance claim"
+  how_long_or_cycle: "One gate-delivery production cycle; no assumed artwork life or equivalent service to machine-made paper"
+  reference_flow_link: "handmade_paper_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_hand_route
+      applies_to: "hand_papermaking"
+      rule: "Include wet furnish preparation, individual sheet forming, couching, pressing, both drying stages, gelatin bath preparation/heating, acceptance and gate packaging; retain stage records inside one aggregate foreground process."
+      source_ids:
+        - khadi-cotton-route
+    - rule_id: boundary_utilities
+      applies_to: "hand_papermaking"
+      rule: "Include electric motors, hydraulic pump, ventilation, auxiliary drying, sizing heat, cleaning and attributable storage energy. Confirm the site's electric configuration; no zero-energy inference from manual forming or loft drying."
+      source_ids:
+        - eu-pp-bref-2015
+        - khadi-cotton-route
+    - rule_id: boundary_water_recovery
+      applies_to: "hand_papermaking"
+      rule: "Include fibre capture and white-water recirculation records, filter solids, unreused waste and final external wastewater. Actual recovery efficiency must be measured; industrial-machine recovery values are not handmade-paper defaults."
+      source_ids:
+        - eu-pp-bref-2015
+    - rule_id: boundary_route_extension
+      applies_to: "inventory completeness"
+      rule: "Known refrigerant leaks, extra packaging, cleaning chemicals or direct emissions require their own species/material exchanges and compatible identity/measurement evidence; undisclosed amounts cannot be zero. Combustion, biological treatment or direct water discharge require expanded source-specific inventories before this method is applied."
+      source_ids:
+        - eu-pp-bref-2015
+    - rule_id: boundary_actual_consumables
+      applies_to: "inventory completeness"
+      rule: "Verify actual press model, hydraulic working-fluid and lubrication specifications, stocks in use/storage, additions, changes, recovery and spills; do not infer mineral oil or consumption from the hydraulic label. Check pre-cut cotton handling, dry-sheet handling/finishing and ventilation for actual cotton/wool lint or sized-paper particles. Record paired actual returns; independently characterize captured dry residues and final outdoor emissions. Every confirmed material, spent fluid, cleaning chemical, captured residue or emission needs a separately collected atomic identity/quantity, and each absence needs evidence; do not substitute wet fibre sludge or paper-machine dust factors."
+      source_ids:
+        - khadi-cotton-route
+        - eu-pp-bref-2015
+boundary_abstraction:
+  declared_starting_condition: "Sorted pre-cut clean cotton garment cuttings, finished sizing materials and utilities arrive at the paper workshop; upstream sorting/cutting must be included in supply data."
+  starting_condition_role: "Gate-to-gate hand papermaking; supplier preparation and transport plus external treatment are linked outside the aggregate foreground unit."
+  product_classification_scope: "A cotton-sheet subset of hand-made paper and paperboard, CPC 32122; no full-leaf coverage claim."
+  recursive_input_rule: "Internal off-spec sheets and recovered cotton fibres returned to beating are measured internal loops; no new upstream input or avoided virgin-fibre credit. Purchased handmade paper or external recovered paper is not this cotton-cutting route."
+  upstream_dataset_requirement: "Match cotton-cutting collection/preparation and supplier allocation, delivered electricity/water, formulated size, gelatin, replacement felt, wrapping and actual external waste treatment. Declare transport legs, mass and distance without adding embedded transport twice."
+  disclosure: "Site, reporting period, integrated operations, lots/moisture, exact supplies, stage meters, storage changes, rework/fibre/water returns, wastewater routing, cutoff estimates and background substitutions."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Hand-made paper and paperboard"
+    uuid: "7f14ce45-f456-4f95-991d-e4693db18679"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cotton-cutting origin and purity"
+    - "actual moisture wet-mass fraction and conditioning"
+    - "dimensions and grammage"
+    - "acceptance tests and texture"
+    - "hand-mould route"
+    - "hydraulic press and drying configuration"
+    - "internal-size brand/formulation/solids/pH"
+    - "gelatin powder purity and animal origin"
+    - "site/geography/period"
+    - "water supply"
+    - "electricity voltage/mix"
+    - "wastewater recipient"
+    - packaging
+    - "fibre/water recovery"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted finished conditioned sheets on a calibrated balance using cp_output, excluding packaging, rejects and unfinished stock. Normalize every row to the same accepted net mass."
+  - id: wet_dry_basis
+    applies_to: "cotton_input; gelatin_input; sizing_emulsion_input; handmade_paper_output; sludge_output; cotton_reject_output; spentfelt_output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve as-received/wet and dry amounts separately. Determine representative moisture/solids with a documented applicable constant-mass drying method, replicate samples, temperature/time and possible volatile-loss bias. No standard moisture fraction is assumed."
+  - id: electricity_basis
+    applies_to: "electricity_input"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Record meter kWh and convert using 1 kWh = 3.6 MJ. Do not treat electric bath heat as a second purchased-heat exchange; keep its stage submeter and useful-heat diagnostic separate."
+  - id: water_basis
+    applies_to: "water_input; wastewater_output; evaporation_output"
+    required_property_ref:
+      name: "Mass or Volume as specified in the row"
+      uuid: ""
+    required_unit: "kg or m3 as specified in the row"
+    rule: "Convert volumes only using documented density/temperature; distinguish fresh withdrawal, internal recirculation, final wastewater, retained moisture and evaporation."
+process_map:
+  - id: hand_papermaking
+    name: "Cotton hand-sheet manufacture, recovery and finishing"
+    inclusion: "required"
+    inclusion_condition: "All covered lots"
+    role: "Aggregate foreground manufacturing unit with separately measured stages"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: hand_papermaking
+    label: "Cotton hand-sheet manufacture, recovery and finishing"
+    inputs:
+      product:
+        - row_id: cotton_input
+          role: "Cotton cloth cutting furnish"
+          name: "Rags, scrap twine, cordage, rope and cables and worn out articles of twine, cordage, rope or cables, of textile materials"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d7e63c9a-9ebe-4a2a-b2f3-486bd5958a13"
+          property_unit: "Mass / kg"
+          description: "Use only sorted, pre-cut, clean cotton garment cuttings without synthetic blends, coatings, printing ink, or elastic. This broad rag identity includes that subset; do not model virgin cotton or cotton linters with it. Weigh consumed as-received mass and sample moisture; retain dry cotton mass separately. Verify supplier preparation and upstream burden allocation. Confirm the actual supplied, prepared secondary material is represented by the Product identity and disclose supplier preparation, legal/product-versus-waste status and allocation; an actual incoming waste transfer needs its own applicable waste identity and boundary review. Neither scrap classification nor purchase alone establishes zero upstream burden."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - khadi-cotton-route
+            ranges: []
+        - row_id: water_input
+          role: "Purchased tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Meter fresh water supplied for soaking, beating, vat makeup, felt washing, equipment cleaning and sizing dilution. Convert measured volume to mass with documented site density and temperature, not the database secondary coefficient. Exclude internal recirculation from fresh input; water in emulsion is already part of that product mass. Use an actual local water-supply background."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-pp-bref-2015
+            ranges: []
+        - row_id: electricity_input
+          role: "Low-voltage grid electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter consumed user-side electricity below 1 kV. Include electric Hollander motor, pumps, hydraulic press power pack, ventilation, electric gelatin-bath heater, auxiliary electric drying/conditioning and attributable storage/cleaning power. Convert kWh to MJ using 3.6; the database property name is retained and does not imply electricity is a fuel. Keep stage submeter totals; sum each kWh once and link location/time/voltage-compatible grid background. Raw supply geography is CN: verify actual workshop/provider geography, year, grid mix, voltage and delivery losses before background linkage. No automatic China or generic-world supply is established."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - khadi-cotton-route
+                - eu-pp-bref-2015
+            ranges: []
+        - row_id: sizing_emulsion_input
+          role: "Ketene-dimer internal sizing emulsion"
+          name: "Ketene-dimer internal sizing emulsion"
+          flow_type: "product"
+          property_unit: "Mass / kg supplied emulsion"
+          description: "Measure one purchased ketene-dimer sizing emulsion added near the end of beating. Declare brand, current formulation, solids fraction, pH, carrier-water fraction and storage conditions. Supplier instructions establish a possible hand-papermaking option, not Khadi composition or a universal dose. Resolve the neutral-pH instructions versus linked acidic Hercon SDS before claiming pH or background compatibility. The AKD component identity, including its synthesis/emulsification metadata, does not establish the actual supplied mixture, complete composition or supplied-emulsion reference mass; UUID remains blank. No starch, alum, dye or filler is presumed present."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_additives."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additives
+              source_ids:
+                - chp-sizing-directions-2014
+                - solenis-hercon-sds-2018
+            ranges: []
+        - row_id: gelatin_input
+          role: "Gelatin surface size"
+          name: "gelatin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aa9b81c7-64ab-40a2-9419-50fedc25a2c7"
+          property_unit: "Mass / kg"
+          description: "Use the selected physical powder identity only for concentrate/dry/grind gelatin with supplier-confirmed purity above 99.5%, CAS 9000-70-8. Weigh new powder added to the electrically heated aqueous tub; report animal origin, residual moisture, bath stocks, spills, spent solution and retained dry gelatin. Do not equate wet sizing-bath mass to powder consumption or import a database recipe. Actual supplier composition and powder-state compatibility remain required."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_additives."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additives
+              source_ids:
+                - khadi-cotton-route
+            ranges: []
+        - row_id: felt_input
+          role: "Wool papermaking couching felt"
+          name: "Felt"
+          flow_type: "product"
+          flow_ref:
+            uuid: "144717eb-3301-402a-89c8-3ba5a969425a"
+          property_unit: "Mass / kg"
+          description: "Measure the actual finished wool papermaking couching felt used over its documented service interval. The broad finished Felt physical Product identity includes this qualified subset without an opposing material or application route; require actual wool fraction, felted structure, dimensions, grade, reuse/wash history and supplier compatibility. It does not establish a bedding blanket, raw wool, synthetic vacuum-bag breather or matched felt-production background. Retain dry felt, water and in-use/stored inventories with actual purchase/replacement/retirement events. Keep the full physical gate and stock ledger separate from environmental consumption attributed by documented actual service to this reporting period; no assumed lifetime, sheet-count mass factor or duplicate replacement burden."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - khadi-cotton-route
+            ranges: []
+        - row_id: wrapping_input
+          role: "Uncoated paper wrapping"
+          name: "Uncoated printing, writing and packaging paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "936bdcb2-06b6-4ee9-8e7c-2f7762aba298"
+          property_unit: "Mass / kg"
+          description: "When sheets are wrapped at the gate, weigh one uncoated paper wrapping grade consumed, including documented stock changes and offcuts. The broad uncoated-paper record includes packaging paper without a contrary route restriction; require the actual grade and supplier background. Keep wrapping out of the reference net paper mass. If delivered loose, document absence; never infer other packaging has zero mass. Actual discarded wrapping offcuts and additive containers, if present, need independently weighed and identified waste records; do not merge them with cotton rejects, sludge or spent felt."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-pp-bref-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: handmade_paper_output
+          role: "Accepted finished handmade cotton paper"
+          name: "Hand-made paper and paperboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7f14ce45-f456-4f95-991d-e4693db18679"
+          property_unit: "Mass / kg"
+          description: "1 kg net accepted finished paper after both drying passes, conditioning and acceptance; exclude wrapping, rejects and unfinished work. Record actual lot moisture, grammage, sheet area/count and sizing status. The broad handmade-paper-and-board identity is narrowed by these qualifiers; it supplies no cotton recipe or performance default."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_output
+              source_ids:
+                - khadi-cotton-route
+            ranges: []
+      waste:
+        - row_id: wastewater_output
+          role: "Cotton-rag papermaking wastewater to external treatment"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass / kg"
+          description: "Measure the actual aqueous process wastewater crossing the gate after internal fibre recovery, including vat bleed, wash water and diluted spent sizing bath only where this is the actual separately characterized transfer accepted by its recipient. Preserve event volumes, calibrated transferred bulk mass or volume × measured event density, sampling locations, pH, temperature, COD/TOC, TSS, BOD and additive-specific analytes; identify sewer/tanker and actual external treatment. The selected broad industrial liquid-Waste Mass/kg identity applies only to this liquid physical stream, with no specified disposal or treatment route. Do not assume 1000 kg/m3, apply the sizing-product SDS density to effluent, or treat bulk wastewater kg as water kg: independently determine water and suspended/dissolved solids/additives for the physical balance. Keep volume-based pollutant-load analysis separate from bulk mass normalized to the reference. The linked SDS does not authorize product disposal to drains; require actual recipient acceptance of composition, pH and loading. Concentrated/unused sizing, spill waste or other separately collected liquids require individual characterized exchanges, not automatic mixing into this row. No manganese-slag, silicon or recovered-fluting-specific wastewater substitute, elemental freshwater discharge or matched treatment background is implied."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - eu-pp-bref-2015
+                - solenis-hercon-sds-2018
+            ranges: []
+        - row_id: cotton_reject_output
+          role: "Rejected unblended cotton cloth cuttings"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass / kg"
+          description: "Weigh actual cotton-only sorting rejects removed from the accepted furnish; record moisture, physical reason for rejection, contamination and specific recipient. The broad industrial solid-Waste identity is restricted to this separately collected non-reused cotton-cutting stream. Preserve wet mass, dry cotton/water, stock movements, actual waste/product status, hazard and receiver/provider acceptance; it sets no disposal/recovery route or matched treatment burden. Mixed synthetic, yellow-stained and garment-making-specific records remain incompatible substitutes for this declared stream. Segregate non-cotton contaminants and separately collected dry fine lint as their own actual exchanges; do not merge them with these coarse cuttings or wet sludge."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_wastes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - khadi-cotton-route
+            ranges: []
+        - row_id: sludge_output
+          role: "Dewatered cotton-fibre papermaking sludge"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass / kg"
+          description: "Weigh unreused dewatered filter/settling cotton-fibre solids transferred offsite; sample dry solids, water and actual sizing/additive contamination and obtain specific receiver acceptance. The broad industrial solid-Waste identity applies only to this separately collected solid or dewatered semisolid stream from physical fibre recovery, not biological-treatment sludge or a liquid effluent. Keep wet/dry mass, composition, hazard, stocks and recipient/treatment compatibility separately traceable; same UUID on other waste rows does not merge streams, prescribe treatment or prove a background. Fibres actually returned to the vat remain internal; water-treatment-chemical-specific sludge is not a substitute."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_wastes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-pp-bref-2015
+            ranges: []
+        - row_id: spentfelt_output
+          role: "Spent wool papermaking felt"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass / kg"
+          description: "Weigh actual retired wool papermaking felt; disclose dry felt material, retained water, cotton fibres, sizing residues and specific recipient. The broad industrial solid-Waste identity applies only to this separately collected discarded felt, without an assumed disposal/recovery route or treatment burden. Match in-use/stock and retirement records to replacement/service attribution without treating retained water as new wool or sharing a physical waste mass with other rows of the same UUID. Unknown synthetic textile or wool-spinning waste is not substituted; verify actual fibre composition, contamination, waste status, hazard and receiver/provider acceptance."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_wastes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - khadi-cotton-route
+            ranges: []
+      elementary:
+        - row_id: evaporation_output
+          role: "Water evaporated to outdoor air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Calculate actual water evaporated from loft drying, redrying after gelatin sizing and heated baths from stage moisture/mass measurements and the complete water balance. Use CAS 7732-18-5 emissions-to-air/unspecified at the final outdoor release, not indoor air or agricultural evapotranspiration. Never substitute all water withdrawal for evaporation. Unclosed balances require investigation, not a forced positive residual. Record conditioning humidity/temperature and any substantiated atmospheric moisture uptake or condensation as a distinct actual boundary transfer requiring reviewed identity and measurement; net uptake is not a negative vapour output or a forced water-balance residual."
+          amount:
+            expression: "Collected physical amount divided by accepted net finished kg for the same reporting period; cp_balance."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_balance
+              source_ids:
+                - eu-pp-bref-2015
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_single_product
+    applies_to: "hand_papermaking"
+    rule: "This defined unit has one accepted product. Attribute its observed burdens to that output; wastes and internal returns do not become saleable co-products by assumption. If saleable co-products arise, collect their separate physical outputs and commission an allocation review before using this single-product model."
+    source_ids:
+      - eu-pp-bref-2015
+  - rule_id: allocation_physical_ledgers
+    applies_to: "all physical balances"
+    rule: "Keep unallocated mass/water/carbon and paired stage transfers separate from any environmental-burden allocation ledger. Never multiply physical co-product outputs or internal returns by allocation shares. No automatic negative credit for cotton cuttings, fibre recovery, rejects or wastewater."
+    source_ids:
+      - eu-pp-bref-2015
+  - rule_id: allocation_shared_utilities
+    applies_to: "electricity and water"
+    rule: "Prefer lot/stage submetering and segregated batches. For shared motors/baths, document attributable measured power-time, water events and serviced output; justify any remaining shared-service split and preserve total-service reconciliation. Supplier allocation of cotton textile production is a separate disclosed upstream decision."
+    source_ids:
+      - eu-pp-bref-2015
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "hand_papermaking"
+      flow_role: "accepted reference output"
+      record_type: "weighing and acceptance"
+      raw_fields: "lot; conditioned net kg; tare; moisture; dimensions; area; count; grammage; acceptance; work-in-progress opening/closing"
+      collection_method: "Calibrated scale after redrying and declared conditioning; representative moisture replicates with documented dry-to-constant-mass method; reconcile lot acceptance and period stock movements"
+      unit: "kg; fraction; m2; g/m2"
+      frequency: "Each lot"
+      temporal_coverage: "Entire declared period"
+      site_scope: "Same site/route/grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; drying method; acceptance and stock records"
+    - protocol_id: cp_materials
+      process_id: "hand_papermaking"
+      flow_role: "cotton cuttings, felt and wrapping"
+      record_type: "receipts and consumption"
+      raw_fields: "supplier; grade; origin; fibre composition; mass; moisture; stores/in-use stocks; returns; felt service interval; packaging status; actual press/fluid/lubricant specification; maintenance additions/change/recovery/spill events"
+      collection_method: "Weigh receipts, consumed masses and remaining stock; supplier composition evidence; allocate felt replacement to recorded service period; no virgin-cotton or raw-wool substitution; verify actual maintenance material exchanges and retain separately named atomic records when confirmed, never assume hydraulic oil chemistry or positive use"
+      unit: "kg; fraction"
+      frequency: "Each lot and replacement"
+      temporal_coverage: "Entire declared period plus felt service interval"
+      site_scope: "Same route and serviced output"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scale checks; invoices; supplier composition; felt service and stock ledger"
+    - protocol_id: cp_additives
+      process_id: "hand_papermaking"
+      flow_role: "formulated size and gelatin"
+      record_type: "addition and bath records"
+      raw_fields: "brand; batch; current SDS; formula; pH; solids; water fraction; powder purity; animal origin; receipts; additions; bath opening/closing; retention; spent bath; temperature; storage; actual AKD and reaction-product speciation; independently evidenced reaction extent and uncertainty"
+      collection_method: "Weigh formulated emulsion and new gelatin powder separately; determine actual solids and retained sizing; reconcile batch bath/dilution records. Treat SDS hazard list as incomplete composition. Confirm current supplier formulation; no old recommended dose reused. For actual AKD use, independently establish reaction/speciation and extent under the recorded storage and papermaking conditions; distinguish carrier H2O, unreacted AKD and actual products. Unknown reaction terms remain gaps, not assumed zero or complete hydrolysis [yan-akd-hydrolysis-2019]"
+      unit: "kg; fraction; pH; temperature"
+      frequency: "Every addition and bath disposal"
+      temporal_coverage: "Entire declared period"
+      site_scope: "Same lots and bath"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Supplier lot certificate; scales; solids test; stock reconciliation; formulation-conflict disclosure"
+    - protocol_id: cp_energy
+      process_id: "hand_papermaking"
+      flow_role: "electricity and useful-heat diagnostics"
+      record_type: "meter and operation logs"
+      raw_fields: "voltage; grid identity; meter opening/closing; stage kWh; motor/press/pump schedules; bath/auxiliary heaters; bath temperatures; evaporation; power-time attribution"
+      collection_method: "Read calibrated user-side meter and stage submeters; record electricity for both drying passes and gelatin heating; verify configuration. Useful heat is a diagnostic against metered electric input, not a second exchange"
+      unit: "kWh; MJ; temperature"
+      frequency: "Each batch and meter period"
+      temporal_coverage: "Entire declared period including seasonal drying"
+      site_scope: "Workshop plus attributable support"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter checks; bills; stage sum; measured operating logs; no nominal-power-only default"
+    - protocol_id: cp_water
+      process_id: "hand_papermaking"
+      flow_role: "fresh water"
+      record_type: "supply meters and batch water"
+      raw_fields: "fresh volume; density; temperature; stage makeup; wash/dilution; supply; stocks; recirculation"
+      collection_method: "Read fresh supply meter, measure density where needed; record all water events separately from internal loops and water already in purchased products"
+      unit: "m3; kg; temperature"
+      frequency: "Every batch and cleaning event"
+      temporal_coverage: "Entire declared period"
+      site_scope: "Same workshop and supply"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration; measured density; water balance"
+    - protocol_id: cp_wastewater
+      process_id: "hand_papermaking"
+      flow_role: "externally treated effluent"
+      record_type: "outlet meters, laboratory and consignment"
+      raw_fields: "bulk liquid kg; volume; measured density in kg/m3 and temperature; water fraction; suspended/dissolved solids and additives; sampling point; flow-weighted sample; method/version; pH; temperature; COD or TOC; correlation if substituted; TSS; BOD; additive-specific analytes; recipient; treatment"
+      collection_method: "Weigh each final bulk-liquid transfer or convert its event volume with measured event density; retain bulk liquid mass, actual water fraction and dissolved/suspended material separately. Preserve event m3 for load analysis, with no density or pure-water default. Obtain representative flow-proportional composites and accredited/equivalent documented laboratory tests with detection limits, blanks and replicates; retain recipient acceptance and treatment model. Screening-only physical fibre recovery is inside the site, biological treatment outside"
+      unit: "m3; mg/L; kg; pH"
+      frequency: "Each discharge; representative operational monitoring"
+      temporal_coverage: "Entire declared period including cleaning/sizing discharges"
+      site_scope: "Final external transfer point"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Outlet meter; lab QA; detection limits; consignment/treatment records; BREF BAT10 is method guidance, not assumed site legal frequency"
+    - protocol_id: cp_wastes
+      process_id: "hand_papermaking"
+      flow_role: "cotton rejects, unreused sludge and spent felt"
+      record_type: "weighing and disposal"
+      raw_fields: "separate waste identity; wet mass; dry fraction; cotton/sizing/wool content; actual separately captured dry lint; retired maintenance fluid and spills; period; recipient; treatment"
+      collection_method: "Weigh each segregated waste; representative dry-solids and contamination sampling; disposal records; exclude fibre actually returned to vat; separately identify confirmed dry capture or maintenance wastes rather than mixing them into existing sludge/felt/cotton streams"
+      unit: "kg; fraction"
+      frequency: "Each disposal event"
+      temporal_coverage: "Entire declared period"
+      site_scope: "Same boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scales; sample method; consignment and waste-property checks"
+    - protocol_id: cp_balance
+      process_id: "hand_papermaking"
+      flow_role: "stage transfers, evaporation and physical balances"
+      record_type: "stage weighing and moisture tests"
+      raw_fields: "paired transfer ids; wet/dry masses; water/sizing; actual captured lint and final outdoor release observations; first/second drying; evaporation; fresh intake; final effluent; sludge water; dry cotton; measured carbon; opening/closing water/solids/carbon stocks; independently evidenced chemical H2O formation and consumption; actual reaction products and extent evidence"
+      collection_method: "Measure representative stage wet and dry mass; keep sender/receiver equal for each internal transfer; reconcile net water, dry-solids and carbon at gate; investigate residuals using measurement uncertainties; no presumed cellulose carbon fraction. Keep whole-mass and elemental conservation separate from the molecular-H2O species balance and dry-component transformations; establish actual chemical H2O formation/consumption independently of the closure residual, with method, applicable chemistry, extent, uncertainty and supporting records [yan-akd-hydrolysis-2019]"
+      unit: "kg; fraction"
+      frequency: "Each batch with period reconciliation"
+      temporal_coverage: "Entire declared period"
+      site_scope: "Aggregate unit and all internal stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Paired transfer ledger; moisture/solids/carbon methods; uncertainty; reconciliation"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For each non-reference exchange, normalized amount = attributable total physical exchange for the period / accepted net finished paper kg for that period. Preserve the physical totals and their units; only handmade_paper_output is fixed at 1 kg."
+      inputs:
+        - "period exchange totals"
+        - cp_output
+        - "applicable row protocol"
+      output: "exchange amount per 1 kg reference flow"
+      source_ids:
+        - eu-pp-bref-2015
+    - id: dry_mass
+      applies_to: "cotton_input; handmade_paper_output; cotton_reject_output; sludge_output; spentfelt_output"
+      rule: "dry solids kg = wet kg × measured dry-solids fraction; water kg = wet kg minus dry solids kg. Retained additive solids are not cotton; report each separately. This diagnostic never replaces the delivered wet reference."
+      inputs:
+        - "wet mass"
+        - "tested dry-solids fraction"
+        - "additive retention"
+      output: "physical dry-solids and water ledger"
+      source_ids:
+        - eu-pp-bref-2015
+    - id: physical_water_balance
+      applies_to: "evaporation_output"
+      rule: "evaporation kg = incoming molecular H2O kg plus chemically formed H2O kg minus chemically consumed H2O kg minus exported liquid-water component and retained water kg minus change in site molecular-H2O stock kg. The simplified incoming-minus-exported/retained/stock equation applies only where relevant H2O reactions are absent or independently evidenced negligible within declared measurement uncertainty. AKD hydrolysis consumes H2O; for the actual optional AKD branch, require independent reaction-extent evidence, with no assumed hydrolysis fraction, rate or complete conversion of the purchased AKD. Include purchased-material water, accepted-sheet moisture, each waste's actual water and offsite effluent water (bulk liquid kg × measured water fraction, not total liquid mass); internal recirculation cancels once at both ends. Confirm with stage drying/bath measurements; report unresolved residual rather than assigning unmeasured evaporation."
+      inputs:
+        - cp_water
+        - cp_additives
+        - cp_output
+        - cp_wastewater
+        - cp_wastes
+        - cp_balance
+      output: "measured/reconciled evaporation kg and closure residual"
+      source_ids:
+        - eu-pp-bref-2015
+        - yan-akd-hydrolysis-2019
+    - id: treatment_load
+      applies_to: "wastewater_output"
+      rule: "pollutant kg = sum over matched discharge intervals of outlet m3 × flow-weighted mg/L × 0.001. Keep COD as oxygen-demand equivalent, TSS as test-defined solids, TOC as carbon; COD is not a chemical species and cannot be added to TSS or converted to CO2. Loads characterize treatment input, not direct river emissions."
+      inputs:
+        - "measured discharge interval volumes"
+        - "matched laboratory results"
+      output: "treatment-input loads with uncertainty"
+      source_ids:
+        - eu-pp-bref-2015
+    - id: physical_carbon_balance
+      applies_to: "all inventory rows"
+      rule: "Reconcile measured incoming carbon, outgoing carbon in accepted paper and each waste/effluent, and stock changes; distinguish cotton/gelatin biogenic and sizing/packaging source fractions from supplier or analytical evidence. Do not infer a carbon fraction from flow name. If actual biogenic CO2 occurs, retain a separate LCI exchange with proper media and measured source; a GHG reporting convention cannot delete it. Track independently evidenced AKD reaction products in their actual retained, exported or emitted destinations; any actual CO2 requires separate quantity, species/media and carbon-origin evidence. Hydrolysis alone does not establish an emitted CO2 quantity or origin."
+      inputs:
+        - "measured composition"
+        - "supplier carbon origin"
+        - cp_balance
+      output: "physical carbon ledger and residual"
+      source_ids:
+        - eu-pp-bref-2015
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all rows"
+      requirement: "Match the actual material/species, route, delivery state, medium, reference property and unit. Blank UUIDs remain explicit gaps, with no approximate correction-flow substitution. Identity success is not a complete background dataset."
+      evidence: "Supplier/recipient specifications; direct identities; unresolved manifest fields"
+    - id: quality_coverage
+      applies_to: "site records"
+      requirement: "Cover accepted/rejected batches, both drying stages, sizing, cleaning and stock changes in the same period. Quantify omissions where feasible and retain uncertainty; no borrowed factory averages."
+      evidence: "cp_output and all applicable protocols"
+    - id: quality_balances
+      applies_to: "manufacturing and recovery"
+      requirement: "Close water/dry-solids/carbon against measured uncertainty without forced closure. Preserve internal fibre recovery and white-water volumes as physical ledgers; no credit or purchased-input double count."
+      evidence: "cp_balance and waste/treatment ledgers"
+    - id: quality_source_limits
+      applies_to: "methodology and additives"
+      requirement: "BREF concerns industrial pulp/paper mills: transfer applicable qualitative accounting/monitoring only. Khadi is one producer, and Carriage House directions/SDS are supplier-specific historical evidence; establish current pH/formulation independently for the foreground package."
+      evidence: "Source locators and actual supplier certificates"
+validation_rules:
+  - rule_id: validation_reference
+    applies_to: "reference product"
+    rule: "Exactly one accepted finished output links to the reference; require cotton and hand-mould route, moisture, acceptance and all qualifiers. Stage wet/dry papers are internal transfers, not duplicated product outputs."
+    source_ids:
+      - khadi-cotton-route
+  - rule_id: validation_denominator
+    applies_to: "all inventory rows"
+    rule: "Reference, collection, aggregation and all normalized rows use 1 kg accepted net conditioned finished paper. Do not divide by dry fibre, mould area, number of wet sheets, gross wrapped mass or rejected output without explicit consistent conversion."
+    source_ids:
+      - eu-pp-bref-2015
+  - rule_id: validation_energy
+    applies_to: "electricity_input"
+    rule: "Electric motor/press and heating records must be complete. Loft or hand labels cannot justify zero; physical heat diagnostics cannot duplicate purchased electricity. Other utility configurations require a reviewed atomic-flow extension."
+    source_ids:
+      - eu-pp-bref-2015
+  - rule_id: validation_water
+    applies_to: "water, wastewater, recovery and solids"
+    rule: "Reconcile stock-aware fresh/retained/discharged/evaporated molecular H2O, independently evidenced chemical H2O formation/consumption and dry-component transformations; whole-mass or elemental closure does not establish H2O-species closure. Accept the simplified evaporation equation only for absent or independently evidenced negligible H2O reactions at declared uncertainty; unknown reaction terms cannot pass as zero, evaporation or a fitted residual. For actual AKD use, check extent/speciation evidence without assuming complete hydrolysis, a rate or a CO2 amount/origin. Use matched concentrations and volumes; distinguish offsite treatment input from direct emissions and preserve the external treatment burden."
+    source_ids:
+      - eu-pp-bref-2015
+      - yan-akd-hydrolysis-2019
+  - rule_id: validation_additives
+    applies_to: "size and gelatin"
+    rule: "Confirm supplied formulation, wet/dry quantity basis, purity, bath stocks and retained sizing. Resolve current pH/formulation before acid-free claims; the linked old SDS and generic AKD component cannot establish this emulsion's background compatibility."
+    source_ids:
+      - chp-sizing-directions-2014
+      - solenis-hercon-sds-2018
+  - rule_id: validation_completeness
+    applies_to: "data package"
+    rule: "Each exchange is atomic and retains unresolved identity or numerical gaps; no invented UUID, default factory quantity or silent zero. If actual emissions include particles, specify disjoint size bins without summing overlapping totals; preserve actual biogenic CO2 regardless of GHG convention. Added emissions require media/species/unit evidence. Review actual maintenance-fluid exchanges, dry-fibre capture and outdoor releases; absence of dry chopping does not prove their absence, and no paper-machine dust quantity is borrowed."
+    source_ids:
+      - eu-pp-bref-2015
+published_dataset_profile:
+  dataset_role: "Site-specific foreground hand-papermaking production process"
+  downstream_use: "secondary_dataset; background_dataset only after declared compatibility and uncertainty assessment"
+  allowed_use: "The defined clean-cotton-cutting, hand-mould/hydraulic-press, electric/loft-drying and offsite-effluent-treatment route with actual foreground evidence"
+  excluded_use: "Full CPC 32122 generalization; machine-made/mould-machine paper; other fibre, pulping, combustion or treatment routes; unconditional acid-free/archival claims; functional comparisons based only on mass"
+  required_metadata: "Reference qualifiers; exact site and period; stage records; stocks; cotton upstream treatment/allocation; utilities; supplied additives; transport; external treatment; background identities; normalization; cutoffs"
+  required_quality_disclosure: "Record coverage, uncertainty and physical balance residuals; unresolved UUID and formulation/background gaps; supplier-source limits; methodological extensions"
+  update_trigger: "Furnish/formulation, energy/drying, utility supply, wastewater treatment, product quality/moisture basis or supplier/background change"
+data_sources:
+  - id: "khadi-cotton-route"
+    type: "handbook"
+    reference: "Khadi Papers, About the paper, South India section: https://www.khadi.com/about-khadi-papers/about-the-paper/"
+    used_for: "One producer's cotton garment-cutting furnish, Hollander/hand-mould/couching/hydraulic pressing/loft drying and gelatin sequence; no recipe, site energy or industry quantities imported"
+  - id: "eu-pp-bref-2015"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Production of Pulp, Paper and Board (2015), §§7.1.1–7.1.2 printed pp.660–662, §7.3.4 pp.728–729, BAT10 p.788: https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf"
+    used_for: "Industrial-machine distinction and applicable qualitative energy/water/fibre-recovery and monitoring principles; no machine performance values, handmade dose or legal frequency assumed"
+  - id: "chp-sizing-directions-2014"
+    type: "handbook"
+    reference: "Carriage House Paper, Directions for sizing, revised March 2014, p.1: https://pdfs.carriagehousepaper.com/CarriageHousePaper-Sizing.pdf"
+    used_for: "A ketene-dimer emulsion internal-sizing option and addition stage; historical dosage, shelf life and concentration not adopted as defaults"
+  - id: "solenis-hercon-sds-2018"
+    type: "handbook"
+    reference: "Solenis Hercon 100 Sizing Agent SDS R0702621, v1.5, revision 22 May 2018, §§3,9,12–13: https://pdfs.carriagehousepaper.com/Hercon.100-SIZINGAGENT-000000000000414870United-States-English(1).pdf"
+    used_for: "Supplier-linked mixture identity limitations and pH counterevidence; hazard list is not complete formulation, and SDS disposal guidance does not establish zero effluent impact"
+  - id: "yan-akd-hydrolysis-2019"
+    type: "literature"
+    reference: "Yan, N., Wan, X.-F., Hu, H.-C. and Chai, X.-S. (2019), Kinetic modelling of alkyl ketene dimer hydrolysis during the storage and papermaking process, Can. J. Chem. Eng. 97:2097–2101, DOI 10.1002/cjce.23440, publisher abstract: https://onlinelibrary.wiley.com/doi/10.1002/cjce.23440"
+    used_for: "Primary evidence that diluted aqueous AKD can hydrolyse under storage/papermaking conditions; supports considering chemical H2O consumption, not a workshop-specific extent, formulation, kinetic constant or emission quantity. Abstract only; full kinetic model not adopted"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:0a71a012d691191351c9e29d23a13a8059fe6551012c2ae3d953396b6c753d8c"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6975"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6975
+          line: 61
+          column: 1
+        end:
+          offset: 10560
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Sorted pre-cut clean cotton garment cuttings, finished sizing materials and utilities arrive at the paper workshop; upstream sorting/cutting must be included in supply data. |\n| starting_condition_role | Gate-to-gate hand papermaking; supplier preparation and transport plus external treatment are linked outside the aggregate foreground unit. |\n| product_classification_scope | A cotton-sheet subset of hand-made paper and paperboard, CPC 32122; no full-leaf coverage claim. |\n| recursive_input_rule | Internal off-spec sheets and recovered cotton fibres returned to beating are measured internal loops; no new upstream input or avoided virgin-fibre credit. Purchased handmade paper or external recovered paper is not this cotton-cutting route. |\n| upstream_dataset_requirement | Match cotton-cutting collection/preparation and supplier allocation, delivered electricity/water, formulated size, gelatin, replacement felt, wrapping and actual external waste treatment. Declare transport legs, mass and distance without adding embedded transport twice. |\n| disclosure | Site, reporting period, integrated operations, lots/moisture, exact supplies, stage meters, storage changes, rework/fibre/water returns, wastewater routing, cutoff estimates and background substitutions. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_hand_route` | hand_papermaking | Include wet furnish preparation, individual sheet forming, couching, pressing, both drying stages, gelatin bath preparation/heating, acceptance and gate packaging; retain stage records inside one aggregate foreground process. | khadi-cotton-route |\n| `boundary_utilities` | hand_papermaking | Include electric motors, hydraulic pump, ventilation, auxiliary drying, sizing heat, cleaning and attributable storage energy. Confirm the site's electric configuration; no zero-energy inference from manual forming or loft drying. | eu-pp-bref-2015; khadi-cotton-route |\n| `boundary_water_recovery` | hand_papermaking | Include fibre capture and white-water recirculation records, filter solids, unreused waste and final external wastewater. Actual recovery efficiency must be measured; industrial-machine recovery values are not handmade-paper defaults. | eu-pp-bref-2015 |\n| `boundary_route_extension` | inventory completeness | Known refrigerant leaks, extra packaging, cleaning chemicals or direct emissions require their own species/material exchanges and compatible identity/measurement evidence; undisclosed amounts cannot be zero. Combustion, biological treatment or direct water discharge require expanded source-specific inventories before this method is applied. | eu-pp-bref-2015 |\n| `boundary_actual_consumables` | inventory completeness | Verify actual press model, hydraulic working-fluid and lubrication specifications, stocks in use/storage, additions, changes, recovery and spills; do not infer mineral oil or consumption from the hydraulic label. Check pre-cut cotton handling, dry-sheet handling/finishing and ventilation for actual cotton/wool lint or sized-paper particles. Record paired actual returns; independently characterize captured dry residues and final outdoor emissions. Every confirmed material, spent fluid, cleaning chemical, captured residue or emission needs a separately collected atomic identity/quantity, and each absence needs evidence; do not substitute wet fibre sludge or paper-machine dust factors. | khadi-cotton-route; eu-pp-bref-2015 |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 287
+              line: 9
+              column: 1
+            end:
+              offset: 341
+              line: 9
+              column: 55
+          text: "# Hand-formed cotton-rag paper, pressed and loft-dried"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6975
+              line: 61
+              column: 1
+            end:
+              offset: 6996
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_27612"
+      family: "allocation"
+      span:
+        start:
+          offset: 27612
+          line: 302
+          column: 1
+        end:
+          offset: 28896
+          line: 310
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_single_product` | hand_papermaking | This defined unit has one accepted product. Attribute its observed burdens to that output; wastes and internal returns do not become saleable co-products by assumption. If saleable co-products arise, collect their separate physical outputs and commission an allocation review before using this single-product model. | eu-pp-bref-2015 |\n| `allocation_physical_ledgers` | all physical balances | Keep unallocated mass/water/carbon and paired stage transfers separate from any environmental-burden allocation ledger. Never multiply physical co-product outputs or internal returns by allocation shares. No automatic negative credit for cotton cuttings, fibre recovery, rejects or wastewater. | eu-pp-bref-2015 |\n| `allocation_shared_utilities` | electricity and water | Prefer lot/stage submetering and segregated batches. For shared motors/baths, document attributable measured power-time, water events and serviced output; justify any remaining shared-service split and preserve total-service reconciliation. Supplier allocation of cotton textile production is a separate disclosed upstream decision. | eu-pp-bref-2015 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 287
+              line: 9
+              column: 1
+            end:
+              offset: 341
+              line: 9
+              column: 55
+          text: "# Hand-formed cotton-rag paper, pressed and loft-dried"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 27612
+              line: 302
+              column: 1
+            end:
+              offset: 27652
+              line: 302
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_42109"
+      family: "validation"
+      span:
+        start:
+          offset: 42109
+          line: 346
+          column: 1
+        end:
+          offset: 44893
+          line: 357
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference` | reference product | Exactly one accepted finished output links to the reference; require cotton and hand-mould route, moisture, acceptance and all qualifiers. Stage wet/dry papers are internal transfers, not duplicated product outputs. | khadi-cotton-route |\n| `validation_denominator` | all inventory rows | Reference, collection, aggregation and all normalized rows use 1 kg accepted net conditioned finished paper. Do not divide by dry fibre, mould area, number of wet sheets, gross wrapped mass or rejected output without explicit consistent conversion. | eu-pp-bref-2015 |\n| `validation_energy` | electricity_input | Electric motor/press and heating records must be complete. Loft or hand labels cannot justify zero; physical heat diagnostics cannot duplicate purchased electricity. Other utility configurations require a reviewed atomic-flow extension. | eu-pp-bref-2015 |\n| `validation_water` | water, wastewater, recovery and solids | Reconcile stock-aware fresh/retained/discharged/evaporated molecular H2O, independently evidenced chemical H2O formation/consumption and dry-component transformations; whole-mass or elemental closure does not establish H2O-species closure. Accept the simplified evaporation equation only for absent or independently evidenced negligible H2O reactions at declared uncertainty; unknown reaction terms cannot pass as zero, evaporation or a fitted residual. For actual AKD use, check extent/speciation evidence without assuming complete hydrolysis, a rate or a CO2 amount/origin. Use matched concentrations and volumes; distinguish offsite treatment input from direct emissions and preserve the external treatment burden. | eu-pp-bref-2015; yan-akd-hydrolysis-2019 |\n| `validation_additives` | size and gelatin | Confirm supplied formulation, wet/dry quantity basis, purity, bath stocks and retained sizing. Resolve current pH/formulation before acid-free claims; the linked old SDS and generic AKD component cannot establish this emulsion's background compatibility. | chp-sizing-directions-2014; solenis-hercon-sds-2018 |\n| `validation_completeness` | data package | Each exchange is atomic and retains unresolved identity or numerical gaps; no invented UUID, default factory quantity or silent zero. If actual emissions include particles, specify disjoint size bins without summing overlapping totals; preserve actual biogenic CO2 regardless of GHG convention. Added emissions require media/species/unit evidence. Review actual maintenance-fluid exchanges, dry-fibre capture and outdoor releases; absence of dry chopping does not prove their absence, and no paper-machine dust quantity is borrowed. | eu-pp-bref-2015 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 287
+              line: 9
+              column: 1
+            end:
+              offset: 341
+              line: 9
+              column: 55
+          text: "# Hand-formed cotton-rag paper, pressed and loft-dried"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 42109
+              line: 346
+              column: 1
+            end:
+              offset: 42131
+              line: 346
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_hand_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6975"
+      source_span:
+        start:
+          offset: 8435
+          line: 76
+          column: 1
+        end:
+          offset: 8728
+          line: 76
+          column: 294
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_6975"
+      source_span:
+        start:
+          offset: 8729
+          line: 77
+          column: 1
+        end:
+          offset: 9043
+          line: 77
+          column: 315
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_water_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_6975"
+      source_span:
+        start:
+          offset: 9044
+          line: 78
+          column: 1
+        end:
+          offset: 9347
+          line: 78
+          column: 304
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_route_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_6975"
+      source_span:
+        start:
+          offset: 9348
+          line: 79
+          column: 1
+        end:
+          offset: 9766
+          line: 79
+          column: 419
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_actual_consumables"
+      identity_kind: "explicit"
+      unit_id: "normative_6975"
+      source_span:
+        start:
+          offset: 9767
+          line: 80
+          column: 1
+        end:
+          offset: 10557
+          line: 80
+          column: 791
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_single_product"
+      identity_kind: "explicit"
+      unit_id: "normative_27612"
+      source_span:
+        start:
+          offset: 27725
+          line: 306
+          column: 1
+        end:
+          offset: 28111
+          line: 306
+          column: 387
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_27612"
+      source_span:
+        start:
+          offset: 28112
+          line: 307
+          column: 1
+        end:
+          offset: 28483
+          line: 307
+          column: 372
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_shared_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_27612"
+      source_span:
+        start:
+          offset: 28484
+          line: 308
+          column: 1
+        end:
+          offset: 28894
+          line: 308
+          column: 411
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_42109"
+      source_span:
+        start:
+          offset: 42204
+          line: 350
+          column: 1
+        end:
+          offset: 42489
+          line: 350
+          column: 286
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_42109"
+      source_span:
+        start:
+          offset: 42490
+          line: 351
+          column: 1
+        end:
+          offset: 42808
+          line: 351
+          column: 319
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_energy"
+      identity_kind: "explicit"
+      unit_id: "normative_42109"
+      source_span:
+        start:
+          offset: 42809
+          line: 352
+          column: 1
+        end:
+          offset: 43109
+          line: 352
+          column: 301
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_water"
+      identity_kind: "explicit"
+      unit_id: "normative_42109"
+      source_span:
+        start:
+          offset: 43110
+          line: 353
+          column: 1
+        end:
+          offset: 43936
+          line: 353
+          column: 827
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_additives"
+      identity_kind: "explicit"
+      unit_id: "normative_42109"
+      source_span:
+        start:
+          offset: 43937
+          line: 354
+          column: 1
+        end:
+          offset: 44293
+          line: 354
+          column: 357
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_42109"
+      source_span:
+        start:
+          offset: 44294
+          line: 355
+          column: 1
+        end:
+          offset: 44891
+          line: 355
+          column: 598
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6975"
+      source_span:
+        start:
+          offset: 6975
+          line: 61
+          column: 1
+        end:
+          offset: 6996
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6975"
+      source_span:
+        start:
+          offset: 7024
+          line: 65
+          column: 1
+        end:
+          offset: 8362
+          line: 72
+          column: 221
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_27612"
+      source_span:
+        start:
+          offset: 27612
+          line: 302
+          column: 1
+        end:
+          offset: 27652
+          line: 302
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_42109"
+      source_span:
+        start:
+          offset: 42109
+          line: 346
+          column: 1
+        end:
+          offset: 42131
+          line: 346
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0a71a012d691191351c9e29d23a13a8059fe6551012c2ae3d953396b6c753d8c"
+  generated_content_sha256: "sha256:7865d09fe5b63b80493187df46da4aeba29e281bae86c0abd44afa38bb7a94f5"
