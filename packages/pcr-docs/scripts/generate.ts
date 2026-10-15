@@ -3,7 +3,7 @@ import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResu
 import type {BuilderManifest} from "../../../builder/lib/types.ts";
 import {compileDocsBrowserAssets} from "./browser-assets.ts";
 import {writeRecordDataPacks} from "./record-data-packs.ts";
-import {inlineManifestUrl} from "./raw-download.ts";
+import {INLINE_MARKDOWN_LIMIT, inlineDownloadManifestPath, inlineDownloadUrl} from "./raw-download.ts";
 type ClassificationRef={system:string;version:string;code:string;title?:string;mapping_type?:string};
 interface SiteAuthoringManifest extends BuilderManifest {classification_refs?:ClassificationRef[];modules?:Record<string,string[]>}
 type GeneratedRecord=Omit<SitePcrRecord,"slug"> & {slug:[string,string,string]};
@@ -211,12 +211,20 @@ function bindSource(relative: string, bytes: Uint8Array) {
   }
 }
 const downloadsBySource = new Map<string, Download>();
+const downloadUrls = new Set<string>();
 function download(relative: string, bytes: Uint8Array) {
   bindSource(relative, bytes);
   const cached = downloadsBySource.get(relative);
   if (cached) return cached;
-  const inline = inlineManifestUrl(relative, bytes,
-    fs.existsSync(path.join(root, path.posix.dirname(relative), 'release-history.yaml')));
+  const manifestPath = inlineDownloadManifestPath(relative);
+  let inline: string | undefined;
+  if (manifestPath && bytes.length <= INLINE_MARKDOWN_LIMIT) {
+    const manifestBytes = manifestPath === relative ? bytes : fs.readFileSync(path.join(root, manifestPath));
+    bindSource(manifestPath, manifestBytes);
+    inline = inlineDownloadUrl(relative, bytes,
+      fs.existsSync(path.join(root, path.posix.dirname(relative), 'release-history.yaml')),
+      {path: manifestPath, bytes: manifestBytes}, downloadUrls);
+  }
   const url = inline ?? "/generated/raw/" + relative;
   if (!inline) write("public/raw/" + relative, bytes);
   const item = {
@@ -225,8 +233,10 @@ function download(relative: string, bytes: Uint8Array) {
     sha256: sha256(bytes),
     bytes: bytes.length,
   };
-  if (!report.downloads.some((d) => d.url === url))
+  if (!downloadUrls.has(url)) {
     report.downloads.push({ ...item, sourcePath: relative });
+    downloadUrls.add(url);
+  }
   downloadsBySource.set(relative, item);
   return item;
 }

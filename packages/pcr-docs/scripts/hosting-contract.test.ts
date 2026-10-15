@@ -15,11 +15,17 @@ const downloads = [
     url: "/generated/raw/library/pcrs/a/b/c/releases/1.0.0/manifest.snapshot.yaml",
   },
 ];
-test("inline metadata exception validates bytes and cannot waive physical download headers", () => {
+test("inline artifact exception validates bytes and cannot waive physical download headers", () => {
   const bytes = Buffer.from('status: candidate\ncontent_maturity: authored_methodology\n');
   const inline = {name:'manifest.yaml',url:'data:application/octet-stream;base64,'+bytes.toString('base64'),bytes:bytes.length,sha256:'sha256:'+createHash('sha256').update(bytes).digest('hex')};
   assert.doesNotThrow(() => verifyHostingContract(config, [...downloads, inline]));
-  for (const changed of [{...inline,name:'pcr.en-US.md'},{...inline,bytes:0},{...inline,sha256:'sha256:'+'0'.repeat(64)},{...inline,url:'data:text/html;base64,PGgxPng8L2gxPg=='}])
+  for (const name of ['pcr.en-US.md', 'pcr.zh-CN.md']) assert.doesNotThrow(() => verifyHostingContract(config, [{...inline, name}]));
+  const markdown = Buffer.alloc(32768, 65);
+  const large = {name:'pcr.en-US.md',url:'data:application/octet-stream;base64,'+markdown.toString('base64'),bytes:markdown.length,sha256:'sha256:'+createHash('sha256').update(markdown).digest('hex')};
+  assert.doesNotThrow(() => verifyHostingContract(config, [large]));
+  assert.throws(() => verifyHostingContract(config, [{...large,name:'manifest.yaml'}]), /Inline manifest length/u);
+
+  for (const changed of [{...inline,name:'pcr.de-DE.md'},{...inline,bytes:0},{...inline,sha256:'sha256:'+'0'.repeat(64)},{...inline,url:'data:text/html;base64,PGgxPng8L2gxPg=='}])
     assert.throws(() => verifyHostingContract(config, [changed]));
   assert.throws(() => verifyHostingContract({...config,headers:config.headers.filter(rule => rule.source !== "/generated/raw/*")}, [...downloads,inline]), /Raw artifact (?:noindex|attachment)/u);
 });

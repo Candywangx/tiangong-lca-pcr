@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-10-14
-lastReviewedNote: "Reviewed bounded inline downloads for unpublished candidate manifests up to 8192 bytes. All canonical sources, physical published/history/language/projection downloads and native navigation payloads remain intact. Complete export and source-bound CI remain required before merge."
+lastReviewedAt: 2026-10-15
+lastReviewedNote: "Reviewed bounded native inline downloads for current unpublished authored candidates: manifests up to 16384 exact bytes and required English/Chinese Markdown up to 32768 exact bytes. Same-directory manifests bind eligibility to the pinned Git source; duplicate inline bytes retain distinct source/filename identities through physical fallback. Published/history/optional-language/projection downloads and navigation payloads remain intact. Complete export and source-bound qualification remain required."
 lastReviewedCommit: 6b99296b0b935404abdf900b2566fe2ff59a966d
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -77,18 +77,25 @@ The core document bundle contains the complete manifest, verified structured
 projection, declared languages and original artifact buffers. Downloads preserve those buffers byte for byte. Exact-byte download hashes are distinct from the
 existing normalized-text projection fingerprint.
 
-Current candidate PCR manifests with authored methodology, no release history and at most
-8,192 original bytes use native `data:application/octet-stream;base64,` download links
-with the `manifest.yaml` filename. These bounded inline downloads work without
+Current candidate PCRs with authored methodology and no release history may use
+native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
+`pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
+each required-language Markdown limit is 32,768 original bytes. Eligibility comes
+from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
+These bounded downloads preserve each original filename and work without
 JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
-byte to the pinned source. Current candidate HTTP manifest URLs may change with
-this transport; use each record's current download links. Published/deprecated
-current manifests, all release/history artifacts, larger manifests, language
-Markdown and structured projections retain physical downloads. Physical responses
-keep attachment/noindex headers; inline bytes create no separately indexable HTTP
+byte to the pinned source. Current candidate HTTP URLs for these artifacts may
+change with this transport; use each record's current download links.
+Published/deprecated current artifacts, all release/history/revision artifacts,
+optional-language Markdown, larger files and structured projections retain
+physical downloads. When different source artifacts have identical inline bytes,
+only the first uses that data URL; later artifacts retain physical URLs so source
+identity and download filenames remain unambiguous. Physical responses keep
+attachment/noindex headers; inline bytes create no separately indexable HTTP
 resource. Source-relative links reuse the same source-bound download and filename.
 The exporter verifies rendered download anchors, and sealed-site qualification
-checks actual downloads without JavaScript in Chromium, Firefox and WebKit.
+checks the largest available inline artifact per filename without
+JavaScript in Chromium, Firefox and WebKit.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,

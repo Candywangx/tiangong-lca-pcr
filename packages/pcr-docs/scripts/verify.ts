@@ -17,7 +17,7 @@ import {
 } from "./markdown.ts";
 import { SUMMARY_LIMIT } from "./summaries.ts";
 import { summarizeExportFiles } from "./export-size.ts";
-import { decodeInlineManifestUrl, inlineManifestUrl } from "./raw-download.ts";
+import { decodeInlineDownloadUrl, inlineDownloadManifestPath, inlineDownloadUrl } from "./raw-download.ts";
 import { readProductIdentity } from "../../../builder/scripts/product-identity.ts";
 import { gettingStartedGuides, gettingStartedGuide } from "../lib/getting-started.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
@@ -85,16 +85,19 @@ if (fs.existsSync(path.join(root, "product-release.json"))) {
 }
 for (const raw of report.downloads) {
   const original = fs.readFileSync(path.join(root, raw.sourcePath));
-  const inline = decodeInlineManifestUrl(raw.url);
+  const inline = decodeInlineDownloadUrl(raw.url);
   const bytes = inline ?? fs.readFileSync(path.join(out, raw.url));
   if (inline) {
-    requireThat(raw.name === 'manifest.yaml' && raw.bytes === inline.length,
-      'Invalid inline manifest metadata: ' + raw.sourcePath);
-    requireThat(inlineManifestUrl(raw.sourcePath, original,
-      fs.existsSync(path.join(root, path.posix.dirname(raw.sourcePath), 'release-history.yaml'))) === raw.url,
-      'Ineligible inline manifest: ' + raw.sourcePath);
+    requireThat(raw.name === path.posix.basename(raw.sourcePath) && raw.bytes === inline.length,
+      'Invalid inline download metadata: ' + raw.sourcePath);
+    const manifestPath = inlineDownloadManifestPath(raw.sourcePath);
+    requireThat(manifestPath, 'Ineligible inline source: ' + raw.sourcePath);
+    requireThat(inlineDownloadUrl(raw.sourcePath, original,
+      fs.existsSync(path.join(root, path.posix.dirname(raw.sourcePath), 'release-history.yaml')),
+      {path: manifestPath, bytes: fs.readFileSync(path.join(root, manifestPath))}) === raw.url,
+      'Ineligible inline download: ' + raw.sourcePath);
     requireThat(!fs.existsSync(path.join(out, 'generated/raw', raw.sourcePath)),
-      'Inline manifest duplicated as an HTTP file: ' + raw.sourcePath);
+      'Inline download duplicated as an HTTP file: ' + raw.sourcePath);
   }
   requireThat(sha256(bytes) === raw.sha256, "Raw download changed " + raw.url);
   requireThat(
@@ -107,7 +110,7 @@ const inlineByRecord = new Map(manifest.records.map(record => [record.id, record
 for (const record of manifest.records) {
   for (const raw of inlineByRecord.get(record.id) ?? []) {
     const bound = downloadByUrl.get(raw.url);
-    requireThat(bound?.sha256 === raw.sha256 && bound.sourcePath === record.sourcePath + '/manifest.yaml', 'Unbound inline manifest: ' + record.id);
+    requireThat(bound?.sha256 === raw.sha256 && bound.sourcePath === record.sourcePath + '/' + raw.name && bound.name === raw.name, 'Unbound inline download: ' + record.id);
   }
 }
 // Every public inspector record must restore its full generated source, including historical releases.
@@ -274,14 +277,14 @@ for (const page of manifest.pages) {
   const document = readPage(page.url);
   for (const raw of (!page.recordVersion && page.pcrId ? inlineByRecord.get(page.pcrId) : undefined) ?? []) {
     const link = Array.from(document.querySelectorAll<HTMLAnchorElement>('a.pcr-download-name')).find(anchor => anchor.getAttribute('href') === raw.url);
-    requireThat(link?.getAttribute('download') === 'manifest.yaml', 'Missing native inline manifest download: ' + page.url);
+    requireThat(link?.getAttribute('download') === raw.name, 'Missing native inline download: ' + page.url);
   }
   for (const anchor of document.querySelectorAll<HTMLAnchorElement>('a[href^="data:"]')) {
     // Source YAML fragments do not change download bytes. Reuse this loop's
     // existing bounded DOM lifetime, including split chapters and relative links.
     const url = anchor.getAttribute('href')!.split('#', 1)[0]!;
     const raw = downloadByUrl.get(url);
-    requireThat(raw && decodeInlineManifestUrl(url) && raw.name === 'manifest.yaml'
+    requireThat(raw && decodeInlineDownloadUrl(url)
       && anchor.getAttribute('download') === raw.name,
       'Unbound rendered inline download: ' + page.url);
   }
@@ -514,7 +517,8 @@ const result = {
   pages: manifest.pages.length,
   sourceDocuments: report.documents.length,
   sourceDownloads: report.downloads.length,
-  inlineManifestDownloads: report.downloads.filter(raw => raw.url.startsWith('data:')).length,
+  inlineManifestDownloads: report.downloads.filter(raw => raw.url.startsWith('data:') && raw.name === 'manifest.yaml').length,
+  inlineLanguageDownloads: report.downloads.filter(raw => raw.url.startsWith('data:') && raw.name !== 'manifest.yaml').length,
   ...sizeEvidence,
 };
 fs.writeFileSync(

@@ -1,4 +1,4 @@
-import {decodeInlineManifestUrl} from "./raw-download.ts";
+import {decodeInlineDownloadUrl} from "./raw-download.ts";
 import {decodeRecordData} from "../lib/record-data.ts";
 import {decodeSearchEntries} from "../lib/search-wire.ts";
 import {Index} from "flexsearch";
@@ -503,7 +503,7 @@ test("metadata summaries describe the page they belong to, and report title-only
     assert.equal(metadata.length, 1, "relative links reuse one source-bound download");
     const inline = metadata[0]!;
     assert.ok(inline.url.startsWith("data:application/octet-stream;base64,"));
-    assert.deepEqual(decodeInlineManifestUrl(inline.url), fs.readFileSync(path.join(fixture.pcrDir, "manifest.yaml")));
+    assert.deepEqual(decodeInlineDownloadUrl(inline.url), fs.readFileSync(path.join(fixture.pcrDir, "manifest.yaml")));
     assert.equal(fs.existsSync(path.join(output, "public/generated/raw", fixture.libraryPath, "manifest.yaml")), false);
     for (const page of site.pages.filter(page => page.kind === "pcr" && page.language === "en-US")) {
       const html = fs.readFileSync(path.join(output, ".generated", page.htmlPath!), "utf8");
@@ -511,11 +511,22 @@ test("metadata summaries describe the page they belong to, and report title-only
       assert.ok(html.includes(inline.url + '#fields'));
       assert.ok(html.includes('download="manifest.yaml"'));
     }
+    for (const name of ["pcr.en-US.md", "pcr.zh-CN.md"]) {
+      const raw = report.downloads.find(file => file.sourcePath === fixture.libraryPath + "/" + name);
+      assert.ok(raw && raw.url.startsWith("data:"), "candidate required-language Markdown uses native inline transport: " + name);
+      assert.deepEqual(decodeInlineDownloadUrl(raw.url), fs.readFileSync(path.join(fixture.pcrDir, name)));
+      assert.equal(fs.existsSync(path.join(output, "public/generated/raw", fixture.libraryPath, name)), false);
+    }
     const first = fs.readFileSync(path.join(output, ".generated/site.json"));
     const repeated = spawnSync(process.execPath, [script, "--source-root", root, "--output-root", output], {encoding:"utf8", maxBuffer:4*1024*1024});
     assert.equal(repeated.status, 0, repeated.stderr);
     assert.deepEqual(fs.readFileSync(path.join(output, ".generated/site.json")), first);
 
+    fs.appendFileSync(path.join(fixture.pcrDir, "manifest.yaml"), "\n# Uncommitted eligibility substitution\n");
+    const substituted = spawnSync(process.execPath, [script, "--source-root", root, "--output-root", output], {encoding:"utf8", maxBuffer:4*1024*1024});
+    assert.notEqual(substituted.status, 0, "inline eligibility must use the pinned manifest bytes");
+    assert.match(substituted.stderr, /Source differs from pinned Git commit: .*manifest.yaml/u);
+    assert.deepEqual(fs.readFileSync(path.join(output, ".generated/site.json")), first, "failed source binding preserves the previous complete artifact set");
 
     const domain = site.pages.find(
       (page) => page.kind === "catalog" && page.language === "en-US" && page.slugs.length === 2,

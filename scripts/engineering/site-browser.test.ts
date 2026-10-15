@@ -3,7 +3,7 @@ import {mkdtempSync,mkdirSync,writeFileSync,rmSync,realpathSync,existsSync,symli
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import {inspectSiteExport,parseSiteBrowserArguments,prepareSiteBrowserReport,withSiteExportServer,isCancelledSitePrefetch,captureCancelledSiteRequest,emittedLanguageCodes,browserLanguageScenarios,findInlineManifestDownload} from './site-browser.ts';
+import {inspectSiteExport,parseSiteBrowserArguments,prepareSiteBrowserReport,withSiteExportServer,isCancelledSitePrefetch,captureCancelledSiteRequest,emittedLanguageCodes,browserLanguageScenarios,findInlineDownload} from './site-browser.ts';
 import type {CancelledRequest,SiteBrowserEngine} from './site-browser.ts';
 import {preferredRoute} from '../../packages/pcr-docs/lib/language-preference.ts';
 function fixture(){const parent=mkdtempSync(path.join(realpathSync(tmpdir()),'site-browser-contract-')),root=path.join(parent,'export');mkdirSync(root);const put=(key:string,text:string)=>{mkdirSync(path.dirname(path.join(root,key)),{recursive:true});writeFileSync(path.join(root,key),text);};
@@ -14,14 +14,23 @@ function fixture(){const parent=mkdtempSync(path.join(realpathSync(tmpdir()),'si
 }
 test('sealed browser selects a real bounded inline download and rejects a missing filename', () => {
  const f=fixture();try {
-  assert.equal(findInlineManifestDownload(inspectSiteExport(f.root)),undefined);
+  assert.equal(findInlineDownload(inspectSiteExport(f.root)),undefined);
   const bytes=Buffer.from('\ufeffstatus: candidate\r\ncontent_maturity: authored_methodology\r\ntitle: 中文\r\n');
   const url='data:application/octet-stream;base64,'+bytes.toString('base64');
   f.put('en/docs/pcr/a/b/c/index.html',`<html lang="en-US"><h1>Fixture</h1><a download="manifest.yaml" href="${url}" class="pcr-download-name">manifest.yaml</a></html>`);
-  const selected=findInlineManifestDownload(inspectSiteExport(f.root));assert.ok(selected);
+  const selected=findInlineDownload(inspectSiteExport(f.root));assert.ok(selected);
   assert.equal(selected.route,'/en/docs/pcr/a/b/c/');assert.equal(selected.url,url);assert.equal(selected.bytes,bytes.length);
+  for(const name of ['pcr.en-US.md','pcr.zh-CN.md']) {
+   f.put('en/docs/pcr/a/b/c/index.html',`<html lang="en-US"><h1>Fixture</h1><a download="${name}" href="${url}" class="pcr-download-name">${name}</a></html>`);
+   const markdown=findInlineDownload(inspectSiteExport(f.root),name);assert.ok(markdown);assert.equal(markdown.name,name);assert.equal(markdown.bytes,bytes.length);
+  }
+
+  const larger=Buffer.alloc(24000,65),largerUrl='data:application/octet-stream;base64,'+larger.toString('base64');
+  f.put('en/docs/pcr/a/b/c/index.html',`<html lang="en-US"><h1>Fixture</h1><a download="pcr.en-US.md" href="${url}" class="pcr-download-name">pcr.en-US.md</a></html>`);
+  f.put('en/docs/pcr/a/b/larger/index.html',`<html lang="en-US"><h1>Fixture</h1><a download="pcr.en-US.md" href="${largerUrl}" class="pcr-download-name">pcr.en-US.md</a></html>`);
+  const largest=findInlineDownload(inspectSiteExport(f.root),'pcr.en-US.md');assert.ok(largest);assert.equal(largest.bytes,24000);assert.equal(largest.route,'/en/docs/pcr/a/b/larger/');
   f.put('en/docs/pcr/a/b/c/index.html',`<html lang="en-US"><h1>Fixture</h1><a href="${url}" class="pcr-download-name">manifest.yaml</a></html>`);
-  assert.throws(()=>findInlineManifestDownload(inspectSiteExport(f.root)),/manifest.yaml/u);
+  assert.throws(()=>findInlineDownload(inspectSiteExport(f.root)),/manifest.yaml/u);
  }finally{f.close();}
 });
 test('site browser requires explicit single root/report arguments without silent skip',()=>{assert.equal(parseSiteBrowserArguments(['--help']),'help');for(const args of [[],['--root','x'],['--report','x'],['--root','x','--report','y','--report','z'],['--root','--report','x'],['--unknown','x']])assert.throws(()=>parseSiteBrowserArguments(args),{code:'SITE_BROWSER_ARGUMENT'});assert.deepEqual(parseSiteBrowserArguments(['--root','x','--report','y']),{root:path.resolve('x'),report:path.resolve('y')});});
