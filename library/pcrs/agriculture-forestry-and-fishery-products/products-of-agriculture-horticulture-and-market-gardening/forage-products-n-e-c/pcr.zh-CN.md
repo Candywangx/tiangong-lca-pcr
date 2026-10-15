@@ -1,8 +1,1009 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.forage-products-n-e-c
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 未另分类的饲草产品
+
+## 1. 范围与适用性
+
+本 PCR 适用于一种明确命名、以饲草为生产目的的 CPC 01919 作物或产品，例如饲用甜菜、胡萝卜、芜菁、高粱、三叶草、羽衣甘蓝、羽扇豆、红豆草、野豌豆、干草或饲用芜菁甘蓝。边界从作物建植和生产开始，经过收获，可选择延伸至首次萎蔫、干燥、切碎、打捆、制粒、清理或分级后的交付点。
+
+不包括玉米青贮/饲草、苜蓿、谷物秸秆或颖壳、并非为饲草生产的作物、复合饲料或配方饲料、放牧服务，以及首次调制之后的饲料制造。每个数据包只代表一种指定产品及一个交付状态。
+
+## 2. 产品类别标识
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.forage-products-n-e-c |
+| classification_refs | CPC 3.0: 01919（未另分类的饲草产品）; mapping relation: narrower |
+| covered_products | 一种明确命名、以饲草为目的的作物或产品，在收获或首次调制交付点 |
+| excluded_products | 玉米饲草；苜蓿；谷物秸秆和颖壳；非饲草作物；复合/配方饲料；放牧服务；后续饲料制造 |
+| representative_product | 在声明含水率或干物质状态下的一种指定饲草产品 |
+| production_route | 建植与管理生产 → 收获/收集 → 可选首次调制 → 交付 |
+| market_state | 收获态新鲜饲草，或声明为萎蔫、干燥、切碎、打捆、制粒、清理或分级的首次调制饲草 |
+
+## 3. 参考流
+
+| 字段 | 值 |
+| --- | --- |
+| What | 在所选交付点的一种指定饲草产品 |
+| How much | 1 kg 净产品 |
+| How well | 声明物种/产品、植物部位、形态、等级、含水率或干物质，以及调制状态 |
+| How long or cycle | 声明地块和作物期；多年生或多期投入保持期间关联 |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| 字段 | 值 |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | 指定饲草产品（UUID 未解析） |
+| 参考流属性 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | 物种/产品；植物部位；收获形态；含水率或干物质；等级；作物期；生产系统；调制状态；交付点 |
+
+每份前景数据包须声明实际路线、终端产品状态和交接门，保留原始称量、质量平衡及批次追溯记录。以该门的唯一交接参考输出归一化，前序工序采用实测转移数量。
+
+唯一参考输出为 `reference_product_at_declared_handoff`，由下列实际路线在声明交接门的产品承接。原路线输出编号用于追溯实际来源和物理状态，不再分别固定为参考数量。
+
+## 4. 计量与单位规则
+| rule_id | 适用于 | 必需属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | 参考产品 | Mass（UUID 未解析） | kg | 使用去皮重后的净质量；同时声明含水率或干物质基准。 |
+| `moisture_conversion` | 新鲜、萎蔫和干燥产品 | Mass | kg | 仅在记录配对含水率、测定方法和换算公式时进行湿基/干基换算。 |
+| `area_time` | 土地占用 | Area*time | m2·year | 根据地块面积和实际占用时长计算，并按同一作物期产出归一化。 |
+| `transport_work` | 道路货运 | Transport work | t·km | 净运输吨数乘以满载公里；返空处理必须单独披露。 |
+
+## 5. 系统边界
+
+### 边界抽象
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | 指定地块上明确命名的饲草作物在建植或本报告作物期开始时的状态 |
+| starting_condition_role | 前景作物生产的起始状态；上游投入使用独立数据集 |
+| product_classification_scope | 一种 CPC 01919 指定饲草产品，不跨越被排除的相邻类别 |
+| recursive_input_rule | 若同类别饲草作为种植或调制投入，作为已交付的上游产品数据集记录，并按来源、状态和交付点区分；不得递归重建同一产品系统 |
+| upstream_dataset_requirement | 种子、肥料、农药、能源、水和服务投入使用适合其供应边界的独立上游数据 |
+| disclosure | 声明物种/产品、地块、作物期、生产系统、收获方法、含水率、形态、等级、首次调制作业和所选交付点 |
+
+### 边界规则
+
+| rule_id | 适用于 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| boundary_named_product | Product scope | Model one named forage species/product and plant part at one declared state and gate. Exclude maize forage, alfalfa, cereal straw or husks, crops not grown for forage, compound feed and grazing services. | unsd-cpc-01919 |
+| boundary_gate_choice | Reference gate | Select either harvest handoff or the first declared conditioning handoff. If conditioning is selected, harvested forage is an intermediate and only the conditioned product is the reference output. | fao-grassland-forage |
+| boundary_conditional_conditioning | Primary conditioning | Include only operations actually performed before the selected gate; identify the raw input state, conditioned output state, service inputs, residues and rejects. | fao-grassland-forage |
+| boundary_periods_assets | Periods and shared assets | Retain establishment, annual or multi-year crop periods and shared machinery or facility use; attribute each burden once to its actual consuming node and period. | iso-14044-allocation |
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| forage_crop_production | 饲草作物建植与生产管理 | required | 栽培饲草必须纳入；田间生产在可收获作物交接点结束。 | 建植并管理指定饲草作物，报告可收获生物量。 | 按地块和作物期计量的可收获饲草质量。 |
+| forage_harvest | 饲草收获与田间收集 | required | 割草、切割、起根或其他从生产环境中移除的作业必须纳入。 | 独立记录收获责任，并核对收集产品、田间残留物和损失。 | 离开收获过程的指定饲草产品净质量。 |
+| primary_forage_conditioning | 可选的首次饲草调制 | conditional | 仅当所选交付点之前发生萎蔫、干燥、切碎、打捆、制粒、清理或分级时纳入。 | 将收获饲草转为一种明确的首次调制状态，不包括饲料配方加工。 | 在声明含水率、形态和等级下的调制饲草净质量。 |
+| declared_reference_handoff | 声明交接门的产品计量 | required |  | foreground | reference_product_at_declared_handoff |
+
+### 过程：饲草作物建植与生产管理 (`forage_crop_production`)
+
+建植并管理指定饲草作物，报告可收获生物量。
+
+#### 输入
+##### 产品流
+
+###### 种子或繁殖材料 (`propagation_material`)
+
+记录转入指定饲草作物的种子、根冠、插条或其他种植材料。
+
+- 选定流: Named-crop propagation material; UUID unresolved until species and form are known
+- 流属性/单位: Mass / kg or verified count unit
+- 数量规则: Measured purchased or internally transferred planting material
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每 1 kg 参考饲草，并保留地块和作物期关联.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_propagation`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 0.5
+  - 单位: kg/kg reference forage
+  - 基准: 种植材料按参考饲草归一化的宽泛筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 尿素肥料投入（`nutrient_inputs`）
+
+仅当声明的过程实际使用尿素肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：尿素肥料
+- 数量规则：记录该过程和期间实际使用的尿素肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：按地块和作物期记录，再归一化至每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_nutrients`
+
+###### 磷酸一铵肥料投入（`nutrient_inputs_monoammonium_phosphate`）
+
+仅当声明的过程实际使用磷酸一铵肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：磷酸一铵肥料
+- 数量规则：记录该过程和期间实际使用的磷酸一铵肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：按地块和作物期记录，再归一化至每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_nutrients`
+
+###### 氯化钾肥料投入（`nutrient_inputs_potassium_chloride`）
+
+仅当声明的过程实际使用氯化钾肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：氯化钾肥料
+- 数量规则：记录该过程和期间实际使用的氯化钾肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：按地块和作物期记录，再归一化至每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_nutrients`
+
+###### 施用的牛粪肥投入（`nutrient_inputs_cattle_manure`）
+
+仅当声明的过程实际使用施用的牛粪肥时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：施用的牛粪肥
+- 数量规则：记录该过程和期间实际使用的施用的牛粪肥数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：按地块和作物期记录，再归一化至每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_nutrients`
+
+###### 农业石灰石投入（`nutrient_inputs_agricultural_limestone`）
+
+仅当声明的过程实际使用农业石灰石时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：农业石灰石
+- 数量规则：记录该过程和期间实际使用的农业石灰石数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：按地块和作物期记录，再归一化至每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_nutrients`
+
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
+
+###### 灌溉用水 (`irrigation_water`)
+
+记录灌溉供应水量；降雨属于背景信息，不作为产品流投入。
+
+- 选定流: Irrigation water selected from the actual source record
+- 流属性/单位: Volume / m3 preferred
+- 数量规则: Metered or supplier-recorded irrigation volume
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：按每公顷和作物期记录，再归一化至参考饲草产出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_irrigation`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 15000
+  - 单位: m3/ha·crop period
+  - 基准: 灌溉水量筛选区间
+  - 基准类型: 作物周期 (`crop_cycle`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 中压电力投入（`production_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：按作物期记录并归一化至每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_production_energy`
+
+###### 柴油投入（`production_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：按作物期记录并归一化至每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_production_energy`
+
+##### 废物流
+
+##### 基本流
+
+###### 农业用地占用 (`land_occupation`)
+
+计算声明作物期的占地面积与时间。
+
+- 选定流: Agricultural land occupation elementary flow; UUID unresolved
+- 流属性/单位: Area*time / m2·year
+- 数量规则: Field area multiplied by occupation duration
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：按作物期并归一化至参考产出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 由采集数据计算 (`calculated_from_collection`)
+- 采集协议: `cp_land_history`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0.01
+  - 上限: 1000
+  - 单位: m2·year/kg reference forage
+  - 基准: 面积时间宽泛筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 土地转化 (`land_transformation`)
+
+仅记录有证据且归属于声明生产系统的土地覆盖转化。
+
+- 选定流: Land transformation elementary flow by prior and new cover; UUID unresolved
+- 流属性/单位: Area / m2
+- 数量规则: Mapped transformed area allocated once over the declared attribution period
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：在声明归属期内每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 由采集数据计算 (`calculated_from_collection`)
+- 采集协议: `cp_land_history`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 1000
+  - 单位: m2/kg reference forage
+  - 基准: 土地转化宽泛筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+#### 输出
+##### 产品流
+
+###### 可收获饲草生物量 (`harvest_ready_forage`)
+
+记录交接至收获过程的指定作物及植物部位，不得同时计为最终参考产品。
+
+- 选定流: Named harvest-ready forage biomass; UUID unresolved
+- 流属性/单位: Mass / kg
+- 数量规则: Measured net harvest-ready mass at recorded moisture
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：按地块和作物期.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_lot`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0.01
+  - 上限: 100
+  - 单位: kg/m2 crop area
+  - 基准: 可收获生物量产量的宽泛路线筛选区间
+  - 基准类型: 作物周期 (`crop_cycle`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+##### 废物流
+
+###### 移除的杂草与非目标生物量 (`production_residue_removed`)
+
+记录从田间移除的生物量，并按实际去向分类。
+
+- 选定流: Removed non-target biomass; UUID unresolved
+- 流属性/单位: Mass / kg dry matter preferred
+- 数量规则: Measured or sampled removed biomass by destination
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 可收获饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_residues`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 5
+  - 单位: kg/kg harvest-ready forage
+  - 基准: 残留物宽泛筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+##### 基本流
+
+###### 土壤直接氧化亚氮 (`soil_n2o`)
+
+仅依据选定清单方法和有记录的氮活动数据计算直接 N2O。
+
+- 选定流: Nitrous oxide to air; UUID unresolved pending exact compartment verification
+- 流属性/单位: Mass / kg N2O
+- 数量规则: Calculated from collected nitrogen inputs and the declared method
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 参考饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 由采集数据计算 (`calculated_from_collection`)
+- 采集协议: `cp_nutrients`
+- 来源: `ipcc-2019-managed-soils`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 0.1
+  - 单位: kg N2O/kg reference forage
+  - 基准: 方法计算结果的宽泛 QA 筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+### 过程：饲草收获与田间收集 (`forage_harvest`)
+
+独立记录收获责任，并核对收集产品、田间残留物和损失。
+
+#### 输入
+##### 产品流
+
+###### 可收获饲草批次 (`harvest_ready_batch`)
+
+以相同物种、地块、作物期和批次标识将生产产出转入收获过程。
+
+- 选定流: Named harvest-ready forage biomass; UUID unresolved
+- 流属性/单位: Mass / kg
+- 数量规则: Inter-process transferred net mass
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每个收获批次.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_lot`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0.01
+  - 上限: 1000000
+  - 单位: kg/harvest lot
+  - 基准: 批量规模筛选区间
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 中压电力投入（`harvest_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：每 1 kg 收获饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_energy`
+
+###### 柴油投入（`harvest_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：每 1 kg 收获饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_energy`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 收获的指定饲草产品 (`harvested_forage`)
+
+将此预期产出记录为收获交付点合格的指定饲草；若选择初级调制交付点，则将其作为中间产品。
+
+- 选定流: Named harvested forage product; UUID unresolved
+- 流属性/单位: Mass / kg
+原始产出计量与核对要求：Measured net accepted mass at declared moisture
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每个收获批次.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_lot`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 1.5
+  - 单位: kg/kg harvest-ready batch
+  - 基准: 收获质量平衡 QA 区间
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 可销售的较低等级饲草 (`lower_grade_forage`)
+
+仅当较低等级产品具有可证实的预定用途和交接点时，将此预期产出单独记录。
+
+- 选定流: Named lower-grade forage product; UUID unresolved
+- 流属性/单位: Mass / kg
+- 数量规则: Measured mass by grade and destination
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每个收获批次.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_grade_disposition`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 1
+  - 单位: kg/kg harvest-ready batch
+  - 基准: 质量分数 QA 校验区间
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+##### 废物流
+
+###### 收获剔除物与田间损失 (`harvest_rejects`)
+
+记录剔除、掉落或腐败材料及其田间保留、回收或丢弃去向。
+
+- 选定流: Harvest reject or loss material; UUID unresolved
+- 流属性/单位: Mass / kg dry matter preferred
+- 数量规则: Measured or sampled mass by exclusive destination
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 可收获批次.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_grade_disposition`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 1
+  - 单位: kg/kg harvest-ready batch
+  - 基准: 质量分数 QA 校验区间
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+##### 基本流
+
+###### 归还土壤的饲草作物残留物 (`residue_to_soil`)
+
+记录有意留在或归还田间的作物生物量，不得将其作为可销售产品。
+
+- 选定流: Biogenic crop residue to soil; UUID unresolved
+- 流属性/单位: Mass / kg dry matter
+- 数量规则: Sampled dry matter partitioned to the field destination
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 收获饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 由采集数据计算 (`calculated_from_collection`)
+- 采集协议: `cp_residues`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 10
+  - 单位: kg dry matter/kg harvested forage
+  - 基准: 残留物还田宽泛筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+### 过程：可选的首次饲草调制 (`primary_forage_conditioning`)
+
+将收获饲草转为一种明确的首次调制状态，不包括饲料配方加工。
+
+#### 输入
+##### 产品流
+
+###### 原始收获饲草批次 (`raw_forage_batch`)
+
+接收收获产品，并保留物种、植物部位、含水率、形态和批次标识。
+
+- 选定流: Named harvested forage product; UUID unresolved
+- 流属性/单位: Mass / kg
+- 数量规则: Measured receiving mass and moisture
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每个调制批次.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_batch`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0.01
+  - 上限: 1000000
+  - 单位: kg/conditioning batch
+  - 基准: 调制批量规模筛选区间
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 调制过程用水 (`conditioning_water`)
+
+记录清洗、润湿或其他声明调制作业的新增水；循环水不得重复计入新增投入。
+
+- 选定流: Process water selected from the actual source record
+- 流属性/单位: Volume / m3 preferred
+- 数量规则: Metered fresh water by conditioning batch
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 调制饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_water`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 5
+  - 单位: m3/t conditioned forage
+  - 基准: 过程用水宽泛筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 中压电力投入（`conditioning_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：每 1 kg 调制饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_energy`
+
+###### 柴油投入（`conditioning_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：每 1 kg 调制饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_energy`
+
+###### 田间至调制点的道路运输服务 (`field_transport`)
+
+仅当田间至调制点运输位于所选边界内时记录购入道路货运服务；避免与自有车辆燃料重复。
+
+- 选定流: Road freight transport service resolved from route records
+- 流属性/单位: Transport work / t·km
+- 数量规则: Net transported tonnes multiplied by loaded kilometres
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 路线特定 (`route_specific`)
+原始活动或阶段基准：每个原始饲草批次.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 运输服务 (`transport_service`)
+- 证据类型: 由采集数据计算 (`calculated_from_collection`)
+- 采集协议: `cp_transport`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 1000
+  - 单位: t·km/t raw forage
+  - 基准: 道路满载运输距离筛选区间
+  - 基准类型: 运输服务 (`transport_service`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 外部废水处理服务 (`wastewater_treatment`)
+
+仅对转交有记录服务商的废水记录外部处理服务。
+
+- 选定流: Wastewater treatment service resolved from provider and route records
+- 流属性/单位: Volume / m3 or provider-native service unit
+- 数量规则: Treated quantity reconciled to generated wastewater and invoice
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 路线特定 (`route_specific`)
+原始活动或阶段基准：每 1 kg 调制饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_wastewater`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 5
+  - 单位: m3/t conditioned forage
+  - 基准: 处理服务 QA 筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 首次调制参考饲草 (`conditioned_forage`)
+
+将此预期产出记录为声明含水率、形态、等级和初级调制交付点下的一种指定饲草产品。
+
+- 选定流: Named first-conditioned forage product; UUID unresolved
+- 流属性/单位: Mass / kg
+原始产出计量与核对要求：Measured net accepted mass at declared moisture
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每个调制批次.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_batch`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 1.5
+  - 单位: kg/kg raw forage input
+  - 基准: 调制质量平衡 QA 区间
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 较低等级调制饲草 (`conditioned_lower_grade`)
+
+将此预期产出作为较低等级产品，与剔除物或废物分开报告。
+
+- 选定流: Named lower-grade conditioned forage; UUID unresolved
+- 流属性/单位: Mass / kg
+- 数量规则: Measured mass by grade and destination
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每个调制批次.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_grade_disposition`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 1
+  - 单位: kg/kg raw forage input
+  - 基准: 质量分数 QA 校验区间
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+##### 废物流
+
+###### 调制剔除物与损失 (`conditioning_rejects`)
+
+按互斥去向记录杂质、腐败生物量、细料及不合格材料。
+
+- 选定流: Conditioning reject material; UUID unresolved
+- 流属性/单位: Mass / kg
+- 数量规则: Measured reject mass by batch and destination
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 原始饲草投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_grade_disposition`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 1
+  - 单位: kg/kg raw forage input
+  - 基准: 质量分数 QA 校验区间
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 调制废水 (`conditioning_wastewater`)
+
+将产生的废水与购入处理服务分开记录，并标明去向。
+
+- 选定流: Forage-conditioning wastewater; UUID unresolved
+- 流属性/单位: Volume / m3 or Mass / kg
+- 数量规则: Metered or calculated generated quantity by batch and route
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 调制饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_wastewater`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 5
+  - 单位: m3/t conditioned forage
+  - 基准: 废水 QA 筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+##### 基本流
+
+###### 调制粉尘排放至空气 (`conditioning_dust`)
+
+仅记录实测或按方法计算的颗粒物排放，并保留粒径级别和接收环境。
+
+- 选定流: Particulate matter to air by verified size fraction; UUID unresolved
+- 流属性/单位: Mass / kg
+- 数量规则: Measured or method-calculated emitted particulate mass
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：每 1 kg 调制饲草.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 由采集数据计算 (`calculated_from_collection`)
+- 采集协议: `cp_conditioning_energy`
+
+- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
+  - 范围角色: 默认估计 (`default_estimate`)
+  - 下限: 0
+  - 上限: 0.1
+  - 单位: kg/kg conditioned forage
+  - 基准: 颗粒物排放宽泛筛选区间
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+
+### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
+该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
+#### 输入
+##### 产品流
+###### 实际路线的交接产品（`actual_route_product_for_handoff`）
+记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
+- 选定流：指定饲草产品（UUID 未解析）
+- 流属性 / 单位：质量 / kg
+- 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
+- 数值模式：前景记录（`foreground_record`）
+- 特异性：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+该计量节点不产生新的废物投入。
+##### 基本流
+该计量节点不产生新的资源投入。
+#### 输出
+##### 产品流
+###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
+- 选定流：指定饲草产品（UUID 未解析）
+- 流属性 / 单位：质量 / kg
+- 数量规则：1 kg
+- 数值模式：前景记录（`foreground_record`）
+- 特异性：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+实际状态的产品 UUID 须独立核实；当前未确认时保持待核实，不继承前序或其他路线的 UUID。
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+实际损失已在发生工序记录；不得在此重复记录。
+##### 基本流
+实际排放已在发生工序记录；不得在此重复记录。
+
+## 7. 分配与联产品处理
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| allocation_outputs | Multiple intended outputs | Use subdivision first. If shared burdens remain, use a documented causal physical relation where defensible; otherwise document the selected allocation basis and sensitivity. Waste and field residue without intended product function receive no co-product allocation. | iso-14044-allocation |
+| allocation_periods | Establishment and productive periods | Attribute establishment or multi-year burdens across declared productive outputs using recorded production history or an explicit forecast, and prevent duplicate attribution to each year. | iso-14044-allocation |
+| allocation_rejects | Lower grades, rejects and rework | Trace each lot to accepted product, lower grade, rework, recovery, soil return or discard. Count accepted material at its final handoff and include rework inputs once. | iso-14044-allocation |
+| allocation_shared_assets | Shared fields, machinery and conditioning assets | Prefer metered use or operating time; otherwise use a documented physical driver. Enumerate consuming nodes and periods and prevent duplicate burdens. | iso-14044-allocation |
+
+## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_propagation | forage_crop_production | propagation_material | supplier or transfer record | species, variety, form, amount, date, field, source | Reconcile invoices and internal transfers；原始汇总与分配：sum by product, field and crop period | kg or count | each planting | all establishment events | declared field | 每声明的参考流 | invoice, lot and unit checks |
+| cp_nutrients | forage_crop_production | nutrient_inputs; soil_n2o | application log and invoice | product, mass, nutrient grade, N form, field, date, crop period | Reconcile purchases, application logs and composition；原始汇总与分配：每种实际施用产品分别记录在原子投入卡中，养分总量仅在分析层计算 | kg product and kg nutrient | each application | all crop periods | declared fields | 每声明的参考流 | invoice, application calibration and method record |
+| cp_crop_protection | forage_crop_production | crop_protection_inputs | application and supplier record | product, active ingredient, amount, area, date, target | Reconcile applied quantity with purchases；原始汇总与分配：sum actual applications by lot and period | kg product | each application | all crop periods | declared fields | 每声明的参考流 | label, invoice and operator log |
+| cp_irrigation | forage_crop_production | irrigation_water | meter or supplier record | source, volume, date, area, field, crop period | Read calibrated meter or reconcile invoices；原始汇总与分配：sum by field and period; normalize to output | m3 | each event or billing period | each crop period | field and water source | 每声明的参考流 | meter calibration and invoice |
+| cp_production_energy | forage_crop_production | production_energy | meter, receipt and equipment log | carrier, amount, unit, operation, date, field, shared use | Reconcile energy and operating records；原始汇总与分配：sum by carrier; allocate shared use by measured operation | native carrier unit | each operation | each crop period | site and equipment | 每声明的参考流 | meter, invoice and equipment log |
+| cp_land_history | forage_crop_production | land_occupation; land_transformation | field and geospatial record | boundary, area, dates, prior cover, crop period | Reconcile maps with dated land evidence；原始汇总与分配：calculate area-time and allocate transformation once | ha, ha·year | each crop period and conversion | full attribution period | declared fields | 每声明的参考流 | map, register and dated evidence |
+| cp_harvest_lot | forage_crop_production; forage_harvest | harvest_ready_forage; harvest_ready_batch; harvested_forage | lot and scale record | species, plant part, field, dates, gross, tare, net, moisture, destination | Weigh each lot and match handoffs；原始汇总与分配：reconcile inter-process transfers without duplicate final output | kg and moisture | each lot | each harvest | field and receiving node | 每声明的参考流 | scale calibration, lot and moisture record |
+| cp_residues | forage_crop_production; forage_harvest | production_residue_removed; residue_to_soil | sample and disposition record | biomass type, wet/dry mass, field, period, destination | Sample or weigh and document destination；原始汇总与分配：partition among soil return, intended output and removal | kg dry matter | each crop period | all included periods | field and residue type | 每声明的参考流 | sampling, dry-matter and destination evidence |
+| cp_harvest_energy | forage_harvest | harvest_energy | fuel, meter and machinery log | carrier, amount, equipment, operation, field, lot | Reconcile consumption to harvest lots；原始汇总与分配：sum by carrier and normalize to accepted output | native carrier unit | each operation | each harvest | equipment and field | 每声明的参考流 | invoice, meter and machinery log |
+| cp_grade_disposition | forage_harvest; primary_forage_conditioning | lower_grade_forage; harvest_rejects; conditioned_lower_grade; conditioning_rejects | grade, scale and destination record | identity, grade, mass, moisture, intended use, destination, lot | Inspect and weigh each grade and destination；原始汇总与分配：mutually exclusive accepted, lower grade, rework and waste partition | kg | each lot | each harvest or conditioning campaign | lot and handoff | 每声明的参考流 | grade sheet, scale and disposition evidence |
+| cp_conditioning_batch | primary_forage_conditioning | raw_forage_batch; conditioned_forage | receiving and output lot record | input/output mass, moisture, species, form, grade, route, lot | Match intake and output lots and measure moisture；原始汇总与分配：reconcile products, rejects, removed water and loss | kg and moisture | each batch | included operations | conditioning site | 每声明的参考流 | calibrated scale, moisture and lot balance |
+| cp_conditioning_water | primary_forage_conditioning | conditioning_water | meter or batch record | source, fresh volume, recirculation, batch, date | Meter or reconcile tank and supplier records；原始汇总与分配：separate fresh from recirculated water | m3 | each batch | wet-conditioning periods | conditioning site | 每声明的参考流 | meter/tank calibration and batch log |
+| cp_conditioning_energy | primary_forage_conditioning | conditioning_energy; conditioning_dust | meter, fuel and equipment log | carrier, amount, equipment, operation, batch, time, dust measurement | Reconcile measured energy and any emission method to batch；原始汇总与分配：sum by carrier and operation; preserve particulate fraction | native carrier unit and kg dust | each batch | conditioning campaign | site and equipment | 每声明的参考流 | meter, invoice, equipment and sampling record |
+| cp_transport | primary_forage_conditioning | field_transport | waybill and route record | mass, origin, destination, loaded distance, vehicle, return trip | Reconcile route and mass to lot；原始汇总与分配：tonnes multiplied by loaded kilometres | t, km and t·km | each transfer | included field-to-site routes | route and lot | 每声明的参考流 | waybill, route and scale record |
+| cp_wastewater | primary_forage_conditioning | wastewater_treatment; conditioning_wastewater | meter, discharge and provider record | volume, batch, operation, destination, provider, route | Meter or reconcile generated and treated quantities；原始汇总与分配：reconcile generation, reuse, discharge and treatment | m3 | each batch or billing period | wet-conditioning periods | site and provider | 每声明的参考流 | meter, invoice and treatment evidence |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| normalize_reference | All processes | Divide each process exchange by net reference-product mass at the selected gate while retaining crop-period and lot linkage. | Process amount, net reference mass, gate, crop period and lot | Exchange per 1 kg reference forage | mass-balance-identity |
+| convert_dry_matter | Fresh, wilted and dried forage | Dry matter = measured wet mass × (1 − moisture fraction on wet basis); inverse conversion requires the target moisture. | Wet mass, moisture test and basis | Dry mass or converted product mass | fao-grassland-forage |
+| calculate_n2o | Direct soil N2O | Apply the declared IPCC managed-soils equation and factor to collected N activity data; convert N2O-N to N2O when required by the method. | N inputs, factor, tier, soil and climate fields | kg direct N2O per reference flow | ipcc-2019-managed-soils |
+| reconcile_lot | Harvest and conditioning | On one moisture basis, input equals intended outputs plus lower grades, rejects, residues, removed water and measured loss. | Lot masses, grades, moisture and destinations | Reconciled mutually exclusive lot balance | mass-balance-identity |
+| road_transport_work | Field-to-conditioner transport | Transport work = net transported tonnes × loaded route kilometres; apply return treatment only when evidenced. | Net mass, loaded distance and return record | t·km by lot | iso-14044-allocation |
+
+### 数据质量要求
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| identity_gate | Reference product | Record one species/product, plant part, form, moisture/dry matter, grade, crop period, production system and exclusive gate. | Lot identity, product description and reviewed flow evidence |
+| period_coverage | Production periods | Include establishment and productive periods when relevant and retain period-specific yield and attribution records. | Field register, planting/harvest dates and yield history |
+| input_completeness | 全部过程投入 | 将繁殖材料、每种独立的养分产品、植保产品、水、能源、运输及处理投入与原始记录逐项核对；不得接受笼统养分交换。 | Invoices, logs, meters and 具体流身份核验 |
+| output_reconciliation | All outputs | Partition accepted product, lower grades, rejects, residues, wastewater and losses into mutually exclusive destinations. | Scale, grade, moisture and disposition records |
+| range_replacement | Provisional ranges | Use reasoned ranges only for screening and replace them with product-, region-, technology- and gate-specific evidence before reviewed or active use. | Reviewed records or external quantitative evidence |
+| unresolved_identity | UUID-bearing flows | Retain blank UUIDs until one exact product, property, unit group and context are confirmed; do not substitute compound feed, alfalfa or grazing-service identities. | Identity lookup and detail-read audit record |
+
+## 9. 验证规则
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| validate_identity | Reference product | Require one named forage species/product, plant part or harvested portion, form, moisture or dry-matter state, crop period, grade and selected gate. | unsd-cpc-01919 |
+| validate_exclusions | Category boundary | Reject maize forage, alfalfa, cereal straw/husks, non-forage crops, compound feed, mixtures and grazing-service inventories. | unsd-cpc-01919 |
+| validate_gate | Process graph | Require one exclusive reference gate and reconcile every inter-process handoff without counting the same material as both intermediate and final product. | fao-grassland-forage |
+| validate_mass_moisture | Harvest and conditioning lots | Reconcile inputs, products, lower grades, residues, wastewater, removed moisture and losses on a consistent moisture or dry-matter basis; investigate output above input. | mass-balance-identity |
+| validate_flow_identitys | Product inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
+| validate_periods | Crop periods | Reconcile establishment and productive periods and ensure shared assets and multi-period burdens are attributed once. | iso-14044-allocation |
+| validate_destinations | Grades, rejects and residues | Require mutually exclusive intended-product, lower-grade, rework, recovery, soil-return and waste destinations; do not count rejects as accepted product. | iso-14044-allocation |
+| validate_n2o | Direct soil N2O | Require documented nitrogen activity data, selected IPCC equation, factor and tier; keep direct and indirect pathways separate and avoid double counting. | ipcc-2019-managed-soils |
+| validate_conditioning | Conditional conditioning routes | Confirm each declared wilting, drying, chopping, baling, pelleting, cleaning or grading operation occurred and has inputs, output state, losses and handoff recorded; omit inactive routes. | fao-grassland-forage |
+| validate_ranges | All inventory cards | Check each Range against its amount rule, unit, denominator and route condition. Treat reasoned estimates as replaceable screening values before reviewed or active use. |  |
+
+## 10. 发布数据集配置
+
+| 字段 | 值 |
+| --- | --- |
+| dataset_role | 一种指定饲草产品的初级前景生产和首次交付数据集 |
+| downstream_use | 用于前景过程包及其生命周期模型投影的 secondary_dataset；仅在边界和代表性适合时作为 background_dataset |
+| allowed_use | 在声明地点、作物期、生产系统、含水率/干物质、形态和交付点下的一种指定 CPC 01919 饲草 |
+| excluded_use | 全部饲草的平均数据；玉米饲草、苜蓿、秸秆/颖壳、复合饲料、放牧服务或后续饲料制造 |
+| required_metadata | 物种/产品；植物部位；品种（如已知）；地块和地理；作物期；生产与收获路线；含水率/干物质；形态和等级；交付点；投入记录；调制作业；分配方法 |
+| required_quality_disclosure | UUID 缺口；测量和来源覆盖；时期归属；Range 证据等级；水分与质量平衡；共享资产分配；排放方法；地点和年份代表性 |
+| update_trigger | 新产品或路线；交付点、形态或水分状态变化；新的已验证参考身份；更新的作物期、分配、排放或调制证据；以评审证据替换暂定 Range |
+
+## 11. 数据来源
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| unsd-cpc-01919 | official_guidance | UNSD, CPC Version 3.0 Explanatory Notes, code 01919, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Classification scope and named examples |
+| fao-grassland-forage | handbook | FAO, Grassland Index and forage conservation resources, https://www.fao.org/4/x7660e/x7660e00.htm | Forage production, harvest and first-conservation route structure; moisture and dry-matter reporting prompts |
+| ipcc-2019-managed-soils | official_guidance | 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct N2O calculation and nitrogen activity data |
+| iso-14044-allocation | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html | Subdivision, co-product attribution and shared burden decisions |
+| mass-balance-identity | method_factor | Physical mass-balance identity on a consistent moisture basis | Lot reconciliation and QA; not a product-specific yield factor |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |

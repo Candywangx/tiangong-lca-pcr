@@ -31,8 +31,8 @@ async function load(language:string):Promise<SearchShard[]> {
   const data:unknown=await response.json();
   if(!record(data)||!record(data.entries)||!Array.isArray(data.records)||!data.records.every(searchRecord))throw new Error("Invalid serialized search data.");
   if(manifest.schemaVersion!==3&&manifest.schemaVersion!==4&&Object.hasOwn(data,"sparseMaps"))throw new Error("Invalid serialized search data.");
-  if(manifest.schemaVersion!==4&&(Object.hasOwn(data,"scoreMasks")||Object.hasOwn(data,"postingDeltas")))throw new Error("Invalid serialized search data.");
-  const entries=(manifest.schemaVersion===3||manifest.schemaVersion===4)?decodeSearchEntries(data.entries,data.sparseMaps,manifest.schemaVersion,data.scoreMasks,data.postingDeltas):data.entries;
+  if(manifest.schemaVersion!==4&&(Object.hasOwn(data,"scoreMasks")||Object.hasOwn(data,"postingDeltas")||Object.hasOwn(data,"columnarMaps")))throw new Error("Invalid serialized search data.");
+  const entries=(manifest.schemaVersion===3||manifest.schemaVersion===4)?decodeSearchEntries(data.entries,data.sparseMaps,manifest.schemaVersion,data.scoreMasks,data.postingDeltas,data.columnarMaps):data.entries;
   const index=await createIndex(language);
   for(const [key,payload]of Object.entries(entries)){
    let serialized:string;

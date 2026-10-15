@@ -12,6 +12,7 @@ export interface SearchWireEntries {
   sparseMaps: string[];
   scoreMasks?: true;
   postingDeltas?: true;
+  columnarMaps?: string[];
 }
 function sparseMap(value: unknown[]): SparseTerm[] | undefined {
   const result: SparseTerm[] = [];
@@ -46,6 +47,38 @@ function maskMap(value: SparseTerm[]): unknown[][] {
   return value.map(([term, length, slots]) => [term,
     length * 512 + slots.reduce((mask, [position]) => mask + 2 ** position, 0),
     ...slots.map(([, posting]) => deltaPosting(posting))]);
+}
+/** Keep the exact term order and score headers while removing per-term JSON tuple framing. */
+function columnarMap(value: unknown[][]): unknown[] {
+  const terms: string[] = [], headers: number[] = [], postings: unknown[] = [];
+  for (const term of value) {
+    terms.push(term[0] as string);
+    headers.push(term[1] as number);
+    postings.push(...term.slice(2));
+  }
+  return [terms, headers, postings];
+}
+function restoreColumnar(value: unknown[]): unknown[] {
+  if (value.length !== 3 || !Array.isArray(value[0]) || !Array.isArray(value[1])
+    || !Array.isArray(value[2]) || value[0].length !== value[1].length
+    || value[2].length > value[0].length * SEARCH_SCORE_SLOTS) throw invalid();
+  const terms = value[0] as unknown[], headers = value[1] as unknown[], postings = value[2] as unknown[];
+  const result: unknown[] = [];
+  let offset = 0;
+  for (let index = 0; index < terms.length; index++) {
+    const header = headers[index];
+    if (typeof terms[index] !== 'string' || typeof header !== 'number' || !Number.isInteger(header)
+      || header < 0 || header > SEARCH_SCORE_SLOTS * 512 + 511) throw invalid();
+    const length = Math.floor(header / 512), mask = header % 512;
+    if (mask >= 2 ** length) throw invalid();
+    let count = 0;
+    for (let position = 0; position < length; position++) if (mask & 2 ** position) count++;
+    if (offset + count > postings.length) throw invalid();
+    result.push([terms[index], header, ...postings.slice(offset, offset + count)]);
+    offset += count;
+  }
+  if (offset !== postings.length) throw invalid();
+  return result;
 }
 function restoreMasks(value: unknown[]): unknown[] {
   const nested = value.map(term => {
@@ -88,31 +121,40 @@ function restoreMap(value: unknown[], version: 3 | 4): unknown[] {
 /** Compress only supported map shapes when smaller; every export key/value remains recoverable. */
 export function encodeSearchEntries(entries: Record<string, unknown[]>, version: 3 | 4 = 3): SearchWireEntries {
   const result: Record<string, unknown[]> = Object.create(null) as Record<string, unknown[]>;
-  const sparseMaps: string[] = [];
+  const sparseMaps: string[] = [], columnarMaps: string[] = [];
   for (const [key, value] of Object.entries(entries)) {
     if (!Array.isArray(value)) throw invalid();
     const nested = mapKey(key) ? sparseMap(value) : undefined;
     const sparse = nested && (version === 4 ? maskMap(nested) : nested);
-    if (sparse && new TextEncoder().encode(JSON.stringify(sparse)).length
+    const columns = version === 4 && sparse ? columnarMap(sparse as unknown[][]) : undefined;
+    const encoded = columns && new TextEncoder().encode(JSON.stringify(columns)).length
+      < new TextEncoder().encode(JSON.stringify(sparse)).length ? columns : sparse;
+    if (encoded && new TextEncoder().encode(JSON.stringify(encoded)).length
       < new TextEncoder().encode(JSON.stringify(value)).length) {
-      if (JSON.stringify(version === 4 ? restoreMasks(sparse) : restoreMap(sparse, version)) !== JSON.stringify(value)) throw invalid();
-      result[key] = sparse; sparseMaps.push(key);
+      if (JSON.stringify(version === 4 ? restoreMasks(encoded === columns ? restoreColumnar(encoded) : encoded) : restoreMap(encoded, version)) !== JSON.stringify(value)) throw invalid();
+      result[key] = encoded; sparseMaps.push(key);
+      if (encoded === columns) columnarMaps.push(key);
     } else result[key] = value;
   }
-  return version === 4 ? { entries: result, sparseMaps, scoreMasks: true, postingDeltas: true } : { entries: result, sparseMaps };
+  return version === 4 ? { entries: result, sparseMaps, scoreMasks: true, postingDeltas: true,
+    ...(columnarMaps.length ? { columnarMaps } : {}) } : { entries: result, sparseMaps };
 }
 /** Decode the declared bounded v3/v4 format before engine import; unmarked arrays remain native. */
-export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, version: 3 | 4 = 3, scoreMasks?: unknown, postingDeltas?: unknown): Record<string, unknown[]> {
+export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, version: 3 | 4 = 3, scoreMasks?: unknown, postingDeltas?: unknown, columnarMaps?: unknown): Record<string, unknown[]> {
   if ((scoreMasks !== undefined || postingDeltas !== undefined)
     && (version !== 4 || scoreMasks !== true || postingDeltas !== true)) throw invalid();
   if (!object(entries) || !Array.isArray(sparseMaps)
     || !sparseMaps.every(key => typeof key === 'string' && mapKey(key) && Object.hasOwn(entries, key))
     || new Set(sparseMaps).size !== sparseMaps.length) throw invalid();
   const selected = new Set(sparseMaps as string[]);
+  if (columnarMaps !== undefined && (version !== 4 || scoreMasks !== true || postingDeltas !== true
+    || !Array.isArray(columnarMaps) || !columnarMaps.every(key => typeof key === 'string' && selected.has(key))
+    || new Set(columnarMaps).size !== columnarMaps.length)) throw invalid();
+  const columnar = new Set((columnarMaps ?? []) as string[]);
   const result: Record<string, unknown[]> = Object.create(null) as Record<string, unknown[]>;
   for (const [key, value] of Object.entries(entries)) {
     if (!Array.isArray(value)) throw invalid();
-    result[key] = selected.has(key) ? (scoreMasks === true ? restoreMasks(value) : restoreMap(value, version)) : value;
+    result[key] = selected.has(key) ? (scoreMasks === true ? restoreMasks(columnar.has(key) ? restoreColumnar(value) : value) : restoreMap(value, version)) : value;
   }
   return result;
 }
