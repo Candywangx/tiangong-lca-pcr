@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.packing-cases-boxes-crates-drums-and-similar-packings-of-wood-cable-drums-of-wood"
-  classification_refs: "CPC 3.0:31701; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/."
+  classification_refs: "CPC 3.0 31701; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
   covered_products: "Uncoated nailed coniferous solid-sawn empty shipping box with matched lid and integral cleats"
   excluded_products: "Cable drums, stave barrels, pallets, open crates, structural framed crates, panel-board boxes, glued boxes, shook, reused boxes"
   representative_product: "New shipping box cut and nailed from purchased kiln-dried coniferous boards; no default dimensions, payload or mass"
@@ -80,12 +80,12 @@ measurement_rules:
     required_unit: "kg"
     rule: "Reference amount is 1 kg accepted finished empty box at factory gate; use cp_output. Weigh the complete box, matched lid, integral cleats and installed nails for the same configuration, excluding cargo, cushioning and separate transport packaging."
   - id: campaign_basis
-    applies_to: "all inventory rows"
+    applies_to: "reference-product mass denominator shared by all inventory rows"
     required_property_ref:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Every row is reported per 1 kg reference flow; accepted net mass total Q from the same campaign is the shared denominator. Count records require measured kg/box and actual count for the same configuration to obtain Q; capacity or payload cannot substitute."
+    rule: "Every row is reported per 1 kg reference flow; accepted net mass total Q from the same campaign is the shared denominator. Count records require measured kg/box and actual count for the same configuration to obtain Q; capacity or payload cannot substitute. The required Mass/kg property describes accepted product Q only; each numerator keeps its own native row reference property/unit."
   - id: wood_mass
     applies_to: "sawn_timber, wood_offcut, sawdust_waste"
     required_property_ref:
@@ -548,6 +548,15 @@ dataset_production:
       output: "three disjoint kg exchanges per 1 kg reference flow"
       source_ids:
         - epa-sawmill-dust-2014
+    - id: complete_period_normalization
+      applies_to: "all inventory rows"
+      rule: "Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity."
+      inputs:
+        - "all linked raw collection protocols"
+        - "accepted reference-product pool"
+        - "stock and rework links"
+      output: "native exchange unit per declared reference quantity; zero-output pool remains unnormalized"
+      source_ids: []
   data_quality_requirements:
     - id: identity_quantity
       applies_to: "all inventory rows"
@@ -626,18 +635,18 @@ data_sources:
     used_for: "Sections 2, 2.1, 3.1 (printed p7): packaging scope and treatment/marking; prevents presumed treatment, without claiming actual treatment or current jurisdictional conformity"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:5955510478ebeb1cf8e588d532ff1c835c47f8f8eee723d5a3198b7ea116e534"
+  source_sha256: "sha256:10138f08f2061c135f22db0c572a8923eab90f1ec4a39b61abece9ef735312d7"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6058"
+    - unit_id: "normative_6208"
       family: "system_boundary"
       span:
         start:
-          offset: 6058
+          offset: 6208
           line: 60
           column: 1
         end:
-          offset: 8726
+          offset: 8876
           line: 80
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Supplier-delivered kiln-dried unimpregnated coniferous sawn timber and purchased nails received at plant; moisture and upstream drying/treatment declared |\n| starting_condition_role | Foreground receipt boundary; upstream material and transport burdens remain required |\n| product_classification_scope | Nailed solid-board box subset of CPC 31701, narrower |\n| recursive_input_rule | New manufacture does not take an existing finished box as same-category input; actual reuse/repair is out of scope, and upstream purchased-board burdens are not recursively truncated |\n| upstream_dataset_requirement | Boards require forestry/sawmilling and actual kiln drying; nail production, electricity supply, actual oil and inbound transport require compatible upstream datasets; waste receipt/treatment is documented. Identity UUIDs are not complete background datasets |\n| disclosure | One aggregated foreground unit with separate stage ledgers; purchasing state, region/period, transport distances, waste routes, actual/missing treatment evidence and all exclusions |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_upstream | all inputs | Link upstream data compatible with delivered state, species, moisture, route, property and unit; another PCR or a regional CORRIM lumber survey is not a box-factory coefficient. | usda-wood-handbook-2021 |\n| boundary_aggregation | box_manufacture | Cutting, part nailing, assembly, rework, extraction, acceptance and handling before delivery form one aggregated foreground unit with separately measured stages. Internal box-part handovers stay in the physical ledger, not a second finished output with the reference UUID. Both ends of an internal transfer record the same quantity, without duplicate external exchanges. | usda-nailing-1959 |\n| boundary_treatment | box_manufacture | A wooden-box, kiln-dried or classification name cannot establish heat treatment/fumigation or an IPPC mark. Actual supplier treatment is covered by sourced upstream data. Actual foreground treatment requires a separate treatment stage, individual atomic inputs/emissions and energy bases followed by review; the present route inventory is incomplete. | ippc-ispm15-2018 |\n| boundary_emissions | pm_fine, pm_coarse, pm_large | Record only particles released to the outdoor environment; captured quantities are technosphere waste. EPA sawmill PTE does not cover boilers, condensable particles or measured box-factory coefficients; do not copy its indoor-activity zero assumption. | epa-sawmill-dust-2014 |\n\n"
@@ -657,11 +666,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6058
+              offset: 6208
               line: 60
               column: 1
             end:
-              offset: 6079
+              offset: 6229
               line: 60
               column: 22
           text: "## 5. System Boundary"
@@ -677,15 +686,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_22780"
+    - unit_id: "normative_22930"
       family: "allocation"
       span:
         start:
-          offset: 22780
+          offset: 22930
           line: 299
           column: 1
         end:
-          offset: 24104
+          offset: 24254
           line: 307
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | box_manufacture | Prefer actual batch measurement/submeter attribution for the same box design. Attribute shared compressed air, extraction and handling using measured electricity and verifiable runtime or service quantities with disclosed causality; payload rating is not an energy driver. | usda-nailing-1959 |\n| allocation_waste | wood_offcut, sawdust_waste, steel_nail_scrap, used_oil | This route has finished_box as its sole accepted product output; documented waste transfer creates no default co-product share or substitution credit. If a residue is sold as a distinct useful co-product, revise the inventory with its correct product identity, collection and an independent allocation decision first; a waste row cannot be retained while claiming completeness. | usda-wood-handbook-2021 |\n| allocation_physical | all inventory rows | Keep complete physical outputs and mass/water/carbon ledgers after environmental burdens are attributed. Never multiply physical waste/co-product outputs by burden-allocation shares or close mass gaps using waste credits. Internal loops have equal quantities at both ends and only external net flows are exchanged. | usda-wood-handbook-2021 |\n\n"
@@ -705,11 +714,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 22780
+              offset: 22930
               line: 299
               column: 1
             end:
-              offset: 22820
+              offset: 22970
               line: 299
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -725,16 +734,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_33591"
+    - unit_id: "normative_35130"
       family: "validation"
       span:
         start:
-          offset: 33591
-          line: 339
+          offset: 35130
+          line: 340
           column: 1
         end:
-          offset: 35691
-          line: 350
+          offset: 37230
+          line: 351
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | finished_box | Accept only the declared new nailed coniferous solid-board box; a family selector cannot include cable drums, plywood boxes or other products. Actual foreground treatment or combustion without complete rows makes validation incomplete. | usda-nailing-1959; usda-crate-1964; ippc-ispm15-2018 |\n| validate_reference | finished_box | Require exactly one reference finished-product output and the shared 1 kg denominator with measured same-configuration net box mass including matched lid; dimensions, useful volume and payload are not mass or functional equivalence evidence. | usda-nailing-1959; usda-wood-handbook-2021 |\n| validate_atomic | all inventory rows | Each row is one atomic exchange; blank UUID, unresolved background quantity basis and omitted positive emissions remain pending. Conditional rows require occurrence/absence records; lookup failure is not no-match and identity success is not dataset completeness. | usda-wood-handbook-2021 |\n| validate_balance | all inventory rows | Verify campaign wood, nails, oil, water and sourced biogenic carbon in the physical ledger before allocation; internal handovers have equal quantities and residue transfer/stocks/reuse are not duplicated. Explain mass gaps and monitoring uncertainty without balancing through allocation shares or credits. | usda-wood-handbook-2021 |\n| validate_air | pm_fine; pm_coarse; pm_large; water_vapour | Air medium and size must match direct-read identities; use disjoint size rows, and captured sawdust is not emission. Actual additional VOCs, oil mist, condensables or leaks require separate specific species/medium rows before claiming completeness, without broad-pollutant or correction substitutes. | epa-sawmill-dust-2014 |\n| validate_treatment | finished_box | Kiln drying and purchasing records alone do not prove a heat-treatment process or valid IPPC mark; declare source, treatment location and actual evidence, without conformity claims where absent. | ippc-ispm15-2018 |\n\n"
       headings:
@@ -753,12 +762,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 33591
-              line: 339
+              offset: 35130
+              line: 340
               column: 1
             end:
-              offset: 33613
-              line: 339
+              offset: 35152
+              line: 340
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -777,220 +786,220 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_upstream"
       identity_kind: "explicit"
-      unit_id: "normative_6058"
+      unit_id: "normative_6208"
       source_span:
         start:
-          offset: 7303
+          offset: 7453
           line: 75
           column: 1
         end:
-          offset: 7543
+          offset: 7693
           line: 75
           column: 241
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_aggregation"
       identity_kind: "explicit"
-      unit_id: "normative_6058"
+      unit_id: "normative_6208"
       source_span:
         start:
-          offset: 7544
+          offset: 7694
           line: 76
           column: 1
         end:
-          offset: 7979
+          offset: 8129
           line: 76
           column: 436
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_treatment"
       identity_kind: "explicit"
-      unit_id: "normative_6058"
+      unit_id: "normative_6208"
       source_span:
         start:
-          offset: 7980
+          offset: 8130
           line: 77
           column: 1
         end:
-          offset: 8392
+          offset: 8542
           line: 77
           column: 413
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_6058"
+      unit_id: "normative_6208"
       source_span:
         start:
-          offset: 8393
+          offset: 8543
           line: 78
           column: 1
         end:
-          offset: 8724
+          offset: 8874
           line: 78
           column: 332
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_22780"
+      unit_id: "normative_22930"
       source_span:
         start:
-          offset: 22893
+          offset: 23043
           line: 303
           column: 1
         end:
-          offset: 23230
+          offset: 23380
           line: 303
           column: 338
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_waste"
       identity_kind: "explicit"
-      unit_id: "normative_22780"
+      unit_id: "normative_22930"
       source_span:
         start:
-          offset: 23231
+          offset: 23381
           line: 304
           column: 1
         end:
-          offset: 23714
+          offset: 23864
           line: 304
           column: 484
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_22780"
+      unit_id: "normative_22930"
       source_span:
         start:
-          offset: 23715
+          offset: 23865
           line: 305
           column: 1
         end:
-          offset: 24102
+          offset: 24252
           line: 305
           column: 388
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_33591"
+      unit_id: "normative_35130"
       source_span:
         start:
-          offset: 33686
-          line: 343
+          offset: 35225
+          line: 344
           column: 1
         end:
-          offset: 34012
-          line: 343
+          offset: 35551
+          line: 344
           column: 327
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_33591"
+      unit_id: "normative_35130"
       source_span:
         start:
-          offset: 34013
-          line: 344
+          offset: 35552
+          line: 345
           column: 1
         end:
-          offset: 34339
-          line: 344
+          offset: 35878
+          line: 345
           column: 327
     - pointer: "/validation_rules/2"
       rule_id: "validate_atomic"
       identity_kind: "explicit"
-      unit_id: "normative_33591"
+      unit_id: "normative_35130"
       source_span:
         start:
-          offset: 34340
-          line: 345
+          offset: 35879
+          line: 346
           column: 1
         end:
-          offset: 34671
-          line: 345
+          offset: 36210
+          line: 346
           column: 332
     - pointer: "/validation_rules/3"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_33591"
+      unit_id: "normative_35130"
       source_span:
         start:
-          offset: 34672
-          line: 346
+          offset: 36211
+          line: 347
           column: 1
         end:
-          offset: 35047
-          line: 346
+          offset: 36586
+          line: 347
           column: 376
     - pointer: "/validation_rules/4"
       rule_id: "validate_air"
       identity_kind: "explicit"
-      unit_id: "normative_33591"
+      unit_id: "normative_35130"
       source_span:
         start:
-          offset: 35048
-          line: 347
+          offset: 36587
+          line: 348
           column: 1
         end:
-          offset: 35435
-          line: 347
+          offset: 36974
+          line: 348
           column: 388
     - pointer: "/validation_rules/5"
       rule_id: "validate_treatment"
       identity_kind: "explicit"
-      unit_id: "normative_33591"
+      unit_id: "normative_35130"
       source_span:
         start:
-          offset: 35436
-          line: 348
+          offset: 36975
+          line: 349
           column: 1
         end:
-          offset: 35689
-          line: 348
+          offset: 37228
+          line: 349
           column: 254
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6058"
+      unit_id: "normative_6208"
       source_span:
         start:
-          offset: 6058
+          offset: 6208
           line: 60
           column: 1
         end:
-          offset: 6079
+          offset: 6229
           line: 60
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6058"
+      unit_id: "normative_6208"
       source_span:
         start:
-          offset: 6107
+          offset: 6257
           line: 64
           column: 1
         end:
-          offset: 7230
+          offset: 7380
           line: 71
           column: 198
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_22780"
+      unit_id: "normative_22930"
       source_span:
         start:
-          offset: 22780
+          offset: 22930
           line: 299
           column: 1
         end:
-          offset: 22820
+          offset: 22970
           line: 299
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_33591"
+      unit_id: "normative_35130"
       source_span:
         start:
-          offset: 33591
-          line: 339
+          offset: 35130
+          line: 340
           column: 1
         end:
-          offset: 33613
-          line: 339
+          offset: 35152
+          line: 340
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -999,5 +1008,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:5955510478ebeb1cf8e588d532ff1c835c47f8f8eee723d5a3198b7ea116e534"
-  generated_content_sha256: "sha256:aa6346d94c35c7a11b43ff85d26d4f40cddfc35c7a351042391b1089a1e15708"
+    sha256: "sha256:10138f08f2061c135f22db0c572a8923eab90f1ec4a39b61abece9ef735312d7"
+  generated_content_sha256: "sha256:26d7e53835214e4b1f8bc0d66eafb3c7bd41430f91f6f2e6f5e494cc7298f30f"

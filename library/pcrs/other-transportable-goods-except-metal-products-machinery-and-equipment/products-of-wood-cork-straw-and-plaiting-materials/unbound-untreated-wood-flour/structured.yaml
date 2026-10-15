@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.unbound-untreated-wood-flour"
-  classification_refs: "CPC 3.0 31220; narrower"
+  classification_refs: "CPC 3.0 31220; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
   covered_products: "Untreated unbound flour from dry waste sawdust, one declared filler grade"
   excluded_products: "Wood wool; long fibers; bonded or chemically treated products; thermally dried onsite routes"
   representative_product: "Loose mechanically milled wood flour at bulk dispatch"
@@ -445,6 +445,15 @@ dataset_production:
       output: "unallocated physical balance"
       source_ids:
         - usda-wood-handbook-2021
+    - id: complete_period_normalization
+      applies_to: "all inventory rows"
+      rule: "Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity."
+      inputs:
+        - "all linked raw collection protocols"
+        - "accepted reference-product pool"
+        - "stock and rework links"
+      output: "native exchange unit per declared reference quantity; zero-output pool remains unnormalized"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "all inventory rows"
@@ -505,18 +514,18 @@ data_sources:
     used_for: "Water/oven-dry-wood mass basis; no species survey parameter or drying target adopted"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:63ed6b9206bd42ff91e9a0e194393a40d0fcca129b99743253018406cae3c55a"
+  source_sha256: "sha256:11311bf3073bbba13d52c84608c06d1d93e369b7ade2070fd13fa0d78f88601f"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5725"
+    - unit_id: "normative_5827"
       family: "system_boundary"
       span:
         start:
-          offset: 5725
+          offset: 5827
           line: 59
           column: 1
         end:
-          offset: 7673
+          offset: 7775
           line: 78
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Dry clean untreated waste sawdust received at flour plant; verified moisture suitable for unheated milling |\n| starting_condition_role | Foreground collection gate; upstream origin and drying are not erased |\n| product_classification_scope | Only the wood flour subset of CPC 31220 and the declared route |\n| recursive_input_rule | Record purchased flour of the same grade with its own supplier dataset; stop foreground recursion at the supplier gate, not by treating its burden as zero |\n| upstream_dataset_requirement | Traceable waste-sawdust origin, supplier drying/transport, allocation and electricity background; documented waste cut-off or co-product burden |\n| disclosure | Site, dates, species, moisture, waste status, dust controls/destinations, foreground gate and upstream burden choices |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `b_route` | all inventory rows | Include receipt, grinding, screening, dust control, handling and attributable maintenance electricity. This route has no onsite fuel use, thermal drying or bonding; reject that route mismatch rather than hide exchanges. | `clemons-wood-flour-2005` |\n| `b_returns` | oversize_return; oversize_reinput; captured_dust_return; captured_dust_reinput | Internal transfers are recorded at equal amounts on both ends and cancel in the aggregated foreground boundary. They are neither external feed nor saleable output; repeated passes still consume measured electricity. |  |\n| `b_carbon` | sawdust_input; flour_output; dust_waste; screen_reject; pm25; pmcoarse; pmover10 | Keep a physical dry-wood and biogenic-carbon account. Do not add photosynthetic uptake again if supplied upstream, and do not delete real biogenic CO2 emissions because a climate indicator excludes them. No onsite combustion is permitted in this route. |  |\n\n"
@@ -536,11 +545,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5725
+              offset: 5827
               line: 59
               column: 1
             end:
-              offset: 5746
+              offset: 5848
               line: 59
               column: 22
           text: "## 5. System Boundary"
@@ -556,15 +565,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_20889"
+    - unit_id: "normative_20991"
       family: "allocation"
       span:
         start:
-          offset: 20889
+          offset: 20991
           line: 269
           column: 1
         end:
-          offset: 21906
+          offset: 22008
           line: 277
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `a_dedicated` | flour_mill | A dedicated single-grade campaign assigns its environmental burdens to accepted flour. Keep discarded waste and internal returns in the physical balance; do not allocate them as saleable co-products. |  |\n| `a_multigrade` | flour_mill | Separate grade-specific meters or campaigns first. Where saleable grades share operations, report unallocated physical outputs and separately document the burden-sharing relationship using measured causal drivers; if none is supported, retain an allocation review gap. Do not import sawmill allocation percentages. |  |\n| `a_ledgers` | all inventory rows | Maintain the physical process/wood-water-carbon balance separately from the allocated burden ledger. Never multiply actual co-product output mass or internal link quantity by a burden share. No avoided-product credit without an explicit reviewed system-expansion scenario. |  |\n\n"
@@ -584,11 +593,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 20889
+              offset: 20991
               line: 269
               column: 1
             end:
-              offset: 20929
+              offset: 21031
               line: 269
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -604,16 +613,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_27963"
+    - unit_id: "normative_29454"
       family: "validation"
       span:
         start:
-          offset: 27963
-          line: 306
+          offset: 29454
+          line: 307
           column: 1
         end:
-          offset: 29459
-          line: 316
+          offset: 30950
+          line: 317
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `v_reference` | flour_output | Exactly one accepted reference output has 1 kg net dispatch flour; all rows and collection denominators agree in both languages. The verified foreground reference UUID and required concrete flour qualifiers must be complete. Its broad physical identity does not establish actual provider/background compatibility or collected amounts. |  |\n| `v_route` | flour_mill | Reject wood wool, bonding, chemical treatment, onsite drying/heating or combustion as this route. Do not infer applicability from CPC alone. | `hmrc-wood-classification`; `clemons-wood-flour-2005` |\n| `v_returns` | oversize_return; oversize_reinput; captured_dust_return; captured_dust_reinput | Both ends of each return pair carry equal physical mass and moisture; every dust portion has one destination, with no double counting of waste and air emissions. |  |\n| `v_air` | pm25; pmcoarse; pmover10; water_vapour | Check outdoor-air medium, nonoverlapping aerodynamic bins and emission controls; cumulative PM must not be added to its component bins. Water releases to water or indoor-air exposure records cannot replace outdoor-air flows. |  |\n| `v_balance` | flour_mill | Reconcile wood-water-carbon stocks, transfers and losses before allocation; then check the burden ledger separately. Require unresolved measurements or unsupported allocation to remain explicit. | `usda-wood-handbook-2021` |\n\n"
       headings:
@@ -632,12 +641,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 27963
-              line: 306
+              offset: 29454
+              line: 307
               column: 1
             end:
-              offset: 27985
-              line: 306
+              offset: 29476
+              line: 307
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -656,194 +665,194 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "b_route"
       identity_kind: "explicit"
-      unit_id: "normative_5725"
+      unit_id: "normative_5827"
       source_span:
         start:
-          offset: 6713
+          offset: 6815
           line: 74
           column: 1
         end:
-          offset: 6997
+          offset: 7099
           line: 74
           column: 285
     - pointer: "/system_boundary/rules/1"
       rule_id: "b_returns"
       identity_kind: "explicit"
-      unit_id: "normative_5725"
+      unit_id: "normative_5827"
       source_span:
         start:
-          offset: 6998
+          offset: 7100
           line: 75
           column: 1
         end:
-          offset: 7315
+          offset: 7417
           line: 75
           column: 318
     - pointer: "/system_boundary/rules/2"
       rule_id: "b_carbon"
       identity_kind: "explicit"
-      unit_id: "normative_5725"
+      unit_id: "normative_5827"
       source_span:
         start:
-          offset: 7316
+          offset: 7418
           line: 76
           column: 1
         end:
-          offset: 7671
+          offset: 7773
           line: 76
           column: 356
     - pointer: "/allocation_rules/0"
       rule_id: "a_dedicated"
       identity_kind: "explicit"
-      unit_id: "normative_20889"
+      unit_id: "normative_20991"
       source_span:
         start:
-          offset: 21002
+          offset: 21104
           line: 273
           column: 1
         end:
-          offset: 21237
+          offset: 21339
           line: 273
           column: 236
     - pointer: "/allocation_rules/1"
       rule_id: "a_multigrade"
       identity_kind: "explicit"
-      unit_id: "normative_20889"
+      unit_id: "normative_20991"
       source_span:
         start:
-          offset: 21238
+          offset: 21340
           line: 274
           column: 1
         end:
-          offset: 21589
+          offset: 21691
           line: 274
           column: 352
     - pointer: "/allocation_rules/2"
       rule_id: "a_ledgers"
       identity_kind: "explicit"
-      unit_id: "normative_20889"
+      unit_id: "normative_20991"
       source_span:
         start:
-          offset: 21590
+          offset: 21692
           line: 275
           column: 1
         end:
-          offset: 21904
+          offset: 22006
           line: 275
           column: 315
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_27963"
+      unit_id: "normative_29454"
       source_span:
         start:
-          offset: 28058
-          line: 310
+          offset: 29549
+          line: 311
           column: 1
         end:
-          offset: 28430
-          line: 310
+          offset: 29921
+          line: 311
           column: 373
     - pointer: "/validation_rules/1"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_27963"
+      unit_id: "normative_29454"
       source_span:
         start:
-          offset: 28431
-          line: 311
+          offset: 29922
+          line: 312
           column: 1
         end:
-          offset: 28656
-          line: 311
+          offset: 30147
+          line: 312
           column: 226
     - pointer: "/validation_rules/2"
       rule_id: "v_returns"
       identity_kind: "explicit"
-      unit_id: "normative_27963"
+      unit_id: "normative_29454"
       source_span:
         start:
-          offset: 28657
-          line: 312
+          offset: 30148
+          line: 313
           column: 1
         end:
-          offset: 28920
-          line: 312
+          offset: 30411
+          line: 313
           column: 264
     - pointer: "/validation_rules/3"
       rule_id: "v_air"
       identity_kind: "explicit"
-      unit_id: "normative_27963"
+      unit_id: "normative_29454"
       source_span:
         start:
-          offset: 28921
-          line: 313
+          offset: 30412
+          line: 314
           column: 1
         end:
-          offset: 29203
-          line: 313
+          offset: 30694
+          line: 314
           column: 283
     - pointer: "/validation_rules/4"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_27963"
+      unit_id: "normative_29454"
       source_span:
         start:
-          offset: 29204
-          line: 314
+          offset: 30695
+          line: 315
           column: 1
         end:
-          offset: 29457
-          line: 314
+          offset: 30948
+          line: 315
           column: 254
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5725"
+      unit_id: "normative_5827"
       source_span:
         start:
-          offset: 5725
+          offset: 5827
           line: 59
           column: 1
         end:
-          offset: 5746
+          offset: 5848
           line: 59
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5725"
+      unit_id: "normative_5827"
       source_span:
         start:
-          offset: 5774
+          offset: 5876
           line: 63
           column: 1
         end:
-          offset: 6640
+          offset: 6742
           line: 70
           column: 135
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_20889"
+      unit_id: "normative_20991"
       source_span:
         start:
-          offset: 20889
+          offset: 20991
           line: 269
           column: 1
         end:
-          offset: 20929
+          offset: 21031
           line: 269
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_27963"
+      unit_id: "normative_29454"
       source_span:
         start:
-          offset: 27963
-          line: 306
+          offset: 29454
+          line: 307
           column: 1
         end:
-          offset: 27985
-          line: 306
+          offset: 29476
+          line: 307
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -852,5 +861,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:63ed6b9206bd42ff91e9a0e194393a40d0fcca129b99743253018406cae3c55a"
-  generated_content_sha256: "sha256:246ccf41f00a334bb16f959ea0f8751f49baf12bbb5ee146af953228e8c7dbcc"
+    sha256: "sha256:11311bf3073bbba13d52c84608c06d1d93e369b7ade2070fd13fa0d78f88601f"
+  generated_content_sha256: "sha256:1e94376a71fff448546505f002fb424381ef5bc9bf770d1258fd57161561e97e"

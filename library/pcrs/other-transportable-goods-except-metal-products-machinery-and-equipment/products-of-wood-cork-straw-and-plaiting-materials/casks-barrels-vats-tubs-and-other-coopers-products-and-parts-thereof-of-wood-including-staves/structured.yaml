@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.casks-barrels-vats-tubs-and-other-coopers-products-and-parts-thereof-of-wood-including-staves"
-  classification_refs: "CPC3.0 31703; proposed narrower scope only; accepted mapping is independently governed"
+  classification_refs: "CPC 3.0 31703; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
   covered_products: "New all-oak wine barrels, bare black or galvanized steel hoops, declared bending and toast configuration"
   excluded_products: "Staves/heads sold alone; used/refurbished barrels; non-oak or composite barrels; vats/tubs; charred spirits casks"
   representative_product: "One specified new oak wine barrel model; no fixed oak origin, capacity or service life"
@@ -92,12 +92,12 @@ measurement_rules:
     required_unit: "kg"
     rule: "Q is measured accepted net mass of a compatible batch of complete barrels after test drainage, including installed hoops and supplied closure but excluding test water and dispatch packaging. Use cp_acceptance. All inventory rows use per 1 kg reference flow; keep raw batch totals."
   - id: wood_water_basis
-    applies_to: "all wood and residue rows"
+    applies_to: "separately measured wood components with state-validated methods"
     required_property_ref:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Record as-received mass and dry-basis moisture u for each stage. m_dry = m_wet/(1+u), where u is kg water/kg oven-dry wood. Measure oak MC; do not use a generic density or softwood MC. Moisture loss is not automatically wood yield loss. [usda-wood-2021]"
+    rule: "Record actual wood-component wet mass and dry-basis moisture u for each stage, using a method independently validated for the actual species and physical/thermal/chemical state. m_wood_dry = m_wood_wet/(1+u), where u is kg water/kg oven-dry wood measured on that same component; retain non-wood constituents separately. Use oak-appropriate sampling and report extractive/volatile-loss uncertainty; no generic density or softwood MC. This component rule never replaces whole accepted barrel Q including installed hoops/closure, whole rejected-barrel mass or native whole residue exchange mass. Inorganic ash, carbonized/chemically transformed char, metal, plastic and liquid residues require their own compatible solids/water/composition measurements; do not automatically apply ordinary wood MC or wood-carbon fractions to transformed material. Valid unchanged wood components after thermal processing remain included only with actual-state validation. Moisture loss is not automatically wood yield loss. [usda-wood-2021]"
   - id: power_basis
     applies_to: "all electricity rows"
     required_property_ref:
@@ -1902,8 +1902,8 @@ dataset_production:
       process_id: "new_barrel_production"
       flow_role: "individual coproduct/waste streams"
       record_type: "weighing/destination"
-      raw_fields: "stage; stream; source; moisture; dry mass; carbon; sold/internal/discarded; contract; price; treatment recipient; stock"
-      collection_method: "Segregated weighing and sampled carbon/moisture; reconcile waste manifests, sales and internal fuel use; collect runoff/test/blowdown flow and contamination; full physical outputs / Q; per 1 kg reference flow; allocation kept separately"
+      raw_fields: "stage; stream; source; moisture; dry mass; carbon; sold/internal/discarded; contract; price; treatment recipient; stock; whole native exchange mass; separated component masses; actual-state validated water/solids method; wood-component MC; ash/char dry inorganic solids and independently assayed carbon; liquid water/non-water fractions; metal/plastic composition; carbon origin"
+      collection_method: "Segregated weighing and sampled carbon/moisture; reconcile waste manifests, sales and internal fuel use; collect runoff/test/blowdown flow and contamination; full physical outputs / Q; per 1 kg reference flow; allocation kept separately. Independently separate actual components; apply wood_water_basis/dry_wood only to measured wood with methods validated for its actual species/state. Retain whole liquid mass and independently measured water/non-water constituents, whole metal/plastic mass/composition and whole rejected barrel plus separately measured wood/hoops/other constituents. Inorganic ash and carbonized char use validated material-specific solids/water tests and independent carbon assays, never ordinary wood MC or a wood-carbon fraction. Preserve all native whole handover masses; unknown separation or actual-state method remains pending."
       unit: "kg; water volume plus defined density"
       frequency: "each removed or sold lot"
       temporal_coverage: "Same stock-corrected production/seasoning cohorts"
@@ -1926,8 +1926,8 @@ dataset_production:
       process_id: "new_barrel_production"
       flow_role: "physical wood-water-carbon ledger"
       record_type: "stage reconciliation"
-      raw_fields: "dry wood in/out; retained barrel wood; wood/hoop mass; internal fuel; water receipt/rain/spray/reuse/runoff/steam/evaporation; char/ash; emitted species carbon; C fractions; stock"
-      collection_method: "Reconcile stage ledgers using measured stock change, moisture and elemental carbon; investigate residuals, distinguish heat-induced dry loss from evaporation; verify emitted rather than generated species; stock-corrected full balances / Q; per 1 kg reference flow"
+      raw_fields: "dry wood in/out; retained barrel wood; wood/hoop mass; internal fuel; water receipt/rain/spray/reuse/runoff/steam/evaporation; char/ash; emitted species carbon; C fractions; stock; separate whole/component mass; state-specific wood, ash/char, inorganic solids, liquid water/non-water and metal/plastic carbon evidence"
+      collection_method: "Reconcile stage ledgers using measured stock change, moisture and elemental carbon; investigate residuals, distinguish heat-induced dry loss from evaporation; verify emitted rather than generated species; stock-corrected full balances / Q; per 1 kg reference flow. Preserve complete-barrel Q and native whole exchange quantities; wood, water, inorganic solids and independently assayed material carbon remain separate component accounts, with unknown separation/state method disclosed."
       unit: "kg dry matter; kg water; kg C"
       frequency: "each cohort and reporting period"
       temporal_coverage: "Cover seasoning and manufacture through Q acceptance"
@@ -1951,14 +1951,14 @@ dataset_production:
       source_ids:
         - usda-wood-2021
     - id: dry_wood
-      applies_to: "wood and residue rows"
-      rule: "u = (m_wet - m_oven)/m_oven; m_dry = m_wet/(1+u). Sample the same material state; do not subtract water again from oven-dry mass."
+      applies_to: "separately measured wood components with state-validated methods"
+      rule: "u = (m_wood_wet - m_wood_oven)/m_wood_oven; m_wood_dry = m_wood_wet/(1+u). Sample the same actual wood component/species/state with an independently validated water-only mass-loss endpoint, accounting for extractive/volatile or chemical degradation uncertainty; do not subtract water again from its measured oven-dry mass. Separate wood from hoops, coating, mineral, plastic and other constituents before applying this conversion; never convert the whole accepted/rejected barrel or a whole mixed waste as wood. Preserve native whole exchange masses. Ash/carbonized char use material-specific measured dry solids, water and independently assayed carbon, excluding inorganic solids from dry-wood mass and prohibiting ordinary wood-carbon fractions on transformed material. Liquids retain whole wet mass and separately measured water/non-water constituents; metals/plastics retain actual mass/composition. Unknown component separation or actual-state method remains pending."
       inputs:
-        - m_wet
-        - m_oven
+        - m_wood_wet
+        - m_wood_oven
         - cp_wood
         - cp_residues
-      output: "dry material mass and moisture"
+      output: "separately measured dry wood and moisture; independent whole/component material ledgers"
       source_ids:
         - usda-wood-2021
     - id: water_reconcile
@@ -1975,7 +1975,7 @@ dataset_production:
         - usda-wood-2021
     - id: carbon_reconcile
       applies_to: "wood, fuel and air rows"
-      rule: "For each carbon origin, input carbon = retained barrel carbon + exported coproduct/waste carbon + removed char/ash carbon + emitted species carbon + stock change + disclosed residual. Use measured dry mass times measured compatible C fraction. Derive species carbon by molar stoichiometry; combustion and pyrolysis share the same carbon supply and cannot each receive all of it."
+      rule: "For each carbon origin, input carbon = retained barrel carbon + exported coproduct/waste carbon + removed char/ash carbon + emitted species carbon + stock change + disclosed residual. Use measured dry mass times measured compatible C fraction. Derive species carbon by molar stoichiometry; combustion and pyrolysis share the same carbon supply and cannot each receive all of it. Use actual component/state-compatible carbon assays; ash/char inorganic solids are not dry wood, transformed char/ash cannot use ordinary wood-carbon fractions, and metal/plastic/non-water liquid solids or whole mixed-barrel mass cannot be counted as wood carbon."
       inputs:
         - cp_balance
         - cp_wood
@@ -1996,6 +1996,15 @@ dataset_production:
       source_ids:
         - epa-sawmill-pte-scope
         - epa-wood-boilers
+    - id: complete_period_normalization
+      applies_to: "all inventory rows"
+      rule: "Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity."
+      inputs:
+        - "all linked raw collection protocols"
+        - "accepted reference-product pool"
+        - "stock and rework links"
+      output: "native exchange unit per declared reference quantity; zero-output pool remains unnormalized"
+      source_ids: []
   data_quality_requirements:
     - id: quality_basis
       applies_to: "all inventory rows"
@@ -2093,18 +2102,18 @@ data_sources:
     used_for: "Illustrates burden partition and product-only packaging in a softwood case; no cooperage mass shares, yield, fuel or moisture imported"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:cb9a9adab17eec1bb52b99a0640731759477af41f2f783223c0535c3aa6481c7"
+  source_sha256: "sha256:bacffb00600fd422eccbf672faed724f010461014e46b8fd80369eefc7431898"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7230"
+    - unit_id: "normative_8076"
       family: "system_boundary"
       span:
         start:
-          offset: 7230
+          offset: 8076
           line: 65
           column: 1
         end:
-          offset: 10240
+          offset: 11086
           line: 86
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Untreated green split/sawn oak blanks delivered to seasoning/cooperage, or separately identified purchased air-seasoned oak blanks with verified upstream seasoning coverage |\n| starting_condition_role | Foreground cut-in with upstream cradle burdens explicitly linked; not a burden-free raw material or universal industry start |\n| product_classification_scope | New oak wine barrel subset of CPC3.0 31703; covers no stave-only/reference vat or refurbishment datasets |\n| recursive_input_rule | A purchased prepared blank or part requires an upstream provider for its actual prior manufacturing/seasoning. Internal retained wood and recirculated water are physical stage records, not new purchases or duplicate cradle burdens |\n| upstream_dataset_requirement | Species/route/state-compatible forestry and blank preparation, delivery transport, steel hoop fabrication/coating, delivered utilities, packaging and waste treatment; unresolved providers disclosed and completed before cradle-to-gate claims |\n| disclosure | Receipt state, upstream coverage, measured stage map, utilities/purchased versus internal heat, waste destination, test acceptance, allocation, exclusions and omitted evidence. Finished barrel ready for dispatch at factory gate; wine use and end-of-life outside this production dataset |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_states | new_barrel_production | Retain separate rough/seasoned/stave-shell/complete-barrel states and all actually executed stages. Model the integrated cooperage unit from receipt through accepted dispatch once; stage transfers are metered internal ledgers, not extra reference outputs. | seguin-process, taransaud-quality |\n| boundary_thermal | thermal and boiler stages | Distinguish bending heat from sensory toast, direct fuel burning from degradation of retained oak, and separate boiler outlets. Use EPA boiler evidence only for a matching actual boiler; open fires require their own site emission evidence. | seguin-toasts, thermal-wood-2005, epa-wood-boilers |\n| boundary_material | all inventory rows | Include actual raw materials, utility use, rejects, wastewater, wastes and emissions. A UUID gap does not authorize omitting a physically present flow; preserve a concrete atomic exchange and provider/identity gap. Document any actual treatment additive, adhesive, oil, packaging component or direct natural-water release with its own row before completeness. | usda-wood-2021, taransaud-quality |\n| boundary_carbon | wood and air outputs | Keep dry wood, retained toasted-layer carbon, exported residues, collected char/ash carbon and emitted chemical carbon as a reconciled physical account; retain biogenic CO2 in LCI. Upstream forest uptake is counted once in the linked boundary and not inferred as a negative cooperage emission. | usda-wood-2021, thermal-wood-2005, epa-wood-boilers |\n\n\n"
@@ -2124,11 +2133,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7230
+              offset: 8076
               line: 65
               column: 1
             end:
-              offset: 7251
+              offset: 8097
               line: 65
               column: 22
           text: "## 5. System Boundary"
@@ -2144,15 +2153,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_93670"
+    - unit_id: "normative_94516"
       family: "allocation"
       span:
         start:
-          offset: 93670
+          offset: 94516
           line: 1544
           column: 1
         end:
-          offset: 95478
+          offset: 96324
           line: 1554
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_direct | new_barrel_production | First use measured subdivision or causal direct attribution. Finishing, leak tests, permanent hoops and barrel-only packaging belong to the barrel. Saleable wood coproducts are identified by actual destination/contract; waste disposition alone does not establish a coproduct. | corrim-allocation-case, taransaud-quality |\n| allocation_physical_ledger | all inventory rows | Maintain the complete unallocated physical stage, dry-mass/water/carbon ledger. Internal offcut fuel is accounted once with matching produced and consumed mass and moisture. Whole-unit internal transfers cancel; do not assign avoided upstream fuel burden or duplicate purchases without a separately declared substitution scenario. | usda-wood-2021, thermal-wood-2005 |\n| allocation_shared_burden | shared environmental burdens | If unavoidable shared burdens remain, justify a site-specific physical causal relationship for eligible coproducts; report the eligible masses and shares. If no physical relationship can be defended, justify economic attribution using same-period net revenues and test an alternative. The softwood case supplies no oak cooperage allocation share or default method. | corrim-allocation-case |\n| allocation_no_mass_scaling | coproduct outputs and internal links | Apply allocation shares only to the burden account, never multiply actual barrel/coproduct output quantities, residual carbon, internal wood transfers or measured water by a share. Keep the full physical ledger alongside the allocated product dataset; reconcile that ledger rather than demanding mass closure in the reduced burden ledger. | usda-wood-2021, corrim-allocation-case |\n\n\n"
@@ -2172,11 +2181,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 93670
+              offset: 94516
               line: 1544
               column: 1
             end:
-              offset: 93710
+              offset: 94556
               line: 1544
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -2192,16 +2201,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_105574"
+    - unit_id: "normative_110264"
       family: "validation"
       span:
         start:
-          offset: 105574
-          line: 1588
+          offset: 110264
+          line: 1589
           column: 1
         end:
-          offset: 108501
-          line: 1601
+          offset: 113191
+          line: 1602
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | reference flow | Require new unused all-oak wine-barrel identity, finished completeness and leak acceptance; reject stave-only, refurbished or unqualified different toast/service configurations. UUID inclusion does not resolve background applicability. | taransaud-quality, seguin-toasts |\n| validate_denominator | all inventory rows | Exactly one accepted_new_oak_barrel reference output is 1 kg and every exchange uses the same stock-corrected Q denominator. Keep stages distinct, prevent duplicate product outputs and audit all internal links for equal physical quantity. | usda-wood-2021 |\n| validate_flows | all inventory rows | Verify exact physical/chemical identity against name, CAS, route, current classification, reference property and unit; a conflicting species/CAS or hard treatment/route blocks adoption even if a name looks right. An isolated source-classification error may permit conditional use of a coherent physical identity only with an explicit metadata debt, actual material/state/provider verification and source-owner clarification; it is not complete metadata validation. Each row is atomic, with exact Chinese baseName when provided; blank UUIDs retain their concrete exchange and missing-identity disclosure. | usda-wood-2021 |\n| validate_energy | all utility rows | Require measured delivered energy/volume/mass on a supplier-compatible basis. Distinguish purchased steam from internal boiler heat, apply kWh/MJ conversion only to electric energy, and leave gas/steam basis compatibility pending when unknown. | epa-wood-boilers |\n| validate_emissions | all elementary outputs | Require outlet/medium, actual escaped species, carbon origin and quantity-definition evidence. Verify NOx convention excluding N2O, disjoint PM and filterable/condensable scope. Do not substitute correction flows or equate visible smoke with a PM mass; preserve biogenic CO2 despite GHG-reporting conventions. | thermal-wood-2005, epa-wood-boilers, epa-sawmill-pte-scope |\n| validate_closure | physical ledger and allocation | Reconcile dry material, water, biogenic/fossil carbon and all measured destinations with stock changes and uncertainty; retain unexplained residuals. Review allocation against the full unallocated physical ledger and the separately allocated burden ledger; do not change coproduct mass to close allocated burdens. | usda-wood-2021, corrim-allocation-case |\n| validate_completeness | dataset profile | Before a complete cradle-to-gate dataset claim, resolve physically present UUID/provider gaps and all route quantities, add actual unlisted atomic flows and treatment releases, disclose skipped checks and uncertainty, and verify all required qualifiers. PCR authored status does not prove site-data or independent methodology approval. | taransaud-quality, usda-wood-2021 |\n\n\n"
       headings:
@@ -2220,12 +2229,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 105574
-              line: 1588
+              offset: 110264
+              line: 1589
               column: 1
             end:
-              offset: 105596
-              line: 1588
+              offset: 110286
+              line: 1589
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -2244,246 +2253,246 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_states"
       identity_kind: "explicit"
-      unit_id: "normative_7230"
+      unit_id: "normative_8076"
       source_span:
         start:
-          offset: 8722
+          offset: 9568
           line: 80
           column: 1
         end:
-          offset: 9059
+          offset: 9905
           line: 80
           column: 338
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_thermal"
       identity_kind: "explicit"
-      unit_id: "normative_7230"
+      unit_id: "normative_8076"
       source_span:
         start:
-          offset: 9060
+          offset: 9906
           line: 81
           column: 1
         end:
-          offset: 9403
+          offset: 10249
           line: 81
           column: 344
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_material"
       identity_kind: "explicit"
-      unit_id: "normative_7230"
+      unit_id: "normative_8076"
       source_span:
         start:
-          offset: 9404
+          offset: 10250
           line: 82
           column: 1
         end:
-          offset: 9844
+          offset: 10690
           line: 82
           column: 441
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_carbon"
       identity_kind: "explicit"
-      unit_id: "normative_7230"
+      unit_id: "normative_8076"
       source_span:
         start:
-          offset: 9845
+          offset: 10691
           line: 83
           column: 1
         end:
-          offset: 10237
+          offset: 11083
           line: 83
           column: 393
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_direct"
       identity_kind: "explicit"
-      unit_id: "normative_93670"
+      unit_id: "normative_94516"
       source_span:
         start:
-          offset: 93783
+          offset: 94629
           line: 1548
           column: 1
         end:
-          offset: 94150
+          offset: 94996
           line: 1548
           column: 368
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_physical_ledger"
       identity_kind: "explicit"
-      unit_id: "normative_93670"
+      unit_id: "normative_94516"
       source_span:
         start:
-          offset: 94151
+          offset: 94997
           line: 1549
           column: 1
         end:
-          offset: 94571
+          offset: 95417
           line: 1549
           column: 421
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_shared_burden"
       identity_kind: "explicit"
-      unit_id: "normative_93670"
+      unit_id: "normative_94516"
       source_span:
         start:
-          offset: 94572
+          offset: 95418
           line: 1550
           column: 1
         end:
-          offset: 95023
+          offset: 95869
           line: 1550
           column: 452
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_no_mass_scaling"
       identity_kind: "explicit"
-      unit_id: "normative_93670"
+      unit_id: "normative_94516"
       source_span:
         start:
-          offset: 95024
+          offset: 95870
           line: 1551
           column: 1
         end:
-          offset: 95475
+          offset: 96321
           line: 1551
           column: 452
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_105574"
+      unit_id: "normative_110264"
       source_span:
         start:
-          offset: 105669
-          line: 1592
+          offset: 110359
+          line: 1593
           column: 1
         end:
-          offset: 105977
-          line: 1592
+          offset: 110667
+          line: 1593
           column: 309
     - pointer: "/validation_rules/1"
       rule_id: "validate_denominator"
       identity_kind: "explicit"
-      unit_id: "normative_105574"
+      unit_id: "normative_110264"
       source_span:
         start:
-          offset: 105978
-          line: 1593
+          offset: 110668
+          line: 1594
           column: 1
         end:
-          offset: 106281
-          line: 1593
+          offset: 110971
+          line: 1594
           column: 304
     - pointer: "/validation_rules/2"
       rule_id: "validate_flows"
       identity_kind: "explicit"
-      unit_id: "normative_105574"
+      unit_id: "normative_110264"
       source_span:
         start:
-          offset: 106282
-          line: 1594
+          offset: 110972
+          line: 1595
           column: 1
         end:
-          offset: 106944
-          line: 1594
+          offset: 111634
+          line: 1595
           column: 663
     - pointer: "/validation_rules/3"
       rule_id: "validate_energy"
       identity_kind: "explicit"
-      unit_id: "normative_105574"
+      unit_id: "normative_110264"
       source_span:
         start:
-          offset: 106945
-          line: 1595
+          offset: 111635
+          line: 1596
           column: 1
         end:
-          offset: 107248
-          line: 1595
+          offset: 111938
+          line: 1596
           column: 304
     - pointer: "/validation_rules/4"
       rule_id: "validate_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_105574"
+      unit_id: "normative_110264"
       source_span:
         start:
-          offset: 107249
-          line: 1596
+          offset: 111939
+          line: 1597
           column: 1
         end:
-          offset: 107669
-          line: 1596
+          offset: 112359
+          line: 1597
           column: 421
     - pointer: "/validation_rules/5"
       rule_id: "validate_closure"
       identity_kind: "explicit"
-      unit_id: "normative_105574"
+      unit_id: "normative_110264"
       source_span:
         start:
-          offset: 107670
-          line: 1597
+          offset: 112360
+          line: 1598
           column: 1
         end:
-          offset: 108080
-          line: 1597
+          offset: 112770
+          line: 1598
           column: 411
     - pointer: "/validation_rules/6"
       rule_id: "validate_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_105574"
+      unit_id: "normative_110264"
       source_span:
         start:
-          offset: 108081
-          line: 1598
+          offset: 112771
+          line: 1599
           column: 1
         end:
-          offset: 108498
-          line: 1598
+          offset: 113188
+          line: 1599
           column: 418
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7230"
+      unit_id: "normative_8076"
       source_span:
         start:
-          offset: 7230
+          offset: 8076
           line: 65
           column: 1
         end:
-          offset: 7251
+          offset: 8097
           line: 65
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7230"
+      unit_id: "normative_8076"
       source_span:
         start:
-          offset: 7279
+          offset: 8125
           line: 69
           column: 1
         end:
-          offset: 8649
+          offset: 9495
           line: 76
           column: 303
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_93670"
+      unit_id: "normative_94516"
       source_span:
         start:
-          offset: 93670
+          offset: 94516
           line: 1544
           column: 1
         end:
-          offset: 93710
+          offset: 94556
           line: 1544
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_105574"
+      unit_id: "normative_110264"
       source_span:
         start:
-          offset: 105574
-          line: 1588
+          offset: 110264
+          line: 1589
           column: 1
         end:
-          offset: 105596
-          line: 1588
+          offset: 110286
+          line: 1589
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2492,5 +2501,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:cb9a9adab17eec1bb52b99a0640731759477af41f2f783223c0535c3aa6481c7"
-  generated_content_sha256: "sha256:cf9bd31c208f09c388e850086580ae550ac8ac04dfed0149832ffb16105df300"
+    sha256: "sha256:bacffb00600fd422eccbf672faed724f010461014e46b8fd80369eefc7431898"
+  generated_content_sha256: "sha256:5e194ade54d4bb0f9c679b7d941261543bb2c7f37a53658bce42b4677c9e2de1"

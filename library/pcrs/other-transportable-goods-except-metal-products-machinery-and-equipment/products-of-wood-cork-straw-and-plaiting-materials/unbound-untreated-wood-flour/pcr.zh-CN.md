@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.unbound-untreated-wood-flour |
-| classification_refs | CPC 3.0 31220; narrower |
+| classification_refs | CPC 3.0 31220; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 由干燥锯屑废物生产的未处理无黏结木粉，一个明确填料等级 |
 | excluded_products | 木丝；长纤维；黏结或化学处理产品；场内热干燥路线 |
 | representative_product | 散装交付的机械粉磨松散木粉 |
@@ -294,6 +294,7 @@ content_maturity: authored_methodology
 | --- | --- | --- | --- | --- | --- |
 | `campaign_basis` | all inventory rows | 各交换按相关期初期末存量修正可归属批次接收/释放合计，再除以 B，即交付含水率下的净验收木粉质量（千克）。负荷分配前保留实物交换；参考行为 1 千克。 | campaign records; B | 每 1 kg 参考流的交换数量 |  |
 | `wood_balance` | sawdust_input; flour_output; dust_waste; screen_reject; pm25; pmcoarse; pmover10 | 绝干木质投入加期初绝干木质存量，等于交付绝干木粉、处置绝干木料、排放绝干木质颗粒和期末绝干木质存量之和，允许已声明的实测不确定性。内部回料抵消；不明残差保留为质量缺口。 | wet/dry masses; stocks; particle composition | 未分配实物平衡 | `usda-wood-handbook-2021` |
+| complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
 

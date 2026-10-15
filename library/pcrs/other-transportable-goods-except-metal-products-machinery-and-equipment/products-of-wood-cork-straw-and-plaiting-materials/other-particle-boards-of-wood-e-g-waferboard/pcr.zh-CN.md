@@ -22,7 +22,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-particle-boards-of-wood-e-g-waferboard |
-| classification_refs | CPC 3.0 31439；narrower；仅为分类背景 |
+| classification_refs | CPC 3.0 31439; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 随机宽薄木质刨片waferboard；粉状PF及声明的间接蒸汽/干式控制试点路线 |
 | excluded_products | 细粒UF板；主动定向OSB/waferboard；纤维板；单板胶合板；非木质板；涂层/覆面/处理板；其他胶种和供热/控制路线 |
 | representative_product | 厂门验收随机宽刨片PF板材净成品；历史图2/W系列锚点不是供方清单数据 |
@@ -643,7 +643,7 @@ translation_status: aligned
 | dry_wood_account | conifer_logs, hardwood_logs | 每批未处理木材：干木材=湿木材/(1+u)；水=湿木材-干木材。板材和废物内分别保留胶/蜡固形物及碳来源；绝干板材不等于干木材。 | wet mass; dry-basis u; cp_material | 实物干物质与水账 | usda-wood-moisture-2021 |
 | steam_enthalpy | steam, condensate | 净交付焓=进入质量×进入比焓-返还质量×返还比焓-其他输出物流焓-储能增加量，采用明确共同基准。热损、放空与阶段有用热分别核对。供方返还抵扣须遵循其背景口径；进入蒸汽质量或数据库能量单位均不能单独等于净有用热。 | inlet/return/outgoing states; mass; stock; cp_steam | 核对能量账及兼容蒸汽链接 | epa-waferboard-2002 |
 | pm_partition | pm25, pmcoarse, pmover10, condensable_pm | 对于成对兼容的可过滤测量：细段=PM2.5；中段=PM10-PM2.5；粗段=可过滤PM总量-PM10。各段非负；必须保留不确定性及一致采样条件，不再加累计PM10/总PM。可凝结测量及分子VOC质量按相态保留且不重复。 | paired outlet tests; cp_emission | 互斥实物颗粒及分子物种清单 | epa-waferboard-2002 |
-| physical_closure | p_wafer | 同一核算期及边界的整体物流质量满足：期初库存+外部输入=成品+实际共产品+废物+基本排放+期末库存；存在时纳入相关气相质量交换。各相关元素（包括C/H/O）遵循同一方程，生物/化石碳来源分开；反应不生成质量或元素。分子H2O及各明确定义的反应物种/材料类别j则满足：opening_j + inputs_j + formation_j = outputs_j + closing_j + consumption_j，采用一致的组分定义、单位及范围。生成/消耗须依据实际配方、组成和实测或独立验证的反应程度：PF热压缩合改变树脂固形物并生成水；另行审查的生物控制扩展在摄取氧的同时将有机物转化为水、CO2、生物量及其他实际产物。不要求仅外部进出的干物质/H2O闭合，不设完全固化、完全降解或通用产率。供入/载体水、反应水、蒸发及公用蒸汽/返还回路分开；相间转移不生成H2O。内部交接两端一致并在厂级抵消。报告未解释余差及传播不确定性，不将余差当作反应证据。 | all stream totals; stock; elemental/component composition; actual reaction extent; cp_material; cp_water; cp_residue; cp_emission; cp_steam | 未分配整体质量/元素及反应感知组分账 | epa-waferboard-2002; conner-wood-adhesives-2001 |
+| physical_closure | p_wafer | 同一核算期及边界的整体物流质量满足：期初库存+外部输入=成品+实际共产品+废物+基本排放+期末库存；存在时纳入相关气相质量交换。各相关元素（包括C/H/O）遵循同一方程，生物/化石碳来源分开；反应不生成质量或元素。分子H2O及各明确定义的反应物种/材料类别j则满足：opening_j + inputs_j + formation_j = outputs_j + closing_j + consumption_j，采用一致的组分定义、单位及范围。生成/消耗须依据实际配方、组成和实测或独立验证的反应程度：PF热压缩合改变树脂固形物并生成水；另行审查的生物控制扩展在摄取氧的同时将有机物转化为水、CO2、生物量及其他实际产物。不要求仅外部进出的干物质/H2O闭合，不设完全固化、完全降解或通用产率。供入/载体水、反应水、蒸发及公用蒸汽/返还回路分开；相间转移不生成H2O。内部交接两端一致并在厂级抵消。报告未解释余差及传播不确定性，不将余差当作反应证据。内部交接的两端须具有相同实测数量及相容的物理/化学状态。 | all stream totals; stock; elemental/component composition; actual reaction extent; cp_material; cp_water; cp_residue; cp_emission; cp_steam | 未分配整体质量/元素及反应感知组分账 | epa-waferboard-2002; conner-wood-adhesives-2001 |
 | burden_attribution | p_wafer | 先归属直接负荷。仅将有理由的分配份额作用于其余共用环境负荷，同一范围份额之和为一。全部产品实物数量保持不变；产品归属负荷除以Q形成下游数据集。 | direct/common burdens; allocation drivers; cp_allocation; Q | 独立产品归属负荷账 | ghg-allocation-2011 |
 
 ### 数据质量要求

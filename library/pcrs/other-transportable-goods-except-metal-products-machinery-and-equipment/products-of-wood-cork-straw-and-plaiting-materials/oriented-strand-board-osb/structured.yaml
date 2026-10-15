@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.oriented-strand-board-osb"
-  classification_refs: "CPC 3.0 31432; narrower"
+  classification_refs: "CPC 3.0 31432; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
   covered_products: "Unoverlaid wood OSB with PF/pMDI binder and declared long-strand layered orientation"
   excluded_products: "Random particleboard/waferboard; fibre/veneer panels; treated, overlaid or other-binder variants"
   representative_product: "Accepted finished OSB at factory gate, actual dispatch wet mass, excluding packaging"
@@ -215,7 +215,7 @@ process_inventory:
           flow_ref:
             uuid: "9f10798f-ffb5-402d-b805-27d2db4e2caf"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Only phenol-formaldehyde resin matching the declared supplied prepolymer/powder form. Measure its actual resin content and record the delivered commercial formulation separately; separately account carrier water and identified additives without double counting formulated mass."
+          description: "Use this phenolic-resin row only for an actual independently supplied PF prepolymer/powder state matching the selected identity and provider reference; record its supplied mass, measured resin solids, moisture and additives. If the actual purchase is a prepared aqueous PF formulation, require one specific complete-formulation supply row and compatible provider covering preparation/delivery before use; its resin, carrier water and included additives are analytical composition, not new onsite purchases. Actual independently bought additions and onsite mixing water/utilities remain separate. Never equate wet formulation kg to dry polymer kg."
           amount:
             expression: "Measured unallocated physical period exchange divided by net accepted finished OSB mass; retain stage/stream breakdown and use the linked collection protocol. Keep allocated environmental burdens in the separate burden account."
             value_mode: "calculated_value"
@@ -235,7 +235,7 @@ process_inventory:
           name: "Petroleum paraffin wax for OSB blending"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Only petroleum paraffin wax used for water resistance; measure actual wax and separately record emulsion water. No universal wax loading."
+          description: "Use this row for petroleum paraffin wax actually supplied separately for water resistance, with measured supplied wax mass/state and provider basis. A bought wax emulsion is one complete formulation and requires its own specific compatible supply row/provider including preparation/delivery; its wax, carrier water and additives remain analytical subledgers only. Separately purchased constituents and actual onsite emulsification/mixing water/utilities are real separate exchanges. No universal wax loading or emulsion concentration."
           amount:
             expression: "Measured unallocated physical period exchange divided by net accepted finished OSB mass; retain stage/stream breakdown and use the linked collection protocol. Keep allocated environmental burdens in the separate burden account."
             value_mode: "calculated_value"
@@ -1281,7 +1281,7 @@ dataset_production:
       flow_role: "each resin/wax/coating by layer"
       record_type: "collected_record"
       raw_fields: "commercial formulation, resin chemistry and residual reactive groups, solids method, carrier water, free monomer, face/core layer ID, dosing mass, layup orientation, cure settings and evidenced extent/pathways, retained cured composition, reaction H2O formation/consumption and CO2, uncertainty"
-      collection_method: "Calibrated dosing/load-cell and supplier certificate reconciliation by layer; separate PF, pMDI, wax and carrier water. Use actual supplied formulation and representative cure/composition evidence to quantify only onsite reaction extent, including PF condensation water and pMDI water consumption/CO2 formation; distinguish other evidenced cure pathways, retained binder and unreacted material. No assumed full cure, sample recipe or universal yield; unknown extent remains unresolved. Count formulation and its constituent breakdown once, without repeating upstream resin manufacture. Sum measured consumption separately for each material and layer; divide by net accepted finished OSB mass"
+      collection_method: "Calibrated dosing/load-cell and supplier certificate reconciliation by layer; separate PF, pMDI, wax and carrier water. Use actual supplied formulation and representative cure/composition evidence to quantify only onsite reaction extent, including PF condensation water and pMDI water consumption/CO2 formation; distinguish other evidenced cure pathways, retained binder and unreacted material. No assumed full cure, sample recipe or universal yield; unknown extent remains unresolved. Count formulation and its constituent breakdown once, without repeating upstream resin manufacture. Sum measured consumption separately for each material and layer; divide by net accepted finished OSB mass. Record each actual complete resin/wax/coating supply once in its verified wet/dry provider basis; retain PF/pMDI/wax/active/carrier/additive analytical subledgers without extra purchases. Require supplier formulation preparation/delivery once; real independently purchased additions and onsite mixing/utilities stay separate. Preserve raw stock/loss/internal-transfer ledgers."
       unit: "kg"
       frequency: "per lot and monthly reconciliation"
       temporal_coverage: "One representative production period with seasonal/grade coverage"
@@ -1429,6 +1429,15 @@ dataset_production:
       source_ids:
         - epa-osb-2002
         - epa-wood-boiler-2022
+    - id: complete_period_normalization
+      applies_to: "all inventory rows"
+      rule: "Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity."
+      inputs:
+        - "all linked raw collection protocols"
+        - "accepted reference-product pool"
+        - "stock and rework links"
+      output: "native exchange unit per declared reference quantity; zero-output pool remains unnormalized"
+      source_ids: []
   data_quality_requirements:
     - id: dq_scope
       applies_to: "p_osb"
@@ -1507,18 +1516,18 @@ data_sources:
     used_for: "Metering/reference conditions, pressure-temperature-compressibility volume conversion and associated measurements. Used for engineering state correspondence only, not current legal-compliance certification or fixed standard P/T. Wet-to-dry mole correction and OSB normalization are declared method derivations requiring actual composition and measured state."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:76e6089a3365d33e23fe78e2cd7f71ace75b4cf3aedfd8a247a872578d10499a"
+  source_sha256: "sha256:f264167e8f4098937ab649906ed457929e27ca1f6e499ff63c10a912b3d3212d"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5467"
+    - unit_id: "normative_5569"
       family: "system_boundary"
       span:
         start:
-          offset: 5467
+          offset: 5569
           line: 60
           column: 1
         end:
-          offset: 7846
+          offset: 7948
           line: 77
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receiving gate for logs with explicit bark status, or receiving gate for externally supplied green/dried unresinated strands; disclose transport already included |\n| starting_condition_role | foreground_entry |\n| product_classification_scope | CPC 3.0 31432 OSB subset stated in section 1; classification does not define grade |\n| recursive_input_rule | Purchased OSB is not a raw strand input and cannot be recursively substituted. Rework stays in physical stock/transfer records; no duplicate finished reference output. |\n| upstream_dataset_requirement | Matching forestry/log preparation, externally supplied strand production, each resin/wax/coating, fuel, electricity, water and packaging background; receiving-gate freight separately if absent upstream. External waste treatment must be linked. |\n| disclosure | Foreground gate-to-gate, including onsite heat and controls; cradle-to-gate requires explicit upstream connections. Excludes installation, use and end of life unless separately modelled. |\n\nUse one integrated foreground inventory p_osb through grading/packing. Preserve the following collection stages independently: s_receive (yard/conditioning/debarking/stranding only if inside the gate); s_dry (drying and screening, per face/core furnish); s_blend (separate layer recipe); s_form (orientation and layup); s_press (press cycle and cure); s_finish (cooling, trimming, optional sanding and edge sealing); s_pack; s_heat (boiler/thermal heater and actual internal heat recovery); s_control (dust collection/WESP/RTO/water treatment). [corrim-osb-us-2025; epa-osb-2002]\n\nAssign direct-fired dryer fuel and the combined drying/combustion exhaust to s_dry; separate boiler fuel, ash and its stack to s_heat. Put RTO auxiliary fuel and final emissions at s_control. Shared dryer/press/RTO stacks are measured once after controls, with documented originating stages. Boiler AP-42 guidance does not supply direct-fired dryer factors. Recovered RTO heat lowers measured purchased fuel/heat; an internal loop is not a negative external heat export. Do not book useful onsite heat and its fuel as two purchased supplies. If heat leaves the plant, define one exact export flow and metered delivery boundary separately. [epa-osb-2002; epa-wood-boiler-2022]\n\n"
@@ -1538,11 +1547,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5467
+              offset: 5569
               line: 60
               column: 1
             end:
-              offset: 5488
+              offset: 5590
               line: 60
               column: 22
           text: "## 5. System Boundary"
@@ -1558,15 +1567,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_63955"
+    - unit_id: "normative_64823"
       family: "allocation"
       span:
         start:
-          offset: 63955
+          offset: 64823
           line: 919
           column: 1
         end:
-          offset: 65536
+          offset: 66404
           line: 925
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nMaintain unallocated whole-mass/element ledgers and separate reaction-aware component ledgers under wood_water_carbon before burden allocation. Internal bark, untreated fines, resin-bearing trims and sanding dust have separate transfer records with source/destination, moisture, composition and equal handoff quantities at both ends. Internal reuse cancels at the aggregate plant boundary but remains visible in stage balances. Sold co-products, internal fuels and externally discarded wastes are mutually exclusive destinations for each portion. Never multiply physical co-product output or an internal link by an allocation fraction. [corrim-osb-us-2025]\n\nAssign directly attributable resin, pressing, grade/finishing and packaging burdens to OSB. Subdivide joint stages before allocating residual shared burdens to marketed outputs; document a physically justified dry-material basis and test an economic alternative when the physical relationship is inadequate. The separate burden account may use a_j = d_j / sum(d_k), where d_j is measured eligible exported dry material of each joint output under one declared basis. Finished board dry solids include binder/wax and must not be called dry wood; disclose whether the causal allocation basis uses measured wood fraction or total dry solids. Internal fuel is not a marketed output in this export denominator: trace its processing and combustion to the heat consumer; shared exported energy requires a separate causal allocation. No automatic substitution credit. [corrim-osb-us-2025]\n\n"
@@ -1586,11 +1595,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 63955
+              offset: 64823
               line: 919
               column: 1
             end:
-              offset: 63995
+              offset: 64863
               line: 919
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1606,16 +1615,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_81328"
+    - unit_id: "normative_83963"
       family: "validation"
       span:
         start:
-          offset: 81328
-          line: 960
+          offset: 83963
+          line: 961
           column: 1
         end:
-          offset: 83710
-          line: 970
+          offset: 86345
+          line: 971
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | finished_osb | Exactly one finished reference output; net mass excludes packaging; all qualifiers and the actual layer architecture/grade must be provided. | corrim-osb-us-2025 |\n| v_basis | all inventory rows | Reference amount, normalization basis and collection denominator agree in both languages. Before burden allocation verify whole-mass and elemental C/H/O conservation, energy reconciliation and separate reaction-aware H2O/reactive-component ledgers under wood_water_carbon. Require actual formulation, cure/oxidation extent, air/oxygen/humidity, retained product/residue and exhaust composition with uncertainty, including PF-generated H2O, pMDI-consumed H2O/fossil CO2 and actual combustion products. Reject external-only H2O/dry-resin closure, assumed full cure/oxidation, default yields, altered measurements, duplicated reaction products or internal transfers. Unknown formation/consumption or unmatched stage endpoints leave balance completeness unresolved; report residuals against evidenced uncertainty, not a fabricated balancing amount. | usda-wood-handbook-2021; epa-osb-2002; epa-wood-boiler-2022; frihart-joining-2023 |\n| v_emissions | p_osb | Include biogenic CO2 and fossil binder/fuel carbon separately. Verify each emission species and medium; never replace sulfur dioxide with sulfur oxides, propanal with propanol, or MDI monomer with polymeric resin. Speciate remaining identified organics as additional atomic rows; a VOC total is a closure diagnostic, not added to its species. | epa-osb-2002; corrim-osb-us-2025 |\n| v_scope_extension | p_osb | Add each actual unlisted fuel, chemical, refrigerant, packaging component, wastewater outlet pollutant or exported heat as a separate exact exchange with a collection protocol. Different binder/treatment/overlay variants require applicability review. No unexamined cut-off based on small mass. | epa-osb-2002 |\n| v_case_limits | p_osb | CORRIM is a 23-facility US 2022/2023 survey (report submitted 2025-03-21, edited 2025-07-22). Its numeric density, moisture, fuel mix, adhesive rates, yields and allocation percentages are not defaults. Resolve its repeated PM labels and conflicting by-product percentage/species labels against primary records before numerical use. | corrim-osb-us-2025 |\n\n"
       headings:
@@ -1634,12 +1643,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 81328
-              line: 960
+              offset: 83963
+              line: 961
               column: 1
             end:
-              offset: 81350
-              line: 960
+              offset: 83985
+              line: 961
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1658,168 +1667,168 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5467"
+      unit_id: "normative_5569"
       source_span:
         start:
-          offset: 6588
+          offset: 6690
           line: 73
           column: 1
         end:
-          offset: 7167
+          offset: 7269
           line: 73
           column: 580
     - pointer: "/system_boundary/rules/1"
       rule_id: "system_boundary_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5467"
+      unit_id: "normative_5569"
       source_span:
         start:
-          offset: 7169
+          offset: 7271
           line: 75
           column: 1
         end:
-          offset: 7844
+          offset: 7946
           line: 75
           column: 676
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_63955"
+      unit_id: "normative_64823"
       source_span:
         start:
-          offset: 63997
+          offset: 64865
           line: 921
           column: 1
         end:
-          offset: 64653
+          offset: 65521
           line: 921
           column: 657
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_63955"
+      unit_id: "normative_64823"
       source_span:
         start:
-          offset: 64655
+          offset: 65523
           line: 923
           column: 1
         end:
-          offset: 65534
+          offset: 66402
           line: 923
           column: 880
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_81328"
+      unit_id: "normative_83963"
       source_span:
         start:
-          offset: 81423
-          line: 964
+          offset: 84058
+          line: 965
           column: 1
         end:
-          offset: 81617
-          line: 964
+          offset: 84252
+          line: 965
           column: 195
     - pointer: "/validation_rules/1"
       rule_id: "v_basis"
       identity_kind: "explicit"
-      unit_id: "normative_81328"
+      unit_id: "normative_83963"
       source_span:
         start:
-          offset: 81618
-          line: 965
+          offset: 84253
+          line: 966
           column: 1
         end:
-          offset: 82581
-          line: 965
+          offset: 85216
+          line: 966
           column: 964
     - pointer: "/validation_rules/2"
       rule_id: "v_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_81328"
+      unit_id: "normative_83963"
       source_span:
         start:
-          offset: 82582
-          line: 966
+          offset: 85217
+          line: 967
           column: 1
         end:
-          offset: 82985
-          line: 966
+          offset: 85620
+          line: 967
           column: 404
     - pointer: "/validation_rules/3"
       rule_id: "v_scope_extension"
       identity_kind: "explicit"
-      unit_id: "normative_81328"
+      unit_id: "normative_83963"
       source_span:
         start:
-          offset: 82986
-          line: 967
+          offset: 85621
+          line: 968
           column: 1
         end:
-          offset: 83326
-          line: 967
+          offset: 85961
+          line: 968
           column: 341
     - pointer: "/validation_rules/4"
       rule_id: "v_case_limits"
       identity_kind: "explicit"
-      unit_id: "normative_81328"
+      unit_id: "normative_83963"
       source_span:
         start:
-          offset: 83327
-          line: 968
+          offset: 85962
+          line: 969
           column: 1
         end:
-          offset: 83708
-          line: 968
+          offset: 86343
+          line: 969
           column: 382
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5467"
+      unit_id: "normative_5569"
       source_span:
         start:
-          offset: 5467
+          offset: 5569
           line: 60
           column: 1
         end:
-          offset: 5488
+          offset: 5590
           line: 60
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5467"
+      unit_id: "normative_5569"
       source_span:
         start:
-          offset: 5516
+          offset: 5618
           line: 64
           column: 1
         end:
-          offset: 6586
+          offset: 6688
           line: 71
           column: 204
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_63955"
+      unit_id: "normative_64823"
       source_span:
         start:
-          offset: 63955
+          offset: 64823
           line: 919
           column: 1
         end:
-          offset: 63995
+          offset: 64863
           line: 919
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_81328"
+      unit_id: "normative_83963"
       source_span:
         start:
-          offset: 81328
-          line: 960
+          offset: 83963
+          line: 961
           column: 1
         end:
-          offset: 81350
-          line: 960
+          offset: 83985
+          line: 961
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1828,5 +1837,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:76e6089a3365d33e23fe78e2cd7f71ace75b4cf3aedfd8a247a872578d10499a"
-  generated_content_sha256: "sha256:baf848d21eb05aa54ac164f516b746ce478190b948fd9a9e28ae36ad23130a5a"
+    sha256: "sha256:f264167e8f4098937ab649906ed457929e27ca1f6e499ff63c10a912b3d3212d"
+  generated_content_sha256: "sha256:61c23cdc3d1ac57bd22f68722f8dfa94656c4c78f5361f7932a4d22b81a2ba18"

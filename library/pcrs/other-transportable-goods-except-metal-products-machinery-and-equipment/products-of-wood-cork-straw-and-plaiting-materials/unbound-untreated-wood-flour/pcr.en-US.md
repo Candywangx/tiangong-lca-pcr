@@ -19,7 +19,7 @@ Exclude wood wool, pulp/refined long fibers, chips, particleboard furnish, bonde
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.unbound-untreated-wood-flour |
-| classification_refs | CPC 3.0 31220; narrower |
+| classification_refs | CPC 3.0 31220; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Untreated unbound flour from dry waste sawdust, one declared filler grade |
 | excluded_products | Wood wool; long fibers; bonded or chemically treated products; thermally dried onsite routes |
 | representative_product | Loose mechanically milled wood flour at bulk dispatch |
@@ -294,6 +294,7 @@ Net water evaporated to outdoor air during unheated milling and handling, if pos
 | --- | --- | --- | --- | --- | --- |
 | `campaign_basis` | all inventory rows | For each exchange, sum attributable campaign receipts/releases after relevant opening/closing stock correction and divide by B, the net accepted flour mass at dispatch moisture in kg. Maintain physical transfers before burden allocation; the reference row equals 1 kg. | campaign records; B | exchange quantity per 1 kg reference flow |  |
 | `wood_balance` | sawdust_input; flour_output; dust_waste; screen_reject; pm25; pmcoarse; pmover10 | Dry incoming wood plus opening dry-wood stock equals dispatched dry flour plus disposed dry wood plus emitted dry wood particles plus closing dry-wood stock, subject to disclosed measured uncertainty. Internal returns cancel; unexplained residuals remain a quality gap. | wet/dry masses; stocks; particle composition | unallocated physical balance | `usda-wood-handbook-2021` |
+| complete_period_normalization | all inventory rows | Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity. | all linked raw collection protocols; accepted reference-product pool; stock and rework links | native exchange unit per declared reference quantity; zero-output pool remains unnormalized |  |
 
 ### Data Quality Requirements
 

@@ -21,7 +21,7 @@ The representative inventory covers electrically heated platens and electric dri
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.densified-wood |
-| classification_refs | CPC 3.0:31520; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/. |
+| classification_refs | CPC 3.0 31520; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Resin-free unglued heat-stabilized compressed solid-wood tool-handle blanks; yellow birch representative |
 | excluded_products | Compreg; ordinary plywood/blockboard; glued compressed veneer; MDF; particleboard; naturally dense uncompressed wood; heat-modified-only wood; coated or chemically treated products |
 | representative_product | Uncoated yellow-birch tool-handle blank, net accepted conditioned mass at factory gate |
