@@ -39,11 +39,11 @@ jobs:
       dist_tag: ${{ steps.context.outputs.dist_tag }}
       product: ${{ steps.context.outputs.product }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - name: Refresh main and tags
@@ -87,11 +87,11 @@ jobs:
       actions: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
@@ -107,7 +107,7 @@ jobs:
           git fetch --force origin '+refs/tags/*:refs/tags/*'
           node builder/scripts/product-release.ts context "$PRODUCT_TAG"
       - name: Download only the qualified product bundle
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.quality-gate.outputs.product_artifact_id }}
           path: dist/product-release
@@ -125,7 +125,7 @@ jobs:
         run: node builder/scripts/product-publish.ts dist/product-release
       - name: Preserve the attempt journal even when a target remains pending
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-product-attempt-${{ github.run_id }}-${{ github.run_attempt }}
           path: dist/product-release/attempt*.json
@@ -145,11 +145,11 @@ jobs:
       RELEASE_TAG: ${{ needs.release-context.outputs.tag }}
       DIST_TAG: ${{ needs.release-context.outputs.dist_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
@@ -194,7 +194,7 @@ jobs:
           gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" "${assets[@]}" --clobber
       - name: Preserve build evidence, including on publication failure
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: npm-release-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
