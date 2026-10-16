@@ -164,10 +164,12 @@ process_inventory:
                   - ufifas-leafy-vegetable-guide-2024
         - row_id: crop_establishment_agricultural_nutrient_inputs_urea
           role: "Urea fertilizer"
-          name: "Urea fertilizer"
+          name: "Urea"
           flow_type: "product"
+          flow_ref:
+            uuid: "3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e"
           property_unit: "Mass / kg"
-          description: "**Collection scope and applicability for crop_establishment_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg marketable fresh spinach from the same crop cycle. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "**Collection scope and applicability for crop_establishment_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg marketable fresh spinach from the same crop cycle. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_establishment_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -185,10 +187,12 @@ process_inventory:
             ranges: []
         - row_id: crop_establishment_agricultural_nutrient_inputs_ammonium_sulfate
           role: "Ammonium sulfate fertilizer"
-          name: "Ammonium sulfate fertilizer"
+          name: "Ammonium sulfate"
           flow_type: "product"
+          flow_ref:
+            uuid: "8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_establishment_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -316,33 +320,27 @@ process_inventory:
                 basis_kind: "crop_cycle"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: establishment_machinery_fuel
-          role: "Mobile machinery fuel for bed preparation"
-          name: "Mobile machinery fuel"
+        - row_id: establishment_machinery_fuel_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Energy or mass / MJ or kg"
-          description: "Record fuel used for bed preparation, cultivation, seeding, or transplanting when field machinery crosses the foreground boundary. Raw activity or stage basis: per 1,000 kg marketable fresh spinach from the same crop cycle."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for documented diesel-powered machinery within this operation. Retain fuel grade and formulation; convert recorded volume with measured or supplier-supported density. Other powertrains require their actual carrier, not a diesel equivalent. Apply establishment_machinery_fuel_specific_input; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable."
           amount:
-            expression: "Metered fuel or equipment fuel log allocated to the spinach bed."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
+            expression: "Collect this carrier under cp_field_energy_records for crop_establishment. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "fuel_inventory"
+              kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_field_energy_records
               source_ids:
-                - ucanr-spinach-production-2011
-            ranges:
-              - role: qa_guardrail
-                lower: "50"
-                upper: "400"
-                unit: "MJ/ha"
-                basis: "field preparation and planting operations"
-                basis_kind: "fuel_inventory"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -386,10 +384,12 @@ process_inventory:
       product:
         - row_id: crop_management_agricultural_nutrient_inputs_urea
           role: "Urea fertilizer"
-          name: "Urea fertilizer"
+          name: "Urea"
           flow_type: "product"
+          flow_ref:
+            uuid: "3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e"
           property_unit: "Mass / kg"
-          description: "**Collection scope and applicability for crop_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg marketable fresh spinach. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "**Collection scope and applicability for crop_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg marketable fresh spinach. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_nutrient_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -407,10 +407,12 @@ process_inventory:
             ranges: []
         - row_id: crop_management_agricultural_nutrient_inputs_ammonium_sulfate
           role: "Ammonium sulfate fertilizer"
-          name: "Ammonium sulfate fertilizer"
+          name: "Ammonium sulfate"
           flow_type: "product"
+          flow_ref:
+            uuid: "8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_nutrient_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -510,33 +512,6 @@ process_inventory:
                 - govnl-spinach-production-guide-2025
                 - fao-organic-nutrients
             ranges: []
-        - row_id: crop_protection_input
-          role: "Crop-protection product"
-          name: "Crop-protection product"
-          flow_type: "product"
-          property_unit: "Mass / kg product or kg active ingredient"
-          description: "Record each crop-protection product by active ingredient or commercial formulation when it is applied to the spinach crop. Raw activity or stage basis: per 1,000 kg marketable fresh spinach."
-          amount:
-            expression: "Supplier invoice, spray log, or application record by field and crop cycle."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_crop_protection_records
-              source_ids:
-                - govnl-spinach-production-guide-2025
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "20"
-                unit: "kg product/ha"
-                basis: "total applied crop-protection product for the represented crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: crop_irrigation_water
           role: "Irrigation water during crop growth"
           name: "Irrigation water"
@@ -566,33 +541,27 @@ process_inventory:
                 evidence_kind: "external_source"
                 source_ids:
                   - ucanr-spinach-production-2011
-        - row_id: crop_machinery_fuel
-          role: "Mobile machinery fuel during crop management"
-          name: "Mobile machinery fuel"
+        - row_id: crop_machinery_fuel_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Energy or mass / MJ or kg"
-          description: "Record fuel for cultivation, mechanical weed management, fertigation equipment, and other mobile machinery assigned to the crop cycle. Raw activity or stage basis: per 1,000 kg marketable fresh spinach."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for documented diesel-powered machinery within this operation. Retain fuel grade and formulation; convert recorded volume with measured or supplier-supported density. Other powertrains require their actual carrier, not a diesel equivalent. Apply crop_machinery_fuel_specific_input; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable."
           amount:
-            expression: "Fuel log or equipment activity estimate allocated to the spinach crop cycle."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
+            expression: "Collect this carrier under cp_field_energy_records for crop_management. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "fuel_inventory"
+              kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_field_energy_records
               source_ids:
-                - ucanr-spinach-production-2011
-            ranges:
-              - role: qa_guardrail
-                lower: "100"
-                upper: "800"
-                unit: "MJ/ha"
-                basis: "cultivation and crop-management operations"
-                basis_kind: "fuel_inventory"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -820,33 +789,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: primary_packaging_input
-          role: "Primary packaging for fresh spinach"
-          name: "Primary packaging"
-          flow_type: "product"
-          property_unit: "Mass / kg packaging material"
-          description: "Record bags, bands, crates, cartons, or other packaging that crosses the declared gate-preparation boundary with the spinach. Raw activity or stage basis: per 1,000 kg marketable packed spinach."
-          amount:
-            expression: "Packaging bill of materials and counted units reconciled to packed marketable output."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_packaging_records
-              source_ids:
-                - usda-ams-bunched-spinach-standard
-            ranges:
-              - role: qa_guardrail
-                lower: "2"
-                upper: "35"
-                unit: "kg packaging material per 1,000 kg spinach"
-                basis: "declared primary packaging format and reusable-container accounting"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -1017,7 +959,7 @@ dataset_production:
       flow_role: "mobile machinery fuel"
       record_type: "fuel invoice and equipment activity log"
       raw_fields: "fuel type; quantity; equipment; operation; field; date; allocation basis"
-      collection_method: "supplier invoice plus equipment log or activity estimate; Raw aggregation and attribution: allocate shared operations by area, hours, or fuel record"
+      collection_method: "supplier invoice plus equipment log or activity estimate; Raw aggregation and attribution: allocate shared operations by area, hours, or fuel record establishment_machinery_fuel_specific_input: Operation crop_establishment: Record fuel used for bed preparation, cultivation, seeding, or transplanting when field machinery crosses the foreground boundary. Original quantity method: Metered fuel or equipment fuel log allocated to the spinach bed. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. crop_machinery_fuel_specific_input: Operation crop_management: Record fuel for cultivation, mechanical weed management, fertigation equipment, and other mobile machinery assigned to the crop cycle. Original quantity method: Fuel log or equipment activity estimate allocated to the spinach crop cycle. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "L, kg, or MJ"
       frequency: "each refuelling or operation"
       temporal_coverage: "full represented crop cycle"
@@ -1041,7 +983,7 @@ dataset_production:
       flow_role: "crop-protection products"
       record_type: "spray or treatment log and supplier record"
       raw_fields: "product; active ingredient; rate; area; date; target; equipment"
-      collection_method: "record each application and product lot; Raw aggregation and attribution: sum by active ingredient and crop cycle"
+      collection_method: "record each application and product lot; Raw aggregation and attribution: sum by active ingredient and crop cycle crop_protection_input_specific_input: Operation crop_management: Record each crop-protection product by active ingredient or commercial formulation when it is applied to the spinach crop. Original quantity method: Supplier invoice, spray log, or application record by field and crop cycle. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg product or kg active ingredient"
       frequency: "each application"
       temporal_coverage: "full represented crop cycle"
@@ -1101,7 +1043,7 @@ dataset_production:
       flow_role: "primary packaging"
       record_type: "packaging specification, bill of materials, and count record"
       raw_fields: "material; unit mass; units; reuse status; batch; output mass"
-      collection_method: "packaging count and specification reconciliation; Raw aggregation and attribution: sum virgin and reusable packaging separately per packed output"
+      collection_method: "packaging count and specification reconciliation; Raw aggregation and attribution: sum virgin and reusable packaging separately per packed output primary_packaging_input_specific_input: Operation harvest_and_gate_preparation: Record bags, bands, crates, cartons, or other packaging that crosses the declared gate-preparation boundary with the spinach. Original quantity method: Packaging bill of materials and counted units reconciled to packed marketable output. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg material and units"
       frequency: "each packaging lot or batch"
       temporal_coverage: "full represented harvest campaign"
@@ -1276,9 +1218,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf"
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f9be067ed9ea3400491f9fbac97077f32c9a9ab12fa06addac912c77927d1120"
+  source_sha256: "sha256:1435b1951ae833e2f4bb18cbcf7b7753a46d60262c3b9dcc544c09a375e0f871"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4925"
@@ -1329,16 +1275,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48645"
+    - unit_id: "normative_48377"
       family: "allocation"
       span:
         start:
-          offset: 48645
-          line: 842
+          offset: 48377
+          line: 780
           column: 1
         end:
-          offset: 49959
-          line: 852
+          offset: 49691
+          line: 790
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_single_crop_cycle` | shared field, bed, or protected unit | Attribute crop-cycle inputs to spinach using the recorded bed or unit area and the crop-cycle output; do not allocate to a second crop without its own records. | `ucanr-spinach-production-2011` |\n| `allocation_multi_cut_spinach` | repeated cuts from one sowing | Treat successive cuts as outputs of the same declared crop cycle and reconcile each cut before normalizing to total marketable spinach. | `psu-spinach-harvest-guidance-2025` |\n| `allocation_residue_fate` | field residues, rejects, and trim | Do not assign a co-product credit to residues unless a documented recipient, quantity, and intended use exists; otherwise retain the burden with spinach production and report the residue fate. | `usda-ams-bunched-spinach-standard` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1357,12 +1303,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48645
-              line: 842
+              offset: 48377
+              line: 780
               column: 1
             end:
-              offset: 48685
-              line: 842
+              offset: 48417
+              line: 780
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1377,16 +1323,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_60223"
+    - unit_id: "normative_66872"
       family: "validation"
       span:
         start:
-          offset: 60223
-          line: 894
+          offset: 66872
+          line: 844
           column: 1
         end:
-          offset: 61948
-          line: 905
+          offset: 68597
+          line: 855
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_output` | reference flow | The declared reference output must be marketable fresh spinach at the declared gate and must use mass in kg; a frozen, canned, cooked, or retail product is outside this PCR. | `usda-ams-bunched-spinach-standard` |\n| `validate_crop_cycle_dates` | crop establishment and management | Sowing or transplanting, applications, irrigation, harvest cuts, and gate output must fall within the declared crop cycle or be explicitly attributed to it. | `govnl-spinach-production-guide-2025` |\n| `validate_nutrient_basis` | fertilizer inputs and emissions | Product mass, nutrient concentration, nutrient basis, and emission calculation method must be present and internally consistent; avoid counting both product mass and nutrient mass as the same exchange. | `ucanr-spinach-production-2011`; `ipcc-2019-refinement-nitrogen` |\n| `validate_mass_balance` | harvest and gate preparation | Gross harvest and received mass must reconcile with marketable output, rejects, residues, and losses within the declared measurement uncertainty. | `usda-ams-bunched-spinach-standard` |\n| `validate_flow_identity_resolution` | parameterized rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_qualifiers` | reference flow and dataset metadata | Required qualifiers must be present in the dataset package, including crop form, cut, gate, washing, cooling, packaging, and production route. | `usda-ams-bunched-spinach-standard`; `psu-spinach-harvest-guidance-2025` |\n\n"
       headings:
@@ -1405,12 +1351,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 60223
-              line: 894
+              offset: 66872
+              line: 844
               column: 1
             end:
-              offset: 60245
-              line: 894
+              offset: 66894
+              line: 844
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1481,132 +1427,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_single_crop_cycle"
       identity_kind: "explicit"
-      unit_id: "normative_48645"
+      unit_id: "normative_48377"
       source_span:
         start:
-          offset: 48758
-          line: 846
+          offset: 48490
+          line: 784
           column: 1
         end:
-          offset: 49027
-          line: 846
+          offset: 48759
+          line: 784
           column: 270
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_multi_cut_spinach"
       identity_kind: "explicit"
-      unit_id: "normative_48645"
+      unit_id: "normative_48377"
       source_span:
         start:
-          offset: 49028
-          line: 847
+          offset: 48760
+          line: 785
           column: 1
         end:
-          offset: 49270
-          line: 847
+          offset: 49002
+          line: 785
           column: 243
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_fate"
       identity_kind: "explicit"
-      unit_id: "normative_48645"
+      unit_id: "normative_48377"
       source_span:
         start:
-          offset: 49271
-          line: 848
+          offset: 49003
+          line: 786
           column: 1
         end:
-          offset: 49569
-          line: 848
+          offset: 49301
+          line: 786
           column: 299
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_48645"
+      unit_id: "normative_48377"
       source_span:
         start:
-          offset: 49571
-          line: 850
+          offset: 49303
+          line: 788
           column: 1
         end:
-          offset: 49957
-          line: 850
+          offset: 49689
+          line: 788
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_output"
       identity_kind: "explicit"
-      unit_id: "normative_60223"
+      unit_id: "normative_66872"
       source_span:
         start:
-          offset: 60318
-          line: 898
+          offset: 66967
+          line: 848
           column: 1
         end:
-          offset: 60580
-          line: 898
+          offset: 67229
+          line: 848
           column: 263
     - pointer: "/validation_rules/1"
       rule_id: "validate_crop_cycle_dates"
       identity_kind: "explicit"
-      unit_id: "normative_60223"
+      unit_id: "normative_66872"
       source_span:
         start:
-          offset: 60581
-          line: 899
+          offset: 67230
+          line: 849
           column: 1
         end:
-          offset: 60847
-          line: 899
+          offset: 67496
+          line: 849
           column: 267
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_basis"
       identity_kind: "explicit"
-      unit_id: "normative_60223"
+      unit_id: "normative_66872"
       source_span:
         start:
-          offset: 60848
-          line: 900
+          offset: 67497
+          line: 850
           column: 1
         end:
-          offset: 61182
-          line: 900
+          offset: 67831
+          line: 850
           column: 335
     - pointer: "/validation_rules/3"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_60223"
+      unit_id: "normative_66872"
       source_span:
         start:
-          offset: 61183
-          line: 901
+          offset: 67832
+          line: 851
           column: 1
         end:
-          offset: 61427
-          line: 901
+          offset: 68076
+          line: 851
           column: 245
     - pointer: "/validation_rules/4"
       rule_id: "validate_flow_identity_resolution"
       identity_kind: "explicit"
-      unit_id: "normative_60223"
+      unit_id: "normative_66872"
       source_span:
         start:
-          offset: 61428
-          line: 902
+          offset: 68077
+          line: 852
           column: 1
         end:
-          offset: 61662
-          line: 902
+          offset: 68311
+          line: 852
           column: 235
     - pointer: "/validation_rules/5"
       rule_id: "validate_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_60223"
+      unit_id: "normative_66872"
       source_span:
         start:
-          offset: 61663
-          line: 903
+          offset: 68312
+          line: 853
           column: 1
         end:
-          offset: 61946
-          line: 903
+          offset: 68595
+          line: 853
           column: 284
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1635,27 +1581,27 @@ normative_context:
           column: 289
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48645"
+      unit_id: "normative_48377"
       source_span:
         start:
-          offset: 48645
-          line: 842
+          offset: 48377
+          line: 780
           column: 1
         end:
-          offset: 48685
-          line: 842
+          offset: 48417
+          line: 780
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_60223"
+      unit_id: "normative_66872"
       source_span:
         start:
-          offset: 60223
-          line: 894
+          offset: 66872
+          line: 844
           column: 1
         end:
-          offset: 60245
-          line: 894
+          offset: 66894
+          line: 844
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1664,5 +1610,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f9be067ed9ea3400491f9fbac97077f32c9a9ab12fa06addac912c77927d1120"
-  generated_content_sha256: "sha256:6468cd241ab4ab4284769675b921578ce974cd6b7e83e92e061e9e5114a4b7a9"
+    sha256: "sha256:1435b1951ae833e2f4bb18cbcf7b7753a46d60262c3b9dcc544c09a375e0f871"
+  generated_content_sha256: "sha256:5c78e584b958b05ff40ac066a77a7f96859c28af4efac2bd89247a0bf819a53c"

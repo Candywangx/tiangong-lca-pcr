@@ -269,32 +269,6 @@ Use actual species, housing/storage conditions and a justified nitrogen-flow met
 
 ##### Product flows
 
-###### Recovery medium (`recovery_medium`)
-
-Record actual collection or aspiration medium and its lot-specific composition.
-
-Denominator and scope requirements：per recovery event
-
-Raw quantity and calculation requirements: Measure issued and returned medium per event. Original collection denominator kind: process_output.
-
-- Selected flow: Embryo or oocyte recovery medium (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_recovery`
-- Range: Provisional recovery-medium screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg per event
-  - Basis: issued medium in the documented event
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -687,32 +661,6 @@ Raw quantity and calculation requirements: Count receipts against grading's acce
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Preservation energy (`preservation_energy`)
-
-Only actual chilled or frozen lots use this node; fresh lots bypass it.
-
-Denominator and scope requirements：per accepted preserved embryo
-
-Raw quantity and calculation requirements: Meter energy over actual intervention and storage period. Original collection denominator kind: process_output.
-
-- Selected flow: Preservation energy supply (UUID unresolved)
-- Flow property / unit: Energy / kWh
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_preserve`
-- Range: Provisional preservation-energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kWh per accepted preserved embryo
-  - Basis: measured energy divided by accepted post-preservation count
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Cryogenic nitrogen (`nitrogen`)
 
 Record liquid nitrogen only for routes and tanks that actually use it.
@@ -835,32 +783,6 @@ Raw quantity and calculation requirements: Count stage-, route- and state-matche
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Protective containers (`container`)
-
-Record actual straw, vial or ampoule and its new or reusable status; distinguish product enclosure from post-gate shipping.
-
-Denominator and scope requirements：per released embryo
-
-Raw quantity and calculation requirements: Measure new materials and uniquely attributed reusable-container service. Original collection denominator kind: reference_flow.
-
-- Selected flow: Embryo protective packaging (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_release`
-- Range: Provisional packaging screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg per released embryo
-  - Basis: new and attributed reusable packaging over released embryos
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -916,16 +838,36 @@ Denominator and scope requirements：per reference flow
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `container_specific_input` | `cp_release` | Operation release: Record actual straw, vial or ampoule and its new or reusable status; distinguish product enclosure from post-gate shipping. Denominator and scope requirements：per released embryo Raw quantity and calculation requirements: Measure new materials and uniquely attributed reusable-container service. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `preservation_energy_identification` | `cp_preserve` | Actual chilled/frozen embryo preservation equipment and storage duration. Fresh lots bypass this node. Distinguish powered freezing from passive cryogenic storage; liquid nitrogen is a material input, not an electricity equivalent. Denominator and scope requirements：per accepted preserved embryo Raw quantity and calculation requirements: Meter energy over actual intervention and storage period. Original collection denominator kind: process_output. (`route-energy-fao`) |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_donor` | `donor` | feed, water, manure, donor service | husbandry ledger | donor_id, species, period, donor_days, feed_DM, water_kg, manure_kg, replacement, room_hours | weigh, meter, event log; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | day, kg, h | daily/event | full linked donor period | all donors | per reference flow | dated signed ledger; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_recovery` | `recovery` | medium and raw embryo/oocyte | event register | event_id, donor_id, route, medium_kg, raw_embryo_count, oocyte_count, losses, room_hours | issue sheet, count, weigh; Raw aggregation requirements: reconcile each event. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, item, h | event | all attempts | collection unit | per reference flow | chain of custody; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_recovery` | `recovery` | medium and raw embryo/oocyte | event register | event_id, donor_id, route, medium_kg, raw_embryo_count, oocyte_count, losses, room_hours | issue sheet, count, weigh; Raw aggregation requirements: reconcile each event. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `recovery_medium_specific_input`: Record actual collection or aspiration medium and its lot-specific composition. Denominator and scope requirements：per recovery event Raw quantity and calculation requirements: Measure issued and returned medium per event. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, item, h | event | all attempts | collection unit | per reference flow | chain of custody; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_lab` | `preparation` | media, semen, prepared embryos, spent media | laboratory batch log | lot_id, route, media_kg, semen_lot, dose_count, retrieved_count, fertilised_count, prepared_count, waste_kg, incubator_hours | issue and assay log; Raw aggregation requirements: route-specific balance. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, dose, item, h | lot | all batches | laboratory | per reference flow | assay and lot record; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_grade` | `grading` | accepted, downgraded, held, rejected | grade register | lot_id, stage, grade, accepted, downgraded, held, rejected, destination | qualified examination; Raw aggregation requirements: reconcile all destinations. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | item | lot | all assessed material | laboratory | per reference flow | signed grade sheet; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_preserve` | `preservation` | energy, nitrogen, stable count, rejects | cold-chain log | lot_id, state, kWh, nitrogen_kg, storage_days, tank_hours, pre_count, accepted, rejected | meter, stock balance, logger; Raw aggregation requirements: route-specific count and occupancy. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kWh, kg, day, item | lot/day | full intervention and storage | cold room/tank | per reference flow | logger and QC; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_release` | `release` | container and released embryo | release ledger | lot_id, route, stage, grade, state, new_package_kg, reuse_cycles, released, gate_time | issue count and QA sign-off; Raw aggregation requirements: count signed releases. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, embryo | lot | every handover | laboratory gate | per reference flow | label and signed receipt; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_preserve` | `preservation` | energy, nitrogen, stable count, rejects | cold-chain log | lot_id, state, kWh, nitrogen_kg, storage_days, tank_hours, pre_count, accepted, rejected | meter, stock balance, logger; Raw aggregation requirements: route-specific count and occupancy. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: `preservation_energy_identification`: Actual chilled/frozen embryo preservation equipment and storage duration. Fresh lots bypass this node. Distinguish powered freezing from passive cryogenic storage; liquid nitrogen is a material input, not an electricity equivalent. Denominator and scope requirements：per accepted preserved embryo Raw quantity and calculation requirements: Meter energy over actual intervention and storage period. Original collection denominator kind: process_output. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kWh, kg, day, item | lot/day | full intervention and storage | cold room/tank | per reference flow | logger and QC; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_release` | `release` | container and released embryo | release ledger | lot_id, route, stage, grade, state, new_package_kg, reuse_cycles, released, gate_time | issue count and QA sign-off; Raw aggregation requirements: count signed releases. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `container_specific_input`: Operation release: Record actual straw, vial or ampoule and its new or reusable status; distinguish product enclosure from post-gate shipping. Denominator and scope requirements：per released embryo Raw quantity and calculation requirements: Measure new materials and uniquely attributed reusable-container service. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, embryo | lot | every handover | laboratory gate | per reference flow | label and signed receipt; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_pathway_emissions` | `donor` | pathway-specific gases and manure N/C | herd, feed, manure, field and method ledger | species/class; animal-days; intake/DM/digestibility; volatile solids; manure N/TAN; system shares; climate; storage time; fertiliser N; grazing; volatilisation/leaching; methane recovery; factor source/unit; final accepted output ; collected manure wet mass; dry matter; destination| collect primary activity by node and period, document parameter applicability, retain each pathway worksheet and any linked treatment/pasture dataset  Retain raw totals and normalize attributed quantities once to the measured accepted final reference output.| animal-day; kg DM; kg VS; kg N; kg CH4; kg N2O; kg NH3 | each operating period and management change | complete represented cohort and service period | actual operated nodes only | per reference flow | meter/analysis records, nitrogen cascade, method and factor evidence, no-duplication ledger |
 | `cp_feed_supply_and_intake` | `donor` | Feed supply, intake and loss | stock, receipt, issue and loss ledger | feed identity/source; cohort/phase; period; opening/closing stock; receipts; on-site provision; unused returns/transfers; uneaten/spoiled mass and destination; as-fed/DM; actual intake; burden owner; accepted final output | Reconcile matched stock, scales, ration/forage estimates and disposal records under calc_feed_supply_and_intake. Keep raw totals and stage denominators; assign production and treatment burden once, then normalize to accepted final output. | kg as-fed; kg DM | each issue and period close | complete represented cohort/period | actual operated feeding nodes | per reference flow | stock and supplier records; moisture evidence; loss and no-duplication reconciliation |
 | `cp_manure_n2o_coverage` | `donor` | Direct and indirect manure/soil N2O coverage | pathway N ledger and method worksheet | species/class; period; excreted N; stage stocks/transfers; system shares; volatilised NH3-N/NOx-N; leached/runoff N; application/grazing N; factor source, unit and applicability; direct/indirect components; receiving medium; linked process and assigned card; accepted final output | Retain raw stage N and component calculations under calc_manure_n2o_coverage, matched to actual operation and existing manure protocols. Document unsupported or inapplicable paths and coverage boundaries; normalize attributable N2O once. | kg N; kg N2O | each reporting period and management change | complete represented management period | actual operated and explicitly linked nodes | per reference flow | N balance, factor unit/applicability, component-to-card and no-duplication worksheet |
@@ -987,3 +929,4 @@ Denominator and scope requirements：per reference flow
 | `review-ipcc-livestock-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 10: Emissions from Livestock and Manure Management](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf) | Species and pathway applicability; CH4 and N2O method selection, not universal emission factors |
 | `review-eea-manure-2023` | official_guidance | [EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, 3.B Manure Management](https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023) | NH3 nitrogen-flow method; verify actual species, management and geographical applicability before adopting parameters |
 | `review-ipcc-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | Managed-soil direct and indirect nitrogen pathways and boundary reconciliation |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

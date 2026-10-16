@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| Reference product flow | Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3` |
+| Reference product flow | 驴 `40fd68b3-1ea0-4828-8532-f64140fc3ea3` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -106,7 +106,7 @@ sync_with: pcr.en-US.md
 
 声明繁育群、幼驴或购买补栏动物作为前景包的活体动物起始条件记录。
 
-- 选定流：Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
+- 选定流：驴 `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
 - 流属性/单位：Mass / kg live weight
 - 数量规则：系统进入时的实测活重和头数
 - 数值来源模式：前景记录（`foreground_record`）
@@ -123,31 +123,6 @@ sync_with: pcr.en-US.md
   - 上限：1
   - 单位：kg/kg live-weight output
   - 基准：作为声明起始条件或购买活体动物带入的活驴质量
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
-###### 繁育基础的外购饲料和牧草（`purchased_feed_and_forage_for_breeding_basis`）
-
-用于维持繁育或补栏动物、并在分配到可销售动物之前发生的饲料和牧草，应按饲料类型和水分基础记录。
-
-- 选定流：Assorted Feed `cb2b142b-0ed1-4d6f-9283-cfef94451a75`
-- 流属性/单位：Mass / kg dry matter and kg as-fed
-- 数量规则：实测外购或自产饲料质量，必要时换算为干物质
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始采集或过程口径：每个群体维持期或分配到的 kg 活重输出
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_feed_and_forage_records`
-- 来源：`fao-leap-animal-feeds-2016`
-- 数量范围：暂定繁育基础饲料筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：50
-  - 单位：kg dry matter/kg live-weight output
-  - 基准：分配给活驴生产的宽泛首轮饲料干物质
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
@@ -201,7 +176,7 @@ sync_with: pcr.en-US.md
 
 进入育成的活驴群作为补栏进入和繁育基础过程的产品输出记录。
 
-- 选定流：Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
+- 选定流：驴 `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
 - 流属性/单位：Mass / kg live weight
 - 数量规则：转入育成或饲养过程时的实测活重
 - 数值来源模式：前景记录（`foreground_record`）
@@ -247,7 +222,7 @@ sync_with: pcr.en-US.md
 
 育成用活驴群是来自繁育、购买或补栏进入记录的动物输入。
 
-- 选定流：Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
+- 选定流：驴 `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
 - 流属性/单位：Mass / kg live weight
 - 数量规则：进入育成期的实测活重
 - 数值来源模式：前景记录（`foreground_record`）
@@ -259,38 +234,13 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_weight_records`
 
-###### 育成期消耗的饲料和牧草（`feed_and_forage_consumed_during_rearing`）
-
-在记录允许时，应分别记录饲料、牧草、作物秸秆、放牧采食估算、精料、矿物补充料和外购饲料。
-
-- 选定流：Assorted Feed `cb2b142b-0ed1-4d6f-9283-cfef94451a75`
-- 流属性/单位：Mass / kg dry matter and kg as-fed
-- 数量规则：按动物类别记录的实测饲料领用、放牧估算或饲料平衡
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始采集或过程口径：每 kg 活重输出或 animal-day
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_feed_and_forage_records`
-- 来源：`fao-leap-animal-feeds-2016`
-- 数量范围：暂定育成饲料筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：80
-  - 单位：kg dry matter/kg live-weight output
-  - 基准：分配给活驴育成的宽泛首轮饲料干物质
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 饮水和饲养用水（`drinking_and_husbandry_water`）
 
-用于饮水、清洁、降温和动物处理的水，应尽可能按水源和用途记录。
+按实际水源和用途记录跨越所代表过程边界的供水。区分外购供水、已链接的现场取水/供水节点、本过程直接取水及内部回用。本产品卡仅用于身份兼容的供水交换，并声明供方及已覆盖作业；本过程直接建模取水时，用环境资源流及实际供水作业，不再为同一水量另加上游供水。回用不构成新的采购或取水。配制饲料只记录本节点实际另加的水，不再次采购已包含在外购饲料内的水。
 
-- 选定流：Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
+- 选定流：工艺用水 `ec205030-248c-496f-9cf2-06d9d26dc6ff`
 - 流属性/单位：Mass or volume / kg, L, or m3
-- 数量规则：实测水表、罐装水、井泵记录，或按动物类别估算的饮水量
+- 数量规则：依据有记录的水源及供水责任 记录跨越本过程边界且身份兼容的实际供水数量，排除本过程直接建模取水、内部回用及已含于外购饲料的水。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 原始采集或过程口径：每 kg 活重输出或 animal-day
@@ -299,6 +249,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_water_records`
+- 来源：`ecoinvent-water-supply-2023`
 - 数量范围：暂定用水筛选估算
   - 范围角色：默认估计（`default_estimate`）
   - 下限：0
@@ -369,7 +320,7 @@ sync_with: pcr.en-US.md
 
 用于抽水、照明、舍饲、饲料处理、粪污移动、称重和场内运输的电力和燃料按能源载体记录。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -381,13 +332,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 柴油 (`farm_energy_for_husbandry_diesel`)
 
 仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 用于抽水、照明、舍饲、饲料处理、粪污移动、称重和场内运输的电力和燃料按能源载体记录。
 
-- 选定流：柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -399,6 +352,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
 
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 ##### 废物流
 
 育成和日常饲养通常不需要废物输入。只有废弃物来源饲料或回收垫料作为声明范围内的输入使用时才纳入。
@@ -407,11 +362,11 @@ sync_with: pcr.en-US.md
 
 ###### 动物生产取水（`water_withdrawal_for_animal_production`）
 
-当数据包报告基本水流时，取水量从饮水和饲养用水记录计算。
+仅记录归属于本前景过程的实际环境取水，不从供水使用量或外购饲料所含水量自动推导。排除已由链接供水商或现场供水节点表示的取水；现场直接取水仅在未由该节点计入时归属于本过程。内部回用不构成新取水。匹配水源、取水点、期间、原始取水量和上游取水/处理/输配覆盖；依据记录计入使用点之前的供水损失，不将交付用量等同于取水量。确认资源身份及环境区室与实际水源兼容；不兼容时，在最终交换前保留具体的未解析身份。
 
-- 选定流：water `419682fe-60fb-4b43-be89-bf2824b51104`
+- 选定流：水 `419682fe-60fb-4b43-be89-bf2824b51104`
 - 流属性/单位：Mass / kg
-- 数量规则：由水源和数量记录计算
+- 数量规则：依据有记录的水源及供水责任 计算有记录且归属本过程的原始取水量，排除供方已覆盖取水及回用；换算单位并归一化一次。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始采集或过程口径：每 kg 活重输出
@@ -420,6 +375,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_water_records`
+- 来源：`ecoinvent-water-supply-2023`
 - 数量范围：暂定取水筛选估算
   - 范围角色：默认估计（`default_estimate`）
   - 下限：0
@@ -429,6 +385,7 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
+
 #### 输出
 
 ##### 产品流
@@ -437,7 +394,7 @@ sync_with: pcr.en-US.md
 
 农场门商品活驴是参考产品输出。
 
-- 选定流：Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
+- 选定流：驴 `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
 - 流属性/单位：Mass / kg live weight
 - 数量规则：声明门的实测活重
 - 数值来源模式：前景记录（`foreground_record`）
@@ -484,7 +441,7 @@ sync_with: pcr.en-US.md
 
 仅核算前景直接燃烧的化石 CO2。
 
-- 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：仅用前景直接运营设备的实际化石燃料量和相容燃烧因子计算本卡 CO2；排除外购电力发电排放和已由委外运输服务覆盖的排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -514,7 +471,7 @@ sync_with: pcr.en-US.md
 
 粪便、尿液、垫料和排泄物从舍饲、运动场、储存、放牧沉积或收集系统进入声明管理路线时进行跟踪。
 
-- 选定流：Fecal fertilizer `e7f0099e-ecb6-48b5-a683-c0da022022b4`
+- 选定流：粪肥 `e7f0099e-ecb6-48b5-a683-c0da022022b4`
 - 流属性/单位：Mass / kg wet mass, kg dry matter, kg volatile solids, and kg N where applicable
 - 数量规则：实测粪污质量、垫料质量、粪污储存记录，或按动物类别计算排泄量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -551,7 +508,7 @@ sync_with: pcr.en-US.md
 
 只有当粪污、堆肥或养分产品被出售、转移或作为活体动物参考流之外的共产品有意使用时，才作为产品输出。
 
-- 选定流：Fecal fertilizer `e7f0099e-ecb6-48b5-a683-c0da022022b4`
+- 选定流：粪肥 `e7f0099e-ecb6-48b5-a683-c0da022022b4`
 - 流属性/单位：Mass / kg and kg N where applicable
 - 数量规则：作为商品或转移时的实测粪肥产品质量和养分含量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -597,7 +554,7 @@ sync_with: pcr.en-US.md
 
 肠道甲烷使用声明的 IPCC tier 或经审查的区域方法，针对非反刍马属动物计算。
 
-- 选定流：methane (biogenic) `fe0acd60-3ddc-11dd-a8ea-0050c2490048`
+- 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：按动物群体、动物类别、活重、采食量和声明 IPCC 或区域排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -618,11 +575,13 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
+此身份为生物源甲烷向未特指空气排放。保留实际接收环境；数据集要求更具体介质时使用兼容变体，不因养殖活动而默认近地城市空气。
+
 ###### 粪污甲烷到空气（`manure_methane_to_air`）
 
 粪污甲烷根据粪污管理系统、气候、挥发性固体、储存或沉积路线计算。
 
-- 选定流：methane (biogenic) `fe0acd60-3ddc-11dd-a8ea-0050c2490048`
+- 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：按挥发性固体和声明粪污管理甲烷方法计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -643,11 +602,13 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
+此身份为生物源甲烷向未特指空气排放。保留实际接收环境；数据集要求更具体介质时使用兼容变体，不因养殖活动而默认近地城市空气。
+
 ###### 粪污氧化亚氮到空气（`manure_nitrous_oxide_to_air`）
 
 粪污氧化亚氮根据氮排泄量、粪污管理系统以及直接或间接 N2O 方法计算。
 
-- 选定流：nitrous oxide, emissions to air unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：按粪污氮和声明的直接或间接 N2O 方法计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -672,7 +633,7 @@ sync_with: pcr.en-US.md
 
 范围内的舍饲、储存、农场控制田间施用和放牧沉积应计算或记录氨挥发。
 
-- 选定流：ammonia, emissions to air unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：按粪污氮、管理路线、气候或储存条件以及声明 NH3 方法计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -695,7 +656,7 @@ sync_with: pcr.en-US.md
 
 当售前暂养、检疫、分拣、装载或交付位于声明门以内时，记录进入这些活动的活体动物。
 
-- 选定流：Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
+- 选定流：驴 `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
 - 流属性/单位：Mass / kg live weight
 - 数量规则：进入处理或交付期的实测活重
 - 数值来源模式：前景记录（`foreground_record`）
@@ -713,7 +674,7 @@ sync_with: pcr.en-US.md
 
 当声明门包括超出正常农场门转移的处理或交付时，记录电力、燃料、装载设备和路线特定运输服务。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -725,13 +686,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_gate_handling_and_transport_records`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 柴油 (`handling_energy_and_delivery_transport_diesel`)
 
 仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 当声明门包括超出正常农场门转移的处理或交付时，记录电力、燃料、装载设备和路线特定运输服务。
 
-- 选定流：柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -742,6 +705,8 @@ sync_with: pcr.en-US.md
 - 基准类型：运输服务（`transport_service`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_gate_handling_and_transport_records`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 公路货运服务（`handling_energy_and_delivery_transport_road_freight`）
 
@@ -781,7 +746,7 @@ sync_with: pcr.en-US.md
 
 声明转移活驴是在声明门的活体动物输出。
 
-- 选定流：Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
+- 选定流：驴 `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 千克
 - 数值来源模式：前景记录（`foreground_record`）
@@ -803,7 +768,7 @@ sync_with: pcr.en-US.md
 
 处理和交付能源化石二氧化碳根据燃料和能源记录计算。
 
-- 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：仅用前景直接运营设备的实际化石燃料量和相容燃烧因子计算本卡 CO2；排除外购电力发电排放和已由委外运输服务覆盖的排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -842,8 +807,8 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_stock_entry_records | stock_entry_and_breeding_basis | declared breeding herd or purchased stock entry | animal receiving, birth, purchase, or herd inventory record | animal or lot id; source; age class; sex; breed or type; intended use; live weight; acquisition or birth date; health status; upstream burden treatment | scale record, veterinary certificate, herd book, purchase invoice, or birth record；原活动量汇总：按动物类别汇总活重，并在纳入繁育基础负荷时分配到活重输出 | head and kg live weight | per birth, purchase, transfer, or inventory period | rearing cycle or herd maintenance period | declared herd, farm, or lot | 每声明的参考流 | scale calibration, herd book, animal movement record, purchase invoice, health certificate |
 | cp_live_weight_records | rearing_and_husbandry; farm_gate_handling_and_delivery | live ass weight and output | weighing, sale, dispatch, or animal movement record | animal or lot id; age class; sex; breed or type; weighing date; live weight; gate; buyer or destination; health status | calibrated scale, weigh tape with conversion, sale ticket, or animal movement record；原活动量汇总：汇总声明门活重，并与进入、出生、购买、死亡和销售记录核对 | kg live weight and head | per weighing, sale, or dispatch event | rearing cycle and delivery period | animal lot, farm, and transfer gate | 每声明的参考流 | scale calibration, sale ticket, movement certificate, dispatch note |
-| cp_feed_and_forage_records | stock_entry_and_breeding_basis; rearing_and_husbandry | feed and forage | feed purchase, grazing, feed issue, or feed balance record | feed type; source; dry matter or as-fed basis; quantity; moisture; animal class; feeding period | invoice, feed issue log, pasture allocation record, feed inventory, or nutrition record；原活动量汇总：必要时换算为干物质；按 animal-days、活重或有文件支持的日粮组分配 | kg as-fed and kg dry matter | daily, batch, month, or feeding period | rearing cycle or herd maintenance period | farm, pasture, housing unit, or animal class | 每声明的参考流 | invoice, feed analysis, inventory reconciliation, pasture record |
-| cp_water_records | rearing_and_husbandry | drinking and husbandry water | water meter, tank fill, pump, well, or use estimate record | source; volume; period; animal class; use type; allocation method | meter reading, pump log, water invoice, tank record, or documented estimate；原活动量汇总：按水源汇总并在需要时换算为 kg；按 animal-days 或活重分配 | L, m3, or kg | daily, month, batch, or reporting period | rearing cycle | water source, housing unit, pasture, or animal lot | 每声明的参考流 | meter calibration, pump log, water invoice, documented estimate |
+| cp_feed_and_forage_records | stock_entry_and_breeding_basis; rearing_and_husbandry | feed and forage | feed purchase, grazing, feed issue, or feed balance record | feed type; source; dry matter or as-fed basis; quantity; moisture; animal class; feeding period | invoice, feed issue log, pasture allocation record, feed inventory, or nutrition record；原活动量汇总：必要时换算为干物质；按 animal-days、活重或有文件支持的日粮组分配 `purchased_feed_and_forage_for_breeding_basis_specific_input`: 用于维持繁育或补栏动物、并在分配到可销售动物之前发生的饲料和牧草，应按饲料类型和水分基础记录。 实测外购或自产饲料质量，必要时换算为干物质 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-leap-animal-feeds-2016` `feed_and_forage_consumed_during_rearing_specific_input`: 在记录允许时，应分别记录饲料、牧草、作物秸秆、放牧采食估算、精料、矿物补充料和外购饲料。 按动物类别记录的实测饲料领用、放牧估算或饲料平衡 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-leap-animal-feeds-2016` | kg as-fed and kg dry matter | daily, batch, month, or feeding period | rearing cycle or herd maintenance period | farm, pasture, housing unit, or animal class | 每声明的参考流 | invoice, feed analysis, inventory reconciliation, pasture record |
+| cp_water_records | rearing_and_husbandry | drinking and husbandry water | water meter, tank fill, pump, well, or use estimate record | source; volume; period; animal class; use type; allocation method | meter reading, pump log, water invoice, tank record, or documented estimate；原活动量汇总：按水源汇总并在需要时换算为 kg；按 animal-days 或活重分配 用水记录另须明确外购/直接取水/回用来源、取水点及水源区室、原始取水量与交付量、内部回用、损失、供方或现场节点、已覆盖的取水/处理/输配、换算基准、期间及负担责任。分开保留各数量，不将全部用水量自动转为前景取水。 | L, m3, or kg | daily, month, batch, or reporting period | rearing cycle | water source, housing unit, pasture, or animal lot | 每声明的参考流 | meter calibration, pump log, water invoice, documented estimate |
 | cp_bedding_and_housing_records | rearing_and_husbandry | bedding and housing materials | bedding purchase, issue, or replacement record | material type; quantity; moisture where relevant; replacement frequency; housing unit; fate | invoice, stock issue log, housing operation record, or bedding balance；原活动量汇总：汇总垫料输入，并在相关时分配到粪污或废物路线 | kg | per delivery, replacement, or reporting period | rearing cycle | housing unit or animal lot | 每声明的参考流 | invoice, inventory log, housing record |
 | cp_veterinary_and_health_records | rearing_and_husbandry | veterinary and animal health inputs | treatment, vaccine, medicine, disinfectant, or identification record | product; active ingredient if applicable; dose; item count; treated animals; date; reason | veterinary log, invoice, product label, treatment certificate, or farm health record；原活动量汇总：按动物批次汇总产品数量，并在有实质影响时归一化到活重输出 | kg, L, dose, item, or product-specific unit | per treatment event or reporting period | rearing cycle | animal lot or farm | 每声明的参考流 | veterinary record, invoice, treatment log, product label |
 | cp_energy_records | rearing_and_husbandry | farm energy | electricity, fuel, equipment, or service energy record | carrier; quantity; meter or invoice id; operation; period; allocation method | utility bill, meter reading, fuel invoice, equipment log, or telematics；原活动量汇总：换算为 MJ 或 kWh，并按有文件支持的基础分配到活驴生产 | kWh, MJ, L, or kg fuel | month, batch, or operation | rearing cycle | farm, housing unit, pump, feed system, or manure system | 每声明的参考流 | invoice, meter record, fuel log, equipment record |
@@ -864,6 +829,7 @@ sync_with: pcr.en-US.md
 | calculate_manure_nh3 | manure ammonia | 使用粪污氮、舍饲、储存、田间施用、放牧沉积以及所需气候或管理数据，应用声明 EMEP/EEA 或区域氨方法 | cp_manure_and_excreta_records | kg NH3 per reference output | `emep-eea-2023-manure-management` |
 | calculate_energy_co2 | farm energy fossil CO2 | 仅核算前景直接运营设备的化石燃料燃烧 CO2，再按合格产出归一化；外购电力及委外运输排放由相应上游数据承担，不得重复 | cp_energy_records; cp_gate_handling_and_transport_records | kg fossil CO2 per reference output |  |
 | allocate_breeding_basis | breeding herd burdens | 当繁育群在范围内时，使用有文件支持的群体输出基础将繁育群维持负荷分配到商品活驴输出 | cp_stock_entry_records; cp_feed_and_forage_records; cp_live_weight_records | breeding-basis burden per kg live-weight output |  |
+| calculate_water_boundary | `drinking_and_husbandry_water`; `water_withdrawal_for_animal_production` | 按外购供水、直接建模取水、已链接现场供水及内部回用划分记录。环境取水归属实际节点一次；供方已覆盖取水不得再次作为前景资源投入。使用分水源原始取水记录并计入有记录的供水损失，不采用交付用水总量；回用单独记录。水源/供方覆盖不明须保留为证据缺口，不推定零取水。体积仅按有记录基准换算为质量，可归属数量归一化一次。 | `cp_water_records`; 供方覆盖及水源记录 | 分开的供水产品、归属基本流取水及回用台账 | `ecoinvent-water-supply-2023` |
 
 ### 数据质量要求
 
@@ -890,6 +856,7 @@ sync_with: pcr.en-US.md
 - 死亡、淘汰、粪肥产品、垫料废物和其他输出具有声明去向
 - 当粪污、奶、役用服务、繁育服务或其他共产品被计入信用时，声明分配或过程细分
 - 超出暂定筛选范围的值包含来源说明、修正数据或方法理由
+- 数据集完整性确认前，依据水源及供方记录核对 calculate_water_boundary：供方已覆盖取水不得在前景重计，回用不得作为新取水，水源/区室绑定须核验，覆盖证据缺失不得当作零值。
 
 ## 10. 发布数据集画像
 
@@ -913,3 +880,4 @@ sync_with: pcr.en-US.md
 | `emep-eea-2023-manure-management` | official_guidance | <https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023/> | 粪污管理的氨和空气污染物过程分解 |
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity for live-weight output, animal inventory reconciliation, and process reference outputs. | 参考输出和动物质量平衡检查的 QA 校验 |
 | `aphis-equine-treatment-context` | official_guidance | APHIS equine import treatment context; identity example only, not a universal treatment rule or evidence of use, https://www.aphis.usda.gov/news/program-update/resumption-equine-imports-mexico-after-new-world-screwworm-detection | 条件性身份依据；实际场址用量和适用性须单独核实 |
+| `ecoinvent-water-supply-2023` | literature | [ecoinvent, Water Supply, 2023](https://support.ecoinvent.org/water-supply) | 方法背景：供水可覆盖取水、处理及输配，实际供方边界须另行核实。不假定本 PCR 使用 ecoinvent 供方，也不认为通用水 UUID 适合所有水源。 |

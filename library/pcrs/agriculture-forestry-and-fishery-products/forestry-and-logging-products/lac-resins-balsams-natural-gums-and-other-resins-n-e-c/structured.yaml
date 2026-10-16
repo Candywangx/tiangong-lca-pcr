@@ -156,38 +156,14 @@ process_inventory:
     label: "Managed host production and maintenance"
     inputs:
       product:
-        - row_id: host_inputs
-          role: "Host maintenance materials"
-          name: "Host maintenance materials"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Declared nursery plants, fertilizers, protection chemicals and consumables used to maintain actual host plots; expand from records into concrete material exchanges with separate units, formulation and nutrient/active-ingredient basis. Natural unmanaged collection does not inherit cultivation burdens."
-          amount:
-            expression: "Attributed measured quantity from cp_host_management; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_host_management
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: host_energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for host_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Actual fuels, purchased electricity and supplied heat for establishment and maintenance only; preserve carrier, native units and metering period before justified conversion. Do not duplicate shared pump or equipment energy at collection. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for host_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Actual fuels, purchased electricity and supplied heat for establishment and maintenance only; preserve carrier, native units and metering period before justified conversion. Do not duplicate shared pump or equipment energy at collection. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_host_management and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -203,10 +179,12 @@ process_inventory:
             ranges: []
         - row_id: host_energy_diesel
           role: "Diesel fuel supplied to equipment"
-          name: "Diesel fuel supplied to equipment"
+          name: "Diesel fuel"
           flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_host_management and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -376,70 +354,19 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       elementary:
-        - row_id: host_management_combustion_air
-          role: "Actual on-site combustion substances to air"
-          name: "Actual on-site combustion substances to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust."
-          amount:
-            expression: "Attributed measured quantity from cp_host_management; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_host_management
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "30"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
   - id: plant_collection
     label: "Plant exudate tapping or natural collection"
     inputs:
       product:
-        - row_id: tapping_materials
-          role: "Plant tapping and collection materials"
-          name: "Plant tapping and collection materials"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Actual collection vessels, tool replacement shares and permitted stimulants when tapping occurs; naturally exuded material collection does not automatically use stimulants. Record formulations and quantities separately within this material-role card."
-          amount:
-            expression: "Attributed measured quantity from cp_plant_collection; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_plant_collection
-              source_ids:
-                - fao-tapping-route
-                - fao-plant-exudate-production
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: plant_collection_energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for plant_collection_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Meter attributable collection and in-boundary site movement energy; manual collection may have verified zero purchased energy, not an assumed universal zero. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for plant_collection_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Meter attributable collection and in-boundary site movement energy; manual collection may have verified zero purchased energy, not an assumed universal zero. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_plant_collection and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -515,32 +442,7 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       elementary:
-        - row_id: plant_collection_combustion_air
-          role: "Actual on-site combustion substances to air"
-          name: "Actual on-site combustion substances to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust."
-          amount:
-            expression: "Attributed measured quantity from cp_plant_collection; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_plant_collection
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "30"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
   - id: lac_collection
     label: "Lac host inoculation and crude lac harvest"
     inputs:
@@ -572,38 +474,14 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: lac_collection_materials
-          role: "Lac host inoculation and harvest materials"
-          name: "Lac host inoculation and harvest materials"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Actual tying, collection and harvest consumables excluding broodlac already recorded; link use to inoculation and harvest phases of the same host/cycle."
-          amount:
-            expression: "Attributed measured quantity from cp_lac_collection; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_lac_collection
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: lac_collection_energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for lac_collection_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Actual energy for host access, inoculation, cutting/scraping and internal movement, attributed to the observed lac cycle; do not count host maintenance energy twice. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for lac_collection_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Actual energy for host access, inoculation, cutting/scraping and internal movement, attributed to the observed lac cycle; do not count host maintenance energy twice. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_lac_collection and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -704,32 +582,7 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       elementary:
-        - row_id: lac_collection_combustion_air
-          role: "Actual on-site combustion substances to air"
-          name: "Actual on-site combustion substances to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust."
-          amount:
-            expression: "Attributed measured quantity from cp_lac_collection; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_lac_collection
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "30"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
   - id: primary_preparation
     label: "Primary cleaning grading and preparation"
     inputs:
@@ -762,10 +615,12 @@ process_inventory:
                 source_ids: []
         - row_id: preparation_energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for preparation_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Actual energy for evidenced simple cleaning, screening, sorting, drying and storage before dispatch; no mandatory heated drying, extraction or universal recipe. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for preparation_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Actual energy for evidenced simple cleaning, screening, sorting, drying and storage before dispatch; no mandatory heated drying, extraction or universal recipe. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_primary_preparation and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -800,32 +655,6 @@ process_inventory:
               - role: qa_guardrail
                 lower: "0"
                 upper: "100"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: preparation_materials
-          role: "Primary preparation consumable materials"
-          name: "Primary preparation consumable materials"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Actual cleaning and maintenance consumables only; preserve concrete identities and avoid embedding extraction solvents, reactive modification or blended finished formulations."
-          amount:
-            expression: "Attributed measured quantity from cp_primary_preparation; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_primary_preparation
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1022,32 +851,6 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: primary_preparation_combustion_air
-          role: "Actual on-site combustion substances to air"
-          name: "Actual on-site combustion substances to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust."
-          amount:
-            expression: "Attributed measured quantity from cp_primary_preparation; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_primary_preparation
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "30"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
   - id: producer_dispatch
     label: "Producer storage protection and dispatch"
     inputs:
@@ -1137,10 +940,12 @@ process_inventory:
             ranges: []
         - row_id: dispatch_energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for dispatch_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Actual in-boundary storage, weighing and handling energy. Customer transport, distribution and product use begin after the declared producer dispatch gate and are excluded. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for dispatch_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Actual in-boundary storage, weighing and handling energy. Customer transport, distribution and product use begin after the declared producer dispatch gate and are excluded. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_producer_dispatch and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -1187,59 +992,9 @@ process_inventory:
                 evidence_kind: "calculated_from_collection"
                 source_ids: []
       waste:
-        - row_id: dispatch_waste
-          role: "Producer dispatch damaged packaging and rejected solids"
-          name: "Producer dispatch damaged packaging and rejected solids"
-          flow_type: "waste"
-          property_unit: "Mass / kg"
-          description: "Enumerate actual damaged packaging and final rejected product separately by waste identity and treatment recipient under this variable-role card; keep returns/rework internal and exclude rejected mass from accepted reference output."
-          amount:
-            expression: "Attributed measured quantity from cp_producer_dispatch; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_producer_dispatch
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
       elementary:
-        - row_id: producer_dispatch_combustion_air
-          role: "Actual on-site combustion substances to air"
-          name: "Actual on-site combustion substances to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust."
-          amount:
-            expression: "Attributed measured quantity from cp_producer_dispatch; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_producer_dispatch
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "30"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
 allocation_rules:
   - rule_id: subdivision_first
     applies_to: "all intended output grades and host coproducts"
@@ -1272,7 +1027,7 @@ dataset_production:
       flow_role: "management inputs land and shared assets"
       record_type: "host/plot and period ledger"
       raw_fields: "host species; plot; management status; area; land class; establishment and replacement dates; input identities/formulations; native quantity/unit; water source; productive periods; all outputs; shared use; emissions method; attribution evidence; linked dispatch net mass"
-      collection_method: "Trace actual plot/cycle activity records, calibration, invoices and land-use history; retain original area/cycle/service bases and convert their attributed totals exactly once to the net accepted dispatch denominator. Record actual direct abstraction/transformation separately where applicable."
+      collection_method: "Trace actual plot/cycle activity records, calibration, invoices and land-use history; retain original area/cycle/service bases and convert their attributed totals exactly once to the net accepted dispatch denominator. Record actual direct abstraction/transformation separately where applicable. host_management_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_host_management; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
       unit: "actual native units; normalized card units"
       frequency: "each event and reporting period"
       temporal_coverage: "complete establishment and attributable productive periods"
@@ -1284,7 +1039,7 @@ dataset_production:
       flow_role: "plant exudate collection and direct emissions"
       record_type: "collection lot record"
       raw_fields: "botanical identity; natural/tapped method; dates; collected gross/tare/net mass; water/impurity state; stimulus formulation; native inputs/energy units; losses; destination; emissions substances/medium/method; linked dispatch mass; source_handoff_key; matched_output_receipt_rows; own_or_purchased; component_basis"
-      collection_method: "Weigh and identify each collected lot and reconcile tools, materials, fuel and retained stock; preserve raw collection-unit and seasonal data, apply evidenced allocation then divide by matched accepted dispatch net mass exactly once. Retain unallocated source and collected-material physical ledgers under cp_biological_source_plant_collection; burden attribution must not reduce those physical quantities."
+      collection_method: "Weigh and identify each collected lot and reconcile tools, materials, fuel and retained stock; preserve raw collection-unit and seasonal data, apply evidenced allocation then divide by matched accepted dispatch net mass exactly once. Retain unallocated source and collected-material physical ledgers under cp_biological_source_plant_collection; burden attribution must not reduce those physical quantities. plant_collection_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_plant_collection; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
       unit: "actual native units; normalized card units"
       frequency: "each tapping/collection event and lot"
       temporal_coverage: "complete declared season and dispatch lots"
@@ -1296,7 +1051,7 @@ dataset_production:
       flow_role: "inoculation harvest broodlac and residues"
       record_type: "host/cycle and harvest record"
       raw_fields: "lac insect strain; host species/plot; natural or inoculated status; broodlac identity/mass; inoculation and harvest dates; twig/impurity basis; wet/net mass; surviving/retained brood; energy/materials; destination; emissions; dispatch link; source_handoff_key; matched_output_receipt_rows; own_or_purchased; component_basis"
-      collection_method: "Identify actual host/cycle and weigh crude harvest plus broodlac separately; natural collection records zero inoculation only with evidence. Retain raw host/cycle bases and attribute quantities then normalize exactly once to linked net accepted dispatch mass. Retain unallocated source and collected-material physical ledgers under cp_biological_source_lac_collection; burden attribution must not reduce those physical quantities."
+      collection_method: "Identify actual host/cycle and weigh crude harvest plus broodlac separately; natural collection records zero inoculation only with evidence. Retain raw host/cycle bases and attribute quantities then normalize exactly once to linked net accepted dispatch mass. Retain unallocated source and collected-material physical ledgers under cp_biological_source_lac_collection; burden attribution must not reduce those physical quantities. lac_collection_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_lac_collection; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
       unit: "actual native units; normalized card units"
       frequency: "each inoculation and harvest lot"
       temporal_coverage: "full recorded inoculation-to-harvest cycle or natural collection period"
@@ -1308,7 +1063,7 @@ dataset_production:
       flow_role: "raw/prepared material grades wastes water and volatile losses"
       record_type: "preparation lot ledger"
       raw_fields: "incoming state/mass; process and bypass flags; incoming/outgoing water and impurity tests; retained volatile constituents; opening/closing stocks; accepted grades; rework; solids; wastewater; energy/material native units; emissions substance/air; actual treatment recipient; dispatch mass"
-      collection_method: "Weigh inputs, outputs and stock; meter actual supplies and separate water-specific versus other volatile tests. Preserve raw preparation batch balances and uncertainty; allocate shared operations and normalize totals once to matched net accepted dispatch mass. Unexplained loss remains a gap."
+      collection_method: "Weigh inputs, outputs and stock; meter actual supplies and separate water-specific versus other volatile tests. Preserve raw preparation batch balances and uncertainty; allocate shared operations and normalize totals once to matched net accepted dispatch mass. Unexplained loss remains a gap. primary_preparation_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_primary_preparation; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
       unit: "actual native units; normalized card units"
       frequency: "each preparation run and changeover"
       temporal_coverage: "whole declared preparation and storage period"
@@ -1319,9 +1074,9 @@ dataset_production:
       process_id: "producer_dispatch"
       flow_role: "accepted reference output packaging receipts and rejects"
       record_type: "lot dispatch acceptance ledger"
-      raw_fields: "named identity/form/grade; source lot; preparation/bypass; gross; tare; accepted net mass; water/volatile/impurity method and result; receipts; opening/closing stocks; other outputs; reject destination; packaging new/reuse records; native energy units; gate/date; attribution; emissions"
-      collection_method: "Calibrated weighing or matched traceable gross-minus-tare acceptance records; exclude packaging and rejected mass. Preserve original lot totals and carrier units, reconcile receipts plus opening stock against all dispatches, losses and closing stock, and normalize attributed totals exactly once to accepted net reference-product mass."
-      unit: "actual native units; kg accepted product; normalized card units"
+      raw_fields: "named identity/form/grade; source lot; preparation/bypass; gross; tare; accepted net mass; water/volatile/impurity method and result; receipts; opening/closing stocks; other outputs; reject destination; packaging new/reuse records; native energy units; gate/date; attribution; emissions; stream material/product identity; composition and contamination state; native quantity and unit; item-mass/density conversion evidence; lot; net product and packaging mass; reuse/rework; recipient; treatment route; matched reference output"
+      collection_method: "Calibrated weighing or matched traceable gross-minus-tare acceptance records; exclude packaging and rejected mass. Preserve original lot totals and carrier units, reconcile receipts plus opening stock against all dispatches, losses and closing stock, and normalize attributed totals exactly once to accepted net reference-product mass. producer_dispatch_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_producer_dispatch; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability.; dispatch_waste_specific_output: At the actual primary-resin/gum producer dispatch, identify discarded packaging by material separately from rejected product by the actual named resin/gum, form, quality and state. Keep documented return/rework internal and exclude rejected product and packaging tare from accepted reference-product net mass. Preserve original lot totals, opening/closing stocks, actual recipients and disposal/recovery routes; attribute once and normalize to matched accepted net dispatch mass. The former broad aggregate screen is not a default or mandatory component limit. This is a mandatory collection and calculation requirement, not an inventory exchange. Before dataset completeness, create one physically specific card for each actual exported stream, including composition, state, native quantity/property, destination and evidenced product/waste role. Use only a compatible verified UUID, or explicitly register the concrete unresolved identity. Do not invent a packaging recipe, assume segregation, infer zero from missing evidence or omit a required stream. A real single mixed stream may remain one composition-defined identity only with collection/transfer evidence and compatible treatment; never duplicate it with its component exports. Keep separately handled liquid and solid streams distinct. Preserve original attribution, period, mass/water balances, reference denominator and treatment/service boundaries; link existing matching exchanges rather than count duplicates. Former aggregate ranges are not individual-stream defaults or limits."
+      unit: "actual native units; kg accepted product; normalized card units; kg separately for each stream; native liquid volume separately; count and mass distinct"
       frequency: "each dispatch and accounting period"
       temporal_coverage: "complete declared dispatch period matched to source cycle"
       site_scope: "actual producer dispatch gate"
@@ -1378,6 +1133,13 @@ dataset_production:
         - "component analysis"
         - "cited applicable factors"
       output: "disclosed substance/medium emissions and carbon basis"
+      source_ids: []
+    - id: dispatch_waste_specific_output
+      applies_to: "producer_dispatch"
+      rule: "At the actual primary-resin/gum producer dispatch, identify discarded packaging by material separately from rejected product by the actual named resin/gum, form, quality and state. Keep documented return/rework internal and exclude rejected product and packaging tare from accepted reference-product net mass. Preserve original lot totals, opening/closing stocks, actual recipients and disposal/recovery routes; attribute once and normalize to matched accepted net dispatch mass. The former broad aggregate screen is not a default or mandatory component limit. This is a mandatory collection and calculation requirement, not an inventory exchange. Before dataset completeness, create one physically specific card for each actual exported stream, including composition, state, native quantity/property, destination and evidenced product/waste role. Use only a compatible verified UUID, or explicitly register the concrete unresolved identity. Do not invent a packaging recipe, assume segregation, infer zero from missing evidence or omit a required stream. A real single mixed stream may remain one composition-defined identity only with collection/transfer evidence and compatible treatment; never duplicate it with its component exports. Keep separately handled liquid and solid streams distinct. Preserve original attribution, period, mass/water balances, reference denominator and treatment/service boundaries; link existing matching exchanges rather than count duplicates. Former aggregate ranges are not individual-stream defaults or limits."
+      inputs:
+        - cp_producer_dispatch
+      output: "actual stream-specific exchanges, destinations and nonduplicated mass balance"
       source_ids: []
   data_quality_requirements:
     - id: identity_quality
@@ -1476,7 +1238,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:81e36c8445c491a46e8f5be9f3a1f40e769a4f036867b4dea26eb345ddffdf21"
+  source_sha256: "sha256:b6eed58e24993309ccf1c7a3455b5124b10e9b73c1334e30c6d476aa1915c1d2"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7177"
@@ -1527,16 +1289,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_68790"
+    - unit_id: "normative_59619"
       family: "allocation"
       span:
         start:
-          offset: 68790
-          line: 1103
+          offset: 59619
+          line: 894
           column: 1
         end:
-          offset: 71200
-          line: 1115
+          offset: 62029
+          line: 906
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `subdivision_first` | all intended output grades and host coproducts | Prefer measured process/lot subdivision. Enumerate actual primary product grades, saleable host wood and retained/sold broodlac with quantity, quality, boundary and receiver. Grade outputs that leave independently are products; discarded material is waste, not an automatic coproduct credit. | |\n| `common_host_burdens` | shared host production and seasonal outputs | Attribute remaining common host/asset burdens using documented causal service, area-time or use records where defensible. If inseparable products lack a defensible physical relation, use contemporaneous site-gate economic shares with price/quantity evidence and sensitivity; never prescribe one mass split or price for all gums, resins and lac. | |\n| `period_attribution` | establishment; productive seasons; replacement and shared assets | Link establishment and maintenance to actual productive and nonproductive periods, host replacement and termination, and future output expectations with sensitivity. A harvest may not carry both its full establishment cost and a second annualized copy. No universal host lifetime, gum yield or lac cycle is prescribed. | |\n| `rework_retention` | primary_preparation; producer_dispatch | Keep internal rework/returns with their originating burdens and record repeated energy/material use; net final accepted output excludes rejects and stock retained for a later period. Record waste treatment responsibility explicitly; do not assume substitution credits. | |\n| `common_service_once` | shared roads pumps tools stores and changeovers | Register all consuming nodes and periods, meter/subdivide where possible and distribute the one common total using evidenced services. Attribute campaign cleaning and changeovers once to actual lots; compatible output totals reconcile to the denominator before reference normalization. | |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1555,12 +1317,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 68790
-              line: 1103
+              offset: 59619
+              line: 894
               column: 1
             end:
-              offset: 68830
-              line: 1103
+              offset: 59659
+              line: 894
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1575,16 +1337,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_84048"
+    - unit_id: "normative_86611"
       family: "validation"
       span:
         start:
-          offset: 84048
-          line: 1149
+          offset: 86611
+          line: 953
           column: 1
         end:
-          offset: 87076
-          line: 1162
+          offset: 89639
+          line: 966
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_final_reference` | primary_product_dispatch | Require one qualified final product output of 1 kg net as-received reference product excluding packaging; its name, link, mass property/unit and qualifiers align with section 3. Intermediate/raw receipts remain measured, not fixed. | |\n| `validate_source_route` | source and host nodes | Verify each lot's actual plant or lac source, management and inoculation activation plus primary-preparation bypass/operation records; do not apply all alternatives or unknown-state defaults. | fao-plant-exudate-production; fao-lac-primary-states |\n| `validate_balance` | all material handoffs | Reconcile wet/net/dry/component quantities, water, natural volatile loss, impurities, other grades, waste, retained brood/rework and stock; disclose residuals and measurement uncertainty. Never label all loss as water or waste as sold product. | |\n| `validate_attribution` | periods grades infrastructure and campaigns | Require complete intended output and service consumers plus period/phase boundaries, replacement/termination, causal subdivision or evidenced residual allocation, and no duplicate host, shared-asset, cleaning, stock or returned-material burdens. | |\n| `validate_normalization` | all amounts and collection protocols | Require a matched accepted dispatch denominator, documented raw bases and conversions, and exactly-once attribution/normalization. All amounts and protocol reporting use per 1 kg reference flow. Range screens are not default values or evidence that the mass balance is satisfied. | |\n| `validate_identity_emissions` | concrete exchanges and direct emissions | Verify actual fixed identities and support units before final dataset publication; expand variable roles into concrete materials/substances and destinations. Species-resolved air emissions and explicit fuel/service combustion scope prevent invented or duplicated exhaust. | |\n| `validate_scope_state` | reference product and downstream use | Reject interchange of primary gum/resin/lac with rubber, industrial rosin/turpentine, extracted shellac or finished formulation; primary-only methodology does not imply exact whole-leaf coverage. No automatic sequestration or storage credit. | unsd-cpc-natural-resins; fao-lac-primary-states |\n| `validate_biological_source_handoff` | `host_management`; `plant_collection`; `lac_collection`; `primary_preparation`; `producer_dispatch` | Each collected output lot requires an explicit source and matched downstream receipt; purchased lots must not be recounted as own-site collection. Reconcile raw collected quantities with physical handoffs, not all biological output against auxiliary inputs. Do not invent formation, resource flows or CO2 uptake from unexplained residuals. Unknown source or handoff blocks a complete data package; absent evidence for total formation or uncollected stock must not be represented as a closed source balance. |  |\n\n"
       headings:
@@ -1603,12 +1365,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 84048
-              line: 1149
+              offset: 86611
+              line: 953
               column: 1
             end:
-              offset: 84070
-              line: 1149
+              offset: 86633
+              line: 953
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1718,184 +1480,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "subdivision_first"
       identity_kind: "explicit"
-      unit_id: "normative_68790"
+      unit_id: "normative_59619"
       source_span:
         start:
-          offset: 68903
-          line: 1107
+          offset: 59732
+          line: 898
           column: 1
         end:
-          offset: 69271
-          line: 1107
+          offset: 60100
+          line: 898
           column: 369
     - pointer: "/allocation_rules/1"
       rule_id: "common_host_burdens"
       identity_kind: "explicit"
-      unit_id: "normative_68790"
+      unit_id: "normative_59619"
       source_span:
         start:
-          offset: 69272
-          line: 1108
+          offset: 60101
+          line: 899
           column: 1
         end:
-          offset: 69692
-          line: 1108
+          offset: 60521
+          line: 899
           column: 421
     - pointer: "/allocation_rules/2"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_68790"
+      unit_id: "normative_59619"
       source_span:
         start:
-          offset: 69693
-          line: 1109
+          offset: 60522
+          line: 900
           column: 1
         end:
-          offset: 70107
-          line: 1109
+          offset: 60936
+          line: 900
           column: 415
     - pointer: "/allocation_rules/3"
       rule_id: "rework_retention"
       identity_kind: "explicit"
-      unit_id: "normative_68790"
+      unit_id: "normative_59619"
       source_span:
         start:
-          offset: 70108
-          line: 1110
+          offset: 60937
+          line: 901
           column: 1
         end:
-          offset: 70444
-          line: 1110
+          offset: 61273
+          line: 901
           column: 337
     - pointer: "/allocation_rules/4"
       rule_id: "common_service_once"
       identity_kind: "explicit"
-      unit_id: "normative_68790"
+      unit_id: "normative_59619"
       source_span:
         start:
-          offset: 70445
-          line: 1111
+          offset: 61274
+          line: 902
           column: 1
         end:
-          offset: 70810
-          line: 1111
+          offset: 61639
+          line: 902
           column: 366
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_68790"
+      unit_id: "normative_59619"
       source_span:
         start:
-          offset: 70812
-          line: 1113
+          offset: 61641
+          line: 904
           column: 1
         end:
-          offset: 71198
-          line: 1113
+          offset: 62027
+          line: 904
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validate_final_reference"
       identity_kind: "explicit"
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 84143
-          line: 1153
+          offset: 86706
+          line: 957
           column: 1
         end:
-          offset: 84436
-          line: 1153
+          offset: 86999
+          line: 957
           column: 294
     - pointer: "/validation_rules/1"
       rule_id: "validate_source_route"
       identity_kind: "explicit"
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 84437
-          line: 1154
+          offset: 87000
+          line: 958
           column: 1
         end:
-          offset: 84737
-          line: 1154
+          offset: 87300
+          line: 958
           column: 301
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 84738
-          line: 1155
+          offset: 87301
+          line: 959
           column: 1
         end:
-          offset: 85032
-          line: 1155
+          offset: 87595
+          line: 959
           column: 295
     - pointer: "/validation_rules/3"
       rule_id: "validate_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 85033
-          line: 1156
+          offset: 87596
+          line: 960
           column: 1
         end:
-          offset: 85355
-          line: 1156
+          offset: 87918
+          line: 960
           column: 323
     - pointer: "/validation_rules/4"
       rule_id: "validate_normalization"
       identity_kind: "explicit"
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 85356
-          line: 1157
+          offset: 87919
+          line: 961
           column: 1
         end:
-          offset: 85707
-          line: 1157
+          offset: 88270
+          line: 961
           column: 352
     - pointer: "/validation_rules/5"
       rule_id: "validate_identity_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 85708
-          line: 1158
+          offset: 88271
+          line: 962
           column: 1
         end:
-          offset: 86059
-          line: 1158
+          offset: 88622
+          line: 962
           column: 352
     - pointer: "/validation_rules/6"
       rule_id: "validate_scope_state"
       identity_kind: "explicit"
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 86060
-          line: 1159
+          offset: 88623
+          line: 963
           column: 1
         end:
-          offset: 86419
-          line: 1159
+          offset: 88982
+          line: 963
           column: 360
     - pointer: "/validation_rules/7"
       rule_id: "validate_biological_source_handoff"
       identity_kind: "explicit"
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 86420
-          line: 1160
+          offset: 88983
+          line: 964
           column: 1
         end:
-          offset: 87074
-          line: 1160
+          offset: 89637
+          line: 964
           column: 655
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1924,27 +1686,27 @@ normative_context:
           column: 243
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_68790"
+      unit_id: "normative_59619"
       source_span:
         start:
-          offset: 68790
-          line: 1103
+          offset: 59619
+          line: 894
           column: 1
         end:
-          offset: 68830
-          line: 1103
+          offset: 59659
+          line: 894
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_84048"
+      unit_id: "normative_86611"
       source_span:
         start:
-          offset: 84048
-          line: 1149
+          offset: 86611
+          line: 953
           column: 1
         end:
-          offset: 84070
-          line: 1149
+          offset: 86633
+          line: 953
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1953,5 +1715,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:81e36c8445c491a46e8f5be9f3a1f40e769a4f036867b4dea26eb345ddffdf21"
-  generated_content_sha256: "sha256:d7bbe6df66221d3d22ff09ab972855017973f9c67e2c821df6a2ad4097857fa6"
+    sha256: "sha256:b6eed58e24993309ccf1c7a3455b5124b10e9b73c1334e30c6d476aa1915c1d2"
+  generated_content_sha256: "sha256:80cf2fd9fbd961cafc8675c55fca403dfa9c995330d0e433acf9a3362482a5e3"

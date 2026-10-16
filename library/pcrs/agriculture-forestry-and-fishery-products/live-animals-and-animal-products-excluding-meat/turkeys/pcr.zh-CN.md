@@ -102,32 +102,6 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 种禽饲料和物资（`breeder_feed`）
-
-按种禽期间记录饲料及饲养物资；形成数据集时分开实际物料种类。
-
-分母与范围要求：每 kg 合格种蛋
-
-原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output.
-
-- 选定流：种禽饲料及饲养物资
-- 流属性/单位：Mass / kg
-- 数量规则：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_breeder`
-- 数量范围：暂定种禽投入完整性筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/kg 合格种蛋
-  - 基准：宽泛初始筛查，后以种禽记录替换
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 种禽供应水（`breeder_water`）
 
 按用途分别记录种禽饮水及清洁用水；功能分组由前景记录确定。
@@ -154,31 +128,20 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 种禽舍能源（`breeder_energy`）
+###### 交流电 (`breeder_energy_electricity`)
 
-按载体和种禽期间记录供暖、通风及照明。
+仅适用于本作业有记录的交流电设备。记录电压及供电技术，电表kWh按1 kWh = 3.6 MJ换算；其他动力来源须使用其实际载能体。执行`breeder_energy_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-分母与范围要求：每 kg 合格种蛋
-
-原始数量及计算要求：计量或因果分摊的载体用量 原始采集分母类型：process_output。
-
-- 选定流：种禽舍供应能源
-- 流属性/单位：Energy / kWh、MJ 或燃料原单位
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_breeder`采集`breeder`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_breeder`
-- 数量范围：暂定种禽能源筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：10000
-  - 单位：kWh 等效/kg 合格种蛋
-  - 基准：宽泛初始筛查，非默认因子
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
 ##### 废物流
 
@@ -254,7 +217,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：分途径挥发性固体与因子计算 原始采集分母类型：process_output。
 
-- 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
+- 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -283,7 +246,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：分途径氮与因子计算 原始采集分母类型：process_output。
 
-- 选定流：一氧化二氮（排放至空气） `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -310,7 +273,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：分途径氮挥发计算 原始采集分母类型：process_output。
 
-- 选定流：氨（排放至空气） `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -371,7 +334,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_hatchery` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -382,11 +345,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_hatchery`
 - 来源：`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`incubation_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_hatchery` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -396,6 +361,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_hatchery`
 - 来源：`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 孵化场清洁用水（`hatchery_water`）
 
@@ -441,7 +408,7 @@ sync_with: pcr.en-US.md
 
 生产者交付关联：仅当本状态／交付门专属行被选为实际路线的最终来源时，才向 reference_handover_input 提供同一批实际合格产品。此时它是内部交付记录，不是第二次对外参考产品销售；否则保留原有中间移交角色。保留确切身份及原有路线条件，只选实际最终来源，不汇总所有连续移交；匹配同批次及相容的物种／状态／交付门证据。较窄固定身份的交付门或物种不得扩大。交付接口不增加加工、运输、产率假设或重复处理负担。
 
-- 选定流：一日龄火鸡雏（种禽与孵化场路线，孵化场交付） `f836d3cf-2f72-4d00-900d-d6e748a8c6f2`
+- 选定流：一日龄火鸡雏 `f836d3cf-2f72-4d00-900d-d6e748a8c6f2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -461,32 +428,6 @@ sync_with: pcr.en-US.md
   - 来源：`mass-balance-identity`
 
 ##### 废物流
-
-###### 孵化残余（`hatch_residues`）
-
-按物质身份及处理去向区分未孵出蛋、蛋壳和不合格雏火鸡。
-
-分母与范围要求：每孵化批次
-
-原始数量及计算要求：按去向称量或以只数换算残余质量 原始采集分母类型：process_output。
-
-- 选定流：孵化残余及不合格雏火鸡
-- 流属性/单位：Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_hatchery`
-- 数量范围：暂定残余筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg/kg 接收种蛋及孵化生物量
-  - 基准：暂定残余比例，仍须逐项平衡
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
@@ -522,32 +463,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 饲养饲料（`rearing_feed`）
-
-按生长阶段保留配方、来源、原样质量和干物质。
-
-分母与范围要求：每 kg 可售较大日龄活鸟
-
-原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output.
-
-- 选定流：火鸡饲料及牧草
-- 流属性/单位：Mass / kg 干物质
-- 数量规则：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_rearing`
-- 数量范围：暂定饲料转化筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg 干物质/kg 活鸟
-  - 基准：宽泛初始筛查，后以配方记录替换
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 供应的饲养用水（`rearing_water`）
 
 在记录中区分饮水与清洁用水；按实际用途决定具体功能分组。
@@ -574,31 +489,20 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 舍饲能源（`rearing_energy`）
+###### 交流电 (`rearing_energy_electricity`)
 
-按载体和群批次记录供暖、通风及照明的电力与燃料。
+仅适用于本作业有记录的交流电设备。记录电压及供电技术，电表kWh按1 kWh = 3.6 MJ换算；其他动力来源须使用其实际载能体。执行`rearing_energy_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-分母与范围要求：每 kg 可售较大日龄活鸟
-
-原始数量及计算要求：计量或分摊的载体用量 原始采集分母类型：process_output。
-
-- 选定流：火鸡舍饲能源
-- 流属性/单位：Energy / kWh、MJ 或燃料原单位
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_rearing`采集`rearing`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_rearing`
-- 数量范围：暂定舍饲能源筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：10000
-  - 单位：kWh 等效/kg 活鸟
-  - 基准：宽泛初始筛查，非默认因子
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
 ##### 废物流
 
@@ -637,32 +541,6 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 死亡及清出垫料（`rearing_residues`）
-
-按去向区分尸体及垫料／粪污；独立出售的粪肥需另作共产品决定。
-
-分母与范围要求：每饲养群批次
-
-原始数量及计算要求：称量物料及按只数换算尸体质量 原始采集分母类型：process_output。
-
-- 选定流：火鸡死亡及清出垫料／粪污
-- 流属性/单位：Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_rearing`
-- 数量范围：暂定残余筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/kg 可售活鸟
-  - 基准：宽泛初始筛查，区分出售粪肥
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 基本流
 
 ###### 粪污甲烷排放至空气（`manure_ch4`）
@@ -673,7 +551,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：分途径挥发性固体与因子计算 原始采集分母类型：process_output。
 
-- 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
+- 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -702,7 +580,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：分途径氮与排放因子计算 原始采集分母类型：process_output。
 
-- 选定流：一氧化二氮（排放至空气） `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -729,7 +607,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：分途径氮与挥发计算 原始采集分母类型：process_output。
 
-- 选定流：氨（排放至空气） `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -799,7 +677,7 @@ sync_with: pcr.en-US.md
 
 生产者交付关联：仅当本状态／交付门专属行被选为实际路线的最终来源时，才向 reference_handover_input 提供同一批实际合格产品。此时它是内部交付记录，不是第二次对外参考产品销售；否则保留原有中间移交角色。保留确切身份及原有路线条件，只选实际最终来源，不汇总所有连续移交；匹配同批次及相容的物种／状态／交付门证据。较窄固定身份的交付门或物种不得扩大。交付接口不增加加工、运输、产率假设或重复处理负担。
 
-- 选定流：火鸡（活体、未加工，农场交付） `b8c33c48-06d3-402e-9ef7-391ddec1761b`
+- 选定流：火鸡 `b8c33c48-06d3-402e-9ef7-391ddec1761b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -940,14 +818,26 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `breeder_feed_specific_input` | `cp_breeder` | 作业 breeder：按种禽期间记录饲料及饲养物资；形成数据集时分开实际物料种类。 分母与范围要求：每 kg 合格种蛋 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 |
+| `breeder_energy_specific_input` | `cp_breeder` | 作业 breeder：按载体和种禽期间记录供暖、通风及照明。 分母与范围要求：每 kg 合格种蛋 原始数量及计算要求：计量或因果分摊的载体用量 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 |
+| `rearing_feed_specific_input` | `cp_rearing` | 作业 rearing：按生长阶段保留配方、来源、原样质量和干物质。 分母与范围要求：每 kg 可售较大日龄活鸟 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 |
+| `rearing_energy_specific_input` | `cp_rearing` | 作业 rearing：按载体和群批次记录供暖、通风及照明的电力与燃料。 分母与范围要求：每 kg 可售较大日龄活鸟 原始数量及计算要求：计量或分摊的载体用量 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 |
+
+
 ### 数据采集协议
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_breeder` | `breeder` | 饲料、合格／淘汰蛋、存栏 | 种禽台账 | 存栏；饲料；蛋枚数／质量；淘汰；淘汰种禽；期间 | 农场日志及秤；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 | 只、kg | 每日／期间 | 完整种禽期间 | 一体化种禽场 | 每参考流 | 签署的存栏／蛋平衡；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_breeder` | `breeder` | 饲料、合格／淘汰蛋、存栏 | 种禽台账 | 存栏；饲料；蛋枚数／质量；淘汰；淘汰种禽；期间 | 农场日志及秤；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 `breeder_feed_specific_input`: 作业 breeder：按种禽期间记录饲料及饲养物资；形成数据集时分开实际物料种类。 分母与范围要求：每 kg 合格种蛋 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `breeder_energy_specific_input`: 作业 breeder：按载体和种禽期间记录供暖、通风及照明。 分母与范围要求：每 kg 合格种蛋 原始数量及计算要求：计量或因果分摊的载体用量 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | 只、kg | 每日／期间 | 完整种禽期间 | 一体化种禽场 | 每参考流 | 签署的存栏／蛋平衡；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_breeder_manure` | `breeder` | CH4、N2O、NH3 | 种禽粪污途径 | 禽群存栏；挥发性固体；排泄氮；途径份额；因子层级 | 粪污记录及分途径计算；原始汇总要求：每污染物及途径只计算一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg、比例 | 种禽期间 | 完整种禽和粪污期间 | 一体化种禽场 | 每参考流 | 投入、因子及去向记录；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_hatchery` | `hatchery` | 种蛋、能源、雏禽、残余 | 孵化批次 | 接收；来源；入孵／出孵日；仪表；水；结果只数；抽样质量 | 日志、仪表及秤；原始汇总要求：按批次汇总，以样本换算只数。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | 枚／只、kg、kWh、m3 | 每批次 | 孵化至出雏 | 生产者孵化场 | 每参考流 | 签署的孵化平衡；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_rearing` | `rearing` | 雏禽、饲料、水、能源、站立禽群、残余 | 群台账 | 来源／只数；配方／水分；仪表；死亡；存栏；垫料去向 | 单据、仪表、日志及秤；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 | 只、kg、m3、kWh | 每日／群 | 完整生长群 | 生产农场 | 每参考流 | 发票、仪表及存栏平衡；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_hatchery` | `hatchery` | 种蛋、能源、雏禽、残余 | 孵化批次 | 接收；来源；入孵／出孵日；仪表；水；结果只数；抽样质量 | 日志、仪表及秤；原始汇总要求：按批次汇总，以样本换算只数。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 `hatch_residues_specific_output`: 按物质身份及处理去向区分未孵出蛋、蛋壳和不合格雏火鸡。 分母与范围要求：每孵化批次 原始数量及计算要求：按去向称量或以只数换算残余质量 原始采集分母类型：process_output。 依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | 枚／只、kg、kWh、m3 | 每批次 | 孵化至出雏 | 生产者孵化场 | 每参考流 | 签署的孵化平衡；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_rearing` | `rearing` | 雏禽、饲料、水、能源、站立禽群、残余 | 群台账 | 来源／只数；配方／水分；仪表；死亡；存栏；垫料去向 | 单据、仪表、日志及秤；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 `rearing_feed_specific_input`: 作业 rearing：按生长阶段保留配方、来源、原样质量和干物质。 分母与范围要求：每 kg 可售较大日龄活鸟 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `rearing_energy_specific_input`: 作业 rearing：按载体和群批次记录供暖、通风及照明的电力与燃料。 分母与范围要求：每 kg 可售较大日龄活鸟 原始数量及计算要求：计量或分摊的载体用量 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `rearing_residues_specific_output`: 按去向区分尸体及垫料／粪污；独立出售的粪肥需另作共产品决定。 分母与范围要求：每饲养群批次 原始数量及计算要求：称量物料及按只数换算尸体质量 原始采集分母类型：process_output。 依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 这是必需的产出身份确认要求，不是集合式交换。保留本作业实际副产品、拒收物、包装废物及处理物流的全部核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料和状态、数量、去向及产品或废物角色。确实混合的废物流可作为一条物理组成明确且组成有计量依据的混合物，不编造分离，也不重复计入其中组分。不同单位分别记录，保留原分配和参考流归一化规则并协调产出平衡。联产品分配前确认实际功能，废物不能仅因具有质量而分得联产品负荷。核验兼容UUID或明确保留未解析身份，缺失记录不等于零数量或可排除。  | 只、kg、m3、kWh | 每日／群 | 完整生长群 | 生产农场 | 每参考流 | 发票、仪表及存栏平衡；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_manure` | `rearing` | CH4、N2O 和 NH3 | 粪污途径 | 挥发性固体；排泄氮；贮存／沉积；途径份额；因子层级 | 记录及相容 IPCC 计算；原始汇总要求：分别计算污染物与途径。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg、比例 | 群／期间 | 完整粪污期间 | 生产农场 | 每参考流 | 因子及投入记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_catching` | `catching` | 站立、可售、损失 | 发货批次 | 站立／可售／损失只数；抽样质量；交付门；时间 | 发货清点及称重；原始汇总要求：只数×抽样质量，核对一项最终输出。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | 只、kg | 每发货 | 捕捉至农场门 | 生产农场 | 每参考流 | 称重单及签收；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_reference_handover` | `reference_handover` | 合格产品及匹配的内部来源移交 | 生产者交付台账 | lot_id, species, state, grade, route_id, gate, period, accepted_quantity, native_unit, source_row_id, source_lot_id, allocation_link | 在同一实际交付门测量合格净产品，将列出的状态／交付门专属来源行及关联输入与唯一实际产出核对。拒收、库存变化及其他销售单独记录；不假设新增处理或运输。 | kg；原生来源数量 | 每次实际交付 | 匹配来源及交付期间 | 仅声明生产者交付门 | 每参考流 | 可追溯验收记录、同批来源至产出台账、校准数量方法及归一化计算表 |
@@ -1012,3 +902,4 @@ sync_with: pcr.en-US.md
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 直接及间接氮路径，以及粪污贮存与管理土壤排放的衔接；须选择适用的物种及管理证据。 |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

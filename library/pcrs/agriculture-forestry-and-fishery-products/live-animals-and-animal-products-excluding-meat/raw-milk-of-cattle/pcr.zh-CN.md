@@ -164,7 +164,7 @@ sync_with: pcr.en-US.md
 记录饮水、通风、照明、饲喂设备、泵送及其他牛群运行所用的水、电力和燃料；具体数据包中保持
 各供应流相互独立。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -174,6 +174,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_herd_resource_records`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 柴油 (`herd_resources_diesel`)
 
 仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
@@ -181,7 +183,7 @@ sync_with: pcr.en-US.md
 记录饮水、通风、照明、饲喂设备、泵送及其他牛群运行所用的水、电力和燃料；具体数据包中保持
 各供应流相互独立。
 
-- 选定流：柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -190,6 +192,8 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_herd_resource_records`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 进入牛群的后备牛（`replacement_cattle`）
 
@@ -281,7 +285,7 @@ sync_with: pcr.en-US.md
 
 采用一致的活动、生产力、日粮和地区特定方法参数，计算每个被代表牛类别的肠道发酵 CH4。
 
-- 选定流：Methane to air
+- 选定流：甲烷向空气排放
 - 流属性/单位：Mass / kg CH4
 - 数量规则：按动物活动数据及适用肠道排放方法和因子计算报告期 CH4；将分配后的物质质量除以同期间农场门实际可销售乳质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -328,29 +332,6 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 输出粪污或回收产品（`exported_manure`）
-
-记录离开农场的粪污、消化残渣、堆肥、分离固体、回收养分或能源产品，并声明其属于残余物、
-共产品还是废物。
-
-- 选定流：路线特定的粪污或回收产品
-- 流属性/单位：Mass / kg
-- 数量规则：按产品和去向采用实测发运数量。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_manure_records`
-- 数量范围：暂定输出粪污 QA 筛查范围（由 FPCM 筛查范围换算）
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100 * k_period
-  - 单位：kg/kg 实际可销售生乳
-  - 基准：每 1 kg 参考流
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 废物流
 
 ###### 送往废物处理或处置的粪污（`manure_waste`）
@@ -383,7 +364,7 @@ sync_with: pcr.en-US.md
 
 按动物类别、挥发性固体、管理系统、气候和甲烷转换计算粪污 CH4。
 
-- 选定流：Methane to air
+- 选定流：甲烷向空气排放
 - 流属性/单位：Mass / kg CH4
 - 数量规则：按挥发性固体、产甲烷潜力、路线比例、转换因子及适用回收或氧化计算报告期粪污 CH4；将分配后的物质质量除以同期间农场门实际可销售乳质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -408,7 +389,7 @@ sync_with: pcr.en-US.md
 
 计算直接和适用的间接 N2O，避免与田间施用排放重复计算。
 
-- 选定流：Nitrous oxide to air
+- 选定流：一氧化二氮向空气排放
 - 流属性/单位：Mass / kg N2O
 - 数量规则：按氮排泄、路线比例和适用排放因子计算报告期粪污直接及间接 N2O；需要时将 N2O-N 按 44/28 换算为 N2O，再将分配后的 N2O 质量除以同期间农场门实际可销售乳质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -431,7 +412,7 @@ sync_with: pcr.en-US.md
 
 以与粪污氮平衡和间接 N2O 计算一致的方式记录或计算 NH3。
 
-- 选定流：Ammonia to air
+- 选定流：氨向空气排放
 - 流属性/单位：Mass / kg NH3
 - 数量规则：对采集的粪污氮和管理系统记录应用所声明的地区方法。
 - 数值来源模式：计算值（`calculated_value`）
@@ -480,7 +461,7 @@ sync_with: pcr.en-US.md
 在具体数据包中分别记录种子、肥料及其养分含量、施用粪肥、植保产品、燃料、电力、灌溉水和
 外包田间作业。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -489,6 +470,8 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_on_farm_feed_records`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 柴油 (`feed_crop_inputs_diesel`)
 
@@ -497,7 +480,7 @@ sync_with: pcr.en-US.md
 在具体数据包中分别记录种子、肥料及其养分含量、施用粪肥、植保产品、燃料、电力、灌溉水和
 外包田间作业。
 
-- 选定流：柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -506,6 +489,8 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_on_farm_feed_records`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 工艺用水 (`feed_crop_inputs_water`)
 
@@ -634,7 +619,7 @@ sync_with: pcr.en-US.md
 
 分别记录电力、燃料、水、洗涤剂、消毒剂和制冷剂补充量。把挤奶、冷却和储奶资源直接归属于乳。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -643,6 +628,8 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_milking_records`
+
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
 
 ###### 工艺用水 (`milking_resources_water`)
 
@@ -794,7 +781,7 @@ sync_with: pcr.en-US.md
 | `cp_herd_records` | `herd_and_feed_management` | 牛群结构、流动、活重、死亡和肠道参数 | 动物登记和牛群生产记录 | animal_class; head_count; entry_date; exit_date; exit_reason; live_weight; body_weight; milk_yield; feed_digestibility; gross_energy_intake | 农场登记、校准秤或有文件依据的体重估算及牛群系统导出；原始记录核对：核对期初存栏 + 出生 + 购入 - 销售 - 转出 - 死亡 = 期末存栏；汇总动物日。再按 calc_inventory_normalization 归一化可归属的报告期数量；保留未归一化原始记录。 | 头；kg 活重；kg 乳；MJ/头/日 | 连续记录事件，按月汇总 | 至少一个有代表性的 12 个月期间；不稳定时采用更长平均期 | 所有支撑报告乳产出的牛 | 每 1 kg 参考流 | 登记核对、秤校准或方法、事件缺失日志和系统导出 |
 | `cp_feed_records` | `herd_and_feed_management` | 日粮和垫料 | 采购、混料、库存、放牧和实验室记录 | material_id; origin; animal_class; as_fed_mass; dry_matter_fraction; opening_stock; closing_stock; feed_waste; bedding_mass | 地磅、发票、混料日志、饲料分析、放牧估算和库存核对；原始记录核对：投入 + 期初库存 - 期末库存 - 损失；换算为干物质并按农场门实际可销售乳质量归一化。再按 calc_inventory_normalization 归一化可归属的报告期数量；保留未归一化原始记录。 | kg 饲喂态；kg 干物质；干物质百分比 | 按批或每日，按月汇总 | 与乳和牛群相同的代表期 | 被代表牛群使用的全部饲料和垫料 | 每 1 kg 参考流 | 校准、发票、实验室证书和核对差异 |
 | `cp_herd_resource_records` | `herd_and_feed_management` | 牛群用水和牛舍能源 | 计量、发票和设备运行记录 | meter_id; carrier; opening_reading; closing_reading; invoice_quantity; equipment_hours; allocation_driver | 优先分表；否则以物理分配核对场址总量；原始记录核对：核对仪表和发票；保留不同载体。再按 calc_inventory_normalization 归一化可归属的报告期数量；保留未归一化原始记录。 | kg 水；kWh；MJ；kg 或 L 燃料 | 每月 | 与乳相同的代表期 | 牛群牛舍和服务区域，不含单独计量的挤奶负荷 | 每 1 kg 参考流 | 仪表校准、发票、换算因子和分配工作表 |
-| `cp_manure_records` | `manure_management` | 粪污数量、组成、路线、处理、输出和排放 | 粪污管理和养分平衡记录 | animal_class; volatile_solids; nitrogen_excretion; bedding; dilution_water; management_system; climate; storage_duration; treatment; exported_mass; destination | 记录、工程平衡、粪污分析、储存测量和方法计算；原始记录核对：核对产生、储存、处理、施用、输出和处置量；按路线计算。再按 calc_inventory_normalization 归一化可归属的报告期数量；保留未归一化原始记录。 | kg 粪污；kg 挥发性固体；kg N；日；kg 产品 | 按事件或批次，按月汇总 | 与牛群和乳相同期间 | 所有被代表牛群类别的每条粪污路线 | 每 1 kg 参考流 | 采样、实验室结果、储存尺寸、收据、平衡闭合和因子溯源 |
+| `cp_manure_records` | `manure_management` | 粪污数量、组成、路线、处理、输出和排放 | 粪污管理和养分平衡记录 | animal_class; volatile_solids; nitrogen_excretion; bedding; dilution_water; management_system; climate; storage_duration; treatment; exported_mass; destination | 记录、工程平衡、粪污分析、储存测量和方法计算；原始记录核对：核对产生、储存、处理、施用、输出和处置量；按路线计算。再按 calc_inventory_normalization 归一化可归属的报告期数量；保留未归一化原始记录。 `exported_manure_specific_output`: 记录离开农场的粪污、消化残渣、堆肥、分离固体、回收养分或能源产品，并声明其属于残余物、 共产品还是废物。 按产品和去向采用实测发运数量。 这是必需的产出身份确认要求，不是集合式交换。保留本作业实际副产品、拒收物、包装废物及处理物流的全部核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料和状态、数量、去向及产品或废物角色。确实混合的废物流可作为一条物理组成明确且组成有计量依据的混合物，不编造分离，也不重复计入其中组分。不同单位分别记录，保留原分配和参考流归一化规则并协调产出平衡。联产品分配前确认实际功能，废物不能仅因具有质量而分得联产品负荷。核验兼容UUID或明确保留未解析身份，缺失记录不等于零数量或可排除。  | kg 粪污；kg 挥发性固体；kg N；日；kg 产品 | 按事件或批次，按月汇总 | 与牛群和乳相同期间 | 所有被代表牛群类别的每条粪污路线 | 每 1 kg 参考流 | 采样、实验室结果、储存尺寸、收据、平衡闭合和因子溯源 |
 | `cp_on_farm_feed_records` | `on_farm_feed_production` | 管理作物和牧草的投入、产出、土地和养分损失 | 田间作业、收获、放牧和土地记录 | field_id; crop_or_pasture; area; seed; fertilizer; nutrient_content; manure_applied; crop_protection; fuel; electricity; irrigation; yield; dry_matter; residue; grazing_days; previous_land_use | 田间日志、发票、校准施用记录、产量测量、放牧记录和空间证据；原始记录核对：将田间投入分配至收获或采食干物质；保留作物、田块和年份。再按 calc_inventory_normalization 归一化可归属的报告期数量；保留未归一化原始记录。 | ha；kg；kg 养分；MJ；kWh；kg 水；kg 干物质 | 每次作业和收获 | 向乳报告期供应饲料的作物年度 | 全部直接管理饲料土地和已纳入外包作业 | 每 1 kg 参考流 | 完整性、校准、发票、干物质检测、产量核对和土地证据 |
 | `cp_milking_records` | `milking_cooling_storage` | 挤奶、清洗、冷却、储存、水、能源、化学品和制冷剂 | 计量、加药、维修和清洗周期记录 | electricity; fuel; water; cleaning_agent; dose; cleaning_cycles; refrigerant_type; refrigerant_added; tank_temperature | 分表、发票、加药日志、控制器、维修记录和水平衡；原始记录核对：把实测挤奶/冷却负荷直接归属于乳，并与场址总量核对。再按 calc_inventory_normalization 归一化可归属的报告期数量；保留未归一化原始记录。 | kWh；MJ；kg 水；kg 化学品；kg 制冷剂；°C | 每日或按批，按月核对 | 与乳产出相同期间 | 所有挤奶厅、乳房、冷却和场内储存 | 每 1 kg 参考流 | 校准、发票、加药检查、维修证书、温度日志和平衡闭合 |
 | `cp_milk_output_records` | `milking_cooling_storage` | 物理乳、成分、内部使用、拒收乳、废水和可销售产出 | 储奶罐、处理商收据、实验室、去向和水平衡记录 | milk_mass; milk_volume; density; fat_percent; true_protein_percent; temperature; saleable_mass; calf_feed_mass; rejected_mass; wastewater; destination; timestamp | 校准储奶罐或称重记录，并连接实验室成分、处理商收据和水平衡；原始记录核对：核对产乳 = 可销售 + 内部使用 + 拒收 + 库存变化；按批或期间计算 FPCM。再按 calc_inventory_normalization 归一化可归属的报告期数量；保留未归一化原始记录。 | kg；L；kg/L；质量百分比；°C | 每次取乳或批次；代表性成分检测 | 与牛群和资源记录相同期间并覆盖季节性 | 全部产乳、每个去向及相关废水 | 每 1 kg 参考流 | 储奶罐校准、实验室 QA、收据、密度方法和质量平衡闭合 |

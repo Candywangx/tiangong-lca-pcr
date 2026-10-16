@@ -509,30 +509,6 @@ Denominator and scope requirements：per actual recorded lot; final result norma
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Measured curing salt or other permitted preservation medium (`preservative`)
-
-Actually used salt, brine constituent or other permitted medium.
-
-Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin
-
-- Selected flow: Actually used salt, brine constituent or other permitted medium (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Identify substance and measure input; no universal salt dose or fixed flow identity.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_preservation`
-- Range: Provisional completeness screen, not a default yield
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: kg per lot
-  - Basis: actual measured lot flow or service, initial screen only
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Electricity at the equipment supply point (`preservation_energy_electricity`)
 
 **Collection scope and applicability for preservation_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -540,9 +516,9 @@ Denominator and scope requirements：per actual recorded lot; final result norma
 Actual electricity, fuel or other energy carrier for preservation.
 Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_preservation` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -553,11 +529,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_preservation`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`preservation_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_preservation` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -567,6 +545,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preservation`
 - Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -602,30 +582,6 @@ Denominator and scope requirements：per actual recorded lot; final result norma
 
 ##### Waste flows
 
-###### Spent preservation residues (`preservation_waste`)
-
-Spent brine, rejected skin and other actual preservation residues.
-
-Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin
-
-- Selected flow: Spent brine, rejected skin and other actual preservation residues (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Separate liquid and solid treatment and record mass without hiding moisture loss.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_preservation`
-- Range: Provisional completeness screen, not a default yield
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: kg per lot
-  - Basis: actual measured lot flow or service, initial screen only
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 
@@ -644,30 +600,6 @@ Denominator and scope requirements：per actual recorded lot; final result norma
 - Selected flow: Actually saleable raw goat/kid skin from removal, grading or preservation at the declared gate (UUID unresolved)
 - Flow property / unit: Mass / kg
 - Amount rule: Take one route-specific recovered, graded or preserved output per lot; never count alternatives together.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_gate`
-- Range: Provisional completeness screen, not a default yield
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: kg per lot
-  - Basis: actual measured lot flow or service, initial screen only
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Protective presentation material (`protective_material`)
-
-Actually used reusable or single-use protective packaging.
-
-Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin
-
-- Selected flow: Actually used reusable or single-use protective packaging (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Record material and reuse count; package mass is excluded from net skin reference.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
 - Normalization basis: per reference flow
@@ -759,6 +691,16 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `preservative_specific_input` | `cp_preservation` | Operation preservation: Actually used salt, brine constituent or other permitted medium. Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin Original quantity method: Identify substance and measure input; no universal salt dose or fixed flow identity. |
+| `protective_material_specific_input` | `cp_gate` | Operation gate: Actually used reusable or single-use protective packaging. Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin Original quantity method: Record material and reuse count; package mass is excluded from net skin reference. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
@@ -766,8 +708,8 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 | `cp_removal` | `removal` | actual terminal event and independent skin | animal-event ticket | animal and lot ID, species, source route, legal status, live/body mass, skin removal, skin/meat/other products, Waste, gate, period | slaughter/recovery tickets, calibrated scales, upstream dataset linkage; Raw aggregation requirements: match one body input to real outputs and recorded loss. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, event | each event | animal service and terminal periods | actual source and removal site | per reference flow | tickets, scales, legal records; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_conditioning` | `conditioning` | first prepared-skin state | processing batch | incoming skin, water, prepared skin, trims, moisture, lot, time | batch sheet, water meter and calibrated scale; Raw aggregation requirements: reconcile mass by state and treatment. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, h | each batch | reference production period | actual conditioning site | per reference flow | meter and scale calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_grading` | `grading` | accepted/downgraded/rejected destinations | grade ledger | incoming lot, grade, accepted, downgraded, rejected masses and destinations | scale and sale/dispatch documents; Raw aggregation requirements: partition actual grade and reject destinations. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each lot | reference production period | grading site | per reference flow | grade and dispatch evidence; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_preservation` | `preservation` | actual curing or chilling | preservation batch | inlet state and mass, salt/medium, utility carrier, output state/mass, moisture, retained salt, spent liquor, time | batch sheet, meter and laboratory/scale records; Raw aggregation requirements: separate fresh bypass and each intervention. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, kWh, h | each preserved batch | actual preservation periods | curing site | per reference flow | batch, calibration and sample record; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_gate` | `gate` | net saleable skin and package | dispatch lot | incoming state, grade, gross mass, free brine, package tare/reuse, net skin mass, gate, destination | dispatch scale, container ledger and invoice; Raw aggregation requirements: one final net-skin output per sold lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, event | each dispatch | reference handover period | actual handover site | per reference flow | dispatch and tare tickets; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_preservation` | `preservation` | actual curing or chilling | preservation batch | inlet state and mass, salt/medium, utility carrier, output state/mass, moisture, retained salt, spent liquor, time | batch sheet, meter and laboratory/scale records; Raw aggregation requirements: separate fresh bypass and each intervention. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `preservative_specific_input`: Operation preservation: Actually used salt, brine constituent or other permitted medium. Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin Original quantity method: Identify substance and measure input; no universal salt dose or fixed flow identity. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `preservation_waste_specific_output`: Spent brine, rejected skin and other actual preservation residues. Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin Separate liquid and solid treatment and record mass without hiding moisture loss. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion.  | kg, kWh, h | each preserved batch | actual preservation periods | curing site | per reference flow | batch, calibration and sample record; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_gate` | `gate` | net saleable skin and package | dispatch lot | incoming state, grade, gross mass, free brine, package tare/reuse, net skin mass, gate, destination | dispatch scale, container ledger and invoice; Raw aggregation requirements: one final net-skin output per sold lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `protective_material_specific_input`: Operation gate: Actually used reusable or single-use protective packaging. Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin Original quantity method: Record material and reuse count; package mass is excluded from net skin reference. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, event | each dispatch | reference handover period | actual handover site | per reference flow | dispatch and tare tickets; traceable numerator, accepted reference-output denominator and normalization worksheet |
 
 ### Calculation Rules
 

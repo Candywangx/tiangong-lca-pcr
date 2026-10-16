@@ -300,10 +300,12 @@ process_inventory:
                 source_ids: []
         - row_id: crop_management_agricultural_nutrient_inputs_urea
           role: "Urea fertilizer"
-          name: "Urea fertilizer"
+          name: "Urea"
           flow_type: "product"
+          flow_ref:
+            uuid: "3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e"
           property_unit: "Mass / kg"
-          description: "**Collection scope and applicability for crop_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg marketable fresh output. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "**Collection scope and applicability for crop_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg marketable fresh output. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_nutrient_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -320,10 +322,12 @@ process_inventory:
             ranges: []
         - row_id: crop_management_agricultural_nutrient_inputs_ammonium_sulfate
           role: "Ammonium sulfate fertilizer"
-          name: "Ammonium sulfate fertilizer"
+          name: "Ammonium sulfate"
           flow_type: "product"
+          flow_ref:
+            uuid: "8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_nutrient_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -418,61 +422,27 @@ process_inventory:
                 - fao-good-agricultural-practices
                 - fao-organic-nutrients
             ranges: []
-        - row_id: crop_protection_input
-          role: "Crop-protection products"
-          name: "Crop-protection product as applied"
+        - row_id: mobile_machinery_fuel_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Product or active-ingredient mass / kg"
-          description: "Record each crop-protection product applied, retaining product name, active ingredient, formulation, rate, method, date, and treated area. Integrated pest-management records may show that no treatment was used. Raw activity or stage basis: per 1,000 kg marketable fresh output."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for documented diesel-powered machinery within this operation. Retain fuel grade and formulation; convert recorded volume with measured or supplier-supported density. Other powertrains require their actual carrier, not a diesel equivalent. Apply mobile_machinery_fuel_specific_input; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable."
           amount:
-            expression: "Reconcile application logs, product labels, stock movement, and treated area for the complete crop cycle."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_crop_protection_records
-              source_ids:
-                - fao-good-agricultural-practices
-                - codex-fresh-produce-hygiene
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "350"
-                unit: "kg product/ha"
-                basis: "complete crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: mobile_machinery_fuel
-          role: "Mobile machinery fuel"
-          name: "Mobile machinery fuel"
-          flow_type: "product"
-          property_unit: "Energy or fuel mass / MJ or kg"
-          description: "Record diesel, gasoline, or another fuel used for cultivation, spraying, irrigation support, and crop-management operations. Raw activity or stage basis: per 1,000 kg marketable fresh output."
-          amount:
-            expression: "Sum fuel receipts, tank records, or machine-hour calculations assigned to the crop cycle."
-            value_mode: "foreground_record"
+            expression: "Collect this carrier under cp_energy_records for crop_management. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again."
+            value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "process_output"
+              kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_records
               source_ids:
-                - fao-good-agricultural-practices
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1,800"
-                unit: "MJ/ha"
-                basis: "field machinery operations for the crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+                - route-energy-fao
+            ranges: []
         - row_id: management_electricity_input
           role: "Electricity for irrigation and crop management"
           name: "Electricity supply"
@@ -674,60 +644,27 @@ process_inventory:
     label: "Harvest and field sorting"
     inputs:
       product:
-        - row_id: harvest_container_input
-          role: "Harvest containers and field handling materials"
-          name: "Harvest container or field handling material"
+        - row_id: harvest_machinery_fuel_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Mass / kg material or declared container count"
-          description: "Record reusable or single-use bins, crates, liners, and other handling materials used during harvest. Retain reuse cycles and replacement records. Raw activity or stage basis: per 1,000 kg marketable fresh output."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for documented diesel-powered machinery within this operation. Retain fuel grade and formulation; convert recorded volume with measured or supplier-supported density. Other powertrains require their actual carrier, not a diesel equivalent. Apply harvest_machinery_fuel_specific_input; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable."
           amount:
-            expression: "Record material type, tare, number of uses, replacement quantity, and allocation to the crop campaign."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_harvest_handling_records
-              source_ids:
-                - codex-fresh-produce-hygiene
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "80"
-                unit: "kg material per 1,000 kg output"
-                basis: "harvest campaign and declared reuse cycle"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: harvest_machinery_fuel
-          role: "Harvest machinery fuel"
-          name: "Mobile machinery fuel"
-          flow_type: "product"
-          property_unit: "Energy or fuel mass / MJ or kg"
-          description: "Record fuel used by harvest machinery and field transport before first sorting or the declared gate. Raw activity or stage basis: per 1,000 kg marketable fresh output."
-          amount:
-            expression: "Sum fuel receipts, tank records, or machine-hour calculations allocated to the harvest campaign."
-            value_mode: "foreground_record"
+            expression: "Collect this carrier under cp_energy_records for harvest_and_field_sorting. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again."
+            value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "process_output"
+              kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_records
               source_ids:
-                - fao-good-agricultural-practices
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "800"
-                unit: "MJ per 1,000 kg output"
-                basis: "harvest and first field-handling campaign"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -1256,7 +1193,7 @@ dataset_production:
       flow_role: "crop-protection products"
       record_type: "treatment log"
       raw_fields: "product; active ingredient; formulation; dose; date; method; treated area; pre-harvest interval"
-      collection_method: "treatment log and product record; Raw aggregation and attribution: aggregate by active ingredient and route"
+      collection_method: "treatment log and product record; Raw aggregation and attribution: aggregate by active ingredient and route crop_protection_input_specific_input: Operation crop_management: Record each crop-protection product applied, retaining product name, active ingredient, formulation, rate, method, date, and treated area. Integrated pest-management records may show that no treatment was used. Original quantity method: Reconcile application logs, product labels, stock movement, and treated area for the complete crop cycle. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg product, ha, date"
       frequency: "each treatment"
       temporal_coverage: "complete crop cycle"
@@ -1268,7 +1205,7 @@ dataset_production:
       flow_role: "fuel and management electricity"
       record_type: "fuel, machine-hour, meter, or invoice record"
       raw_fields: "fuel type; quantity; equipment; hours; field or unit; electricity meter; allocation basis"
-      collection_method: "receipt, tank record, machine log, or meter; Raw aggregation and attribution: allocate shared services by declared physical basis"
+      collection_method: "receipt, tank record, machine log, or meter; Raw aggregation and attribution: allocate shared services by declared physical basis mobile_machinery_fuel_specific_input: Operation crop_management: Record diesel, gasoline, or another fuel used for cultivation, spraying, irrigation support, and crop-management operations. Original quantity method: Sum fuel receipts, tank records, or machine-hour calculations assigned to the crop cycle. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. harvest_machinery_fuel_specific_input: Operation harvest_and_field_sorting: Record fuel used by harvest machinery and field transport before first sorting or the declared gate. Original quantity method: Sum fuel receipts, tank records, or machine-hour calculations allocated to the harvest campaign. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "MJ, kg, kWh"
       frequency: "each transaction or monthly"
       temporal_coverage: "complete crop cycle"
@@ -1304,7 +1241,7 @@ dataset_production:
       flow_role: "bins, crates, and field materials"
       record_type: "container issue and return record"
       raw_fields: "material; tare; count; reuse turns; loss; cleaning; allocation mass"
-      collection_method: "inventory and return log; Raw aggregation and attribution: allocate reusable service by turns or mass"
+      collection_method: "inventory and return log; Raw aggregation and attribution: allocate reusable service by turns or mass harvest_container_input_specific_input: Record reusable or single-use bins, crates, liners, and other handling materials used during harvest. Retain reuse cycles and replacement records. Record material type, tare, number of uses, replacement quantity, and allocation to the crop campaign. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg, count, turns"
       frequency: "each campaign"
       temporal_coverage: "complete harvest campaign"
@@ -1595,9 +1532,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm"
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:24574248f5521ddbaa81b6010bca8ff282c0971ca142fd09eea7ff9688d6e36c"
+  source_sha256: "sha256:0d47c0d7a1f3510dc5cb47c58b5a5075e6b6a7d8b44184d5c22337eab902f082"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7989"
@@ -1648,16 +1589,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_60492"
+    - unit_id: "normative_59358"
       family: "allocation"
       span:
         start:
-          offset: 60492
-          line: 1050
+          offset: 59358
+          line: 984
           column: 1
         end:
-          offset: 62130
-          line: 1060
+          offset: 60996
+          line: 994
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_shared_field_services` | shared field, irrigation, protected-unit, and packing services | Allocate shared services among product categories or crop cycles using area-time, operating time, water delivered, throughput, or another documented physical relationship. Use economic allocation only when a physical relationship cannot represent the shared service and disclose the price basis. | `iso-14044-2006` |\n| `allocation_marketable_and_off_grade` | marketable product, downgraded product, rejects, and residues | Treat marketable product as the reference output. Record downgraded product, culls, residues, and waste separately with actual fate. Do not credit feed, compost, recycling, or another use without a documented recipient, intended use, quality, and hand-off. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_reusable_containers` | reusable crates, bins, pallets, and liners | Allocate manufacture and replacement of reusable containers over documented turns or service mass, then assign cleaning, loss, and end-of-life records to the actual route. | `iso-14044-2006`; `codex-fresh-produce-hygiene` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1676,12 +1617,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 60492
-              line: 1050
+              offset: 59358
+              line: 984
               column: 1
             end:
-              offset: 60532
-              line: 1050
+              offset: 59398
+              line: 984
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1696,16 +1637,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_75205"
+    - unit_id: "normative_80850"
       family: "validation"
       span:
         start:
-          offset: 75205
-          line: 1109
+          offset: 80850
+          line: 1054
           column: 1
         end:
-          offset: 77739
-          line: 1123
+          offset: 83384
+          line: 1068
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_cpc_scope` | PCR identity and dataset metadata | Confirm the product is within CPC 01249 and is not green beans CPC 01241 or green peas CPC 01242; retain species or cultivar and product-state evidence. | `iso-14044-2006` |\n| `validate_reference_mass` | reference flow and output | Require 1,000 kg marketable output on the mass property and kg unit, with complete crop-cycle and gate declaration. | `mass-balance-identity` |\n| `validate_crop_cycle_completeness` | process map and inventory | Require establishment, management, and harvest processes for every represented crop cycle; require conditioning and dispatch when the declared gate includes those activities. | `fao-good-agricultural-practices`; `codex-fresh-produce-hygiene` |\n| `validate_nutrient_product_basis` | fertilizer and soil-amendment input | Require actual product identity, product mass, nutrient or amendment basis, application date, and no double counting of compound products. | `fao-good-agricultural-practices` |\n| `validate_water_and_energy_separation` | irrigation, withdrawal, washing, cooling, fuel, and electricity | Keep supplied water, natural-resource withdrawal, washing water, fuel, and electricity as separate rows with declared meters or calculation bases. | `fao-crop-evapotranspiration-56`; `fao-fresh-produce-handling` |\n| `validate_output_reconciliation` | marketable, downgraded, reject, residue, wastewater, and packaging rows | Reconcile picking rounds, field sorting, conditioning, and final gate output; investigate unexplained residuals and disclose all declared fates. | `mass-balance-identity`; `iso-14044-2006` |\n| `validate_emission_pathway` | direct and indirect emissions | Require receiving medium, calculation method, documented nutrient or residue inputs, and pathway evidence before treating an emission row as calculated. | `ipcc-2019-managed-soils-n2o` |\n| `validate_gate_and_transport` | conditioning and pre-gate transport | Confirm washing, cooling, packing, storage, and transport included in the dataset occur before the declared gate; exclude post-gate services. | `codex-fresh-produce-hygiene`; `fao-fresh-produce-handling` |\n| `validate_qualifiers` | reference flow and dataset metadata | Require all category qualifiers in the reference-flow table, including species or cultivar, maturity, grade, route, dates, water, nutrient, crop-protection, fate, and gate information. | `codex-fresh-produce-hygiene` |\n\n"
       headings:
@@ -1724,12 +1665,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 75205
-              line: 1109
+              offset: 80850
+              line: 1054
               column: 1
             end:
-              offset: 75227
-              line: 1109
+              offset: 80872
+              line: 1054
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1813,171 +1754,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_shared_field_services"
       identity_kind: "explicit"
-      unit_id: "normative_60492"
+      unit_id: "normative_59358"
       source_span:
         start:
-          offset: 60605
-          line: 1054
+          offset: 59471
+          line: 988
           column: 1
         end:
-          offset: 61025
-          line: 1054
+          offset: 59891
+          line: 988
           column: 421
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_marketable_and_off_grade"
       identity_kind: "explicit"
-      unit_id: "normative_60492"
+      unit_id: "normative_59358"
       source_span:
         start:
-          offset: 61026
-          line: 1055
+          offset: 59892
+          line: 989
           column: 1
         end:
-          offset: 61434
-          line: 1055
+          offset: 60300
+          line: 989
           column: 409
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_reusable_containers"
       identity_kind: "explicit"
-      unit_id: "normative_60492"
+      unit_id: "normative_59358"
       source_span:
         start:
-          offset: 61435
-          line: 1056
+          offset: 60301
+          line: 990
           column: 1
         end:
-          offset: 61740
-          line: 1056
+          offset: 60606
+          line: 990
           column: 306
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_60492"
+      unit_id: "normative_59358"
       source_span:
         start:
-          offset: 61742
-          line: 1058
+          offset: 60608
+          line: 992
           column: 1
         end:
-          offset: 62128
-          line: 1058
+          offset: 60994
+          line: 992
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validate_cpc_scope"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 75300
-          line: 1113
+          offset: 80945
+          line: 1058
           column: 1
         end:
-          offset: 75534
-          line: 1113
+          offset: 81179
+          line: 1058
           column: 235
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference_mass"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 75535
-          line: 1114
+          offset: 81180
+          line: 1059
           column: 1
         end:
-          offset: 75736
-          line: 1114
+          offset: 81381
+          line: 1059
           column: 202
     - pointer: "/validation_rules/2"
       rule_id: "validate_crop_cycle_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 75737
-          line: 1115
+          offset: 81382
+          line: 1060
           column: 1
         end:
-          offset: 76047
-          line: 1115
+          offset: 81692
+          line: 1060
           column: 311
     - pointer: "/validation_rules/3"
       rule_id: "validate_nutrient_product_basis"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 76048
-          line: 1116
+          offset: 81693
+          line: 1061
           column: 1
         end:
-          offset: 76300
-          line: 1116
+          offset: 81945
+          line: 1061
           column: 253
     - pointer: "/validation_rules/4"
       rule_id: "validate_water_and_energy_separation"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 76301
-          line: 1117
+          offset: 81946
+          line: 1062
           column: 1
         end:
-          offset: 76623
-          line: 1117
+          offset: 82268
+          line: 1062
           column: 323
     - pointer: "/validation_rules/5"
       rule_id: "validate_output_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 76624
-          line: 1118
+          offset: 82269
+          line: 1063
           column: 1
         end:
-          offset: 76925
-          line: 1118
+          offset: 82570
+          line: 1063
           column: 302
     - pointer: "/validation_rules/6"
       rule_id: "validate_emission_pathway"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 76926
-          line: 1119
+          offset: 82571
+          line: 1064
           column: 1
         end:
-          offset: 77176
-          line: 1119
+          offset: 82821
+          line: 1064
           column: 251
     - pointer: "/validation_rules/7"
       rule_id: "validate_gate_and_transport"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 77177
-          line: 1120
+          offset: 82822
+          line: 1065
           column: 1
         end:
-          offset: 77454
-          line: 1120
+          offset: 83099
+          line: 1065
           column: 278
     - pointer: "/validation_rules/8"
       rule_id: "validate_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 77455
-          line: 1121
+          offset: 83100
+          line: 1066
           column: 1
         end:
-          offset: 77737
-          line: 1121
+          offset: 83382
+          line: 1066
           column: 283
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2006,27 +1947,27 @@ normative_context:
           column: 363
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_60492"
+      unit_id: "normative_59358"
       source_span:
         start:
-          offset: 60492
-          line: 1050
+          offset: 59358
+          line: 984
           column: 1
         end:
-          offset: 60532
-          line: 1050
+          offset: 59398
+          line: 984
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_75205"
+      unit_id: "normative_80850"
       source_span:
         start:
-          offset: 75205
-          line: 1109
+          offset: 80850
+          line: 1054
           column: 1
         end:
-          offset: 75227
-          line: 1109
+          offset: 80872
+          line: 1054
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2035,5 +1976,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:24574248f5521ddbaa81b6010bca8ff282c0971ca142fd09eea7ff9688d6e36c"
-  generated_content_sha256: "sha256:af5e47ff46662638d8dbcf5ca4289b41b9e3eb43b6a4611f587d88ac9ee34f33"
+    sha256: "sha256:0d47c0d7a1f3510dc5cb47c58b5a5075e6b6a7d8b44184d5c22337eab902f082"
+  generated_content_sha256: "sha256:1125e33a22b40d4e0b46754ebca162a57a5e4455cbd268b3205bea34e86864e7"

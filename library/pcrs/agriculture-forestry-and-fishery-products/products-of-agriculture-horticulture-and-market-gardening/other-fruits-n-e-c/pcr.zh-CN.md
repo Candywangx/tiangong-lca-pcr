@@ -145,7 +145,7 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_and_amendment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -155,12 +155,14 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_and_amendment_records`
 - 来源：`fao-fruit-vegetable-production-practices-2024`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`fruit_site_establishment_and_crop_cycle_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_and_amendment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -170,6 +172,8 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_and_amendment_records`
 - 来源：`fao-fruit-vegetable-production-practices-2024`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`fruit_site_establishment_and_crop_cycle_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -263,37 +267,20 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 采集协议：`cp_energy_and_fuel_records`
 - 来源：`fao-good-farming-practices`
 
-###### 田间和移动机械用燃料（`site_mobile_fuel_input`）
-记录拖拉机、喷雾机、割草机、水泵和其他移动机械，不得再次计入承包服务。
+###### 柴油 (`site_mobile_fuel_input_diesel`)
 
-- 选定流：移动机械燃料 [parameterized]
-- 流属性 / 单位：燃料或能量 / L, kg or MJ
-- 数量规则：按作业和地块使用燃料收据、油箱记录、机时计算或承包商活动记录
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1,000 kg marketable gate output.
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`site_mobile_fuel_input_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_energy_and_fuel_records`采集`fruit_site_establishment_and_crop_cycle`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_energy_and_fuel_records`
-- 来源：`fao-good-farming-practices`
-
-###### 实际使用的作物保护制剂（`crop_protection_input`）
-按产品、活性物质、施用事件和地块记录实际使用的除草剂、杀虫剂、杀菌剂或生物防治产品。
-
-- 选定流：实际作物保护制剂 [unmapped]
-- 流属性 / 单位：质量或体积 / kg formulation, kg active substance or L
-- 数量规则：按产品、事件和地块核对采购与施用记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg marketable gate output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_crop_protection_records`
-- 来源：`fao-fruit-vegetable-production-practices-2024`; `fao-quality-safety-fresh-fruits-2004`
+- 来源：`route-energy-fao`
 
 ##### 基本流
 
@@ -368,54 +355,6 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 
 ##### 基本流
 
-###### 受管理土壤的氧化亚氮（`soil_nitrous_oxide_emission`）
-仅在养分基准、残余去向、接收介质和一种选定方法声明后记录 N2O。
-
-- 选定流：排向空气的氧化亚氮；报告物质和接收介质待声明
-- 流属性 / 单位：质量 / kg N2O
-- 数量规则：对养分投入、残余物和间接路径应用一种选定的 IPCC 兼容方法
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1,000 kg marketable gate output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：方法公式（`method_formula`）
-- 采集协议：`cp_nutrient_and_field_emission_records`
-- 来源：`ipcc-2019-refinement-afolu`
-
-###### 受管理养分产生的氨（`soil_ammonia_emission`）
-仅当方法或测量支持接收介质时记录 NH3。
-
-- 选定流：排向空气的氨；报告物质和接收介质待声明
-- 流属性 / 单位：质量 / kg NH3
-- 数量规则：使用记录的养分投入及选定方法或排放测量记录
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1,000 kg marketable gate output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：方法公式（`method_formula`）
-- 采集协议：`cp_nutrient_and_field_emission_records`
-- 来源：`ipcc-2019-refinement-afolu`
-
-###### 田间活动产生的氮氧化物（`nitrogen_oxides_emission`）
-氮氧化物与 N2O 分开记录，并声明报告物质和接收介质。
-
-- 选定流：排向空气的氮氧化物；报告物质和接收介质待声明
-- 流属性 / 单位：质量 / kg NOx or reported species
-- 数量规则：依据声明的燃料和养分活动使用测量值或选定方法结果
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1,000 kg marketable gate output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：方法公式（`method_formula`）
-- 采集协议：`cp_nutrient_and_field_emission_records`
-- 来源：`ipcc-2019-refinement-afolu`
-
 ###### 硝酸盐或磷酸盐释放路径（`nutrient_release_pathway`）
 只有在接收区室和路径有证据时记录；实际硝酸盐或磷酸盐分组在前景生成时选择。
 
@@ -454,21 +393,20 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_lot_records`
 
-###### 收获燃料或机械能（`harvest_mobile_fuel_input`）
-将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
+###### 柴油 (`harvest_mobile_fuel_input_diesel`)
 
-- 选定流：移动收获机械燃料 [parameterized]
-- 流属性 / 单位：燃料或能量 / L, kg or MJ
-- 数量规则：按活动和批次记录收获燃料或承包活动
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1,000 kg harvested fruit.
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`harvest_mobile_fuel_input_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_energy_and_fuel_records`采集`fruit_harvest_and_field_handoff`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_energy_and_fuel_records`
-- 来源：`fao-good-farming-practices`
+- 来源：`route-energy-fao`
 
 #### 输出
 ##### 产品流
@@ -560,22 +498,6 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 采集协议：`cp_conditioning_records`
 - 来源：`fao-postharvest-handling-fruits`
 
-###### 实际使用的处理剂（`conditioning_agent_input`）
-将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
-
-- 选定流：实际处理剂 [unmapped]
-- 流属性 / 单位：质量或体积 / kg or L
-- 数量规则：按批次和批记录命名产品的领用或施用
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg conditioned fruit.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_conditioning_records`
-- 来源：`fao-quality-safety-fresh-fruits-2004`
-
 #### 输出
 ##### 产品流
 
@@ -612,19 +534,33 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 采集协议：`cp_conditioning_records`
 - 来源：`fao-postharvest-handling-fruits`; `mass-balance-identity`
 
-###### 清洗废水和清洗固体（`conditioning_wastewater`）
-将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
+###### 水果清洗废水（`conditioning_wastewater`）
 
-- 选定流：清洗废水和清洗固体 [unmapped]
-- 流属性 / 单位：体积和质量 / m3 and kg
-- 数量规则：将批次记录与供水、循环水、截留固体和排放协调
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1,000 kg conditioned fruit.
+仅记录实际清洗水相排放或处理交接，保留组成和去向。留在该水相中的悬浮固体属于本废水，不另计固体交换。核验兼容的废物流身份及接收路线前，明确保留UUID未解析状态。
 
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 选定流：水果清洗废水
+- 流属性 / 单位：体积 / m3
+- 数量规则：按`cp_conditioning_records`计量此独立物流。协调供水、循环水、蒸发、产品和移出固体保留水及实际排放，质量与体积平衡须分别保持量纲一致；仅凭本物流有依据的密度进行体积质量换算。归属物流量除以匹配的最终合格产出量，再乘相同产品单位下的声明参考数量，保留实测阶段与最终产出的比例，不重复归一化，不编造固体分流比例。单独保留处理责任且避免重复计入。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_conditioning_records`
+- 来源：`fao-quality-safety-fresh-fruits-2004`; `mass-balance-identity`
+
+###### 水果清洗分离固体（`conditioning_wastewater_separated_solids`）
+
+仅在实际移出并交付独立固体流时适用，记录湿质量及含水率。仍悬浮于废水中的固体不得再次计入。核验兼容的废物流身份及接收路线前，明确保留UUID未解析状态。
+
+- 选定流：水果清洗分离固体
+- 流属性 / 单位：质量 / kg
+- 数量规则：按`cp_conditioning_records`计量此独立物流。协调供水、循环水、蒸发、产品和移出固体保留水及实际排放，质量与体积平衡须分别保持量纲一致；仅凭本物流有依据的密度进行体积质量换算。归属物流量除以匹配的最终合格产出量，再乘相同产品单位下的声明参考数量，保留实测阶段与最终产出的比例，不重复归一化，不编造固体分流比例。单独保留处理责任且避免重复计入。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_conditioning_records`
 - 来源：`fao-quality-safety-fresh-fruits-2004`; `mass-balance-identity`
 
@@ -759,21 +695,6 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 采集协议：`cp_storage_records`
 - 来源：`fao-postharvest-handling-fruits`
 
-###### 实际使用的稳定化材料（`stabilization_material_input`）
-将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
-
-- 选定流：实际稳定化材料 [unmapped]
-- 流属性 / 单位：质量或体积 / kg or L
-- 数量规则：按批次和持续时间记录供应商、维护或储存作业记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg stored fruit and storage day.
-
-- 归一化基准：每声明的参考流
-- 基准类型：储存持续时间（`storage_duration`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_storage_records`
-
 #### 输出
 ##### 产品流
 
@@ -834,54 +755,6 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_packaging_records`
 
-###### 柔性包装、内衬或薄膜（`flexible_packaging_input`）
-将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
-
-- 选定流：新鲜水果柔性包装 [parameterized]
-- 流属性 / 单位：质量或包装服务 / kg or item
-- 数量规则：按批次记录发放质量或数量、容量、皮重、复用和损失
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg packed gate output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_packaging_records`
-- 来源：`fao-postharvest-handling-fruits`
-
-###### 纸箱、盒或纸板包装（`carton_box_packaging_input`）
-将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
-
-- 选定流：新鲜水果纸箱和盒包装 [parameterized]
-- 流属性 / 单位：质量或包装服务 / kg or item
-- 数量规则：按批次保留供应商规格、发放量、皮重、容量和损失
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg packed gate output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_packaging_records`
-- 来源：`fao-postharvest-handling-fruits`
-
-###### 托盘、板条箱或可复用搬运包装（`pallet_crate_packaging_input`）
-将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
-
-- 选定流：新鲜水果托盘和板条箱包装 [parameterized]
-- 流属性 / 单位：质量或包装服务 / kg or item
-- 数量规则：按容量、寿命、复用、返还路线和批次吞吐量分配资产记录
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg packed gate output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_packaging_records`
-- 来源：`fao-postharvest-handling-fruits`; `iso-14044-2006`
-
 ###### 包装线用电（`packaging_electricity_input`）
 将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
 
@@ -919,22 +792,6 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 - 采集协议：`cp_packaging_records`
 
 ##### 废物流
-
-###### 包装拒收物和材料废物（`packaging_waste`）
-将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。
-
-- 选定流：包装废物 [unmapped]
-- 流属性 / 单位：质量 / kg packaging
-- 数量规则：以发放包装减去使用或返还量，并与批次记录协调
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg packed gate output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_packaging_records`
-- 来源：`fao-postharvest-handling-fruits`; `mass-balance-identity`
 
 ### 过程：水果拒收、返工和残余路线（`fruit_reject_rework_and_residue_routing`）
 
@@ -1137,6 +994,22 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `site_mobile_fuel_input_specific_input` | `cp_energy_and_fuel_records` | 作业 fruit_site_establishment_and_crop_cycle：记录拖拉机、喷雾机、割草机、水泵和其他移动机械，不得再次计入承包服务。 原数量方法：按作业和地块使用燃料收据、油箱记录、机时计算或承包商活动记录 |
+| `crop_protection_input_specific_input` | `cp_crop_protection_records` | 作业 fruit_site_establishment_and_crop_cycle：按产品、活性物质、施用事件和地块记录实际使用的除草剂、杀虫剂、杀菌剂或生物防治产品。 原数量方法：按产品、事件和地块核对采购与施用记录 |
+| `harvest_mobile_fuel_input_specific_input` | `cp_energy_and_fuel_records` | 作业 fruit_harvest_and_field_handoff：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按活动和批次记录收获燃料或承包活动 |
+| `conditioning_agent_input_specific_input` | `cp_conditioning_records` | 作业 fruit_primary_conditioning：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按批次和批记录命名产品的领用或施用 |
+| `stabilization_material_input_specific_input` | `cp_storage_records` | 作业 fruit_cold_storage_and_stabilization：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按批次和持续时间记录供应商、维护或储存作业记录 |
+| `flexible_packaging_input_specific_input` | `cp_packaging_records` | 作业 fruit_packaging_and_gate_handoff：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按批次记录发放质量或数量、容量、皮重、复用和损失 |
+| `carton_box_packaging_input_specific_input` | `cp_packaging_records` | 作业 fruit_packaging_and_gate_handoff：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按批次保留供应商规格、发放量、皮重、容量和损失 |
+| `pallet_crate_packaging_input_specific_input` | `cp_packaging_records` | 作业 fruit_packaging_and_gate_handoff：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按容量、寿命、复用、返还路线和批次吞吐量分配资产记录 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -1149,15 +1022,15 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 | `cp_site_cycle_records` | `fruit_site_establishment_and_crop_cycle` | 场址、面积、周期、阶段、产量和残余物 | 地块登记和田间日志 | site; block; species/group; cultivar; system; area; phase; dates; yield; residue; fate | 记录审查和周期核对；原始汇总与分配：aggregate by block and phase; allocate shared records once | ha; date; year; kg | monthly and cycle close | complete crop cycle or perennial phase | each block | 每声明的参考流 | signed logs, block map and yield record |
 | `cp_establishment_records` | `fruit_site_establishment_and_crop_cycle` | 种植和建植 | 苗圃发票、种植日志和资产登记 | material; variety; quantity; date; block; replacement; asset; service life | 发票与登记核对；原始汇总与分配：reconcile purchased, planted, replaced and surviving material | item; kg; date; year | each event | establishment and allocated phases | block and asset | 每声明的参考流 | supplier record and planting log |
 | `cp_nutrient_and_amendment_records` | `fruit_site_establishment_and_crop_cycle` | 肥料和改良剂 | 采购、标签、计划、施用日志和实验室结果 | product; quantity; moisture; N; P2O5; K2O; date; block; area | 文件审查和养分计算；原始汇总与分配：sum actual products and calculate nutrients once | kg product; kg nutrient | each application | complete cycle or phase | each block | 每声明的参考流 | invoice, label, plan or lab result |
-| `cp_crop_protection_records` | `fruit_site_establishment_and_crop_cycle` | 作物保护 | 采购和施用记录 | product; formulation; active; quantity; date; block; area | 记录核对；原始汇总与分配：sum by named formulation and active substance | kg; L; date | each application | complete cycle or phase | each block | 每声明的参考流 | label, invoice and application log |
+| `cp_crop_protection_records` | `fruit_site_establishment_and_crop_cycle` | 作物保护 | 采购和施用记录 | product; formulation; active; quantity; date; block; area | 记录核对；原始汇总与分配：sum by named formulation and active substance `crop_protection_input_specific_input`: 作业 fruit_site_establishment_and_crop_cycle：按产品、活性物质、施用事件和地块记录实际使用的除草剂、杀虫剂、杀菌剂或生物防治产品。 原数量方法：按产品、事件和地块核对采购与施用记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; L; date | each application | complete cycle or phase | each block | 每声明的参考流 | label, invoice and application log |
 | `cp_irrigation_records` | `fruit_site_establishment_and_crop_cycle` | 灌溉和取水 | 水表、泵、许可和灌溉日志 | source; meter; block; method; delivered; withdrawn; return; date | 水表审查和水平衡计算；原始汇总与分配：reconcile withdrawal, delivery, return and consumption | m3; date | event or monthly | complete cycle or phase | source and block | 每声明的参考流 | calibrated meter and worksheet |
-| `cp_energy_and_fuel_records` | `fruit_site_establishment_and_crop_cycle`, `fruit_harvest_and_field_handoff` | 场址和收获能源 | 公用事业账单、燃料收据、油箱日志或承包商记录 | carrier; equipment; operation; quantity; hours; date; block; campaign | 发票、计量和作业日志审查；原始汇总与分配：allocate by use, hours, area or throughput; prevent duplicate inclusion | kWh; L; kg; MJ; h | monthly and campaign | complete cycle and harvest | site, block and equipment | 每声明的参考流 | invoice, meter and allocation worksheet |
-| `cp_nutrient_and_field_emission_records` | `fruit_site_establishment_and_crop_cycle` | 养分和基本流 | 养分计划、检测、排放计算表和因子记录 | N/P; residue; soil; climate; pathway; medium; factor; method; period | 方法计算和证据审查；原始汇总与分配：apply one selected method and de-duplicate pathways | kg nutrient; kg substance | application and cycle close | complete cycle or phase | block and receiving compartment | 每声明的参考流 | worksheet and factor reference |
+| `cp_energy_and_fuel_records` | `fruit_site_establishment_and_crop_cycle`, `fruit_harvest_and_field_handoff` | 场址和收获能源 | 公用事业账单、燃料收据、油箱日志或承包商记录 | carrier; equipment; operation; quantity; hours; date; block; campaign | 发票、计量和作业日志审查；原始汇总与分配：allocate by use, hours, area or throughput; prevent duplicate inclusion `site_mobile_fuel_input_specific_input`: 作业 fruit_site_establishment_and_crop_cycle：记录拖拉机、喷雾机、割草机、水泵和其他移动机械，不得再次计入承包服务。 原数量方法：按作业和地块使用燃料收据、油箱记录、机时计算或承包商活动记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `harvest_mobile_fuel_input_specific_input`: 作业 fruit_harvest_and_field_handoff：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按活动和批次记录收获燃料或承包活动 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kWh; L; kg; MJ; h | monthly and campaign | complete cycle and harvest | site, block and equipment | 每声明的参考流 | invoice, meter and allocation worksheet |
+| `cp_nutrient_and_field_emission_records` | `fruit_site_establishment_and_crop_cycle` | 养分和基本流 | 养分计划、检测、排放计算表和因子记录 | N/P; residue; soil; climate; pathway; medium; factor; method; period | 方法计算和证据审查；原始汇总与分配：apply one selected method and de-duplicate pathways `soil_nitrous_oxide_emission_specific_emission`: 仅在养分基准、残余去向、接收介质和一种选定方法声明后记录 N2O。 对养分投入、残余物和间接路径应用一种选定的 IPCC 兼容方法 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。 `ipcc-2019-refinement-afolu` `soil_ammonia_emission_specific_emission`: 仅当方法或测量支持接收介质时记录 NH3。 使用记录的养分投入及选定方法或排放测量记录 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。 `ipcc-2019-refinement-afolu` `nitrogen_oxides_emission_specific_emission`: 氮氧化物与 N2O 分开记录，并声明报告物质和接收介质。 依据声明的燃料和养分活动使用测量值或选定方法结果 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。 `ipcc-2019-refinement-afolu` | kg nutrient; kg substance | application and cycle close | complete cycle or phase | block and receiving compartment | 每声明的参考流 | worksheet and factor reference |
 | `cp_harvest_lot_records` | `fruit_harvest_and_field_handoff` | 收获输出和损失 | 收获票据、秤和批次记录 | lot; block; date; species/group; cultivar; maturity; harvested; loss; destination; hand-off | 称重核对和批次审查；原始汇总与分配：reconcile output to harvested, lost and transferred amounts | kg; date; lot | each lot | all harvests | block and harvest operation | 每声明的参考流 | calibrated scale and traceability record |
-| `cp_conditioning_records` | `fruit_primary_conditioning` | 原料输入、备料输出、水、能源、制剂、拒收物和废水 | 批次表、计量、卫生和排放记录 | batch; lot; input; output; water; recirculation; agent; energy; reject; solids; discharge; date | 批次质量平衡和文件审查；原始汇总与分配：reconcile intake to output, rejects, solids, water and wastewater | kg; m3; kWh; L | batch or shift | all included conditioning | line, site and lot | 每声明的参考流 | batch sheet, scale, meter and discharge record |
+| `cp_conditioning_records` | `fruit_primary_conditioning` | 原料输入、备料输出、水、能源、制剂、拒收物和废水 | 批次表、计量、卫生和排放记录 | batch; lot; input; output; water; recirculation; agent; energy; reject; solids; discharge; date | 批次质量平衡和文件审查；原始汇总与分配：reconcile intake to output, rejects, solids, water and wastewater `conditioning_agent_input_specific_input`: 作业 fruit_primary_conditioning：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按批次和批记录命名产品的领用或施用 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; m3; kWh; L | batch or shift | all included conditioning | line, site and lot | 每声明的参考流 | batch sheet, scale, meter and discharge record |
 | `cp_grading_and_destination_records` | `fruit_grading_and_destination_sorting` | 等级、可销售输出、共产品、次果和异物 | 分级表、秤和接收方记录 | input; grade; maturity; accepted; downgraded; cull; foreign matter; recipient; destination; date | 称重分级核对；原始汇总与分配：enumerate destinations and reconcile to input | kg; date; lot | each lot or run | all included grading | line, site and lot | 每声明的参考流 | scale, grade sheet and receipt |
-| `cp_storage_records` | `fruit_cold_storage_and_stabilization` | 储存输入、输出、时长、能源、材料和损失 | 冷库日志、记录器、库存和发运记录 | lot; mode; temperature; start; end; input; output; loss; reject; energy; material | 记录器和库存核对；原始汇总与分配：reconcile opening stock, receipts, dispatch and loss | kg; kWh; day; °C | each lot and day | declared storage period | cold room and gate | 每声明的参考流 | logger, inventory and dispatch ticket |
-| `cp_packaging_records` | `fruit_packaging_and_gate_handoff` | 产品、包装、能源和废物 | 包装规格、领用记录、资产登记和发运票据 | lot; format; material; tare; item; capacity; reuse; return; loss; energy; net fruit; date | 包装领用和净输出核对；原始汇总与分配：allocate reusable assets over service life and reconcile used, returned and waste | kg; item; kWh; date | lot, campaign or dispatch | all included packaging | line, site and lot | 每声明的参考流 | package specification and issue record |
+| `cp_storage_records` | `fruit_cold_storage_and_stabilization` | 储存输入、输出、时长、能源、材料和损失 | 冷库日志、记录器、库存和发运记录 | lot; mode; temperature; start; end; input; output; loss; reject; energy; material | 记录器和库存核对；原始汇总与分配：reconcile opening stock, receipts, dispatch and loss `stabilization_material_input_specific_input`: 作业 fruit_cold_storage_and_stabilization：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按批次和持续时间记录供应商、维护或储存作业记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; kWh; day; °C | each lot and day | declared storage period | cold room and gate | 每声明的参考流 | logger, inventory and dispatch ticket |
+| `cp_packaging_records` | `fruit_packaging_and_gate_handoff` | 产品、包装、能源和废物 | 包装规格、领用记录、资产登记和发运票据 | lot; format; material; tare; item; capacity; reuse; return; loss; energy; net fruit; date | 包装领用和净输出核对；原始汇总与分配：allocate reusable assets over service life and reconcile used, returned and waste `flexible_packaging_input_specific_input`: 作业 fruit_packaging_and_gate_handoff：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按批次记录发放质量或数量、容量、皮重、复用和损失 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `carton_box_packaging_input_specific_input`: 作业 fruit_packaging_and_gate_handoff：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按批次保留供应商规格、发放量、皮重、容量和损失 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `pallet_crate_packaging_input_specific_input`: 作业 fruit_packaging_and_gate_handoff：将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 原数量方法：按容量、寿命、复用、返还路线和批次吞吐量分配资产记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `packaging_waste_specific_output`: 将该流作为独立前景交换记录；保留实际数量、批次或过程状态，以及去向或交接证据。 以发放包装减去使用或返还量，并与批次记录协调 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。 `fao-postharvest-handling-fruits`; `mass-balance-identity` | kg; item; kWh; date | lot, campaign or dispatch | all included packaging | line, site and lot | 每声明的参考流 | package specification and issue record |
 | `cp_reject_rework_residue_records` | `fruit_reject_rework_and_residue_routing` | 拒收、降级、回收、返工和残余材料 | 拒收日志、返工票据、接收方、处理和处置记录 | source; lot; state; wet/dry mass; moisture; destination; recipient; function; treatment; date; return link | 称重和目的地审查并进行图关系核对；原始汇总与分配：one declared route per source stream; prevent double counting | kg; m3; date | each event and period close | all included routing | source node, site and recipient | 每声明的参考流 | scale, ticket, receipt or treatment record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
 
@@ -1226,3 +1099,4 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

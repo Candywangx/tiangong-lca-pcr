@@ -632,32 +632,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: preserve_energy
-          role: "Preservation energy where used"
-          name: "Actual cold or drying energy supply"
-          flow_type: "product"
-          property_unit: "Energy / kWh"
-          description: "Meter actual carrier and period; prevent shared-room double counting. Denominator and scope requirements：per kg Optional raw preservation output Raw quantity and calculation requirements: Meter actual carrier and period; prevent shared-room double counting. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_preserve
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10000"
-                unit: "kWh/kg"
-                basis: "per kg Optional raw preservation output"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: preserve_agent
           role: "Actual raw preservative"
           name: "Species- and method-qualified preservative (UUID unresolved)"
@@ -755,32 +729,6 @@ process_inventory:
           flow_type: "product"
           property_unit: "Mass / kg"
           description: "Use either fresh graded lot or its preserved counterpart, not both. Denominator and scope requirements：per kg Protective handover output Raw quantity and calculation requirements: Use either fresh graded lot or its preserved counterpart, not both. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_handover
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "kg/kg"
-                basis: "per kg Protective handover output"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: handover_packaging
-          role: "Protective package when used"
-          name: "Raw-furskin protective packaging"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Identify single-use consumption or reusable turns; no packaging if absent. Denominator and scope requirements：per kg Protective handover output Raw quantity and calculation requirements: Identify single-use consumption or reusable turns; no packaging if absent. Original collection denominator kind: process_output."
           amount:
             expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
             value_mode: "calculated_value"
@@ -938,7 +886,7 @@ dataset_production:
       flow_role: "treated skin and service"
       record_type: "treatment log"
       raw_fields: "before; after; state; moisture; salt; energy; room_time; reject"
-      collection_method: "scale and meter; Raw aggregation requirements: reconcile state and use. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "scale and meter; Raw aggregation requirements: reconcile state and use. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: preserve_energy_identification: Actual raw-furskin preservation and holding: identify cold storage, drying or unpowered preservation from lot records, retaining shared-room attribution. No preservation route is mandatory. Denominator and scope requirements：per kg Optional raw preservation output Raw quantity and calculation requirements: Meter actual carrier and period; prevent shared-room double counting. Original collection denominator kind: process_output. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kg; kWh; h"
       frequency: "treated lot"
       temporal_coverage: "period"
@@ -950,7 +898,7 @@ dataset_production:
       flow_role: "net product and package"
       record_type: "handover ledger"
       raw_fields: "lot; state; species; configuration; gate; net_mass; package; count; reuse"
-      collection_method: "ticket and scale; Raw aggregation requirements: accepted net mass only. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "ticket and scale; Raw aggregation requirements: accepted net mass only. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. handover_packaging_specific_input: Operation handover: Identify single-use consumption or reusable turns; no packaging if absent. Denominator and scope requirements：per kg Protective handover output Raw quantity and calculation requirements: Identify single-use consumption or reusable turns; no packaging if absent. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg; item; turn"
       frequency: "each handover"
       temporal_coverage: "period"
@@ -1070,9 +1018,13 @@ data_sources:
     type: "official_guidance"
     reference: "https://www.fao.org/4/i0523e/i0523e.pdf"
     used_for: "First raw-skin handling and preservation."
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:00f7a43569dfc5a317a3cb761e7cf2253a9a5286dbf47fcf2e27d8a09bae6f84"
+  source_sha256: "sha256:46f878b0d2ec6bdb4afcb62ef6536e7a7dd3e0e89f7dca4f1ed3c28089a70373"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6198"
@@ -1123,16 +1075,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41696"
+    - unit_id: "normative_39209"
       family: "allocation"
       span:
         start:
-          offset: 41696
-          line: 827
+          offset: 39209
+          line: 775
           column: 1
         end:
-          offset: 43010
-          line: 836
+          offset: 40523
+          line: 784
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_source | source and remove | Enumerate earlier farm products at source, then skin and actual saleable terminal products at removal; each has a distinct handover and is counted once. Subdivide independently measured services; for inseparable source burdens use documented physical causality where defensible, otherwise contemporaneous net economic values of actual products with price sensitivity. Neither zero nor whole-animal burden is automatic. | fao-hides-skins |\n| a_period | farm or wild route | Link breeding/growth, capture/slaughter, removal, replacement and termination to actual periods. Wild capture has no invented managed husbandry. Each input and output is attributed once. | un-cpc-3-notes |\n| a_shared | shared traps, removal tools, cleaning and cold/drying rooms | Identify all consuming nodes and service periods. Prefer measured use; otherwise documented service hours or throughput, assigned once without upstream/foreground duplication. | fao-hides-skins |\n| a_state | fresh/preserved; whole/piece | One lot has one marketed state and configuration at its gate. Do not count a pelt and its cuttings twice; allocate treatment only to treated lots. | eu-raw-furskin-heading |\n\n"
       headings:
@@ -1151,12 +1103,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41696
-              line: 827
+              offset: 39209
+              line: 775
               column: 1
             end:
-              offset: 41736
-              line: 827
+              offset: 39249
+              line: 775
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1171,16 +1123,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49204"
+    - unit_id: "normative_52858"
       family: "validation"
       span:
         start:
-          offset: 49204
-          line: 868
+          offset: 52858
+          line: 836
           column: 1
         end:
-          offset: 50811
-          line: 879
+          offset: 54465
+          line: 847
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | sold lot | Reject tanned, dressed, manufactured or hair-bearing non-furrier goods; verify lawful source and actual furrier-use whole/piece identity. | un-cpc-3-notes;eu-raw-furskin-heading |\n| v_balance | each lot | Reconcile source, removed, prepared, accepted, downgrade, waste, treated and sold mass at their measured states. | fao-hides-skins |\n| v_route | farm/wild | No farm animal input on wild route; actual co-products and source burden once; no upstream capture/slaughter duplication. | un-cpc-3-notes |\n| v_period | shared service | Source event and each shared trap, removal, cleaning or cold/dry service have one period and one attributed consumer share. | fao-hides-skins |\n| v_binding | all cards | conditional product inputs require actual concrete selection; uncovered UUIDs need detail confirmation. Mixed raw/dressed count-based candidates cannot bind a raw Mass reference. |  |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n\n"
       headings:
@@ -1199,12 +1151,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49204
-              line: 868
+              offset: 52858
+              line: 836
               column: 1
             end:
-              offset: 49226
-              line: 868
+              offset: 52880
+              line: 836
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1301,132 +1253,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_source"
       identity_kind: "explicit"
-      unit_id: "normative_41696"
+      unit_id: "normative_39209"
       source_span:
         start:
-          offset: 41809
-          line: 831
+          offset: 39322
+          line: 779
           column: 1
         end:
-          offset: 42280
-          line: 831
+          offset: 39793
+          line: 779
           column: 472
     - pointer: "/allocation_rules/1"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_41696"
+      unit_id: "normative_39209"
       source_span:
         start:
-          offset: 42281
-          line: 832
+          offset: 39794
+          line: 780
           column: 1
         end:
-          offset: 42520
-          line: 832
+          offset: 40033
+          line: 780
           column: 240
     - pointer: "/allocation_rules/2"
       rule_id: "a_shared"
       identity_kind: "explicit"
-      unit_id: "normative_41696"
+      unit_id: "normative_39209"
       source_span:
         start:
-          offset: 42521
-          line: 833
+          offset: 40034
+          line: 781
           column: 1
         end:
-          offset: 42791
-          line: 833
+          offset: 40304
+          line: 781
           column: 271
     - pointer: "/allocation_rules/3"
       rule_id: "a_state"
       identity_kind: "explicit"
-      unit_id: "normative_41696"
+      unit_id: "normative_39209"
       source_span:
         start:
-          offset: 42792
-          line: 834
+          offset: 40305
+          line: 782
           column: 1
         end:
-          offset: 43008
-          line: 834
+          offset: 40521
+          line: 782
           column: 217
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_49204"
+      unit_id: "normative_52858"
       source_span:
         start:
-          offset: 49299
-          line: 872
+          offset: 52953
+          line: 840
           column: 1
         end:
-          offset: 49501
-          line: 872
+          offset: 53155
+          line: 840
           column: 203
     - pointer: "/validation_rules/1"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_49204"
+      unit_id: "normative_52858"
       source_span:
         start:
-          offset: 49502
-          line: 873
+          offset: 53156
+          line: 841
           column: 1
         end:
-          offset: 49659
-          line: 873
+          offset: 53313
+          line: 841
           column: 158
     - pointer: "/validation_rules/2"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_49204"
+      unit_id: "normative_52858"
       source_span:
         start:
-          offset: 49660
-          line: 874
+          offset: 53314
+          line: 842
           column: 1
         end:
-          offset: 49824
-          line: 874
+          offset: 53478
+          line: 842
           column: 165
     - pointer: "/validation_rules/3"
       rule_id: "v_period"
       identity_kind: "explicit"
-      unit_id: "normative_49204"
+      unit_id: "normative_52858"
       source_span:
         start:
-          offset: 49825
-          line: 875
+          offset: 53479
+          line: 843
           column: 1
         end:
-          offset: 49998
-          line: 875
+          offset: 53652
+          line: 843
           column: 174
     - pointer: "/validation_rules/4"
       rule_id: "v_binding"
       identity_kind: "explicit"
-      unit_id: "normative_49204"
+      unit_id: "normative_52858"
       source_span:
         start:
-          offset: 49999
-          line: 876
+          offset: 53653
+          line: 844
           column: 1
         end:
-          offset: 50208
-          line: 876
+          offset: 53862
+          line: 844
           column: 210
     - pointer: "/validation_rules/5"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_49204"
+      unit_id: "normative_52858"
       source_span:
         start:
-          offset: 50209
-          line: 877
+          offset: 53863
+          line: 845
           column: 1
         end:
-          offset: 50809
-          line: 877
+          offset: 54463
+          line: 845
           column: 601
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1455,27 +1407,27 @@ normative_context:
           column: 123
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41696"
+      unit_id: "normative_39209"
       source_span:
         start:
-          offset: 41696
-          line: 827
+          offset: 39209
+          line: 775
           column: 1
         end:
-          offset: 41736
-          line: 827
+          offset: 39249
+          line: 775
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49204"
+      unit_id: "normative_52858"
       source_span:
         start:
-          offset: 49204
-          line: 868
+          offset: 52858
+          line: 836
           column: 1
         end:
-          offset: 49226
-          line: 868
+          offset: 52880
+          line: 836
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1484,5 +1436,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:00f7a43569dfc5a317a3cb761e7cf2253a9a5286dbf47fcf2e27d8a09bae6f84"
-  generated_content_sha256: "sha256:a025263f54b664f96a9e508f53e50dc96d5f149ca8f82c8cfbc3e2ab7337959a"
+    sha256: "sha256:46f878b0d2ec6bdb4afcb62ef6536e7a7dd3e0e89f7dca4f1ed3c28089a70373"
+  generated_content_sha256: "sha256:052fb5ac572d234df8fae35ff8fef29f10e0ebe1c9c10b7f65302c06c148015d"

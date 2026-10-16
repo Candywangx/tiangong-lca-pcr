@@ -121,34 +121,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程产出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 适于物种的饲料（`rear_feed`）
-
-称量供应的购入或场内饲料，分开核对采食及剩余料；场内种植负担在上游或前景只归属一次。
-
-分母与范围要求：每 kg 养殖待采收蜗牛
-
-原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output.
-
-- 选定流：陆生蜗牛饲料或作物残余，按供应商限定（UUID 未解析）
-- 流属性/单位：Mass / kg
-- 数量规则：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_rearing`
-本卡 QA 对象：下方摄入量范围仅校验按 calc_feed_supply_and_intake 单独记录并重建的生物摄入量，沿用该范围声明的单位及分母；不用于限定或替代饲料供应交换量，后者保留边界内未食用损失及其生产负担。不得用摄入量上下限校验供应量，也不得为满足范围而扣除损失。供应量专用范围须有独立证据；摄入及损失记录缺失时，此项摄入量 QA 未评估，不视为通过。
-
-- 数量范围：暂定饲料完整性筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：kg/kg
-  - 基准：每 kg 待采收产出的消耗饲料；异常值需调查；QA 变量仅为实录生物摄入量，不是饲料供应清单数量
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 养殖及清洁供水（`rear_water`）
 
 计量养殖箱维护及卫生供水，不把边界外降水计为购入水。
@@ -211,32 +183,6 @@ sync_with: pcr.en-US.md
 
 ##### Waste flows
 
-###### 养殖残余及死亡物（`rear_residue`）
-
-饲料残余、剔除动物及垫料按废物去向分开记录；另售物不是废物。
-
-分母与范围要求：每 kg 养殖待采收蜗牛
-
-原始数量及计算要求：称量或依有记录处置量估算。 原始采集分母类型：process_output。
-
-- 选定流：养殖有机残余及死亡物，按成分限定（UUID 未解析）
-- 流属性/单位：Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_residues`
-- 数量范围：暂定数量完整性筛查，不作为默认投入或合格阈值
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：kg/kg
-  - 基准：每 kg 养殖待采收蜗牛；超范围需核对原始记录
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### Elementary flows
 
 ### Process: 采收或合法采集 (`gather`)
@@ -281,7 +227,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -292,11 +238,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_utilities`
 - 来源：`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`gather_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -306,6 +254,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_utilities`
 - 来源：`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ##### Waste flows
 
@@ -561,7 +511,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -572,31 +522,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_utilities`
 - 来源：`fao-agricultural-energy`
 
-###### 盐、盐水和工艺水（`preserve_medium`）
-
-仅盐渍或盐水批次计量实际盐和盐水/工艺水配方；不存在覆盖所有成分的统一 UUID。
-
-分母与范围要求：每 kg 稳定产出
-
-原始数量及计算要求：分别记录各配方成分并测量留存量与排出量。 原始采集分母类型：process_output。
-
-- 选定流：按配方限定的盐和水投入（UUID 未解析）
-- 流属性/单位：Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_preservation`
-- 数量范围：暂定数量完整性筛查，不作为默认投入或合格阈值
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：kg/kg
-  - 基准：每 kg 稳定产出；超范围需核对原始记录
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
 
 ##### Waste flows
 
@@ -694,32 +620,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程产出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 保护性包装材料（`pack_material`）
-
-使用包装时，按材质及重复使用周期记录实际产品容器及保护性外包，不指定通用固定 UUID；散装交付且无包装时记录零包装材料。
-
-分母与范围要求：每 kg 最终净蜗牛产品
-
-原始数量及计算要求：每次交付的新包装质量加分摊的可周转包装损耗。 原始采集分母类型：process_output。
-
-- 选定流：实际材料的产品容器及运输包装（UUID 未解析）
-- 流属性/单位：Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_handover`
-- 数量范围：暂定包装完整性筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/kg
-  - 基准：每 kg 净产品包装质量；异常值需调查
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -756,32 +656,6 @@ sync_with: pcr.en-US.md
 
 ##### Waste flows
 
-###### 损坏包装及最终产品剔除（`pack_reject`）
-
-分开损坏包装和产品剔除质量，指定实际回收或处置去向。
-
-分母与范围要求：每 kg 最终净蜗牛产品
-
-原始数量及计算要求：按材料和剔除原因称量。 原始采集分母类型：process_output。
-
-- 选定流：明确材料的包装和产品剔除物（UUID 未解析）
-- 流属性/单位：Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_residues`
-- 数量范围：暂定数量完整性筛查，不作为默认投入或合格阈值
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：kg/kg
-  - 基准：每 kg 最终净蜗牛产品；超范围需核对原始记录
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### Elementary flows
 
 ## 7. 分配与联产品处理
@@ -796,17 +670,27 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `rear_feed_specific_input` | `cp_rearing` | 作业 rear：称量供应的购入或场内饲料，分开核对采食及剩余料；场内种植负担在上游或前景只归属一次。 分母与范围要求：每 kg 养殖待采收蜗牛 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 |
+| `pack_material_specific_input` | `cp_handover` | 作业 pack：使用包装时，按材质及重复使用周期记录实际产品容器及保护性外包，不指定通用固定 UUID；散装交付且无包装时记录零包装材料。 分母与范围要求：每 kg 最终净蜗牛产品 原始数量及计算要求：每次交付的新包装质量加分摊的可周转包装损耗。 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 |
+
+
 ### 数据采集协议
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_rearing | rear | 批次存量、饲料及产出 | 养殖日志 | species,cohort,stock,feed,mortality,ready_mass,dates | 日志及校准称；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 | item;kg | 每事件 | 完整养殖批次与期间 | 实际养殖设施 | 每参考流 | 供应商凭据、库存簿、校准记录；可追溯分子、合格参考产出分母及归一化计算表 |
+| cp_rearing | rear | 批次存量、饲料及产出 | 养殖日志 | species,cohort,stock,feed,mortality,ready_mass,dates | 日志及校准称；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 `rear_feed_specific_input`: 作业 rear：称量供应的购入或场内饲料，分开核对采食及剩余料；场内种植负担在上游或前景只归属一次。 分母与范围要求：每 kg 养殖待采收蜗牛 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | item;kg | 每事件 | 完整养殖批次与期间 | 实际养殖设施 | 每参考流 | 供应商凭据、库存簿、校准记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_harvest | gather | 来源及原料批次 | 采集日志 | route,permit,site,cohort,event,raw_mass,incidental,dates | 批次称及采集记录；原始汇总要求：原料批次不重复求和。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg | 每事件 | 完整采集事件 | 实际农场或野外地点 | 每参考流 | 采集单、许可、称量；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_preparation | prepare | 吐沙、清洗与等级 | 批次日志 | incoming,water,accepted,downgraded,reject,shell,destination | 表计、称量、等级日志；原始汇总要求：每批质量平衡。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg | 每批 | 全部准备批次 | 初级加工地点 | 每参考流 | 等级规范、称及水表记录；可追溯分子、合格参考产出分母及归一化计算表 |
-| cp_preservation | preserve | 路线及状态转换 | 配方与批次日志 | initial,final,temperature,time,moisture,salt,brine,reject,energy | 称量、表计、配方、检测；原始汇总要求：按状态批次平衡。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg;kWh | 每实际处理 | 全部保藏批次 | 实际工厂 | 每参考流 | 配方、水分检测、能源账单；可追溯分子、合格参考产出分母及归一化计算表 |
+| cp_preservation | preserve | 路线及状态转换 | 配方与批次日志 | initial,final,temperature,time,moisture,salt,brine,reject,energy | 称量、表计、配方、检测；原始汇总要求：按状态批次平衡。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 `preserve_medium_specific_input`: 仅盐渍或盐水批次计量实际盐和盐水/工艺水配方；不存在覆盖所有成分的统一 UUID。 分母与范围要求：每 kg 稳定产出 原始数量及计算要求：分别记录各配方成分并测量留存量与排出量。 原始采集分母类型：process_output。 依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg;kWh | 每实际处理 | 全部保藏批次 | 实际工厂 | 每参考流 | 配方、水分检测、能源账单；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_utilities | rear;gather;prepare;preserve | 水及能源 | 表计或燃料记录 | meter,carrier,node,period,shared_driver | 表计与发票核对；原始汇总要求：按实测驱动量归属一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg;kWh;MJ | 每计量期 | 完整批次或服务期 | 消费节点 | 每参考流 | 校准、账单、分配表；可追溯分子、合格参考产出分母及归一化计算表 |
-| cp_handover | pack | 包装及最终批次 | 发运记录 | state,net_mass,tare,reuse,gate,handover | 校准称及交付单；原始汇总要求：按状态求和合格净销售质量。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg | 每批 | 全部合格销售批次 | 实际交付地点 | 每参考流 | 称量单及追溯；可追溯分子、合格参考产出分母及归一化计算表 |
-| cp_residues | rear;gather;prepare;preserve;pack | 废物及损失 | 处置和平衡日志 | composition,mass,destination,reason,period | 称量及处置凭证；原始汇总要求：每个分流去向仅求和一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg | 每事件 | 全部前景期间 | 实际节点 | 每参考流 | 凭证及平衡记录；可追溯分子、合格参考产出分母及归一化计算表 |
+| cp_handover | pack | 包装及最终批次 | 发运记录 | state,net_mass,tare,reuse,gate,handover | 校准称及交付单；原始汇总要求：按状态求和合格净销售质量。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 `pack_material_specific_input`: 作业 pack：使用包装时，按材质及重复使用周期记录实际产品容器及保护性外包，不指定通用固定 UUID；散装交付且无包装时记录零包装材料。 分母与范围要求：每 kg 最终净蜗牛产品 原始数量及计算要求：每次交付的新包装质量加分摊的可周转包装损耗。 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg | 每批 | 全部合格销售批次 | 实际交付地点 | 每参考流 | 称量单及追溯；可追溯分子、合格参考产出分母及归一化计算表 |
+| cp_residues | rear;gather;prepare;preserve;pack | 废物及损失 | 处置和平衡日志 | composition,mass,destination,reason,period | 称量及处置凭证；原始汇总要求：每个分流去向仅求和一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 `pack_reject_specific_output`: 分开损坏包装和产品剔除质量，指定实际回收或处置去向。 分母与范围要求：每 kg 最终净蜗牛产品 原始数量及计算要求：按材料和剔除原因称量。 原始采集分母类型：process_output。 依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 这是必需的产出身份确认要求，不是集合式交换。保留本作业实际副产品、拒收物、包装废物及处理物流的全部核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料和状态、数量、去向及产品或废物角色。确实混合的废物流可作为一条物理组成明确且组成有计量依据的混合物，不编造分离，也不重复计入其中组分。不同单位分别记录，保留原分配和参考流归一化规则并协调产出平衡。联产品分配前确认实际功能，废物不能仅因具有质量而分得联产品负荷。核验兼容UUID或明确保留未解析身份，缺失记录不等于零数量或可排除。 `rear_residue_specific_output`: 饲料残余、剔除动物及垫料按废物去向分开记录；另售物不是废物。 分母与范围要求：每 kg 养殖待采收蜗牛 原始数量及计算要求：称量或依有记录处置量估算。 原始采集分母类型：process_output。 依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | kg | 每事件 | 全部前景期间 | 实际节点 | 每参考流 | 凭证及平衡记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_feed_supply_and_intake` | `rear` | 饲料投入、采食及损失 | 库存、收货、发料及损失台账 | 饲料身份/来源；群体/阶段；期间；期初/期末库存；收货；自产供给；未用退回/转出；未食用/变质质量及去向；原物/干物质；实际采食量；负担归属；合格最终产出 | 按 calc_feed_supply_and_intake 核对匹配的库存、称重、日粮/采草估算及处置记录。保留原始总量及阶段分母，生产与处理负担各归属一次，再对合格最终产出归一化。 | kg as-fed; kg DM | 每次发料及期间结算 | 完整所代表群体/期间 | 实际运行饲喂节点 | 每参考流 | 库存及供应商记录；水分证据；损失及无重复核算核对 |
 
 ### 计算规则

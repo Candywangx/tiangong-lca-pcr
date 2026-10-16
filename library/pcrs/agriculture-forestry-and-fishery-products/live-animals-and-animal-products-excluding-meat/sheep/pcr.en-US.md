@@ -119,58 +119,6 @@ Denominator and scope requirements：per kg live sheep at farm gate and declared
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Feed and forage supply (`feed_forage_supply`)
-
-Record each feed source actually entering the flock diet, including grazed forage where its managed production is in scope, conserved forage, concentrates, by-products, supplements, and milk replacer. No generic feed UUID is assigned.
-
-Denominator and scope requirements：per kg live sheep at farm gate
-
-- Selected flow: Sheep feed and forage by actual product identity (UUID unresolved)
-- Flow property / unit: Mass / kg dry matter and kg as-fed
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_feed_and_grazing`
-- Sources: `fao-leap-small-ruminants-2016`; `ipcc-2019-livestock-manure`
-QA scope for this card: the intake range below screens only separately recorded biological intake on its stated unit and denominator, reconstructed under calc_feed_supply_and_intake. It does not bound or substitute for the supplied-feed exchange, which retains in-boundary uneaten losses and their production burden. Do not compare feed supply with intake bounds or subtract losses merely to fit a range. A supply-specific range requires separate evidence; missing intake/loss records leave this intake QA unassessed, not passing.
-
-- Range: Provisional lifetime feed-intake screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.5
-  - Upper: 30
-  - Unit: kg feed dry matter/kg reference live weight
-  - Basis: broad replaceable screen spanning animal class, route, growth period, pasture accounting, and co-product systems; not a default ration; QA variable is recorded biological intake only, not the supplied-feed inventory amount
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Veterinary and flock-health products (`flock_health_products`)
-
-Record actual vaccines, medicines, disinfectants, mineral treatments, and other purchased health products by formulation and use. Veterinary services sold separately are not the reference product.
-
-Denominator and scope requirements：per kg live sheep at farm gate
-
-- Selected flow: Veterinary and flock-health product by actual formulation (UUID unresolved)
-- Flow property / unit: Mass, volume, or dose / kg, L, or dose
-- Amount rule: Record product, active ingredient or formulation, dose, treated animal class, date, and discarded quantity; report zero when unused.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_health_products`
-- Sources: `fao-leap-small-ruminants-2016`
-- Range: Provisional flock-health product screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg or L formulated product/kg reference live weight
-  - Basis: broad conditional screen; replace with treatment and purchase records and do not interpret as a recommended dose
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Supplied water (`supplied_water`)
 
 Record drinking, cleaning, cooling, and other supplied water crossing the farm process boundary. Rainfall and unmanaged surface water are site conditions, not Product inputs.
@@ -203,9 +151,9 @@ Denominator and scope requirements：per kg live sheep at farm gate
 Record purchased or on-site electricity, fuels, heat, and other carriers used for housing, water supply, feeding, shearing, manure handling, weighing, and directly controlled flock movement.
 Denominator and scope requirements：per kg live sheep at farm gate
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_water_energy_transport` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -216,11 +164,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_water_energy_transport`
 - Sources: `fao-leap-small-ruminants-2016`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`energy_supply_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_water_energy_transport` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -230,6 +180,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_water_energy_transport`
 - Sources: `fao-leap-small-ruminants-2016`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`energy_supply_heat`)
 
@@ -528,13 +480,23 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `feed_forage_supply_specific_input` | `cp_feed_and_grazing` | Operation managed_sheep_production: Record each feed source actually entering the flock diet, including grazed forage where its managed production is in scope, conserved forage, concentrates, by-products, supplements, and milk replacer. No generic feed UUID is assigned. Denominator and scope requirements：per kg live sheep at farm gate Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. |
+| `flock_health_products_specific_input` | `cp_health_products` | Operation managed_sheep_production: Record actual vaccines, medicines, disinfectants, mineral treatments, and other purchased health products by formulation and use. Veterinary services sold separately are not the reference product. Denominator and scope requirements：per kg live sheep at farm gate Original quantity method: Record product, active ingredient or formulation, dose, treated animal class, date, and discarded quantity; report zero when unused. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_flock_events` | managed_sheep_production | animal entries, births, phase transfers, sales, culls, and reference output | flock register, weigh record, sale or transfer record | animal or lot id; class; sex; purpose; breed where material; event; date; head count; live weight; scale point; origin or destination | calibrated individual or lot weighing linked to flock records; Raw aggregation requirements: reconcile opening stock + entries + births = closing stock + transfers + sales + deaths, then normalize transferred live weight. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | head and kg live weight | each event | complete cohort or representative reporting period | all represented flock groups and farm-gate transfer point | per reference flow | scale calibration, signed transfer, flock-register reconciliation; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_feed_and_grazing` | managed_sheep_production | feed and forage input | feed invoice, ration, pasture and grazing log, stock movement | feed identity; source; as-fed mass; dry matter; animal class; grazing area and duration; refusals | weigh supplied feed; derive pasture intake with a declared reviewed method when direct measurement is unavailable; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | kg as-fed and kg dry matter | feed event or period | all biological phases in the cohort or reporting period | flock group, pasture parcel, and housing unit | per reference flow | invoices, scale records, feed analysis, pasture and movement logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_health_products` | managed_sheep_production | veterinary and flock-health products | treatment register and purchase record | product; formulation or active ingredient; dose; quantity; animal class; date; reason; discard | treatment log reconciled to purchases and stock; Raw aggregation requirements: sum actual administered and discarded quantities by formulation. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | dose, kg, or L | each treatment | complete cohort or reporting period | all represented flock groups | per reference flow | signed treatment register, invoice, stock reconciliation; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_feed_and_grazing` | managed_sheep_production | feed and forage input | feed invoice, ration, pasture and grazing log, stock movement | feed identity; source; as-fed mass; dry matter; animal class; grazing area and duration; refusals | weigh supplied feed; derive pasture intake with a declared reviewed method when direct measurement is unavailable; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `feed_forage_supply_specific_input`: Operation managed_sheep_production: Record each feed source actually entering the flock diet, including grazed forage where its managed production is in scope, conserved forage, concentrates, by-products, supplements, and milk replacer. No generic feed UUID is assigned. Denominator and scope requirements：per kg live sheep at farm gate Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg as-fed and kg dry matter | feed event or period | all biological phases in the cohort or reporting period | flock group, pasture parcel, and housing unit | per reference flow | invoices, scale records, feed analysis, pasture and movement logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_health_products` | managed_sheep_production | veterinary and flock-health products | treatment register and purchase record | product; formulation or active ingredient; dose; quantity; animal class; date; reason; discard | treatment log reconciled to purchases and stock; Raw aggregation requirements: sum actual administered and discarded quantities by formulation. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `flock_health_products_specific_input`: Operation managed_sheep_production: Record actual vaccines, medicines, disinfectants, mineral treatments, and other purchased health products by formulation and use. Veterinary services sold separately are not the reference product. Denominator and scope requirements：per kg live sheep at farm gate Original quantity method: Record product, active ingredient or formulation, dose, treated animal class, date, and discarded quantity; report zero when unused. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | dose, kg, or L | each treatment | complete cohort or reporting period | all represented flock groups | per reference flow | signed treatment register, invoice, stock reconciliation; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_water_energy_transport` | managed_sheep_production | supplied water, energy carriers, and included inbound transport | meter, invoice, fuel and trip log | water source and quantity; energy carrier and quantity; meter id; activity; cargo; mass; distance; vehicle; date | meters, invoices, tank records, odometer or route records; Raw aggregation requirements: assign directly where metered; otherwise allocate by documented operating hours, animal-days, or live-weight-time. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | m3, kg, L, kWh, MJ, and t*km | monthly, trip, or event | complete cohort or reporting period | farm, grazing support, housing, handling, manure, and included movement activities | per reference flow | calibration, invoice, meter photo, trip manifest, allocation worksheet; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_outputs_and_losses` | managed_sheep_production | wool, milk, manure export, mortalities, and other output or loss | shearing, milk, manure transfer, mortality, and waste records | output identity; mass; wet/dry or composition basis; animal group; date; destination; loss cause; fate | weigh or meter each output; estimate mortality mass from recorded live weight or documented class average; Raw aggregation requirements: sum by output identity and hand-off; distinguish intended product, internal use, residue, and waste. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, L, and head | each output or loss event | complete cohort or reporting period | all represented flock groups and output gates | per reference flow | scale or meter records, invoice, transfer document, mortality and waste log; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_manure_and_emissions` | managed_sheep_production | manure routing, enteric CH4, manure CH4, and direct N2O | animal population, feed, excretion, manure-pathway and climate records | animal class; head or animal-days; live weight; feed or gross energy; nitrogen intake; manure pathway; storage duration; climate; method tier; factors | collect flock and manure records and calculate with the declared reviewed method; Raw aggregation requirements: calculate by class, phase, and manure pathway, then aggregate without duplicating deposited, stored, applied, or exported manure. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg CH4, kg N2O or kg N2O-N, and kg manure | monthly or phase | all biological phases and manure pathways | grazing parcels, housing, storage, treatment, application, and export points | per reference flow | source records, method worksheet, factor provenance, independent pathway reconciliation; traceable numerator, accepted reference-output denominator and normalization worksheet |

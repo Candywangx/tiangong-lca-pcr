@@ -116,7 +116,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01323_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -126,12 +126,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_establishment_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement-agriculture`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`p01323_orchard_establishment_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01323_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -141,6 +143,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_establishment_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement-agriculture`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`p01323_orchard_establishment_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -280,7 +284,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01323_cultivation_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -290,12 +294,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_cultivation_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement-agriculture`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`p01323_orchard_cultivation_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01323_cultivation_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -305,6 +311,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_cultivation_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement-agriculture`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`p01323_orchard_cultivation_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -383,39 +391,24 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_01323_cultivation_records`
 - 来源：`fao-gap-framework-2003`
 
-###### 移动机械燃料和田间能源（`orange_cultivation_energy_input`）
+###### 柴油 (`orange_cultivation_energy_input_diesel`)
 
-记录除草、喷施、修剪和田间运输等果园作业使用的燃料或移动机械能源。
+实际柴油果园拖拉机割草、喷施、修剪辅助及田间移动；其他动力系统须有独立记录。
 
-- 选定流：农业移动机械燃料或能源供应
-- 流属性/单位：能源或燃料质量 / MJ 或 kg
-- 数量规则：燃料领用记录、带有文件依据燃料因子的机械小时记录或承包商发票分配
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每果园年度和 1 kg 合格橙.
+仅在本节点设备及采购记录确认使用此燃料时启用。记录牌号、配方、供应商及实际质量，体积按有证据的密度换算，不用默认密度。UUID标识燃料产品，不是燃烧服务或排放因子；实际前景燃烧另行计入，避免重复已含燃烧的上游服务。
 
-- 归一化基准：每声明的参考流
-- 基准类型：生产周期（`crop_cycle`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_01323_cultivation_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_01323_cultivation_records`
-- 来源：`fao-gap-framework-2003`
+- 来源：`route-energy-fao`
 
-###### 施用植保制剂（`orange_crop_protection_input`）
-
-记录实际施用的制剂名称、有效成分、用量、处理面积和施用事件。
-
-- 选定流：橙园植保制剂
-- 流属性/单位：产品质量 / kg product
-- 数量规则：将产品发票、喷施日志或承包商记录与处理面积核对
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每果园年度和 1 kg 合格橙.
-
-- 归一化基准：每声明的参考流
-- 基准类型：生产周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_01323_cultivation_records`
-- 来源：`fao-gap-framework-2003`
+执行第8节`orange_cultivation_energy_input_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -458,24 +451,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_01323_cultivation_records`
 - 来源：`ipcc-2019-refinement-agriculture`
 
-###### 果园土壤的氮径流或淋失（`orange_nitrogen_water_emission`）
-
-当数据包根据养分和水量平衡计算时，记录向受纳水体或土壤排放的硝酸盐或其他氮损失。
-
-- 选定流：受管理果园土壤向声明受纳环境排放的氮
-- 流属性/单位：报告氮物种质量 / kg 物质或 kg N
-- 数量规则：现场测量，或根据采集的养分和水量平衡记录进行方法计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每果园年度和 1 kg 合格橙.
-
-- 归一化基准：每声明的参考流
-- 基准类型：生产周期（`crop_cycle`）
-- 证据类型：方法公式（`method_formula`）
-- 采集协议：`cp_01323_cultivation_records`
-- 来源：`ipcc-2019-refinement-agriculture`
-
-
 ##### 废物流
 
 ###### 修剪和果园残余物至声明去向（`orange_pruning_residue`）
@@ -500,64 +475,12 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 采收能源和田间运输服务（`orange_harvest_energy_input`）
-
-记录跨越前景边界的采收机械燃料、电力或承包采收能源；农场出场后的运输与本卡片分开。
-
-- 选定流：采收能源供应或移动机械燃料
-- 流属性/单位：能源或燃料质量 / MJ 或 kg
-- 数量规则：采收日志、燃料领用记录、机械小时因子或承包商分配
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每采收和合格橙质量.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_01323_harvest_records`
-- 来源：`fao-gap-framework-2003`
-
-###### 农场端包装功能（`orange_packaging_input`）
-
-仅当包装跨越声明的农场端处理边界时记录箱、纸箱、托盘或其他包装，并声明重复使用、回收和损耗假设。
-
-- 选定流：农场端包装功能
-- 流属性/单位：质量或包装件数 / kg 或 item
-- 数量规则：以合格橙产量归一化包装领用记录，并记录重复使用次数
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：每采收和合格橙质量.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_01323_harvest_records`
-- 来源：`codex-fresh-fruits-vegetables-cxc-53`
-
 ##### 废物流
 
 ##### 产品流
 
 #### 输出
 ##### 基本流
-
-###### 农场端处理排放（`orange_farm_gate_emissions`）
-
-仅当清洗、处理或现场燃烧在声明边界内时记录直接排放，并保留受纳环境和污染物身份。
-
-- 选定流：农场端处理向声明受纳环境的排放
-- 流属性/单位：报告物质质量 / kg substance
-- 数量规则：现场测量或根据处理活动记录进行方法计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每采收和合格橙质量.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_01323_harvest_records`
-- 来源：`fao-gap-framework-2003`、`ipcc-2019-refinement-agriculture`
-
 
 ##### 产品流
 
@@ -612,6 +535,28 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `orange_crop_protection_input_specific_input` | `cp_01323_cultivation_records` | 作业 p01323_orchard_cultivation：记录实际施用的制剂名称、有效成分、用量、处理面积和施用事件。 原数量方法：将产品发票、喷施日志或承包商记录与处理面积核对 |
+| `orange_packaging_input_specific_input` | `cp_01323_harvest_records` | 作业 p01323_harvest_farm_gate：仅当包装跨越声明的农场端处理边界时记录箱、纸箱、托盘或其他包装，并声明重复使用、回收和损耗假设。 原数量方法：以合格橙产量归一化包装领用记录，并记录重复使用次数 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `orange_cultivation_energy_input_identification` | `cp_01323_cultivation_records` | 实际柴油果园拖拉机割草、喷施、修剪辅助及田间移动；其他动力系统须有独立记录。 原始活动或阶段基准：每果园年度和 1 kg 合格橙. (`route-energy-fao`) |
+| `orange_harvest_energy_input_identification` | `cp_01323_harvest_records` | 实际采摘及收集路线、周转箱移动及出口前搬运。增加载能体前先确认设备及承包服务包含项，排除出口后运输。 原始活动或阶段基准：每采收和合格橙质量. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -620,8 +565,8 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_01323_establishment_records` | `p01323_orchard_establishment` | 种植、养分、残余物、土地、果园能力 | 苗圃记录、种植日志、地块图、更新记录 | 地块；品种；砧木；植株数量；产品；产品质量；养分分析；面积；年度；残余物去向 | 核对发票、田间日志、地图和实测或有依据的换算；原始汇总与分配：按地块汇总并按结果年限和合格产出分配 | kg、item、kg nutrient、ha year | 每次建植或更新事件 | 全建植期和声明分配期 | 果园地块 | 每声明的参考流 | 签署日志、发票、地图、产品分析 |
-| `cp_01323_cultivation_records` | `p01323_orchard_cultivation` | 养分、灌溉、燃料、植保、残余物、排放 | 投入发票、喷施日志、水表记录、机械记录、土壤或水量平衡 | 地块；日期；产品；数量；养分基准；灌溉量；燃料；机械小时；处理面积；残余物质量；排放方法 | 按月或事件核对地块面积和果园年度产出；原始汇总与分配：汇总事件，保留产品和养分基准，并归一化至合格产出 | kg product、kg nutrient、m3、MJ、kg residue | 每个事件并按月汇总 | 一个生产年度或声明生产周期 | 果园地块和场址 | 每声明的参考流 | 水表核验、发票、喷施记录、因子文件、质量平衡 |
-| `cp_01323_harvest_records` | `p01323_harvest_farm_gate` | 采收能源、包装、拒收品、排放、合格产品 | 采收票、地磅记录、包装记录、去向记录 | 日期；地块；采收质量；合格质量；拒收质量；去向；燃料或能源；包装类型；包装质量；重复使用次数 | 将采收和去向质量与农场出场产品总量核对；原始汇总与分配：汇总批次并分别保留合格、拒收和副产品路线 | kg、MJ、kg packaging、item | 每个采收批次 | 全采收季和声明农场出场期 | 果园和处理点 | 每声明的参考流 | 校准秤、批次票、包装领用记录、去向收据 |
+| `cp_01323_cultivation_records` | `p01323_orchard_cultivation` | 养分、灌溉、燃料、植保、残余物、排放; 必须完成的具体排放识别与计算 | 投入发票、喷施日志、水表记录、机械记录、土壤或水量平衡 | 地块；日期；产品；数量；养分基准；灌溉量；燃料；机械小时；处理面积；残余物质量；排放方法; 物质名称；接收环境；报告单位及元素或化合物基准；方法和因子来源；实际活动量；期间；数量不确定性；相关既有交换 | 按月或事件核对地块面积和果园年度产出；原始汇总与分配：汇总事件，保留产品和养分基准，并归一化至合格产出 按路线确认要求：`orange_cultivation_energy_input_identification`: 实际柴油果园拖拉机割草、喷施、修剪辅助及田间移动；其他动力系统须有独立记录。 原始活动或阶段基准：每果园年度和 1 kg 合格橙. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `orange_crop_protection_input_specific_input`: 作业 p01323_orchard_cultivation：记录实际施用的制剂名称、有效成分、用量、处理面积和施用事件。 原数量方法：将产品发票、喷施日志或承包商记录与处理面积核对 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。; orange_nitrogen_water_emission_specific_emission: 根据养分和水量平衡记录，确定实际果园年度有依据的氮径流及淋失。明确报告物质、适用时的溶解态或颗粒态基准，以及实际受纳水体或土壤环境。总 N 或平衡残差不能直接证明硝酸盐身份。保留果园年度归属及合格橙产出归一化。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | kg product、kg nutrient、m3、MJ、kg residue; kg 具体物质与 kg N 分开记录 | 每个事件并按月汇总 | 一个生产年度或声明生产周期 | 果园地块和场址 | 每声明的参考流 | 水表核验、发票、喷施记录、因子文件、质量平衡 |
+| `cp_01323_harvest_records` | `p01323_harvest_farm_gate` | 采收能源、包装、拒收品、排放、合格产品; 必须完成的具体排放识别与计算 | 采收票、地磅记录、包装记录、去向记录 | 日期；地块；采收质量；合格质量；拒收质量；去向；燃料或能源；包装类型；包装质量；重复使用次数; 物质名称；接收环境；报告单位及元素或化合物基准；方法和因子来源；实际活动量；期间；数量不确定性；相关既有交换 | 将采收和去向质量与农场出场产品总量核对；原始汇总与分配：汇总批次并分别保留合格、拒收和副产品路线 按路线确认要求：`orange_harvest_energy_input_identification`: 实际采摘及收集路线、周转箱移动及出口前搬运。增加载能体前先确认设备及承包服务包含项，排除出口后运输。 原始活动或阶段基准：每采收和合格橙质量. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `orange_packaging_input_specific_input`: 作业 p01323_harvest_farm_gate：仅当包装跨越声明的农场端处理边界时记录箱、纸箱、托盘或其他包装，并声明重复使用、回收和损耗假设。 原数量方法：以合格橙产量归一化包装领用记录，并记录重复使用次数 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。; orange_farm_gate_emissions_specific_emission: 对声明门内实际发生的清洗、处理和场内燃烧，根据测量或适用的活动量方法逐一识别直接污染物与接收介质。区分送往处理的废水转移与污染物的实际环境排放；核对场内和供方责任，避免重复计算已由整体服务覆盖的燃烧排放。保留采收量与合格橙量的关联以及门内归属。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | kg、MJ、kg packaging、item; kg 具体物质与 kg N 分开记录 | 每个采收批次 | 全采收季和声明农场出场期 | 果园和处理点 | 每声明的参考流 | 校准秤、批次票、包装领用记录、去向收据 |
 
 ### 计算规则
 
@@ -631,6 +576,8 @@ sync_with: pcr.en-US.md
 | `calc_establishment_allocation` | 建植行 | 按声明的结果年限和合格产量分配建植和更新量，并保留分配周期。 | 建植量；结果年限；合格产量 | 分配后的果园年度量 | `fao-gap-framework-2003` |
 | `calc_nutrient_basis` | 养分投入行 | 保留产品质量，并根据产品分析和施用产品量计算养分质量；不得以养分质量替代产品投入。 | 产品数量；产品分析 | 产品质量和养分质量 | `ipcc-2019-refinement-agriculture` |
 | `calc_reject_mass_balance` | 采收拒收品和产品输出 | 核对采收量与合格产出、拒收品、副产品和库存变化，并解释未解决差额。 | 采收量；合格量；拒收量；副产品；库存变化 | 已核对的质量平衡 | `mass-balance-identity` |
+| `orange_nitrogen_water_emission_specific_emission` | `p01323_orchard_cultivation` | 根据养分和水量平衡记录，确定实际果园年度有依据的氮径流及淋失。明确报告物质、适用时的溶解态或颗粒态基准，以及实际受纳水体或土壤环境。总 N 或平衡残差不能直接证明硝酸盐身份。保留果园年度归属及合格橙产出归一化。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_01323_cultivation_records` | 逐物质和介质的排放交换及独立元素台账 | `ipcc-2019-refinement-agriculture` |
+| `orange_farm_gate_emissions_specific_emission` | `p01323_harvest_farm_gate` | 对声明门内实际发生的清洗、处理和场内燃烧，根据测量或适用的活动量方法逐一识别直接污染物与接收介质。区分送往处理的废水转移与污染物的实际环境排放；核对场内和供方责任，避免重复计算已由整体服务覆盖的燃烧排放。保留采收量与合格橙量的关联以及门内归属。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_01323_harvest_records` | 逐物质和介质的排放交换及独立元素台账 | `fao-gap-framework-2003`; `ipcc-2019-refinement-agriculture` |
 
 ### 数据质量要求
 
@@ -677,3 +624,4 @@ sync_with: pcr.en-US.md
 | `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

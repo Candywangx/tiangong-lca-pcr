@@ -199,9 +199,9 @@ Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_nutrient_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -211,12 +211,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_records`
 - Sources: `fao-gap-framework-2003`; `ipcc-2019-managed-soils-n2o`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`crop_management_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_nutrient_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -226,6 +228,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_records`
 - Sources: `fao-gap-framework-2003`; `ipcc-2019-managed-soils-n2o`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`crop_management_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -287,31 +291,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_nutrient_records`
 - Sources: `fao-gap-framework-2003`; `ipcc-2019-managed-soils-n2o`; `fao-organic-nutrients`
 
-###### Crop-protection products (`crop_protection_input`)
-
-Record herbicides, fungicides, insecticides, biological controls, and adjuvants that cross the foreground boundary, preserving active ingredient and formulated product quantities where documented.
-
-- Selected flow: Crop-protection product
-- Flow property / unit: Mass / kg formulated product or active ingredient
-- Amount rule: Sum product quantities from invoices, spray logs, application records, and stock reconciliation for the represented crop cycle.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_crop_protection_records`
-- Sources: `fao-gap-framework-2003`
-- Range: Crop-protection product screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 30
-  - Unit: kg formulated product/ha
-  - Basis: total applications to the represented crop cycle
-  - Basis kind: crop_cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Irrigation and fertigation water (`crop_irrigation_water`)
 
 Record water delivered to the crop during management, separating irrigation from fertigation carrier water and natural-resource withdrawal.
@@ -362,30 +341,20 @@ Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
   - Basis kind: crop_cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Mobile machinery fuel (`mobile_machinery_fuel`)
+###### Diesel fuel (`mobile_machinery_fuel_diesel`)
 
-Record diesel, gasoline, or other fuel used by tractors and mobile machinery for bed preparation, cultivation, spraying, and harvest support.
+Only for documented diesel-powered machinery within this operation. Retain fuel grade and formulation; convert recorded volume with measured or supplier-supported density. Other powertrains require their actual carrier, not a diesel equivalent. Apply `mobile_machinery_fuel_specific_input`; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable.
 
-- Selected flow: Mobile machinery fuel
-- Flow property / unit: Energy or fuel mass / MJ or kg
-- Amount rule: Sum fuel receipts, tank records, or machine-hour calculations assigned to the represented crop cycle.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
-
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect this carrier under `cp_energy_records` for `crop_management`. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_energy_records`
-- Sources: `fao-gap-framework-2003`
-- Range: Mobile-fuel screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1,500
-  - Unit: MJ/ha
-  - Basis: field machinery operations for the crop cycle
-  - Basis kind: crop_cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `route-energy-fao`
 
 ##### Waste flows
 
@@ -580,31 +549,6 @@ Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
   - Basis kind: reference_flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Primary crate, carton, or pallet packaging (`primary_packaging_input`)
-
-Record packaging materials or reusable packaging service that crosses the foreground boundary before the declared gate, with material, tare, reuse, and allocation information.
-
-- Selected flow: Crate, carton, or pallet packaging function
-- Flow property / unit: Mass or packaging service / kg or item
-- Amount rule: Record package mass or item count, capacity, tare, reuse cycles, and loss or return rate for the represented harvest campaign.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_transport_records`
-- Sources: `usda-ams-eggplant-standard`
-- Range: Primary-packaging screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 80
-  - Unit: kg packaging per 1,000 kg output
-  - Basis: declared primary packaging at the gate
-  - Basis kind: reference_flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Pre-gate road freight (`pre_gate_road_transport`)
 
 Record purchased transport from field to pack-house or another declared pre-gate hand-off when it occurs within the foreground boundary.
@@ -692,31 +636,6 @@ Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
   - Basis kind: crop_cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Packaging waste (`packaging_waste_output`)
-
-Record damaged, discarded, or unrecovered packaging leaving the pre-gate packing operation, separated by material and fate.
-
-- Selected flow: Packaging waste
-- Flow property / unit: Mass / kg
-- Amount rule: Reconcile packaging issued, returned, reused, and discarded for the represented campaign.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: reference_flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_transport_records`
-- Sources: `mass-balance-identity`
-- Range: Packaging-waste screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 12
-  - Unit: kg packaging waste per 1,000 kg output
-  - Basis: pre-gate packing material reconciliation
-  - Basis kind: reference_flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -730,6 +649,17 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `crop_protection_input_specific_input` | `cp_crop_protection_records` | Operation crop_management: Record herbicides, fungicides, insecticides, biological controls, and adjuvants that cross the foreground boundary, preserving active ingredient and formulated product quantities where documented. Original quantity method: Sum product quantities from invoices, spray logs, application records, and stock reconciliation for the represented crop cycle. |
+| `mobile_machinery_fuel_specific_input` | `cp_energy_records` | Operation crop_management: Record diesel, gasoline, or other fuel used by tractors and mobile machinery for bed preparation, cultivation, spraying, and harvest support. Original quantity method: Sum fuel receipts, tank records, or machine-hour calculations assigned to the represented crop cycle. |
+| `primary_packaging_input_specific_input` | `cp_packaging_transport_records` | Operation harvest_and_gate_preparation: Record packaging materials or reusable packaging service that crosses the foreground boundary before the declared gate, with material, tare, reuse, and allocation information. Original quantity method: Record package mass or item count, capacity, tare, reuse cycles, and loss or return rate for the represented harvest campaign. |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -741,12 +671,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_area_cycle_records` | `crop_establishment` | land occupation | field or facility register | area, unit, crop dates, protected status, prior use | map or register production unit and verify start and end dates; Raw aggregation and attribution: multiply area by declared occupation period | ha and date | each crop cycle | full crop occupation period | each field, bed, or protected unit | per declared reference flow | field map, lease or facility record, date record |
 | `cp_irrigation_records` | `crop_management` | irrigation and withdrawal | meter, permit, or water-balance record | source, meter, application, date, volume, return flow | read meter or reconstruct documented water balance; Raw aggregation and attribution: sum by crop cycle and separate source withdrawal from delivery | m3 | each application or daily total | establishment to final harvest | each water source and crop unit | per declared reference flow | meter calibration, permit, or water-balance check |
 | `cp_nutrient_records` | `crop_management` | nutrient inputs and soil emissions | invoice, label, nutrient plan, and application log | product, mass, nutrient fraction, date, method, area, residue fate | reconcile purchases to application records and calculate nutrient equivalents; Raw aggregation and attribution: sum applications assigned to the crop cycle | kg product and kg nutrient | each application | full crop cycle | each crop unit | per declared reference flow | supplier label, soil plan, laboratory or log review |
-| `cp_crop_protection_records` | `crop_management` | crop-protection products | spray and stock record | product, active ingredient, dose, date, area, method | reconcile spray logs with invoices and stock movement; Raw aggregation and attribution: sum by product and active ingredient | kg product or active ingredient | each application | full crop cycle | each crop unit | per declared reference flow | product label, application log, trained-operator check |
-| `cp_energy_records` | `crop_management` | field and post-harvest energy | meter, fuel, or invoice record | carrier, quantity, operation, equipment, date, crop or batch assignment | read meter or reconcile fuel receipts and operating records; Raw aggregation and attribution: allocate shared use by declared physical basis | kWh, MJ, L, or kg | each operation or billing period | full crop cycle and pre-gate handling | field, facility, and shared equipment | per declared reference flow | meter, receipt, machine-hour, or allocation record |
+| `cp_crop_protection_records` | `crop_management` | crop-protection products | spray and stock record | product, active ingredient, dose, date, area, method | reconcile spray logs with invoices and stock movement; Raw aggregation and attribution: sum by product and active ingredient `crop_protection_input_specific_input`: Operation crop_management: Record herbicides, fungicides, insecticides, biological controls, and adjuvants that cross the foreground boundary, preserving active ingredient and formulated product quantities where documented. Original quantity method: Sum product quantities from invoices, spray logs, application records, and stock reconciliation for the represented crop cycle. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg product or active ingredient | each application | full crop cycle | each crop unit | per declared reference flow | product label, application log, trained-operator check |
+| `cp_energy_records` | `crop_management` | field and post-harvest energy | meter, fuel, or invoice record | carrier, quantity, operation, equipment, date, crop or batch assignment | read meter or reconcile fuel receipts and operating records; Raw aggregation and attribution: allocate shared use by declared physical basis `mobile_machinery_fuel_specific_input`: Operation crop_management: Record diesel, gasoline, or other fuel used by tractors and mobile machinery for bed preparation, cultivation, spraying, and harvest support. Original quantity method: Sum fuel receipts, tank records, or machine-hour calculations assigned to the represented crop cycle. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kWh, MJ, L, or kg | each operation or billing period | full crop cycle and pre-gate handling | field, facility, and shared equipment | per declared reference flow | meter, receipt, machine-hour, or allocation record |
 | `cp_residue_fate_records` | `crop_management` | crop residues | residue and recipient record | stream, wet mass, fate, recipient, date, field | weigh or estimate residue and retain fate evidence; Raw aggregation and attribution: sum by residue stream and fate | kg wet residue | each removal or crop-cycle close | crop-cycle close and post-harvest cleanup | each crop unit | per declared reference flow | weigh ticket, recipient record, or treatment receipt |
 | `cp_harvest_grade_records` | `harvest_and_gate_preparation` | marketable output and culls | harvest and grading record | date, round, gross harvest, accepted mass, culls, grade, gate | weigh each harvest round and reconcile grade outcomes; Raw aggregation and attribution: sum by crop cycle and declared gate | kg | each harvest round | entire harvest campaign | each field, bed, or campaign | per declared reference flow | scale record, grade sheet, and mass-balance check |
 | `cp_postharvest_records` | `harvest_and_gate_preparation` | washing and cooling | batch, meter, or equipment record | batch, water, recirculation, cooling time, loss, discharge | read batch or meter record and link to harvest lot; Raw aggregation and attribution: aggregate by accepted output batch | m3, kWh, kg, and h | each batch | all pre-gate handling | pack-house or declared handling site | per declared reference flow | batch sheet, meter, and sanitation record |
-| `cp_packaging_transport_records` | `harvest_and_gate_preparation` | packaging and pre-gate transport | packaging issue and dispatch record | material, tare, reuse, item count, mass, distance, vehicle, load | reconcile packaging and dispatch records to accepted harvest lots; Raw aggregation and attribution: sum packaging and transport by declared gate output | kg, item, km, or t*km | each campaign or dispatch | all in-scope pre-gate movements | field, pack-house, and route | per declared reference flow | package specification, dispatch note, route record |
+| `cp_packaging_transport_records` | `harvest_and_gate_preparation` | packaging and pre-gate transport | packaging issue and dispatch record | material, tare, reuse, item count, mass, distance, vehicle, load | reconcile packaging and dispatch records to accepted harvest lots; Raw aggregation and attribution: sum packaging and transport by declared gate output `primary_packaging_input_specific_input`: Operation harvest_and_gate_preparation: Record packaging materials or reusable packaging service that crosses the foreground boundary before the declared gate, with material, tare, reuse, and allocation information. Original quantity method: Record package mass or item count, capacity, tare, reuse cycles, and loss or return rate for the represented harvest campaign. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `packaging_waste_output_specific_output`: Record damaged, discarded, or unrecovered packaging leaving the pre-gate packing operation, separated by material and fate. Reconcile packaging issued, returned, reused, and discarded for the represented campaign. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion. `mass-balance-identity` | kg, item, km, or t*km | each campaign or dispatch | all in-scope pre-gate movements | field, pack-house, and route | per declared reference flow | package specification, dispatch note, route record |
 
 ### Calculation Rules
 
@@ -808,3 +738,4 @@ Evidence applicability: cited general farm-record and postharvest frameworks do 
 | `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

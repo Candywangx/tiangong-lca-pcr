@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Asparagus `3a8d74d8-77a2-4242-b9d3-c0d1b2141b81` |
+| 参考产品流 | 芦笋 `3a8d74d8-77a2-4242-b9d3-c0d1b2141b81` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -96,7 +96,7 @@ sync_with: pcr.en-US.md
 
 按类型和田块记录进入农田的成活根冠或移栽苗。
 
-- 选定流：Asparagus crowns or transplants
+- 选定流：芦笋根冠或移栽苗
 - 流属性/单位：Number of items / plant
 - 数量规则：按类型和田块计数成活种植单元。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -137,12 +137,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
 - 来源：`osu-asparagus-production`；`uc-ipm-asparagus-fertilization`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`stand_establishment_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -152,6 +154,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
 - 来源：`osu-asparagus-production`；`uc-ipm-asparagus-fertilization`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`stand_establishment_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -217,7 +221,7 @@ sync_with: pcr.en-US.md
 
 建植灌溉与降水和年度灌溉分开记录。
 
-- 选定流：Irrigation water
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 流集分组：`irrigation-water`
 - 数量规则：按田块和水源计量供水量。
@@ -250,7 +254,7 @@ sync_with: pcr.en-US.md
 
 该内部交接记录验收后的生产面积，不是参考产品。
 
-- 选定流：Established productive asparagus stand
+- 选定流：已建立的生产期芦笋种植群体
 - 流属性/单位：Area / ha
 - 数量规则：扣除失败植株并核对补植后的验收面积。
 - 数值来源模式：计算值（`calculated_value`）
@@ -281,7 +285,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_year_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -291,12 +295,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_year_records`
 - 来源：`osu-asparagus-production`；`uc-ipm-asparagus-fertilization`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`annual_field_management_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_year_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -306,6 +312,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_year_records`
 - 来源：`osu-asparagus-production`；`uc-ipm-asparagus-fertilization`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`annual_field_management_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -371,7 +379,7 @@ sync_with: pcr.en-US.md
 
 供水量与降水分开记录，并声明水源和灌溉技术。
 
-- 选定流：Irrigation water
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 流集分组：`irrigation-water`
 - 数量规则：按田块年计量灌溉供水量。
@@ -398,7 +406,7 @@ sync_with: pcr.en-US.md
 
 灌溉和田间作业电力与水量和燃料分开记录。
 
-- 选定流：Purchased electricity
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 流集分组：`electricity-supply`
 - 数量规则：按田块年计量或分配电力，避免重复计算抽水用电。
@@ -431,7 +439,7 @@ sync_with: pcr.en-US.md
 
 该内部交接是采收前的新鲜嫩茎质量，尚不是农场门商品。
 
-- 选定流：Harvest-ready asparagus spears in field
+- 选定流：田间待收芦笋嫩茎
 - 流属性/单位：Mass / kg fresh spears
 - 数量规则：采收毛重加单独测得的田间损失。
 - 数值来源模式：计算值（`calculated_value`）
@@ -459,7 +467,7 @@ sync_with: pcr.en-US.md
 
 按去向记录残体质量，区分还田、移除、焚烧、堆肥和其他处理。
 
-- 选定流：Senesced asparagus fern and field residue
+- 选定流：衰老芦笋茎叶及田间残余物
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：按去向计量或估算干物质和氮含量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -486,7 +494,7 @@ sync_with: pcr.en-US.md
 
 合成氮、有机氮和还田残体氮产生的直接 N2O 作为独立大气输出计算。
 
-- 选定流：Nitrous oxide to ambient air
+- 选定流：一氧化二氮向环境空气排放
 - 流属性/单位：Mass / kg N2O
 - 数量规则：采用声明适用的 IPCC 或地区方法并保留 N2O-N 至 N2O 换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -516,7 +524,7 @@ sync_with: pcr.en-US.md
 
 使用同一田块年的内部交接量并与产品和损失核对。
 
-- 选定流：Harvest-ready asparagus spears in field
+- 选定流：田间待收芦笋嫩茎
 - 流属性/单位：Mass / kg fresh spears
 - 数量规则：损失发生前等于对应的 `harvest_ready_spears_output`。
 - 数值来源模式：计算值（`calculated_value`）
@@ -533,7 +541,7 @@ sync_with: pcr.en-US.md
 
 仅在农场门交付前清洗时纳入补充水。
 
-- 选定流：Washing water
+- 选定流：清洗用水
 - 流属性/单位：Volume / m3
 - 流集分组：`process-water`
 - 数量规则：计量补充水和循环水并保留废水关联。
@@ -555,58 +563,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 一次包装（`primary_packaging_input`）
-
-按材料记录随产品交付的柔性绑带、套袋和袋；刚性托盘和周转箱单独记录。
-
-- 选定流：Flexible primary packaging for fresh asparagus
-- 流属性/单位：Mass / kg packaging
-- 流集分组：`flexible-packaging`
-- 数量规则：计量用于交付产品的包装，并单独识别可回用包装。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 商品芦笋.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_handling_records`
-- 来源：`penn-state-asparagus-production`
-- 数量范围：暂定柔性包装筛查范围
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/1,000 kg marketable asparagus
-  - 基准：等待材料记录的宽泛首轮柔性包装用量
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
-###### 刚性一次包装（`rigid_packaging_input`）
-
-按材料和回用周转次数记录随产品交付的刚性托盘和周转箱。
-
-- 选定流：Rigid primary packaging for fresh asparagus
-- 流属性/单位：Mass / kg packaging
-- 流集分组：`rigid-container-packaging`
-- 数量规则：计量用于交付产品的包装，并单独记录可回用容器的周转次数。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 商品芦笋.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_handling_records`
-- 来源：`penn-state-asparagus-production`
-- 数量范围：暂定刚性包装筛查范围
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/1,000 kg marketable asparagus
-  - 基准：等待材料和周转记录的宽泛首轮刚性包装用量
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 废物流
 
 ##### 基本流
@@ -618,7 +574,7 @@ sync_with: pcr.en-US.md
 
 该输出是按声明农场门交付的经修整、分级、新鲜、未加工芦笋。
 
-- 选定流：Asparagus `3a8d74d8-77a2-4242-b9d3-c0d1b2141b81`
+- 选定流：芦笋 `3a8d74d8-77a2-4242-b9d3-c0d1b2141b81`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：扣除采收、修整和拒收损失后的核验秤重质量。
 
@@ -639,7 +595,7 @@ sync_with: pcr.en-US.md
 
 按物理状态和去向记录拒收嫩茎与修整物。
 
-- 选定流：Rejected and trimmed fresh asparagus material
+- 选定流：鲜芦笋拒收物及修整材料
 - 流属性/单位：Mass / kg fresh material
 - 数量规则：计量拒收和修整质量并声明还田、饲料、堆肥、处理或处置。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -674,6 +630,16 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `primary_packaging_input_specific_input` | `cp_handling_records` | 作业 harvest_and_farm_gate_preparation：按材料记录随产品交付的柔性绑带、套袋和袋；刚性托盘和周转箱单独记录。 原数量方法：计量用于交付产品的包装，并单独识别可回用包装。 |
+| `rigid_packaging_input_specific_input` | `cp_handling_records` | 作业 harvest_and_farm_gate_preparation：按材料和回用周转次数记录随产品交付的刚性托盘和周转箱。 原数量方法：计量用于交付产品的包装，并单独记录可回用容器的周转次数。 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -684,7 +650,7 @@ sync_with: pcr.en-US.md
 | `cp_establishment_records` | `stand_establishment` | 种植材料、养分、水和验收面积 | 田间、采购、施用和计量记录 | field_id; date; planting_material_type; units_planted; failed_units; product_mass; nutrient_concentration; irrigation_volume; established_area | 将采购与施用记录核对到各建植田块；原始汇总与分配：按田块汇总并保留失败和补植 | plant; kg; m3; ha | 每次作业 | 完整建植活动 | 每个代表田块 | 每声明的参考流 | 发票、标签、仪表、田块图和验收记录 |
 | `cp_field_year_records` | `annual_field_management` | 养分、水、电力、残体和排放活动 | 田块年度日志、发票、仪表和施用记录 | field_id; year; stand_age; area; product_identity; product_mass; nutrient_concentration; irrigation_volume; electricity; residue_mass; dry_matter; residue_nitrogen; destination | 将全部记录核对至同一田块年；原始汇总与分配：先按田块年汇总再按参考流归一化 | ha; kg; kg nutrient; m3; kWh | 每次事件及年度结束 | 含采后茎叶管理的全年 | 每个代表生产田块 | 每声明的参考流 | 发票、标签、分析、仪表和去向记录 |
 | `cp_harvest_records` | `harvest_and_farm_gate_preparation` | 待采与采收毛重嫩茎 | 采收日志和秤重记录 | field_id; harvest_date; harvest_pass; gross_mass; field_loss; harvest_method; area | 每个采收批次关联田块和日期；原始汇总与分配：按田块年汇总，归一化前不混合园龄 | kg; ha | 每次采收 | 完整采收期 | 每个代表田块 | 每声明的参考流 | 校准秤和采收票据 |
-| `cp_handling_records` | `harvest_and_farm_gate_preparation` | 水、包装、商品输出和拒收物 | 批次、秤重、仪表、包装和废物记录 | lot_id; source_field; gross_input; wash_water; packaging_material; packaging_mass; marketable_mass; grade; colour; trim_state; reject_mass; reject_reason; destination | 保持至交付的批次质量和公用工程核对；原始汇总与分配：聚合前核对投入、产品、拒收和质量变化 | kg; m3 | 每批或班次 | 完整采收包装期 | 每条代表处理线 | 每声明的参考流 | 校准秤、仪表、等级检验和去向凭证 |
+| `cp_handling_records` | `harvest_and_farm_gate_preparation` | 水、包装、商品输出和拒收物 | 批次、秤重、仪表、包装和废物记录 | lot_id; source_field; gross_input; wash_water; packaging_material; packaging_mass; marketable_mass; grade; colour; trim_state; reject_mass; reject_reason; destination | 保持至交付的批次质量和公用工程核对；原始汇总与分配：聚合前核对投入、产品、拒收和质量变化 `primary_packaging_input_specific_input`: 作业 harvest_and_farm_gate_preparation：按材料记录随产品交付的柔性绑带、套袋和袋；刚性托盘和周转箱单独记录。 原数量方法：计量用于交付产品的包装，并单独识别可回用包装。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `rigid_packaging_input_specific_input`: 作业 harvest_and_farm_gate_preparation：按材料和回用周转次数记录随产品交付的刚性托盘和周转箱。 原数量方法：计量用于交付产品的包装，并单独记录可回用容器的周转次数。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; m3 | 每批或班次 | 完整采收包装期 | 每条代表处理线 | 每声明的参考流 | 校准秤、仪表、等级检验和去向凭证 |
 
 ### 计算规则
 

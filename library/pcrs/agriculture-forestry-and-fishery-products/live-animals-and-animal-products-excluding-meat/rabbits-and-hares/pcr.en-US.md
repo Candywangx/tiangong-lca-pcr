@@ -127,32 +127,6 @@ Raw quantity and calculation requirements: measured received live mass Original 
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Breeder feed and forage (`breeder_feed`)
-
-Record supplied feed, forage and stock changes; grazed material is not purchased feed.
-
-Denominator and scope requirements：per kg live weanlings leaving breeder
-
-Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: process_output.
-
-- Selected flow: Rabbit feed and forage (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_feed`
-- Range: Provisional completeness screen, not a default
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/kg
-  - Basis: per kg live weanlings leaving breeder
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Supplied breeder water (`breeder_water`)
 
 Separate drinking from cleaning by actual use; a water group is deferred.
@@ -179,57 +153,24 @@ Raw quantity and calculation requirements: metered or recorded supplied water Or
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Breeder energy supply (`breeder_energy`)
+###### Alternating current (`breeder_energy_electricity`)
 
-Record heating, ventilation, lighting and pumping by real carrier and service.
+Actual electric ventilation, lighting and pumping in this rabbit housing stage. Natural ventilation does not imply a fan load; heating/cooling technology and its supply require separate evidence.
 
-Denominator and scope requirements：per kg live weanlings leaving breeder
+Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat.
 
-Raw quantity and calculation requirements: metered or invoiced energy by carrier Original collection denominator kind: process_output.
-
-- Selected flow: Energy supply (UUID unresolved)
-- Flow property / unit: Energy / MJ
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_utilities`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_utilities`
-- Range: Provisional completeness screen, not a default
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: MJ/kg
-  - Basis: per kg live weanlings leaving breeder
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `rabbit-housing-energy`
 
-###### Breeder bedding and care materials (`breeder_materials`)
-
-Record route-specific litter and veterinary materials by separate actual identity.
-
-Denominator and scope requirements：per kg live weanlings leaving breeder
-
-Raw quantity and calculation requirements: measured supplied material by identity Original collection denominator kind: process_output.
-
-- Selected flow: Bedding and veterinary materials (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_materials`
-- Range: Provisional completeness screen, not a default
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/kg
-  - Basis: per kg live weanlings leaving breeder
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Apply `breeder_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 ##### Waste flows
 
@@ -515,57 +456,24 @@ Raw quantity and calculation requirements: metered supplied water Original colle
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Rearing energy supply (`rearing_energy`)
+###### Alternating current (`rearing_energy_electricity`)
 
-Record actual ventilation, temperature and lighting carrier consumption.
+Actual electric ventilation, lighting and pumping in this rabbit housing stage. Natural ventilation does not imply a fan load; heating/cooling technology and its supply require separate evidence.
 
-Denominator and scope requirements：per kg live rabbits leaving rearing
+Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat.
 
-Raw quantity and calculation requirements: metered or invoiced energy Original collection denominator kind: process_output.
-
-- Selected flow: Energy supply (UUID unresolved)
-- Flow property / unit: Energy / MJ
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_utilities`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_utilities`
-- Range: Provisional completeness screen, not a default
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: MJ/kg
-  - Basis: per kg live rabbits leaving rearing
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `rabbit-housing-energy`
 
-###### Rearing bedding and care materials (`rearing_materials`)
-
-Record litter and care materials separately for the actual housing mode.
-
-Denominator and scope requirements：per kg live rabbits leaving rearing
-
-Raw quantity and calculation requirements: measured supplied material Original collection denominator kind: process_output.
-
-- Selected flow: Bedding and veterinary materials (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_materials`
-- Range: Provisional completeness screen, not a default
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/kg
-  - Basis: per kg live rabbits leaving rearing
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Apply `rearing_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 ##### Waste flows
 
@@ -845,58 +753,6 @@ Raw quantity and calculation requirements: measured disposal mass Original colle
 
 ##### Product flows
 
-###### Capture and short-holding consumables (`capture_materials`)
-
-Record actual consumed trap and welfare materials; reusable equipment is allocated service, not consumed anew each campaign.
-
-Denominator and scope requirements：per kg accepted hares at capture handover
-
-Raw quantity and calculation requirements: measured consumed mass by material Original collection denominator kind: process_output.
-
-- Selected flow: Capture and holding consumables (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_capture`
-- Range: Provisional completeness screen, not a default
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/kg
-  - Basis: per kg accepted hares at capture handover
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Capture and handling energy (`capture_energy`)
-
-Record trap-check and short-holding fuel/electricity by carrier and actual service.
-
-Denominator and scope requirements：per kg accepted hares at capture handover
-
-Raw quantity and calculation requirements: measured campaign fuel and electricity Original collection denominator kind: process_output.
-
-- Selected flow: Energy supply (UUID unresolved)
-- Flow property / unit: Energy / MJ
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_capture`
-- Range: Provisional completeness screen, not a default
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: MJ/kg
-  - Basis: per kg accepted hares at capture handover
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -1052,17 +908,50 @@ Required product-instance qualifiers: Species; domestic or wild; age/class; head
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `breeder_feed_specific_input` | `cp_feed` | Operation breeder: Record supplied feed, forage and stock changes; grazed material is not purchased feed. Denominator and scope requirements：per kg live weanlings leaving breeder Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. |
+| `breeder_materials_specific_input` | `cp_materials` | Operation breeder: Record route-specific litter and veterinary materials by separate actual identity. Denominator and scope requirements：per kg live weanlings leaving breeder Raw quantity and calculation requirements: measured supplied material by identity Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+| `rearing_materials_specific_input` | `cp_materials` | Operation rearing: Record litter and care materials separately for the actual housing mode. Denominator and scope requirements：per kg live rabbits leaving rearing Raw quantity and calculation requirements: measured supplied material Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `breeder_energy_identification` | `cp_utilities` | Actual electric ventilation, lighting and pumping in this rabbit housing stage. Natural ventilation does not imply a fan load; heating/cooling technology and its supply require separate evidence. Denominator and scope requirements：per kg live weanlings leaving breeder Raw quantity and calculation requirements: metered or invoiced energy by carrier Original collection denominator kind: process_output. (`rabbit-housing-energy`) |
+| `rearing_energy_identification` | `cp_utilities` | Actual electric ventilation, lighting and pumping in this rabbit housing stage. Natural ventilation does not imply a fan load; heating/cooling technology and its supply require separate evidence. Denominator and scope requirements：per kg live rabbits leaving rearing Raw quantity and calculation requirements: metered or invoiced energy Original collection denominator kind: process_output. (`rabbit-housing-energy`) |
+| `capture_energy_identification` | `cp_capture` | Actual trap-check trips and short holding of captured hares. Establish transport mode, equipment and ownership; do not assume a vehicle fuel or duplicate inclusive capture services. Denominator and scope requirements：per kg accepted hares at capture handover Raw quantity and calculation requirements: measured campaign fuel and electricity Original collection denominator kind: process_output. (`route-energy-fao`) |
+
+
+### Material and service identification requirements
+
+Identify each actual material or independently supplied service from supplier and activity records; record composition/specification, quantity, unit, node and period separately. Add one concrete exchange per identity before dataset completion; these requirements are not a single exchange. Reconcile with existing cards and inclusive services to avoid duplication. Allocate reusable assets over evidenced use and preserve physical quantities; normalize once to the matched final reference output. Missing identity or use evidence is a completeness gap, not zero use. Conditional examples below are not an exhaustive bill of materials and do not prescribe use or amounts.
+
+| requirement_id | collection_protocol_id | Required scope |
+| --- | --- | --- |
+| `capture_materials_identification` | `cp_capture` | capture and animal-welfare consumables |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_animals` | `breeder`, `rearing`, `farm_handover` | Living incoming, transferred, culled and final animals | herd/weigh ledger | species, class, count, mass, origin, destination, date | lot count and calibrated scale or documented class sample; Raw aggregation requirements: reconcile opening + births + purchases - deaths - sales - transfers = closing; normalize to accepted live mass. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | head; kg | each event | entire cohort | actual farm sites | per reference flow | weigh slips, herd ledger, scale calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_feed` | `breeder`, `rearing` | feed and forage | purchase/ration ledger | material, mass, stock change, loss, cohort ; unused returns/transfers; uneaten loss; actual intake; loss destination; moisture/DM| Feed input carrying upstream burden = opening stock + receipts - closing stock - documented unused returns or transfers out. Keep in-boundary spoilage and refusals in that input. Separately derive biological intake = that input - measured uneaten losses, with moisture/DM reconciliation; use intake, not purchased input, in animal metabolism calculations. Record each loss destination and include its treatment or manure contribution once. Preserve raw records and normalize attributed quantities to the accepted reference output once. | kg | batch and cycle | operated periods | houses/pasture | per reference flow | invoices and feed logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_utilities` | `breeder`, `rearing` | water and energy | meter/invoice | water source/use, carrier, readings, shared consumer | meter read and use split; Raw aggregation requirements: convert units then attribute once by observed use. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; MJ | meter interval | operated periods | all supply connections | per reference flow | meter images, invoices; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_materials` | `breeder`, `rearing` | bedding and care | material issue | identity, dose, mass, animal group, date, housing route | material issue and veterinary log; Raw aggregation requirements: sum actual consumption by material/cohort. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each use | operated periods | houses | per reference flow | stock and care logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_feed` | `breeder`, `rearing` | feed and forage | purchase/ration ledger | material, mass, stock change, loss, cohort ; unused returns/transfers; uneaten loss; actual intake; loss destination; moisture/DM | Feed input carrying upstream burden = opening stock + receipts - closing stock - documented unused returns or transfers out. Keep in-boundary spoilage and refusals in that input. Separately derive biological intake = that input - measured uneaten losses, with moisture/DM reconciliation; use intake, not purchased input, in animal metabolism calculations. Record each loss destination and include its treatment or manure contribution once. Preserve raw records and normalize attributed quantities to the accepted reference output once. `breeder_feed_specific_input`: Operation breeder: Record supplied feed, forage and stock changes; grazed material is not purchased feed. Denominator and scope requirements：per kg live weanlings leaving breeder Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg | batch and cycle | operated periods | houses/pasture | per reference flow | invoices and feed logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_utilities` | `breeder`, `rearing` | water and energy | meter/invoice | water source/use, carrier, readings, shared consumer | meter read and use split; Raw aggregation requirements: convert units then attribute once by observed use. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: `breeder_energy_identification`: Actual electric ventilation, lighting and pumping in this rabbit housing stage. Natural ventilation does not imply a fan load; heating/cooling technology and its supply require separate evidence. Denominator and scope requirements：per kg live weanlings leaving breeder Raw quantity and calculation requirements: metered or invoiced energy by carrier Original collection denominator kind: process_output. (`rabbit-housing-energy`) `rearing_energy_identification`: Actual electric ventilation, lighting and pumping in this rabbit housing stage. Natural ventilation does not imply a fan load; heating/cooling technology and its supply require separate evidence. Denominator and scope requirements：per kg live rabbits leaving rearing Raw quantity and calculation requirements: metered or invoiced energy Original collection denominator kind: process_output. (`rabbit-housing-energy`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kg; MJ | meter interval | operated periods | all supply connections | per reference flow | meter images, invoices; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_materials` | `breeder`, `rearing` | bedding and care | material issue | identity, dose, mass, animal group, date, housing route | material issue and veterinary log; Raw aggregation requirements: sum actual consumption by material/cohort. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `breeder_materials_specific_input`: Operation breeder: Record route-specific litter and veterinary materials by separate actual identity. Denominator and scope requirements：per kg live weanlings leaving breeder Raw quantity and calculation requirements: measured supplied material by identity Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `rearing_materials_specific_input`: Operation rearing: Record litter and care materials separately for the actual housing mode. Denominator and scope requirements：per kg live rabbits leaving rearing Raw quantity and calculation requirements: measured supplied material Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg | each use | operated periods | houses | per reference flow | stock and care logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_manure` | `breeder`, `rearing` | manure product/emission | pathway ledger | collected mass, moisture, nitrogen, storage, treatment, export, period | weigh, sample, transfer and storage record; Raw aggregation requirements: distinguish beneficial product, disposal and deposit; calculate pathway emission. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; days | removal/cycle | operated periods | manure systems | per reference flow | weigh slips, nitrogen analysis, receiver and method inputs; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_waste` | `breeder`, `rearing`, `farm_handover` | mortality/disposal | loss ledger | species, count, mass, material, destination, date | count/weigh or documented estimate; Raw aggregation requirements: sum by waste identity/destination. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | head; kg | event | whole cohort | operated nodes | per reference flow | disposal receipts, mortality log; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_capture` | `hare_capture` | permit, animals, materials, energy and losses | permit/campaign ledger | jurisdiction, permit, trap, checks, species, captured/released/dead/handed-over counts and masses, material, energy, destination | legal-document check and observed event/meter log; Raw aggregation requirements: captured = released + dead + handover + held; attribute shared equipment by service. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | head; kg; MJ | event | full lawful campaign | permitted site/handover | per reference flow | permit, welfare log, scale, trip/fuel log; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_capture` | `hare_capture` | permit, animals, materials, energy and losses | permit/campaign ledger | jurisdiction, permit, trap, checks, species, captured/released/dead/handed-over counts and masses, material, energy, destination | legal-document check and observed event/meter log; Raw aggregation requirements: captured = released + dead + handover + held; attribute shared equipment by service. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: `capture_energy_identification`: Actual trap-check trips and short holding of captured hares. Establish transport mode, equipment and ownership; do not assume a vehicle fuel or duplicate inclusive capture services. Denominator and scope requirements：per kg accepted hares at capture handover Raw quantity and calculation requirements: measured campaign fuel and electricity Original collection denominator kind: process_output. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | head; kg; MJ | event | full lawful campaign | permitted site/handover | per reference flow | permit, welfare log, scale, trip/fuel log; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_reference_handover` | `reference_handover` | accepted product and matched internal source transfer | producer handover ledger | lot_id, species, state, grade, route_id, gate, period, accepted_quantity, native_unit, source_row_id, source_lot_id, allocation_link | Measure accepted net product at the same actual gate; reconcile the listed state/gate-specific source rows and the linked input with this single physical output. Keep rejects, stock changes and other sales separate. No additional handling or transport is imputed. | kg; native source quantities | each actual handover | matched source and handover periods | declared producer gate only | per reference flow | traceable acceptance record, same-lot source-to-output ledger, calibrated quantity method and normalization worksheet |
 | `cp_pathway_emissions` | `breeder`; `rearing` | pathway-specific gases and manure N/C | herd, feed, manure, field and method ledger | species/class; animal-days; intake/DM/digestibility; volatile solids; manure N/TAN; system shares; climate; storage time; fertiliser N; grazing; volatilisation/leaching; methane recovery; factor source/unit; final accepted output ; collected manure wet mass; dry matter; destination| collect primary activity by node and period, document parameter applicability, retain each pathway worksheet and any linked treatment/pasture dataset  Retain raw totals and normalize attributed quantities once to the measured accepted final reference output.| animal-day; kg DM; kg VS; kg N; kg CH4; kg N2O; kg NH3 | each operating period and management change | complete represented cohort and service period | actual operated nodes only | per reference flow | meter/analysis records, nitrogen cascade, method and factor evidence, no-duplication ledger |
 | `cp_feed_supply_and_intake` | `breeder`; `rearing` | Feed supply, intake and loss | stock, receipt, issue and loss ledger | feed identity/source; cohort/phase; period; opening/closing stock; receipts; on-site provision; unused returns/transfers; uneaten/spoiled mass and destination; as-fed/DM; actual intake; burden owner; accepted final output | Reconcile matched stock, scales, ration/forage estimates and disposal records under calc_feed_supply_and_intake. Keep raw totals and stage denominators; assign production and treatment burden once, then normalize to accepted final output. | kg as-fed; kg DM | each issue and period close | complete represented cohort/period | actual operated feeding nodes | per reference flow | stock and supplier records; moisture evidence; loss and no-duplication reconciliation |
@@ -1131,3 +1020,5 @@ Required product-instance qualifiers: Species; domestic or wild; age/class; head
 | `review-fao-pig-lca-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains: Guidelines for assessment, section 11.2.2 and Appendix 2.13](https://www.fao.org/4/i8686en/I8686EN.pdf) | Feed-loss accounting and general LCA allocation hierarchy; extension to other taxa or reproductive products is this PCR's explicit methodological choice, not a pig parameter transfer |
 | `review-eea-manure-2023` | official_guidance | [EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, 3.B Manure Management](https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023) | NH3 nitrogen-flow method; verify actual species, management and geographical applicability before adopting parameters |
 | `review-ipcc-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | Managed-soil direct and indirect nitrogen pathways and boundary reconciliation |
+| `rabbit-housing-energy` | official_guidance | FAO, The rabbit: husbandry, health and production, Chapter 15. https://www.fao.org/4/X5082E/X5082E0f.htm | Housing-system variation and powered climate-control context only; no universal housing or heating input. |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

@@ -104,23 +104,6 @@ translation_status: aligned
 #### 输入
 ##### 产品流
 
-###### 苗木和支撑材料（`establishment_materials`）
-
-当为声明果园或受管理园地安装、补植或移除时，苗木、支撑材料、防护物和可归属灌溉基础设施跨越边界。
-
-- 选定流：场址特定的苗木、支撑材料、防护物和灌溉基础设施
-- 流属性/单位：质量或声明材料属性 / kg 或声明单位
-- 数量规则：实测安装、补植和移除数量按生命周期合格产量年度化
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_establishment_lifecycle_records`
-- 来源：`source_foreground_records`
-
 ##### 废物流
 
 ##### 基本流
@@ -165,24 +148,6 @@ translation_status: aligned
 ##### 废物流
 
 
-###### 移除的果园材料（`establishment_removal_waste`）
-
-离开建园或移除活动的废弃生物质和支撑材料按材料和去向记录。
-
-- 选定流：果园移除生物质和废弃支撑材料，声明去向
-- 流属性/单位：质量 / kg
-- 数量规则：按材料和去向实测质量，并按生命周期合格产量年度化
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_establishment_lifecycle_records`
-- 来源：`source_foreground_records`
-
-
 ##### 基本流
 
 ### 过程：果园种植管理和植物保护（`orchard_cultivation_and_protection`）
@@ -199,7 +164,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -209,12 +174,14 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_input_records`
 - 来源：`source_foreground_records`；`ipcc-2019-soils-n2o`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`orchard_cultivation_and_protection_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -224,6 +191,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_input_records`
 - 来源：`source_foreground_records`；`ipcc-2019-soils-n2o`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`orchard_cultivation_and_protection_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -302,41 +271,6 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_records`
 - 来源：`source_foreground_records`; `fao-56-crop-evapotranspiration-1998`
-
-###### 植物保护产品（`crop_protection_products`）
-
-果园或受管理园地施用时，记录有名称的植物保护产品及活性成分。
-
-- 选定流：实际植物保护产品和活性成分，声明身份和制剂
-- 流属性/单位：质量 / kg 产品和 kg 活性成分
-- 数量规则：按产品、活性成分、地块和事件实测施用量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_orchard_input_records`
-- 来源：`source_foreground_records`
-
-###### 移动机械燃料（`mobile_machinery_fuel`）
-
-种植管理、修剪、喷施、养分施用、灌溉支持和采收支持所用燃料或等效能源作为作业投入跨越边界。
-
-- 选定流：农业移动机械的燃料或能源
-- 流属性/单位：质量、体积或能量 / kg、L、MJ 或 kWh
-- 流集分组：`mobile-machinery-fuel`
-- 数量规则：按作业实测燃料、计量或机械能源记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_orchard_energy_records`
-- 来源：`source_foreground_records`
 
 ###### 外购电力（`purchased_electricity`）
 
@@ -474,24 +408,6 @@ translation_status: aligned
 - 采集协议：`cp_yield_and_harvest_records`
 - 来源：`source_foreground_records`
 
-###### 采收机械燃料（`harvest_fuel`）
-
-在边界内，采摘、装载和园内移动的采收燃料或等效机械能源须记录。
-
-- 选定流：采收机械的燃料或能源
-- 流属性/单位：质量、体积或能量 / kg、L、MJ 或 kWh
-- 流集分组：`mobile-machinery-fuel`
-- 数量规则：按采收作业实测燃料或机械能源记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_orchard_energy_records`
-- 来源：`source_foreground_records`
-
 ##### 废物流
 
 ##### 基本流
@@ -501,20 +417,19 @@ translation_status: aligned
 
 ###### 合格鲜果（`accepted_fresh_fruit`）
 
-合格鲜果是完成声明采收和等级判定后的参考产品输出。
+这是所述阶段的实测合格鲜果转移，保留实际等级、状态、批次及后续损失；仅最终声明交接输出固定为参考数量。
 
 - 选定流：作为果园门产品接受的鲜整果李或黑刺李
 - 流属性/单位：质量 / kg
-原始产出计量与核对要求：净实测合格质量；参考数量归一化为 1 kg
 
-- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
-- 数值来源模式：固定值（`fixed_value`）
-- 适用范围：通用（`generic`）
+- 数量规则：采集本阶段实测合格净质量，按同批次最终合格交付质量及原归属规则计算每声明参考流的中间转移量；保留状态、含水率和后续损失，不将中间转移强制设为 1 kg。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：参考流.
 
 - 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：方法公式（`method_formula`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_yield_and_harvest_records`
 - 来源：`unece-ffv-29-plums-2020`; `usda-plum-grade-standards-7cfr51`
 
@@ -673,41 +588,23 @@ translation_status: aligned
 
 ###### 门点调理后合格水果（`conditioned_accepted_fruit`）
 
-本过程在包含的调理、等级分离或展示后，将声明的鲜果状态交接至果园门。
+这是所述阶段的实测合格鲜果转移，保留实际等级、状态、批次及后续损失；仅最终声明交接输出固定为参考数量。
 
 - 选定流：声明调理步骤后的合格鲜整果李或黑刺李
 - 流属性/单位：质量 / kg
-原始产出计量与核对要求：净实测合格输出；归一化为 1 kg 参考产品
 
-- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
-- 数值来源模式：固定值（`fixed_value`）
-- 适用范围：通用（`generic`）
+- 数量规则：采集本阶段实测合格净质量，按同批次最终合格交付质量及原归属规则计算每声明参考流的中间转移量；保留状态、含水率和后续损失，不将中间转移强制设为 1 kg。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：参考流.
 
 - 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：方法公式（`method_formula`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_conditioning_and_packaging_records`
 - 来源：`unece-ffv-29-plums-2020`; `usda-plum-grade-standards-7cfr51`
 
 ##### 废物流
-
-###### 调理拒收物和废水（`conditioning_rejects_and_wastewater`）
-
-当调理在边界内时，离开调理过程的拒收水果、清洗残余物和废水按材料和去向记录。
-
-- 选定流：初步调理产生的拒收水果、清洗残余物和废水
-- 流属性/单位：质量或体积 / kg 或 m3
-- 数量规则：按材料和处理或排放路线实测或核算输出
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_conditioning_and_packaging_records`
-- 来源：`source_foreground_records`
 
 ###### 木制板条箱废物，交付记录中的处理环节（`packaging_rejects_wood_crate`）
 
@@ -831,6 +728,18 @@ translation_status: aligned
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `establishment_materials_specific_input` | `cp_establishment_lifecycle_records` | 作业 orchard_establishment_and_removal：当为声明果园或受管理园地安装、补植或移除时，苗木、支撑材料、防护物和可归属灌溉基础设施跨越边界。 原数量方法：实测安装、补植和移除数量按生命周期合格产量年度化 |
+| `crop_protection_products_specific_input` | `cp_orchard_input_records` | 作业 orchard_cultivation_and_protection：果园或受管理园地施用时，记录有名称的植物保护产品及活性成分。 原数量方法：按产品、活性成分、地块和事件实测施用量 |
+| `mobile_machinery_fuel_specific_input` | `cp_orchard_energy_records` | 作业 orchard_cultivation_and_protection：种植管理、修剪、喷施、养分施用、灌溉支持和采收支持所用燃料或等效能源作为作业投入跨越边界。 原数量方法：按作业实测燃料、计量或机械能源记录 |
+| `harvest_fuel_specific_input` | `cp_orchard_energy_records` | 作业 harvest_and_field_collection：在边界内，采摘、装载和园内移动的采收燃料或等效机械能源须记录。 原数量方法：按采收作业实测燃料或机械能源记录 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -838,12 +747,12 @@ translation_status: aligned
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_establishment_lifecycle_records` | `orchard_establishment_and_removal` | establishment_materials; establishment_removal_waste; establishment_land_occupation; established_orchard_condition | planting, asset, and removal records | block area; planting year; tree or stand count; material; installation; replacement; removal; productive life; juvenile years; fate | reconcile invoices, maps, work orders, and removal records to the block；原始汇总与分配：annualize attributable quantities over lifetime accepted output | kg; count; ha; year | each event, reconciled annually | declared productive life and reporting year | each orchard block or managed stand | 每声明的参考流 | invoices, maps, work orders, signed block records |
-| `cp_orchard_input_records` | `orchard_cultivation_and_protection` | nutrient_products; crop_protection_products; direct_n2o_air; ammonia_air; nutrient_losses_to_water_or_soil | input and application log | product; formulation; amount; nutrient or active ingredient; date; field; method; soil or weather condition when used | collect invoices, application logs, nutrient plans, and stock reconciliation；原始汇总与分配：aggregate by actual product and nutrient or substance, then normalize | kg product; kg nutrient; kg active ingredient | each application, reconciled monthly or annually | one harvest year or declared averaging period | each orchard block or managed sloe stand | 每声明的参考流 | invoices, labels, logs, nutrient plan |
+| `cp_establishment_lifecycle_records` | `orchard_establishment_and_removal` | establishment_materials; establishment_removal_waste_specific_output; establishment_land_occupation; established_orchard_condition | planting, asset, and removal records | block area; planting year; tree or stand count; material; installation; replacement; removal; productive life; juvenile years; fate; 每股物流的材料或产品身份；组成及污染状态；原生数量与单位；件重或密度换算依据；批次；产品与包装净质量；复用或返工；接收方；处理路线；匹配参考产出 | reconcile invoices, maps, work orders, and removal records to the block；原始汇总与分配：annualize attributable quantities over lifetime accepted output `establishment_materials_specific_input`: 作业 orchard_establishment_and_removal：当为声明果园或受管理园地安装、补植或移除时，苗木、支撑材料、防护物和可归属灌溉基础设施跨越边界。 原数量方法：实测安装、补植和移除数量按生命周期合格产量年度化 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。; establishment_removal_waste_specific_output: 对可归属的建园、更新或移除活动，将废弃生物质与每种实际支撑、防护及设施材料分别识别。保留实测质量、材料组成、处理或污染状态和实际去向。保留生产寿命、幼龄期及生命周期合格鲜果产量的年度化规则；总移除材料质量不能作为每个组分的数量。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | kg; count; ha; year; 每股物流的 kg 分别记录；液体原生体积另列；件数与质量分开 | each event, reconciled annually | declared productive life and reporting year | each orchard block or managed stand | 每声明的参考流 | invoices, maps, work orders, signed block records |
+| `cp_orchard_input_records` | `orchard_cultivation_and_protection` | nutrient_products; crop_protection_products; direct_n2o_air; ammonia_air; nutrient_losses_to_water_or_soil | input and application log | product; formulation; amount; nutrient or active ingredient; date; field; method; soil or weather condition when used | collect invoices, application logs, nutrient plans, and stock reconciliation；原始汇总与分配：aggregate by actual product and nutrient or substance, then normalize `crop_protection_products_specific_input`: 作业 orchard_cultivation_and_protection：果园或受管理园地施用时，记录有名称的植物保护产品及活性成分。 原数量方法：按产品、活性成分、地块和事件实测施用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg product; kg nutrient; kg active ingredient | each application, reconciled monthly or annually | one harvest year or declared averaging period | each orchard block or managed sloe stand | 每声明的参考流 | invoices, labels, logs, nutrient plan |
 | `cp_irrigation_records` | `orchard_cultivation_and_protection` | irrigation_water; irrigation_withdrawal | water meter and source record | source; meter readings; delivered volume; withdrawal volume; field; date; rain-fed declaration | read meters or retain supplier records; document justified zero for verified rain-fed production；原始汇总与分配：sum delivered irrigation separately from source withdrawal | m3 or kg | each event, reconciled monthly | one harvest year or declared averaging period | each source and block | 每声明的参考流 | meter calibration, invoices, permits, field logs |
-| `cp_orchard_energy_records` | `orchard_cultivation_and_protection;harvest_and_field_collection` | mobile_machinery_fuel; purchased_electricity; harvest_fuel | fuel, machine, and electricity records | fuel type; quantity; meter or invoice; operation; machine; date; block; electricity allocation | retain fuel tickets, machine logs, meters, and allocation method；原始汇总与分配：assign shared energy by measured use or documented hours | L; kg; MJ; kWh | each transaction or operation, reconciled monthly | one harvest year or declared averaging period | each block, fleet, or facility | 每声明的参考流 | invoices, meters, machine hours, worksheet |
+| `cp_orchard_energy_records` | `orchard_cultivation_and_protection;harvest_and_field_collection` | mobile_machinery_fuel; purchased_electricity; harvest_fuel | fuel, machine, and electricity records | fuel type; quantity; meter or invoice; operation; machine; date; block; electricity allocation | retain fuel tickets, machine logs, meters, and allocation method；原始汇总与分配：assign shared energy by measured use or documented hours `mobile_machinery_fuel_specific_input`: 作业 orchard_cultivation_and_protection：种植管理、修剪、喷施、养分施用、灌溉支持和采收支持所用燃料或等效能源作为作业投入跨越边界。 原数量方法：按作业实测燃料、计量或机械能源记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `harvest_fuel_specific_input`: 作业 harvest_and_field_collection：在边界内，采摘、装载和园内移动的采收燃料或等效机械能源须记录。 原数量方法：按采收作业实测燃料或机械能源记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | L; kg; MJ; kWh | each transaction or operation, reconciled monthly | one harvest year or declared averaging period | each block, fleet, or facility | 每声明的参考流 | invoices, meters, machine hours, worksheet |
 | `cp_yield_and_harvest_records` | `orchard_cultivation_and_protection;harvest_and_field_collection` | standing_fruit_for_harvest; fruit_presented_for_harvest; accepted_fresh_fruit; downgraded_processing_fruit; harvest_culls_and_losses | harvest and weighbridge records | species; cultivar; block; date; gross and tare mass; grade; destination; rejected or lost mass; moisture or maturity where relevant | weigh each lot or use documented sampling and reconciliation；原始汇总与分配：reconcile gross harvest to accepted, downgraded, cull, and loss outputs | kg fresh fruit | each lot, aggregated by period | one harvest year or declared averaging period | each block, lot, and destination | 每声明的参考流 | weighbridge tickets, grade sheets, sales records, mass-balance check |
-| `cp_conditioning_and_packaging_records` | `primary_conditioning_and_gate_handoff` | conditioning_fruit_input; conditioning_water; conditioning_electricity; conditioning_packaging_materials; conditioned_accepted_fruit; conditioning_rejects_and_wastewater; packaging_rejects | conditioning, packing, and hand-off records | intake and output mass; water; electricity; package material; tare; reuse cycles; rejects; destination; hand-off date | collect batch sheets, meters, packaging invoices, and dispatch records only for included operations；原始汇总与分配：reconcile intake, accepted output, rejects, wastewater, and packaging; remove reusable tare | kg; m3; kWh; count | each batch or dispatch, reconciled by period | declared harvest and conditioning period | each line, block, or gate facility | 每声明的参考流 | batch records, meters, package specifications, dispatch records |
+| `cp_conditioning_and_packaging_records` | `primary_conditioning_and_gate_handoff` | conditioning_fruit_input; conditioning_water; conditioning_electricity; conditioning_packaging_materials; conditioned_accepted_fruit; conditioning_rejects_and_wastewater_specific_output; packaging_rejects | conditioning, packing, and hand-off records | intake and output mass; water; electricity; package material; tare; reuse cycles; rejects; destination; hand-off date; 每股物流的材料或产品身份；组成及污染状态；原生数量与单位；件重或密度换算依据；批次；产品与包装净质量；复用或返工；接收方；处理路线；匹配参考产出 | collect batch sheets, meters, packaging invoices, and dispatch records only for included operations；原始汇总与分配：reconcile intake, accepted output, rejects, wastewater, and packaging; remove reusable tare; conditioning_rejects_and_wastewater_specific_output: 对实际包含在声明门之前的调理活动，分别识别拒收水果、捕集的清洗固体及废水转移。液体量保留实测原生单位，体积与质量换算需要符合实际废水状态的密度依据。区分送往处理供方的废水与处理后各污染物环境排放，并按边界核对以免重复计量。保留原调理批次吞吐、水与固体平衡及最终合格鲜果归一化。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | kg; m3; kWh; count; 每股物流的 kg 分别记录；液体原生体积另列；件数与质量分开 | each batch or dispatch, reconciled by period | declared harvest and conditioning period | each line, block, or gate facility | 每声明的参考流 | batch records, meters, package specifications, dispatch records |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
 
 ### 计算规则
@@ -851,10 +760,12 @@ translation_status: aligned
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | all quantitative rows | normalized amount = period amount / net accepted reference fruit mass | period amount; net accepted fruit mass | amount per 1 kg reference product | `source_foreground_records` |
-| `calc_perennial_annualization` | establishment_materials; establishment_removal_waste; establishment_land_occupation | annualized amount = attributable lifecycle amount / declared productive-life accepted output | lifecycle amount; productive life; lifetime accepted output | annualized amount per kg accepted fruit | `source_foreground_records` |
+| `calc_perennial_annualization` | establishment_materials; establishment_removal_waste_specific_output; establishment_land_occupation | annualized amount = attributable lifecycle amount / declared productive-life accepted output | lifecycle amount; productive life; lifetime accepted output | annualized amount per kg accepted fruit | `source_foreground_records` |
 | `calc_nutrient_content` | nutrient_products; direct_n2o_air; ammonia_air; nutrient_losses_to_water_or_soil | nutrient amount = product amount × declared nutrient fraction; preserve product and nutrient bases | product amount; nutrient fraction; application event | kg nutrient and emission inputs | `ipcc-2019-soils-n2o`; `source_foreground_records` |
 | `calc_mass_balance` | fruit outputs and conditioning rejects | harvested input = accepted + downgraded/processing + culls + measured or justified losses after tare and moisture reconciliation | harvested mass; output masses; tare; declared basis | reconciled output set and residual loss | `source_foreground_records` |
 | `calc_shared_energy_allocation` | purchased_electricity; mobile_machinery_fuel; harvest_fuel | assign shared records using measured operation use or documented machine-hours; do not use output price without a justified decision | shared record; operation use; allocation basis | process-level energy amount | `source_foreground_records` |
+| `establishment_removal_waste_specific_output` | `orchard_establishment_and_removal` | 对可归属的建园、更新或移除活动，将废弃生物质与每种实际支撑、防护及设施材料分别识别。保留实测质量、材料组成、处理或污染状态和实际去向。保留生产寿命、幼龄期及生命周期合格鲜果产量的年度化规则；总移除材料质量不能作为每个组分的数量。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | `cp_establishment_lifecycle_records` | 逐实际物流的交换、去向及无重复质量平衡 | `source_foreground_records` |
+| `conditioning_rejects_and_wastewater_specific_output` | `primary_conditioning_and_gate_handoff` | 对实际包含在声明门之前的调理活动，分别识别拒收水果、捕集的清洗固体及废水转移。液体量保留实测原生单位，体积与质量换算需要符合实际废水状态的密度依据。区分送往处理供方的废水与处理后各污染物环境排放，并按边界核对以免重复计量。保留原调理批次吞吐、水与固体平衡及最终合格鲜果归一化。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | `cp_conditioning_and_packaging_records` | 逐实际物流的交换、去向及无重复质量平衡 | `source_foreground_records` |
 
 ### 数据质量要求
 

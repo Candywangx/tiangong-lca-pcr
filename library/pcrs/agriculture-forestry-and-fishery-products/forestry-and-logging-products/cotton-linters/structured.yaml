@@ -271,33 +271,25 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: delinting_energy
-          role: "Delinting electricity and mechanical service"
+          role: "Delinting electricity"
           name: "Alternating current"
           flow_type: "product"
           flow_ref:
             uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
           property_unit: "Energy / kWh or MJ"
-          description: "Electricity, compressed air, or mechanical service energy used by linter saws, abrasive delinters, conveyors, fans, and dust collection equipment. Raw collection or process basis: per 1 kg saleable cotton linters"
+          description: "Record only actual low-voltage alternating-current electricity below 1 kV used by this stage and compatible with the selected identity. Retain voltage, provider, geography and delivery boundary; another voltage or DC requires a different identity. This card does not represent fuel, compressed air or mechanical service. Activate only for actual stage use; missing records do not demonstrate non-use. Raw collection or process basis: per 1 kg saleable cotton linters"
           amount:
-            expression: "measured equipment electricity or calculated motor-hour energy for each delinting pass"
-            value_mode: "foreground_record"
+            expression: "Use submeter records or evidenced electrical input power, runtime and load to determine actual electricity; attribute to the original stage and normalize once by matched accepted linter output. Retain kWh and convert once using 1 kWh = 3.6 MJ when linking MJ reference quantities. Do not count fuel heating value or compressed-air/mechanical-service activity as electricity."
+            value_mode: "calculated_value"
             specificity: "technology_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "3"
-                unit: "kWh"
-                basis: "per 1 kg saleable cotton linters"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
         - row_id: delinter_maintenance_materials_lubricant
           role: "Mineral lubricating oil"
           name: "Mineral lubricating oil"
@@ -483,33 +475,25 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: cleaning_baling_energy
-          role: "Cleaning and baling energy"
+          role: "Cleaning and baling electricity"
           name: "Alternating current"
           flow_type: "product"
           flow_ref:
             uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
           property_unit: "Energy / kWh or MJ"
-          description: "Electricity or fuel used for linter cleaning, aspiration, conditioning, baling, bagging, and internal movement. Raw collection or process basis: per 1 kg saleable cotton linters"
+          description: "Record only actual low-voltage alternating-current electricity below 1 kV used by this stage and compatible with the selected identity. Retain voltage, provider, geography and delivery boundary; another voltage or DC requires a different identity. This card does not represent fuel, compressed air or mechanical service. Activate only for actual stage use; missing records do not demonstrate non-use. Raw collection or process basis: per 1 kg saleable cotton linters"
           amount:
-            expression: "measured energy or calculated equipment-hour energy for linter finishing and baling"
-            value_mode: "foreground_record"
+            expression: "Use submeter records or evidenced electrical input power, runtime and load to determine actual electricity; attribute to the original stage and normalize once by matched accepted linter output. Retain kWh and convert once using 1 kWh = 3.6 MJ when linking MJ reference quantities. Do not count fuel heating value or compressed-air/mechanical-service activity as electricity."
+            value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "2"
-                unit: "kWh"
-                basis: "per 1 kg saleable cotton linters"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
         - row_id: bale_ties_and_packaging_steel
           role: "Steel wire"
           name: "Steel wire"
@@ -647,10 +631,12 @@ process_inventory:
                 source_ids: []
         - row_id: dispatch_loading_energy_electricity
           role: "Electricity at equipment supply"
-          name: "Electricity at equipment supply"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Forklift, conveyor, compressed-air, electricity, or fuel use for storage, loading, and producer-gate dispatch. Raw collection or process basis: per 1 kg saleable cotton linters"
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Forklift, conveyor, compressed-air, electricity, or fuel use for storage, loading, and producer-gate dispatch. Raw collection or process basis: per 1 kg saleable cotton linters This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
             value_mode: "foreground_record"
@@ -667,8 +653,10 @@ process_inventory:
           role: "Diesel fuel"
           name: "Diesel fuel"
           flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Forklift, conveyor, compressed-air, electricity, or fuel use for storage, loading, and producer-gate dispatch. Raw collection or process basis: per 1 kg saleable cotton linters"
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Forklift, conveyor, compressed-air, electricity, or fuel use for storage, loading, and producer-gate dispatch. Raw collection or process basis: per 1 kg saleable cotton linters Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
             value_mode: "foreground_record"
@@ -861,8 +849,8 @@ dataset_production:
       process_id: "all_processes"
       flow_role: "electricity, fuel, compressed air, and mechanical service"
       record_type: "meter, invoice, fuel issue, compressed-air allocation, or equipment-hour record"
-      raw_fields: "carrier; quantity; unit; equipment_id; process_id; runtime; date; allocation_basis"
-      collection_method: "meter reading, invoice reconciliation, equipment-hour calculation, or submeter; original activity aggregation: allocate directly metered energy first, then by runtime, throughput, or saleable linter mass"
+      raw_fields: "carrier; quantity; unit; equipment_id; process_id; runtime; date; allocation_basis; actual carrier or independent service identity; supply voltage and provider; contract inclusions; internal or purchased supply; electrical input power and load evidence"
+      collection_method: "meter reading, invoice reconciliation, equipment-hour calculation, or submeter; original activity aggregation: allocate directly metered energy first, then by runtime, throughput, or saleable linter mass; cotton_linter_energy_identity: The delinting and cleaning/baling electricity cards account only for AC electricity. Identify actual fuels, purchased compressed air and independent mechanical services separately from equipment and purchase records, and instantiate concrete exchanges before dataset completeness; retain explicit unresolved UUIDs where necessary and do not prescribe their use. Link internally generated compressed air to its compressor and attribute electricity once; purchased air or inclusive services must not also charge the supplier-included electricity/fuel as additional site purchases. Former aggregate energy screens are not individual-carrier defaults or limits"
       unit: "kWh, MJ, L fuel, kg fuel, equipment-hour"
       frequency: "monthly, per batch, or per campaign"
       temporal_coverage: "representative production year or campaign"
@@ -1089,7 +1077,7 @@ data_sources:
     used_for: "Conditional identity context; verify actual site use, quantities and applicability separately"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e52e70b309fb3043b78196a7edc59b091d29318642357ff4d88a4e9f4b94d095"
+  source_sha256: "sha256:dbfc242bae42391c113f805230afb2ebf79aebdff87ad9bf4f49ecb00d98fffc"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6140"
@@ -1140,16 +1128,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40756"
+    - unit_id: "normative_42086"
       family: "allocation"
       span:
         start:
-          offset: 40756
-          line: 748
+          offset: 42086
+          line: 736
           column: 1
         end:
-          offset: 41897
-          line: 757
+          offset: 43227
+          line: 745
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule |\n| --- | --- |\n| `cottonseed_coproduct_allocation` | If the foreground facility jointly produces cotton linters and delinted cottonseed, allocate shared receipt, cleaning, delinting, storage, and dispatch burdens between linters and delinted seed using a documented physical relationship when it reflects process causality. Otherwise use economic allocation with same-period prices and a sensitivity check. |\n| `incoming_cottonseed_burden` | Purchased cottonseed enters with an upstream dataset. If the study boundary includes cotton ginning or seed ownership before delinting, allocate upstream cottonseed and ginning burdens consistently with the linked cotton or cottonseed PCR. |\n| `off_grade_linter_treatment` | Off-grade linters sold for lower-value uses are co-products when they leave as saleable material; otherwise treat them as waste or internal rework according to measured fate. |\n| `residue_fate` | Dust, hull fragments, seed cleaning rejects, and packaging waste must be tracked by fate, including disposal, composting, fuel use, feed use, or internal recycling. |\n\n"
       headings:
@@ -1168,12 +1156,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40756
-              line: 748
+              offset: 42086
+              line: 736
               column: 1
             end:
-              offset: 40796
-              line: 748
+              offset: 42126
+              line: 736
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1188,16 +1176,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_53236"
+    - unit_id: "normative_55425"
       family: "validation"
       span:
         start:
-          offset: 53236
-          line: 795
+          offset: 55425
+          line: 783
           column: 1
         end:
-          offset: 54424
-          line: 806
+          offset: 56613
+          line: 794
           column: 1
       markdown: "## 9. Validation Rules\n\n| validation_id | Severity | Rule |\n| --- | --- | --- |\n| `reference_output_equals_one_kg` | error | The final producer-gate reference product output must equal 1 kg net saleable cotton linters. |\n| `required_qualifiers_present` | error | Cut type, grade or quality class, moisture basis, impurity basis, bale or loose state, production region, and allocation method must be declared. |\n| `cottonseed_mass_balance_reconciles` | error | Cottonseed input, linters, delinted seed, rejects, dust, and moisture changes must be reconcilable for the declared batch or campaign. |\n| `co_product_allocation_documented` | error | Shared burdens must include a documented allocation method for delinted seed and any saleable off-grade linters or residues. |\n| `cut_type_not_mixed_without_disclosure` | warning | First-cut, second-cut, third-cut, and mill-run linters must not be mixed in the reference product unless the blend and weighted attributes are disclosed. |\n| `downstream_processing_excluded_or_modelled` | warning | Purification, pulping, chemical conversion, paper, absorbent cotton, and nonwoven production must be explicitly excluded or separately modelled. |\n\n"
       headings:
@@ -1216,12 +1204,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 53236
-              line: 795
+              offset: 55425
+              line: 783
               column: 1
             end:
-              offset: 53258
-              line: 795
+              offset: 55447
+              line: 783
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1253,132 +1241,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "cottonseed_coproduct_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_40756"
+      unit_id: "normative_42086"
       source_span:
         start:
-          offset: 40831
-          line: 752
+          offset: 42161
+          line: 740
           column: 1
         end:
-          offset: 41224
-          line: 752
+          offset: 42554
+          line: 740
           column: 394
     - pointer: "/allocation_rules/1"
       rule_id: "incoming_cottonseed_burden"
       identity_kind: "explicit"
-      unit_id: "normative_40756"
+      unit_id: "normative_42086"
       source_span:
         start:
-          offset: 41225
-          line: 753
+          offset: 42555
+          line: 741
           column: 1
         end:
-          offset: 41499
-          line: 753
+          offset: 42829
+          line: 741
           column: 275
     - pointer: "/allocation_rules/2"
       rule_id: "off_grade_linter_treatment"
       identity_kind: "explicit"
-      unit_id: "normative_40756"
+      unit_id: "normative_42086"
       source_span:
         start:
-          offset: 41500
-          line: 754
+          offset: 42830
+          line: 742
           column: 1
         end:
-          offset: 41709
-          line: 754
+          offset: 43039
+          line: 742
           column: 210
     - pointer: "/allocation_rules/3"
       rule_id: "residue_fate"
       identity_kind: "explicit"
-      unit_id: "normative_40756"
+      unit_id: "normative_42086"
       source_span:
         start:
-          offset: 41710
-          line: 755
+          offset: 43040
+          line: 743
           column: 1
         end:
-          offset: 41895
-          line: 755
+          offset: 43225
+          line: 743
           column: 186
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_53236"
+      unit_id: "normative_55425"
       source_span:
         start:
-          offset: 53316
-          line: 799
+          offset: 55505
+          line: 787
           column: 1
         end:
-          offset: 53456
-          line: 799
+          offset: 55645
+          line: 787
           column: 141
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_53236"
+      unit_id: "normative_55425"
       source_span:
         start:
-          offset: 53457
-          line: 800
+          offset: 55646
+          line: 788
           column: 1
         end:
-          offset: 53646
-          line: 800
+          offset: 55835
+          line: 788
           column: 190
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_53236"
+      unit_id: "normative_55425"
       source_span:
         start:
-          offset: 53647
-          line: 801
+          offset: 55836
+          line: 789
           column: 1
         end:
-          offset: 53832
-          line: 801
+          offset: 56021
+          line: 789
           column: 186
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_53236"
+      unit_id: "normative_55425"
       source_span:
         start:
-          offset: 53833
-          line: 802
+          offset: 56022
+          line: 790
           column: 1
         end:
-          offset: 54006
-          line: 802
+          offset: 56195
+          line: 790
           column: 174
     - pointer: "/validation_rules/4"
       rule_id: "validation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_53236"
+      unit_id: "normative_55425"
       source_span:
         start:
-          offset: 54007
-          line: 803
+          offset: 56196
+          line: 791
           column: 1
         end:
-          offset: 54216
-          line: 803
+          offset: 56405
+          line: 791
           column: 210
     - pointer: "/validation_rules/5"
       rule_id: "validation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_53236"
+      unit_id: "normative_55425"
       source_span:
         start:
-          offset: 54217
-          line: 804
+          offset: 56406
+          line: 792
           column: 1
         end:
-          offset: 54422
-          line: 804
+          offset: 56611
+          line: 792
           column: 206
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1407,27 +1395,27 @@ normative_context:
           column: 377
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40756"
+      unit_id: "normative_42086"
       source_span:
         start:
-          offset: 40756
-          line: 748
+          offset: 42086
+          line: 736
           column: 1
         end:
-          offset: 40796
-          line: 748
+          offset: 42126
+          line: 736
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_53236"
+      unit_id: "normative_55425"
       source_span:
         start:
-          offset: 53236
-          line: 795
+          offset: 55425
+          line: 783
           column: 1
         end:
-          offset: 53258
-          line: 795
+          offset: 55447
+          line: 783
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1436,5 +1424,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e52e70b309fb3043b78196a7edc59b091d29318642357ff4d88a4e9f4b94d095"
-  generated_content_sha256: "sha256:8022e1845a21388a1201b1f74696c2f96190fbe69b8525b043e2cc3cecbab611"
+    sha256: "sha256:dbfc242bae42391c113f805230afb2ebf79aebdff87ad9bf4f49ecb00d98fffc"
+  generated_content_sha256: "sha256:6eb0956e94b498ff5eded493aecd0807b0403e3f7e9a77fd1ed5e42f1be33529"

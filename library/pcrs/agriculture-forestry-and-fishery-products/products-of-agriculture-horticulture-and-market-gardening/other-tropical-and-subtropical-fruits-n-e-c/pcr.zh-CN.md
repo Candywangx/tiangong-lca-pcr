@@ -116,7 +116,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01319_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -126,12 +126,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01319_establishment_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement-agriculture`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`p01319_establishment_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01319_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -141,6 +143,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01319_establishment_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement-agriculture`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`p01319_establishment_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -276,7 +280,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01319_cultivation_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -286,12 +290,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01319_cultivation_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement-agriculture`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`p01319_cultivation_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01319_cultivation_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -301,6 +307,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01319_cultivation_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement-agriculture`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`p01319_cultivation_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -395,7 +403,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_01319_cultivation_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -406,11 +414,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_01319_cultivation_records`
 - 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`cultivation_energy_input_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01319_cultivation_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -420,6 +430,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01319_cultivation_records`
 - 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 供应设备的汽油（`cultivation_energy_input_gasoline`）
 
@@ -435,22 +447,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01319_cultivation_records`
 - 来源：`fao-gap-framework-2003`；`fao-forest-equipment`
-
-###### 供应的作物保护产品（`cultivation_crop_protection_input`）
-按产品、已知时的有效成分、施用事件和处理面积记录每种植保配方。
-
-- 选定流：热带或亚热带水果生产的作物保护配方
-- 流属性/单位：配方质量 / kg
-- 数量规则：按产品和事件汇总实测配方质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每作物周期或果园年度并归一化至 1 kg 接收水果.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_01319_cultivation_records`
-- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 ##### 基本流
@@ -510,22 +506,6 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 土壤和作物保护排放（`cultivation_emission_outputs`）
-依据养分和植保投入记录以及所选因子方法计算相关空气和土壤排放。
-
-- 选定流：栽培产生的农业空气和土壤排放
-- 流属性/单位：物质质量 / kg N2O、NH3、硝酸盐或其他声明物质
-- 数量规则：由投入记录计算并保留物质、环境介质和因子基准
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每作物周期或果园年度并归一化至 1 kg 接收水果.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：方法公式（`method_formula`）
-- 采集协议：`cp_01319_cultivation_records`
-- 来源：`ipcc-2019-refinement-agriculture`
-
 ### 过程：采收和农场交付处理（`p01319_harvest_farm_gate`）
 
 #### 输入
@@ -540,7 +520,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_01319_harvest_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -551,11 +531,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_01319_harvest_records`
 - 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`harvest_energy_input_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_01319_harvest_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -566,21 +548,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_01319_harvest_records`
 - 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
 
-###### 农场交付包装和保护材料（`farm_gate_packaging_input`）
-记录农场交付前使用的周转箱、筐、内衬、标签和其他材料；可重复使用包装需要使用寿命证据。
-
-- 选定流：农场交付包装功能
-- 流属性/单位：包装材料质量 / kg
-- 数量规则：按材料称量或发票记录，并按声明使用次数分配可重复使用物品
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每采收批次并归一化至 1 kg 接收水果.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_01319_harvest_records`
-- 来源：`codex-fresh-fruits-vegetables-cxc-53`
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ##### 废物流
 
@@ -639,6 +607,16 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `cultivation_crop_protection_input_specific_input` | `cp_01319_cultivation_records` | 作业 p01319_cultivation：按产品、已知时的有效成分、施用事件和处理面积记录每种植保配方。 原数量方法：按产品和事件汇总实测配方质量 |
+| `farm_gate_packaging_input_specific_input` | `cp_01319_harvest_records` | 作业 p01319_harvest_farm_gate：记录农场交付前使用的周转箱、筐、内衬、标签和其他材料；可重复使用包装需要使用寿命证据。 原数量方法：按材料称量或发票记录，并按声明使用次数分配可重复使用物品 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -647,8 +625,8 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_01319_establishment_records` | `p01319_establishment` | planting, nutrient, residue, land | 苗圃记录、田间日志、面积图 | 身份；件数/质量；面积；日期；残余物；去向 | 发票、田间日志和面积核对；原始汇总与分配：与面积及分配产量核对 | kg、item、ha、year | 每次事件和建立年度 | 完整建立期 | 每地块 | 每声明的参考流 | 签字记录、地图、发票和分配说明 |
-| `cp_01319_cultivation_records` | `p01319_cultivation` | nutrient, irrigation, energy, protection, residues, emissions | 发票、施用日志、计量、水量平衡 | 产品；分析；数量；日期；地块；水源；能源；有效成分；去向 | 发票、计量、日志和因子计算；原始汇总与分配：汇总事件并归一化至接收产量 | kg、m3、kWh、L、物质质量 | 每次事件；周期/年度汇总 | 完整声明生产期 | 每地块/场址 | 每声明的参考流 | 标签、校准、操作日志和因子引用 |
-| `cp_01319_harvest_records` | `p01319_harvest_farm_gate` | harvest, packaging, rejected, accepted fruit | 采收票、称量、包装日志、去向记录 | 身份；批次；采收；接收；淘汰；等级；成熟度；包装；能源；去向 | 批次称量和交付核对；原始汇总与分配：采收 = 接收 + 淘汰 + 其他去向 | kg、kWh、L、item | 每批次和采收季 | 完整采收季 | 每批次/交付点 | 每声明的参考流 | 校准秤、批次票、等级和去向证据 |
+| `cp_01319_cultivation_records` | `p01319_cultivation` | nutrient, irrigation, energy, protection, residues, emissions | 发票、施用日志、计量、水量平衡 | 产品；分析；数量；日期；地块；水源；能源；有效成分；去向 | 发票、计量、日志和因子计算；原始汇总与分配：汇总事件并归一化至接收产量 `cultivation_crop_protection_input_specific_input`: 作业 p01319_cultivation：按产品、已知时的有效成分、施用事件和处理面积记录每种植保配方。 原数量方法：按产品和事件汇总实测配方质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `cultivation_emission_outputs_specific_emission`: 依据养分和植保投入记录以及所选因子方法计算相关空气和土壤排放。 由投入记录计算并保留物质、环境介质和因子基准 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。 `ipcc-2019-refinement-agriculture` | kg、m3、kWh、L、物质质量 | 每次事件；周期/年度汇总 | 完整声明生产期 | 每地块/场址 | 每声明的参考流 | 标签、校准、操作日志和因子引用 |
+| `cp_01319_harvest_records` | `p01319_harvest_farm_gate` | harvest, packaging, rejected, accepted fruit | 采收票、称量、包装日志、去向记录 | 身份；批次；采收；接收；淘汰；等级；成熟度；包装；能源；去向 | 批次称量和交付核对；原始汇总与分配：采收 = 接收 + 淘汰 + 其他去向 `farm_gate_packaging_input_specific_input`: 作业 p01319_harvest_farm_gate：记录农场交付前使用的周转箱、筐、内衬、标签和其他材料；可重复使用包装需要使用寿命证据。 原数量方法：按材料称量或发票记录，并按声明使用次数分配可重复使用物品 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、kWh、L、item | 每批次和采收季 | 完整采收季 | 每批次/交付点 | 每声明的参考流 | 校准秤、批次票、等级和去向证据 |
 
 ### 计算规则
 

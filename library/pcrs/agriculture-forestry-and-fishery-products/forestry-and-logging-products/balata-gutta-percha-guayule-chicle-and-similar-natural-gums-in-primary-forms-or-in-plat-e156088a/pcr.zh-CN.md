@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b` |
+| 参考产品流 | 巴拉塔树胶、杜仲胶、银菊胶、糖胶树胶和类似天然树胶，初级形式或板状、片状或条状 `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Mass unit group 93a60a57-a4c8-11da-a746-0800200c9a66 |
 | 参考单位 | kg |
@@ -98,7 +98,7 @@ sync_with: pcr.en-US.md
 
 按声明路线记录来料。来料可以是割取乳胶、粗胶、采收叶片、银菊灌木生物质或外购粗胶批次。
 
-- 选定流：Natural gum source material
+- 选定流：天然树胶来源材料
 - 流属性/单位：Mass / kg
 - 数量规则：实测来料质量及干物质或总固形物含量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 当燃料、电力或畜力/机械采集服务直接用于割胶、灌木采收、叶片收集、田间切碎或原料接收时纳入。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -140,13 +140,15 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_energy_records`
 - 来源：
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 柴油 (`field_collection_energy_diesel`)
 
 仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 当燃料、电力或畜力/机械采集服务直接用于割胶、灌木采收、叶片收集、田间切碎或原料接收时纳入。
 
-- 选定流：柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -159,13 +161,15 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_energy_records`
 - 来源：
 
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 ##### 废物流
 
 ###### 未采集或拒收来源生物质（`rejected_source_biomass`）
 
 当被拒收的树皮、叶片、枝条、灌木材料或受污染粗胶作为废物离开前景系统，或返回来源区域时记录。
 
-- 选定流：Biogenic plant residue
+- 选定流：生物源植物残余物
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：来源采集后的实测或计算拒收生物质
 - 数值来源模式：前景记录（`foreground_record`）
@@ -194,7 +198,7 @@ sync_with: pcr.en-US.md
 
 当前景数据集代表种植地或受管理来源区域运营，而不仅是外购原料批次接收时，报告土地占用。
 
-- 选定流：Land occupation, forestry or perennial shrub production
+- 选定流：林业或多年生灌木生产用地占用
 - 流属性/单位：Area-time / m2a
 - 数量规则：按采收来源材料分摊的年度化生产性来源面积
 - 数值来源模式：计算值（`calculated_value`）
@@ -225,7 +229,7 @@ sync_with: pcr.en-US.md
 
 实测采集或接收材料转入初级浓缩或萃取过程。
 
-- 选定流：Raw natural gum material
+- 选定流：初级天然树胶材料
 - 流属性/单位：Mass / kg as received and kg dry matter
 - 数量规则：来源采集或接收后的实测转移质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -262,7 +266,7 @@ sync_with: pcr.en-US.md
 
 将原乳胶、粗胶、叶片、灌木生物质或外购粗胶投入回收路线。
 
-- 选定流：Raw natural gum material
+- 选定流：初级天然树胶材料
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：投入浓缩、煮制、凝固或萃取设备的实测原料量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -289,7 +293,7 @@ sync_with: pcr.en-US.md
 
 当工艺用水用于煮制、热水软化、洗涤、水相萃取、浆料输送或冷却并跨越前景边界时纳入。
 
-- 选定流：Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
+- 选定流：工艺用水 `ec205030-248c-496f-9cf2-06d9d26dc6ff`
 - 流属性/单位：Mass / kg
 - 数量规则：扣除内部循环后的实测补充水消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -354,7 +358,7 @@ sync_with: pcr.en-US.md
 
 纳入煮制、萃取、搅拌、离心、蒸发、溶剂回收和泵送的能源。
 
-- 选定流：Electricity, medium voltage `2eb3b2fd-6511-4a22-9018-768024a5b5a6`
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh or MJ
 - 数量规则：实测能源使用，或分摊到回收作业的设备能源
 - 数值来源模式：前景记录（`foreground_record`）
@@ -389,7 +393,7 @@ sync_with: pcr.en-US.md
 
 在最终干燥和成形前记录中间树胶、凝胶物、橡胶馏分、树脂馏分或粗古塔馏分。
 
-- 选定流：Natural gum intermediate
+- 选定流：天然树胶中间品
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：实测中间产物输出，包括水分或固形物基准
 - 数值来源模式：前景记录（`foreground_record`）
@@ -418,7 +422,7 @@ sync_with: pcr.en-US.md
 
 当水离开回收过程进入处理、排放或外部处置时记录废水。
 
-- 选定流：Process wastewater
+- 选定流：生产废水
 - 流属性/单位：Volume / m3 or Mass / kg
 - 数量规则：实测排放量，或循环后水量平衡残差
 - 数值来源模式：计算值（`calculated_value`）
@@ -445,7 +449,7 @@ sync_with: pcr.en-US.md
 
 叶片萃取、灌木萃取、过滤或粗胶清洁产生的固体残渣按干物质和处置或利用路线记录。
 
-- 选定流：Biogenic extraction residue
+- 选定流：生物源提取残余物
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：实测残渣产生量和去向
 - 数值来源模式：前景记录（`foreground_record`）
@@ -474,7 +478,7 @@ sync_with: pcr.en-US.md
 
 当煮制、浓缩或干燥过程中的水分蒸发具有重要性时，作为水量平衡输出报告。
 
-- 选定流：Water vapour to air
+- 选定流：水蒸气向空气排放
 - 流属性/单位：Mass / kg
 - 数量规则：由水量平衡和水分测定计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -507,7 +511,7 @@ sync_with: pcr.en-US.md
 
 将树胶中间材料投入最终干燥、纯化、压制、块状成形、片状成形或切带。
 
-- 选定流：Natural gum intermediate
+- 选定流：天然树胶中间品
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：最终整理过程的实测中间体输入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -534,7 +538,7 @@ sync_with: pcr.en-US.md
 
 纳入干燥、压制、滚压、切割、冷却和通风能源。
 
-- 选定流：Electricity, medium voltage `2eb3b2fd-6511-4a22-9018-768024a5b5a6`
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh or MJ
 - 数量规则：最终整理实测能源使用或分摊设备能源
 - 数值来源模式：前景记录（`foreground_record`）
@@ -567,18 +571,18 @@ sync_with: pcr.en-US.md
 
 ###### 可销售初级天然树胶产品（`saleable_primary_gum_product`）
 
-参考产品为声明形态和质量状态的可销售初级天然树胶。
+这是进入包装和仓储前的合格净胶中间转移，保留同批次实际质量、质量状态和后续损失。最终参考输出仍为生产者门交付产品。
 
-- 选定流：Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b`
+- 选定流：巴拉塔树胶、杜仲胶、银菊胶、糖胶树胶和类似天然树胶，初级形式或板状、片状或条状 `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b`
 - 流属性/单位：Mass / kg
-- 数量规则：计量进入包装和仓储的合格净胶质量，保留实际搬运损失；按同期间最终交付量归一化，不将本中间转移固定为 1 kg。
-- 数值来源模式：固定值（`fixed_value`）
-- 适用范围：产品特定（`product_specific`）
+- 数量规则：采集本阶段实测合格净质量，按同批次最终合格交付质量及原归属规则计算每声明参考流的中间转移量；保留状态、含水率和后续损失，不将中间转移强制设为 1 kg。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
 原始采集或过程口径：reference flow
 
 - 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：身份引用（`identity_reference`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_product_quality_records`
 - 来源：
 
@@ -588,7 +592,7 @@ sync_with: pcr.en-US.md
 
 按去向记录等外树胶、修边料、细粉、受污染树胶或拒收片材。
 
-- 选定流：Off-grade natural gum waste
+- 选定流：不合格天然树胶废物
 - 流属性/单位：Mass / kg
 - 数量规则：实测拒收产品及声明的回用、返工、能量回收或处置路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -678,7 +682,7 @@ sync_with: pcr.en-US.md
 
 当仓库、干燥室、通风、叉车、输送机和搬运设备在生产者门口发运前使用时，纳入其能源。
 
-- 选定流：Electricity, medium voltage `2eb3b2fd-6511-4a22-9018-768024a5b5a6`
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh or MJ
 - 数量规则：实测或分摊的储存和搬运能源
 - 数值来源模式：前景记录（`foreground_record`）
@@ -713,7 +717,7 @@ sync_with: pcr.en-US.md
 
 包装后的可销售初级树胶产品已准备在生产者门口发运。
 
-- 选定流：Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b`
+- 选定流：巴拉塔树胶、杜仲胶、银菊胶、糖胶树胶和类似天然树胶，初级形式或板状、片状或条状 `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b`
 - 流属性/单位：Mass / kg
 - 数量规则：1 千克
 - 数值来源模式：固定值（`fixed_value`）

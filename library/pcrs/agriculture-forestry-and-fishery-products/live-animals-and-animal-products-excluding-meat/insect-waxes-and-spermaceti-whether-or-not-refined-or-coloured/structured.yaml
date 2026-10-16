@@ -324,10 +324,12 @@ process_inventory:
                 source_ids: []
         - row_id: energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Meter actual carrier used in melting or separation; no default heat recipe. Denominator and scope requirements：per kg first-prepared wax Raw quantity and calculation requirements: Measure actual conditioning energy and link lot, source, state and period. Original collection denominator kind: process_output. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Meter actual carrier used in melting or separation; no default heat recipe. Denominator and scope requirements：per kg first-prepared wax Raw quantity and calculation requirements: Measure actual conditioning energy and link lot, source, state and period. Original collection denominator kind: process_output. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_condition and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -477,32 +479,46 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: additive
-          role: "Actual refining aid or colourant"
-          name: "Material-specific refining aid or wax colourant (UUID unresolved)"
+        - row_id: additive_carbon
+          role: "Activated carbon"
+          name: "Activated carbon"
           flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Measure actual material and retained colourant; no addition for untreated lots. Denominator and scope requirements：per kg treated wax Raw quantity and calculation requirements: Measure actual refining aid or colourant and link lot, source, state and period. Original collection denominator kind: process_output."
+          flow_ref:
+            uuid: "5cad53b5-252a-4e2f-8197-8be465707405"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when activated-carbon adsorption is actually used in beeswax refining. Record feedstock, grade and supplier suitability; do not use this identity for spent carbon. No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per reference flow"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_treat
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "kg/kg"
-                basis: "per kg treated wax"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - wax-adsorbents
+            ranges: []
+        - row_id: additive_clay
+          role: "Fuller’s earth bleaching clay"
+          name: "Fuller’s earth bleaching clay"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for actual clay adsorption in beeswax refining; record clay composition, activation and supplier grade separately from activated carbon. No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero."
+          amount:
+            expression: "Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treat
+              source_ids:
+                - wax-adsorbents
+            ranges: []
       waste:
         []
       elementary:
@@ -685,32 +701,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: package
-          role: "Protective packaging"
-          name: "Actual protective wax package or reusable service (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Count actual consumed material or measured reusable package service, not later freight. Denominator and scope requirements：per kg net sold wax Raw quantity and calculation requirements: Measure actual protective packaging and link lot, source, state and period. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_handover
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "kg/kg"
-                basis: "per kg net sold wax"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -828,7 +818,7 @@ dataset_production:
       flow_role: "wax, package and gate"
       record_type: "dispatch ledger"
       raw_fields: "source, state, colourant, purity, moisture, gross, tare, net, package reuse, gate"
-      collection_method: "dispatch ticket and scale; Raw aggregation requirements: one net sale per lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "dispatch ticket and scale; Raw aggregation requirements: one net sale per lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. package_specific_input: Operation handover: Count actual consumed material or measured reusable package service, not later freight. Denominator and scope requirements：per kg net sold wax Raw quantity and calculation requirements: Measure actual protective packaging and link lot, source, state and period. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg"
       frequency: "each sale lot"
       temporal_coverage: "handover period"
@@ -958,9 +948,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm"
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
+  - id: "wax-adsorbents"
+    type: "official_guidance"
+    reference: "FAO, Bees and their role in forest livelihoods, 2009, p. 120, industrial wax refining. https://www.fao.org/docrep/pdf/012/i0842e/i0842e00.pdf"
+    used_for: "Adsorbent identities for an actually used beeswax refining route only; no dose, colourant recipe or universal treatment requirement."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:22dca8371d5983c953d012867e2c0b8067cabdd6e2bfddc15404510ac2d67051"
+  source_sha256: "sha256:afcb4457f62a859d26598540e160807c402048b0a78b352dfb67625e5dbac869"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6941"
@@ -1011,16 +1005,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_38370"
+    - unit_id: "normative_38495"
       family: "allocation"
       span:
         start:
-          offset: 38370
-          line: 714
+          offset: 38495
+          line: 698
           column: 1
         end:
-          offset: 40006
-          line: 725
+          offset: 40131
+          line: 709
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_source | actual source output set | Enumerate wax and each real independently marketed output at its own handoff. Honey is a co-product only for actual bee honey. Prefer supported causal physical attribution; if unavailable, disclose period-specific economic allocation and sensitivity. Never assign wax automatic zero or whole-source burden. | fao-beeswax;fao-beekeeping |\n| a_sperm | lawful spermaceti source | Require legal chain, compatible upstream burden, real other outputs and justified treatment of pre-existing material and terminal alternative. No new capture or fictional co-product. | un-cpc-3-notes |\n| a_state | process and grades | Attribute actual wax states and disjoint saleable grades once. Colourant addition or purification does not make another original-wax output; waste is not marketed wax. | fao-beeswax |\n| a_period | source phases and shared services | Index colony/source, collection, melting, filtration, storage and packaging periods; allocate shared tanks/filters/energy and package services by observed throughput/time across actual consumers once. Record replacement/termination. | fao-beeswax |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1039,12 +1033,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 38370
-              line: 714
+              offset: 38495
+              line: 698
               column: 1
             end:
-              offset: 38410
-              line: 714
+              offset: 38535
+              line: 698
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1059,16 +1053,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46113"
+    - unit_id: "normative_50066"
       family: "validation"
       span:
         start:
-          offset: 46113
-          line: 756
+          offset: 50066
+          line: 758
           column: 1
         end:
-          offset: 47653
-          line: 767
+          offset: 51606
+          line: 769
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | reference lot | Reject vegetable/mineral/synthetic wax, degras, articles and source-free averages; require source and sold raw/refined/coloured state. | un-cpc-3-notes |\n| v_route | source | Require mutually exclusive insect or lawful existing spermaceti source and upstream burden; no fictitious whale capture or non-bee honey. | fao-beeswax;fao-beekeeping |\n| v_balance | lot | Reconcile collected material, additions, prepared/treated wax, grades, rejects and net mass; investigate residual. | fao-beeswax |\n| v_allocation | source and shared services | Reject automatic zero/full wax burden, duplicate honey/wax or shared-asset period. | fao-beeswax |\n| v_identity | concrete exchange | Verify flow type, direction, source, state, gate, Mass property and unit group; beeswax-only flow cannot identify the broad reference. |  |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n\n"
       headings:
@@ -1087,12 +1081,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46113
-              line: 756
+              offset: 50066
+              line: 758
               column: 1
             end:
-              offset: 46135
-              line: 756
+              offset: 50088
+              line: 758
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1176,145 +1170,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_source"
       identity_kind: "explicit"
-      unit_id: "normative_38370"
+      unit_id: "normative_38495"
       source_span:
         start:
-          offset: 38483
-          line: 718
+          offset: 38608
+          line: 702
           column: 1
         end:
-          offset: 38860
-          line: 718
+          offset: 38985
+          line: 702
           column: 378
     - pointer: "/allocation_rules/1"
       rule_id: "a_sperm"
       identity_kind: "explicit"
-      unit_id: "normative_38370"
+      unit_id: "normative_38495"
       source_span:
         start:
-          offset: 38861
-          line: 719
+          offset: 38986
+          line: 703
           column: 1
         end:
-          offset: 39101
-          line: 719
+          offset: 39226
+          line: 703
           column: 241
     - pointer: "/allocation_rules/2"
       rule_id: "a_state"
       identity_kind: "explicit"
-      unit_id: "normative_38370"
+      unit_id: "normative_38495"
       source_span:
         start:
-          offset: 39102
-          line: 720
+          offset: 39227
+          line: 704
           column: 1
         end:
-          offset: 39318
-          line: 720
+          offset: 39443
+          line: 704
           column: 217
     - pointer: "/allocation_rules/3"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_38370"
+      unit_id: "normative_38495"
       source_span:
         start:
-          offset: 39319
-          line: 721
+          offset: 39444
+          line: 705
           column: 1
         end:
-          offset: 39616
-          line: 721
+          offset: 39741
+          line: 705
           column: 298
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_38370"
+      unit_id: "normative_38495"
       source_span:
         start:
-          offset: 39618
-          line: 723
+          offset: 39743
+          line: 707
           column: 1
         end:
-          offset: 40004
-          line: 723
+          offset: 40129
+          line: 707
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_46113"
+      unit_id: "normative_50066"
       source_span:
         start:
-          offset: 46208
-          line: 760
+          offset: 50161
+          line: 762
           column: 1
         end:
-          offset: 46389
-          line: 760
+          offset: 50342
+          line: 762
           column: 182
     - pointer: "/validation_rules/1"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_46113"
+      unit_id: "normative_50066"
       source_span:
         start:
-          offset: 46390
-          line: 761
+          offset: 50343
+          line: 763
           column: 1
         end:
-          offset: 46579
-          line: 761
+          offset: 50532
+          line: 763
           column: 190
     - pointer: "/validation_rules/2"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_46113"
+      unit_id: "normative_50066"
       source_span:
         start:
-          offset: 46580
-          line: 762
+          offset: 50533
+          line: 764
           column: 1
         end:
-          offset: 46730
-          line: 762
+          offset: 50683
+          line: 764
           column: 151
     - pointer: "/validation_rules/3"
       rule_id: "v_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_46113"
+      unit_id: "normative_50066"
       source_span:
         start:
-          offset: 46731
-          line: 763
+          offset: 50684
+          line: 765
           column: 1
         end:
-          offset: 46875
-          line: 763
+          offset: 50828
+          line: 765
           column: 145
     - pointer: "/validation_rules/4"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_46113"
+      unit_id: "normative_50066"
       source_span:
         start:
-          offset: 46876
-          line: 764
+          offset: 50829
+          line: 766
           column: 1
         end:
-          offset: 47050
-          line: 764
+          offset: 51003
+          line: 766
           column: 175
     - pointer: "/validation_rules/5"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_46113"
+      unit_id: "normative_50066"
       source_span:
         start:
-          offset: 47051
-          line: 765
+          offset: 51004
+          line: 767
           column: 1
         end:
-          offset: 47651
-          line: 765
+          offset: 51604
+          line: 767
           column: 601
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1343,27 +1337,27 @@ normative_context:
           column: 165
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_38370"
+      unit_id: "normative_38495"
       source_span:
         start:
-          offset: 38370
-          line: 714
+          offset: 38495
+          line: 698
           column: 1
         end:
-          offset: 38410
-          line: 714
+          offset: 38535
+          line: 698
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46113"
+      unit_id: "normative_50066"
       source_span:
         start:
-          offset: 46113
-          line: 756
+          offset: 50066
+          line: 758
           column: 1
         end:
-          offset: 46135
-          line: 756
+          offset: 50088
+          line: 758
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1372,5 +1366,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:22dca8371d5983c953d012867e2c0b8067cabdd6e2bfddc15404510ac2d67051"
-  generated_content_sha256: "sha256:604c1d46a5b50c44d487eb2ee0840aa028576a12fa1a477c358060f542c0c0e3"
+    sha256: "sha256:afcb4457f62a859d26598540e160807c402048b0a78b352dfb67625e5dbac869"
+  generated_content_sha256: "sha256:9f67d93572f2c8e21da3618d31ef853345ead9e503e35ef68aaa77a543d9d002"

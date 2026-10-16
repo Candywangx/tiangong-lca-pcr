@@ -37,10 +37,6 @@ review_metadata:
       explanation: The exact Tiangong product identity for this declared reference-output state has not been verified; keep the UUID absent and the PCR at candidate/authored_methodology.
     - row_id: planting_material
       reason: No detail-confirmed UUID is recorded for Crop-specific seed, sets, cuttings, or other planting material for the covered crop in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
-    - row_id: field_cultivation_agricultural_nutrient_inputs_urea
-      reason: No detail-confirmed UUID is recorded for Urea fertilizer in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
-    - row_id: field_cultivation_agricultural_nutrient_inputs_ammonium_sulfate
-      reason: No detail-confirmed UUID is recorded for Ammonium sulfate fertilizer in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: field_cultivation_agricultural_nutrient_inputs_triple_superphosphate
       reason: No detail-confirmed UUID is recorded for Triple superphosphate fertilizer in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: field_cultivation_agricultural_nutrient_inputs_potassium_chloride
@@ -49,12 +45,8 @@ review_metadata:
       reason: No detail-confirmed UUID is recorded for Cattle manure applied as fertilizer in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: field_cultivation_agricultural_nutrient_inputs_plant_compost
       reason: No detail-confirmed UUID is recorded for Composted plant residues applied to soil in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
-    - row_id: crop_protection_products
-      reason: No detail-confirmed UUID is recorded for Crop-protection product or active substance used in the declared crop cycle in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: irrigation_water
       reason: No detail-confirmed UUID is recorded for Irrigation water supplied to crop production in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
-    - row_id: cultivation_fuel
-      reason: No detail-confirmed UUID is recorded for Mobile machinery fuel for crop cultivation in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: cultivation_electricity
       reason: No detail-confirmed UUID is recorded for Electricity for irrigation or protected cultivation in field_cultivation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: land_occupation
@@ -79,8 +71,6 @@ review_metadata:
       reason: No detail-confirmed UUID is recorded for Carbon dioxide to air from liming or urea application in field_cultivation (outputs/elementary). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: harvested_crop_input
       reason: No detail-confirmed UUID is recorded for Fresh harvested edible root, bulb, rhizome, corm, or tuber crop from the declared crop cycle in harvest_and_primary_sorting (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
-    - row_id: harvest_fuel
-      reason: No detail-confirmed UUID is recorded for Mobile machinery fuel for harvest and primary sorting in harvest_and_primary_sorting (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: marketable_sorted_crop
       reason: No detail-confirmed UUID is recorded for Fresh marketable sorted other root, bulb, rhizome, corm, or tuber vegetable in harvest_and_primary_sorting (outputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: sorting_rejects
@@ -125,3 +115,27 @@ review_metadata:
       reason: No detail-confirmed UUID is recorded for Fresh product lost during farm-gate storage or dispatch in farm_gate_storage_and_dispatch (outputs/waste). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
     - row_id: packaging_waste
       reason: No detail-confirmed UUID is recorded for Used or discarded packaging from storage or dispatch in farm_gate_storage_and_dispatch (outputs/waste). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+  required_input_identification:
+    - requirement_id: crop_protection_products_specific_input
+      rule: Mandatory, projected collection-method requirement. Actual use must become separate specific exchanges before dataset completeness; no fabricated recipe, missing-as-zero assumption or aggregate flow binding.
+    - requirement_id: cultivation_fuel_specific_input
+      rule: Mandatory, projected collection-method requirement. Actual use must become separate specific exchanges before dataset completeness; no fabricated recipe, missing-as-zero assumption or aggregate flow binding.
+    - requirement_id: harvest_fuel_specific_input
+      rule: Mandatory, projected collection-method requirement. Actual use must become separate specific exchanges before dataset completeness; no fabricated recipe, missing-as-zero assumption or aggregate flow binding.
+  content_identity_remediation:
+    scope: Specific input identity, route applicability and source-bound UUID compatibility; no lifecycle promotion or classification acceptance.
+    bound_rows:
+      - row_id: field_cultivation_agricultural_nutrient_inputs_urea
+        uuid: 3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e
+      - row_id: field_cultivation_agricultural_nutrient_inputs_ammonium_sulfate
+        uuid: 8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf
+    conditional_rows:
+      - row_id: cultivation_fuel_diesel
+        original: cultivation_fuel
+        carrier: diesel
+        uuid: 9d258d75-6792-4f1c-9856-81602ed8f816
+      - row_id: harvest_fuel_diesel
+        original: harvest_fuel
+        carrier: diesel
+        uuid: 9d258d75-6792-4f1c-9856-81602ed8f816
+    remaining_identity_policy: Specific unresolved rows remain explicit when no compatible public identity was confirmed; no near-match material or reference-property substitution is accepted.

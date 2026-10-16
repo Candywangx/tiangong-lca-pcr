@@ -121,7 +121,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_and_soil_amendment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -131,12 +131,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_and_soil_amendment_records`
 - 来源：`fao-gaps-family-agriculture-2007`；`ipcc-2019-managed-soils-n2o`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`p_currant_gooseberry_management_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_and_soil_amendment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -146,6 +148,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_and_soil_amendment_records`
 - 来源：`fao-gaps-family-agriculture-2007`；`ipcc-2019-managed-soils-n2o`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`p_currant_gooseberry_management_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -211,7 +215,7 @@ sync_with: pcr.en-US.md
 
 当水因作物灌溉而被取用或购买时，灌溉水跨越边界。记录必须识别水源和施用方法。
 
-- 选定流：Irrigation water supply
+- 选定流：灌溉供水
 - 流属性/单位：体积 / m3
 - 数量规则：按地块和作物年度计量或由供应商记录的灌溉水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -224,39 +228,20 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_irrigation_and_water_quality_records`
 - 来源：`fao-codex-fresh-produce-primary-production`
 
-###### 声明路线中使用的作物保护产品（`crop_protection_products`）
+###### 柴油 (`mobile_machinery_fuel_diesel`)
 
-当作物保护产品在所代表的作物年度中被购买、混配、施用或以其他方式使用时，其跨越边界。应保留施用时间和采前间隔记录。
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`mobile_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流：作物保护产品供应 [unmapped]
-- 流属性/单位：质量或体积 / kg 或 L 有效产品
-- 数量规则：按施用事件记录实际制剂或有效成分量，并保留产品身份和剂量基准
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 净可销售果实产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_crop_protection_records`
-- 来源：`fao-codex-fresh-produce-primary-production`
-
-###### 田间作业移动机械燃料（`mobile_machinery_fuel`）
-
-在声明的前景路线中运行拖拉机、喷雾机、割草机、采收辅助设备和其他移动机械所用燃料应予记录。
-
-- 选定流：Mobile agricultural machinery fuel supply
-- 流属性/单位：能量或质量 / MJ、L 或 kg 燃料
-- 数量规则：按计量、发票或承包商记录归属于所代表田间作业的燃料使用量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 净可销售果实产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_field_energy_records`采集`p_currant_gooseberry_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_energy_records`
-- 来源：`fao-gaps-family-agriculture-2007`
+- 来源：`route-energy-fao`
 
 ##### 废物流
 
@@ -266,7 +251,7 @@ sync_with: pcr.en-US.md
 
 土地占用记录声明作物年度或报告期内受管理植株所占用的面积和时间。
 
-- 选定流：Agricultural land occupation
+- 选定流：农业用地占用
 - 流属性/单位：面积-时间 / m2·year 或 ha·year
 - 数量规则：记录作物年度内所代表的面积和占用时间；仅纳入声明的生产面积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -300,7 +285,7 @@ sync_with: pcr.en-US.md
 
 当水源取用由前景数据包控制或有记录时，除灌溉水产品输入外，还应单独记录自然资源取用。
 
-- 选定流：Water resource withdrawal
+- 选定流：自然水资源取用
 - 流属性/单位：体积 / m3
 - 数量规则：在有记录时，记录与所代表地块灌溉水供给相对应的水源取用量
 - 数值来源模式：计算值（`calculated_value`）
@@ -359,7 +344,7 @@ sync_with: pcr.en-US.md
 
 当所选计算方法将排放归因于作物年度中的氮投入、残余物管理或其他管理土壤来源时，记录土壤氧化亚氮。
 
-- 选定流：Nitrous oxide emission to ambient air
+- 选定流：一氧化二氮向环境空气排放
 - 流属性/单位：质量 / kg N2O
 - 数量规则：根据声明的氮投入、残余物去向、土壤与气候背景和一个适用的经审查方法计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -376,7 +361,7 @@ sync_with: pcr.en-US.md
 
 当养分产品、施用方法和所选方法支持排放估算时，记录氨排放。
 
-- 选定流：Ammonia emission to ambient air
+- 选定流：氨向环境空气排放
 - 流属性/单位：质量 / kg NH3
 - 数量规则：根据声明的养分投入、产品类型、施用方法、时间和适用因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -393,7 +378,7 @@ sync_with: pcr.en-US.md
 
 当场址条件和所选方法支持淋失或径流估算时，记录向水体的硝酸盐损失。
 
-- 选定流：Nitrate emission to water
+- 选定流：硝酸根向水体排放
 - 流属性/单位：质量 / kg nitrate 或 kg N，并声明报告基准
 - 数量规则：根据声明的养分投入、土壤和水文条件以及适用的淋失或径流方法计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -499,7 +484,7 @@ sync_with: pcr.en-US.md
 
 仅当声明边界内实际发生清洗或其他用水整理步骤时，记录工艺水。
 
-- 选定流：Process water supply
+- 选定流：生产用水供应
 - 流属性/单位：体积 / m3
 - 数量规则：计量或按批次归属的整理作业用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -516,7 +501,7 @@ sync_with: pcr.en-US.md
 
 记录声明初级整理边界内设备和短时冷却作业所用电力。
 
-- 选定流：Electricity supply for primary conditioning
+- 选定流：初步整理用电力供应
 - 流属性/单位：能量 / kWh
 - 数量规则：与匹配整理批次和纳入的冷却时长对应的计量或设备归属电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -673,6 +658,16 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_products_specific_input` | `cp_crop_protection_records` | 作业 p_currant_gooseberry_management：当作物保护产品在所代表的作物年度中被购买、混配、施用或以其他方式使用时，其跨越边界。应保留施用时间和采前间隔记录。 原数量方法：按施用事件记录实际制剂或有效成分量，并保留产品身份和剂量基准 |
+| `mobile_machinery_fuel_specific_input` | `cp_field_energy_records` | 作业 p_currant_gooseberry_management：在声明的前景路线中运行拖拉机、喷雾机、割草机、采收辅助设备和其他移动机械所用燃料应予记录。 原数量方法：按计量、发票或承包商记录归属于所代表田间作业的燃料使用量 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -683,8 +678,8 @@ sync_with: pcr.en-US.md
 | `cp_stand_and_planting_records` | `p_currant_gooseberry_management` | planting material, land occupation, land transformation | field register, planting invoice, stand map, replacement record | field_id; area; species; cultivar; stand_age; planting_date; replacement_area; prior_land_state; production_system | reconcile field roster and stand records to the declared crop year；原始汇总与分配：sum by field and state; retain establishment or replacement events separately | ha; years; kg or item | each planting or replacement event; annual roster | complete crop year and stand period | all represented fields and units | 每声明的参考流 | field map; supplier invoice; stand inventory; land-use record |
 | `cp_nutrient_and_soil_amendment_records` | `p_currant_gooseberry_management` | fertilizer and soil-amendment products | purchase record, application log, supplier label, assay, or laboratory result | field_id; product_name; product_mass; application_date; nutrient_N; nutrient_P; nutrient_K; reporting_basis; method | reconcile product records to each application and preserve product-specific nutrient content；原始汇总与分配：sum actual product mass and nutrient totals without merging product identities | kg product; kg N; kg P; kg K | each application | complete crop year | all represented fields and units | 每声明的参考流 | invoices; labels; assays; application logs |
 | `cp_irrigation_and_water_quality_records` | `p_currant_gooseberry_management` | irrigation water and source withdrawal | meter, pump record, invoice, source register, water-quality record | field_id; source_id; volume; application_date; method; quality_test; withdrawal_volume | match water supply and source withdrawal to fields and crop year；原始汇总与分配：sum by source and field; preserve measured versus attributed volumes | m3 | each irrigation event or meter period | complete crop year | all represented irrigation sources | 每声明的参考流 | meter calibration; source permit or register; water-quality test |
-| `cp_crop_protection_records` | `p_currant_gooseberry_management` | crop-protection products | application log, product label, invoice, sprayer record | field_id; product_name; formulation; active_ingredient; amount; date; pest_or_disease; method; preharvest_interval | reconcile products and application events to represented fields and harvest lots；原始汇总与分配：retain formulation identity and active-ingredient basis; do not combine products | kg; L; date | each application | complete crop year | all represented fields and contractors | 每声明的参考流 | label; calibrated sprayer; application log; harvest interval record |
-| `cp_field_energy_records` | `p_currant_gooseberry_management` | mobile machinery fuel | fuel invoice, tank meter, contractor record, equipment log | field_id; operation; equipment; fuel_type; amount; date; contractor_scope | attribute fuel to included field operations using measured or documented contractor records；原始汇总与分配：sum by operation and represented field; disclose attribution method | L; kg; MJ | each refuelling or operation period | complete crop year | all represented field operations | 每声明的参考流 | invoices; meter; equipment log; contractor statement |
+| `cp_crop_protection_records` | `p_currant_gooseberry_management` | crop-protection products | application log, product label, invoice, sprayer record | field_id; product_name; formulation; active_ingredient; amount; date; pest_or_disease; method; preharvest_interval | reconcile products and application events to represented fields and harvest lots；原始汇总与分配：retain formulation identity and active-ingredient basis; do not combine products `crop_protection_products_specific_input`: 作业 p_currant_gooseberry_management：当作物保护产品在所代表的作物年度中被购买、混配、施用或以其他方式使用时，其跨越边界。应保留施用时间和采前间隔记录。 原数量方法：按施用事件记录实际制剂或有效成分量，并保留产品身份和剂量基准 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; L; date | each application | complete crop year | all represented fields and contractors | 每声明的参考流 | label; calibrated sprayer; application log; harvest interval record |
+| `cp_field_energy_records` | `p_currant_gooseberry_management` | mobile machinery fuel | fuel invoice, tank meter, contractor record, equipment log | field_id; operation; equipment; fuel_type; amount; date; contractor_scope | attribute fuel to included field operations using measured or documented contractor records；原始汇总与分配：sum by operation and represented field; disclose attribution method `mobile_machinery_fuel_specific_input`: 作业 p_currant_gooseberry_management：在声明的前景路线中运行拖拉机、喷雾机、割草机、采收辅助设备和其他移动机械所用燃料应予记录。 原数量方法：按计量、发票或承包商记录归属于所代表田间作业的燃料使用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | L; kg; MJ | each refuelling or operation period | complete crop year | all represented field operations | 每声明的参考流 | invoices; meter; equipment log; contractor statement |
 | `cp_harvest_and_yield_records` | `p_currant_gooseberry_harvest` | harvest-ready fruit, raw harvested fruit, harvest losses | lot ticket, scale, harvest log, field inspection, yield record | field_id; lot_id; cultivar; harvest_date; harvested_mass; accepted_mass; field_loss; grade; destination | reconcile field-level harvest lots to crop-year output；原始汇总与分配：sum gross, accepted, loss, and destination outputs without double counting | kg | each harvest lot | complete harvest period | all represented fields and units | 每声明的参考流 | calibrated scale; lot ticket; harvest log; grade record |
 | `cp_residue_and_waste_fate_records` | `p_currant_gooseberry_management` | pruning residues and residue fate | pruning log, weigh record, field note, destination record | field_id; residue_type; mass; moisture_basis; date; fate; destination | record removed and retained residues separately and link fate to the field；原始汇总与分配：retain dry or wet basis and convert only with documented factor | kg; percent | each removal or management event | complete crop year | all represented fields | 每声明的参考流 | field log; weigh record; destination evidence |
 | `cp_conditioning_batch_records` | `p_currant_gooseberry_conditioning` | incoming fruit, water, package, accepted fruit, downgraded fruit, rejects, spoilage | batch ticket, scale, grade sheet, wash record, cooling record, package record | batch_id; incoming_mass; accepted_mass; downgraded_mass; reject_mass; spoilage_mass; water; package; start_end_time; destination | match every conditioning batch to incoming lot, output state, included activity, and destination；原始汇总与分配：close fruit mass balance; preserve each destination and optional operation separately | kg; m3; item; time | each batch | complete included conditioning period | all included conditioning equipment and lots | 每声明的参考流 | calibrated scale; grade sheet; water meter; cooling log; package record |
@@ -751,3 +746,4 @@ sync_with: pcr.en-US.md
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

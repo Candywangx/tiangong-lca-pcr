@@ -356,32 +356,7 @@ process_inventory:
     label: "Embryo collection or oocyte retrieval"
     inputs:
       product:
-        - row_id: recovery_medium
-          role: "Recovery medium"
-          name: "Embryo or oocyte recovery medium (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Record actual collection or aspiration medium and its lot-specific composition. Denominator and scope requirements：per recovery event Raw quantity and calculation requirements: Measure issued and returned medium per event. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "route_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_recovery
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "kg per event"
-                basis: "issued medium in the documented event"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
       waste:
         []
       elementary:
@@ -760,32 +735,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: preservation_energy
-          role: "Preservation energy"
-          name: "Preservation energy supply (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Energy / kWh"
-          description: "Only actual chilled or frozen lots use this node; fresh lots bypass it. Denominator and scope requirements：per accepted preserved embryo Raw quantity and calculation requirements: Meter energy over actual intervention and storage period. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "route_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_preserve
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "kWh per accepted preserved embryo"
-                basis: "measured energy divided by accepted post-preservation count"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: nitrogen
           role: "Cryogenic nitrogen"
           name: "Liquid nitrogen supply (UUID unresolved)"
@@ -903,32 +852,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: container
-          role: "Protective containers"
-          name: "Embryo protective packaging (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Record actual straw, vial or ampoule and its new or reusable status; distinguish product enclosure from post-gate shipping. Denominator and scope requirements：per released embryo Raw quantity and calculation requirements: Measure new materials and uniquely attributed reusable-container service. Original collection denominator kind: reference_flow."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_release
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg per released embryo"
-                basis: "new and attributed reusable packaging over released embryos"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -1012,7 +935,7 @@ dataset_production:
       flow_role: "medium and raw embryo/oocyte"
       record_type: "event register"
       raw_fields: "event_id, donor_id, route, medium_kg, raw_embryo_count, oocyte_count, losses, room_hours"
-      collection_method: "issue sheet, count, weigh; Raw aggregation requirements: reconcile each event. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "issue sheet, count, weigh; Raw aggregation requirements: reconcile each event. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. recovery_medium_specific_input: Record actual collection or aspiration medium and its lot-specific composition. Denominator and scope requirements：per recovery event Raw quantity and calculation requirements: Measure issued and returned medium per event. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg, item, h"
       frequency: "event"
       temporal_coverage: "all attempts"
@@ -1048,7 +971,7 @@ dataset_production:
       flow_role: "energy, nitrogen, stable count, rejects"
       record_type: "cold-chain log"
       raw_fields: "lot_id, state, kWh, nitrogen_kg, storage_days, tank_hours, pre_count, accepted, rejected"
-      collection_method: "meter, stock balance, logger; Raw aggregation requirements: route-specific count and occupancy. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "meter, stock balance, logger; Raw aggregation requirements: route-specific count and occupancy. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: preservation_energy_identification: Actual chilled/frozen embryo preservation equipment and storage duration. Fresh lots bypass this node. Distinguish powered freezing from passive cryogenic storage; liquid nitrogen is a material input, not an electricity equivalent. Denominator and scope requirements：per accepted preserved embryo Raw quantity and calculation requirements: Meter energy over actual intervention and storage period. Original collection denominator kind: process_output. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kWh, kg, day, item"
       frequency: "lot/day"
       temporal_coverage: "full intervention and storage"
@@ -1060,7 +983,7 @@ dataset_production:
       flow_role: "container and released embryo"
       record_type: "release ledger"
       raw_fields: "lot_id, route, stage, grade, state, new_package_kg, reuse_cycles, released, gate_time"
-      collection_method: "issue count and QA sign-off; Raw aggregation requirements: count signed releases. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "issue count and QA sign-off; Raw aggregation requirements: count signed releases. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. container_specific_input: Operation release: Record actual straw, vial or ampoule and its new or reusable status; distinguish product enclosure from post-gate shipping. Denominator and scope requirements：per released embryo Raw quantity and calculation requirements: Measure new materials and uniquely attributed reusable-container service. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg, embryo"
       frequency: "lot"
       temporal_coverage: "every handover"
@@ -1281,9 +1204,13 @@ data_sources:
     type: "official_guidance"
     reference: "[IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf)"
     used_for: "Managed-soil direct and indirect nitrogen pathways and boundary reconciliation"
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:12c0279c2cfaf31a68845b3e4cf606ed4b3bf6e4016e93105d1b17252781b184"
+  source_sha256: "sha256:78c59a3139744c7539693d892e7c2bef3f82b47b2b6cb070cab3ea482c2a3a73"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6895"
@@ -1334,16 +1261,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49944"
+    - unit_id: "normative_46200"
       family: "allocation"
       span:
         start:
-          offset: 49944
-          line: 905
+          offset: 46200
+          line: 827
           column: 1
         end:
-          offset: 51646
-          line: 917
+          offset: 47902
+          line: 839
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `subdivide` | all lots | Subdivide by species, donor, in-vivo/in-vitro route, final state and grade before any residual allocation; include failed attempts. | `review-fao-pig-lca-2018` |\n| `destinations` | graded output | Accepted reference-grade embryos, independently sold downgraded embryos, held states and treatment rejects require distinct actual handoffs. | `woah-invivo-2024`; `woah-invitro-2024` |\n| `periods` | donor and laboratory | Attribute feed, donor events, collection, culture, storage and replacement/cull to observed service periods and lot outputs once; do not double-allocate across years. | `review-fao-pig-lca-2018` |\n| `assets` | shared facilities | Assign measured service hours/occupancy of rooms, incubators, tanks and reusable containers to all consuming nodes and periods once; disclose residual physical/economic split and sensitivity. | `review-fao-pig-lca-2018` |\n| `allocation_method_basis` | Residual joint burdens and shared service | Apply the general LCA hierarchy: examine subdivision or an appropriately justified system expansion before residual allocation; then prefer a supported physical causal relationship, and justify an economic basis when physical attribution is not established. The donor-day, occupancy or throughput driver is a PCR modelling choice requiring case-specific evidence and sensitivity, not a requirement of sanitary guidance. Include failed attempts and losses in the service period; do not select only successful outputs or introduce hypothetical substitution credits. | `review-fao-pig-lca-2018` |\n\n"
       headings:
@@ -1362,12 +1289,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49944
-              line: 905
+              offset: 46200
+              line: 827
               column: 1
             end:
-              offset: 49984
-              line: 905
+              offset: 46240
+              line: 827
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1382,16 +1309,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_64701"
+    - unit_id: "normative_68494"
       family: "validation"
       span:
         start:
-          offset: 64701
-          line: 954
+          offset: 68494
+          line: 896
           column: 1
         end:
-          offset: 67694
-          line: 967
+          offset: 71487
+          line: 909
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `reference` | final product | Require viable animal embryo, species, route, stage, grade, state and signed release; an anatomical structure cannot substitute for the product flow. | `un-cpc-3`; `woah-invivo-2024`; `woah-invitro-2024` |\n| `route` | each lot | Resolve one in-vivo or in-vitro path and only actual fertilisation/culture, preservation and trade controls. | `woah-invivo-2024`; `woah-invitro-2024` |\n| `balance` | every interface | Reconcile raw, prepared, graded, downgraded, preserved, rejected and released counts plus media and packages. | `woah-invivo-2024`; `woah-invitro-2024` |\n| `attribution` | periods/assets | Verify donor and failed-event periods, every shared consumer, unique burden ownership and independent lower-grade handover. | `woah-invivo-2024`; `woah-invitro-2024` |\n| `v_pathway_emission_coverage` | `donor` | Require a pathway coverage ledger for enteric CH4 where biologically applicable, manure CH4, direct/indirect N2O, NH3 and relevant field emissions. Every pathway needs a measured/calculated value, a named linked process with matching coverage, or supported inapplicability; absent data cannot become zero. Keep wild life before capture outside managed husbandry, assess actual managed holding separately, and retain species-specific evidence. | `review-ipcc-livestock-2019`; `review-ipcc-soils-2019`; `review-eea-manure-2023` |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `review-fao-pig-lca-2018` |\n| `v_manure_n2o_coverage` | Applicable manure and managed-soil N pathways | Require explicit direct and indirect pathway coverage, stage N balances and molecular-mass conversion. Map each component to an existing N2O card or an explicitly covering linked process once under calc_manure_n2o_coverage. Missing indirect-pathway evidence prevents a completeness claim; no default zero or duplicate aggregate-plus-components. | `review-ipcc-livestock-2019`; `review-ipcc-soils-2019` |\n\n"
       headings:
@@ -1410,12 +1337,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 64701
-              line: 954
+              offset: 68494
+              line: 896
               column: 1
             end:
-              offset: 64723
-              line: 954
+              offset: 68516
+              line: 896
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1499,171 +1426,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_49944"
+      unit_id: "normative_46200"
       source_span:
         start:
-          offset: 50079
-          line: 911
+          offset: 46335
+          line: 833
           column: 1
         end:
-          offset: 50267
-          line: 911
+          offset: 46523
+          line: 833
           column: 189
     - pointer: "/allocation_rules/1"
       rule_id: "destinations"
       identity_kind: "explicit"
-      unit_id: "normative_49944"
+      unit_id: "normative_46200"
       source_span:
         start:
-          offset: 50268
-          line: 912
+          offset: 46524
+          line: 834
           column: 1
         end:
-          offset: 50487
-          line: 912
+          offset: 46743
+          line: 834
           column: 220
     - pointer: "/allocation_rules/2"
       rule_id: "periods"
       identity_kind: "explicit"
-      unit_id: "normative_49944"
+      unit_id: "normative_46200"
       source_span:
         start:
-          offset: 50488
-          line: 913
+          offset: 46744
+          line: 835
           column: 1
         end:
-          offset: 50721
-          line: 913
+          offset: 46977
+          line: 835
           column: 234
     - pointer: "/allocation_rules/3"
       rule_id: "assets"
       identity_kind: "explicit"
-      unit_id: "normative_49944"
+      unit_id: "normative_46200"
       source_span:
         start:
-          offset: 50722
-          line: 914
+          offset: 46978
+          line: 836
           column: 1
         end:
-          offset: 50976
-          line: 914
+          offset: 47232
+          line: 836
           column: 255
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_method_basis"
       identity_kind: "explicit"
-      unit_id: "normative_49944"
+      unit_id: "normative_46200"
       source_span:
         start:
-          offset: 50977
-          line: 915
+          offset: 47233
+          line: 837
           column: 1
         end:
-          offset: 51644
-          line: 915
+          offset: 47900
+          line: 837
           column: 668
     - pointer: "/validation_rules/0"
       rule_id: "reference"
       identity_kind: "explicit"
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 64796
-          line: 958
+          offset: 68589
+          line: 900
           column: 1
         end:
-          offset: 65033
-          line: 958
+          offset: 68826
+          line: 900
           column: 238
     - pointer: "/validation_rules/1"
       rule_id: "route"
       identity_kind: "explicit"
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 65034
-          line: 959
+          offset: 68827
+          line: 901
           column: 1
         end:
-          offset: 65209
-          line: 959
+          offset: 69002
+          line: 901
           column: 176
     - pointer: "/validation_rules/2"
       rule_id: "balance"
       identity_kind: "explicit"
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 65210
-          line: 960
+          offset: 69003
+          line: 902
           column: 1
         end:
-          offset: 65395
-          line: 960
+          offset: 69188
+          line: 902
           column: 186
     - pointer: "/validation_rules/3"
       rule_id: "attribution"
       identity_kind: "explicit"
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 65396
-          line: 961
+          offset: 69189
+          line: 903
           column: 1
         end:
-          offset: 65598
-          line: 961
+          offset: 69391
+          line: 903
           column: 203
     - pointer: "/validation_rules/4"
       rule_id: "v_pathway_emission_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 65599
-          line: 962
+          offset: 69392
+          line: 904
           column: 1
         end:
-          offset: 66170
-          line: 962
+          offset: 69963
+          line: 904
           column: 572
     - pointer: "/validation_rules/5"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 66171
-          line: 963
+          offset: 69964
+          line: 905
           column: 1
         end:
-          offset: 66771
-          line: 963
+          offset: 70564
+          line: 905
           column: 601
     - pointer: "/validation_rules/6"
       rule_id: "v_feed_supply_intake_separation"
       identity_kind: "explicit"
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 66772
-          line: 964
+          offset: 70565
+          line: 906
           column: 1
         end:
-          offset: 67212
-          line: 964
+          offset: 71005
+          line: 906
           column: 441
     - pointer: "/validation_rules/7"
       rule_id: "v_manure_n2o_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 67213
-          line: 965
+          offset: 71006
+          line: 907
           column: 1
         end:
-          offset: 67692
-          line: 965
+          offset: 71485
+          line: 907
           column: 480
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1692,27 +1619,27 @@ normative_context:
           column: 106
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49944"
+      unit_id: "normative_46200"
       source_span:
         start:
-          offset: 49944
-          line: 905
+          offset: 46200
+          line: 827
           column: 1
         end:
-          offset: 49984
-          line: 905
+          offset: 46240
+          line: 827
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_64701"
+      unit_id: "normative_68494"
       source_span:
         start:
-          offset: 64701
-          line: 954
+          offset: 68494
+          line: 896
           column: 1
         end:
-          offset: 64723
-          line: 954
+          offset: 68516
+          line: 896
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1721,5 +1648,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:12c0279c2cfaf31a68845b3e4cf606ed4b3bf6e4016e93105d1b17252781b184"
-  generated_content_sha256: "sha256:cf917f1daa22705d97d0a0c39141c1203fa508a9d61968134b9b6607f7c19eec"
+    sha256: "sha256:78c59a3139744c7539693d892e7c2bef3f82b47b2b6cb070cab3ea482c2a3a73"
+  generated_content_sha256: "sha256:75b88d4b7960fd12f6b2ee5b1b09a273b0cdfc32eca77cedcdaf823ecf01037f"

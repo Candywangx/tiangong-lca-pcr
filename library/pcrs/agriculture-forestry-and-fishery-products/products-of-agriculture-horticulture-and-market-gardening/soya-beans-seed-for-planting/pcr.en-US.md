@@ -114,9 +114,9 @@ Raw activity or stage basis: per 1,000 kg harvested seed crop.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per 1,000 kg harvested seed crop.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_nutrient_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -126,12 +126,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`; `ipcc-2019-cropland`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`field_soya_bean_seed_multiplication_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_nutrient_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -141,6 +143,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`; `ipcc-2019-cropland`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`field_soya_bean_seed_multiplication_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -231,9 +235,9 @@ Raw activity or stage basis: per 1,000 kg harvested seed crop.
 Record fuel or directly supplied combustion energy used by field equipment, including pumping when the carrier is combusted on site. Keep mobile transport fuel outside this row.
 Raw activity or stage basis: per 1,000 kg harvested seed crop.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_field_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -244,11 +248,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_field_energy_records`
 - Sources: `ipcc-2019-cropland`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`field_combustion_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_field_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -258,6 +264,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_energy_records`
 - Sources: `ipcc-2019-cropland`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Irrigation pumping electricity (`irrigation_pumping_electricity`)
 Record purchased electricity used for irrigation pumping or electrically driven field equipment at the field boundary.
@@ -273,28 +281,6 @@ Raw activity or stage basis: per 1,000 kg harvested seed crop.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_energy_records`
 - Sources: `ipcc-2019-cropland`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-###### Crop-protection products (`crop_protection_products`)
-Record named formulated products and active substances used for weeds, pests, or diseases. Product identity and active-substance content remain distinct.
-- Selected flow: named crop-protection product or active substance
-- Flow property / unit: Mass / kg product or active substance
-- Amount rule: measured application by product and active substance
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg harvested seed crop.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_crop_protection_records`
-- Sources: `fao-soya-seed-production`
 - Range: Candidate QA guardrail
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -398,28 +384,6 @@ Raw activity or stage basis: per 1,000 kg harvested seed crop.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 ##### Elementary flows
-###### Managed-soil nitrogen emissions to air (`managed_soil_nitrogen_emissions_to_air`)
-Record species-specific managed-soil emissions using the selected method tier, nutrient inputs, and declared soil and climate context.
-- Selected flow: nitrogen species emitted to air from managed soil
-- Flow property / unit: Mass / kg species and kg N
-- Amount rule: calculated from nutrient inputs and the selected soil-emission method
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted seed output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: N input (`n_input`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_nutrient_input_records`
-- Sources: `ipcc-2019-managed-soils-n2o`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 ###### Managed-soil nitrogen emissions to water (`managed_soil_nitrogen_emissions_to_water`)
 Record nitrate or other nitrogen species reaching the declared water compartment when required by the selected method and scope.
 - Selected flow: nitrogen species emitted to water from managed soil
@@ -503,50 +467,6 @@ Raw activity or stage basis: per 1 kg accepted packaged seed.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_energy_records`
 - Sources: `fao-soya-drying-handling`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-###### Conditioning combustion energy (`conditioning_combustion_energy`)
-Record fuel or directly supplied heat used for seed drying or other conditioning operations.
-- Selected flow: drying fuel or delivered process heat
-- Flow property / unit: Mass, volume, or energy / kg, L, or MJ
-- Amount rule: measured fuel or delivered heat by conditioning campaign
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per 1 kg accepted packaged seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_conditioning_energy_records`
-- Sources: `fao-soya-drying-handling`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-###### Seed-treatment material (`seed_treatment_material`)
-Record treatment products and active substances applied to accepted seed lots, including dose, treated mass, and treatment status.
-- Selected flow: seed-treatment product or active substance
-- Flow property / unit: Mass / kg product or active substance
-- Amount rule: measured treatment product and active-substance mass by lot
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg treated seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_seed_treatment_records`
-- Sources: `fao-soya-seed-production`
 - Range: Candidate QA guardrail
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -678,51 +598,7 @@ Raw activity or stage basis: per 1 kg accepted seed.
   - Basis: declared process or reference-flow basis
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-###### Packaging waste (`packaging_waste`)
-Record packaging losses and discarded packaging by material and fate.
-- Selected flow: packaging waste by material and declared fate
-- Flow property / unit: Mass / kg
-- Amount rule: weighed packaging waste or inventory reconciliation by batch
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg packaged seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_waste_records`
-- Sources: `usda-seed-cleaning-handling`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 ##### Elementary flows
-###### Conditioning dust and combustion emissions (`conditioning_dust_and_combustion_emissions`)
-Record particulate or combustion species emitted from cleaning and drying according to the selected compartment and method.
-- Selected flow: conditioning emission to air by substance and compartment
-- Flow property / unit: Mass / kg
-- Amount rule: measured, collected, or calculated emission by campaign
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per 1 kg accepted seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_conditioning_emission_records`
-- Sources: `fao-soya-drying-handling`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 ### Process: Seed Storage (`seed_storage`)
 #### Inputs
 ##### Product flows
@@ -896,27 +772,47 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `crop_protection_products_specific_input` | `cp_crop_protection_records` | Operation field_soya_bean_seed_multiplication: Record named formulated products and active substances used for weeds, pests, or diseases. Product identity and active-substance content remain distinct. Original quantity method: measured application by product and active substance |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `conditioning_combustion_energy_identification` | `cp_conditioning_energy_records` | Actual seed-drying heat supply, with the burner fuel or purchased-heat state identified from equipment and supplier records. Keep existing conditioning electricity separate; neither drying nor combustion is mandatory. Raw activity or stage basis: per 1 kg accepted packaged seed. (`route-energy-fao`) |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 ### Data Collection Protocols
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_source_seed_lot_records` | `field_soya_bean_seed_multiplication` | source seed or source seed lot | seed lot record | lot; class; cultivar or source-lot role; treatment; mass; moisture; supplier or source field | lot certificate, receiving record, calibrated scale; Raw aggregation and attribution: sum by field or source-lot unit and normalize to harvested seed crop | kg and declared attributes | per lot | crop cycle | field or production unit | per declared reference flow | certificate, receiving record, scale |
-| `cp_nutrient_input_records` | `field_soya_bean_seed_multiplication` | nutrient and amendment inputs | application record | product; formulation; nutrient content; mass; date; field; method | invoice, label, application log, service record; Raw aggregation and attribution: sum product and nutrient mass by field | kg product and kg nutrient | per application | crop cycle | field | per declared reference flow | invoice, label, application record |
+| `cp_nutrient_input_records` | `field_soya_bean_seed_multiplication` | nutrient and amendment inputs; required specific-emission identification and calculation | application record | product; formulation; nutrient content; mass; date; field; method; substance name; receiving compartment; reported unit and elemental/compound basis; method and factor source; actual activity; period; quantity uncertainty; related existing exchanges | invoice, label, application log, service record; Raw aggregation and attribution: sum product and nutrient mass by field; managed_soil_nitrogen_emissions_to_air_specific_emission: Identify each applicable gaseous nitrogen species emitted from managed soil in the actual soya-bean seed field. Preserve nutrient-input records, method tier, direct/indirect pathways and soil/climate applicability. Retain the original accepted-seed denominator and nitrogen-input calculation basis. The former 0 to 1000 screen in an unspecified flow unit does not define a valid species amount or default. This is a mandatory identification and calculation requirement, not an exchange. Before dataset completeness, instantiate one concrete elementary card per actual substance and receiving compartment. Retain kg substance separately from kg elemental N; convert only from the method-reported basis using the documented composition or stoichiometric fraction of the identified species. Never equate all nitrogen with a chosen compound or add elemental-N and compound masses as separate releases. Preserve source activity, factor units, period, uncertainty, boundary and original normalization; link to an existing matching card instead of counting a duplicate. Verify a compatible UUID or explicitly register the concrete unresolved identity. Missing identity, method or activity evidence does not establish zero or justify omission. | kg product and kg nutrient; kg of each identified substance and kg N recorded separately | per application | crop cycle | field | per declared reference flow | invoice, label, application record |
 | `cp_irrigation_records` | `field_soya_bean_seed_multiplication` | irrigation and withdrawal | meter or source record | source; meter; reading; volume; date; field; pumping energy | calibrated meter, pump log, water record; Raw aggregation and attribution: sum by source and distinguish delivered water from withdrawal | m3, kg, kWh | event or month | crop cycle | field and source | per declared reference flow | calibration, readings, source record |
 | `cp_field_energy_records` | `field_soya_bean_seed_multiplication` | field fuel and electricity | fuel or utility record | operation; carrier; quantity; machine or supplier; date; field | fuel log, meter, invoice, contractor record; Raw aggregation and attribution: attribute energy without double counting | L, kg, MJ, kWh | operation or billing interval | crop cycle | field or unit | per declared reference flow | meter, invoice, log |
-| `cp_crop_protection_records` | `field_soya_bean_seed_multiplication` | crop protection | application record | product; active substance; dose; area; date; field; target | label and application log; Raw aggregation and attribution: sum by product and active substance | kg product, kg active substance, ha | per application | crop cycle | field | per declared reference flow | label, applicator record |
+| `cp_crop_protection_records` | `field_soya_bean_seed_multiplication` | crop protection | application record | product; active substance; dose; area; date; field; target | label and application log; Raw aggregation and attribution: sum by product and active substance `crop_protection_products_specific_input`: Operation field_soya_bean_seed_multiplication: Record named formulated products and active substances used for weeds, pests, or diseases. Product identity and active-substance content remain distinct. Original quantity method: measured application by product and active substance Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg product, kg active substance, ha | per application | crop cycle | field | per declared reference flow | label, applicator record |
 | `cp_land_use_records` | `field_soya_bean_seed_multiplication` | land occupation | field area record | field; planted area; dates; crop duration | field record, GIS, farm register; Raw aggregation and attribution: calculate area-time and normalize | ha and crop cycle | per cycle | crop cycle | field | per declared reference flow | field map, GIS, farm record |
 | `cp_harvested_seed_mass` | `field_soya_bean_seed_multiplication` | harvested seed crop | harvest record | field; date; mass; moisture; seed route; rejects | calibrated scale and harvest record; Raw aggregation and attribution: reconcile before conditioning | kg and moisture fraction | per harvest | crop cycle | field and receiving point | per declared reference flow | scale, harvest record |
 | `cp_field_residue_records` | `field_soya_bean_seed_multiplication` | field residue | residue record | stream; mass; fate; date; field | scale, baling ticket, field log; Raw aggregation and attribution: sum by fate and boundary crossing | kg | per event | crop cycle | field | per declared reference flow | scale, ticket, field log |
 | `cp_conditioning_input_records` | `seed_conditioning_treatment_and_packaging` | harvested seed input | batch receiving record | batch; input mass; moisture; source; date | batch sheet and calibrated scale; Raw aggregation and attribution: reconcile received mass to outputs | kg and moisture fraction | per batch | conditioning campaign | facility | per declared reference flow | batch sheet, scale |
-| `cp_conditioning_energy_records` | `seed_conditioning_treatment_and_packaging` | conditioning energy | meter or equipment record | campaign; energy type; quantity; operation; period | meter, utility bill, equipment log; Raw aggregation and attribution: sum by operation and normalize | kWh, MJ, kg, L | campaign or interval | conditioning campaign | facility | per declared reference flow | meter, bill, equipment log |
-| `cp_seed_treatment_records` | `seed_conditioning_treatment_and_packaging` | treatment material | treatment record | product; active substance; dose; treated mass; lot | treatment log, label, supplier certificate; Raw aggregation and attribution: sum by product and treated lot | kg product, kg active substance, kg seed | per batch | conditioning campaign | facility | per declared reference flow | log, label |
+| `cp_conditioning_energy_records` | `seed_conditioning_treatment_and_packaging` | conditioning energy | meter or equipment record | campaign; energy type; quantity; operation; period | meter, utility bill, equipment log; Raw aggregation and attribution: sum by operation and normalize Route-specific requirements: `conditioning_combustion_energy_identification`: Actual seed-drying heat supply, with the burner fuel or purchased-heat state identified from equipment and supplier records. Keep existing conditioning electricity separate; neither drying nor combustion is mandatory. Raw activity or stage basis: per 1 kg accepted packaged seed. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kWh, MJ, kg, L | campaign or interval | conditioning campaign | facility | per declared reference flow | meter, bill, equipment log |
+| `cp_seed_treatment_records` | `seed_conditioning_treatment_and_packaging` | treatment material | treatment record | product; active substance; dose; treated mass; lot | treatment log, label, supplier certificate; Raw aggregation and attribution: sum by product and treated lot `seed_treatment_material_specific_input`: Record treatment products and active substances applied to accepted seed lots, including dose, treated mass, and treatment status. measured treatment product and active-substance mass by lot This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. `fao-soya-seed-production` | kg product, kg active substance, kg seed | per batch | conditioning campaign | facility | per declared reference flow | log, label |
 | `cp_packaging_input_records` | `seed_conditioning_treatment_and_packaging` | packaging | packaging issue record | type; item count; capacity; mass; batch | inventory record or packing log; Raw aggregation and attribution: convert count only with declared capacity or mass | item and kg | per batch | conditioning campaign | facility | per declared reference flow | packing log, inventory record |
 | `cp_accepted_seed_mass` | `seed_conditioning_treatment_and_packaging` | accepted seed | release record | batch; mass; moisture; purity; germination; treatment; gate | calibrated scale and quality test; Raw aggregation and attribution: sum released lots at declared basis | kg and attributes | per batch | conditioning campaign | facility and gate | per declared reference flow | scale, test, release record |
 | `cp_reject_mass_records` | `seed_conditioning_treatment_and_packaging` | rejects and screenings | reject record | batch; stream; mass; fate | scale or batch mass balance; Raw aggregation and attribution: sum by stream and fate | kg | per batch | conditioning campaign | facility | per declared reference flow | scale, reject log, fate |
-| `cp_packaging_waste_records` | `seed_conditioning_treatment_and_packaging` | packaging waste | waste record | material; mass; fate; period | scale or contractor record; Raw aggregation and attribution: sum by material and fate | kg | per shipment or campaign | conditioning campaign | facility | per declared reference flow | scale ticket, contractor record |
-| `cp_conditioning_emission_records` | `seed_conditioning_treatment_and_packaging` | conditioning emissions | emission record | substance; compartment; mass or factor; campaign | dust log, maintenance record, calculation; Raw aggregation and attribution: sum by species and compartment | kg | campaign or period | conditioning campaign | facility | per declared reference flow | log, calculation |
+| `cp_packaging_waste_records` | `seed_conditioning_treatment_and_packaging` | packaging waste | waste record | material; mass; fate; period | scale or contractor record; Raw aggregation and attribution: sum by material and fate `packaging_waste_specific_output`: Record packaging losses and discarded packaging by material and fate. weighed packaging waste or inventory reconciliation by batch This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `usda-seed-cleaning-handling` | kg | per shipment or campaign | conditioning campaign | facility | per declared reference flow | scale ticket, contractor record |
+| `cp_conditioning_emission_records` | `seed_conditioning_treatment_and_packaging` | conditioning emissions | emission record | substance; compartment; mass or factor; campaign | dust log, maintenance record, calculation; Raw aggregation and attribution: sum by species and compartment `conditioning_dust_and_combustion_emissions_specific_emission`: Record particulate or combustion species emitted from cleaning and drying according to the selected compartment and method. measured, collected, or calculated emission by campaign This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `fao-soya-drying-handling` | kg | campaign or period | conditioning campaign | facility | per declared reference flow | log, calculation |
 | `cp_storage_lot_records` | `seed_storage` | accepted seed in storage | inventory record | lot; mass; start and end dates; moisture; location | inventory reconciliation and scale; Raw aggregation and attribution: sum stored mass and retain duration | kg and days | per lot | storage period | storage site | per declared reference flow | inventory, scale |
 | `cp_storage_energy_records` | `seed_storage` | storage electricity | meter or utility record | meter; quantity; period; stored mass | meter or utility bill; Raw aggregation and attribution: allocate by mass and duration | kWh or MJ | period | storage duration | storage site | per declared reference flow | meter, bill |
 | `cp_storage_loss_records` | `seed_storage` | storage loss | loss record | lot; loss mass; category; fate; period | inventory reconciliation and scale; Raw aggregation and attribution: sum by fate | kg | per lot or period | storage period | storage site | per declared reference flow | inventory, disposal record |
@@ -936,6 +832,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `reconcile_field_outputs` | field production | harvested seed crop plus residue, non-seed material, and documented loss reconcile to the harvest record within declared tolerance | harvest; residue records | field output balance | `mass-balance-identity` |
 | `reconcile_conditioning_outputs` | conditioning | received mass and moisture reconcile to accepted seed, rejects, packaging waste, emissions, and documented loss | conditioning input; accepted seed; rejects | conditioning balance | `mass-balance-identity`; `fao-soya-drying-handling` |
 | `reconcile_storage_outputs` | storage | stored mass reconciles to delivered seed, storage loss, and closing inventory for the declared period | storage; delivery; loss records | storage balance | `mass-balance-identity` |
+| `managed_soil_nitrogen_emissions_to_air_specific_emission` | `field_soya_bean_seed_multiplication` | Identify each applicable gaseous nitrogen species emitted from managed soil in the actual soya-bean seed field. Preserve nutrient-input records, method tier, direct/indirect pathways and soil/climate applicability. Retain the original accepted-seed denominator and nitrogen-input calculation basis. The former 0 to 1000 screen in an unspecified flow unit does not define a valid species amount or default. This is a mandatory identification and calculation requirement, not an exchange. Before dataset completeness, instantiate one concrete elementary card per actual substance and receiving compartment. Retain kg substance separately from kg elemental N; convert only from the method-reported basis using the documented composition or stoichiometric fraction of the identified species. Never equate all nitrogen with a chosen compound or add elemental-N and compound masses as separate releases. Preserve source activity, factor units, period, uncertainty, boundary and original normalization; link to an existing matching card instead of counting a duplicate. Verify a compatible UUID or explicitly register the concrete unresolved identity. Missing identity, method or activity evidence does not establish zero or justify omission. | `cp_nutrient_input_records` | separate substance/compartment emissions and elemental ledgers | `ipcc-2019-managed-soils-n2o` |
+
 ### Data Quality Requirements
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
@@ -989,3 +887,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

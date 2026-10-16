@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Millet, other `f3fc75e0-f49a-48fd-a12f-88246beb1d0a` |
+| 参考产品流 | 小米，其他 `f3fc75e0-f49a-48fd-a12f-88246beb1d0a` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -90,7 +90,7 @@ sync_with: pcr.en-US.md
 
 用于建植的种子级小米。
 
-- 选定流：Millet, seed `8a2d72cb-ab4f-4c21-a783-c62f81599895`
+- 选定流：小米，种子 `8a2d72cb-ab4f-4c21-a783-c62f81599895`
 - 流属性/单位：Mass / kg
 - 数量规则：计量声明面积和周期使用的种子。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -121,7 +121,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_millet_field` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -131,12 +131,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_millet_field`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`millet_cultivation_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_millet_field` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -146,6 +148,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_millet_field`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`millet_cultivation_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -211,7 +215,7 @@ sync_with: pcr.en-US.md
 
 实际灌溉时记录输送水量；降雨不作为技术流投入。
 
-- 选定流：Irrigation water
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 流集分组：`irrigation-water`
 - 数量规则：计量输送水量并保留水源和灌溉面积。
@@ -234,32 +238,6 @@ sync_with: pcr.en-US.md
   - 证据类型：推理估算（`reasoned_estimate`）
   - 来源：`fao-millet-systems`
 
-###### 配制植保产品（`crop_protection_product`）
-
-按物理身份分别记录每种制剂及有效成分和浓度。
-
-- 选定流：Formulated crop-protection product applied to millet
-- 流属性/单位：Mass or volume / kg or L
-- 数量规则：分别计量每种制剂，不合并不同产品。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：作物周期施用量除以合格谷物质量.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_millet_field`
-- 来源：
-- 数量范围：暂定植保施用量筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg 或 L/ha
-  - 基准：宽泛首轮制剂施用量筛查；保留选定物理单位
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-  - 来源：`fao-millet-systems`
-
 ##### 废物流
 
 ##### 基本流
@@ -275,7 +253,7 @@ sync_with: pcr.en-US.md
 
 根据采集的氮投入和选定 IPCC 层级计算土壤 N2O。
 
-- 选定流：Nitrous oxide to ambient air
+- 选定流：一氧化二氮向环境空气排放
 - 流属性/单位：Mass / kg N2O
 - 数量规则：应用选定 IPCC 层级并以 44/28 将 N2O-N 换算为 N2O。
 - 数值来源模式：计算值（`calculated_value`）
@@ -308,7 +286,7 @@ sync_with: pcr.en-US.md
 
 农业机械收获和装载时燃烧的柴油。
 
-- 选定流：Diesel `1bfff35f-7618-4c07-8bd3-d477eea72b73`
+- 选定流：柴油 `1bfff35f-7618-4c07-8bd3-d477eea72b73`
 - 流属性/单位：Mass / kg
 - 数量规则：计量分配至收获和装载机械的柴油。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -341,7 +319,7 @@ sync_with: pcr.en-US.md
 
 达到声明水分、等级和清理状态的谷物为定量参考。
 
-- 选定流：Millet, other `f3fc75e0-f49a-48fd-a12f-88246beb1d0a`
+- 选定流：小米，其他 `f3fc75e0-f49a-48fd-a12f-88246beb1d0a`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：汇总合格谷物并归一化至 1 kg。
 
@@ -369,7 +347,7 @@ sync_with: pcr.en-US.md
 
 仅在秸秆、茎和叶以有记录产品用途离开时记录。
 
-- 选定流：Millet straw or stover removed after grain harvest
+- 选定流：收获籽粒后移出的粟类秸秆
 - 流属性/单位：Mass / kg
 - 数量规则：分别计量质量、水分、去向和市场状态。
 - 数值来源模式：计算值（`calculated_value`）
@@ -397,7 +375,7 @@ sync_with: pcr.en-US.md
 
 仅在糠秕和破碎穗跨界至有记录处理去向时记录。
 
-- 选定流：Millet chaff and broken panicles sent to treatment
+- 选定流：送往处理的粟类颖壳及破碎穗
 - 流属性/单位：Mass / kg
 - 数量规则：分别计量质量、水分和去向。
 - 数值来源模式：计算值（`calculated_value`）
@@ -433,6 +411,15 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_product_specific_input` | `cp_millet_field` | 作业 millet_cultivation：按物理身份分别记录每种制剂及有效成分和浓度。 原数量方法：分别计量每种制剂，不合并不同产品。 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -440,7 +427,7 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_millet_field` | `millet_cultivation` | 种子、养分、灌溉和植保产品 | 发票、施用、仪表和田间记录 | field_id; cycle; species; area; product_identity; quantity; unit; composition; water | 核对采购、库存和田间施用并保留标签。；原始汇总与分配：按物理身份和田块汇总并按合格谷物归一化。 | kg, L, m3, ha | 每次施用和周期 | 完整周期 | 每个农场和田块 | 每声明的参考流 | 发票、标签、仪表、日志和库存核对 |
+| `cp_millet_field` | `millet_cultivation` | 种子、养分、灌溉和植保产品 | 发票、施用、仪表和田间记录 | field_id; cycle; species; area; product_identity; quantity; unit; composition; water | 核对采购、库存和田间施用并保留标签。；原始汇总与分配：按物理身份和田块汇总并按合格谷物归一化。 `crop_protection_product_specific_input`: 作业 millet_cultivation：按物理身份分别记录每种制剂及有效成分和浓度。 原数量方法：分别计量每种制剂，不合并不同产品。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg, L, m3, ha | 每次施用和周期 | 完整周期 | 每个农场和田块 | 每声明的参考流 | 发票、标签、仪表、日志和库存核对 |
 | `cp_millet_emissions` | `millet_cultivation` | 受管理土壤 N2O | 田间投入和计算记录 | nitrogen_sources; nitrogen_mass; residue_N; soil; climate; water_regime; factor_identity | 对每个田块或层应用接受的 IPCC 层级。；原始汇总与分配：按层计算并按合格谷物汇总。 | kg N, kg N2O-N, kg N2O | 每周期 | 完整周期 | 每田块或层 | 每声明的参考流 | 计算表、因子、换算和复核 |
 | `cp_millet_harvest` | `millet_harvest_preparation` | 收获燃料、谷物、秸秆或茎叶和糠秕 | 机械日志、称重单、水分和去向记录 | field_id; batch_id; area; fuel; grain_mass; moisture; straw_mass; chaff_mass; destinations | 按田块和批次核对产出与燃料。；原始汇总与分配：按批次汇总并按合格谷物归一化。 | kg, t, L, percent, ha | 每次收获和批次 | 完整收获期 | 每个农场和田块 | 每声明的参考流 | 秤检查、票据、水分、燃料和去向证据 |
 

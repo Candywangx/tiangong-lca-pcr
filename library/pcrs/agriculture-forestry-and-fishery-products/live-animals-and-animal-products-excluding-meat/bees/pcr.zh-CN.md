@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| Reference product flow | Bees `0be7ee1d-758e-458f-9dba-56d8c5298875` |
+| Reference product flow | 蜜蜂 `0be7ee1d-758e-458f-9dba-56d8c5298875` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -106,7 +106,7 @@ sync_with: pcr.en-US.md
 
 亲本蜂群、购买蜂王、蜂包、小群、子脾或类似活蜂种群作为活蜂起始条件记录。
 
-- 选定流：Bees `0be7ee1d-758e-458f-9dba-56d8c5298875`
+- 选定流：蜜蜂 `0be7ee1d-758e-458f-9dba-56d8c5298875`
 - 流属性/单位：Mass / kg live bee mass
 - 数量规则：按单元类型实测活蜂质量或有文件支持的数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -200,7 +200,7 @@ sync_with: pcr.en-US.md
 
 接收的活蜂种群是进入蜂群管理和饲喂的活蜂输出。
 
-- 选定流：Bees `0be7ee1d-758e-458f-9dba-56d8c5298875`
+- 选定流：蜜蜂 `0be7ee1d-758e-458f-9dba-56d8c5298875`
 - 流属性/单位：Mass / kg live bee mass
 - 数量规则：种群进入检查后的接收活蜂质量或数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -256,7 +256,7 @@ sync_with: pcr.en-US.md
 
 管理中的活蜂种群是为转移而维持、分群、换王或育成的已接收种群。
 
-- 选定流：Bees `0be7ee1d-758e-458f-9dba-56d8c5298875`
+- 选定流：蜜蜂 `0be7ee1d-758e-458f-9dba-56d8c5298875`
 - 流属性/单位：Mass / kg live bee mass
 - 数量规则：按蜂群、蜂包、蜂王、小群或子脾单元实测质量或有文件支持的数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -314,37 +314,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_feed_and_water_records`
 - 来源：`fao-good-beekeeping-2019`
 
-###### 蛋白饲料和补充料（`protein_feed_and_supplements`）
-
-使用花粉替代物、花粉饼、蛋白补充料、矿物或维生素补充料时记录。
-
-- 选定流：Prepared fermentable feed `b25e209d-4bef-4a2f-8fad-46e4d7de3d76`
-- 流属性/单位：Mass / kg as-fed and kg dry matter where available
-- 数量规则：实测饲喂量和声明组成
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始采集或过程口径：每个管理蜂群、批次或 kg 活蜂输出
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_feed_and_water_records`
-- 数量范围：暂定蛋白补充料筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：20
-  - 单位：kg feed/kg live bee output
-  - 基准：分配给活蜂生产的蛋白补充料宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 饲喂和处理用水（`water_for_feeding_and_handling`）
 
-用于配制饲料、维持蜜蜂、清洁设备或暂养支持的水，应按水源和用途记录。
+按实际水源和用途记录跨越所代表过程边界的供水。区分外购供水、已链接的现场取水/供水节点、本过程直接取水及内部回用。本产品卡仅用于身份兼容的供水交换，并声明供方及已覆盖作业；本过程直接建模取水时，用环境资源流及实际供水作业，不再为同一水量另加上游供水。回用不构成新的采购或取水。配制饲料只记录本节点实际另加的水，不再次采购已包含在外购饲料内的水。
 
-- 选定流：Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
+- 选定流：工艺用水 `ec205030-248c-496f-9cf2-06d9d26dc6ff`
 - 流属性/单位：Mass or volume / kg, L, or m3
-- 数量规则：实测用水或配制饲料中的水分计算
+- 数量规则：依据有记录的水源及供水责任 记录跨越本过程边界且身份兼容的实际供水数量，排除本过程直接建模取水、内部回用及已含于外购饲料的水。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 原始采集或过程口径：每个管理蜂群、批次或 kg 活蜂输出
@@ -353,6 +329,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_feed_and_water_records`
+- 来源：`ecoinvent-water-supply-2023`
 - 数量范围：暂定用水筛选估算
   - 范围角色：默认估计（`default_estimate`）
   - 下限：0
@@ -368,7 +345,7 @@ sync_with: pcr.en-US.md
 
 用于蜂场巡查、搬运、饲喂、通风、短距离移群、制冷和暂养的电力和燃料按能源载体记录。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -380,13 +357,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_and_movement_records`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 柴油 (`apiary_energy_and_movement_fuel_diesel`)
 
 仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 用于蜂场巡查、搬运、饲喂、通风、短距离移群、制冷和暂养的电力和燃料按能源载体记录。
 
-- 选定流：柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -398,6 +377,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_and_movement_records`
 
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 ##### 废物流
 
 蜂群管理通常不需要废物输入。只有回收饲料、旧包装或其他回收材料作为输入跨越前景边界时才纳入。
@@ -406,11 +387,11 @@ sync_with: pcr.en-US.md
 
 ###### 活蜂管理取水（`water_withdrawal_for_live_bee_management`）
 
-当报告基本水流时，取水量从饲料配制、清洁和暂养用水记录计算。
+仅记录归属于本前景过程的实际环境取水，不从供水使用量或外购饲料所含水量自动推导。排除已由链接供水商或现场供水节点表示的取水；现场直接取水仅在未由该节点计入时归属于本过程。内部回用不构成新取水。匹配水源、取水点、期间、原始取水量和上游取水/处理/输配覆盖；依据记录计入使用点之前的供水损失，不将交付用量等同于取水量。确认资源身份及环境区室与实际水源兼容；不兼容时，在最终交换前保留具体的未解析身份。
 
-- 选定流：water `419682fe-60fb-4b43-be89-bf2824b51104`
+- 选定流：水 `419682fe-60fb-4b43-be89-bf2824b51104`
 - 流属性/单位：Mass / kg
-- 数量规则：由水源和数量记录计算
+- 数量规则：依据有记录的水源及供水责任 计算有记录且归属本过程的原始取水量，排除供方已覆盖取水及回用；换算单位并归一化一次。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始采集或过程口径：每 kg 活蜂输出
@@ -419,6 +400,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_feed_and_water_records`
+- 来源：`ecoinvent-water-supply-2023`
 - 数量范围：暂定取水筛选估算
   - 范围角色：默认估计（`default_estimate`）
   - 下限：0
@@ -428,6 +410,7 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
+
 #### 输出
 
 ##### 产品流
@@ -436,7 +419,7 @@ sync_with: pcr.en-US.md
 
 管理后的活蜂单元是准备进入健康处理、维护或发运的蜂群、小群、蜂包、蜂王批次或子脾单元。
 
-- 选定流：Bees `0be7ee1d-758e-458f-9dba-56d8c5298875`
+- 选定流：蜜蜂 `0be7ee1d-758e-458f-9dba-56d8c5298875`
 - 流属性/单位：Mass / kg live bee mass
 - 数量规则：实测质量或有文件支持的数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -484,7 +467,7 @@ sync_with: pcr.en-US.md
 
 仅核算前景直接燃烧的化石 CO2。
 
-- 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：仅用前景直接运营设备的实际化石燃料量和相容燃烧因子计算本卡 CO2；排除外购电力发电排放和已由委外运输服务覆盖的排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -621,7 +604,7 @@ sync_with: pcr.en-US.md
 
 待发运健康活蜂单元是经过处理或检查的活蜂产品输出。
 
-- 选定流：Bees `0be7ee1d-758e-458f-9dba-56d8c5298875`
+- 选定流：蜜蜂 `0be7ee1d-758e-458f-9dba-56d8c5298875`
 - 流属性/单位：Mass / kg live bee mass
 - 数量规则：检查或处理后的实测质量或有文件支持的数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -696,7 +679,7 @@ sync_with: pcr.en-US.md
 
 当装笼、蜂包组装、蜂王发运、暂养、装载或交付位于声明门以内时，记录进入包装的活蜂。
 
-- 选定流：Bees `0be7ee1d-758e-458f-9dba-56d8c5298875`
+- 选定流：蜜蜂 `0be7ee1d-758e-458f-9dba-56d8c5298875`
 - 流属性/单位：Mass / kg live bee mass
 - 数量规则：进入包装时的实测质量或数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -760,7 +743,7 @@ sync_with: pcr.en-US.md
 
 当声明门包括相关活动时，记录电力、通风、制冷、燃料和路线特定运输服务。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -772,13 +755,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_dispatch_energy_and_transport_records`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 柴油 (`dispatch_energy_and_transport_service_diesel`)
 
 仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 当声明门包括相关活动时，记录电力、通风、制冷、燃料和路线特定运输服务。
 
-- 选定流：柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -789,6 +774,8 @@ sync_with: pcr.en-US.md
 - 基准类型：运输服务（`transport_service`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_dispatch_energy_and_transport_records`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 公路货运服务（`dispatch_energy_and_transport_service_road_freight`）
 
@@ -828,7 +815,7 @@ sync_with: pcr.en-US.md
 
 声明转移活蜂是在声明门的参考产品输出。
 
-- 选定流：Bees `0be7ee1d-758e-458f-9dba-56d8c5298875`
+- 选定流：蜜蜂 `0be7ee1d-758e-458f-9dba-56d8c5298875`
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 千克
 - 数值来源模式：前景记录（`foreground_record`）
@@ -893,7 +880,7 @@ sync_with: pcr.en-US.md
 
 发运能源化石二氧化碳根据燃料和能源记录计算。
 
-- 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：仅用前景直接运营设备的实际化石燃料量和相容燃烧因子计算本卡 CO2；排除外购电力发电排放和已由委外运输服务覆盖的排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -932,7 +919,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_live_bee_stock_entry_records | live_bee_stock_entry | parent colony or purchased live bee stock | purchase, split, queen, package, nucleus, brood-frame, or receiving record | source; species; unit type; queen status; life stage; caste mix; colony strength; bee count or mass; health status; acquisition date; upstream burden treatment | receiving record, breeder certificate, health certificate, scale record, colony inspection, or count-to-mass conversion；原活动量汇总：将单元记录换算为活蜂质量，并核对接收、拒收、死亡或逃逸蜜蜂 | kg live bee mass, colony, nucleus, package, queen, frame, or head | per stock entry or batch | production cycle | apiary, breeder, or stock-entry lot | 每声明的参考流 | scale record, receiving record, health certificate, inspection record |
 | cp_live_bee_colony_management_records | colony_management_and_feeding | managed live bee stock | colony inspection, split, queen rearing, package production, or apiary management record | colony id; unit type; queen status; brood stage; adult bee estimate; frame or seam count; date; management action | apiary log, inspection record, production batch record, or breeder log；原活动量汇总：按单元类型和质量换算核对活蜂进入、分群、损失和输出 | colony, frame, seam, head, or kg live bee mass | inspection, batch, week, month, or production cycle | production cycle | apiary, breeder yard, queen yard, or package production unit | 每声明的参考流 | apiary log, inspection sheet, breeder record |
-| cp_feed_and_water_records | colony_management_and_feeding | supplemental feed and water | feed issue, syrup preparation, water, or feeding record | feed type; sugar concentration; dry matter or as-fed basis; product mass; water quantity; treated colonies; date | feed log, invoice, syrup mixing sheet, meter, or tank record；原活动量汇总：必要时换算为 kg 糖或干物质，并按蜂群、批次或活蜂输出分配 | kg, L, m3, kg dry matter, kg sugar | per feeding event, batch, or reporting period | production cycle | apiary, feed room, or production batch | 每声明的参考流 | invoice, feed log, mixing sheet, meter record |
+| cp_feed_and_water_records | colony_management_and_feeding | supplemental feed and water | feed issue, syrup preparation, water, or feeding record | feed type; sugar concentration; dry matter or as-fed basis; product mass; water quantity; treated colonies; date | feed log, invoice, syrup mixing sheet, meter, or tank record；原活动量汇总：必要时换算为 kg 糖或干物质，并按蜂群、批次或活蜂输出分配 `protein_feed_and_supplements_specific_input`: 使用花粉替代物、花粉饼、蛋白补充料、矿物或维生素补充料时记录。 实测饲喂量和声明组成 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 用水记录另须明确外购/直接取水/回用来源、取水点及水源区室、原始取水量与交付量、内部回用、损失、供方或现场节点、已覆盖的取水/处理/输配、换算基准、期间及负担责任。分开保留各数量，不将全部用水量自动转为前景取水。 | kg, L, m3, kg dry matter, kg sugar | per feeding event, batch, or reporting period | production cycle | apiary, feed room, or production batch | 每声明的参考流 | invoice, feed log, mixing sheet, meter record |
 | cp_energy_and_movement_records | colony_management_and_feeding | apiary energy and movement fuel | electricity, fuel, equipment, or movement record | carrier; quantity; route; operation; colonies served; period; allocation method | utility bill, fuel invoice, route log, equipment log, or telematics；原活动量汇总：换算为 MJ 或 kWh，并按有文件支持的基础分配到活蜂生产 | kWh, MJ, L, kg fuel, km, or tonne-km | operation, route, month, or cycle | production cycle | apiary, route, holding room, or production site | 每声明的参考流 | invoice, meter record, fuel log, route record |
 | cp_treatment_and_health_records | health_treatment_and_hive_maintenance | veterinary and pest-control treatments | treatment, pest monitoring, medicine, or certification record | product; active ingredient; dose; treated colony count; date; target pest or disease; certification relevance | treatment log, veterinary record, product label, laboratory result, health certificate, or inspection record；原活动量汇总：汇总活性成分或产品用量，并归一化到处理单元和活蜂输出 | kg, L, dose, strip, item, or product-specific unit | per treatment or inspection event | production cycle | apiary, colony, queen yard, or package lot | 每声明的参考流 | treatment log, product label, inspection result, health certificate |
 | cp_hive_material_and_packaging_records | live_bee_stock_entry; health_treatment_and_hive_maintenance; live_bee_packing_and_dispatch | hive consumables and packaging | material purchase, cage, frame, comb, package, or dispatch material record | material type; mass; item count; capacity; reuse status; batch or shipment | inventory issue record, packing log, invoice, or unit mass specification；原活动量汇总：汇总材料质量和件数；只有在范围内时按声明再用或折旧规则分配可重复使用材料 | kg or item | per batch, shipment, replacement, or reporting period | production cycle or dispatch period | apiary, shop, packing room, or shipment | 每声明的参考流 | invoice, packing log, inventory record |
@@ -953,6 +940,7 @@ sync_with: pcr.en-US.md
 | calculate_apiary_energy_co2 | apiary energy fossil CO2 | 仅核算前景直接运营设备的化石燃料燃烧 CO2，再按合格产出归一化；外购电力及委外运输排放由相应上游数据承担，不得重复 | cp_energy_and_movement_records | kg fossil CO2 per reference output |  |
 | calculate_dispatch_energy_co2 | dispatch energy fossil CO2 | 仅核算前景直接运营设备的化石燃料燃烧 CO2，再按合格产出归一化；外购电力及委外运输排放由相应上游数据承担，不得重复 | cp_dispatch_energy_and_transport_records | kg fossil CO2 per reference output |  |
 | allocate_colony_coproducts | co-products | 当前景边界内计入蜂蜜、蜂蜡、授粉服务、育王服务或其他共产品时，进行过程细分或分配 | cp_live_bee_colony_management_records; co-product records | allocation factors or subdivision rule | `fao-leap-guidelines` |
+| calculate_water_boundary | `water_for_feeding_and_handling`; `water_withdrawal_for_live_bee_management` | 按外购供水、直接建模取水、已链接现场供水及内部回用划分记录。环境取水归属实际节点一次；供方已覆盖取水不得再次作为前景资源投入。使用分水源原始取水记录并计入有记录的供水损失，不采用交付用水总量；回用单独记录。水源/供方覆盖不明须保留为证据缺口，不推定零取水。体积仅按有记录基准换算为质量，可归属数量归一化一次。 | `cp_feed_and_water_records`; 供方覆盖及水源记录 | 分开的供水产品、归属基本流取水及回用台账 | `ecoinvent-water-supply-2023` |
 
 ### 数据质量要求
 
@@ -977,6 +965,7 @@ sync_with: pcr.en-US.md
 - 疾病、害虫、处理、检查、认证、拒收种群、死亡以及分蜂或逃逸损失具有声明记录和去向
 - 当蜂蜜、蜂蜡、授粉服务、育王服务或其他输出被计入信用时，声明共产品处理
 - 超出暂定筛选范围的值包含来源说明、修正数据或方法理由
+- 数据集完整性确认前，依据水源及供方记录核对 calculate_water_boundary：供方已覆盖取水不得在前景重计，回用不得作为新取水，水源/区室绑定须核验，覆盖证据缺失不得当作零值。
 
 ## 10. 发布数据集画像
 
@@ -1002,3 +991,4 @@ sync_with: pcr.en-US.md
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity for live-bee output, stock reconciliation, and process reference outputs. | 参考输出和活蜂质量平衡检查的 QA 校验 |
 | `fao-bee-hive-materials` | official_guidance | FAO Beekeeping and sustainable livelihoods; hive and wax material identity context, https://www.fao.org/4/y5110e/y5110e0e.htm | 条件性身份依据；实际场址用量和适用性须单独核实 |
 | `codex-organic-beekeeping` | official_guidance | Codex organically produced foods, beekeeping provisions; conditional treatment identities, no dose or prescription, https://www.fao.org/docrep/pdf/010/a1385e/a1385e00.pdf | 条件性身份依据；实际场址用量和适用性须单独核实 |
+| `ecoinvent-water-supply-2023` | literature | [ecoinvent, Water Supply, 2023](https://support.ecoinvent.org/water-supply) | 方法背景：供水可覆盖取水、处理及输配，实际供方边界须另行核实。不假定本 PCR 使用 ecoinvent 供方，也不认为通用水 UUID 适合所有水源。 |

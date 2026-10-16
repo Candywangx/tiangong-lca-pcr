@@ -147,32 +147,6 @@ Raw quantity and calculation requirements: Meter the water supplied to each rele
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Actual pulling aid (`pull_aid`)
-
-Record only an actual substance-specific detachment aid; no universal chemical recipe.
-
-Denominator and scope requirements：per kg detached pulled wool
-
-Raw quantity and calculation requirements: Weigh each substance input by batch and identify its chemistry. Original collection denominator kind: process_output.
-
-- Selected flow: Actual species-specific detachment substance (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_pull`
-- Range: Provisional aid screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/kg
-  - Basis: per kg detached pulled wool; provisional screening only
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -277,9 +251,9 @@ Only energy actually used in clipping, combing or collection; a live animal is a
 Denominator and scope requirements：per kg captured coarse hair
 Raw quantity and calculation requirements: Meter or causally attribute each energy carrier. Original collection denominator kind: process_output.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_coarse` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -289,6 +263,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_coarse`
 - Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ##### Waste flows
 
@@ -420,9 +396,9 @@ Count actual first-stage skirting, drying and cleaning services, not later texti
 Denominator and scope requirements：per kg first-conditioned raw fibre
 Raw quantity and calculation requirements: Meter actual carrier and shared dryer use once. Original collection denominator kind: process_output.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_condition` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -432,6 +408,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_condition`
 - Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ##### Waste flows
 
@@ -739,11 +717,20 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `pull_aid_specific_input` | `cp_pull` | Operation pull: Record only an actual substance-specific detachment aid; no universal chemical recipe. Denominator and scope requirements：per kg detached pulled wool Raw quantity and calculation requirements: Weigh each substance input by batch and identify its chemistry. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_pull | pull | skin, aid, wool and pelt | batch ledger | skin source/weight, moisture, aid identity/weight, raw wool, pelt, treatment, dispatch | scale, meter and receiving/dispatch ticket; Raw aggregation requirements: reconcile by source and batch. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;period | each batch | all pull events | actual fellmongery | per reference flow | calibration and source ticket; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| cp_pull | pull | skin, aid, wool and pelt | batch ledger | skin source/weight, moisture, aid identity/weight, raw wool, pelt, treatment, dispatch | scale, meter and receiving/dispatch ticket; Raw aggregation requirements: reconcile by source and batch. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `pull_aid_specific_input`: Operation pull: Record only an actual substance-specific detachment aid; no universal chemical recipe. Denominator and scope requirements：per kg detached pulled wool Raw quantity and calculation requirements: Weigh each substance input by batch and identify its chemistry. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg;period | each batch | all pull events | actual fellmongery | per reference flow | calibration and source ticket; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_coarse | coarse | capture event, energy and hair | cohort/lot ledger | species, source, event, method, phase, energy carrier/amount, coarse/fine hair | capture log, meter and scale; Raw aggregation requirements: reconcile by cohort and lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;carrier unit;period | each event | all source periods | actual farm or collector | per reference flow | capture and meter records; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_condition | condition | incoming, water, energy, prepared fibre | batch ledger | input/output mass, moisture, wash method, water, carrier, rejects | scale and utility meter; Raw aggregation requirements: sum once by route and state. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;carrier unit | each batch | complete conditioning period | actual site | per reference flow | meter and moisture test; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_grade | grade | accepted, downgraded and reject | grade ledger | route, species, grade, input/output weights, buyer, treatment destination | scale and grade ticket; Raw aggregation requirements: sum by grade and destination. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each batch | complete grading period | actual site | per reference flow | grade/dispatch record; traceable numerator, accepted reference-output denominator and normalization worksheet |

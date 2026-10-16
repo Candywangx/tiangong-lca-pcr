@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Other nuts (excluding wild edible nuts and groundnuts), in shell `85d33932-8c99-4207-8011-1bec84102f55` |
+| Reference product flow | 其他坚果（不包括野生坚果和落花生），带壳 `85d33932-8c99-4207-8011-1bec84102f55` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -100,7 +100,7 @@ sync_with: pcr.en-US.md
 
 仅记录在评估期内进入系统的苗木、嫁接苗、种子或砧木，并区分建园与补植。
 
-- 选定流: Species-specific nut planting material
+- 选定流：物种特定坚果种植材料
 - 流属性/单位: Mass or number / kg or item
 - 数量规则: 按物种、苗龄和建园用途计量
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -120,51 +120,11 @@ sync_with: pcr.en-US.md
   - 基准类型: `crop_cycle`
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 农业养分与肥料投入 (`agricultural_nutrient_inputs`)
-
-各矿质肥料、有机肥料和含养分改良剂按具体产品分别列卡，并保留产品、含量、施用事件和养分基准。
-
-- 选定流: Agricultural nutrient and fertilizer supply
-- 流属性/单位: Product and nutrient quantity / kg product, m3 product, kg N, kg P2O5, kg K2O
-- 数量规则: 每种施用产品只采集一次并计算声明养分量
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：每生产公顷和采收年度，并换算至参考质量.
-
-- 归一化基准：每声明的参考流
-- 基准类型: `crop_cycle`
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_orchard_inputs`
-- 数量范围: 氮投入暂定筛查范围
-  - 范围角色: 质量保证护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 400
-  - 单位: kg N/ha·year
-  - 基准: 一个生产采收年度
-  - 基准类型: `crop_cycle`
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-- 数量范围: 磷投入暂定筛查范围
-  - 范围角色: 质量保证护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 300
-  - 单位: kg P2O5/ha·year
-  - 基准: 一个生产采收年度
-  - 基准类型: `crop_cycle`
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-- 数量范围: 钾投入暂定筛查范围
-  - 范围角色: 质量保证护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 600
-  - 单位: kg K2O/ha·year
-  - 基准: 一个生产采收年度
-  - 基准类型: `crop_cycle`
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-
 ###### 灌溉水 (`irrigation_water_input`)
 
 记录施用于生产面积的水量，并与有效降雨区分。
 
-- 选定流: Irrigation water supply
+- 选定流：灌溉供水
 - 流属性/单位: Volume / m3
 - 数量规则: 计量或计算施用灌溉水量；雨养系统以证据记录为零
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -184,53 +144,24 @@ sync_with: pcr.en-US.md
   - 基准类型: `crop_cycle`
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 田间机械能源 (`field_energy_input`)
+###### 柴油 (`field_energy_input_diesel`)
 
-记录果园地面管理、修剪、喷施、采收和场内搬运使用的实际能源载体。
+实际柴油果园机械的地表管理、喷施、采收或内部搬运；启用前确认坚果种类及设备。
 
-- 选定流: Energy supply for mobile field machinery
-- 流属性/单位: Carrier quantity or energy / kg, L, or MJ
-- 数量规则: 计量能源载体用量或保留载体信息的承包作业量
-- 数值来源模式: 计算值 (`calculated_value`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：每生产公顷和采收年度.
+仅在本节点设备及采购记录确认使用此燃料时启用。记录牌号、配方、供应商及实际质量，体积按有证据的密度换算，不用默认密度。UUID标识燃料产品，不是燃烧服务或排放因子；实际前景燃烧另行计入，避免重复已含燃烧的上游服务。
 
-- 归一化基准：每声明的参考流
-- 基准类型: `crop_cycle`
-- 证据类型: 依据采集计算 (`calculated_from_collection`)
-- 采集协议: `cp_orchard_inputs`
-- 数量范围: 田间能源暂定筛查范围
-  - 范围角色: 质量保证护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 500
-  - 单位: L diesel-equivalent/ha·year
-  - 基准: 保留实际能源载体
-  - 基准类型: `crop_cycle`
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_orchard_inputs`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_orchard_inputs`
+- 来源：`route-energy-fao`
 
-###### 植保制剂 (`crop_protection_input`)
-
-记录每种实际制剂、活性成分、浓度和施用事件；不指定通用固定身份。
-
-- 选定流: Crop-protection formulation used for the declared nut species
-- 流属性/单位: Mass of formulation / kg
-- 数量规则: 按产品和施用事件计量制剂量
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 产品特定 (`product_specific`)
-原始活动或阶段基准：每生产公顷和采收年度.
-
-- 归一化基准：每声明的参考流
-- 基准类型: `crop_cycle`
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_orchard_inputs`
-- 数量范围: 制剂暂定筛查范围
-  - 范围角色: 质量保证护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 100
-  - 单位: kg formulation/ha·year
-  - 基准: 保留身份后汇总所有产品
-  - 基准类型: `crop_cycle`
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+执行第8节`field_energy_input_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -243,7 +174,7 @@ sync_with: pcr.en-US.md
 
 记录声明物种以及肉质或纤维质外果皮是否仍保留；包围果仁的硬壳保持完整。
 
-- 选定流: Harvested residual cultivated nut species
+- 选定流：已收获的其他栽培坚果物种
 - 流属性/单位: Mass / kg
 - 数量规则: 计量合格采收质量并记录含水率与外果皮状态
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -269,7 +200,7 @@ sync_with: pcr.en-US.md
 
 按去向分别记录修剪物、落地物、剔除坚果和附带生物质。
 
-- 选定流: Orchard residues and rejected harvested material
+- 选定流：果园残余物及废弃收获材料
 - 流属性/单位: Mass / kg
 - 数量规则: 按残余物类别和去向计量或核算质量
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -295,7 +226,7 @@ sync_with: pcr.en-US.md
 
 使用相同养分和残余物记录计算管理土壤直接及适用的间接N2O。
 
-- 选定流: Nitrous oxide, emissions to air, unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位: Mass / kg N2O
 - 数量规则: 对采集的氮投入和残余物采用适用管理土壤方法
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -320,7 +251,7 @@ sync_with: pcr.en-US.md
 
 按肥料产品、施用方式、天气和所选因子计算挥发。
 
-- 选定流: Ammonia, emissions to air, unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位: Mass / kg NH3
 - 数量规则: 对采集的氮投入采用适用挥发方法
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -345,7 +276,7 @@ sync_with: pcr.en-US.md
 
 仅采用地点适用的淋溶或径流方法计算或监测硝酸盐损失。
 
-- 选定流: Nitrate, emissions to water, unspecified `fe0acd60-3ddc-11dd-aa31-0050c2490048`
+- 选定流：硝酸根 `fe0acd60-3ddc-11dd-aa31-0050c2490048`
 - 流属性/单位: Mass / kg nitrate
 - 数量规则: 所选淋溶/径流方法或监测平衡
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -375,7 +306,7 @@ sync_with: pcr.en-US.md
 
 记录匹配的进料批次，包括物种、外果皮状态、硬壳状态、含水率和来源。
 
-- 选定流: Harvested residual cultivated nut species
+- 选定流：已收获的其他栽培坚果物种
 - 流属性/单位: Mass / kg
 - 数量规则: 计量进料批次质量和含水率
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -399,7 +330,7 @@ sync_with: pcr.en-US.md
 
 仅记录用于清洗、湿式清洁或调理的供应工艺水；干式路线可记录为零。
 
-- 选定流: Process water supply
+- 选定流：生产用水供应
 - 流属性/单位: Volume / m3
 - 数量规则: 计量或按批次计算用水；路线不启用时为零
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -419,29 +350,24 @@ sync_with: pcr.en-US.md
   - 基准类型: `process_output`
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 脱外果皮与干燥能源 (`conditioning_energy_input`)
+###### 交流电 (`conditioning_energy_input_electricity`)
 
-按实际载体记录电力、燃料或外购热量，并区分机械脱外果皮与干燥。
+实际电动脱壳设备及干燥风机，分作业保留记录；干燥热载体按实际加热器确认。
 
-- 选定流: Energy supply for primary hulling and drying
-- 流属性/单位: Carrier quantity or energy / kWh, MJ, kg, L, or m3
-- 数量规则: 按批次计量能源载体和电力
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 技术特定 (`technology_specific`)
-原始活动或阶段基准：每1000 kg合格带壳坚果.
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
 
-- 归一化基准：每声明的参考流
-- 基准类型: `process_output`
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_conditioning_records`
-- 数量范围: 调理能源暂定筛查范围
-  - 范围角色: 质量保证护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 20000
-  - 单位: MJ/1,000 kg accepted product
-  - 基准: 以实际载体替代筛查换算
-  - 基准类型: `process_output`
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_conditioning_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_conditioning_records`
+- 来源：`route-energy-fao`
+
+执行第8节`conditioning_energy_input_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -454,7 +380,7 @@ sync_with: pcr.en-US.md
 
 记录完成所需去外果皮和干燥后的声明物种；硬壳保持完整。
 
-- 选定流: Other nuts (excluding wild edible nuts and groundnuts), in shell
+- 选定流：其他带壳坚果，不含野生食用坚果及花生
 - 流属性/单位: Mass / kg
 - 数量规则: 计量合格质量、含水率、外果皮状态和交付点
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -482,7 +408,7 @@ sync_with: pcr.en-US.md
 
 按去向分别记录外果皮、杂质、腐败坚果和其他剔除物；合格产品的硬壳不是废物。
 
-- 选定流: Removed outer hulls and conditioning rejects
+- 选定流：移出外果皮及整理拒收物
 - 流属性/单位: Mass / kg
 - 数量规则: 按类别和去向计量并进行匹配物料平衡核算
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -508,7 +434,7 @@ sync_with: pcr.en-US.md
 
 仅记录现场燃料燃烧产生的化石CO2；无现场化石燃料燃烧时为零。
 
-- 选定流: Carbon dioxide (fossil), emissions to air, unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位: Mass / kg CO2
 - 数量规则: 燃料量乘以载体特定碳含量和氧化因子
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -538,7 +464,7 @@ sync_with: pcr.en-US.md
 
 记录匹配的物种特定批次及其含水率、外果皮状态、缺陷和前序调理。
 
-- 选定流: Conditioned or farm-gate nuts in shell
+- 选定流：已整理或农场门带壳坚果
 - 流属性/单位: Mass / kg
 - 数量规则: 计量进料批次质量
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -558,53 +484,24 @@ sync_with: pcr.en-US.md
   - 基准类型: `process_output`
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 包装材料 (`packaging_input`)
+###### 交流电 (`grading_energy_input_electricity`)
 
-记录实际使用的袋、内衬、纸箱、周转箱、托盘或其他声明包装；由前景记录确定一个适用包装组和具体交换。
+出口前实际电动输送、分选、称重及包装。
 
-- 选定流: Packaging for nuts in shell
-- 流属性/单位: Mass / kg
-- 数量规则: 计量随合格产品交付的包装；可重复使用物按有据可查的周转次数分摊
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 产品特定 (`product_specific`)
-原始活动或阶段基准：每1000 kg包装坚果.
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
 
-- 归一化基准：每声明的参考流
-- 基准类型: `process_output`
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_grading_records`
-- 数量范围: 包装暂定筛查范围
-  - 范围角色: 质量保证护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 100
-  - 单位: kg/1,000 kg packed nuts
-  - 基准: 无包装时为零；以实际包装形式为准
-  - 基准类型: `process_output`
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_grading_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_grading_records`
+- 来源：`route-energy-fao`
 
-###### 分级与包装能源 (`grading_energy_input`)
-
-记录输送、分选、称量和包装所用电力及实际能源载体。
-
-- 选定流: Energy supply for grading and packing
-- 流属性/单位: Energy or carrier quantity / kWh, MJ, kg, L, or m3
-- 数量规则: 按批次计量能源
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：每1000 kg包装坚果.
-
-- 归一化基准：每声明的参考流
-- 基准类型: `process_output`
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_grading_records`
-- 数量范围: 分级能源暂定筛查范围
-  - 范围角色: 质量保证护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 1000
-  - 单位: kWh/1,000 kg packed nuts
-  - 基准: 保留实际能源载体
-  - 基准类型: `process_output`
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+执行第8节`grading_energy_input_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -617,7 +514,7 @@ sync_with: pcr.en-US.md
 
 仅将一个声明的残余栽培坚果物种和批次作为终端参考；果仁仍由硬壳包围。
 
-- 选定流: Other nuts (excluding wild edible nuts and groundnuts), in shell `85d33932-8c99-4207-8011-1bec84102f55`
+- 选定流：其他坚果（不包括野生坚果和落花生），带壳 `85d33932-8c99-4207-8011-1bec84102f55`
 - 流属性/单位: Mass / kg
 原始产出计量与核对要求：在声明含水率、等级、包装形式和交付点下的1000 kg合格产品
 
@@ -644,7 +541,7 @@ sync_with: pcr.en-US.md
 
 分别记录每种仍有用途的较低等级，不得计入合格参考产品。
 
-- 选定流: Downgraded nuts in shell by declared destination
+- 选定流：按声明去向记录的降级带壳坚果
 - 流属性/单位: Mass / kg
 - 数量规则: 按等级和去向计量降级质量
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -670,7 +567,7 @@ sync_with: pcr.en-US.md
 
 按处理去向分别记录不可用坚果、壳碎片、杂质和破损包装。
 
-- 选定流: Grading and packing rejects by declared destination
+- 选定流：按声明去向记录的分级及包装拒收物
 - 流属性/单位: Mass / kg
 - 数量规则: 按类别和去向计量剔除物质量
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -704,6 +601,30 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `agricultural_nutrient_inputs_specific_input` | `cp_orchard_inputs` | 作业 orchard_production_harvest：各矿质肥料、有机肥料和含养分改良剂按具体产品分别列卡，并保留产品、含量、施用事件和养分基准。 原数量方法：每种施用产品只采集一次并计算声明养分量 |
+| `crop_protection_input_specific_input` | `cp_orchard_inputs` | 作业 orchard_production_harvest：记录每种实际制剂、活性成分、浓度和施用事件；不指定通用固定身份。 原数量方法：按产品和施用事件计量制剂量 |
+| `packaging_input_specific_input` | `cp_grading_records` | 作业 grading_packing：记录实际使用的袋、内衬、纸箱、周转箱、托盘或其他声明包装；由前景记录确定一个适用包装组和具体交换。 原数量方法：计量随合格产品交付的包装；可重复使用物按有据可查的周转次数分摊 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `field_energy_input_identification` | `cp_orchard_inputs` | 实际柴油果园机械的地表管理、喷施、采收或内部搬运；启用前确认坚果种类及设备。 原始活动或阶段基准：每生产公顷和采收年度. (`route-energy-fao`) |
+| `conditioning_energy_input_identification` | `cp_conditioning_records` | 实际电动脱壳设备及干燥风机，分作业保留记录；干燥热载体按实际加热器确认。 原始活动或阶段基准：每1000 kg合格带壳坚果. (`route-energy-fao`) |
+| `grading_energy_input_identification` | `cp_grading_records` | 出口前实际电动输送、分选、称重及包装。 原始活动或阶段基准：每1000 kg包装坚果. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -711,11 +632,11 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_orchard_inputs` | `orchard_production_harvest` | 建园、养分、水、植保、能源 | 发票、田间日志、仪表、承包记录 | 物种、品种、地块、生产面积、树龄、投入身份、配方、含量、数量、单位、日期、载体、用途 | 将采购和施用记录核对至地块；原始汇总与分配：按地块和投入汇总，建园年化后除以合格终端质量 | 原始单位及ha | 每次事件 | 完整声明采收年度；保留建园年化期间 | 每个纳入的果园地块和共享服务 | 每声明的参考流 | 发票、经校准仪表记录、施用日志、面积图、使用寿命证据 |
+| `cp_orchard_inputs` | `orchard_production_harvest` | 建园、养分、水、植保、能源 | 发票、田间日志、仪表、承包记录 | 物种、品种、地块、生产面积、树龄、投入身份、配方、含量、数量、单位、日期、载体、用途 | 将采购和施用记录核对至地块；原始汇总与分配：按地块和投入汇总，建园年化后除以合格终端质量 按路线确认要求：`field_energy_input_identification`: 实际柴油果园机械的地表管理、喷施、采收或内部搬运；启用前确认坚果种类及设备。 原始活动或阶段基准：每生产公顷和采收年度. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `agricultural_nutrient_inputs_specific_input`: 作业 orchard_production_harvest：各矿质肥料、有机肥料和含养分改良剂按具体产品分别列卡，并保留产品、含量、施用事件和养分基准。 原数量方法：每种施用产品只采集一次并计算声明养分量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `crop_protection_input_specific_input`: 作业 orchard_production_harvest：记录每种实际制剂、活性成分、浓度和施用事件；不指定通用固定身份。 原数量方法：按产品和施用事件计量制剂量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | 原始单位及ha | 每次事件 | 完整声明采收年度；保留建园年化期间 | 每个纳入的果园地块和共享服务 | 每声明的参考流 | 发票、经校准仪表记录、施用日志、面积图、使用寿命证据 |
 | `cp_harvest_records` | `orchard_production_harvest` | 采收、合格产品、残余物、剔除物 | 称量单、采收日志、采样记录 | 物种、地块、日期、毛重/皮重、合格质量、外果皮状态、含水率、等级、剔除/残余物类别、去向 | 校准称量和代表性含水率采样；原始汇总与分配：按批次汇总合格与非产品质量；保留物种和状态 | kg、%、ha | 每批 | 完整采收期 | 每个纳入果园地块和收集点 | 每声明的参考流 | 校准证书、批次ID、含水率记录、去向记录 |
 | `cp_orchard_emissions` | `orchard_production_harvest` | 土壤和养分排放 | 计算型前景记录 | 按形态的氮投入、残余物、土壤/气候参数、因子版本、可用时的监测损失 | 对`cp_orchard_inputs`采用有记录的适用方法；原始汇总与分配：按地块计算后按终端产品质量加权 | kg物质 | 每报告年度 | 同一采收年度及方法规定的相关滞后期 | 每个纳入的管理地块 | 每声明的参考流 | 因子来源、计算工作簿、投入核对、评审检查 |
-| `cp_conditioning_records` | `primary_hulling_drying` | 脱外果皮、清洁、干燥、产出、剔除物、排放 | 批次表、秤、仪表、燃料记录、含水率测试 | 物种、批次、进料质量/含水率/外果皮状态、方法、时间、温度、水、载体、能源、合格质量/含水率、外果皮、剔除物、去向 | 匹配批次测量和物料平衡；原始汇总与分配：按批次核算干物质和损失，再按吞吐量加权 | kg、%、m3、kWh、MJ | 每批 | 数据集代表的所有批次 | 每条纳入的调理线/场址 | 每声明的参考流 | 秤和仪表校准、含水率方法、批次ID、燃料发票、平衡闭合 |
-| `cp_grading_records` | `grading_packing` | 等级、返工、包装、剔除物、能源 | 批次表、秤记录、包装规格 | 物种、批次、进料质量、等级准则、合格/降级/剔除质量、返工、包装身份/质量/复用、能源、去向 | 匹配分级运行核算；原始汇总与分配：按等级和去向汇总；共享运行按实测吞吐量分配 | kg、item、kWh | 每次运行或批次 | 数据集代表的所有分级和包装运行 | 每条纳入的生产线/场址 | 每声明的参考流 | 秤校准、等级检验、包装规格、批次关联、平衡闭合 |
+| `cp_conditioning_records` | `primary_hulling_drying` | 脱外果皮、清洁、干燥、产出、剔除物、排放 | 批次表、秤、仪表、燃料记录、含水率测试 | 物种、批次、进料质量/含水率/外果皮状态、方法、时间、温度、水、载体、能源、合格质量/含水率、外果皮、剔除物、去向 | 匹配批次测量和物料平衡；原始汇总与分配：按批次核算干物质和损失，再按吞吐量加权 按路线确认要求：`conditioning_energy_input_identification`: 实际电动脱壳设备及干燥风机，分作业保留记录；干燥热载体按实际加热器确认。 原始活动或阶段基准：每1000 kg合格带壳坚果. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg、%、m3、kWh、MJ | 每批 | 数据集代表的所有批次 | 每条纳入的调理线/场址 | 每声明的参考流 | 秤和仪表校准、含水率方法、批次ID、燃料发票、平衡闭合 |
+| `cp_grading_records` | `grading_packing` | 等级、返工、包装、剔除物、能源 | 批次表、秤记录、包装规格 | 物种、批次、进料质量、等级准则、合格/降级/剔除质量、返工、包装身份/质量/复用、能源、去向 | 匹配分级运行核算；原始汇总与分配：按等级和去向汇总；共享运行按实测吞吐量分配 按路线确认要求：`grading_energy_input_identification`: 出口前实际电动输送、分选、称重及包装。 原始活动或阶段基准：每1000 kg包装坚果. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `packaging_input_specific_input`: 作业 grading_packing：记录实际使用的袋、内衬、纸箱、周转箱、托盘或其他声明包装；由前景记录确定一个适用包装组和具体交换。 原数量方法：计量随合格产品交付的包装；可重复使用物按有据可查的周转次数分摊 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、item、kWh | 每次运行或批次 | 数据集代表的所有分级和包装运行 | 每条纳入的生产线/场址 | 每声明的参考流 | 秤校准、等级检验、包装规格、批次关联、平衡闭合 |
 
 ### 计算规则
 
@@ -772,3 +693,4 @@ sync_with: pcr.en-US.md
 | `emep-eea-2023-guidebook` | method_factor | European Environment Agency, EMEP/EEA air pollutant emission inventory guidebook 2023, https://www.eea.europa.eu/publications/emep-eea-guidebook-2023 | 农业氨排放计算 |
 | `ipcc-2006-stationary-combustion` | method_factor | IPCC, 2006 Guidelines, Volume 2, Chapter 2, https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html | 现场燃料燃烧CO2计算 |
 | `mass-balance-identity` | method_factor | 应用于匹配前景记录的质量守恒恒等式 | 批次核算和精确参考量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

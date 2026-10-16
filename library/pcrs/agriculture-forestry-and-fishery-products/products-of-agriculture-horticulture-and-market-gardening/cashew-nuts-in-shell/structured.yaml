@@ -228,10 +228,12 @@ process_inventory:
                 source_ids: []
         - row_id: cashew_orchard_establishment_and_management_agricultural_nutrient_inputs_urea
           role: "Urea fertilizer"
-          name: "Urea fertilizer"
+          name: "Urea"
           flow_type: "product"
+          flow_ref:
+            uuid: "3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e"
           property_unit: "Mass / kg"
-          description: "**Collection scope and applicability for cashew_orchard_establishment_and_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "**Collection scope and applicability for cashew_orchard_establishment_and_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_cashew_orchard_input_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -248,10 +250,12 @@ process_inventory:
             ranges: []
         - row_id: cashew_orchard_establishment_and_management_agricultural_nutrient_inputs_ammonium_sulfate
           role: "Ammonium sulfate fertilizer"
-          name: "Ammonium sulfate fertilizer"
+          name: "Ammonium sulfate"
           flow_type: "product"
+          flow_ref:
+            uuid: "8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_cashew_orchard_input_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -372,58 +376,27 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: cashew_orchard_energy
-          role: "Orchard fuel and electricity"
-          name: "energy supply for orchard operations"
+        - row_id: cashew_orchard_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Energy or carrier mass / MJ, kWh, or L"
-          description: "Record energy for pumping, nutrient application, pruning, mowing, orchard-floor management, crop protection, and other field operations. Keep fuel separate from electricity. Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual diesel machinery for orchard-floor management and crop care; confirm irrigation-pump supply independently rather than assigning it the tractor fuel. Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. Apply cashew_orchard_energy_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "measured or supplier-recorded energy by operation and orchard block"
-            value_mode: "foreground_record"
+            expression: "Collect only this carrier quantity attributable to this node under cp_cashew_energy_records. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
+            value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_cashew_energy_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "kWh-equivalent per 1,000 kg reference product"
-                basis: "broad field-operation energy estimate"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: cashew_crop_protection
-          role: "Crop-protection products"
-          name: "named crop-protection product or active substance"
-          flow_type: "product"
-          property_unit: "Mass / kg product or active substance"
-          description: "Record named formulations and active ingredients used for insects, diseases, weeds, or other declared crop-protection purposes. Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell."
-          amount:
-            expression: "measured application by product, active ingredient, date, and block"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_cashew_orchard_input_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "40"
-                unit: "kg formulated product per 1,000 kg reference product"
-                basis: "broad named-product application interval"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -484,33 +457,7 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       elementary:
-        - row_id: cashew_direct_field_emissions
-          role: "Managed-soil and crop direct emissions"
-          name: "soil, crop, and field-operation emissions by substance and receiving medium"
-          flow_type: "elementary"
-          property_unit: "Mass / kg substance"
-          description: "Record measured or calculated direct and indirect field emissions by substance, source, nutrient input, and crop year. Do not use a generic emission exchange when the reported species or receiving medium is known. Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell."
-          amount:
-            expression: "measured or calculated from documented nutrient, residue, crop-protection, and field-operation records"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_cashew_emission_records
-              source_ids:
-                - ipcc-2019-afolu
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "80"
-                unit: "kg substance per 1,000 kg reference product"
-                basis: "broad combined field-emission screen; retain species-specific results in the dataset"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
   - id: cashew_harvest_and_collection
     label: "Cashew harvest, apple separation, and collection"
     inputs:
@@ -544,32 +491,6 @@ process_inventory:
                 evidence_kind: "method_formula"
                 source_ids:
                   - mass-balance-identity
-        - row_id: cashew_harvest_energy
-          role: "Harvest and collection energy"
-          name: "harvest and collection energy supply"
-          flow_type: "product"
-          property_unit: "Energy or carrier mass / MJ, kWh, or L"
-          description: "Record fuel, electricity, and equipment services used for shaking, gathering, apple separation, loading, and lot transfer to the declared next node. Raw activity or stage basis: per 1,000 kg accepted fresh farm-gate reference product."
-          amount:
-            expression: "metered, invoiced, or equipment-recorded energy by harvest lot"
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_cashew_energy_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "120"
-                unit: "kWh-equivalent per 1,000 kg reference product"
-                basis: "broad collection and short-distance lot-handling energy interval"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -714,32 +635,6 @@ process_inventory:
                 upper: "50"
                 unit: "L per 1,000 kg reference product"
                 basis: "dry route to optional wet-cleaning interval"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: cashew_drying_energy
-          role: "Drying and conditioning energy"
-          name: "drying and primary-conditioning energy supply"
-          flow_type: "product"
-          property_unit: "Energy or carrier mass / MJ, kWh, or L"
-          description: "Record sun-drying support, forced-air drying, mechanical drying, and other conditioning energy by lot, equipment, carrier, and duration. Preserve the route technology and measured moisture change. Raw activity or stage basis: per 1,000 kg reference product."
-          amount:
-            expression: "metered, fuel-recorded, or calculated from documented equipment and duration"
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_cashew_drying_conditioning_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "300"
-                unit: "kWh-equivalent per 1,000 kg reference product"
-                basis: "broad sun-drying support to mechanical drying interval"
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
@@ -972,58 +867,27 @@ process_inventory:
                 evidence_kind: "method_formula"
                 source_ids:
                   - mass-balance-identity
-        - row_id: cashew_storage_packaging
-          role: "Storage packaging and handling service"
-          name: "storage packaging and handling service"
+        - row_id: cashew_storage_energy_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Mass, item, or energy / kg, item, kWh, or MJ"
-          description: "Record bags, pallets, bins, liners, and handling energy only when they are inside the declared storage boundary. Reusable assets are assigned over documented uses or service life. Raw activity or stage basis: per 1,000 kg declared storage-gate product."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual electric storage ventilation or handling during the recorded lot duration. Unpowered storage has no assumed electricity; pest-control substances and services remain separate. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply cashew_storage_energy_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "measured packaging mass or handling energy by lot, with reuse and service-life treatment"
-            value_mode: "foreground_record"
-            specificity: "route_specific"
+            expression: "Collect only this carrier quantity attributable to this node under cp_cashew_storage_records. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_cashew_storage_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "60"
-                unit: "kg packaging and consumables per 1,000 kg declared storage-gate product"
-                basis: "reusable or single-use storage-container interval"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: cashew_storage_energy
-          role: "Storage electricity and handling energy"
-          name: "storage and handling energy supply"
-          flow_type: "product"
-          property_unit: "Energy or carrier mass / kWh, MJ, or L"
-          description: "Record electricity, fuel, ventilation, pest-control service, and handling energy by storage lot and duration. Pest-control substances are recorded separately when used. Raw activity or stage basis: per 1,000 kg declared storage-gate product."
-          amount:
-            expression: "metered or supplier-recorded energy by storage lot and duration"
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "storage_duration"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_cashew_storage_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "120"
-                unit: "kWh-equivalent per 1,000 kg declared storage-gate product per storage period"
-                basis: "ambient storage to mechanically ventilated storage interval"
-                basis_kind: "storage_duration"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -1220,7 +1084,7 @@ dataset_production:
       flow_role: "nutrient, amendment, crop protection"
       record_type: "input application record"
       raw_fields: "product name; formulation; nutrient content; active ingredient; amount; date; block; purpose; application method"
-      collection_method: "invoice, application log, and supplier record; Raw aggregation and attribution: aggregate by product, nutrient, block, and crop year"
+      collection_method: "invoice, application log, and supplier record; Raw aggregation and attribution: aggregate by product, nutrient, block, and crop year cashew_crop_protection_specific_input: Operation cashew_orchard_establishment_and_management: Record named formulations and active ingredients used for insects, diseases, weeds, or other declared crop-protection purposes. Original quantity method: measured application by product, active ingredient, date, and block Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg product, kg nutrient, kg active ingredient"
       frequency: "every application"
       temporal_coverage: "crop year"
@@ -1244,7 +1108,7 @@ dataset_production:
       flow_role: "energy and carrier"
       record_type: "fuel, electricity, and equipment record"
       raw_fields: "carrier; amount; equipment; operation; lot or block; date; duration; conversion factor"
-      collection_method: "invoice, meter, fuel log, or equipment record; Raw aggregation and attribution: aggregate by carrier, operation, lot, and period"
+      collection_method: "invoice, meter, fuel log, or equipment record; Raw aggregation and attribution: aggregate by carrier, operation, lot, and period Route-specific requirements: cashew_orchard_energy_identification: Actual diesel machinery for orchard-floor management and crop care; confirm irrigation-pump supply independently rather than assigning it the tractor fuel. Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell. (route-energy-fao) cashew_harvest_energy_identification: Actual collection, apple separation and lot movement. Hand gathering and separation do not establish a powered input; identify machinery or inclusive services only where used. Raw activity or stage basis: per 1,000 kg accepted fresh farm-gate reference product. (cashew-drying-route) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "L, kg, MJ, or kWh"
       frequency: "event and monthly"
       temporal_coverage: "crop year and declared post-harvest period"
@@ -1256,7 +1120,7 @@ dataset_production:
       flow_role: "direct and indirect field emissions"
       record_type: "emission calculation input record"
       raw_fields: "nutrient input; residue; soil condition; crop-protection record; emission species; method; factor"
-      collection_method: "calculation workbook linked to raw records; Raw aggregation and attribution: retain substance, receiving medium, factor, and source"
+      collection_method: "calculation workbook linked to raw records; Raw aggregation and attribution: retain substance, receiving medium, factor, and source cashew_direct_field_emissions_specific_emission: Record measured or calculated direct and indirect field emissions by substance, source, nutrient input, and crop year. Do not use a generic emission exchange when the reported species or receiving medium is known. measured or calculated from documented nutrient, residue, crop-protection, and field-operation records This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. ipcc-2019-afolu"
       unit: "kg substance"
       frequency: "annual and event"
       temporal_coverage: "crop year"
@@ -1292,7 +1156,7 @@ dataset_production:
       flow_role: "drying, cleaning, water, energy, moisture"
       record_type: "conditioning batch record"
       raw_fields: "input mass; input moisture; method; duration; energy; water; output moisture; output mass; cleaning loss; wastewater"
-      collection_method: "batch log, meter, moisture test, and water balance; Raw aggregation and attribution: link all inputs and outputs to one batch and gate"
+      collection_method: "batch log, meter, moisture test, and water balance; Raw aggregation and attribution: link all inputs and outputs to one batch and gate Route-specific requirements: cashew_drying_energy_identification: Distinguish sun drying from forced-air or mechanically heated drying using lot and moisture records. Sun drying does not require purchased heat; actual powered auxiliaries or dryers require their own measured, specific input cards. Raw activity or stage basis: per 1,000 kg reference product. (cashew-drying-route) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kg, %, hours, L, kWh"
       frequency: "every batch"
       temporal_coverage: "declared post-harvest period"
@@ -1316,7 +1180,7 @@ dataset_production:
       flow_role: "storage input, loss, packaging, gate output"
       record_type: "stock and dispatch ledger"
       raw_fields: "opening stock; receipts; lot; moisture; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate"
-      collection_method: "stock ledger, dispatch ticket, and storage log; Raw aggregation and attribution: opening + receipts = dispatch + closing + loss"
+      collection_method: "stock ledger, dispatch ticket, and storage log; Raw aggregation and attribution: opening + receipts = dispatch + closing + loss Route-specific requirements: cashew_storage_energy_identification: Actual electric storage ventilation or handling during the recorded lot duration. Unpowered storage has no assumed electricity; pest-control substances and services remain separate. Raw activity or stage basis: per 1,000 kg declared storage-gate product. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. cashew_storage_packaging_specific_input: Operation cashew_storage_and_gate_handoff: Record bags, pallets, bins, liners, and handling energy only when they are inside the declared storage boundary. Reusable assets are assigned over documented uses or service life. Original quantity method: measured packaging mass or handling energy by lot, with reuse and service-life treatment Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg, %, days, kWh, item"
       frequency: "receipt, inspection, and dispatch"
       temporal_coverage: "declared storage period"
@@ -1529,9 +1393,17 @@ data_sources:
     type: "official_guidance"
     reference: "FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf"
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
+  - id: "cashew-drying-route"
+    type: "official_guidance"
+    reference: "FAO, Minor oil crops: Cashew nut, Harvesting and Post harvest treatment. https://www.fao.org/4/x5043e/x5043e06.htm"
+    used_for: "Supports a manual/sun-drying route without presumed powered heat; no moisture target or drying duration is adopted."
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:352afbc4a697579cb509712887576c07614d33c100af547f1a8144b6c3f90ade"
+  source_sha256: "sha256:6792e62e71b84470599730c06cb9d94bd43ec824d0b050dadd5f3f49f99beb91"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8691"
@@ -1582,16 +1454,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_61692"
+    - unit_id: "normative_56668"
       family: "allocation"
       span:
         start:
-          offset: 61692
-          line: 996
+          offset: 56668
+          line: 864
           column: 1
         end:
-          offset: 64996
-          line: 1011
+          offset: 59972
+          line: 879
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | orchard and harvest with an intended cashew-apple output | Prefer process subdivision when orchard, harvest, apple collection, and nut collection records are independently available. When the cashew apple is deliberately collected and transferred as an intended co-product, allocate shared orchard and harvest burdens by measured dry-matter mass; if dry-matter data are unavailable, use measured as-received mass and disclose the limitation. | `iso-14044-2006`; `fao-cashew-india-production-1998` |\n| `allocation_02` | cashew apple not collected as a product | If the apple remains on the orchard floor or is handled as residue without an intended product hand-off, do not assign a co-product credit. Retain its mass and fate as a residue or waste flow and assign the shared burden to the intended in-shell nut output. | `iso-14044-2006`; `fao-cashew-minor-oil-crops` |\n| `allocation_03` | premium and standard in-shell grades | Use physical mass allocation between mutually exclusive accepted in-shell grade outputs when common conditioning burdens cannot be subdivided. Grade-specific operations remain with the grade receiving them; do not allocate the same lot to both a grade row and an aggregate output row. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_04` | perennial orchard periods and phases | Annualize establishment, immature years, replacement, and removal over the declared orchard life and accepted output basis. Link every input and output to a crop year or lifecycle phase; do not count a replacement event in both the original and replacement orchard phases. | `fao-cashew-india-production-1998`; `iso-14044-2006` |\n| `allocation_05` | downgraded, reworked, rejected, and recovered lots | Keep rejected and downgraded lots separate from accepted product. Rework retains the producing-node burden and is linked once; recovered or intentionally marketed material requires a declared destination and allocation decision; discarded material receives its declared treatment burden. | `mass-balance-identity`; `iso-14044-2006` |\n| `allocation_06` | batch, campaign, and changeover attribution | Link orchard, harvest, conditioning, cleaning, grading, and storage inputs and outputs to the batch or campaign that generated them. Record cleaning and changeover events once and do not allocate shared-run burdens to more than one batch without a documented driver. | `mass-balance-identity`; `iso-14044-2006` |\n\nCashew shell mass is part of the in-shell reference product and is not a separate co-product in this PCR. CNSL, shell fragments, kernel, testa, and all shelling outputs belong to a downstream shelling or kernel PCR and must not be introduced into this inventory. No output may be counted both as a cashew-apple co-product and as orchard residue.\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1610,12 +1482,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 61692
-              line: 996
+              offset: 56668
+              line: 864
               column: 1
             end:
-              offset: 61732
-              line: 996
+              offset: 56708
+              line: 864
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1630,16 +1502,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_76641"
+    - unit_id: "normative_82761"
       family: "validation"
       span:
         start:
-          offset: 76641
-          line: 1056
+          offset: 82761
+          line: 948
           column: 1
         end:
-          offset: 79059
-          line: 1070
+          offset: 85179
+          line: 962
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow | Reference product is the verified `Cashew nuts, in shell` UUID with Mass and kg. The dataset declares fresh farm-gate or extended-gate state and does not substitute shelled kernels. | `fda-cashew-nut-methods` |\n| `validation_02` | process map | Every required process is present; conditional drying, cleaning, grading, and storage processes are present when the declared gate or route requires them. | `fao-cashew-postharvest-2020` |\n| `validation_03` | perennial production | Orchard establishment, immature years, productive phase, replacement, and removal are linked to declared crop years and are not double-counted. | `fao-cashew-india-production-1998`; `iso-14044-2006` |\n| `validation_04` | harvest and apple separation | Harvested, collected, uncollected, cashew-apple, residue, and accepted nut masses are mutually reconciled; apple destination is declared. | `mass-balance-identity` |\n| `validation_05` | conditioning and quality | Fresh input, conditioned moisture, premium grade, standard grade, downgraded/rework, reject, foreign material, water loss, and wastewater are mutually exclusive and mass-balanced. | `mass-balance-identity`; `fao-cashew-minor-oil-crops` |\n| `validation_06` | storage and gate | Opening stock, receipts, dispatches, closing stock, storage damage, moisture, storage duration, and gate output reconcile. Storage losses are excluded from accepted output. | `mass-balance-identity`; `fao-cashew-postharvest-2020` |\n| `validation_07` | allocation and rework | Cashew-apple allocation, grade allocation, downgraded routes, rework loops, and rejected-material treatment are explicit and no burden or output is counted twice. | `iso-14044-2006` |\n| `validation_08` | evidence and disclosure | All important quantitative flows have a foreground collection rule and candidate range or method constraint; estimates, unresolved identities, gate state, moisture, and evidence limitations are disclosed. | `fao-cashew-postharvest-2020`; `mass-balance-identity` |\n| `validation_09` | batch and campaign records | Every harvest round, conditioning batch, grade lot, and storage receipt has a declared boundary, linked inputs and outputs, cleaning or changeover status, and reporting period; shared-run burdens are not counted twice. | `mass-balance-identity` |\n\n"
       headings:
@@ -1658,12 +1530,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 76641
-              line: 1056
+              offset: 82761
+              line: 948
               column: 1
             end:
-              offset: 76663
-              line: 1056
+              offset: 82783
+              line: 948
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1760,223 +1632,223 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 61805
-          line: 1000
+          offset: 56781
+          line: 868
           column: 1
         end:
-          offset: 62323
-          line: 1000
+          offset: 57299
+          line: 868
           column: 519
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 62324
-          line: 1001
+          offset: 57300
+          line: 869
           column: 1
         end:
-          offset: 62694
-          line: 1001
+          offset: 57670
+          line: 869
           column: 371
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 62695
-          line: 1002
+          offset: 57671
+          line: 870
           column: 1
         end:
-          offset: 63084
-          line: 1002
+          offset: 58060
+          line: 870
           column: 390
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 63085
-          line: 1003
+          offset: 58061
+          line: 871
           column: 1
         end:
-          offset: 63473
-          line: 1003
+          offset: 58449
+          line: 871
           column: 389
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 63474
-          line: 1004
+          offset: 58450
+          line: 872
           column: 1
         end:
-          offset: 63880
-          line: 1004
+          offset: 58856
+          line: 872
           column: 407
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_06"
       identity_kind: "explicit"
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 63881
-          line: 1005
+          offset: 58857
+          line: 873
           column: 1
         end:
-          offset: 64259
-          line: 1005
+          offset: 59235
+          line: 873
           column: 379
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 64261
-          line: 1007
+          offset: 59237
+          line: 875
           column: 1
         end:
-          offset: 64606
-          line: 1007
+          offset: 59582
+          line: 875
           column: 346
     - pointer: "/allocation_rules/7"
       rule_id: "allocation_rule_8"
       identity_kind: "snapshot_local"
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 64608
-          line: 1009
+          offset: 59584
+          line: 877
           column: 1
         end:
-          offset: 64994
-          line: 1009
+          offset: 59970
+          line: 877
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 76736
-          line: 1060
+          offset: 82856
+          line: 952
           column: 1
         end:
-          offset: 76983
-          line: 1060
+          offset: 83103
+          line: 952
           column: 248
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 76984
-          line: 1061
+          offset: 83104
+          line: 953
           column: 1
         end:
-          offset: 77206
-          line: 1061
+          offset: 83326
+          line: 953
           column: 223
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 77207
-          line: 1062
+          offset: 83327
+          line: 954
           column: 1
         end:
-          offset: 77450
-          line: 1062
+          offset: 83570
+          line: 954
           column: 244
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 77451
-          line: 1063
+          offset: 83571
+          line: 955
           column: 1
         end:
-          offset: 77667
-          line: 1063
+          offset: 83787
+          line: 955
           column: 217
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 77668
-          line: 1064
+          offset: 83788
+          line: 956
           column: 1
         end:
-          offset: 77952
-          line: 1064
+          offset: 84072
+          line: 956
           column: 285
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 77953
-          line: 1065
+          offset: 84073
+          line: 957
           column: 1
         end:
-          offset: 78223
-          line: 1065
+          offset: 84343
+          line: 957
           column: 271
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 78224
-          line: 1066
+          offset: 84344
+          line: 958
           column: 1
         end:
-          offset: 78451
-          line: 1066
+          offset: 84571
+          line: 958
           column: 228
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 78452
-          line: 1067
+          offset: 84572
+          line: 959
           column: 1
         end:
-          offset: 78761
-          line: 1067
+          offset: 84881
+          line: 959
           column: 310
     - pointer: "/validation_rules/8"
       rule_id: "validation_09"
       identity_kind: "explicit"
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 78762
-          line: 1068
+          offset: 84882
+          line: 960
           column: 1
         end:
-          offset: 79057
-          line: 1068
+          offset: 85177
+          line: 960
           column: 296
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2005,27 +1877,27 @@ normative_context:
           column: 426
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_61692"
+      unit_id: "normative_56668"
       source_span:
         start:
-          offset: 61692
-          line: 996
+          offset: 56668
+          line: 864
           column: 1
         end:
-          offset: 61732
-          line: 996
+          offset: 56708
+          line: 864
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_76641"
+      unit_id: "normative_82761"
       source_span:
         start:
-          offset: 76641
-          line: 1056
+          offset: 82761
+          line: 948
           column: 1
         end:
-          offset: 76663
-          line: 1056
+          offset: 82783
+          line: 948
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2034,5 +1906,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:352afbc4a697579cb509712887576c07614d33c100af547f1a8144b6c3f90ade"
-  generated_content_sha256: "sha256:2c3337440b30718817c94fb7b9bdc4fe877db207196e0c7e053b11ffad36a025"
+    sha256: "sha256:6792e62e71b84470599730c06cb9d94bd43ec824d0b050dadd5f3f49f99beb91"
+  generated_content_sha256: "sha256:92d4336af1bacc42861d30c6a318aeeb631eb21be2c5e23997983cb63271cfc6"

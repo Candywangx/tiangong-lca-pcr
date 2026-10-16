@@ -121,56 +121,6 @@ Raw activity or stage basis: per ha planted in one crop cycle.
   - Basis kind: crop_cycle (`crop_cycle`)
   - Evidence kind: reasoned_estimate (`reasoned_estimate`)
 
-###### Consolidated agricultural nutrient supply (`nutrient_supply`)
-
-Record this flow with the stated material state, route and destination.
-
-- Selected flow: Agricultural nutrient supply
-- Flow property / unit: Product quantity and nutrient content / kg, m3, kg N, kg P2O5 and kg K2O
-- Amount rule: measure each supplied product once and calculate nutrient content
-- Value mode: foreground_record (`foreground_record`)
-- Specificity: site_specific (`site_specific`)
-Raw activity or stage basis: per ha planted in one crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: crop_cycle (`crop_cycle`)
-- Evidence kind: collected_record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
-- Sources:
-- Range: Quantity QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5000
-  - Unit: kg product/ha crop cycle
-  - Basis: solid nutrient products per hectare
-  - Basis kind: crop_cycle (`crop_cycle`)
-  - Evidence kind: reasoned_estimate (`reasoned_estimate`)
-
-###### Crop protection and defoliation products (`crop_protection`)
-
-Record this flow with the stated material state, route and destination.
-
-- Selected flow: Crop protection and defoliation products
-- Flow property / unit: Mass or volume / kg or L
-- Amount rule: measured formulation and active substance
-- Value mode: foreground_record (`foreground_record`)
-- Specificity: site_specific (`site_specific`)
-Raw activity or stage basis: per ha treated in one crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: crop_cycle (`crop_cycle`)
-- Evidence kind: collected_record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
-- Sources:
-- Range: Quantity QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg or L/ha crop cycle
-  - Basis: formulated products per hectare
-  - Basis kind: crop_cycle (`crop_cycle`)
-  - Evidence kind: reasoned_estimate (`reasoned_estimate`)
-
 ###### Irrigation water (`irrigation_water`)
 
 Record this flow with the stated material state, route and destination.
@@ -196,30 +146,24 @@ Raw activity or stage basis: per ha irrigated in one crop cycle.
   - Basis kind: crop_cycle (`crop_cycle`)
   - Evidence kind: reasoned_estimate (`reasoned_estimate`)
 
-###### Field energy supply (`field_energy`)
+###### Diesel fuel (`field_energy_diesel`)
 
-Record this flow with the stated material state, route and destination.
+Actual diesel field machinery for establishment and crop care; identify irrigation-pump power independently and retain field/crop-cycle attribution.
 
-- Selected flow: Field energy supply
-- Flow property / unit: Energy / MJ or kWh
-- Amount rule: measured carrier consumption
-- Value mode: foreground_record (`foreground_record`)
-- Specificity: site_specific (`site_specific`)
-Raw activity or stage basis: per ha planted in one crop cycle.
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service.
 
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_energy`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: crop_cycle (`crop_cycle`)
-- Evidence kind: collected_record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_energy`
-- Sources:
-- Range: Quantity QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20000
-  - Unit: MJ/ha crop cycle
-  - Basis: field carrier energy
-  - Basis kind: crop_cycle (`crop_cycle`)
-  - Evidence kind: reasoned_estimate (`reasoned_estimate`)
+- Sources: `route-energy-fao`
+
+Apply `field_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 ##### Elementary flows
 
@@ -385,30 +329,24 @@ Raw activity or stage basis: per harvest lot.
   - Basis kind: process_output (`process_output`)
   - Evidence kind: reasoned_estimate (`reasoned_estimate`)
 
-###### Harvest energy supply (`harvest_energy`)
+###### Diesel fuel (`harvest_energy_diesel`)
 
-Record this flow with the stated material state, route and destination.
+Actual diesel harvesting machinery and pre-gate lot movement; manual or other-power routes need their own evidence instead of this input.
 
-- Selected flow: Harvest energy supply
-- Flow property / unit: Energy / MJ or kWh
-- Amount rule: measured carrier use
-- Value mode: foreground_record (`foreground_record`)
-- Specificity: technology_specific (`technology_specific`)
-Raw activity or stage basis: per 1000 kg accepted seed cotton.
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service.
 
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_energy`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: process_output (`process_output`)
-- Evidence kind: collected_record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_energy`
-- Sources:
-- Range: Quantity QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5000
-  - Unit: MJ/1000 kg seed cotton
-  - Basis: harvest energy
-  - Basis kind: process_output (`process_output`)
-  - Evidence kind: reasoned_estimate (`reasoned_estimate`)
+- Sources: `route-energy-fao`
+
+Apply `harvest_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 #### Outputs
 
@@ -473,30 +411,24 @@ Raw activity or stage basis: per 1000 kg accepted lint.
   - Basis kind: process_output (`process_output`)
   - Evidence kind: reasoned_estimate (`reasoned_estimate`)
 
-###### Gin energy supply (`gin_energy`)
+###### Alternating current (`gin_energy_electricity`)
 
-Record this flow with the stated material state, route and destination.
+Actual electric gin machinery, conveying fans and controls. Drying heat requires identification of the installed burner/supply; retain existing cottonseed/lint allocation and do not assign whole-gin energy to both products.
 
-- Selected flow: Gin energy supply
-- Flow property / unit: Energy / MJ or kWh
-- Amount rule: metered carrier use
-- Value mode: foreground_record (`foreground_record`)
-- Specificity: technology_specific (`technology_specific`)
-Raw activity or stage basis: per 1000 kg accepted lint.
+Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat.
 
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_gin_batch`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: process_output (`process_output`)
-- Evidence kind: collected_record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_gin_batch`
-- Sources:
-- Range: Quantity QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5000
-  - Unit: MJ/1000 kg lint
-  - Basis: gin energy
-  - Basis kind: process_output (`process_output`)
-  - Evidence kind: reasoned_estimate (`reasoned_estimate`)
+- Sources: `cotton-gin-energy`
+
+Apply `gin_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 #### Outputs
 
@@ -678,6 +610,28 @@ Record actual emissions at the operation where they occur; do not duplicate them
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `nutrient_supply_specific_input` | `cp_field_inputs` | Operation cotton_cultivation: Record this flow with the stated material state, route and destination. Original quantity method: measure each supplied product once and calculate nutrient content |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `field_energy_identification` | `cp_energy` | Actual diesel field machinery for establishment and crop care; identify irrigation-pump power independently and retain field/crop-cycle attribution. Raw activity or stage basis: per ha planted in one crop cycle. (`route-energy-fao`) |
+| `harvest_energy_identification` | `cp_energy` | Actual diesel harvesting machinery and pre-gate lot movement; manual or other-power routes need their own evidence instead of this input. Raw activity or stage basis: per 1000 kg accepted seed cotton. (`route-energy-fao`) |
+| `gin_energy_identification` | `cp_gin_batch` | Actual electric gin machinery, conveying fans and controls. Drying heat requires identification of the installed burner/supply; retain existing cottonseed/lint allocation and do not assign whole-gin energy to both products. Raw activity or stage basis: per 1000 kg accepted lint. (`cotton-gin-energy`) |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -686,12 +640,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_field_trace` | `cotton_cultivation` | land and identity | field log | field, area, dates, cultivar | records and maps; Raw aggregation and attribution: preserve strata | ha | field-cycle | complete cycle | all fields | per declared reference flow | maps and logs |
-| `cp_field_inputs` | `cotton_cultivation` | inputs | invoice/application log | identity, amount, analysis, date | reconcile purchase and use; Raw aggregation and attribution: sum once | native | event | complete cycle | all fields | per declared reference flow | invoices and logs |
+| `cp_field_inputs` | `cotton_cultivation` | inputs | invoice/application log | identity, amount, analysis, date | reconcile purchase and use; Raw aggregation and attribution: sum once `nutrient_supply_specific_input`: Operation cotton_cultivation: Record this flow with the stated material state, route and destination. Original quantity method: measure each supplied product once and calculate nutrient content Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `crop_protection_specific_input`: Record this flow with the stated material state, route and destination.  Amount rule: measured formulation and active substance Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | native | event | complete cycle | all fields | per declared reference flow | invoices and logs |
 | `cp_irrigation` | `cotton_cultivation` | water | meter | volume, source, field | meter or balance; Raw aggregation and attribution: sum delivered | m3 | event | complete cycle | irrigated fields | per declared reference flow | calibration |
-| `cp_energy` | cultivation; harvest | energy | meter/fuel log | carrier, quantity, equipment | reconcile meters and invoices; Raw aggregation and attribution: by node | MJ; kWh | operation | full route | all equipment | per declared reference flow | invoices and meters |
+| `cp_energy` | cultivation; harvest | energy | meter/fuel log | carrier, quantity, equipment | reconcile meters and invoices; Raw aggregation and attribution: by node Route-specific requirements: `field_energy_identification`: Actual diesel field machinery for establishment and crop care; identify irrigation-pump power independently and retain field/crop-cycle attribution. Raw activity or stage basis: per ha planted in one crop cycle. (`route-energy-fao`) `harvest_energy_identification`: Actual diesel harvesting machinery and pre-gate lot movement; manual or other-power routes need their own evidence instead of this input. Raw activity or stage basis: per 1000 kg accepted seed cotton. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | MJ; kWh | operation | full route | all equipment | per declared reference flow | invoices and meters |
 | `cp_field_emissions` | `cotton_cultivation` | emissions | calculation | N, factors, compartments | disclosed IPCC tier; Raw aggregation and attribution: field then aggregate | kg/ha | field-cycle | complete cycle | all fields | per declared reference flow | factor provenance |
 | `cp_mass_balance` | cultivation; harvest | biomass | lot mass | intake, accepted, reject, loss, moisture | calibrated scales; Raw aggregation and attribution: close per lot | kg | lot | all lots | all included fields and harvest lots | per declared reference flow | calibration |
-| `cp_gin_batch` | `cotton_ginning` | batch flows | batch log | intake, lint, seed, trash, energy, grade, controls | scales and meters; Raw aggregation and attribution: close per batch | kg; MJ; kWh | batch | all batches | all included gin lines | per declared reference flow | calibration and bale records |
+| `cp_gin_batch` | `cotton_ginning` | batch flows | batch log | intake, lint, seed, trash, energy, grade, controls | scales and meters; Raw aggregation and attribution: close per batch Route-specific requirements: `gin_energy_identification`: Actual electric gin machinery, conveying fans and controls. Drying heat requires identification of the installed burner/supply; retain existing cottonseed/lint allocation and do not assign whole-gin energy to both products. Raw activity or stage basis: per 1000 kg accepted lint. (`cotton-gin-energy`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kg; MJ; kWh | batch | all batches | all included gin lines | per declared reference flow | calibration and bale records |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
 
 ### Calculation Rules
@@ -753,3 +707,5 @@ Evidence applicability: cited general farm-record and postharvest frameworks do 
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
 | `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |
+| `cotton-gin-energy` | handbook | Funk and Hardin (2017), Energy Utilization and Conservation in Cotton Gins, Cotton Ginners Handbook. https://www.cotton.org/journal/2017-21/2/156.cfm | Electric conveying/gin equipment and separate drying demand; no per-bale intensity or fuel identity is imposed. |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

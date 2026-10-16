@@ -115,30 +115,6 @@ Denominator and scope requirements：per kg accepted live output
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Species-appropriate feed (`captive_feed`)
-
-Record actual feed identity, including procured prey only where genuinely used; no universal reptile diet is assumed.
-
-Denominator and scope requirements：per kg accepted live output
-
-- Selected flow: Actual feed or prey supplied to named cohort
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_resources`
-- Range: Provisional non-negative feed screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg/kg live output
-  - Basis: per kg accepted live output; replace with species records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Supplied drinking, pool or cleaning water (`captive_water`)
 
 Record water actually supplied, separating functions where records allow.
@@ -170,9 +146,9 @@ Denominator and scope requirements：per kg accepted live output
 Record actual carrier for heating, lighting, filtration or humidity control where required by selected species and site.
 Denominator and scope requirements：per kg accepted live output
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_resources` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -182,6 +158,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_resources`
 - Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ##### Waste flows
 
@@ -397,30 +375,6 @@ Denominator and scope requirements：per kg accepted live output
 
 ##### Product flows
 
-###### Capture and holding consumables (`capture_supplies`)
-
-Record actual nets, traps, safe containers or purchased consumables; reusable equipment is attributed by use period.
-
-Denominator and scope requirements：per kg accepted live output
-
-- Selected flow: Actual capture and holding materials
-- Flow property / unit: Mass / kg
-- Amount rule: issue records and shared-equipment attribution
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_resources`
-- Range: Provisional capture-material screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: kg/kg live output
-  - Basis: per kg accepted live output; includes attributed reuse
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Supplied holding water (`capture_water`)
 
 Count actual short-holding water if supplied; no assumed common water need for all reptiles.
@@ -507,30 +461,6 @@ Denominator and scope requirements：per kg accepted live output
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Discarded capture consumables (`capture_discarded_supplies`)
-
-Record spent nets, traps or containment materials only if actually discarded at this node, separate from animal mortality.
-
-Denominator and scope requirements：per kg accepted live output
-
-- Selected flow: Spent capture and holding supplies for documented treatment
-- Flow property / unit: Mass / kg
-- Amount rule: weighed or reconciled discarded consumables by material and treatment
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_outputs`
-- Range: Provisional capture-consumable waste screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: kg/kg live output
-  - Basis: per kg accepted live output; only actual discard
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 No unmeasured release is assumed.
@@ -562,30 +492,6 @@ Denominator and scope requirements：per kg accepted live output
   - Upper: 10000
   - Unit: kg/kg accepted live output
   - Basis: per kg accepted live output; compare route records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Species-appropriate containment for handover (`handover_containment`)
-
-Include disposable enclosure material handed with lot or consumed before gate; reusable cages are shared assets.
-
-Denominator and scope requirements：per kg accepted live output
-
-- Selected flow: Actual live-animal containment material
-- Flow property / unit: Mass / kg
-- Amount rule: measured material issued and attributed reuse if applicable
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_resources`
-- Range: Provisional containment-material screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: kg/kg live output
-  - Basis: per kg accepted live output; disclose cage reuse
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
@@ -694,14 +600,25 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `captive_feed_specific_input` | `cp_resources` | Operation captive: Record actual feed identity, including procured prey only where genuinely used; no universal reptile diet is assumed. Denominator and scope requirements：per kg accepted live output Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. |
+| `capture_supplies_specific_input` | `cp_resources` | Operation capture: Record actual nets, traps, safe containers or purchased consumables; reusable equipment is attributed by use period. Denominator and scope requirements：per kg accepted live output Original quantity method: issue records and shared-equipment attribution |
+| `handover_containment_specific_input` | `cp_resources` | Operation handover: Include disposable enclosure material handed with lot or consumed before gate; reusable cages are shared assets. Denominator and scope requirements：per kg accepted live output Original quantity method: measured material issued and attributed reuse if applicable |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_stock` | `captive` | opening/purchased reptiles | animal inventory and provenance | species, source, permit, count, mass, class, date, supplier, carried burden | reconcile intake and opening ledger; Raw aggregation requirements: attribute stock once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, head | receipt and period opening | full cohort | breeder site | per reference flow | permits, supplier and scale records; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_resources` | `captive`, `capture`, `handover` | feed, water, energy, consumables, shared cages | meter, invoice, issue/service logs | input identity, amount, unit, node, cohort, period, reuse, water discharge | meter or reconcile invoices and stock; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | kg, MJ, day | each issue and monthly | full cohort/campaign | foreground nodes | per reference flow | logs, invoices, meters, allocation worksheet; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_resources` | `captive`, `capture`, `handover` | feed, water, energy, consumables, shared cages | meter, invoice, issue/service logs | input identity, amount, unit, node, cohort, period, reuse, water discharge | meter or reconcile invoices and stock; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `captive_feed_specific_input`: Operation captive: Record actual feed identity, including procured prey only where genuinely used; no universal reptile diet is assumed. Denominator and scope requirements：per kg accepted live output Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `capture_supplies_specific_input`: Operation capture: Record actual nets, traps, safe containers or purchased consumables; reusable equipment is attributed by use period. Denominator and scope requirements：per kg accepted live output Original quantity method: issue records and shared-equipment attribution Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `handover_containment_specific_input`: Operation handover: Include disposable enclosure material handed with lot or consumed before gate; reusable cages are shared assets. Denominator and scope requirements：per kg accepted live output Original quantity method: measured material issued and attributed reuse if applicable Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, MJ, day | each issue and monthly | full cohort/campaign | foreground nodes | per reference flow | logs, invoices, meters, allocation worksheet; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_live` | `captive`, `capture`, `handover` | live transfers and accepted output | count, weighing, acceptance | species, source, authorization, animal ID, count, size, mass, health, date, gate | weigh and inspect living animals; Raw aggregation requirements: normalize accepted mass to 1 kg. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, head | each handover | all cohorts/campaigns | source site | per reference flow | scale, identity and health records; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_outputs` | `captive`, `capture`, `handover` | co-product, mortality and rejects | sale, incident and disposal | species, event, mass, count, fate, date, gate | measure or reconcile event logs; Raw aggregation requirements: distinguish product, waste, internal return. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, head | each event | all periods | site/campaign | per reference flow | receipts and incident logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_outputs` | `captive`, `capture`, `handover` | co-product, mortality and rejects | sale, incident and disposal | species, event, mass, count, fate, date, gate | measure or reconcile event logs; Raw aggregation requirements: distinguish product, waste, internal return. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `capture_discarded_supplies_specific_output`: Record spent nets, traps or containment materials only if actually discarded at this node, separate from animal mortality. Denominator and scope requirements：per kg accepted live output weighed or reconciled discarded consumables by material and treatment This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion.  | kg, head | each event | all periods | site/campaign | per reference flow | receipts and incident logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_emission` | `captive` | direct releases | monitoring or method | named substance, receiving medium, mass, period, method | direct monitoring or source-backed calculation; Raw aggregation requirements: normalize by output. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | monitored interval | full cohort | facility | per reference flow | test report and calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_feed_supply_and_intake` | `captive` | Feed supply, intake and loss | stock, receipt, issue and loss ledger | feed identity/source; cohort/phase; period; opening/closing stock; receipts; on-site provision; unused returns/transfers; uneaten/spoiled mass and destination; as-fed/DM; actual intake; burden owner; accepted final output | Reconcile matched stock, scales, ration/forage estimates and disposal records under calc_feed_supply_and_intake. Keep raw totals and stage denominators; assign production and treatment burden once, then normalize to accepted final output. | kg as-fed; kg DM | each issue and period close | complete represented cohort/period | actual operated feeding nodes | per reference flow | stock and supplier records; moisture evidence; loss and no-duplication reconciliation |
 

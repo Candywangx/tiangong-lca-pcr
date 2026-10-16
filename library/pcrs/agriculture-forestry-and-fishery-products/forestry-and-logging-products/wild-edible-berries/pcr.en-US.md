@@ -99,21 +99,6 @@ The production mode is trip/lot-based gathering plus declared preparation runs a
 
 ##### Product flows
 
-###### Gathering energy, materials and attributable services (`gather_common_inputs`)
-
-One conditional umbrella covers actual fuel/electricity, picking containers/tools, access and attributable equipment or collector service. Record concrete provider, material, property/unit and service scope; do not also count inclusive outsourced service components.
-
-- Selected flow: Gathering energy, materials and attributable services
-- Flow property / unit: Actual recorded property / recorded unit
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_gather`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
-
 ##### Waste flows
 
 No separate exchange is assumed; record any actual additional boundary crossing with its identity and measurement evidence.
@@ -241,28 +226,6 @@ Only actual removed berry or incidental material physically returned to a docume
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
 
-###### Actual gathering direct emissions (`gather_direct_emissions`)
-
-Only separately owned actual emissions from equipment or operations: report named substance/particle class, receiving compartment, activity and supported factor or measurement. No unspecified berry biomass or unknown loss as pollutant; avoid inclusive service and upstream combustion duplication.
-
-- Selected flow: Actual gathering direct emissions
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_gather`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
-
 ### Process: Collection-area transfer (`transfer`)
 
 #### Inputs
@@ -290,21 +253,6 @@ Record each actual internal or purchased input once, source lot, state, net/gros
   - Basis: per 1 kg reference flow
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
-
-###### Transfer energy, materials and services (`transfer_common_inputs`)
-
-One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs.
-
-- Selected flow: Transfer energy, materials and services
-- Flow property / unit: Actual recorded property / recorded unit
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_transfer`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
 
 ##### Waste flows
 
@@ -342,51 +290,7 @@ Measure actual fresh whole berries reaching the next active node or handover; re
 
 ##### Waste flows
 
-###### Actual rejects, spilled juice, residues and spent materials (`transfer_waste`)
-
-Record actual damaged/spoiled berries, leaves/stems/foreign matter, caught juice, spent packaging or wastewater by origin, composition and recipient treatment. Distinguish intended other goods from disposal and liquid discharge from air emissions. No universal loss factor; recovered internal material re-enters its actual node with accumulated burden.
-
-- Selected flow: Actual rejects, spilled juice, residues and spent materials
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_transfer`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
-
 ##### Elementary flows
-
-###### Actual transfer direct emissions (`transfer_direct_emissions`)
-
-Conditional actual separately owned named emissions, including equipment exhaust, refrigerant leakage or water to air only when independently evidenced and identified. Record substance, compartment, activity/factor or direct measurement. Unknown mass imbalance or mixed leaked juice is not a water-vapour identity. Do not duplicate inclusive services or upstream inventories.
-
-- Selected flow: Actual transfer direct emissions
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_transfer`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
 
 ### Process: Initial cleaning and grade sorting (`condition`)
 
@@ -415,21 +319,6 @@ Record each actual internal or purchased input once, source lot, state, net/gros
   - Basis: per 1 kg reference flow
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
-
-###### Cleaning and grading energy, materials and services (`condition_common_inputs`)
-
-One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs.
-
-- Selected flow: Cleaning and grading energy, materials and services
-- Flow property / unit: Actual recorded property / recorded unit
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_condition`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
 
 ##### Waste flows
 
@@ -489,51 +378,7 @@ Only goods intentionally accepted for another grade or declared downstream use w
 
 ##### Waste flows
 
-###### Actual rejects, spilled juice, residues and spent materials (`condition_waste`)
-
-Record actual damaged/spoiled berries, leaves/stems/foreign matter, caught juice, spent packaging or wastewater by origin, composition and recipient treatment. Distinguish intended other goods from disposal and liquid discharge from air emissions. No universal loss factor; recovered internal material re-enters its actual node with accumulated burden.
-
-- Selected flow: Actual rejects, spilled juice, residues and spent materials
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_condition`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
-
 ##### Elementary flows
-
-###### Actual condition direct emissions (`condition_direct_emissions`)
-
-Conditional actual separately owned named emissions, including equipment exhaust, refrigerant leakage or water to air only when independently evidenced and identified. Record substance, compartment, activity/factor or direct measurement. Unknown mass imbalance or mixed leaked juice is not a water-vapour identity. Do not duplicate inclusive services or upstream inventories.
-
-- Selected flow: Actual condition direct emissions
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_condition`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
 
 ### Process: Fresh holding or cooling (`hold`)
 
@@ -562,21 +407,6 @@ Record each actual internal or purchased input once, source lot, state, net/gros
   - Basis: per 1 kg reference flow
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
-
-###### Fresh-holding energy, materials and services (`hold_common_inputs`)
-
-One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs.
-
-- Selected flow: Fresh-holding energy, materials and services
-- Flow property / unit: Actual recorded property / recorded unit
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_hold`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
 
 ##### Waste flows
 
@@ -614,51 +444,7 @@ Measure actual fresh whole berries reaching the next active node or handover; re
 
 ##### Waste flows
 
-###### Actual rejects, spilled juice, residues and spent materials (`hold_waste`)
-
-Record actual damaged/spoiled berries, leaves/stems/foreign matter, caught juice, spent packaging or wastewater by origin, composition and recipient treatment. Distinguish intended other goods from disposal and liquid discharge from air emissions. No universal loss factor; recovered internal material re-enters its actual node with accumulated burden.
-
-- Selected flow: Actual rejects, spilled juice, residues and spent materials
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_hold`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
-
 ##### Elementary flows
-
-###### Actual hold direct emissions (`hold_direct_emissions`)
-
-Conditional actual separately owned named emissions, including equipment exhaust, refrigerant leakage or water to air only when independently evidenced and identified. Record substance, compartment, activity/factor or direct measurement. Unknown mass imbalance or mixed leaked juice is not a water-vapour identity. Do not duplicate inclusive services or upstream inventories.
-
-- Selected flow: Actual hold direct emissions
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_hold`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
 
 ### Process: Presentation and primary acceptance (`handover`)
 
@@ -687,21 +473,6 @@ Record each actual internal or purchased input once, source lot, state, net/gros
   - Basis: per 1 kg reference flow
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
-
-###### Packaging and acceptance energy, materials and services (`handover_common_inputs`)
-
-One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs.
-
-- Selected flow: Packaging and acceptance energy, materials and services
-- Flow property / unit: Actual recorded property / recorded unit
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_handover`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
 
 ##### Waste flows
 
@@ -763,51 +534,7 @@ Reference normalization identity: Let R > 0 kg be the actual accepted net final 
 
 ##### Waste flows
 
-###### Actual rejects, spilled juice, residues and spent materials (`handover_waste`)
-
-Record actual damaged/spoiled berries, leaves/stems/foreign matter, caught juice, spent packaging or wastewater by origin, composition and recipient treatment. Distinguish intended other goods from disposal and liquid discharge from air emissions. No universal loss factor; recovered internal material re-enters its actual node with accumulated burden.
-
-- Selected flow: Actual rejects, spilled juice, residues and spent materials
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_handover`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
-
 ##### Elementary flows
-
-###### Actual handover direct emissions (`handover_direct_emissions`)
-
-Conditional actual separately owned named emissions, including equipment exhaust, refrigerant leakage or water to air only when independently evidenced and identified. Record substance, compartment, activity/factor or direct measurement. Unknown mass imbalance or mixed leaked juice is not a water-vapour identity. Do not duplicate inclusive services or upstream inventories.
-
-- Selected flow: Actual handover direct emissions
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable quantity from the linked protocol.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_handover`
-- Range: Provisional non-enforcing reasoned screening estimate
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
 
 ## 7. Allocation and Co-product Handling
 
@@ -819,15 +546,28 @@ Conditional actual separately owned named emissions, including equipment exhaust
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `gather_common_inputs_specific_input` | `cp_gather` | Operation gather: One conditional umbrella covers actual fuel/electricity, picking containers/tools, access and attributable equipment or collector service. Record concrete provider, material, property/unit and service scope; do not also count inclusive outsourced service components. Original quantity method: Measured attributable quantity from the linked protocol. |
+| `transfer_common_inputs_specific_input` | `cp_transfer` | Operation transfer: One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs. Original quantity method: Measured attributable quantity from the linked protocol. |
+| `condition_common_inputs_specific_input` | `cp_condition` | Operation condition: One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs. Original quantity method: Measured attributable quantity from the linked protocol. |
+| `hold_common_inputs_specific_input` | `cp_hold` | Operation hold: One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs. Original quantity method: Measured attributable quantity from the linked protocol. |
+| `handover_common_inputs_specific_input` | `cp_handover` | Operation handover: One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs. Original quantity method: Measured attributable quantity from the linked protocol. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_gather` | `gather` | all actual node exchanges | measured linked ledger | species; source sites; management history; season; trip/run id and time; successful/unsuccessful effort; removed berry mass; separate incidental non-berry natural material composition/mass and removal origin; directly returned natural compartment/location/time/mass; external waste recipient; collected mass; rejects/return destination; actual inputs/provider/unit; named emissions/compartment/activity/factor; equipment/service scope | Trace source observations and management declaration independently of sales label; calibrated lot weighing and timed trip logs, invoices, meter/service records and actual named-substance emission measurement or activity-factor evidence. | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
-| `cp_transfer` | `transfer` | all actual node exchanges | measured linked ledger | incoming/outgoing lot and fresh state; source/recipient node; distance/time/loading; gross/tare/foreign matter; caught juice/spill and destination; inputs/service boundaries; named emissions and activity/factors | Weigh dispatch/receipt on calibrated scales, link trip/load logs and route scope; meter actual inputs or retain supplier service evidence. Record real spills and separately owned exhaust, never inclusive service duplication. | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
-| `cp_condition` | `condition` | all actual node exchanges | measured linked ledger | incoming fresh lot; cleaning/washing active status; maturity/grade rules; accepted grade, intended other goods/recipient; stems/leaves/foreign matter; damaged berries; caught juice/wastewater destination; re-sort/return origin; supplied inputs; named substance/compartment/activity/factor | Calibrated before/after net weighing plus actual grade acceptance records; separately weigh foreign matter, other goods, rejects and liquids. Link washing meters, cleaning/run changeovers, supplier services and actual direct-emission evidence. | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
-| `cp_hold` | `hold` | all actual node exchanges | measured linked ledger | lot; before/after fresh state; time/temperature; opening/closing stocks; occupied capacity-time; energy/material/services; spoiled/damaged berries, liquid and destination; measured moisture change; refrigerant/substance/compartment and activity/factor | Use stock/lot records and calibrated receipt/exit weighings with actual holding logs and metered or evidenced shared service drivers. Identify moisture change independently; use refrigerant balances or named direct measurement/activity-factor evidence when real. | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
-| `cp_handover` | `handover` | all actual node exchanges | measured linked ledger | species; eligibility; untended origin; accepted lot/grade/fresh moisture; primary gate/time; gross mass; measured container tare; excluded stems/leaves/foreign matter; other-goods mass/recipient; accepted net mass; packaging material/mass/reuse turns/losses/cleaning; returns and waste destination; actual utilities/service; named emissions/compartment/activity/factor | Weigh the accepted fresh whole lot on a calibrated scale, subtract documented tare and excluded parts, reconcile the same species/grade/lot with the actual acceptance record. Record packaging/reuse and separate other-goods handoffs, returns, waste and actual direct-emission evidence. | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
+| `cp_gather` | `gather` | all actual node exchanges | measured linked ledger | species; source sites; management history; season; trip/run id and time; successful/unsuccessful effort; removed berry mass; separate incidental non-berry natural material composition/mass and removal origin; directly returned natural compartment/location/time/mass; external waste recipient; collected mass; rejects/return destination; actual inputs/provider/unit; named emissions/compartment/activity/factor; equipment/service scope | Trace source observations and management declaration independently of sales label; calibrated lot weighing and timed trip logs, invoices, meter/service records and actual named-substance emission measurement or activity-factor evidence. `gather_common_inputs_specific_input`: Operation gather: One conditional umbrella covers actual fuel/electricity, picking containers/tools, access and attributable equipment or collector service. Record concrete provider, material, property/unit and service scope; do not also count inclusive outsourced service components. Original quantity method: Measured attributable quantity from the linked protocol. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `gather_direct_emissions_specific_emission`: Only separately owned actual emissions from equipment or operations: report named substance/particle class, receiving compartment, activity and supported factor or measurement. No unspecified berry biomass or unknown loss as pollutant; avoid inclusive service and upstream combustion duplication. Measured attributable quantity from the linked protocol. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability.  | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
+| `cp_transfer` | `transfer` | all actual node exchanges | measured linked ledger | incoming/outgoing lot and fresh state; source/recipient node; distance/time/loading; gross/tare/foreign matter; caught juice/spill and destination; inputs/service boundaries; named emissions and activity/factors | Weigh dispatch/receipt on calibrated scales, link trip/load logs and route scope; meter actual inputs or retain supplier service evidence. Record real spills and separately owned exhaust, never inclusive service duplication. `transfer_common_inputs_specific_input`: Operation transfer: One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs. Original quantity method: Measured attributable quantity from the linked protocol. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `transfer_direct_emissions_specific_emission`: Conditional actual separately owned named emissions, including equipment exhaust, refrigerant leakage or water to air only when independently evidenced and identified. Record substance, compartment, activity/factor or direct measurement. Unknown mass imbalance or mixed leaked juice is not a water-vapour identity. Do not duplicate inclusive services or upstream inventories. Measured attributable quantity from the linked protocol. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `transfer_waste_specific_output`: Record actual damaged/spoiled berries, leaves/stems/foreign matter, caught juice, spent packaging or wastewater by origin, composition and recipient treatment. Distinguish intended other goods from disposal and liquid discharge from air emissions. No universal loss factor; recovered internal material re-enters its actual node with accumulated burden. Measured attributable quantity from the linked protocol. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
+| `cp_condition` | `condition` | all actual node exchanges | measured linked ledger | incoming fresh lot; cleaning/washing active status; maturity/grade rules; accepted grade, intended other goods/recipient; stems/leaves/foreign matter; damaged berries; caught juice/wastewater destination; re-sort/return origin; supplied inputs; named substance/compartment/activity/factor | Calibrated before/after net weighing plus actual grade acceptance records; separately weigh foreign matter, other goods, rejects and liquids. Link washing meters, cleaning/run changeovers, supplier services and actual direct-emission evidence. `condition_common_inputs_specific_input`: Operation condition: One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs. Original quantity method: Measured attributable quantity from the linked protocol. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `condition_direct_emissions_specific_emission`: Conditional actual separately owned named emissions, including equipment exhaust, refrigerant leakage or water to air only when independently evidenced and identified. Record substance, compartment, activity/factor or direct measurement. Unknown mass imbalance or mixed leaked juice is not a water-vapour identity. Do not duplicate inclusive services or upstream inventories. Measured attributable quantity from the linked protocol. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `condition_waste_specific_output`: Record actual damaged/spoiled berries, leaves/stems/foreign matter, caught juice, spent packaging or wastewater by origin, composition and recipient treatment. Distinguish intended other goods from disposal and liquid discharge from air emissions. No universal loss factor; recovered internal material re-enters its actual node with accumulated burden. Measured attributable quantity from the linked protocol. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
+| `cp_hold` | `hold` | all actual node exchanges | measured linked ledger | lot; before/after fresh state; time/temperature; opening/closing stocks; occupied capacity-time; energy/material/services; spoiled/damaged berries, liquid and destination; measured moisture change; refrigerant/substance/compartment and activity/factor | Use stock/lot records and calibrated receipt/exit weighings with actual holding logs and metered or evidenced shared service drivers. Identify moisture change independently; use refrigerant balances or named direct measurement/activity-factor evidence when real. `hold_common_inputs_specific_input`: Operation hold: One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs. Original quantity method: Measured attributable quantity from the linked protocol. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `hold_direct_emissions_specific_emission`: Conditional actual separately owned named emissions, including equipment exhaust, refrigerant leakage or water to air only when independently evidenced and identified. Record substance, compartment, activity/factor or direct measurement. Unknown mass imbalance or mixed leaked juice is not a water-vapour identity. Do not duplicate inclusive services or upstream inventories. Measured attributable quantity from the linked protocol. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `hold_waste_specific_output`: Record actual damaged/spoiled berries, leaves/stems/foreign matter, caught juice, spent packaging or wastewater by origin, composition and recipient treatment. Distinguish intended other goods from disposal and liquid discharge from air emissions. No universal loss factor; recovered internal material re-enters its actual node with accumulated burden. Measured attributable quantity from the linked protocol. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
+| `cp_handover` | `handover` | all actual node exchanges | measured linked ledger | species; eligibility; untended origin; accepted lot/grade/fresh moisture; primary gate/time; gross mass; measured container tare; excluded stems/leaves/foreign matter; other-goods mass/recipient; accepted net mass; packaging material/mass/reuse turns/losses/cleaning; returns and waste destination; actual utilities/service; named emissions/compartment/activity/factor | Weigh the accepted fresh whole lot on a calibrated scale, subtract documented tare and excluded parts, reconcile the same species/grade/lot with the actual acceptance record. Record packaging/reuse and separate other-goods handoffs, returns, waste and actual direct-emission evidence. `handover_common_inputs_specific_input`: Operation handover: One conditional common-input umbrella: actual utilities, supplied water, materials, equipment and services are disaggregated only in the concrete ledger. Retain real unit, provider and duty. Record packaging mass, reusable container ownership, turns, losses and cleaning when applicable; a complete outsourced service excludes its already covered inputs. Original quantity method: Measured attributable quantity from the linked protocol. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `handover_direct_emissions_specific_emission`: Conditional actual separately owned named emissions, including equipment exhaust, refrigerant leakage or water to air only when independently evidenced and identified. Record substance, compartment, activity/factor or direct measurement. Unknown mass imbalance or mixed leaked juice is not a water-vapour identity. Do not duplicate inclusive services or upstream inventories. Measured attributable quantity from the linked protocol. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `handover_waste_specific_output`: Record actual damaged/spoiled berries, leaves/stems/foreign matter, caught juice, spent packaging or wastewater by origin, composition and recipient treatment. Distinguish intended other goods from disposal and liquid discharge from air emissions. No universal loss factor; recovered internal material re-enters its actual node with accumulated burden. Measured attributable quantity from the linked protocol. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg and actual exchange units | each trip/lot/run and event | complete declared season and holding period, including stocks and unsuccessful trips | every actual contributor site and node | per 1 kg reference flow | calibration, origin/acceptance evidence, timestamps, service scope, contributor and destination reconciliations |
 
 Retain a linked common site/season/trip/lot/asset ledger: enumerate every contributor, opening/closing stocks, unsuccessful trip and actual changeover, asset owner/life/service period/replacement/retirement, every consumer and allocation driver. Keep excluded sites and periods with the reason and evidence. This ledger supports the node protocols without inventing another exchange or equal-weight site mean.
 

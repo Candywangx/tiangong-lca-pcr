@@ -145,9 +145,9 @@ Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_cashew_orchard_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -157,12 +157,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cashew_orchard_input_records`
 - Sources: `ipcc-2019-afolu`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`cashew_orchard_establishment_and_management_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_cashew_orchard_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -172,6 +174,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cashew_orchard_input_records`
 - Sources: `ipcc-2019-afolu`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`cashew_orchard_establishment_and_management_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -257,54 +261,24 @@ Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Orchard fuel and electricity (`cashew_orchard_energy`)
+###### Diesel fuel (`cashew_orchard_energy_diesel`)
 
-Record energy for pumping, nutrient application, pruning, mowing, orchard-floor management, crop protection, and other field operations. Keep fuel separate from electricity.
+Actual diesel machinery for orchard-floor management and crop care; confirm irrigation-pump supply independently rather than assigning it the tractor fuel.
 
-- Selected flow: energy supply for orchard operations
-- Flow property / unit: Energy or carrier mass / MJ, kWh, or L
-- Group selection: deferred until foreground records identify electricity, diesel, petrol, or another carrier
-- Amount rule: measured or supplier-recorded energy by operation and orchard block
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell.
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service.
 
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_cashew_energy_records`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_cashew_energy_records`
-- Range: Provisional orchard-energy screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kWh-equivalent per 1,000 kg reference product
-  - Basis: broad field-operation energy estimate
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `route-energy-fao`
 
-###### Crop-protection products (`cashew_crop_protection`)
-
-Record named formulations and active ingredients used for insects, diseases, weeds, or other declared crop-protection purposes.
-
-- Selected flow: named crop-protection product or active substance
-- Flow property / unit: Mass / kg product or active substance
-- Amount rule: measured application by product, active ingredient, date, and block
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cashew_orchard_input_records`
-- Range: Provisional crop-protection screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 40
-  - Unit: kg formulated product per 1,000 kg reference product
-  - Basis: broad named-product application interval
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Apply `cashew_orchard_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 ##### Waste flows
 
@@ -337,32 +311,6 @@ Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell.
 #### Outputs
 
 ##### Elementary flows
-
-###### Managed-soil and crop direct emissions (`cashew_direct_field_emissions`)
-
-Record measured or calculated direct and indirect field emissions by substance, source, nutrient input, and crop year. Do not use a generic emission exchange when the reported species or receiving medium is known.
-
-- Selected flow: soil, crop, and field-operation emissions by substance and receiving medium
-- Flow property / unit: Mass / kg substance
-- Amount rule: measured or calculated from documented nutrient, residue, crop-protection, and field-operation records
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_cashew_emission_records`
-- Sources: `ipcc-2019-afolu`
-- Range: Provisional direct-emission screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 80
-  - Unit: kg substance per 1,000 kg reference product
-  - Basis: broad combined field-emission screen; retain species-specific results in the dataset
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 
 ##### Waste flows
 
@@ -420,31 +368,6 @@ Raw activity or stage basis: per 1,000 kg accepted fresh farm-gate reference pro
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
-
-###### Harvest and collection energy (`cashew_harvest_energy`)
-
-Record fuel, electricity, and equipment services used for shaking, gathering, apple separation, loading, and lot transfer to the declared next node.
-
-- Selected flow: harvest and collection energy supply
-- Flow property / unit: Energy or carrier mass / MJ, kWh, or L
-- Group selection: deferred until the carrier and operation are recorded
-- Amount rule: metered, invoiced, or equipment-recorded energy by harvest lot
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh farm-gate reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cashew_energy_records`
-- Range: Harvest-energy screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 120
-  - Unit: kWh-equivalent per 1,000 kg reference product
-  - Basis: broad collection and short-distance lot-handling energy interval
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -584,31 +507,6 @@ Raw activity or stage basis: per 1,000 kg reference product.
   - Upper: 50
   - Unit: L per 1,000 kg reference product
   - Basis: dry route to optional wet-cleaning interval
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Drying and conditioning energy (`cashew_drying_energy`)
-
-Record sun-drying support, forced-air drying, mechanical drying, and other conditioning energy by lot, equipment, carrier, and duration. Preserve the route technology and measured moisture change.
-
-- Selected flow: drying and primary-conditioning energy supply
-- Flow property / unit: Energy or carrier mass / MJ, kWh, or L
-- Group selection: deferred until the route identifies electricity, thermal fuel, or another energy carrier
-- Amount rule: metered, fuel-recorded, or calculated from documented equipment and duration
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per 1,000 kg reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cashew_drying_conditioning_records`
-- Range: Drying-energy screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 300
-  - Unit: kWh-equivalent per 1,000 kg reference product
-  - Basis: broad sun-drying support to mechanical drying interval
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
@@ -826,54 +724,24 @@ Raw activity or stage basis: per 1,000 kg declared storage-gate product.
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Storage packaging and handling service (`cashew_storage_packaging`)
+###### Alternating current (`cashew_storage_energy_electricity`)
 
-Record bags, pallets, bins, liners, and handling energy only when they are inside the declared storage boundary. Reusable assets are assigned over documented uses or service life.
+Actual electric storage ventilation or handling during the recorded lot duration. Unpowered storage has no assumed electricity; pest-control substances and services remain separate.
 
-- Selected flow: storage packaging and handling service
-- Flow property / unit: Mass, item, or energy / kg, item, kWh, or MJ
-- Amount rule: measured packaging mass or handling energy by lot, with reuse and service-life treatment
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-Raw activity or stage basis: per 1,000 kg declared storage-gate product.
+Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat.
 
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_cashew_storage_records`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_cashew_storage_records`
-- Range: Storage-packaging screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 60
-  - Unit: kg packaging and consumables per 1,000 kg declared storage-gate product
-  - Basis: reusable or single-use storage-container interval
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `route-energy-fao`
 
-###### Storage electricity and handling energy (`cashew_storage_energy`)
-
-Record electricity, fuel, ventilation, pest-control service, and handling energy by storage lot and duration. Pest-control substances are recorded separately when used.
-
-- Selected flow: storage and handling energy supply
-- Flow property / unit: Energy or carrier mass / kWh, MJ, or L
-- Group selection: deferred until the carrier and service are recorded
-- Amount rule: metered or supplier-recorded energy by storage lot and duration
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-Raw activity or stage basis: per 1,000 kg declared storage-gate product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Storage duration (`storage_duration`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cashew_storage_records`
-- Range: Storage-energy screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 120
-  - Unit: kWh-equivalent per 1,000 kg declared storage-gate product per storage period
-  - Basis: ambient storage to mechanically ventilated storage interval
-  - Basis kind: Storage duration (`storage_duration`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Apply `cashew_storage_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 ##### Waste flows
 
@@ -1010,6 +878,30 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `cashew_crop_protection_specific_input` | `cp_cashew_orchard_input_records` | Operation cashew_orchard_establishment_and_management: Record named formulations and active ingredients used for insects, diseases, weeds, or other declared crop-protection purposes. Original quantity method: measured application by product, active ingredient, date, and block |
+| `cashew_storage_packaging_specific_input` | `cp_cashew_storage_records` | Operation cashew_storage_and_gate_handoff: Record bags, pallets, bins, liners, and handling energy only when they are inside the declared storage boundary. Reusable assets are assigned over documented uses or service life. Original quantity method: measured packaging mass or handling energy by lot, with reuse and service-life treatment |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `cashew_orchard_energy_identification` | `cp_cashew_energy_records` | Actual diesel machinery for orchard-floor management and crop care; confirm irrigation-pump supply independently rather than assigning it the tractor fuel. Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell. (`route-energy-fao`) |
+| `cashew_harvest_energy_identification` | `cp_cashew_energy_records` | Actual collection, apple separation and lot movement. Hand gathering and separation do not establish a powered input; identify machinery or inclusive services only where used. Raw activity or stage basis: per 1,000 kg accepted fresh farm-gate reference product. (`cashew-drying-route`) |
+| `cashew_drying_energy_identification` | `cp_cashew_drying_conditioning_records` | Distinguish sun drying from forced-air or mechanically heated drying using lot and moisture records. Sun drying does not require purchased heat; actual powered auxiliaries or dryers require their own measured, specific input cards. Raw activity or stage basis: per 1,000 kg reference product. (`cashew-drying-route`) |
+| `cashew_storage_energy_identification` | `cp_cashew_storage_records` | Actual electric storage ventilation or handling during the recorded lot duration. Unpowered storage has no assumed electricity; pest-control substances and services remain separate. Raw activity or stage basis: per 1,000 kg declared storage-gate product. (`route-energy-fao`) |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -1018,15 +910,15 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_cashew_orchard_lifecycle_records` | `cashew_orchard_establishment_and_management` | orchard asset, land, planting, replacement, residue | orchard block and asset register | block area; planting year; cultivar; tree count; replacement; removal; pruning residue; orchard phase; accepted output | block register, field log, and annual reconciliation; Raw aggregation and attribution: link block records to crop year and accepted output | ha, item, kg, orchard year | event and annual | full declared orchard life or documented representative period | every contributing orchard block | per declared reference flow | signed field register, GIS or survey area, replacement evidence |
-| `cp_cashew_orchard_input_records` | `cashew_orchard_establishment_and_management` | nutrient, amendment, crop protection | input application record | product name; formulation; nutrient content; active ingredient; amount; date; block; purpose; application method | invoice, application log, and supplier record; Raw aggregation and attribution: aggregate by product, nutrient, block, and crop year | kg product, kg nutrient, kg active ingredient | every application | crop year | every contributing block | per declared reference flow | invoice, product label, application log |
+| `cp_cashew_orchard_input_records` | `cashew_orchard_establishment_and_management` | nutrient, amendment, crop protection | input application record | product name; formulation; nutrient content; active ingredient; amount; date; block; purpose; application method | invoice, application log, and supplier record; Raw aggregation and attribution: aggregate by product, nutrient, block, and crop year `cashew_crop_protection_specific_input`: Operation cashew_orchard_establishment_and_management: Record named formulations and active ingredients used for insects, diseases, weeds, or other declared crop-protection purposes. Original quantity method: measured application by product, active ingredient, date, and block Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg product, kg nutrient, kg active ingredient | every application | crop year | every contributing block | per declared reference flow | invoice, product label, application log |
 | `cp_cashew_irrigation_records` | `cashew_orchard_establishment_and_management` | irrigation and water | irrigation meter or water ledger | source; volume; block; date; meter; water quality; withdrawal and return | meter, pump record, or transparent water balance; Raw aggregation and attribution: reconcile delivery, withdrawal, and declared consumption | m3 or kg | event and monthly | crop year | every irrigated block | per declared reference flow | meter calibration, pump log, water ledger |
-| `cp_cashew_energy_records` | all field, harvest, conditioning, and storage processes | energy and carrier | fuel, electricity, and equipment record | carrier; amount; equipment; operation; lot or block; date; duration; conversion factor | invoice, meter, fuel log, or equipment record; Raw aggregation and attribution: aggregate by carrier, operation, lot, and period | L, kg, MJ, or kWh | event and monthly | crop year and declared post-harvest period | each operation and facility | per declared reference flow | invoice, meter, fuel log, equipment specification |
-| `cp_cashew_emission_records` | `cashew_orchard_establishment_and_management` | direct and indirect field emissions | emission calculation input record | nutrient input; residue; soil condition; crop-protection record; emission species; method; factor | calculation workbook linked to raw records; Raw aggregation and attribution: retain substance, receiving medium, factor, and source | kg substance | annual and event | crop year | every contributing block | per declared reference flow | calculation review, factor version, source citation |
+| `cp_cashew_energy_records` | all field, harvest, conditioning, and storage processes | energy and carrier | fuel, electricity, and equipment record | carrier; amount; equipment; operation; lot or block; date; duration; conversion factor | invoice, meter, fuel log, or equipment record; Raw aggregation and attribution: aggregate by carrier, operation, lot, and period Route-specific requirements: `cashew_orchard_energy_identification`: Actual diesel machinery for orchard-floor management and crop care; confirm irrigation-pump supply independently rather than assigning it the tractor fuel. Raw activity or stage basis: per 1,000 kg accepted cashew nuts in shell. (`route-energy-fao`) `cashew_harvest_energy_identification`: Actual collection, apple separation and lot movement. Hand gathering and separation do not establish a powered input; identify machinery or inclusive services only where used. Raw activity or stage basis: per 1,000 kg accepted fresh farm-gate reference product. (`cashew-drying-route`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | L, kg, MJ, or kWh | event and monthly | crop year and declared post-harvest period | each operation and facility | per declared reference flow | invoice, meter, fuel log, equipment specification |
+| `cp_cashew_emission_records` | `cashew_orchard_establishment_and_management` | direct and indirect field emissions | emission calculation input record | nutrient input; residue; soil condition; crop-protection record; emission species; method; factor | calculation workbook linked to raw records; Raw aggregation and attribution: retain substance, receiving medium, factor, and source `cashew_direct_field_emissions_specific_emission`: Record measured or calculated direct and indirect field emissions by substance, source, nutrient input, and crop year. Do not use a generic emission exchange when the reported species or receiving medium is known. measured or calculated from documented nutrient, residue, crop-protection, and field-operation records This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `ipcc-2019-afolu` | kg substance | annual and event | crop year | every contributing block | per declared reference flow | calculation review, factor version, source citation |
 | `cp_cashew_harvest_lot_records` | `cashew_harvest_and_collection` | harvest, collection, field loss, residue | harvest-lot register | block; collection round; maturity; harvested mass; uncollected mass; debris; apple separation; destination | weighbridge, field scale, and lot log; Raw aggregation and attribution: reconcile available, collected, lost, and residue mass | kg, date, lot | every collection round | harvest season | every contributing block | per declared reference flow | scale calibration, lot ticket, field inspection |
 | `cp_cashew_co_output_destination_records` | `cashew_harvest_and_collection` | cashew apple co-product or residue | destination and transfer record | apple mass; dry matter or moisture; destination; recipient; price or use; fate; transfer date | scale, transfer record, and destination confirmation; Raw aggregation and attribution: separate intended output from residue and waste | kg and declared fraction | every transfer | harvest season | each apple destination | per declared reference flow | receipt, transfer note, destination evidence |
-| `cp_cashew_drying_conditioning_records` | `cashew_primary_drying_cleaning_and_grading` | drying, cleaning, water, energy, moisture | conditioning batch record | input mass; input moisture; method; duration; energy; water; output moisture; output mass; cleaning loss; wastewater | batch log, meter, moisture test, and water balance; Raw aggregation and attribution: link all inputs and outputs to one batch and gate | kg, %, hours, L, kWh | every batch | declared post-harvest period | each conditioning facility or farm unit | per declared reference flow | calibrated scale, moisture test, batch ticket |
+| `cp_cashew_drying_conditioning_records` | `cashew_primary_drying_cleaning_and_grading` | drying, cleaning, water, energy, moisture | conditioning batch record | input mass; input moisture; method; duration; energy; water; output moisture; output mass; cleaning loss; wastewater | batch log, meter, moisture test, and water balance; Raw aggregation and attribution: link all inputs and outputs to one batch and gate Route-specific requirements: `cashew_drying_energy_identification`: Distinguish sun drying from forced-air or mechanically heated drying using lot and moisture records. Sun drying does not require purchased heat; actual powered auxiliaries or dryers require their own measured, specific input cards. Raw activity or stage basis: per 1,000 kg reference product. (`cashew-drying-route`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kg, %, hours, L, kWh | every batch | declared post-harvest period | each conditioning facility or farm unit | per declared reference flow | calibrated scale, moisture test, batch ticket |
 | `cp_cashew_grade_and_reject_records` | `cashew_primary_drying_cleaning_and_grading` | grade, downgrade, reject, foreign material | inspection and grade record | lot; grade; shell condition; kernel defect; blank; mold; insects; foreign material; accepted mass; rework; fate | inspection, sampling, and scale record; Raw aggregation and attribution: mutually exclusive grade and reject states | kg, %, grade code | every lot | declared post-harvest period | each grading point | per declared reference flow | inspection sheet, sample plan, scale calibration |
-| `cp_cashew_storage_records` | `cashew_storage_and_gate_handoff` | storage input, loss, packaging, gate output | stock and dispatch ledger | opening stock; receipts; lot; moisture; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate | stock ledger, dispatch ticket, and storage log; Raw aggregation and attribution: opening + receipts = dispatch + closing + loss | kg, %, days, kWh, item | receipt, inspection, and dispatch | declared storage period | each storage facility | per declared reference flow | stock reconciliation, dispatch ticket, moisture and pest record |
+| `cp_cashew_storage_records` | `cashew_storage_and_gate_handoff` | storage input, loss, packaging, gate output | stock and dispatch ledger | opening stock; receipts; lot; moisture; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate | stock ledger, dispatch ticket, and storage log; Raw aggregation and attribution: opening + receipts = dispatch + closing + loss Route-specific requirements: `cashew_storage_energy_identification`: Actual electric storage ventilation or handling during the recorded lot duration. Unpowered storage has no assumed electricity; pest-control substances and services remain separate. Raw activity or stage basis: per 1,000 kg declared storage-gate product. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `cashew_storage_packaging_specific_input`: Operation cashew_storage_and_gate_handoff: Record bags, pallets, bins, liners, and handling energy only when they are inside the declared storage boundary. Reusable assets are assigned over documented uses or service life. Original quantity method: measured packaging mass or handling energy by lot, with reuse and service-life treatment Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, %, days, kWh, item | receipt, inspection, and dispatch | declared storage period | each storage facility | per declared reference flow | stock reconciliation, dispatch ticket, moisture and pest record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
 
 ### Calculation Rules
@@ -1096,3 +988,5 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `cashew-drying-route` | official_guidance | FAO, Minor oil crops: Cashew nut, Harvesting and Post harvest treatment. https://www.fao.org/4/x5043e/x5043e06.htm | Supports a manual/sun-drying route without presumed powered heat; no moisture target or drying duration is adopted. |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

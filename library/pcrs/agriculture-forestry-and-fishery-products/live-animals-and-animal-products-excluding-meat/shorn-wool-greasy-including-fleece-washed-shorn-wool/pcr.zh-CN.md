@@ -92,33 +92,6 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 饲料及牧草摄取（`feed`）
-
-按群组、饲料种类、干物质和年度量化外购饲料与放牧；自有牧地饲料生产仅链接一次。
-
-分母与范围要求：按羊群年度归属后每 kg 原毛
-
-原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：reference_flow.
-
-- 选定流：按实际身份确定的羊饲料与放牧生物质
-- 流属性/单位：Mass / kg 干物质
-- 数量规则：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_flock_feed`
-- 来源：`iwto-wool-lca-2016`
-- 数量范围：暂定饲料筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：kg 干物质/kg 原毛
-  - 基准：宽泛初筛，以羊群记录替代
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 饮水及饲养用水（`flock_water`）
 
 按用途和来源区分饮水与清洁用水，具体流由记录展开。
@@ -155,7 +128,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_flock_feed` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -165,12 +138,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_flock_feed`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`nutrient_input_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_flock_feed` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -180,6 +155,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_flock_feed`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`nutrient_input_triple_superphosphate`）
 
@@ -240,32 +217,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_flock_feed`
 - 来源：`fao-organic-nutrients`
-
-###### 羊群能源载体（`flock_energy`）
-
-按用途和服务年度从电表/燃料记录展开载体，含共用羊舍和粪污设备。
-
-分母与范围要求：归属后每 kg 原毛
-
-原始数量及计算要求：按载体及年度记录电表和燃料 原始采集分母类型：reference_flow。
-
-- 选定流：羊群运营能源供应
-- 流属性/单位：Energy 或载体量 / kWh、MJ、L 或 kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_water_energy`
-- 数量范围：暂定能源筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：500
-  - 单位：kWh 当量/kg 原毛
-  - 基准：宽泛跨载体初筛，保留原单位
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 #### 输出
 
@@ -335,7 +286,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：按声明的 IPCC 层级处理群组年度活动 原始采集分母类型：reference_flow。
 
-- 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
+- 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：Mass / kg CH4
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -362,7 +313,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：排泄 N × 管理份额 × 声明因子及 N 到 N2O 换算 原始采集分母类型：reference_flow。
 
-- 选定流：一氧化二氮（排放至空气） `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：Mass / kg N2O
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -389,7 +340,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：粪污 N × 记录的挥发计算方法 原始采集分母类型：reference_flow。
 
-- 选定流：氨（排放至空气） `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass / kg NH3
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -538,31 +489,20 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 剪毛设备能源（`shear_energy`）
+###### 交流电 (`shear_energy_electricity`)
 
-按载体和事件记录电动或燃油剪毛机及相关设备。
+仅适用于本作业有记录的交流电设备。记录电压及供电技术，电表kWh按1 kWh = 3.6 MJ换算；其他动力来源须使用其实际载能体。执行`shear_energy_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-分母与范围要求：每 kg 剪取羊毛
-
-原始数量及计算要求：每事件电表或设备日志 原始采集分母类型：process_output。
-
-- 选定流：剪毛能源
-- 流属性/单位：Energy 或载体 / kWh、MJ 或 L
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_wash_shear`采集`shearing`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_wash_shear`
-- 数量范围：暂定剪毛能源筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：10
-  - 单位：kWh 当量/kg 剪取羊毛
-  - 基准：宽泛剪毛机能源筛查
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
 #### 输出
 
@@ -725,32 +665,6 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 毛包和包裹材料（`bale_material`）
-
-记录实际纺织袋、薄膜、扎带和标签；从农场记录确定复用次数。
-
-分母与范围要求：农场门口每 kg 净原毛
-
-原始数量及计算要求：按毛包净材料消耗扣除经证实的复用 原始采集分母类型：reference_flow。
-
-- 选定流：打包和呈现材料
-- 流属性/单位：Mass 或数量 / kg 或件
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：产品特定（`product_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_grade_bale`
-- 数量范围：包装材料筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg 材料/kg 原毛
-  - 基准：无包装交付时可为零
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 #### 输出
 
 ##### 产品流
@@ -795,16 +709,38 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `feed_specific_input` | `cp_flock_feed` | 作业 flock：按群组、饲料种类、干物质和年度量化外购饲料与放牧；自有牧地饲料生产仅链接一次。 分母与范围要求：按羊群年度归属后每 kg 原毛 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：reference_flow. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 |
+| `shear_energy_specific_input` | `cp_wash_shear` | 作业 shearing：按载体和事件记录电动或燃油剪毛机及相关设备。 分母与范围要求：每 kg 剪取羊毛 原始数量及计算要求：每事件电表或设备日志 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 |
+| `bale_material_specific_input` | `cp_grade_bale` | 作业 baling：记录实际纺织袋、薄膜、扎带和标签；从农场记录确定复用次数。 分母与范围要求：农场门口每 kg 净原毛 原始数量及计算要求：按毛包净材料消耗扣除经证实的复用 原始采集分母类型：reference_flow。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `flock_energy_identification` | `cp_water_energy` | 畜群年度圈舍及粪污机械，排除另行表示的剪毛；按实际设备记录选取载能体，牧场饲养本身不证明燃料消耗。 原始数量及计算要求：按载体及年度记录电表和燃料 原始采集分母类型：reference_flow。 (`route-energy-fao`) |
+
+
 ### 数据采集协议
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_flock_feed` | `flock` | 饲料、养分 | 羊群/地块/发票 | 群组、牧地面积、日粮、干物质、养分、日期、库存 | 农场记录与有文件的摄入模型；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 | kg、ha | 月/事件 | 羊群与饲养年度 | 农场 | 每参考流 | 票据、饲料测试；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_water_energy` | `flock` | 水、能源 | 电表/发票 | 来源、载体、用途、期间、共用者 | 仪表及发票；原始汇总要求：按使用者分配。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | m3、kWh、L | 月 | 羊群年度 | 农场 | 每参考流 | 仪表照片、票据；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_flock_feed` | `flock` | 饲料、养分 | 羊群/地块/发票 | 群组、牧地面积、日粮、干物质、养分、日期、库存 | 农场记录与有文件的摄入模型；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 `feed_specific_input`: 作业 flock：按群组、饲料种类、干物质和年度量化外购饲料与放牧；自有牧地饲料生产仅链接一次。 分母与范围要求：按羊群年度归属后每 kg 原毛 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：reference_flow. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、ha | 月/事件 | 羊群与饲养年度 | 农场 | 每参考流 | 票据、饲料测试；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_water_energy` | `flock` | 水、能源 | 电表/发票 | 来源、载体、用途、期间、共用者 | 仪表及发票；原始汇总要求：按使用者分配。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 按路线确认要求：`flock_energy_identification`: 畜群年度圈舍及粪污机械，排除另行表示的剪毛；按实际设备记录选取载能体，牧场饲养本身不证明燃料消耗。 原始数量及计算要求：按载体及年度记录电表和燃料 原始采集分母类型：reference_flow。 (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | m3、kWh、L | 月 | 羊群年度 | 农场 | 每参考流 | 仪表照片、票据；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_flock_outputs` | `flock` | 活羊 | 销售/存栏簿 | 群组、头数、活重、日期、门口 | 地磅与点数；原始汇总要求：期初+新增-移出=期末。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg、头 | 事件 | 羊群年度 | 农场 | 每参考流 | 销售单、登记簿；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_manure` | `flock` | 粪污与排放 | 活动簿 | 群组、N 摄入/排泄、管理、储存、转移、因子 | 采集活动并声明 IPCC 层级；原始汇总要求：分立 CH4、N2O、NH3 路径。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg N、kg 粪 | 月/事件 | 羊群年度 | 农场 | 每参考流 | 活动和因子表；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_wash_shear` | `fleece_wash`, `shearing` | 清洗与剪毛 | 事件簿 | 羊、洗毛日期/水/废水/晾干、剪毛日期、原毛质量、能源 | 事件表、秤、仪表；原始汇总要求：一份羊毛对应一路线。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg、m3、kWh | 事件 | 剪毛季 | 农场 | 每参考流 | 事件和校准表；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_grade_bale` | `conditioning`, `grading`, `baling` | 质量/呈现 | 等级/毛包簿 | 剪取、剔边、等级、水分、皮重、包装复用、交付 | 秤及买方单据；原始汇总要求：剪取=等级+拒收+变化/损失。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg、件 | 每包 | 剪毛季 | 农场 | 每参考流 | 称重单、分级记录；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_wash_shear` | `fleece_wash`, `shearing` | 清洗与剪毛 | 事件簿 | 羊、洗毛日期/水/废水/晾干、剪毛日期、原毛质量、能源 | 事件表、秤、仪表；原始汇总要求：一份羊毛对应一路线。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 `shear_energy_specific_input`: 作业 shearing：按载体和事件记录电动或燃油剪毛机及相关设备。 分母与范围要求：每 kg 剪取羊毛 原始数量及计算要求：每事件电表或设备日志 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、m3、kWh | 事件 | 剪毛季 | 农场 | 每参考流 | 事件和校准表；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_grade_bale` | `conditioning`, `grading`, `baling` | 质量/呈现 | 等级/毛包簿 | 剪取、剔边、等级、水分、皮重、包装复用、交付 | 秤及买方单据；原始汇总要求：剪取=等级+拒收+变化/损失。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 `bale_material_specific_input`: 作业 baling：记录实际纺织袋、薄膜、扎带和标签；从农场记录确定复用次数。 分母与范围要求：农场门口每 kg 净原毛 原始数量及计算要求：按毛包净材料消耗扣除经证实的复用 原始采集分母类型：reference_flow。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、件 | 每包 | 剪毛季 | 农场 | 每参考流 | 称重单、分级记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_pathway_emissions` | `flock` | 路径专属气体及粪污氮/碳 | 动物、饲料、粪污、田间及方法台账 | 物种/类别；动物日；采食/干物质/消化率；挥发性固体；粪污氮/铵态氮；系统份额；气候；贮存时间；肥料氮；放牧；挥发/淋溶；甲烷回收；因子来源/单位；最终合格产出 ；收集粪污湿质量；干物质；去向| 按节点及期间采集一手活动数据，证明参数适用性，保留各路径计算表及链接的处理/牧地数据集  保留原始总量，可归属数量仅对实测最终合格参考产出归一化一次。| animal-day；kg DM；kg VS；kg N；kg CH4；kg N2O；kg NH3 | 各运行期间及管理变化时 | 完整所代表群体与服务期间 | 仅实际运行节点 | 每参考流 | 计量/分析记录、氮级联、方法与因子证据、防重复台账 |
 | `cp_feed_supply_and_intake` | `flock` | 饲料投入、采食及损失 | 库存、收货、发料及损失台账 | 饲料身份/来源；群体/阶段；期间；期初/期末库存；收货；自产供给；未用退回/转出；未食用/变质质量及去向；原物/干物质；实际采食量；负担归属；合格最终产出 | 按 calc_feed_supply_and_intake 核对匹配的库存、称重、日粮/采草估算及处置记录。保留原始总量及阶段分母，生产与处理负担各归属一次，再对合格最终产出归一化。 | kg as-fed; kg DM | 每次发料及期间结算 | 完整所代表群体/期间 | 实际运行饲喂节点 | 每参考流 | 库存及供应商记录；水分证据；损失及无重复核算核对 |
 | `cp_manure_n2o_coverage` | `flock` | 粪污/土壤直接及间接 N2O 覆盖 | 分路径氮台账及方法计算表 | 物种/类别；期间；排泄氮；阶段库存/转移；系统份额；挥发 NH3-N/NOx-N；淋溶/径流氮；施用/放牧氮；因子来源、单位及适用性；直接/间接分项；接受介质；已链接过程及归属卡；合格最终产出 | 按 calc_manure_n2o_coverage 保留原始阶段氮及分项计算，并匹配实际作业与现有粪污协议。记录缺证据或不适用路径及覆盖边界，可归属 N2O 归一化一次。 | kg N; kg N2O | 每个报告期间及管理变化 | 完整所代表管理期间 | 实际运行及明确链接节点 | 每参考流 | 氮平衡、因子单位/适用性、分项到卡片及无重复核算表 |
@@ -869,3 +805,4 @@ sync_with: pcr.en-US.md
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

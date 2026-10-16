@@ -279,9 +279,9 @@ Meter actual carrier used in melting or separation; no default heat recipe.
 Denominator and scope requirements：per kg first-prepared wax
 Raw quantity and calculation requirements: Measure actual conditioning energy and link lot, source, state and period. Original collection denominator kind: process_output.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_condition` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -291,6 +291,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_condition`
 - Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ###### Purchased heat at the process inlet (`energy_heat`)
 
@@ -429,31 +431,39 @@ Raw quantity and calculation requirements: Measure actual wax entering optional 
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Actual refining aid or colourant (`additive`)
+###### Activated carbon (`additive_carbon`)
 
-Measure actual material and retained colourant; no addition for untreated lots.
+Only when activated-carbon adsorption is actually used in beeswax refining. Record feedstock, grade and supplier suitability; do not use this identity for spent carbon.
 
-Denominator and scope requirements：per kg treated wax
-
-Raw quantity and calculation requirements: Measure actual refining aid or colourant and link lot, source, state and period. Original collection denominator kind: process_output.
-
-- Selected flow: Material-specific refining aid or wax colourant (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Selected flow: Activated carbon `5cad53b5-252a-4e2f-8197-8be465707405`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_treat`
-- Range: Provisional nonnegative ledger QA, not a yield or recipe
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg/kg
-  - Basis: per kg treated wax
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `wax-adsorbents`
+
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
+
+###### Fuller’s earth bleaching clay (`additive_clay`)
+
+Only for actual clay adsorption in beeswax refining; record clay composition, activation and supplier grade separately from activated carbon.
+
+- Selected flow: Fuller’s earth bleaching clay
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_treat`
+- Sources: `wax-adsorbents`
+
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
 
 ##### Waste flows
 
@@ -647,32 +657,6 @@ Raw quantity and calculation requirements: Measure actual saleable wax before pa
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Protective packaging (`package`)
-
-Count actual consumed material or measured reusable package service, not later freight.
-
-Denominator and scope requirements：per kg net sold wax
-
-Raw quantity and calculation requirements: Measure actual protective packaging and link lot, source, state and period. Original collection denominator kind: process_output.
-
-- Selected flow: Actual protective wax package or reusable service (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_handover`
-- Range: Provisional nonnegative ledger QA, not a yield or recipe
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg/kg
-  - Basis: per kg net sold wax
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -724,6 +708,24 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `package_specific_input` | `cp_handover` | Operation handover: Count actual consumed material or measured reusable package service, not later freight. Denominator and scope requirements：per kg net sold wax Raw quantity and calculation requirements: Measure actual protective packaging and link lot, source, state and period. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+
+
+### Material and service identification requirements
+
+Identify each actual material or independently supplied service from supplier and activity records; record composition/specification, quantity, unit, node and period separately. Add one concrete exchange per identity before dataset completion; these requirements are not a single exchange. Reconcile with existing cards and inclusive services to avoid duplication. Allocate reusable assets over evidenced use and preserve physical quantities; normalize once to the matched final reference output. Missing identity or use evidence is a completeness gap, not zero use. Conditional examples below are not an exhaustive bill of materials and do not prescribe use or amounts.
+
+| requirement_id | collection_protocol_id | Required scope |
+| --- | --- | --- |
+| `additive_identification` | `cp_treat` | actual wax refining aids and colourants |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
@@ -732,7 +734,7 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 | cp_condition | condition | material, energy, conditional wash water and prepared wax | separation ledger | lot, mass in/out, method, carrier, energy, water source/input, wastewater or evaporation destination, purity, moisture | scale, meter and assay; Raw aggregation requirements: before/after and water balance by source. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;MJ | each lot | conditioning period | facility | per reference flow | scale, meter, assay; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_treat | treat | optional refining or colouring | treatment ledger | lot, input/output mass, added material, colour, purity, rejects | batch sheet, scale and assay; Raw aggregation requirements: once; raw bypass. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each treated lot | treatment period | facility | per reference flow | sheet and assay; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_grade | grade | accepted, downgrade and reject | grade ledger | source, state, grade, mass, destination | grade ticket and scale; Raw aggregation requirements: disjoint grades. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each lot | grade period | facility | per reference flow | grade and reject tickets; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| cp_handover | handover | wax, package and gate | dispatch ledger | source, state, colourant, purity, moisture, gross, tare, net, package reuse, gate | dispatch ticket and scale; Raw aggregation requirements: one net sale per lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each sale lot | handover period | facility | per reference flow | ticket and calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| cp_handover | handover | wax, package and gate | dispatch ledger | source, state, colourant, purity, moisture, gross, tare, net, package reuse, gate | dispatch ticket and scale; Raw aggregation requirements: one net sale per lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `package_specific_input`: Operation handover: Count actual consumed material or measured reusable package service, not later freight. Denominator and scope requirements：per kg net sold wax Raw quantity and calculation requirements: Measure actual protective packaging and link lot, source, state and period. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg | each sale lot | handover period | facility | per reference flow | ticket and calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_residue | collect;condition;treat;grade | waste | treatment ledger | lot, type, mass, destination, period | scale and transfer record; Raw aggregation requirements: once per material/destination. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each event | relevant period | origin site | per reference flow | transfer record; traceable numerator, accepted reference-output denominator and normalization worksheet |
 
 ### Calculation Rules
@@ -784,3 +786,4 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 | `fao-beeswax` | official_guidance | [FAO beeswax production/refining](https://www.fao.org/4/i0842e/i0842e12.pdf) | bee route and separation |
 | `fao-beekeeping` | official_guidance | [FAO beekeeping wax products](https://www.fao.org/4/w0076e/w0076e12.htm) | comb/cappings and honey context |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `wax-adsorbents` | official_guidance | FAO, Bees and their role in forest livelihoods, 2009, p. 120, industrial wax refining. https://www.fao.org/docrep/pdf/012/i0842e/i0842e00.pdf | Adsorbent identities for an actually used beeswax refining route only; no dose, colourant recipe or universal treatment requirement. |

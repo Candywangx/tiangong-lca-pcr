@@ -177,32 +177,6 @@ process_inventory:
                 basis_kind: "crop_cycle"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: field_nutrient_inputs
-          role: "Agricultural nutrient and fertilizer inputs"
-          name: "Agricultural nutrient and fertilizer supply"
-          flow_type: "product"
-          property_unit: "Product quantity and nutrient content / kg product, m3 product, kg N, kg P2O5 and kg K2O"
-          description: "Record all mineral fertilizers, organic fertilizers and nutrient-bearing amendments once, preserving product, assay and event. Raw activity or stage basis: per cultivated hectare and crop cycle."
-          amount:
-            expression: "collect each applied product once and calculate nutrients from assay"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_activity
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1500"
-                unit: "kg product/ha"
-                basis: "one crop cycle; nutrient composition remains explicit"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: field_irrigation_input
           role: "Irrigation water"
           name: "Irrigation water supply"
@@ -229,58 +203,27 @@ process_inventory:
                 basis_kind: "crop_cycle"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: field_energy_input
-          role: "Field machinery energy"
-          name: "Energy supply for mobile field machinery"
+        - row_id: field_energy_input_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Carrier quantity or energy / kg, L, kWh or MJ"
-          description: "Record carrier-specific energy for establishment, crop care and harvest. Raw activity or stage basis: per cultivated hectare and crop cycle."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual diesel field machinery for cotton establishment, crop care and harvest; attribute shared cotton outputs under the existing allocation rules. Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. Apply field_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "measured carrier or contractor activity with documented conversion"
+            expression: "Collect only this carrier quantity attributable to this node under cp_field_activity. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "crop_cycle"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_field_activity
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "L diesel-equivalent/ha"
-                basis: "one crop cycle; actual carrier remains explicit"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: field_crop_protection_input
-          role: "Crop-protection formulations"
-          name: "Crop-protection formulation used in cotton production"
-          flow_type: "product"
-          property_unit: "Mass or volume / kg or L"
-          description: "Record each actual formulation by active ingredient, concentration and event. Raw activity or stage basis: per cultivated hectare and crop cycle."
-          amount:
-            expression: "measured formulation by product and application event"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_activity
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg formulation/ha"
-                basis: "one crop cycle; actual products govern"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -458,32 +401,27 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: gin_energy_input
-          role: "Gin energy supply"
-          name: "Gin energy supply"
+        - row_id: gin_energy_input_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Energy or carrier quantity / kWh, MJ, kg, L or m3"
-          description: "Record electricity and thermal carriers for receiving, drying, cleaning, ginning, conveying and controls. Raw activity or stage basis: per 1,000 kg accepted cottonseed."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual electric gin machinery, conveying fans and controls. Drying heat requires identification of the installed burner/supply; retain existing cottonseed/lint allocation and do not assign whole-gin energy to both products. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply gin_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "measured meters and carrier purchases allocated once to the lot"
+            expression: "Collect only this carrier quantity attributable to this node under cp_gin_utility. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "process_output"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_gin_utility
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "2000"
-                unit: "kWh-equivalent/1,000 kg cottonseed"
-                basis: "receiving through separation and conveying"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - cotton-gin-energy
+            ranges: []
         - row_id: gin_process_water_input
           role: "Gin process water"
           name: "Process water supply"
@@ -658,58 +596,27 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: storage_energy_input
-          role: "Aeration and handling energy"
-          name: "Energy supply for cottonseed handling and aeration"
+        - row_id: storage_energy_input_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Energy or carrier quantity / kWh, MJ, kg, L or m3"
-          description: "Record carriers used for conveying, ventilation, temperature control and handling. Raw activity or stage basis: per 1,000 kg accepted cottonseed."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual electric cottonseed conveying, aeration and temperature control over the declared storage period; no-storage routes require no invented storage load. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply storage_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "metered energy or runtime-power calculation"
+            expression: "Collect only this carrier quantity attributable to this node under cp_storage_lot. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "process_output"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_storage_lot
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "kWh-equivalent/1,000 kg cottonseed"
-                basis: "declared storage period; no-storage route may be zero"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: cottonseed_packaging_input
-          role: "Cottonseed packaging"
-          name: "Packaging function for cottonseed hand-off"
-          flow_type: "product"
-          property_unit: "Mass or item count / kg or item"
-          description: "Record packaging that remains with product at hand-off and preserve reuse cycles. Raw activity or stage basis: per 1,000 kg accepted cottonseed."
-          amount:
-            expression: "measured packaging divided by verified reuse cycles"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_storage_lot
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg/1,000 kg cottonseed"
-                basis: "packaging crossing the gate; bulk route may be zero"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -872,7 +779,7 @@ dataset_production:
       flow_role: "inputs"
       record_type: "collected"
       raw_fields: "field; area; cultivar; dates; product; assay; amount; meter; carrier"
-      collection_method: "invoices, logs and meters; Raw aggregation and attribution: sum by field and identity"
+      collection_method: "invoices, logs and meters; Raw aggregation and attribution: sum by field and identity Route-specific requirements: field_energy_input_identification: Actual diesel field machinery for cotton establishment, crop care and harvest; attribute shared cotton outputs under the existing allocation rules. Raw activity or stage basis: per cultivated hectare and crop cycle. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. field_nutrient_inputs_specific_input: Operation cotton_field_production: Record all mineral fertilizers, organic fertilizers and nutrient-bearing amendments once, preserving product, assay and event. Original quantity method: collect each applied product once and calculate nutrients from assay Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. field_crop_protection_input_specific_input: Operation cotton_field_production: Record each actual formulation by active ingredient, concentration and event. Original quantity method: measured formulation by product and application event Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "ha; kg; L; m3; kWh; MJ"
       frequency: "each event"
       temporal_coverage: "full crop cycle"
@@ -920,7 +827,7 @@ dataset_production:
       flow_role: "energy/water"
       record_type: "collected/calculated"
       raw_fields: "meter; purchase; runtime; power; water; period"
-      collection_method: "meters, invoices, runtime; Raw aggregation and attribution: allocate shared total once"
+      collection_method: "meters, invoices, runtime; Raw aggregation and attribution: allocate shared total once Route-specific requirements: gin_energy_input_identification: Actual electric gin machinery, conveying fans and controls. Drying heat requires identification of the installed burner/supply; retain existing cottonseed/lint allocation and do not assign whole-gin energy to both products. Raw activity or stage basis: per 1,000 kg accepted cottonseed. (cotton-gin-energy) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kWh; MJ; kg; L; m3"
       frequency: "shift/bill"
       temporal_coverage: "full campaign"
@@ -944,7 +851,7 @@ dataset_production:
       flow_role: "cottonseed/energy/package/loss"
       record_type: "collected/calculated"
       raw_fields: "lot; mass; moisture; temperature; foreign matter; duration; runtime; package; reject"
-      collection_method: "scales, probes, meters, logs; Raw aggregation and attribution: reconcile input, accepted, reject, moisture"
+      collection_method: "scales, probes, meters, logs; Raw aggregation and attribution: reconcile input, accepted, reject, moisture Route-specific requirements: storage_energy_input_identification: Actual electric cottonseed conveying, aeration and temperature control over the declared storage period; no-storage routes require no invented storage load. Raw activity or stage basis: per 1,000 kg accepted cottonseed. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. cottonseed_packaging_input_specific_input: Operation cottonseed_handling_storage: Record packaging that remains with product at hand-off and preserve reuse cycles. Original quantity method: measured packaging divided by verified reuse cycles Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg; %; C; h; kWh; item"
       frequency: "receipt/daily/dispatch"
       temporal_coverage: "full storage period"
@@ -1106,9 +1013,17 @@ data_sources:
     type: "method_factor"
     reference: "This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing."
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
+  - id: "cotton-gin-energy"
+    type: "handbook"
+    reference: "Funk and Hardin (2017), Energy Utilization and Conservation in Cotton Gins, Cotton Ginners Handbook. https://www.cotton.org/journal/2017-21/2/156.cfm"
+    used_for: "Electric conveying/gin equipment and separate drying demand; no per-bale intensity or fuel identity is imposed."
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a4a86bf0a0d9d6729024ace54360182e20cc36401fed8d01a0e6d2a7fc6b9249"
+  source_sha256: "sha256:2dbe885c9b2ca8e726c49eaf368e670a1def637b977b3a8e74fe07473dd85548"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4760"
@@ -1159,16 +1074,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35227"
+    - unit_id: "normative_33575"
       family: "allocation"
       span:
         start:
-          offset: 35227
-          line: 751
+          offset: 33575
+          line: 664
           column: 1
         end:
-          offset: 36317
-          line: 761
+          offset: 34665
+          line: 674
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_gin_coproducts` | cultivation and ginning | Treat lint and cottonseed as intended co-products. Subdivide metered process burdens first; allocate remaining inseparable burdens by economic value using matched quantities and representative prices. | `cottonseed-storage-2018` |\n| `allocation_sensitivity` | lint/cottonseed | Report mass-allocation sensitivity and prices, currency, period, moisture, grades and value shares; no default substitution credit. |  |\n| `allocation_residuals` | gin/storage outputs | Give no co-product credit to waste. Treat recovered material as product only with intended use, positive value and separate hand-off. |  |\n| `allocation_shared_assets` | shared infrastructure | Attribute by measured use, runtime, throughput or another causal driver and count each burden once. |  |\n| `allocation_rework_rejects` | rejects | Return rework to its node; downgraded saleable output remains product and discarded material remains waste. |  |\n\n"
       headings:
@@ -1187,12 +1102,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35227
-              line: 751
+              offset: 33575
+              line: 664
               column: 1
             end:
-              offset: 35267
-              line: 751
+              offset: 33615
+              line: 664
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1207,16 +1122,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_42864"
+    - unit_id: "normative_51270"
       family: "validation"
       span:
         start:
-          offset: 42864
-          line: 800
+          offset: 51270
+          line: 737
           column: 1
         end:
-          offset: 44237
-          line: 813
+          offset: 52643
+          line: 750
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference | Reject planting, delinted or crushed seed and derived products; require whole fuzzy non-planting cottonseed and qualifiers. |  |\n| `validate_process_chain` | map | Require cultivation/harvest and ginning; include storage only when before gate and impose no inactive-route amount. |  |\n| `validate_gin_balance` | ginning | Require matched input and complete lint, cottonseed, useful output, waste and moisture reconciliation. | `cotton-ginners-handbook-2016` |\n| `validate_coproduct_allocation` | crop/gin | Require explicit lint/cottonseed attribution, economic inputs and mass sensitivity; reject double allocation. |  |\n| `validate_flow_identitys` | inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_ranges` | cards | Require role, bounds, unit, basis and evidence; lower <= upper and inactive conditional routes impose no amount. |  |\n| `validate_reject_routing` | rejects | Route each off-spec stream once and exclude rejected mass from accepted output. |  |\n| `validate_shared_burdens` | shared services | Require a causal driver and prove each shared burden is counted once. |  |\n\n"
       headings:
@@ -1235,12 +1150,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 42864
-              line: 800
+              offset: 51270
+              line: 737
               column: 1
             end:
-              offset: 42886
-              line: 800
+              offset: 51292
+              line: 737
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1337,171 +1252,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_gin_coproducts"
       identity_kind: "explicit"
-      unit_id: "normative_35227"
+      unit_id: "normative_33575"
       source_span:
         start:
-          offset: 35340
-          line: 755
+          offset: 33688
+          line: 668
           column: 1
         end:
-          offset: 35628
-          line: 755
+          offset: 33976
+          line: 668
           column: 289
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_sensitivity"
       identity_kind: "explicit"
-      unit_id: "normative_35227"
+      unit_id: "normative_33575"
       source_span:
         start:
-          offset: 35629
-          line: 756
+          offset: 33977
+          line: 669
           column: 1
         end:
-          offset: 35812
-          line: 756
+          offset: 34160
+          line: 669
           column: 184
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residuals"
       identity_kind: "explicit"
-      unit_id: "normative_35227"
+      unit_id: "normative_33575"
       source_span:
         start:
-          offset: 35813
-          line: 757
+          offset: 34161
+          line: 670
           column: 1
         end:
-          offset: 36000
-          line: 757
+          offset: 34348
+          line: 670
           column: 188
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_35227"
+      unit_id: "normative_33575"
       source_span:
         start:
-          offset: 36001
-          line: 758
+          offset: 34349
+          line: 671
           column: 1
         end:
-          offset: 36160
-          line: 758
+          offset: 34508
+          line: 671
           column: 160
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rework_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_35227"
+      unit_id: "normative_33575"
       source_span:
         start:
-          offset: 36161
-          line: 759
+          offset: 34509
+          line: 672
           column: 1
         end:
-          offset: 36315
-          line: 759
+          offset: 34663
+          line: 672
           column: 155
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 42959
-          line: 804
+          offset: 51365
+          line: 741
           column: 1
         end:
-          offset: 43133
-          line: 804
+          offset: 51539
+          line: 741
           column: 175
     - pointer: "/validation_rules/1"
       rule_id: "validate_process_chain"
       identity_kind: "explicit"
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 43134
-          line: 805
+          offset: 51540
+          line: 742
           column: 1
         end:
-          offset: 43289
-          line: 805
+          offset: 51695
+          line: 742
           column: 156
     - pointer: "/validation_rules/2"
       rule_id: "validate_gin_balance"
       identity_kind: "explicit"
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 43290
-          line: 806
+          offset: 51696
+          line: 743
           column: 1
         end:
-          offset: 43464
-          line: 806
+          offset: 51870
+          line: 743
           column: 175
     - pointer: "/validation_rules/3"
       rule_id: "validate_coproduct_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 43465
-          line: 807
+          offset: 51871
+          line: 744
           column: 1
         end:
-          offset: 43626
-          line: 807
+          offset: 52032
+          line: 744
           column: 162
     - pointer: "/validation_rules/4"
       rule_id: "validate_flow_identitys"
       identity_kind: "explicit"
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 43627
-          line: 808
+          offset: 52033
+          line: 745
           column: 1
         end:
-          offset: 43839
-          line: 808
+          offset: 52245
+          line: 745
           column: 213
     - pointer: "/validation_rules/5"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 43840
-          line: 809
+          offset: 52246
+          line: 746
           column: 1
         end:
-          offset: 43987
-          line: 809
+          offset: 52393
+          line: 746
           column: 148
     - pointer: "/validation_rules/6"
       rule_id: "validate_reject_routing"
       identity_kind: "explicit"
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 43988
-          line: 810
+          offset: 52394
+          line: 747
           column: 1
         end:
-          offset: 44112
-          line: 810
+          offset: 52518
+          line: 747
           column: 125
     - pointer: "/validation_rules/7"
       rule_id: "validate_shared_burdens"
       identity_kind: "explicit"
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 44113
-          line: 811
+          offset: 52519
+          line: 748
           column: 1
         end:
-          offset: 44235
-          line: 811
+          offset: 52641
+          line: 748
           column: 123
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1530,27 +1445,27 @@ normative_context:
           column: 201
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35227"
+      unit_id: "normative_33575"
       source_span:
         start:
-          offset: 35227
-          line: 751
+          offset: 33575
+          line: 664
           column: 1
         end:
-          offset: 35267
-          line: 751
+          offset: 33615
+          line: 664
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_42864"
+      unit_id: "normative_51270"
       source_span:
         start:
-          offset: 42864
-          line: 800
+          offset: 51270
+          line: 737
           column: 1
         end:
-          offset: 42886
-          line: 800
+          offset: 51292
+          line: 737
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1559,5 +1474,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a4a86bf0a0d9d6729024ace54360182e20cc36401fed8d01a0e6d2a7fc6b9249"
-  generated_content_sha256: "sha256:6b2ef2189203c44289ed3d5fc8d207d39e0d1324356b76ecc6039254464b2ec5"
+    sha256: "sha256:2dbe885c9b2ca8e726c49eaf368e670a1def637b977b3a8e74fe07473dd85548"
+  generated_content_sha256: "sha256:cea9027eb9cd47b897b25596a03547b9d4b094315a02ec32ff744ed6a9411749"
