@@ -652,7 +652,7 @@ sync_with: pcr.en-US.md
 
 ###### 水蒸气 (`water_vapor`)
 
-采用匹配水量平衡或排气湿度与流量测定纸幅干燥及其他向大气的实际蒸发水。供汽质量不自动等于纸幅蒸发水；燃烧生成水在平衡中另列。
+按配对排气湿度／流量或独立约束的水账测定纸幅干燥及其他排口实际外流 H2O 水蒸气；同基准核对入流空气湿度。供汽质量不自动等于纸幅蒸发水。排口实测水蒸气已包含在该点释放的反应水，不再向实测输出叠加燃烧、生物或其他反应生成水。采用 cp_reaction 独立证明 H2O 生成／消耗；不由一个残差同时拟合反应水与蒸发。
 
 - 选定流：水蒸气 `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - 流属性/单位：质量 (`93a60a56-a3c8-11da-a746-0800200b9a66`); 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -693,20 +693,22 @@ sync_with: pcr.en-US.md
 | cp_production | paper_mill | 净交付质量及固形物 | 实测原始记录 | 纸卷编号；等级；毛质量；纸芯包膜皮重；验收净质量 S；湿基水分 w；废次品；期初期末存量 | 经校准净称重、验收记录及代表性交付状态重量法水分样品；保留干燥终点、测试方法、调湿及重复测定不确定性。 | kg; mass fraction | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
 | cp_materials | paper_mill | 每种纸浆、填料及化学品 | 实测原始记录 | 供方；批次；树种等级；完整制剂来料质量；各真实组分／添加物／载体水；实测水分固形物；纯度；活性浓度；各项用量；存量变化；留存干物质 | 经校准来料秤或流量计、批次质检单及独立核对固形物样品；逐种核对交付与消耗量、干基配比及背景参考基准。 | kg; mass fraction | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
 | cp_energy | paper_mill | 电力、天然气及外购蒸汽 | 实测原始记录 | 阶段电表 kWh；天然气体积温压湿干组成 Z；蒸汽质量温压干度及回流焓；供方背景参考；运行时间 | 经校准仪表及账单、供方参考状态说明、蒸汽凝结水测量和热量平衡；区分外购与内部转移。 | MJ; m3; kg | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
-| cp_water | paper_mill | 新鲜水、蒸发及外送废水 | 实测原始记录 | 补水体积；水源；完整湿废水质量及配对密度／温度；H2O 组分分数／质量与水密度；受纳体及外送／直接分支；白水和凝结水链接；纸幅水分；蒸发；排水；锅炉排污；存量 | 经校准流量计及水分或排气测量；核对新鲜水、物料携水、产品水、蒸发、外运废水及存量变化。 | m3; kg | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
+| cp_water | paper_mill | 新鲜水、水蒸气、外送废水及公用工程水边界交接 | 实测原始记录 | 补水体积；水源；实际外部蒸汽 H2O；每项实际外部凝结水／公用工程水回送及其他 H2O 外送，配对质量或体积、密度、H2O 分数、温度／状态、发送接收方及边界；入流／外流空气湿度；完整湿废水质量及配对密度／温度；H2O 组分分数／质量与水密度；受纳体及外送／直接分支；内部白水和凝结水链接；纸幅水分；实际水蒸气；锅炉排污；存量；经 cp_reaction 独立证明的反应 H2O 生成／消耗 | 经校准流量计／秤及水分／排气测量；同报告期同边界将实际外部蒸汽与实测外部凝结水／公用工程水回送和 cp_energy 配对。全部外部 H2O 输入及输出（含其他真实外送）与内部循环分开核对，并纳入反应生成／消耗、产品水、实际水蒸气、废水／废物携水及存量。内部链接仅在边界内抵消，不新增采购、排水或排放；不假定回送比例。实测输出已含排出的反应水；未知项保留缺口，不当作零。 | m3; kg | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
 | cp_air | paper_mill | 每种已命名空气排放 | 实测原始记录 | 排口来源；物种；碳来源；粒径区间；实测浓度；气量；持续时间；温压；氧量；湿干及可凝结基准；方法；捕集氧化 | 代表性烟囱或逸散监测及来源专属碳气平衡；流量浓度按同一参考条件配对。任何因子须有真实来源及技术、控制匹配。 | kg | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
 | cp_effluent | paper_mill | 每种已命名环境水负荷 | 实测原始记录 | 最终排口受纳方；体积；配对浓度；分析定义；COD/BOD 测试；总氮磷及具体物种；日期；处理状态；质控 | 流量比例混合采样并配对排水流量及实验室分析；仅记录实际厂内处理后的最终释放。记录分析覆盖、检出限及实际 BOD 周期。 | kg | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
-| cp_residues | paper_mill | 外运废纸及污泥 | 实测原始记录 | 流身份；湿干质量；固形物；灰分；污染物；发送接收方；处理；回收内部损纸；捕集切纸粉尘、内部粉尘回用及外送粉尘；存量变化 | 经校准地磅或秤、固形物测试及接收凭证；区分实际原子废物类型及内部回用。 | kg | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
+| cp_residues | paper_mill | 外运废纸及污泥 | 实测原始记录 | 流身份；湿干质量；固形物；灰分；污染物；一次纤维／填料与生化剩余污泥；有机／矿物比例及元素组成；碳来源；生物质存量；发送接收方；处理；回收内部损纸；捕集切纸粉尘、内部粉尘回用及外送粉尘；存量变化 | 经校准地磅或秤、固形物测试及接收凭证；区分实际原子废物类型及内部回用。 | kg | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
 | cp_packaging | paper_mill | PE 包膜及纸芯 | 实测原始记录 | 物料身份；批次；消耗量；皮重；随货质量；有记录纸芯复用；废料去向 | 逐种称量并核对采购、存量及发货；保留供方等级及复用记录；包装排除在 S 之外。 | kg | 逐批或连续计量；排放按代表性工况与实际监测计划 | 与净交付产品同报告期，披露缺测 | 同工厂同等级及相关排口，保留阶段编号 | 每 1 kg 参考流 | 校准、链条记录、采样与实验室质控、供方基准及平衡残差 |
+| cp_reaction | paper_mill | 实际燃烧及生物／物料转化 | 实测原始记录及独立证据反应账 | 真实路线及反应程度；消耗／生成物料与物种；C/H/O/N 及其他相关元素组成；化石／生物／矿物碳来源；配对气体入流／外流流量与组成（含净 O2 摄取及湿度）；溶解气体；出水组分；生物质形成／衰减及存量；独立约束 H2O 生成／消耗；方法及不确定性 | 经校准气体／氧气及液固测量与代表性组成／物种、元素分析和有证据反应程度配对；与 cp_air、cp_effluent、cp_materials、cp_residues、cp_water 核对。实际产气、捕集、氧化、溶解／外送及释放路线分账。不设通用生物质产率、COD 换水因子或假定有机式，不由残差拟合反应／蒸发对；不可识别项保留缺口。 | kg; mass fraction | 代表性真实工况及配对报告期记录 | 与净交付产品同报告期，披露缺测 | 同工厂真实反应阶段，保留阶段编号 | 每 1 kg 参考流 | 校准、分析基准、独立反应证据、可识别性及不确定性 |
 
 ### 计算规则
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | period_normalization | all inventory rows | Q_ref = Q_period / S；S 为同报告期验收净交付原纸 kg；Q_ref 为每 1 kg 参考流的交换数量。 | Q_period; S; cp_production | Q_ref | jrc-paper-bref-2015 |
-| solids_balance | pulp_soft; pulp_hard; gcc; pcc; kaolin; starch_ox; akd; pae; pam; wallpaper_base; broke; sludge; cutting_dust | m_dry = m_delivered × measured_solids_fraction；D = S × (1-w)；逐种核对投入干物质 = 产品留存 + 外运废物干物质 + 排放干物质 + 存量变化。内部回用在同边界两端抵消，包装另记。 | cp_materials; cp_production; cp_residues | 实物干物质账及残差 | jrc-paper-bref-2015 |
+| physical_mass_elements | all inventory rows | 逐实际阶段及总边界：总质量投入 = 总质量输出 + 存量变化；各元素（C/H/O/N 及其他相关元素）同样守恒，不设元素反应源／汇项。同基准纳入真实 O2 摄取、其他净空气交换、全部固／液／气路线及存量。由独立组成及反应程度证据约束反应，不只依闭合。化石、生物、矿物碳分别追踪产品、生物质、污泥、出水、产气／捕集／氧化及实际释放。采用整流质量或其不重叠组分，不两者相加；COD/BOD 及有重叠污染物／元素指标不是可相加实物质量。内部转移抵消，负荷分配不缩放实物流。 | cp_materials; cp_production; cp_energy; cp_water; cp_air; cp_effluent; cp_residues; cp_packaging; cp_reaction | 总质量与元素账、碳来源去向及残差 | jrc-paper-bref-2015, epa-aerobic-treatment-2000 |
+| solids_balance | pulp_soft; pulp_hard; gcc; pcc; kaolin; starch_ox; akd; pae; pam; wallpaper_base; broke; sludge; cutting_dust; effluent; co2_fossil; co2_bio; bio_ch4 | m_dry = m_delivered × measured_solids_fraction；D = S × (1-w)。保留实测干物料／组分账，不设普遍干固体守恒。对每种真实反应物料／物种，同分析基准下投入 + 有证据生成 = 输出 + 有证据消耗 + 存量变化。采用 cp_reaction 和元素闭合追踪有机物同化、矿化、生物质形成／衰减、转为气体及出水溶解／颗粒组分去向；O2 等反应物参与，气体质量不是被消耗有机固体的等质量替代。仅已证明惰性固体保持投入 = 输出 + 存量变化。内部两端同基准抵消，包装另记；不设默认产率，不由残差拟合污泥。 | cp_materials; cp_production; cp_residues; cp_reaction; cp_air; cp_effluent | 实物干物料／物种去向及残差 | jrc-paper-bref-2015, epa-aerobic-treatment-2000 |
 | utility_reconciliation | electricity; gas; steam | 电表 kWh × 3.6 = MJ；同状态各阶段表量与总表核对。气体体积仅经声明的 T/P、湿干及 Z 换算；实物净蒸汽热 = sum(m_in×h_in) - sum(m_return×h_return) - 声明边界其他有文件依据的外流焓，损失另记。供方 GCV 参考需求须独立文件化换算；不等同净热与 GCV，不套默认常数、不新增内部蒸汽投入。 | cp_energy | 相容公用工程数量及内部热量账 | jrc-paper-bref-2015 |
-| water_balance | water_input; water_vapor; liquid_water; effluent; wallpaper_base; sludge; cutting_dust | 输入新鲜水 + 物料携水 + 实际燃烧生成水 = 产品水 + 蒸发 + 排水及废物携水 + 存量变化；按实测密度转换体积，白水与凝结水内部两端同量。 | cp_water; cp_materials; cp_production; cp_residues | 实物水量账及残差 | jrc-paper-bref-2015 |
+| water_balance | water_input; water_vapor; liquid_water; effluent; wallpaper_base; sludge; cutting_dust | 外部 H2O 输入（新鲜水、物料携水、实际外部蒸汽及空气湿度）+ 独立证明的 H2O 生成 = 产品水 + 实际外流 H2O 水蒸气 + 实际外部凝结水／公用工程水回送 + 其他真实 H2O 外送（含废水／废物携 H2O）+ 独立证明的 H2O 消耗 + 存量变化。采用 cp_reaction 纳入实际燃烧、生物及其他反应项；未知项不当作零。实测外流 H2O 已含反应水，不再次叠加。不由一个残差同时解出反应生成水与蒸发，不用 COD 作产水默认值。体积采用实测／有文件依据的对应状态密度；内部白水／凝结水两端同量；内部抵消不替代实测外部回送／外送，内部循环不新增采购、排水或排放，不假定回送比例。 | cp_water; cp_materials; cp_production; cp_residues; cp_energy; cp_air; cp_reaction | 实物水量账及残差 | jrc-paper-bref-2015, epa-aerobic-treatment-2000 |
 | effluent_load | cod; bod; tss; n_water; p_water | Load_kg = sum(V_i_m3 × c_i_mg_per_L × 0.001)，仅同时间、同分析定义的配对流量浓度；归一化时除以 S。送厂外处理负荷不得再计作环境释放。 | cp_effluent; cp_production | 逐项水排放负荷 | jrc-paper-bref-2015 |
 | air_load | co2_fossil; co2_bio; co; nmvoc; nox; so2; ch4; n2o; bio_ch4; pm25; pmcoarse; pmover10 | 逐排口逐物种按同状态浓度 × 烟气流量 × 时间积分，再除以 S；否则使用真实已引用且相容的实测活动量与来源专属因子，保留不确定性，不设通用因子。 | cp_air; cp_production | 逐项空气排放负荷 | jrc-paper-bref-2015, epa-natural-gas-combustion |
 | wastewater_native_quantity | effluent | X_wet = 实测整液交接质量或 sum(V_handover×对应温度状态的 rho_effluent)；交换 = X_wet/S。水／干组分、库存及接收方另记；污染负荷不是整液质量。同一外送处理分支排除重复直接输出。 | cp_water; cp_effluent; cp_production | 每 kg 合格净纸的 kg 湿废水 | |
@@ -722,13 +724,13 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | identity_basis | all inventory rows | 逐项核验身份与供方或接收方背景基准；UUID 不是已完成数据集。缺失身份不许邻近替代。 | 供方质检单、路线、背景定义 |
 | coverage | all inventory rows | 保留适用、实测正值、确认未使用、缺测或低于检出限状态；列出实际配方及全部实际化学品、包装和排放物种，逐种增加原子行并核验。条件性行不隐含默认数量。 | 材料账、运行记录、监测及明确缺口 |
-| balances | paper_mill | 报告分阶段及总边界干物质、水和碳平衡；内部两端同量，解释残差与不确定性。交付纸中生物碳不当作负排放抵扣。 | 实物账与独立环境负荷账 |
+| balances | paper_mill | 分别报告阶段及总边界总质量／元素闭合、反应性干物料去向和物种 H2O 账，包含真实氧摄取、气体／出水去向、实测外部凝结水／公用工程水回送及其他 H2O 外送、生物质形成／衰减及存量。保留分析基准、校准、独立反应约束和残差不确定性。反应水、蒸发或有机物去向不可识别则完整性待定；不以虚构污泥、产率或假定零强行闭合。实测输出已包含反应产物。交付纸中生物碳不当作负排放抵扣。 | 实物账、cp_reaction 证据与独立环境负荷账 |
 | comparability | wallpaper_base | 不同浆料、填料、施胶、水分、定量或表层状态不得只按 kg 声称功能等价。 | 采购规格和验收测试 |
 | ranges | all inventory rows | 不采用历史专利或单一生产者数量作通用范围；采集真实场址数据，未知保持缺口。 | 真实测量及限定原件 |
 
 ## 9. 校验规则
 
-要求恰好一个链接 wallpaper_base 的合格参考输出；两种语言、每行及每个协议均采用 1 kg 和同一净交付分母。分别核对限定信息、化学组成或物种、参考属性、单位组、环境介质及数量背景基准。所有实际投入与排放须为原子流并链接采集；前景缺测、NOx 约定不受支持、蒸汽交付基准未决或背景不兼容均令数据集校验不完整。核对无装饰、浸渍或无纺成品主张，无嵌套颗粒物重复，无未处理废水与最终释放负荷重复，无捕集或回用干切粉尘与逸散颗粒物重复，无生物 CO2 删除，且实物账与分配账分开。方法检查不证明工厂实际测量或科学批准。
+要求恰好一个链接 wallpaper_base 的合格参考输出；两种语言、每行及每个协议均采用 1 kg 和同一净交付分母。分别核对限定信息、化学组成或物种、参考属性、单位组、环境介质及数量背景基准。所有实际投入与排放须为原子流并链接采集；前景缺测、NOx 约定不受支持、蒸汽交付基准未决或背景不兼容均令数据集校验不完整。核对无装饰、浸渍或无纺成品主张，无嵌套颗粒物重复，无未处理废水与最终释放负荷重复，无捕集或回用干切粉尘与逸散颗粒物重复，无生物 CO2 删除，且实物账与分配账分开。核对含真实氧气与气体路线的总质量及元素闭合、反应性有机物／生物质生成和消耗、独立约束的 H2O 反应项。不可识别项令校验不完整，不当作零。拒绝强制有机干固体守恒、COD 换水默认值、由一个残差同时拟合反应水／蒸发，以及向实测水蒸气或液体输出再次叠加反应水。核对 cp_water 保留实测外部凝结水／公用工程水回送及其他 H2O 外送，不允许用内部链接抵消或假定回送比例替代。内部循环不新增采购、排水或排放。保留已证明惰性固体平衡及碳来源去向。来源：`jrc-paper-bref-2015`、`epa-aerobic-treatment-2000`。方法检查不证明工厂实际测量或科学批准。
 
 ## 10. 发布数据集画像
 
@@ -751,3 +753,4 @@ sync_with: pcr.en-US.md
 | bopaper-muralle | literature | BO PAPER, MURALLE official product page; https://www.bopaper.com.br/muralle?lang=en; 访问日期 2026-10-12; product description/application and coil finishing. | 具体生产者纸卷交付及后续印刷或塑料涂层边界；不推定其配方、供能或通用定量。 |
 | epa-natural-gas-combustion | official_guidance | US EPA, AP-42 §1.4 Natural Gas Combustion, retained official PDF header 10/26; https://www.epa.gov/sites/default/files/2020-09/documents/1.4_natural_gas_combustion.pdf; 读取日期 2026-10-12; §§1.4.1-1.4.3, pp.1.4-1 to1.4-3. | 仅支持燃气外部燃烧物种及优先现场测试；无默认排放因子、燃料组成或热值，不当作许可限值。 |
 | eu-pef-allocation-2021 | official_guidance | European Commission, Recommendation (EU) 2021/2279, Annex I §4.5, pp.63-64; https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf; 读取日期 2026-10-12. | 多功能性分配层级及披露；不声称完整 PEF 合规或默认回收抵扣。 |
+| epa-aerobic-treatment-2000 | official_guidance | US EPA, Decentralized Systems Technology Fact Sheet: Aerobic Treatment, EPA 832-F-00-031, September 2000; https://www.epa.gov/sites/production/files/2015-06/documents/aerobic_treatment_0.pdf; 读取日期 2026-10-14；PDF 第1页 DESCRIPTION。 | 仅支持有氧条件下有机物转为 CO2 和 H2O 的一般原理。家庭／分散式案例不提供造纸厂化学式、生物质产率、反应水／COD 因子、处理性能或数值默认值；真实反应程度和去向须独立场址证据。 |

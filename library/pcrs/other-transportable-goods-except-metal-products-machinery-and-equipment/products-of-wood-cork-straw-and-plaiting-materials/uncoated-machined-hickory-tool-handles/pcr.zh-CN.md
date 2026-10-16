@@ -337,7 +337,7 @@ CPC 31330木棍仅粗修，明确未经车削、弯曲或其他加工；不是�
 | calculate_electricity | electricity | Energy_MJ=3.6 × attributable electricity_kWh；x_electricity=Energy_MJ/Q。电力不能使用燃料热值或锅炉效率系数。 | cp_energy; Q | 每1千克参考流的MJ | |
 | calculate_transport | inbound_transport | Work_kgkm=sum(shipment_kg × leg_km)；Work_tkm=Work_kgkm/1000；x_transport=Work_kgkm/Q。实际装载/空驶约定保留在兼容的背景服务中，避免同一路段重复计入。 | cp_transport; Q | 每1千克参考流的kg*km | |
 | calculate_particles | pm25; pmcoarse; pmover10 | E25=E_PM2.5；Ecoarse=E_PM10-E_PM2.5；Elarge=E_filterable_total-E_PM10。仅同方法/源/控制/时间/数量基准允许相减，各区间在报告不确定性内须非负。浓度乘实际对应气量时采用1mg=0.000001kg；实际各源区间排放求和后除以Q。不能把累积PM2.5、PM10及总量合计为独立排放。 | cp_emission; Q | 每1千克参考流的互斥区间千克 | epa-sawmill-pte-2014 |
-| reconcile_physical_ledgers | all inventory rows | 绝干木输入+期初绝干库存=合格绝干木+边角料绝干木+清洁捕集绝干木+废砂纸/打磨粉尘中实测木质+木源空气颗粒物+期末绝干库存+未解释残差。水输入+期初水+实测吸收=合格木料/余料含水+实测释放+期末水+水残差。碳输入+期初碳=合格木料/余料碳+木源空气碳+期末碳+碳残差，采用各实测绝干碳比例。实际挥发碳排放须另行扩展为具体排放流。大气净水分交换须有证据，不能假定零值。量化残差与不确定性，不把未测量损失改称零值或虚构排放。包装纸/矿物及磨料分别平衡；内部交接保留相等两端后抵销。 | cp_reference; cp_wood; cp_aux; cp_residue; cp_emission | 分开的实物绝干木、水及碳平衡、残差和材料组成账 | usda-wood-handbook-2021 |
+| reconcile_physical_ledgers | all inventory rows | 使用归一化前的生产分账总量。木料输入指已调整原料库存/退回的消耗量；余料量指已调整余料库存/出运的产生量。以下生产平衡的期初/末存量仅指在制品，不得再次加入已用于上述调整的原料或余料库存变化。消耗绝干木+期初在制品绝干木=合格绝干木+边角料绝干木+清洁捕集绝干木+废砂纸/打磨粉尘中实测木质+木源空气颗粒物+独立测得的木源挥发物质量+期末在制品绝干木+未解释残差。消耗材料含水+期初在制品水+实测吸收=合格木料/余料含水+实测释放+期末在制品水+水残差。消耗材料碳+期初在制品碳=合格木料/余料碳+木源空气碳+期末在制品碳+碳残差，采用各实测绝干碳比例。实际挥发碳排放须另行扩展为具体排放流。大气净水分交换须有证据，不能假定零值。量化残差与不确定性，不把未测量损失改称零值或虚构排放。包装纸/矿物及磨料分别平衡；内部交接保留相等两端后抵销。 | cp_reference; cp_wood; cp_aux; cp_residue; cp_emission | 分开的实物绝干木、水及碳平衡、残差和材料组成账 | usda-wood-handbook-2021 |
 
 ### 数据质量要求
 
