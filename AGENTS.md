@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 3372bc9f3a0e3dcb41595a05f31c6d4114be08ef
-lastReviewedNote: "Reviewed PCR #114 combined 0.4.7 qualification repair: the POSIX signal-test fixture publishes readiness atomically and reaps its owned subprocess group before deleting temporary files. Controlled failure now exits with the original assertion instead of hanging; complete instrumented engineering tests and strict types pass locally. Production runner, coverage semantics, CI budgets, runtime pins and candidate methodology are unchanged; fresh complete CI and publication remain required."
+lastReviewedAt: 2026-10-16
+lastReviewedCommit: 176c63d6b115f3116a2ceda7172833ef0f83f7df
+lastReviewedNote: "PCR #117: bounded npm graph/Actions discovery coordinates root/core Ajv and reuses full qualification; runtime pins, readers, assets, locks, methodology and product/publication authority remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -334,6 +334,11 @@ code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
 reusable release invocation select full mode, including empty product tags.
 Do not satisfy a failed qualification with prior-attempt shard artifacts or
 report compact portable tests as complete corpus qualification.
+
+Bounded npm/Actions monitoring follows `docs/dependency-maintenance.md` and
+reuses that full qualification. The root/core Ajv declarations remain
+coordinated; discovery never grants reader/snapshot adoption, product release
+or methodology authority.
 
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
