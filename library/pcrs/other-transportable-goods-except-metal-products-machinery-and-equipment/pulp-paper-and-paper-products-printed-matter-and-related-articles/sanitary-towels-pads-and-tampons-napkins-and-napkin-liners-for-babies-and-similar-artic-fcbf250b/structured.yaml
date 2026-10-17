@@ -1,10 +1,1548 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "32196"
-  title: "Sanitary towels (pads) and tampons, napkins and napkin liners for babies and similar articles, of any material"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.sanitary-towels-pads-and-tampons-napkins-and-napkin-liners-for-babies-and-similar-artic-fcbf250b"
+  classification_refs: "CPC 3.0 32196; narrower"
+  covered_products: "Disposable taped baby diapers with fluff-pulp/SAP core; purchased-component electric conversion"
+  excluded_products: "Pads; tampons; adult incontinence; reusable; swimming; pull-on; fluff-free designs"
+  representative_product: "Pampers Swaddlers fragrance-free taped baby diaper, US size 4 design; actual lot specification required"
+  production_route: "Purchased ECF chemical fluff pulp sheets and distinct component inputs → dry defibration/SAP dosing/core forming → assembly and electric adhesive/coating application → cutting/QC/pack-out; one aggregate foreground unit, separate stage meters"
+  market_state: "Unused, complete, accepted diaper at converter dispatch gate, actual moisture; accompanying packaging separate"
+functional_unit:
+  what: "Manufacture a specified complete taped baby diaper designed to contain infant excreta"
+  how_much: "1 kg accepted complete net diaper product; this is a manufacturing declared unit"
+  how_well: "Declared actual size, component specification and lot acceptance tests; no generic absorption or leak-protection equivalence"
+  how_long_or_cycle: "One manufacturing cycle to converter gate for a single-use product; use duration is outside the unit"
+  reference_flow_link: "diaper_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "conversion"
+      rule: "Include receipt/handling, dry defibration, SAP dosing/core forming, web and film assembly, elastics/fasteners, actual coating, cutting, inspection/rejects, pack-out, dust collection and attributable electric auxiliaries. Explicitly retain upstream burdens for every input; do not present a converter module as a full lifecycle result."
+      source_ids:
+        - pampers-swaddlers-construction
+        - ea-nappies-2008
+        - pampers-manufacturing-traceability
+    - rule_id: upstream_pulp_boundary
+      applies_to: "fluff_pulp"
+      rule: "Purchased pulp manufacture is upstream, including recovery/boilers and mill treatment. Supplier wet/AD/oven-dry bases must be reconciled with received mass. Do not bring sawmill evidence into pulp process quantities. Retain upstream biogenic CO2 exchanges and carbon origin even if a climate reporting convention excludes them from a subtotal."
+      source_ids:
+        - jrc-pulp-paper-bref-2015
+    - rule_id: physical_network
+      applies_to: "conversion"
+      rule: "Aggregate manufacture and packaging into one foreground unit so the same complete product is output only once. Retain stage meters and a separate physical process diagram/balances. Each internal transfer has equal mass/identity at both ends; internal recirculation and collected return are not external exchange or credited waste."
+      source_ids:
+        - ea-nappies-2008
+    - rule_id: actual_air_path
+      applies_to: "conversion"
+      rule: "Inspect dry defibration/core-forming/cutting exhaust and fugitive pathways. BREF7.1.10 establishes possible paper-cutting dust, not a diaper/SAP factor. Keep capture and external particulate emission separate and measured; classify size and composition without correction flows. Additional actual volatilized species need separate verified elementary rows before dataset completion."
+      source_ids:
+        - jrc-pulp-paper-bref-2015
+boundary_abstraction:
+  declared_starting_condition: "Purchased pulp sheets and individually declared components at converter receipt; actual supplier grade/state/route and inbound freight boundary disclosed"
+  starting_condition_role: "foreground_module"
+  product_classification_scope: "CPC32196 taped infant-diaper subset only; method is independent from the classification label"
+  recursive_input_rule: "No recursive diaper manufacturing for purchased completed diapers: record the actual input and compatible upstream dataset, disclose refurbishment/rework. Internal rework remains internal; do not purchase the same rejected unit again."
+  upstream_dataset_requirement: "Supplier-specific component manufacture and transport consistent with reference properties; for pulp include actual wood sourcing, kraft pulping/recovery, ECF bleaching, drying and wastewater treatment. Use BREF only for relevant pulp process/reporting context, not a lumber dataset or a diaper recipe."
+  disclosure: "Converter module versus cradle-to-gate aggregate; geography/year; complete component BOM; supplied subassembly states; actual product moisture; utility and treatment boundaries; all exclusions and gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Sanitary towels (pads) and tampons, napkins and napkin liners for babies and similar articles, of any material"
+    uuid: "aaedb37f-8a1a-4dea-aa96-3613fa13bb0e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Taped baby diaper"
+    - "size and lot"
+    - "complete BOM"
+    - "pulp and SAP identity"
+    - "material and supplied-state of each component"
+    - "actual net moisture"
+    - "fragrance/lotion/indicator state"
+    - "accepted QC protocol/results"
+    - "all-electric converter route and supply voltage"
+    - "packaging exclusion"
+    - "provider dataset bases"
+    - "site/year"
+    - "external waste and emission routes"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "diaper_output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "1 kg complete net accepted diapers at dispatch moisture. All inventory and collection aggregation use this same reference_flow basis. Do not substitute pure pulp/SAP mass or include packaging."
+  - id: net_batch_basis
+    applies_to: "All inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Collect raw Q by cp_output and raw external period totals A_i on the same complete pool. The expressions q_i=A_i/Q on inventory cards denote the single normalize_net_product calculation; they do not instruct another division. Counts corroborate measured net mass and never establish an assumed item weight."
+  - id: received_pulp_basis
+    applies_to: "fluff_pulp"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep measured as-received mass and dry-solids fraction s separate. Supplier AD reporting is a declared convention, not received moisture. Verify conversion and background reference basis before linking."
+  - id: electric_energy_basis
+    applies_to: "grid_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert delivered kWh to MJ by 3.6 only. Preserve supplier voltage/mix and losses; internal step-down losses are in foreground consumption if inside the gate, not an extra purchased electricity input."
+process_map:
+  - id: conversion
+    name: "Purchased-component diaper conversion and pack-out"
+    inclusion: "required"
+    inclusion_condition: "Declared electrically powered dry route"
+    role: "foreground"
+    quantitative_reference: "1 kg accepted complete net diapers"
+process_inventory:
+  - id: conversion
+    label: "Purchased-component diaper conversion and pack-out"
+    inputs:
+      product:
+        - row_id: fluff_pulp
+          role: "Delivered fluff pulp"
+          name: "Chemical wood pulp, other than dissolving grades"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fe36cb07-5527-4085-a80b-c8ef2cc7e0aa"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Delivered ECF-bleached, non-dissolving chemical fluff pulp sheets for dry defibration. Record actual grade, kraft route, producer, as-received moisture and delivery mass. A broad non-dissolving pulp identity is usable only with these qualifiers; it does not select a supplier dataset or a universal dry-matter factor."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+                - jrc-pulp-paper-bref-2015
+            ranges: []
+        - row_id: sap
+          role: "Sodium polyacrylate SAP granules"
+          name: "Crosslinked sodium polyacrylate superabsorbent granules"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Crosslinked sodium polyacrylate superabsorbent granules, recorded by delivered formulation mass, actual CAS/neutralization/crosslinking and supplier grade. Do not substitute acrylic acid, polyacrylamide or polyacrylate-2; do not import an absorption multiplier."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: topsheet
+          role: "PP/PE topsheet web"
+          name: "Non-woven fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6b35ed69-0eb9-4c4a-902e-bdc43eeef146"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One delivered PP/PE nonwoven topsheet grade. Record fibre chemistry, bonding route, surfactant finish and emollient state from the supplier. The broad nonwoven identity does not imply spunbonding. A pre-coated web includes its coating in received mass; then the separate emollient input is absent."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: cuff_web
+          role: "PP leak-barrier cuff web"
+          name: "Non-woven fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6b35ed69-0eb9-4c4a-902e-bdc43eeef146"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One PP nonwoven cuff grade, separately metered from topsheet and outer facing. Retain the actual coating and pigment content. No fictional separate ingredient exchange is created for a finish already supplied on the web."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: outer_facing
+          role: "PP outer facing web"
+          name: "Non-woven fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6b35ed69-0eb9-4c4a-902e-bdc43eeef146"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Delivered PP nonwoven outer facing; record print/finish mass within the actual supplied grade. It is separate from the PE backsheet in this route. A purchased PE/PP laminate must instead be represented by its real one-piece input identity before using this dataset."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: acquisition_web
+          role: "Polyester acquisition layer"
+          name: "Textile, nonwoven polyester"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5ac0c411-47ce-40ed-8ce1-9aaf9c351ca4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Delivered polyester nonwoven acquisition/distribution web. Confirm whether the supplied grade includes PE binder fibres or other constituents; the polyester identity is conditional on an actually polyester web and a compatible supplier inventory. Require supplier proof of actual nonwoven polyester construction and compatible reference basis; a different quilted/composite construction requires identity review."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: core_wrap_nonwoven
+          role: "Nonwoven core wrap"
+          name: "Non-woven fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6b35ed69-0eb9-4c4a-902e-bdc43eeef146"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: one actual nonwoven core wrap web, with polymer grade and bonding declared. This construction detail is not disclosed for every Swaddlers lot; establish it by supplier BOM/disassembly. Do not add this row merely because another product has a wrap."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: core_wrap_tissue
+          role: "Cellulose tissue core wrap"
+          name: "Toilet or facial tissue stock, towel or napkin stock and similar paper, cellulose wadding and webs of cellulose fibres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3070a34a-8d40-426e-9299-7c367b0dca21"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual purchased cellulose tissue wrap, if used in the declared lot. The historic UK nappy description supports this possibility, not a current Swaddlers default. Disclose whether it replaces or accompanies the nonwoven wrap and meter each physical web once."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ea-nappies-2008
+            ranges: []
+        - row_id: backsheet
+          role: "Printed PE barrier film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One delivered PE barrier film grade including its supplied fillers, print and finish. Verify actual PE chemistry/CAS9002-88-4, film state, porosity and provider; this UUID carries an inconsistent external classification, so physical identity alone is retained conditionally. The supplied pigment solids are inside this input, not a second fictitious pigment purchase."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: hook_fastener
+          role: "PP mechanical fastening tab"
+          name: "Commodity plastic products"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b5f649d-db2b-426c-9bd2-aff11fce2e3a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual PP mechanical hook tab grade, excluding a separately delivered PE carrier. Record its mass, receiving state and supplier manufacture; PP resin or filament is not a finished hook tab. The broad plastic-product identity locates this one actual finished PP mechanical hook component, not PP resin, a collection of fasteners or a metal part. Require the actual hook geometry, PP/additive composition, supplied subassembly state, process and compatible supplier reference mass; no molding route or fastening performance is inferred."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: landing_web
+          role: "PP nonwoven landing strip"
+          name: "Non-woven fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6b35ed69-0eb9-4c4a-902e-bdc43eeef146"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on a separately delivered PP nonwoven landing strip. Record actual fastening-compatible web grade and coatings; a supplied complete fastening assembly is one real input instead and requires its own identity."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: tab_carrier
+          role: "PE fastening-tab carrier film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on PE carrier film delivered separately from the PP hook. Record the PE grade and adhesive already present. Exclude this separate row when the complete fastening tab is purchased as a single component. Verify actual PE-film grade/composition, CAS9002-88-4 and supplier physical/reference state; the unresolved source metadata does not establish a compatible delivered background."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: elastic_strand
+          role: "Elastane elastic strand"
+          name: "Spandex"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b722c9ee-6aa7-46ec-ba55-bde79502aaca"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual elastane strands for leg/waist fit, not natural rubber. Confirm the polyether-polyurea copolymer identity described by the selected record and actual strand form with the supplier; a different elastomer chemistry requires a different identity. Require actual continuous elastic-strand form and supplier/source confirmation that the broad fibre identity applies, with the declared chemistry and delivered mass; mixed fabric/staple metadata does not establish strand manufacture. If the source is limited to fabric or staple fibre, a compatible strand identity is required."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: construction_adhesive
+          role: "Solid thermoplastic construction adhesive"
+          name: "Hot melt adhesive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3ec33f9f-92dd-487a-a0d9-b177c926b8f0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One purchased solvent-free thermoplastic hot-melt construction adhesive grade. Supplier proof of this physical route is required: the producer only discloses polymer adhesives, not every proprietary grade. If the actual glue is reactive or waterborne this row is unavailable. Measure glue issue/returns and incorporation/purge separately. Require the actual entire supplied solid, solvent-free, reversibly softened thermoplastic formulation and compatible provider mass; no vulcanization, rubber article or chemical curing is inferred."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: elastic_adhesive
+          role: "Solid thermoplastic elastic attachment adhesive"
+          name: "Hot melt adhesive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3ec33f9f-92dd-487a-a0d9-b177c926b8f0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: a second, separately supplied hot-melt adhesive grade for elastics. If one grade serves both roles, partition the single metered issue into disjoint role totals rather than duplicating it. Chemistry/provider conditions are the same as construction_adhesive. The same actual solid thermoplastic formulation and provider-state requirements apply; role subdivision never duplicates one physical adhesive purchase."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: emollient
+          role: "Topsheet emollient coating formulation"
+          name: "Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "59808a77-a33c-493f-8e5f-c0eb3e837943"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual purchased emollient/balm formulation applied to the topsheet. Record product name, complete composition, solids, lot and incorporation mass. Producer disclosure confirms the balm, but does not disclose a complete recipe; do not assume petrolatum, stearyl alcohol or aloe. Absent as an on-site input for pre-coated topsheet. The broad functional Coating identity represents the complete actual supplied balm coating, not a pure ingredient. Record delivered phase, full supplier formulation/SDS, water/volatile/solid fractions and delivery versus incorporated mass before background linkage. Separate actual application charge, retained amount, stock/return and purge; no chemical recipe or coating temperature is defaulted."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: wetness_indicator
+          role: "Wetness-indicator formulation"
+          name: "Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "59808a77-a33c-493f-8e5f-c0eb3e837943"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual delivered pH-sensitive wetness-indicator formulation with a water-soluble colorant. Record product/colour chemistry, carrier, solids and application route from the provider. It is neither the generic construction adhesive nor an inferred pure dye. If already included in purchased film, count it in that film only. The broad functional Coating identity represents this separately supplied complete pH-sensitive indicator coating. Verify actual supplied formulation/SDS, phase, colorant/carrier chemistry, water/volatiles/solids, application and compatible supplier mass; absent raw CAS does not verify a particular colorant. Charge, retained coating and independent purge remain separate measured accounts, without imposing a hot-melt, aqueous or solvent recipe."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: pack_bag
+          role: "PE retail pack bag"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Delivered PE bag used for the actual pack count, including supplied print. Record net packaging mass and packaging losses separately. Packaging accompanies the net diaper output but never enlarges its reference mass denominator."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ea-nappies-2008
+            ranges: []
+        - row_id: pack_carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated shipping carton"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7336a8ee-9e4d-49a6-9fe5-ce285f613245"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One real corrugated transport box grade. Record actual fibre mix, print, provider and mass; do not impose the candidate database box recipe of 16.6% virgin/83.4% recycled fibre. The broad packaging record positively includes corrugated cases; use it only for this one actual delivered carton, never an aggregated bag/carton/wrap bundle. Require actual fibre composition, board construction, print/glue, moisture, grade and supplier/plant-gate mass compatibility. No 16.6%/83.4% fibre recipe or generic-world supplier dataset is adopted. The source record's English name is “Packaging materials, unspecified”; the selected-flow display below narrows that verified broad identity to this single corrugated carton. Its generic name does not authorize a packaging bundle or establish a supplier match."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ea-nappies-2008
+            ranges: []
+        - row_id: grid_electricity
+          role: "Purchased medium-voltage electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Conditional on actual 1–35 kV grid-average supply to the user. Meter the delivered supply point, including electric defibration, forming, bonding/heating, compressed air, HVAC, inspection and packaging within scope. Retain this record’s Net calorific value property label/MJ; kWh-to-MJ conversion by 3.6 does not select a geographic mix or prove a different voltage. Record supplier, year and loss boundary; use a different verified identity for a different delivery voltage. The raw CN supply geography and MV grid-average consumption mix do not default the actual site country or background. Require actual site/country/year/provider and voltage/loss-boundary compatibility before linkage."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - pampers-manufacturing-traceability
+            ranges: []
+        - row_id: cleaning_water
+          role: "Purchased tap water for cleaning"
+          name: "Water, tap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6a8b6455-e9bb-4cb9-81ea-5e83413d5fe1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: externally supplied tap water for actual converter cleaning and relevant auxiliaries. This dry converting route has no pulping or wet forming water. Measure supplied kg or convert metered m3 using measured site density; the broad physical identity does not identify a local waterworks dataset."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - ea-nappies-2008
+            ranges: []
+        - row_id: cleaning_detergent
+          role: "Aqueous neutral cleaning detergent formulation"
+          name: "Washing Agent"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1ee04905-0d1a-453e-9d3a-9ce612d79be0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on the named neutral aqueous cleaner actually used; record purchased formulation mass, complete supplier composition, dilution and route. Add a separate atomic row for each additional cleaning product used. Textile soaping formulations are not assumed compatible. The broad hard-surface cleaning-agent identity conditionally locates this one complete neutral aqueous delivered formulation. Confirm actual cleaning purpose, full grade/SDS composition, supplied concentration and measured pH, water fraction, dilution water, phase and compatible provider mass basis. It does not establish a laundry/soaping recipe, pure surfactant mass or supplier background."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - ea-nappies-2008
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: diaper_output
+          role: "Accepted complete net diapers"
+          name: "Sanitary towels (pads) and tampons, napkins and napkin liners for babies and similar articles, of any material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aaedb37f-8a1a-4dea-aa96-3613fa13bb0e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The sole reference product output is 1 kg of complete, unused, accepted taped diapers at actual dispatch moisture, including pulp, SAP, all webs/films, tabs, elastics, retained glue, pigments, balm and indicator. Exclude retail/transport packaging, rejected units and removable test specimens from net product mass. Record packaging accompanying delivery separately."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_output
+              source_ids:
+                - pampers-swaddlers-construction
+                - ea-nappies-2008
+            ranges: []
+      waste:
+        - row_id: captured_pulp_dust
+          role: "Captured fluff-pulp dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: separately captured pulp dust before SAP mixing, leaving the boundary to a named receiver. Confirm composition, moisture and no hazardous contamination; broad industrial dust physical identity is conditional, not an air emission. Internal return is only a measured internal transfer, not this external waste."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: captured_core_dust
+          role: "Captured absorbent-core dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: a physically separate collector stream after pulp/SAP mixing; measure actual cellulose/SAP fractions and receiver conditions. Do not call this pure SAP or add its total to pre-mix dust if both labels refer to one bin. Reuse of broad Dust identity is limited to an actually collected particulate waste."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: mixed_rejects
+          role: "Unused diaper conversion rejects"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual composite rejects/trim leaving as one receiver stream; include constituents, glue contamination and moisture. Exclude excreta and post-consumer diapers. Disassembly or segregated recovery fractions cannot also be counted as complete rejected units. Broad industrial solid-waste identity applies only to this independently collected actual solid stream. Preserve its named stage, material/adhesive/coating composition, moisture, weighed whole mass, inventory and actual receiver acceptance/treatment; do not merge streams, infer a hazardous status, cleaned/recycled grade or credit, or count constituents and their composite waste twice."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: pp_trim
+          role: "Segregated PP nonwoven trim"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: separately collected PP nonwoven trim at dispatch. Record coatings and receiving route. A mandatory mechanical-recycling UUID is not a default for unspecific waste removal. If in mixed_rejects, this separate amount is absent. Broad industrial solid-waste identity applies only to this independently collected actual solid stream. Preserve its named stage, material/adhesive/coating composition, moisture, weighed whole mass, inventory and actual receiver acceptance/treatment; do not merge streams, infer a hazardous status, cleaned/recycled grade or credit, or count constituents and their composite waste twice."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: pe_trim
+          role: "Segregated PE barrier-film trim"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: segregated PE film trim, including actual fillers/print/glue state and receiver. It must not be linked to PET waste or to already-cleaned recycled PE without proof of treatment state. Broad industrial solid-waste identity applies only to this independently collected actual solid stream. Preserve its named stage, material/adhesive/coating composition, moisture, weighed whole mass, inventory and actual receiver acceptance/treatment; do not merge streams, infer a hazardous status, cleaned/recycled grade or credit, or count constituents and their composite waste twice."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: pet_trim
+          role: "Segregated polyester acquisition-web trim"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: one separately collected polyester nonwoven trim stream, with actual binder, finish and receiver. Exclude any amount already in composite rejects. Broad industrial solid-waste identity applies only to this independently collected actual solid stream. Preserve its named stage, material/adhesive/coating composition, moisture, weighed whole mass, inventory and actual receiver acceptance/treatment; do not merge streams, infer a hazardous status, cleaned/recycled grade or credit, or count constituents and their composite waste twice."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: tissue_trim
+          role: "Segregated cellulose tissue-wrap trim"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual tissue wrap and separate collection; record adhesive contamination and receiving grade. Paper recycling treatment is not inferred solely from the material name. Broad industrial solid-waste identity applies only to this independently collected actual solid stream. Preserve its named stage, material/adhesive/coating composition, moisture, weighed whole mass, inventory and actual receiver acceptance/treatment; do not merge streams, infer a hazardous status, cleaned/recycled grade or credit, or count constituents and their composite waste twice."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: elastic_trim
+          role: "Segregated elastane-strand trim"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: one separate elastane trim stream; retain polymer grade, glue contamination and receiving conditions. Do not describe it as natural-rubber waste. Broad industrial solid-waste identity applies only to this independently collected actual solid stream. Preserve its named stage, material/adhesive/coating composition, moisture, weighed whole mass, inventory and actual receiver acceptance/treatment; do not merge streams, infer a hazardous status, cleaned/recycled grade or credit, or count constituents and their composite waste twice."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: adhesive_purge
+          role: "Solid thermoplastic adhesive purge"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: separately removed solid thermoplastic adhesive purge of one identified grade. Create a distinct row for another incompatible purge grade; do not use wafer-production glue residue. Broad industrial solid-waste identity applies only to this independently collected actual solid stream. Preserve its named stage, material/adhesive/coating composition, moisture, weighed whole mass, inventory and actual receiver acceptance/treatment; do not merge streams, infer a hazardous status, cleaned/recycled grade or credit, or count constituents and their composite waste twice."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: emollient_purge
+          role: "Diaper emollient-coating purge"
+          name: "Diaper emollient-coating purge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on on-site balm coating and separately removed purge of the actual formulation; keep composition and receiver. A contaminated cleaning wipe is a different waste requiring its own row. Measure actual phase at handoff, full balm composition, water/solids and whole mass or representative density if converted from volume. The phase is not established by application equipment: retain the UUID gap until an actually compatible solid, semi-solid or liquid identity and receiver basis is verified."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: indicator_purge
+          role: "Diaper wetness-indicator purge"
+          name: "Diaper wetness-indicator purge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on on-site indicator application and separately removed purge of its actual formulation. Record carrier, colourant and receiver; never combine this with adhesive purge merely because both use a heated applicator. Measure actual handoff phase, full indicator formulation, water/solids and whole mass or representative density if converted. Retain the UUID gap while phase and receiver compatibility remain unknown; do not force this purge into solid adhesive waste or liquid wastewater."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - pampers-swaddlers-construction
+            ranges: []
+        - row_id: pack_bag_trim
+          role: "PE retail-bag packaging trim"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual separate pack-bag waste, measured apart from incorporated bags. Record print and receiving state; do not duplicate a bin already recorded as pe_trim. Broad industrial solid-waste identity applies only to this independently collected actual solid stream. Preserve its named stage, material/adhesive/coating composition, moisture, weighed whole mass, inventory and actual receiver acceptance/treatment; do not merge streams, infer a hazardous status, cleaned/recycled grade or credit, or count constituents and their composite waste twice."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ea-nappies-2008
+            ranges: []
+        - row_id: pack_board_trim
+          role: "Corrugated carton packaging trim"
+          name: "Paper and cardboard packaging waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a318022d-c960-4eb5-a81c-04a9c4dda7e4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual cardboard packaging trim/rejected boxes of the declared grade. Record glue, coatings and receiver. The record’s illustrative loss percentage is not an amount rule."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ea-nappies-2008
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Cleaning wastewater to external treatment"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: one actual aqueous converter-cleaning effluent stream to a sewer or external treatment provider, with volume, density, detergent/solids composition and receiver conditions. It is neither a freshwater withdrawal nor a direct environmental release. Do not reuse manganese-residue washing wastewater. No on-site treatment is implied. The broad industrial liquid-waste identity locates only this independent whole wet aqueous stream delivered to the actual named external receiver. Weigh whole wet kg or convert actual volume with a measured representative density; record water, solids, cleaner and other contamination, collection stage and acceptance/treatment conditions. Keep H2O and contaminant subledgers without a second external waste/water exchange; no hazard class, generic disposal route, credit or freshwater release is inferred."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - ea-nappies-2008
+            ranges: []
+      elementary:
+        - row_id: pm_fine
+          role: "Fine airborne particles"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on measured particles (PM2.5) actually crossing to outdoor air, unspecified subcompartment, from dry defibration/forming/cutting. Use this non-overlapping size interval only; retain sampling method, exhaust flow, controls, fugitive coverage and site composition. Do not treat captured or internally returned dust as an emission, or assume a positive amount from a database match."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-pulp-paper-bref-2015
+                - ea-nappies-2008
+            ranges: []
+        - row_id: pm_coarse
+          role: "Coarse airborne particles"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on measured particles (PM2.5–PM10) actually crossing to outdoor air, unspecified subcompartment, from dry defibration/forming/cutting. Use this non-overlapping size interval only; retain sampling method, exhaust flow, controls, fugitive coverage and site composition. Do not treat captured or internally returned dust as an emission, or assume a positive amount from a database match."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-pulp-paper-bref-2015
+                - ea-nappies-2008
+            ranges: []
+        - row_id: pm_large
+          role: "Large airborne particles"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on measured particles (>PM10) actually crossing to outdoor air, unspecified subcompartment, from dry defibration/forming/cutting. Use this non-overlapping size interval only; retain sampling method, exhaust flow, controls, fugitive coverage and site composition. Do not treat captured or internally returned dust as an emission, or assume a positive amount from a database match."
+          amount:
+            expression: "q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-pulp-paper-bref-2015
+                - ea-nappies-2008
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "conversion"
+    rule: "First investigate subdivision or system expansion to avoid allocation; isolate the actual lot/line with direct meters where subdivision is possible. If expansion is justified, include the additional functions and report the expanded system as a whole. Only after documenting why these approaches are unavailable, partition unavoidable shared energy/services using a relevant measured physical relationship; if unavailable, justify an alternative relationship with actual economic records and sensitivity. No universal mass or price fraction applies. Review before choosing substitution; no automatic scrap credit."
+    source_ids:
+      - ec-pef-allocation-2021
+  - rule_id: physical_vs_burden
+    applies_to: "conversion"
+    rule: "Keep unallocated physical mass/water/carbon ledgers and diagrams separate from attributed environmental-burden ledgers. Physical coproduct or waste outputs and internal transfers stay at measured quantities; never mechanically multiply their physical output by the diaper allocation fraction. Attribute only justified common burdens without changing conservation."
+    source_ids:
+      - ec-pef-allocation-2021
+  - rule_id: waste_rework
+    applies_to: "conversion"
+    rule: "Rejects are not saleable coproducts by default. Document any real external coproduct function/receiver before allocating. Internal rework remains physical recovery, without displacement credit; external waste treatment stays connected to the actual stream and actual receiver."
+    source_ids:
+      - ec-pef-allocation-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "conversion"
+      flow_role: "diaper_output"
+      record_type: "Calibrated dispatch and QC records"
+      raw_fields: "lot; size; date; accepted batches; gross and packaging tare; removed samples; reject mass; net Q; actual moisture; QC test method/results"
+      collection_method: "Weigh complete accepted net diapers with calibrated scales and independently verified packaging tare; never infer item mass from marketing size or age. Retain raw production, dispatch, QC, returns and opening/closing feed, WIP and finished-stock records for the complete matched site/SKU/state/route period, including failed and zero-output runs, rejects, rework, changeovers, starts/stops, cleaning and attributable idle operations with their actual burdens. Q is unique newly generated accepted complete net diaper production in this pool, excluding packaging, rejects and removed samples. Use calibrated accepted-production weighing, or reconcile dispatch plus closing minus opening accepted stock with actual transfers/returns; do not reapply a stock correction to production already measured. Count a returned and reaccepted net batch once; internal rework is not new output. Track opening/closing WIP and stocks with their embodied material and carried production burdens, transferring rather than duplicating or dropping them; opening product dispatched is not new production. Retain the raw positive Q and each raw period total A_i without division here; normalize_net_product is the sole normalization step. If Q<=0 or the pool/burden match is unestablished, preserve raw records and leave normalized exchanges unavailable."
+      unit: "kg"
+      frequency: "Each lot and dispatch"
+      temporal_coverage: "Complete representative operating period, including changeovers, starts and losses"
+      site_scope: "Declared line and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scale calibration; tare samples; lot QA and stock reconciliation"
+    - protocol_id: cp_material
+      process_id: "conversion"
+      flow_role: "Each material input"
+      record_type: "Supplier/BOM and issue records"
+      raw_fields: "flow row; grade; CAS/composition; supplier; received/issued/returned stocks; moisture/solids; incorporation; internal rework; pigment/finish; coating state; density or web area/areal mass if converted"
+      collection_method: "Weigh issues minus unused returns or reconcile opening+receipts-closing stock with transfer corrections. Screen all actual attributable maintenance oils/greases, filters, wipes and replacement consumables from service/issue/return/stock records. Document exclusions or supported absence; add separate atomic inputs and external spent streams with actual chemistry/form/quantity/receiver before dataset use, never a generic per-machine default. Keep row-specific stage logs; supplied subassemblies and embedded ingredients cannot be counted again. Supplier reference basis must be separately verified. A_i=sum disjoint external consumption totals for the matching lots; record incorporation, losses and stock change separately Retain each A_i as its raw matched-period total in the stated numerator unit, without prior division by Q; normalize_net_product performs the only normalization using cp_output Q."
+      unit: "kg"
+      frequency: "Each receipt/lot/shift"
+      temporal_coverage: "Same period/lots as Q"
+      site_scope: "Declared product grades and line"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Supplier specifications; calibrated scale/roll meter; BOM/disassembly and stock balance"
+    - protocol_id: cp_energy
+      process_id: "conversion"
+      flow_role: "grid_electricity"
+      record_type: "Revenue/submeter and operating logs"
+      raw_fields: "delivered kWh; voltage; supplier; mix/year; meter boundary; stage kWh; machine hours/load; HVAC/compressor scope; allocation driver; losses"
+      collection_method: "Read calibrated delivered-power meter and stage meters, reconcile bills and loss boundaries. Collect electric heating and compressed-air/HVAC energy, including idle/start-up attributable to the lot; avoid meter overlaps. A_e=3.6 times the justified attributed delivered kWh; stage and auxiliary totals reconcile to the same purchase meter Retain each A_i as its raw matched-period total in the stated numerator unit, without prior division by Q; normalize_net_product performs the only normalization using cp_output Q."
+      unit: "kWh; MJ"
+      frequency: "Interval meter and each campaign"
+      temporal_coverage: "Same complete period as Q"
+      site_scope: "Factory delivery and declared stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration, invoice, supply contract, driver justification"
+    - protocol_id: cp_waste
+      process_id: "conversion"
+      flow_role: "Each separate outgoing production/material waste"
+      record_type: "Collector and receiver records"
+      raw_fields: "row/bin id; stage; actual handoff phase; weighed whole net kg; representative density if volume converted; moisture; cellulose/SAP/polymer/glue fractions; contamination; internal return; receiver/treatment; stored waste"
+      collection_method: "Weigh each real separately received stream and inspect composition. Reconcile generation, internal return, stored material and removal tickets. Distinguish composite rejects from separately recovered fractions. A_i=sum net external quantities after stock reconciliation; internally returned material is excluded Retain each A_i as its raw matched-period total in the stated numerator unit, without prior division by Q; normalize_net_product performs the only normalization using cp_output Q."
+      unit: "kg"
+      frequency: "Each collection and removal"
+      temporal_coverage: "Same period, with waste stock correction"
+      site_scope: "Actual named collector and receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scale tickets; waste composition; receiver contract; return logs"
+    - protocol_id: cp_cleaning
+      process_id: "conversion"
+      flow_role: "Water, cleaner and effluent separately"
+      record_type: "Cleaning meter and receiver records"
+      raw_fields: "water volume/mass; actual density; cleaner grade/composition/mass/dilution; effluent volume/density; contaminants; retained water; receiver; vapour or other exit; stock"
+      collection_method: "Meter each actual input and effluent; sample water density and effluent composition using documented lab methods. Keep sewer handoff distinct from a direct discharge; complete any actual evaporation/discharge row before dataset use. Aggregate each stream separately; use actual density for m3-to-kg; retain whole physical water balance without conflating wastewater and tap input Retain each A_i as its raw matched-period total in the stated numerator unit, without prior division by Q; normalize_net_product performs the only normalization using cp_output Q."
+      unit: "kg; m3"
+      frequency: "Each cleaning event and discharge"
+      temporal_coverage: "Matching lots and relevant auxiliary period"
+      site_scope: "Declared line cleaning/auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meters; lab density/analysis; cleaning logs; receiving conditions"
+    - protocol_id: cp_air
+      process_id: "conversion"
+      flow_role: "Each actual non-overlapping particulate interval"
+      record_type: "Stack/fugitive monitoring"
+      raw_fields: "source/vent id; control; sample method/time; particle cuts; concentration and basis; dry/wet/reference gas volume; period exhaust; run/load; fugitive pathway; below-detection bounds; composition"
+      collection_method: "Use actual calibrated exhaust-flow and concentration/particle-size measurements representative of route and controls; align gas bases. Inventory all relevant vents and fugitive paths. If only total dust is known, retain the size-resolution gap rather than fabricate fractions. A_j=sum concentration_j times matching exhaust volume times 10^-6 plus independently measured fugitive kg; size bins mutually exclusive; no PM10 total added to its sub-bins Retain each A_i as its raw matched-period total in the stated numerator unit, without prior division by Q; normalize_net_product performs the only normalization using cp_output Q."
+      unit: "mg/m3; m3; kg"
+      frequency: "Validated sampling campaign with operational logs"
+      temporal_coverage: "Matched operating conditions and period Q"
+      site_scope: "Outdoor air across converter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Lab methods/calibration; particle cut definitions; vent map; coverage and detection bounds"
+  calculation_rules:
+    - id: normalize_net_product
+      applies_to: "Every external inventory row"
+      rule: "For Q>0 with the complete matched pool and carried burdens established by cp_output, calculate q_i=A_i/Q exactly once from each raw external row total in its native numerator unit. Collection protocols retain raw totals; identical card expressions are references to this calculation. Convert native units before this step and do not divide an already normalized value again. Preserve complete physical exchange quantities and stock transfers separately from justified attributed environmental burdens. If Q<=0 or matching is unresolved, retain raw records and leave q_i unavailable."
+      inputs:
+        - "A_i actual row total"
+        - "Q measured complete net accepted kg"
+        - "cp_output plus linked row protocol"
+      output: "Row unit per 1 kg net accepted diapers"
+      source_ids:
+        - pampers-manufacturing-traceability
+    - id: pulp_reference_conversion
+      applies_to: "fluff_pulp"
+      rule: "m_dry=m_received*s; m_provider=m_dry/s_provider"
+      inputs:
+        - "Measured received mass and solids s"
+        - "separately declared supplier reference solids s_provider>0"
+      output: "Provider-reference kg consistent with linked inventory. Use 0.90 only if that provider explicitly uses BREF AD convention; never default received s."
+      source_ids:
+        - jrc-pulp-paper-bref-2015
+    - id: electricity_conversion
+      applies_to: "grid_electricity"
+      rule: "A_e=3.6*E_kWh; retain the raw campaign MJ total for normalize_net_product only"
+      inputs:
+        - cp_energy
+        - cp_output
+      output: "Raw campaign MJ; normalized MJ/kg only in normalize_net_product"
+      source_ids:
+        - pampers-manufacturing-traceability
+    - id: mass_water_carbon_ledgers
+      applies_to: "conversion"
+      rule: "At the production acceptance boundary, inputs + opening raw-material/WIP stock = newly accepted net diapers Q + separately identified other product/material transfers out + accompanying packaging + wastes/emissions + unused-material returns + closing raw-material/WIP stock; include any actual transfers into production and match their quantities at both ends. Do not add finished stocks of those same accepted diapers to this production ledger. Where actual finished storage/dispatch is included, keep a linked finished-stock ledger: opening finished stock + newly accepted production transferred in + other actual returns/transfers in = actual dispatch + other actual withdrawals/transfers out + closing finished stock. Returned/reaccepted lot transfers do not create new Q. On consolidation cancel the acceptance/rework handoffs and use actual external product dispatch with closing finished stock, never Q as an extra physical output as well. Retain all actual included handling, packing, storage and dispatch operations and their complete burdens, assigned to the matched lot/cohort; this clarification changes neither Q nor operation coverage. balance each material on measured dry/wet basis, water and carbon separately. Internal transfer quantities cancel. Preserve measured residual and uncertainty, not a forced yield. Each ledger uses receipts and actual handoffs at its own stated boundary consistently, not stock-adjusted consumption plus the same stock movements twice. Keep measured material-specific water/carbon fractions and origins for every actual component, formulation, auxiliary and packaging; unknown fractions/origins remain unknown. Water includes material/formulation moisture, retained product, shipped packaging, separate whole-wet waste and stocks; any measured net vapour subtracts matching incoming-air humidity before a reviewed outdoor-water elementary row is used. Constituent H2O/contaminants are subledgers, not duplicate external wastewater exchanges. Packaging receipts+opening reconcile independently to measured shipped tare, external scraps/returns and closing stocks, all outside Q."
+      inputs:
+        - cp_material
+        - cp_output
+        - cp_waste
+        - cp_cleaning
+        - cp_air
+      output: "Unallocated physical ledgers, with fibre/polymer carbon retained in product and origin identified"
+      source_ids:
+        - ea-nappies-2008
+    - id: exclusive_particle_bins
+      applies_to: "pm_fine; pm_coarse; pm_large"
+      rule: "If cumulative PM10 and PM2.5 are available on identical sampling bases, PM2.5–10=PM10-PM2.5; if total dust on that same basis is available, >PM10=total dust-PM10. Reject negative or mismatched-basis differences. Otherwise measure each size interval; do not infer missing bins or add cumulative totals to fractions."
+      inputs:
+        - cp_air
+      output: "kg/kg; outdoor-air unspecified"
+      source_ids:
+        - jrc-pulp-paper-bref-2015
+    - id: shared_burden
+      applies_to: "Unavoidable shared utilities"
+      rule: "B_lot=B_common*d_lot/sum(d_k), only for an evidenced relevant driver d; add directly metered lot burdens separately. Keep the physical quantities unchanged in the source ledgers."
+      inputs:
+        - cp_energy
+        - "measured driver and other coproduct records"
+      output: "attributed burden"
+      source_ids:
+        - ec-pef-allocation-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "All rows and reference"
+      requirement: "Actual physical chemistry/form/route, Chinese official UUID display, reference property/unit and supplier reference basis separately verified. Blank identities or unresolved provider conversions block those dataset exchanges, not proof of zero."
+      evidence: "Supplier specs; original identity fields; basis records"
+    - id: dq_quantities
+      applies_to: "All amounts"
+      requirement: "No recipe, single-diaper mass, absorption multiplier or default emissions. Retain calibration, uncertainty, stock movements, actual component mass and allocation rationale for matching lots."
+      evidence: "cp_output; cp_material; cp_energy; cp_waste; cp_cleaning; cp_air"
+    - id: dq_scope
+      applies_to: "Full dataset"
+      requirement: "List all actual component, utility, loss and emission pathways, including embedded pigments/finishes, formulation solids and actual attributable maintenance consumables/spent streams. Actual phase, maintenance and water-path uncertainty requires evidence or reviewed atomic extensions before dataset completeness, not invented zero or guessed recipes. Extend atomic inventory before use when an actual missing material, fuel, steam, volatile species, water exit or waste appears. Missing periods/particle bins remain explicitly inconclusive."
+      evidence: "Plant diagram; lot BOM/disassembly; monitoring and receiver map"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "diaper_output"
+    rule: "Require exactly one complete product output tied to the reference, Q>0, net mass including all actual retained components, and matching 1 kg denominator in all rows/protocols/calculations and both languages. Reject packaging in Q, invented item masses, size mixing without lot separation and duplicate intermediate reference outputs."
+    source_ids:
+      - pampers-swaddlers-construction
+  - rule_id: validate_boundary_identity
+    applies_to: "conversion"
+    rule: "Validate route, BOM, supplied-component states, upstream pulp boundary and supplier property/basis compatibility. Unresolved SAP/formulation/fastener/waste UUIDs and unknown grade conversions remain dataset blockers until resolved or documented absent. Do not silently use a near-name chemical or unrelated wastewater."
+    source_ids:
+      - jrc-pulp-paper-bref-2015
+      - pampers-swaddlers-construction
+  - rule_id: validate_conservation
+    applies_to: "conversion"
+    rule: "Require separate physical and burden ledgers, conserved internal links, packaging and reject stock reconciliation, and complete water/carbon balance with reported residuals/uncertainty. No automatic waste/coproduct credits or mechanical allocation of physical output."
+    source_ids:
+      - ec-pef-allocation-2021
+      - ea-nappies-2008
+  - rule_id: validate_air_completeness
+    applies_to: "pm_fine; pm_coarse; pm_large"
+    rule: "Require correct outdoor-air medium, mutually exclusive particle intervals, actual exhaust/fugitive coverage and gas bases. Captured dust must not be counted as airborne emission. Missing monitoring is unknown, not zero; a total-only measurement cannot justify three resolved fractions. Additional real emissions require separately verified species/media."
+    source_ids:
+      - jrc-pulp-paper-bref-2015
+  - rule_id: validate_claims
+    applies_to: "Comparison and completeness"
+    rule: "Do not compare a kilogram manufacturing unit with an excreta-containment service without separately evidenced count, tested function, usage and end-of-life scenarios. Report checks performed/skipped, errors, unknown coverage and unresolved provider identity separately from PCR maturity; an authored candidate is not independent scientific approval."
+    source_ids:
+      - ea-nappies-2008
+published_dataset_profile:
+  dataset_role: "foreground_module"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Transparent converter inventory for the defined design and measured route; aggregate with verified upstream and freight datasets"
+  excluded_use: "Whole-class CPC coverage, service-equivalent comparison, use/end-of-life conclusions, other diaper routes or unresolved exchange amounts"
+  required_metadata: "Product size/lot/BOM and QC; provider/grade/quantity bases; actual site/year; net mass/moisture and excluded packaging; all component/waste/air conditions; foreground/upstream/freight boundaries; complete source and flow references"
+  required_quality_disclosure: "Unresolved identities/conversions, monitoring and period coverage, conditional absences, shared-burden drivers, balance residuals/uncertainty, reference physical subset and source limitations"
+  update_trigger: "Changed formulation, web/film/fastener state, pulp route, utility delivery, QC specification, waste/emission route or newly resolved evidence"
+data_sources:
+  - id: "pampers-swaddlers-construction"
+    type: "literature"
+    reference: "https://www.pampers.com/en-us/products/pampers-swaddlers-diapers"
+    used_for: "Producer product/Ingredients and How to use sections; Swaddlers taped construction and fragrance-free state. Manufacturer evidence, not independent approval. No marketing performance, weight, recipe or confidential plant specifics adopted."
+  - id: "pampers-diaper-components"
+    type: "literature"
+    reference: "https://www.pampers.com/en-us/about-us/quality-and-safety/article/whats-in-a-pampers-diaper"
+    used_for: "Producer component-function disclosure; material families and their role, not quantitative performance or universal formulation."
+  - id: "pampers-manufacturing-traceability"
+    type: "literature"
+    reference: "https://www.pampers.com/en-us/about-us/quality-and-safety/article/manufacturing-process"
+    used_for: "Manufacturer continuous assembly/inspection/packaging and lot/material traceability. Collection protocols and normalization are explicit PCR requirements, not quantities from this page."
+  - id: "ea-nappies-2008"
+    type: "official_guidance"
+    reference: "https://assets.publishing.service.gov.uk/media/5a7c4054e5274a1b00422810/scho0808boir-e-e.pdf"
+    used_for: "Environment Agency SC010018/SR2 (2008), sections1.2–1.3, printed3/PDF7 and figure1.1 printed5/PDF9. Historical UK2006 component and lifecycle structure only; no table1.2 weight/percentages, use rate or study impacts used as defaults."
+  - id: "jrc-pulp-paper-bref-2015"
+    type: "official_guidance"
+    reference: "https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf"
+    used_for: "JRC2015: net-production and AD convention printed49/PDF87; kraft mill processes3.1 printed196/PDF234; paper cutting dust7.1.10 printed670/PDF708. Pulp supplier reporting/process context and qualitative paper-cutting dust potential; no diaper/SAP BAT claim, emission factor or source-mill default."
+  - id: "ec-pef-allocation-2021"
+    type: "official_guidance"
+    reference: "https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "Commission Recommendation(EU)2021/2279 Annex I4.5, PDF63–64. Generic multifunctionality hierarchy, without a universal driver/share, substitution credit or full PEF/CFF claim."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:692d4ada95c838306504ae7649dc7f0e5a0e494e20f56293fbe508c2815ff22f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5928"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5928
+          line: 60
+          column: 1
+        end:
+          offset: 8983
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased pulp sheets and individually declared components at converter receipt; actual supplier grade/state/route and inbound freight boundary disclosed |\n| starting_condition_role | foreground_module |\n| product_classification_scope | CPC32196 taped infant-diaper subset only; method is independent from the classification label |\n| recursive_input_rule | No recursive diaper manufacturing for purchased completed diapers: record the actual input and compatible upstream dataset, disclose refurbishment/rework. Internal rework remains internal; do not purchase the same rejected unit again. |\n| upstream_dataset_requirement | Supplier-specific component manufacture and transport consistent with reference properties; for pulp include actual wood sourcing, kraft pulping/recovery, ECF bleaching, drying and wastewater treatment. Use BREF only for relevant pulp process/reporting context, not a lumber dataset or a diaper recipe. |\n| disclosure | Converter module versus cradle-to-gate aggregate; geography/year; complete component BOM; supplied subassembly states; actual product moisture; utility and treatment boundaries; all exclusions and gaps |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_complete` | `conversion` | Include receipt/handling, dry defibration, SAP dosing/core forming, web and film assembly, elastics/fasteners, actual coating, cutting, inspection/rejects, pack-out, dust collection and attributable electric auxiliaries. Explicitly retain upstream burdens for every input; do not present a converter module as a full lifecycle result. | pampers-swaddlers-construction; ea-nappies-2008; pampers-manufacturing-traceability |\n| `upstream_pulp_boundary` | `fluff_pulp` | Purchased pulp manufacture is upstream, including recovery/boilers and mill treatment. Supplier wet/AD/oven-dry bases must be reconciled with received mass. Do not bring sawmill evidence into pulp process quantities. Retain upstream biogenic CO2 exchanges and carbon origin even if a climate reporting convention excludes them from a subtotal. | jrc-pulp-paper-bref-2015 |\n| `physical_network` | `conversion` | Aggregate manufacture and packaging into one foreground unit so the same complete product is output only once. Retain stage meters and a separate physical process diagram/balances. Each internal transfer has equal mass/identity at both ends; internal recirculation and collected return are not external exchange or credited waste. | ea-nappies-2008 |\n| `actual_air_path` | `conversion` | Inspect dry defibration/core-forming/cutting exhaust and fugitive pathways. BREF7.1.10 establishes possible paper-cutting dust, not a diaper/SAP factor. Keep capture and external particulate emission separate and measured; classify size and composition without correction flows. Additional actual volatilized species need separate verified elementary rows before dataset completion. | jrc-pulp-paper-bref-2015 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 383
+              line: 10
+              column: 1
+            end:
+              offset: 443
+              line: 10
+              column: 61
+          text: "# Conversion of fluff-pulp/SAP disposable taped baby diapers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5928
+              line: 60
+              column: 1
+            end:
+              offset: 5949
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_56526"
+      family: "allocation"
+      span:
+        start:
+          offset: 56526
+          line: 750
+          column: 1
+        end:
+          offset: 58092
+          line: 758
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_hierarchy` | `conversion` | First investigate subdivision or system expansion to avoid allocation; isolate the actual lot/line with direct meters where subdivision is possible. If expansion is justified, include the additional functions and report the expanded system as a whole. Only after documenting why these approaches are unavailable, partition unavoidable shared energy/services using a relevant measured physical relationship; if unavailable, justify an alternative relationship with actual economic records and sensitivity. No universal mass or price fraction applies. Review before choosing substitution; no automatic scrap credit. | ec-pef-allocation-2021 |\n| `physical_vs_burden` | `conversion` | Keep unallocated physical mass/water/carbon ledgers and diagrams separate from attributed environmental-burden ledgers. Physical coproduct or waste outputs and internal transfers stay at measured quantities; never mechanically multiply their physical output by the diaper allocation fraction. Attribute only justified common burdens without changing conservation. | ec-pef-allocation-2021 |\n| `waste_rework` | `conversion` | Rejects are not saleable coproducts by default. Document any real external coproduct function/receiver before allocating. Internal rework remains physical recovery, without displacement credit; external waste treatment stays connected to the actual stream and actual receiver. | ec-pef-allocation-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 383
+              line: 10
+              column: 1
+            end:
+              offset: 443
+              line: 10
+              column: 61
+          text: "# Conversion of fluff-pulp/SAP disposable taped baby diapers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 56526
+              line: 750
+              column: 1
+            end:
+              offset: 56566
+              line: 750
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_72007"
+      family: "validation"
+      span:
+        start:
+          offset: 72007
+          line: 790
+          column: 1
+        end:
+          offset: 74167
+          line: 800
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | `diaper_output` | Require exactly one complete product output tied to the reference, Q>0, net mass including all actual retained components, and matching 1 kg denominator in all rows/protocols/calculations and both languages. Reject packaging in Q, invented item masses, size mixing without lot separation and duplicate intermediate reference outputs. | pampers-swaddlers-construction |\n| `validate_boundary_identity` | `conversion` | Validate route, BOM, supplied-component states, upstream pulp boundary and supplier property/basis compatibility. Unresolved SAP/formulation/fastener/waste UUIDs and unknown grade conversions remain dataset blockers until resolved or documented absent. Do not silently use a near-name chemical or unrelated wastewater. | jrc-pulp-paper-bref-2015; pampers-swaddlers-construction |\n| `validate_conservation` | `conversion` | Require separate physical and burden ledgers, conserved internal links, packaging and reject stock reconciliation, and complete water/carbon balance with reported residuals/uncertainty. No automatic waste/coproduct credits or mechanical allocation of physical output. | ec-pef-allocation-2021; ea-nappies-2008 |\n| `validate_air_completeness` | pm_fine; pm_coarse; pm_large | Require correct outdoor-air medium, mutually exclusive particle intervals, actual exhaust/fugitive coverage and gas bases. Captured dust must not be counted as airborne emission. Missing monitoring is unknown, not zero; a total-only measurement cannot justify three resolved fractions. Additional real emissions require separately verified species/media. | jrc-pulp-paper-bref-2015 |\n| `validate_claims` | Comparison and completeness | Do not compare a kilogram manufacturing unit with an excreta-containment service without separately evidenced count, tested function, usage and end-of-life scenarios. Report checks performed/skipped, errors, unknown coverage and unresolved provider identity separately from PCR maturity; an authored candidate is not independent scientific approval. | ea-nappies-2008 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 383
+              line: 10
+              column: 1
+            end:
+              offset: 443
+              line: 10
+              column: 61
+          text: "# Conversion of fluff-pulp/SAP disposable taped baby diapers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 72007
+              line: 790
+              column: 1
+            end:
+              offset: 72029
+              line: 790
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5928"
+      source_span:
+        start:
+          offset: 7265
+          line: 75
+          column: 1
+        end:
+          offset: 7726
+          line: 75
+          column: 462
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "upstream_pulp_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_5928"
+      source_span:
+        start:
+          offset: 7727
+          line: 76
+          column: 1
+        end:
+          offset: 8143
+          line: 76
+          column: 417
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "physical_network"
+      identity_kind: "explicit"
+      unit_id: "normative_5928"
+      source_span:
+        start:
+          offset: 8144
+          line: 77
+          column: 1
+        end:
+          offset: 8532
+          line: 77
+          column: 389
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "actual_air_path"
+      identity_kind: "explicit"
+      unit_id: "normative_5928"
+      source_span:
+        start:
+          offset: 8533
+          line: 78
+          column: 1
+        end:
+          offset: 8981
+          line: 78
+          column: 449
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_56526"
+      source_span:
+        start:
+          offset: 56639
+          line: 754
+          column: 1
+        end:
+          offset: 57321
+          line: 754
+          column: 683
+    - pointer: "/allocation_rules/1"
+      rule_id: "physical_vs_burden"
+      identity_kind: "explicit"
+      unit_id: "normative_56526"
+      source_span:
+        start:
+          offset: 57322
+          line: 755
+          column: 1
+        end:
+          offset: 57752
+          line: 755
+          column: 431
+    - pointer: "/allocation_rules/2"
+      rule_id: "waste_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_56526"
+      source_span:
+        start:
+          offset: 57753
+          line: 756
+          column: 1
+        end:
+          offset: 58090
+          line: 756
+          column: 338
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_72007"
+      source_span:
+        start:
+          offset: 72102
+          line: 794
+          column: 1
+        end:
+          offset: 72513
+          line: 794
+          column: 412
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_boundary_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_72007"
+      source_span:
+        start:
+          offset: 72514
+          line: 795
+          column: 1
+        end:
+          offset: 72941
+          line: 795
+          column: 428
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_72007"
+      source_span:
+        start:
+          offset: 72942
+          line: 796
+          column: 1
+        end:
+          offset: 73296
+          line: 796
+          column: 355
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_air_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_72007"
+      source_span:
+        start:
+          offset: 73297
+          line: 797
+          column: 1
+        end:
+          offset: 73743
+          line: 797
+          column: 447
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_claims"
+      identity_kind: "explicit"
+      unit_id: "normative_72007"
+      source_span:
+        start:
+          offset: 73744
+          line: 798
+          column: 1
+        end:
+          offset: 74165
+          line: 798
+          column: 422
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5928"
+      source_span:
+        start:
+          offset: 5928
+          line: 60
+          column: 1
+        end:
+          offset: 5949
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5928"
+      source_span:
+        start:
+          offset: 5977
+          line: 64
+          column: 1
+        end:
+          offset: 7192
+          line: 71
+          column: 219
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_56526"
+      source_span:
+        start:
+          offset: 56526
+          line: 750
+          column: 1
+        end:
+          offset: 56566
+          line: 750
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_72007"
+      source_span:
+        start:
+          offset: 72007
+          line: 790
+          column: 1
+        end:
+          offset: 72029
+          line: 790
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:692d4ada95c838306504ae7649dc7f0e5a0e494e20f56293fbe508c2815ff22f"
+  generated_content_sha256: "sha256:841bd99b240658c363174bcd11ab0e4f2af01eab654984d6475696c3981a92bd"
