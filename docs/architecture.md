@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-16
-lastReviewedCommit: 176c63d6b115f3116a2ceda7172833ef0f83f7df
-lastReviewedNote: "PCR #117: bounded npm graph/Actions discovery coordinates root/core Ajv and reuses full qualification; runtime pins, readers, assets, locks, methodology and product/publication authority remain unchanged."
+lastReviewedAt: 2026-10-17
+lastReviewedCommit: 9147e85fa6610ede77b92dcb75caee33859c31db
+lastReviewedNote: "PCR #128: reviewed the generated root-lock route and positive/negative controls; exact root-lock guidance existence does not establish compatibility. Manifest/site-lock/source/workflow review, full qualification, runtime and product/publication authority, and canonical methodology remain unchanged."
 ---
 
 # PCR 资料库架构

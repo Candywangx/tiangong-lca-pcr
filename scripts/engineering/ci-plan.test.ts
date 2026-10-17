@@ -30,6 +30,15 @@ test('unknown, mixed, shared, executable, history and optional-language changes 
   assert.equal(decision([pcr],{verifiedDiff:false}).reason,'diff-not-proven');
 });
 
+test('generated lock routing never reduces dependency, governance or unknown qualification', () => {
+  for (const name of ['package-lock.json', 'package.json', 'packages/pcr-core/package.json',
+    'packages/pcr-docs/package-lock.json', '.docpact/config.yaml', 'docs/dependency-maintenance.md',
+    'scripts/engineering/ci-workflow.test.ts', '.github/workflows/validate.yml', 'config/unregistered.json']) {
+    assert.equal(decision([name]).mode, 'full', name);
+    assert.equal(decision(['package-lock.json', name]).mode, 'full', `root lock plus ${name}`);
+  }
+});
+
 test('invalid and platform-dependent paths cannot enter a reduced plan', () => {
   for(const name of ['/absolute','../outside','./relative','double//path','back\\slash','space path','control\npath','nul\0path','tab\tpath','delete\u007f'])
     assert.equal(decision([pcr,name]).reason,'unrecognized-path',JSON.stringify(name));
