@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 3372bc9f3a0e3dcb41595a05f31c6d4114be08ef
-lastReviewedNote: "Reviewed PCR #114 combined 0.4.7 qualification repair: the POSIX signal-test fixture publishes readiness atomically and reaps its owned subprocess group before deleting temporary files. Controlled failure now exits with the original assertion instead of hanging; complete instrumented engineering tests and strict types pass locally. Production runner, coverage semantics, CI budgets, runtime pins and candidate methodology are unchanged; fresh complete CI and publication remain required."
+lastReviewedAt: 2026-10-17
+lastReviewedCommit: 9147e85fa6610ede77b92dcb75caee33859c31db
+lastReviewedNote: "PCR #128: reviewed the generated root-lock route and positive/negative controls; exact root-lock guidance existence does not establish compatibility. Manifest/site-lock/source/workflow review, full qualification, runtime and product/publication authority, and canonical methodology remain unchanged."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
