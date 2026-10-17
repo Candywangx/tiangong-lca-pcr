@@ -288,10 +288,10 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
  }finally{await blocked.close();}
 }
 export async function qualifySiteBrowser(options:SiteBrowserOptions){
- const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.63.0')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.63.0.');
+ const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.64.1')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.64.1.');
  const exported=inspectSiteExport(options.root),languageCodes=emittedLanguageCodes(exported),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
  const languagePreferences:LanguagePreferenceEvidence[]=[];
- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.63.0',results,languagePreferences,status:'running',completedAt:'',failure:''};
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',results,languagePreferences,status:'running',completedAt:'',failure:''};
  try {await withSiteExportServer(exported.root,async origin=>{
   for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
    try {for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size,locale:'zh-CN'});
