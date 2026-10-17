@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-17
-lastReviewedNote: "PCR #129: reviewed Next 16.4.2 and its required sharp 0.35.5/libvips graph plus bundled optional WASM metadata. Static export, language/source fidelity, consumer and methodology boundaries, runtime pins and product 0.4.7 remain unchanged. Local macOS checks are bounded; fresh full Linux/native/browser/sealed CI and independent review remain required before source merge, integration or any separately authorized publication."
-lastReviewedCommit: "18f43d72be53bf55469a84f1fbd5deda782450a7"
+lastReviewedNote: "PCR #130: reviewed the source-map-js 1.2.2 security lock delta and offline mapping/PostCSS regressions on the explicit PCR #129 development dependency. Runtime pins, static export, language/source fidelity, methodology and product 0.4.7 remain unchanged. Source merge requires PCR #129/PR #126 on main first, exact merge-input revalidation, fresh full qualification and independent review; publication remains separately authorized."
+lastReviewedCommit: a9604159d0f0ccb36dfa0a6f7829564bffc072ba
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
