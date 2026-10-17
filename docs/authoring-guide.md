@@ -25,7 +25,7 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-17
-lastReviewedCommit: 8cc7b1cac9a4e4f3922c8c46f50bcd8252be90c1
+lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
 lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
 ---
 
