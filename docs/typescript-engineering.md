@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-17
-lastReviewedCommit: 9147e85fa6610ede77b92dcb75caee33859c31db
-lastReviewedNote: "PCR #128: reviewed the generated root-lock route and positive/negative controls; exact root-lock guidance existence does not establish compatibility. Manifest/site-lock/source/workflow review, full qualification, runtime and product/publication authority, and canonical methodology remain unchanged."
+lastReviewedCommit: 8cc7b1cac9a4e4f3922c8c46f50bcd8252be90c1
+lastReviewedNote: "PCR #132: reviewed the exact Playwright/core 1.64.1 dependency, strict qualifier and receipt pins, and version-specific Firefox source. Existing semantic, cancellation and cleanup assertions, accepted site/security graph, Node/npm and product 0.4.7 are unchanged; new actual-engine and fresh full source qualification remain required. Publication/provider authority is unchanged."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
