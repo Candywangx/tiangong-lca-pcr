@@ -38,11 +38,12 @@ jobs:
       mode: ${{ steps.plan.outputs.mode }}
       plan_artifact_id: ${{ steps.upload.outputs.artifact-id }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
+          package-manager-cache: false
           node-version-file: .nvmrc
       - name: Classify the complete exact-source diff and freeze test membership
         id: plan
@@ -56,7 +57,7 @@ jobs:
           fi
       - name: Preserve the exact qualification plan
         id: upload
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-qualification-plan-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-plan/
@@ -68,10 +69,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -83,7 +84,7 @@ jobs:
           npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
           npm ci
           npm --prefix packages/pcr-docs ci
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
           path: ${{ runner.temp }}/pcr-plan
@@ -126,7 +127,7 @@ jobs:
         run: npm run test:engineering:compiled
       - name: Preserve content qualification evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-content-contracts-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-content-contracts/
@@ -143,10 +144,10 @@ jobs:
       matrix:
         shard: [harness, core, builder, consumer, docs, engineering, corpus, general]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -171,7 +172,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y poppler-utils
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
           path: ${{ runner.temp }}/pcr-plan
@@ -188,7 +189,7 @@ jobs:
           fi
       - name: Preserve exact shard execution receipt
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-shard-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-receipts/${{ matrix.shard }}.json
@@ -196,7 +197,7 @@ jobs:
           retention-days: 14
       - name: Preserve isolated raw coverage inputs
         if: always() && matrix.shard != 'corpus'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-coverage-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-coverage/
@@ -204,7 +205,7 @@ jobs:
           retention-days: 14
       - name: Preserve browser diagnostics
         if: always() && matrix.shard == 'consumer'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-browser-${{ github.run_id }}-${{ github.run_attempt }}
           path: .reports/browser/
@@ -222,7 +223,7 @@ jobs:
       coverage_artifact_id: ${{ steps.documentation-coverage.outputs.artifact-id }}
     steps:
       - name: Check out complete source history
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       # The workspace source repository is private, so this job consumes the generated snapshot
@@ -254,7 +255,7 @@ jobs:
           print('manifest identity is a local integrity statement only; origin provenance is attested by the workspace export against the private source commit')
           PYVERIFY
       - name: Set up production documentation runtime
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -265,7 +266,7 @@ jobs:
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
       - name: Install locked dependencies
         run: npm ci && npm --prefix packages/pcr-docs ci
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
           path: ${{ runner.temp }}/pcr-plan
@@ -291,7 +292,7 @@ jobs:
       - name: Preserve exact full-build coverage inputs
         id: documentation-coverage
         if: always() && needs.plan.outputs.mode == 'full'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-documentation-coverage-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-documentation-coverage/
@@ -302,7 +303,7 @@ jobs:
           python3 scripts/vendor/workspace-seo/check.py --root packages/pcr-docs/out --origin https://pcr.tiangong.earth --output "${{ runner.temp }}/pcr-seo-report.json"
       - name: Preserve SEO verification report
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-seo-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-seo-report.json
@@ -316,7 +317,7 @@ jobs:
 
       - name: Preserve the exact product bundle for qualification and publication
         id: product-upload
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-product-${{ steps.candidate.outputs.tag }}-${{ github.sha }}
           path: |
@@ -352,8 +353,8 @@ jobs:
         run: |
           git config --global core.longpaths true
           git config --global core.autocrlf false
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -393,8 +394,8 @@ jobs:
         run: |
           git config --global core.longpaths true
           git config --global core.autocrlf false
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -403,7 +404,7 @@ jobs:
       - name: Install qualification tools
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Download the one sealed candidate
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.documentation.outputs.product_artifact_id }}
           path: ${{ runner.temp }}/pcr-sealed-product
@@ -414,7 +415,7 @@ jobs:
         run: npm run qualify:sealed -- --bundle "${{ runner.temp }}/pcr-sealed-product" --expected-source "${{ github.sha }}" --report "${{ runner.temp }}/pcr-sealed-consumer"
       - name: Preserve installed artifact evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-sealed-${{ matrix.os }}-${{ matrix.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-sealed-consumer/
@@ -426,8 +427,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -437,7 +438,7 @@ jobs:
           npm ci --ignore-scripts --no-audit --no-fund
           node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
       - name: Download the same sealed candidate
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.documentation.outputs.product_artifact_id }}
           path: ${{ runner.temp }}/pcr-sealed-product
@@ -446,7 +447,7 @@ jobs:
         run: npm run qualify:web -- --bundle "${{ runner.temp }}/pcr-sealed-product" --expected-source "${{ github.sha }}" --report "${{ runner.temp }}/pcr-sealed-web"
       - name: Preserve extracted web and browser evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-sealed-web-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-sealed-web/
@@ -460,18 +461,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Read the provider import runtime separately from the build pin
         id: provider
         run: echo "node=$(jq -r '.nodeVersion' edgeone.json)" >> "$GITHUB_OUTPUT"
       - name: Set up the real artifact construction runtime
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
+          package-manager-cache: false
           node-version-file: .nvmrc
       - name: Preserve the artifact producer executable across the runtime switch
         id: producer
         run: echo "node-exec=$(command -v node)" >> "$GITHUB_OUTPUT"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ steps.provider.outputs.node }}
           cache: npm
@@ -492,10 +494,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -504,23 +506,23 @@ jobs:
           npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
           npm ci --ignore-scripts --no-audit --no-fund
           npm --prefix packages/pcr-docs ci --ignore-scripts --no-audit --no-fund
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
           path: ${{ runner.temp }}/pcr-plan
           merge-multiple: true
       - name: Download every receipt without flattening shard directories
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: pcr-shard-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-receipts
       - name: Download isolated current-invocation raw measurements
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: pcr-coverage-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-measurements
       - name: Download exact full-build measurement
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.documentation.outputs.coverage_artifact_id }}
           path: ${{ runner.temp }}/pcr-documentation-coverage
@@ -529,7 +531,7 @@ jobs:
         run: node scripts/engineering/coverage-ci.ts "$RUNNER_TEMP/pcr-plan/qualification.json" "$RUNNER_TEMP/pcr-receipts" "$RUNNER_TEMP/pcr-measurements" "$RUNNER_TEMP/pcr-documentation-coverage" "$RUNNER_TEMP/pcr-coverage-report"
       - name: Preserve coverage and rejection evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-source-coverage-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pcr-coverage-report/
@@ -542,13 +544,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
+          package-manager-cache: false
           node-version-file: .nvmrc
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
           path: ${{ runner.temp }}/pcr-plan
