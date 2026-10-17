@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
-lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
+lastReviewedAt: 2026-10-17
+lastReviewedCommit: "18f43d72be53bf55469a84f1fbd5deda782450a7"
+lastReviewedNote: "PCR #129: reviewed Next 16.4.2 and its required sharp 0.35.5/libvips graph plus bundled optional WASM metadata. Static export, language/source fidelity, consumer and methodology boundaries, runtime pins and product 0.4.7 remain unchanged. Local macOS checks are bounded; fresh full Linux/native/browser/sealed CI and independent review remain required before source merge, integration or any separately authorized publication."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
