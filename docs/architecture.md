@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-17
-lastReviewedCommit: a9604159d0f0ccb36dfa0a6f7829564bffc072ba
-lastReviewedNote: "PCR #130: reviewed the source-map-js 1.2.2 security lock delta and offline mapping/PostCSS regressions on the explicit PCR #129 development dependency. Runtime pins, static export, language/source fidelity, methodology and product 0.4.7 remain unchanged. Source merge requires PCR #129/PR #126 on main first, exact merge-input revalidation, fresh full qualification and independent review; publication remains separately authorized."
+lastReviewedCommit: 8cc7b1cac9a4e4f3922c8c46f50bcd8252be90c1
+lastReviewedNote: "PCR #132: reviewed the exact Playwright/core 1.64.1 dependency, strict qualifier and receipt pins, and version-specific Firefox source. Existing semantic, cancellation and cleanup assertions, accepted site/security graph, Node/npm and product 0.4.7 are unchanged; new actual-engine and fresh full source qualification remain required. Publication/provider authority is unchanged."
 ---
 
 # PCR 资料库架构
