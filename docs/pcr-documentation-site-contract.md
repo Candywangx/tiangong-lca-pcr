@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: "2026-10-18"
-lastReviewedNote: "Reviewed fork PCR58 storage repair: candidate required-language Markdown uses the existing native byte-exact download transport through 48 KiB; manifest eligibility remains 16 KiB. Complete source content, stable page URLs, supported Next payloads, source binding, download fidelity, provider file/resource gates and product 0.4.7 remain required. Final-source qualification and publication are separate."
-lastReviewedCommit: "80959d888a2f2b106f32d02c2bcde73fcae21092"
+lastReviewedNote: "Reviewed fork PCR58 storage and memory repair: candidate required-language Markdown uses the existing native byte-exact download transport through 48 KiB; manifest inline downloads remain 16 KiB. Two static workers bound repeated complete-manifest copies. Complete source content, stable page URLs, supported Next payloads, source binding, download fidelity, provider file/resource gates and product 0.4.7 remain required. Final-source qualification and publication are separate."
+lastReviewedCommit: "41aee0f766ae9a831b2d57b7c3b0ef0c658c9ab8"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -304,7 +304,7 @@ elapsed-time acceptance budget. CI bounds its instrumented documentation job to
 60 minutes; stage and total durations remain reported. The old 18-minute full-build
 cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
 only the sealed-product importer, whose separate 15-minute download/materialization
-deadline, cleanup and atomic handoff remain enforced. The export uses four workers
+deadline, cleanup and atomic handoff remain enforced. The export uses two static workers
 with a 4 GB Node heap ceiling per process and retains the 6 GB process-tree memory
 guard; a heap ceiling is not proof of total resident memory.
 
