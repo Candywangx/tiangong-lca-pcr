@@ -1,37 +1,72 @@
 schema_version: 1
-id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.ammonium-sulphate
+id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.ammonium-sulphate"
 title:
-  en-US: "Ammonium sulphate"
-  zh-CN: null
-status: scaffold
-pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+  en-US: "Synthetic crystalline ammonium sulphate"
+  zh-CN: "合成晶体硫酸铵"
+status: "candidate"
+pcr_kind: "product_category_rule"
+content_maturity: "authored_methodology"
 domains:
   - "other-transportable-goods-except-metal-products-machinery-and-equipment"
 modules:
   core:
-    - pcr-minimum-content
-    - unit-of-analysis
-    - reference-flow
-    - inventory-flow-taxonomy
-    - system-boundary
-    - allocation
-    - data-quality
-    - validation-rules
+    - "pcr-minimum-content"
+    - "unit-of-analysis"
+    - "reference-flow"
+    - "inventory-flow-taxonomy"
+    - "system-boundary"
+    - "allocation"
+    - "data-quality"
+    - "validation-rules"
 target_entities:
-  - flow
-  - process
-  - lifecyclemodel
+  - "flow"
+  - "process"
+  - "lifecyclemodel"
+  - "dataset"
 languages:
-  canonical: en-US
+  canonical: "en-US"
   available:
-    - en-US
-    - zh-CN
+    - "en-US"
+    - "zh-CN"
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: "aligned"
 classification_refs:
-  - system: CPC
+  - system: "CPC"
     version: "3.0"
     code: "34612"
     title: "Ammonium sulphate"
-    mapping_type: exact
+    mapping_type: "narrower"
+review_metadata:
+  scientific_review: "pending independent methodology review; candidate is not active or published"
+  semantic_boundary: "Synthetic NH3/concentrated H2SO4 crystalline bulk product with steam-heated drying; recovered/byproduct, coated, compacted, mixed and solution routes excluded. Proposed CPC 34612 narrower only."
+  provider_compatibility: "Physical flow identities are separate from actual supplier/process quantities. Steam Mass identity has no verified net-heat or pressure basis; site cp_steam must establish actual pressure/quality/enthalpy and supplier delivered-mass definition. Chinese 1–35kV electricity and 93–98% sulfuric acid UUIDs apply only under their physical qualifiers. No current site data claimed."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: "condensate"
+        reason_code: "identity_requires_review"
+        explanation: "Candidate cc69ba9d has phase-change/condensation names but generalComment explicitly describes water vapour from growing renewables; conflict with clean heating-steam condensate. Milk evaporate condensate has incompatible source. No adopted clean steam-condensate identity."
+      - row_id: "mother_purge"
+        reason_code: "identity_requires_review"
+        explanation: "Candidates represent sodium-sulfate waste powder, ammonia-N indicator, ammonium chloride/thiocyanate, ferric sulfate or acid mist rather than measured AS mother liquor."
+      - row_id: "scrubber_purge"
+        reason_code: "identity_requires_review"
+        explanation: "Candidates are incompatible salts, acid mist or a source-reported aqueous output tied to multi-Si module packaging; no AS dryer-scrubber purge adopted."
+      - row_id: "cooling_blowdown"
+        reason_code: "identity_requires_review"
+        explanation: "Wastewater d2d44ce1 is manganese-slag washing; c1170d90 is multi-Si wafer slicing; ba1c2ea5 is a landing-site untreated to-water output; coolant/oil and paper-mill candidates encode other sources. Do not adopt as AS cooling-tower blowdown."
+      - row_id: "washdown"
+        reason_code: "identity_requires_review"
+        explanation: "No adopted verified flow covering AS equipment-cleaning wastewater with its actual salt/free acid matrix and external receiver; generic or other-route candidates require clarification."
+      - row_id: "rejected_crystals"
+        reason_code: "identity_requires_review"
+        explanation: "No adopted verified waste-flow identity for rejected AS crystals; other salts/indicator or nonspecific source states do not confirm this segregated disposal stream."
+    dataset_production: "Actual site/SKU/assay/quantities, utility/provider bases, stream composition and receiver/treatment must be collected; absence is not a fabricated foreground dataset."
+  inventory_contract:
+    atomic_flows: "v1"
+    localized_flow_names: "tiangong_zh_v1"
+  identity_qualifications:
+    rejected_dust: "Generic Waste flow Dust is conditionally used for segregated collected AS salt dust, with actual contamination/moisture/receiver disclosure; not a specific treatment dataset."
+    liquid_water: "Water CAS7732-18-5 elementary emission to freshwater, native Volume/m3; isotope/ice synonyms are broad and do not override actual ordinary liquid-water qualification."
+    steam: "Generic chemical steam physical Mass/kg, no pressure override; actual pressure/quality/provider mass basis and independent delivered-heat balance required."
+    condensate: "Rejected near-name record cc69ba9d: generalComment is vapour from growing renewables; no adopted clean liquid steam-condensate link."
+updated_at_utc: '2026-10-18T07:43:31Z'

@@ -1,10 +1,1322 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34631"
-  title: "Potassium chloride (muriate of potash)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.potassium-chloride-muriate-of-potash"
+  classification_refs: "CPC 3.0 34631; narrower"
+  covered_products: "Uncoated bulk granular fertilizer-grade KCl from the declared thermal route"
+  excluded_products: "Other production routes, grades/states and compound fertilizers listed in Section 1"
+  representative_product: "Potassium chloride fertilizer, granular, K2O equivalent ≥60.0% by mass"
+  production_route: "Sylvinite hot leaching → separation → cooling crystallisation → debrining/drying → compaction/screening → bulk delivery"
+  market_state: "Granular solid, bulk, accepted at the China plant gate; moisture and grade as delivered"
+functional_unit:
+  what: "Supply granular KCl fertilizer as a potassium source; no field-yield claim"
+  how_much: "1 kg accepted as-delivered net product"
+  how_well: "K2O-equivalent ≥60% by actual assay; declared KCl, water and granule specification"
+  how_long_or_cycle: "One plant-gate delivery; agricultural use and service duration excluded"
+  reference_flow_link: "kcl_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "hot_leach_kcl"
+      rule: "Include heat generation/recovery, brine recycle, crystalliser vacuum/cooling, debrining, drying, water glazing, compaction, screening, storage, loading and actual emissions/waste controls. Keep final-product transfers inside one integrated unit; stage handoffs have equal amounts on both ends, with assay/stock changes reconciled."
+      source_ids:
+        - ks-thermal-2023
+        - eccc-potash-2017
+    - rule_id: boundary_waste
+      applies_to: "hot_leach_kcl"
+      rule: "Cover actual saline tailings, clarification sludge, purge, captured dust, contaminated runoff and receiver treatments. Separate onsite intermediates from offsite exchanges. Tailings dissolution and closure/aftercare cannot be asserted harmless; retain an attributable scenario, duration and uncertainty for long-term releases."
+      source_ids:
+        - eu-mwei-2018
+    - rule_id: boundary_downstream
+      applies_to: "hot_leach_kcl"
+      rule: "Exclude field application, crop yields, avoided fertilizer substitution, user transport after plant gate, and product packaging from this bulk reference. Disclose any capital/maintenance exclusions and their significance; actual material consumptions or releases cannot be silently removed."
+      source_ids:
+        - un-cpc3-2025
+boundary_abstraction:
+  declared_starting_condition: "Mined sylvinite ore delivered to aboveground processing; upstream mining, crushing and transport are supplied through verified background data"
+  starting_condition_role: "background_dataset"
+  product_classification_scope: "CPC 3.0 34631; narrower"
+  recursive_input_rule: "Do not recurse into another KCl fertilizer dataset as if it were untreated ore. If refined KCl is actually the feed, this production boundary does not apply; choose finishing-only guidance after independent applicability review."
+  upstream_dataset_requirement: "Delivered ore with actual composition/origin and extraction burden; electricity at actual voltage/region/year; pipeline gas at verified volume basis; water supply; actual purchased makeup salt; residue management and applicable transport. Missing upstream burdens are disclosed as incomplete, not zero."
+  disclosure: "Disclose outsourced mining/transport and shared utilities, waste management inside/outside the site, stock changes, closure/aftercare scenario and exclusions. No physical mining-stage omission is concealed by a gate-to-gate label."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Potassium chloride fertilizer, granular, K2O equivalent ≥60.0% by mass"
+    uuid: "c8585965-5595-48da-9260-2970ed1905cb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual producer/site and China plant-gate context"
+    - "mined feed and hot-leach route"
+    - "bulk granular uncoated state"
+    - "actual KCl/K2O-equivalent assay and assay basis"
+    - "moisture and insolubles/Mg/NaCl impurities"
+    - "granule-size specification"
+    - "accepted net mass excluding packaging"
+    - "measurement period"
+    - "internal recycle and stock changes"
+    - "energy/control configuration"
+    - "supplier background basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference is 1 kg accepted as-delivered net granular product, not 1 kg K, K2O, dry KCl or packaged gross mass. Q is accepted net product mass for the same collection period; exclude rejects, recycles and co-products."
+  - id: nutrient_basis
+    applies_to: "kcl_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep product, dry solids, KCl, elemental K and K2O-equivalent quantities separately. Use measured moisture/assay on a stated basis; nutrient equivalents are calculations, not new physical product or emitted K2O. [ks-kalimop-grade]"
+  - id: gas_volume
+    applies_to: "gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Meter pipeline gaseous natural gas for the onsite heating boiler and direct-contact dryer, with separate consumption records. Reference quantity is Volume/m3. Record temperature, absolute pressure, wet/dry basis, composition, compressibility and supplier reference-volume definition; conversion and background compatibility remain unestablished until these agree. No mass coefficient from a database row is a density. Do not add the internal steam generated from this gas as purchased heat."
+  - id: energy_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Meter grid electricity at the 1–35 kV delivery point and retain stage submetering for crushing, pumps, vacuum/cooling, centrifuges, compaction, screening and dust controls. Match region, year, voltage and upstream delivery losses. Convert metered kWh to MJ using 3.6 MJ/kWh; the database reference property is Net calorific value, not a claimed fuel heating value."
+  - id: water_components
+    applies_to: "water_out; chloride; potassium; sodium"
+    required_property_ref:
+      name: "Volume; Mass"
+      uuid: ""
+    required_unit: "m3; kg"
+    rule: "Preserve the outfall’s total physical brine volume/mass separately from the water component and individual dissolved ions. Use measured density and composition; no assumed saline density. Water resource input, purchased water, waste shipment and direct water release are different boundary roles."
+process_map:
+  - id: hot_leach_kcl
+    name: "Integrated hot-leach granular KCl production"
+    inclusion: "required"
+    inclusion_condition: "Declared route and accepted product identity in Sections 1–3"
+    role: "foreground"
+    quantitative_reference: "kcl_product; 1 kg"
+process_inventory:
+  - id: hot_leach_kcl
+    label: "Integrated hot-leach granular KCl production"
+    inputs:
+      product:
+        - row_id: ore
+          role: "Sylvinite ore for hot leaching"
+          name: "Sylvinite ore for hot leaching"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh received sylvinite ore and sample KCl, NaCl, water, water-insoluble matter and Mg-bearing impurities. Declare mined feed origin, crushing state and delivered upstream inventory; refined MOP is not raw ore."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_mineral; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mineral
+              source_ids:
+                - ks-thermal-2023
+                - eu-mwei-2018
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter grid electricity at the 1–35 kV delivery point and retain stage submetering for crushing, pumps, vacuum/cooling, centrifuges, compaction, screening and dust controls. Match region, year, voltage and upstream delivery losses. Convert metered kWh to MJ using 3.6 MJ/kWh; the database reference property is Net calorific value, not a claimed fuel heating value. Reference unit group 93a60a57-a3c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_energy; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - eu-lvic-aaf-2007
+                - eccc-potash-2017
+                - eu-mwei-2018
+            ranges: []
+        - row_id: water
+          role: "Water, process"
+          name: "Water, process"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d8ad9111-4304-46fb-bc23-9a2f36d65a83"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased process-water mass added to leaching, washing, glazing, cooling makeup and water-only dust scrubbing separately by stage. Internal mother brine and recovered condensate are circulation, not repeated purchased water. Count water carried by incoming ore separately in its composition. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_water; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+                - eccc-potash-2017
+                - eu-mwei-2018
+            ranges: []
+        - row_id: gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Meter pipeline gaseous natural gas for the onsite heating boiler and direct-contact dryer, with separate consumption records. Reference quantity is Volume/m3. Record temperature, absolute pressure, wet/dry basis, composition, compressibility and supplier reference-volume definition; conversion and background compatibility remain unestablished until these agree. No mass coefficient from a database row is a density. Do not add the internal steam generated from this gas as purchased heat. The selected record names processed pipeline natural gas but carries CAS 74-82-8 for methane; retain this source identity-review conflict explicitly. It does not establish pure methane or the composition of the metered gas mixture. Use this link only with documented compatible actual pipeline-gas identity and supplier Volume/m3 basis; otherwise keep the input linkage pending. Reference unit group 93a60a57-a3c8-12da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_energy; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - eu-lvic-aaf-2007
+                - eccc-potash-2017
+                - eu-mwei-2018
+            ranges: []
+        - row_id: makeup_salt
+          role: "Sodium chloride"
+          name: "Sodium chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a413ea86-0887-42c8-be77-3bee86d5863b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: separately weigh purchased NaCl of verified purity ≥99.5% used for initial leach-brine preparation or salt makeup. Count only actual external addition and account for initial/final brine stocks. This flow cannot identify mixed halite tailings or imply that salt dosing is always needed. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_mineral; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mineral
+              source_ids:
+                - ks-thermal-2023
+                - eu-mwei-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: kcl_product
+          role: "Potassium chloride fertilizer, granular, K2O equivalent ≥60.0% by mass"
+          name: "Potassium chloride fertilizer, granular, K2O equivalent ≥60.0% by mass"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c8585965-5595-48da-9260-2970ed1905cb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Exactly one final accepted bulk granular KCl product output; exclude packaging and rejected/recycled material from Q. Assay as-delivered K2O-equivalent grade, KCl, moisture and impurities. Use actual assay, not the identity record’s nominal 60% scenario, for nutrient calculations. Retain centrifuge, dryer and compactor handoff measurements within the same foreground unit. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - ks-thermal-2023
+                - eccc-potash-2017
+                - ks-kalimop-grade
+            ranges: []
+        - row_id: halite_product
+          role: "Recovered halite-rich mineral salt"
+          name: "Recovered halite-rich mineral salt"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: one recovered halite-rich salt sold as a documented co-product; weigh the actual mixture and report NaCl/KCl/Mg-salt/insoluble fractions, moisture and buyer specification. It is neither pure NaCl by assumption nor waste automatically. The same mass must not also appear as tailings. Additional recovered mineral products require separate identified rows."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_mineral; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mineral
+              source_ids:
+                - ks-thermal-2023
+                - eu-mwei-2018
+            ranges: []
+      waste:
+        - row_id: tailings
+          role: "NaCl-rich solid hot-leach tailings"
+          name: "NaCl-rich solid hot-leach tailings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh one NaCl-rich solid hot-leach residue sent to identified waste management. Measure water and residual KCl, NaCl, Mg salts and insolubles. Require the receiver’s salinity acceptance and management route; do not substitute sodium-chloride chemical product or unrelated waste. Onsite handling remains inside the integrated unit, with its material stock and saline releases tracked."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_residue; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - eu-mwei-2018
+                - ks-thermal-2023
+            ranges: []
+        - row_id: sludge
+          role: "Water-insoluble mineral clarification sludge"
+          name: "Water-insoluble mineral clarification sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh water-insoluble mineral clarification sludge separately from coarse salt tailings; sample actual clay/mineral composition, entrained brine and moisture. Record dewatering and treatment destination. It is not biological sludge."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_residue; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - eu-mwei-2018
+                - ks-thermal-2023
+            ranges: []
+        - row_id: purge
+          role: "Spent saline mother-liquor purge"
+          name: "Spent saline mother-liquor purge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: measure one spent saline mother-liquor stream exported for treatment, with mass, density, water and each major salt concentration and receiver. Internal purge treatment is not simultaneously an exported waste and a direct freshwater release. Returned mother brine is internal recycle; neither treated wastewater from another industry nor pure water identifies this waste."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_purge; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purge
+              source_ids:
+                - eu-mwei-2018
+                - ks-thermal-2023
+            ranges: []
+        - row_id: dust_waste
+          role: "Collected potassium-chloride-bearing dust for disposal"
+          name: "Collected potassium-chloride-bearing dust for disposal"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: weigh collected KCl-bearing dust actually sent for disposal and assay moisture and contamination. Dust returned to product or leaching is internal recovery, not this waste output and not an air emission. Separate mineral sludge from collected dry dust."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_residue; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - eccc-potash-2017
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record fossil CO2 from onsite natural-gas combustion and reconcile fuel carbon with measured CO, CH4 and other actual carbon species. Do not borrow a boiler default conversion fraction or treat mineral KCl as carbon input. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: co
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure fossil CO from the applicable gas burners; retain mass of CO, sampling method, exhaust flow, dry/wet conditions and operating periods. Do not convert it to CO2 mass in the physical emission ledger. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: ch4
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure unburnt fossil methane from burners and actual onsite gas-system leakage separately, then aggregate without overlap. Do not use a biogenic or delayed-emission correction flow. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: n2o
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collect N2O combustion emissions or a technically justified species-specific estimate with uncertainty. N2O is separate from NO and NO2; nitrogenous fertilizer-use factors do not apply. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: no
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report actual NO mass from species-resolved measurements. Total NOx reported as NO2-equivalent does not establish this quantity; require speciation and a documented conversion or retain the quantitative result as pending. Do not sum NOx again with NO/NO2. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: no2
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report actual NO2 mass with the same sampling and exhaust basis as NO. Maintain the separate physical species and verified characterization basis; exclude N2O from NOx. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: so2
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Quantify SO2 according to measured gas sulfur/odorants and applicable stack records; low sulfur is not proof of zero. Do not substitute a generic sulfur-oxides aggregate. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: hcl
+          role: "hydrogen chloride"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional screening row for actual HCl from the salt dryer: the Autazes producer report describes MgCl2 impurity decomposition in its specific dryer; use it only as a screening mechanism, not a recipe or emission factor. Establish impurity chemistry, exhaust evidence and control configuration before using a positive amount. No HCl formation fraction is assumed from the KCl product name, and natural-gas boiler factors do not describe this salt-specific release. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - brazil-potash-dryer-case
+            ranges: []
+        - row_id: formaldehyde
+          role: "formaldehyde"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Species-specific combustion screening: quantify formaldehyde where applicable, with detection limits and method evidence. An aggregate VOC total cannot stand in for this row. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: benzene
+          role: "benzene"
+          name: "benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9202-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Species-specific combustion screening: quantify benzene where applicable, without reusing the formaldehyde or total VOC amount. Additional actual VOC species require their own atomic rows. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-ap42-gas
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure PM2.5 leaving the site from dryers, compactors, screens, storage, loadout and combustion, after actual control devices. Include fugitive sources; wet-scrubber water droplets and condensable particulate definitions must be documented. Collected dust is not emitted dust. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eccc-potash-2017
+            ranges: []
+        - row_id: pm10
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report only the PM2.5–PM10 size interval. If the same compatible method reports cumulative PM10 and PM2.5, derive this interval by subtraction with uncertainty and nonnegative reconciliation; otherwise do not fabricate a split. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eccc-potash-2017
+            ranges: []
+        - row_id: pm_over10
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report only particles larger than PM10; derive total-minus-PM10 only when sampling definitions and coverage agree. Never add cumulative total particulate or PM10 again to the three non-overlapping intervals. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eccc-potash-2017
+            ranges: []
+        - row_id: water_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Determine water vapour actually discharged from evaporation, drying and cooling, separating recovered condensate and combustion-generated water in the water ledger. Record mass, not the volume of humid exhaust gas. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_air; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvic-aaf-2007
+                - eccc-potash-2017
+                - eu-mwei-2018
+            ranges: []
+        - row_id: water_out
+          role: "Water"
+          name: "Water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional: liquid water component directly released to freshwater after onsite management. Record actual effluent volume, density and water fraction; convert water-component mass to the water reference volume using justified water density. The total brine volume is not automatically pure-water volume. Exclude offsite wastewater shipments and internal recycles from this elementary exchange. Reference unit group 93a60a57-a3c8-12da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_water; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+                - eccc-potash-2017
+                - eu-mwei-2018
+            ranges: []
+        - row_id: chloride
+          role: "chloride"
+          name: "chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9508-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: chloride-ion mass released to freshwater, using discharge volume and representative chloride analysis at the final outfall, including attributable saline runoff. This is not elemental chlorine or HCl. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_water; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+                - eccc-potash-2017
+                - eu-mwei-2018
+            ranges: []
+        - row_id: potassium
+          role: "Potassium, ion"
+          name: "Potassium, ion"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "17f0762e-681b-4f6f-8693-58b95f6779a7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: potassium-ion mass directly released to freshwater from the same outfall basis; use measured ion concentration, not fertilizer K2O grade. Record residual K loss in the mineral balance. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_water; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+                - eccc-potash-2017
+                - eu-mwei-2018
+            ranges: []
+        - row_id: sodium
+          role: "Sodium, ion"
+          name: "Sodium, ion"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "6a3f413e-8aab-4c58-93b0-1f51c9714adb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: sodium-ion mass directly released to freshwater, with measured concentration and outfall volume. Do not reuse a sodium resource extraction flow or add whole NaCl mass to the same ionic discharge inventory. Reference unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+          amount:
+            expression: "Record the actual attributable period exchange by cp_water; divide by Q, the accepted product mass in kg for the same period. Preserve the stream’s stated numerator unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+                - eccc-potash-2017
+                - eu-mwei-2018
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "hot_leach_kcl"
+    rule: "For this attributional inventory, first separately collect dedicated KCl finishing burdens and any physically separable salt recovery. Apply virtual subdivision only with an evidenced causal relationship. Allocate only the remaining inseparable environmental burdens, first by determining physical causality; where that does not establish a relationship, use documented market value at the separation point and matched-period prices, with sensitivity. No universal mass share or revenue price is supplied."
+    source_ids:
+      - eu-ilcd-2010
+  - rule_id: allocation_physical_ledger
+    applies_to: "hot_leach_kcl"
+    rule: "Preserve actual ore, product, recovered salt, waste and emissions in the unallocated physical mass/water/K/Na/Cl/carbon ledger. Multiply environmental burden accounts by allocation shares, never mechanically multiply co-product physical outputs. Report physical and allocated accounts separately; recovered salt is not an avoided-production credit by default. Waste disposal remains attributed consistently to its originating process."
+    source_ids:
+      - eu-ilcd-2010
+      - eu-mwei-2018
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "hot_leach_kcl"
+      flow_role: "kcl_product"
+      record_type: "accepted product ledger"
+      raw_fields: "lot; net accepted mass Q; granule sizes; as-delivered moisture; KCl; K2O-equivalent; NaCl; Mg; insolubles; assay basis; site; date; failed/zero-output and rework/return links; opening/closing product and work-in-progress stocks with carried burdens"
+      collection_method: "Calibrated net weighing and representative composite sample/traceable laboratory assay; exclude packaging, rejected lots and internal recycles from Q while retaining their actual production burdens in the matched pool. Reconcile net accepted production, stocks and returns by lot under normalize_period; a returned/reaccepted net batch is confirmed only once and internal rework is not added output; final reference output per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "one declared representative period including startup/shutdown and stock changes"
+      site_scope: "same site and product scope; shared units assigned transparently"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; coverage; reconciliation; detection limits; traceable records"
+    - protocol_id: cp_mineral
+      process_id: "hot_leach_kcl"
+      flow_role: "ore; makeup_salt; halite_product"
+      record_type: "weighing and mineral assay"
+      raw_fields: "stream; lot; incoming/outgoing mass; moisture; KCl/NaCl/Mg salts/insolubles; origin/receiver; initial/final stocks; makeup-salt purity"
+      collection_method: "Calibrated scales, representative solid/liquid sampling and assay with standards, lab method and uncertainty; reconcile dry components and entrained liquid; retain raw period stream totals and opening/closing stock/composition records for normalize_period; no division during collection"
+      unit: "kg"
+      frequency: "each lot and stock reconciliation"
+      temporal_coverage: "one declared representative period including startup/shutdown and stock changes"
+      site_scope: "same site and product scope; shared units assigned transparently"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; coverage; reconciliation; detection limits; traceable records"
+    - protocol_id: cp_energy
+      process_id: "hot_leach_kcl"
+      flow_role: "electricity; gas"
+      record_type: "meter and supplier record"
+      raw_fields: "meter; stage; kWh; gas m3; temperature; absolute pressure; wet/dry basis; Z; composition; LHV/HHV basis; supplier volume definition; steam supply/return conditions"
+      collection_method: "Calibrated delivery meters and phase submeters; invoices and supplier definitions; heat audit including boiler losses, condensate return, recovery and actual steam enthalpy; retain raw attributable period delivered-energy/volume totals for normalize_period; no division during collection"
+      unit: "MJ; m3"
+      frequency: "continuous, reconciled each accounting period"
+      temporal_coverage: "one declared representative period including startup/shutdown and stock changes"
+      site_scope: "same site and product scope; shared units assigned transparently"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; coverage; reconciliation; detection limits; traceable records"
+    - protocol_id: cp_residue
+      process_id: "hot_leach_kcl"
+      flow_role: "tailings; sludge; dust_waste"
+      record_type: "residue stock and disposal record"
+      raw_fields: "stream; actual wet mass; dry fractions; entrained liquid; contamination; internal recycle; shipment/onsite stock; receiver; salinity acceptance; long-term facility scenario"
+      collection_method: "Separate calibrated weighing, representative moisture/composition assay and waste-receiver documentation; reconcile capture with recovered/rejected dust; retain raw actual outbound period stream totals for normalize_period, with onsite deposition stocks separately; no division during collection"
+      unit: "kg"
+      frequency: "each disposal or stock event"
+      temporal_coverage: "one declared representative period including startup/shutdown and stock changes"
+      site_scope: "same site and product scope; shared units assigned transparently"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; coverage; reconciliation; detection limits; traceable records"
+    - protocol_id: cp_purge
+      process_id: "hot_leach_kcl"
+      flow_role: "purge"
+      record_type: "external liquid-waste record"
+      raw_fields: "purge mass/volume; density; water/salt fractions; destination; recycled amount; initial/final brine stocks"
+      collection_method: "Meter/weigh external liquid shipment and sample composition; reconcile internal treatment and recirculation separately; retain raw external purge period mass totals for normalize_period; no division during collection"
+      unit: "kg"
+      frequency: "each shipment and period balance"
+      temporal_coverage: "one declared representative period including startup/shutdown and stock changes"
+      site_scope: "same site and product scope; shared units assigned transparently"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; coverage; reconciliation; detection limits; traceable records"
+    - protocol_id: cp_air
+      process_id: "hot_leach_kcl"
+      flow_role: "co2; co; ch4; n2o; no; no2; so2; hcl; formaldehyde; benzene; pm25; pm10; pm_over10; water_air"
+      record_type: "species and dust measurement"
+      raw_fields: "source/stage; species; size interval; stack/fugitive flow; concentration; temperature/pressure; wet/dry/O2-reference basis; hours; detection limit; control status; sampling definition; condensable fraction"
+      collection_method: "Representative outlet stack/species tests with matched exhaust volume and operating coverage; documented fugitive assessment; droplet interference and filterable/condensable definitions; carbon/water reconciliation where valid; retain raw species-specific actual period emitted-mass totals for normalize_period; disjoint size intervals; no division during collection"
+      unit: "kg"
+      frequency: "representative operating modes and period hours"
+      temporal_coverage: "one declared representative period including startup/shutdown and stock changes"
+      site_scope: "same site and product scope; shared units assigned transparently"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; coverage; reconciliation; detection limits; traceable records"
+    - protocol_id: cp_water
+      process_id: "hot_leach_kcl"
+      flow_role: "water; water_out; chloride; potassium; sodium"
+      record_type: "water and outfall balance"
+      raw_fields: "purchased water mass; recycle/condensate; effluent volume/density/water fraction; temperature; Cl-/K+/Na+ concentration; freshwater receptor; rainfall/runoff; stocks; closure scenario"
+      collection_method: "Calibrated meters, representative flow-weighted outfall samples and ion-specific analysis; state density/temperature and uncertainty; monitor saline residue facilities and attributable long-term releases; retain raw actual period water/ion totals and original physical effluent records for normalize_period; no division during collection; do not duplicate an offsite purge as direct discharge"
+      unit: "kg; m3"
+      frequency: "continuous flows and representative sampling; stock periods"
+      temporal_coverage: "one declared representative period including startup/shutdown and stock changes"
+      site_scope: "same site and product scope; shared units assigned transparently"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; coverage; reconciliation; detection limits; traceable records"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For each non-reference exchange, collect X as the raw period total in its stated numerator unit and apply x = X / Q exactly once here; protocols, conversions and load calculations do not divide by Q. Use the complete matched site/route/product-state production pool, including startup/shutdown, failed and zero-output runs, rejects and internal rework, with their actual material, energy, emission and waste burdens. Reconcile opening/closing raw-material, mother-brine, work-in-progress and product stocks together with their carried production burdens; match withdrawals, receipts and returns so prior or carried burdens are neither omitted nor counted twice. Q is the unique positive accepted as-delivered net product mass attributable to that pool after stock and return reconciliation; count a returned and reaccepted net batch only once, and internal rework is not new output. If Q <= 0 or the pool/burden match cannot be demonstrated, retain the raw records and leave the normalized result unavailable. Final reference output is 1 kg; preserve the unallocated physical ledger and apply any burden allocation only to the separate environmental-burden account."
+      inputs:
+        - X
+        - Q
+        - cp_product
+      output: "exchange per 1 kg reference flow"
+      source_ids:
+        - eu-lvic-aaf-2007
+    - id: electricity_conversion
+      applies_to: "electricity"
+      rule: "E_MJ = 3.6 * E_kWh"
+      inputs:
+        - E_kWh
+        - cp_energy
+      output: "E_MJ"
+      source_ids:
+        - eu-lvic-aaf-2007
+    - id: assay_conversion
+      applies_to: "kcl_product"
+      rule: "m_dry = m_product * (1 - w); m_KCl = m_dry * f_KCl_dry only for a dry-basis assay. Elemental K in KCl = m_KCl * molar_mass(K) / molar_mass(KCl); K2O-equivalent = m_K * molar_mass(K2O) / (2 * molar_mass(K)). Use actual declared assay if other K-bearing impurities exist; no nominal-grade substitution."
+      inputs:
+        - m_product
+        - w
+        - f_KCl_dry
+        - cp_product
+      output: "m_dry; m_KCl; m_K; K2O-equivalent"
+      source_ids:
+        - ks-kalimop-grade
+    - id: ion_load
+      applies_to: "chloride; potassium; sodium"
+      rule: "For each ion, emitted mass = sum of representative concentration (kg/m3 of actual effluent) times matched discharged effluent volume (m3), with compatible dissolved/total definition. Reconcile rainfall, runoff and stocks."
+      inputs:
+        - concentration
+        - "discharge volume"
+        - cp_water
+      output: "ion mass"
+      source_ids:
+        - eu-mwei-2018
+    - id: water_volume
+      applies_to: "water_out"
+      rule: "water-component mass = effluent volume * measured effluent density * water mass fraction; water reference volume = water-component mass / justified water density at the declared temperature. Preserve the original total effluent measurement."
+      inputs:
+        - "effluent volume"
+        - "effluent density"
+        - "water fraction"
+        - "water density"
+        - cp_water
+      output: "water volume"
+      source_ids:
+        - eu-mwei-2018
+    - id: mineral_balance
+      applies_to: "hot_leach_kcl"
+      rule: "For K, Na and Cl individually: incoming measured component mass + opening stock = product + recovered salt + residues + direct releases + closing stock, with actual impurity speciation and measurement uncertainty. Keep mass/water balances before environmental burden allocation."
+      inputs:
+        - cp_mineral
+        - cp_product
+        - cp_residue
+        - cp_purge
+        - cp_air
+        - cp_water
+      output: "component reconciliation"
+      source_ids:
+        - eu-mwei-2018
+        - eu-lvic-aaf-2007
+    - id: allocation_account
+      applies_to: "hot_leach_kcl"
+      rule: "Assigned KCl burden = measured KCl-specific burden + justified KCl share * inseparable shared burden; shares sum to one. Physical co-product quantities remain their measured values; dividing burdens by Q does not rescale their mass."
+      inputs:
+        - "specific/shared burden"
+        - "causal or price records"
+        - Q
+      output: "allocated KCl burden"
+      source_ids:
+        - eu-ilcd-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify physical name/CAS/route/state, constituent mixture and stream destination; UUID identity and provider quantitative basis are separate checks. Unresolved links require a specific named physical stream, assay and later resolution; do not replace ore or wastes with convenient adjacent products."
+      evidence: "cp_mineral; cp_residue; cp_purge"
+    - id: dq_scope
+      applies_to: "hot_leach_kcl"
+      requirement: "Retain actual SKU/site/period and operating modes, initial/final brine stocks and phase submetering. A missing measurement, unsupported emission split or unmatched supplier dataset is pending, not zero or a complete dataset."
+      evidence: "cp_product; cp_energy"
+    - id: dq_air
+      applies_to: "cp_air"
+      requirement: "Distinguish actual species, non-overlapping particle fractions and sampling/condensable definitions; nondetects need detection limits and treatment of uncertainty. Screening excludes sources only with a documented physical/measurement basis."
+      evidence: "eccc-potash-2017; epa-ap42-gas"
+    - id: dq_source_limits
+      applies_to: "hot_leach_kcl"
+      requirement: "K+S diagrams and Canadian practices support physical methods only; do not import their temperatures, sector emission percentages, purity, yield or energy as generic values. LVIC-AAF common audits are used without importing ammonia/NPK recipes. AP42 boiler data require actual combustor applicability and cannot default the direct salt dryer."
+      evidence: "ks-thermal-2023; eccc-potash-2017; eu-lvic-aaf-2007; epa-ap42-gas"
+validation_rules:
+  - rule_id: validate_product
+    applies_to: "kcl_product"
+    rule: "Require exactly one reference-linked accepted output and all Section 3 qualifiers, measured ≥60% K2O-equivalent on the declared grade basis, net mass, moisture and granular bulk identity; other physical routes/states cannot be auto-selected."
+    source_ids:
+      - ks-kalimop-grade
+      - un-cpc3-2025
+  - rule_id: validate_balance
+    applies_to: "hot_leach_kcl"
+    rule: "Check period/Q alignment, phase handoff equality, K/Na/Cl/water/fuel-carbon reconciliation, stock changes, no duplicate recycle/steam/wastewater or particle outputs, and separate physical versus allocated accounts. Unexplained residuals beyond declared measurement uncertainty are findings, not balancing filler flows."
+    source_ids:
+      - eu-mwei-2018
+      - eu-lvic-aaf-2007
+      - eu-ilcd-2010
+  - rule_id: validate_completeness
+    applies_to: "all inventory rows"
+    rule: "Require primary collection, actual supplier/receiver compatibility and conditional applicability evidence for each used exchange. Unresolved UUID, natural-gas volume convention, total-NOx-only data, missing particle speciation, unknown brine composition or omitted long-term residue burdens remain explicit incomplete coverage. No source factor or claimed identity converts these into a passing site dataset."
+    source_ids:
+      - eccc-potash-2017
+      - eu-mwei-2018
+      - epa-ap42-gas
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Declared granular KCl supply inventory within this route/grade/site basis after data completeness review"
+  excluded_use: "Other mineral/chemical products, agricultural-use impact factors, automatic classification-wide coverage, food/pharma purity or supplier substitution without verification"
+  required_metadata: "reference qualifiers; boundary and period; measured assays/stocks; allocation decision; source scope; supplier and receiver records; actual units/conversions"
+  required_quality_disclosure: "unresolved identities/backgrounds; measurement coverage and detection limits; physical balance residuals; long-term scenarios; allocation sensitivity and exclusions"
+  update_trigger: "feed mineralogy/grade, purification or additive route, product grade/state, utility basis, residue destination, monitoring or supplier change"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN CPC Version 3.0 Explanatory Notes, 30 June 2025, printed/PDF p165; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification identity and adjacent K2SO4/carnallite boundaries only"
+  - id: "ks-thermal-2023"
+    type: "handbook"
+    reference: "K+S Compendium July 2023, p48 thermal dissolution diagram; https://www.kpluss.com/.downloads/ir/2023/kpluss-compendium-july-2023.pdf"
+    used_for: "Thermal KCl separation and mother-brine recycling; no diagram operating defaults"
+  - id: "ks-kalimop-grade"
+    type: "handbook"
+    reference: "K+S KALIMOP GRAN. product information, web snapshot 2026-10-14; https://www.kpluss.com/en-us/our-business-products/agriculture/products/en-kalimop-gran/"
+    used_for: "Granular KCl and 60% K2O-equivalent grade existence; not target SKU assay or manufacturing-site proof"
+  - id: "eccc-potash-2017"
+    type: "official_guidance"
+    reference: "ECCC Code of Practice for the Management of PM2.5 Emissions in the Potash Sector in Canada, September 2017, Sections 2.1.2.6–2.1.2.9 and 3–4, PDF pp15,19,24; https://www.canada.ca/content/dam/eccc/documents/pdf/cepa/20250707-eng.pdf"
+    used_for: "Drying/compaction/glazing and dust monitoring/control limitations; Canadian physical examples, no emission percentages transferred"
+  - id: "eu-mwei-2018"
+    type: "official_guidance"
+    reference: "JRC109657, MWEI BREF 2018, Sections 1.3.1.2, 2.1.1.8–2.1.1.9, 4.2.1.3.4.1, PDF pp60,81,278; DOI10.2760/35297; https://publications.jrc.ec.europa.eu/repository/bitstream/JRC109657/jrc109657_mwei_bref_-_for_pubsy_online.pdf"
+    used_for: "Saline potash-residue dissolution, extractive-waste mass/water balances and aftercare; no universal residue composition"
+  - id: "eu-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "EC LVIC-AAF BREF August 2007, scope and Sections 1.4.8/1.5.1, PDF pp27,51,61; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-03/LVIC-AAF.pdf"
+    used_for: "Common energy audits, steam/water/CO2 bookkeeping only; ammonia, acid and NPK-specific methods excluded"
+  - id: "epa-ap42-gas"
+    type: "official_guidance"
+    reference: "US EPA AP42 Section 1.4 Natural Gas Combustion, retained edition with page footer 10/26 (October 2026), pp1.4-2–1.4-3; https://www.epa.gov/sites/default/files/2020-09/documents/1.4_natural_gas_combustion.pdf"
+    used_for: "Gas boiler/furnace emission species and technology/measurement scope; no universal factor or dryer recipe"
+  - id: "eu-ilcd-2010"
+    type: "official_guidance"
+    reference: "ILCD Handbook General guide for LCA Detailed guidance, March 2010, Sections 7.9.2–7.9.3, printed pp255–257/PDF pp275–277; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision, physical causality and market-value fallback with decision-context limitations"
+  - id: "brazil-potash-dryer-case"
+    type: "handbook"
+    reference: "Brazil Potash Autazes Technical Report Summary, 19 April 2024, rotary dryer and scrubber sections, printed pp138 and 144; https://ir.brazilpotash.com/financials/sec-filings/content/0001193125-24-102820/d818742daddexhb.htm"
+    used_for: "Project-case screening of MgCl2 impurity-related HCl; no transfer of recipe, treatment reagent, capacity or emission factor"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1d29cea27feae3ef5d24563202dabcba30017c545216cb206ae99c8335c40621"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6294"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6294
+          line: 60
+          column: 1
+        end:
+          offset: 8706
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Mined sylvinite ore delivered to aboveground processing; upstream mining, crushing and transport are supplied through verified background data |\n| starting_condition_role | background_dataset |\n| product_classification_scope | CPC 3.0 34631; narrower |\n| recursive_input_rule | Do not recurse into another KCl fertilizer dataset as if it were untreated ore. If refined KCl is actually the feed, this production boundary does not apply; choose finishing-only guidance after independent applicability review. |\n| upstream_dataset_requirement | Delivered ore with actual composition/origin and extraction burden; electricity at actual voltage/region/year; pipeline gas at verified volume basis; water supply; actual purchased makeup salt; residue management and applicable transport. Missing upstream burdens are disclosed as incomplete, not zero. |\n| disclosure | Disclose outsourced mining/transport and shared utilities, waste management inside/outside the site, stock changes, closure/aftercare scenario and exclusions. No physical mining-stage omission is concealed by a gate-to-gate label. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | hot_leach_kcl | Include heat generation/recovery, brine recycle, crystalliser vacuum/cooling, debrining, drying, water glazing, compaction, screening, storage, loading and actual emissions/waste controls. Keep final-product transfers inside one integrated unit; stage handoffs have equal amounts on both ends, with assay/stock changes reconciled. | ks-thermal-2023; eccc-potash-2017 |\n| boundary_waste | hot_leach_kcl | Cover actual saline tailings, clarification sludge, purge, captured dust, contaminated runoff and receiver treatments. Separate onsite intermediates from offsite exchanges. Tailings dissolution and closure/aftercare cannot be asserted harmless; retain an attributable scenario, duration and uncertainty for long-term releases. | eu-mwei-2018 |\n| boundary_downstream | hot_leach_kcl | Exclude field application, crop yields, avoided fertilizer substitution, user transport after plant gate, and product packaging from this bulk reference. Disclose any capital/maintenance exclusions and their significance; actual material consumptions or releases cannot be silently removed. | un-cpc3-2025 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 330
+              line: 9
+              column: 88
+          text: "# Bulk granular fertilizer-grade potassium chloride by hot leaching and crystallisation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6294
+              line: 60
+              column: 1
+            end:
+              offset: 6315
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37716"
+      family: "allocation"
+      span:
+        start:
+          offset: 37716
+          line: 584
+          column: 1
+        end:
+          offset: 38907
+          line: 591
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | hot_leach_kcl | For this attributional inventory, first separately collect dedicated KCl finishing burdens and any physically separable salt recovery. Apply virtual subdivision only with an evidenced causal relationship. Allocate only the remaining inseparable environmental burdens, first by determining physical causality; where that does not establish a relationship, use documented market value at the separation point and matched-period prices, with sensitivity. No universal mass share or revenue price is supplied. | eu-ilcd-2010 |\n| allocation_physical_ledger | hot_leach_kcl | Preserve actual ore, product, recovered salt, waste and emissions in the unallocated physical mass/water/K/Na/Cl/carbon ledger. Multiply environmental burden accounts by allocation shares, never mechanically multiply co-product physical outputs. Report physical and allocated accounts separately; recovered salt is not an avoided-production credit by default. Waste disposal remains attributed consistently to its originating process. | eu-ilcd-2010; eu-mwei-2018 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 330
+              line: 9
+              column: 88
+          text: "# Bulk granular fertilizer-grade potassium chloride by hot leaching and crystallisation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37716
+              line: 584
+              column: 1
+            end:
+              offset: 37756
+              line: 584
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50597"
+      family: "validation"
+      span:
+        start:
+          offset: 50597
+          line: 626
+          column: 1
+        end:
+          offset: 51915
+          line: 634
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_product | kcl_product | Require exactly one reference-linked accepted output and all Section 3 qualifiers, measured ≥60% K2O-equivalent on the declared grade basis, net mass, moisture and granular bulk identity; other physical routes/states cannot be auto-selected. | ks-kalimop-grade; un-cpc3-2025 |\n| validate_balance | hot_leach_kcl | Check period/Q alignment, phase handoff equality, K/Na/Cl/water/fuel-carbon reconciliation, stock changes, no duplicate recycle/steam/wastewater or particle outputs, and separate physical versus allocated accounts. Unexplained residuals beyond declared measurement uncertainty are findings, not balancing filler flows. | eu-mwei-2018; eu-lvic-aaf-2007; eu-ilcd-2010 |\n| validate_completeness | all inventory rows | Require primary collection, actual supplier/receiver compatibility and conditional applicability evidence for each used exchange. Unresolved UUID, natural-gas volume convention, total-NOx-only data, missing particle speciation, unknown brine composition or omitted long-term residue burdens remain explicit incomplete coverage. No source factor or claimed identity converts these into a passing site dataset. | eccc-potash-2017; eu-mwei-2018; epa-ap42-gas |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 330
+              line: 9
+              column: 88
+          text: "# Bulk granular fertilizer-grade potassium chloride by hot leaching and crystallisation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50597
+              line: 626
+              column: 1
+            end:
+              offset: 50619
+              line: 626
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6294"
+      source_span:
+        start:
+          offset: 7574
+          line: 75
+          column: 1
+        end:
+          offset: 7977
+          line: 75
+          column: 404
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_6294"
+      source_span:
+        start:
+          offset: 7978
+          line: 76
+          column: 1
+        end:
+          offset: 8356
+          line: 76
+          column: 379
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_downstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6294"
+      source_span:
+        start:
+          offset: 8357
+          line: 77
+          column: 1
+        end:
+          offset: 8704
+          line: 77
+          column: 348
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_37716"
+      source_span:
+        start:
+          offset: 37829
+          line: 588
+          column: 1
+        end:
+          offset: 38392
+          line: 588
+          column: 564
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_37716"
+      source_span:
+        start:
+          offset: 38393
+          line: 589
+          column: 1
+        end:
+          offset: 38905
+          line: 589
+          column: 513
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_product"
+      identity_kind: "explicit"
+      unit_id: "normative_50597"
+      source_span:
+        start:
+          offset: 50692
+          line: 630
+          column: 1
+        end:
+          offset: 51003
+          line: 630
+          column: 312
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_50597"
+      source_span:
+        start:
+          offset: 51004
+          line: 631
+          column: 1
+        end:
+          offset: 51408
+          line: 631
+          column: 405
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_50597"
+      source_span:
+        start:
+          offset: 51409
+          line: 632
+          column: 1
+        end:
+          offset: 51913
+          line: 632
+          column: 505
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6294"
+      source_span:
+        start:
+          offset: 6294
+          line: 60
+          column: 1
+        end:
+          offset: 6315
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6294"
+      source_span:
+        start:
+          offset: 6343
+          line: 64
+          column: 1
+        end:
+          offset: 7501
+          line: 71
+          column: 248
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37716"
+      source_span:
+        start:
+          offset: 37716
+          line: 584
+          column: 1
+        end:
+          offset: 37756
+          line: 584
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50597"
+      source_span:
+        start:
+          offset: 50597
+          line: 626
+          column: 1
+        end:
+          offset: 50619
+          line: 626
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1d29cea27feae3ef5d24563202dabcba30017c545216cb206ae99c8335c40621"
+  generated_content_sha256: "sha256:874a5a4bd150e9846c5259851a8b7d7d735d61f01b7b874c7de1423ab274b51c"

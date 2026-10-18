@@ -1,10 +1,1826 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "36115"
-  title: "\"Camel-back\" strips for retreading rubber tyres"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.camel-back-strips-for-retreading-rubber-tyres"
+  classification_refs: "CPC 3.0 36115; narrower"
+  covered_products: "Extruded uncured rubber tread profiles with an applied uncured cushion-gum backing for tractor-rear and OTR hot-mould retreading"
+  excluded_products: "Pre-vulcanized interchangeable treads; arbitrary compounded rubber without the supplied tread profile; narrow-ribbon direct winding; finished new or retreaded whole tyres; inner tubes, flaps and tyre innerliners; fast-moving commercial-vehicle use in this selected subset; onsite rubber reclamation and buy-finished-strip repacking. CPC 36220 explicitly excludes camelback, but this alone does not establish new methodology."
+  representative_product: "One declared profile and tread/cushion batch combination, uncured and newly quality released; no fixed layer ratio or formulation"
+  production_route: "Actual separately acquired solid elastomers and individual supplied ingredients/preparations → separately traced tread/cushion mixing and milling → die-profile extrusion/forming and cushion application → cooling/conditioning and cutting → first quality release, with actual attributable rework, packaging and logistics ledgers. Internal compound/trim transfers cancel; subsequent casing application and tyre mould cure are outside this strip production method."
+  market_state: "Finished supplied but still uncured cushion-backed strip; no claimed tyre-distance function"
+functional_unit:
+  what: "Supply a declared uncured profiled tread and backing for subsequent tractor-rear/OTR mould retreading"
+  how_much: "1 kg newly first-quality-released net two-layer rubber strip; Q is production release mass, not net delivery"
+  how_well: "Actual declared profile, layer bond/condition, compound cure-state and acceptance specification; no unverified universal test threshold"
+  how_long_or_cycle: "One manufacturing first-release cycle with actual included cohort handling; no operational tyre life asserted"
+  reference_flow_link: "new_camelback"
+system_boundary:
+  rules:
+    - rule_id: boundary_integrated
+      applies_to: "p_camelback"
+      rule: "Retain complete actual onsite compounding and profile manufacture of both rubber layers plus real attributable cooling, tests, rework, packaging, storage and handling. Stage records are detailed inside one consolidated unit process; do not replace it with bought finished-strip packing."
+      source_ids:
+        - surya-camelback
+        - epa-camelback-1973
+    - rule_id: boundary_downstream
+      applies_to: "p_camelback"
+      rule: "The selected supplied object is uncured, with factory-applied cushion backing. Casing inspection/buffing/building and whole-tyre mould vulcanization belong to subsequent retreading; pre-cured tread manufacture cannot be treated as this same gate."
+      source_ids:
+        - surya-camelback
+        - patent-camelback-1965
+    - rule_id: boundary_stocks
+      applies_to: "all inventory rows"
+      rule: "Q is the unique positive net mass in kg first accepted at the manufacturing quality-release gate for the same product/profile, two-layer route, uncured state and matched cohort; both rubber layers are included and removable release liner/transport packaging are excluded. Q is newly released production, not actual dispatch. Do not add closing finished stock of the same Q as another production output. Keep finished warehousing, packaging, handling and dispatch in a separate real ledger and cancel internal production-to-warehouse handoffs on consolidation. Returns/reinspection do not create new Q. A previously released return retains its original mass and burden; incremental rework is attributed once to the appropriate original cohort, with old-cohort stocks/burdens kept separate from current new production."
+      source_ids:
+        - epa-camelback-1973
+    - rule_id: boundary_actual_atoms
+      applies_to: "all inventory rows"
+      rule: "Every actual purchased formulation is one complete supplied input; constituents are subledgers. This inventory is a conditional atomic starting set, not a prescribed recipe. Record every additional actual ingredient, auxiliary, fuel, refrigerant, package, external Product/utility return, waste and elementary species on its own card before quantitative use; establish absent/not_applicable cases from real evidence."
+      source_ids:
+        - epa-camelback-1973
+boundary_abstraction:
+  declared_starting_condition: "Acquired identified raw solid elastomers, separate ingredients/whole supplied preparations, utilities and packaging entering the integrated two-layer strip line"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "A bounded cushion-backed uncured-profile subset of CPC 36115, not all tread or rubber products"
+  recursive_input_rule: "Internal compound, strip and trim transfers remain stage subledgers and cancel in the consolidated process; returned finished strips preserve original burdens and never become new virgin purchases or new Q. Do not replace integrated manufacturing by purchase of finished strips."
+  upstream_dataset_requirement: "Independently match each actual supplied material/formulation, energy and packaging by full physical identity, grade/form, route, geography/supply location and exact property/unit; upstream acquisition and transport enter once. A UUID supplies identity, not provider quantities."
+  disclosure: "Declare every stage owner and actual recipe/formulation, included utility generation, failed/rework/return histories, WIP/finished stock mass and burdens, first-release versus dispatch gate, packaging reuse/returns and all actual external outlets."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "\"Camel-back\" strips for retreading rubber tyres"
+    uuid: "ce4921de-ce26-4e35-8d49-4d283f73db0c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "declared site and actual data period"
+    - "tractor-rear or OTR intended retread and casing/mould compatibility"
+    - "uncured extruded profile dimensions and net mass of both rubber layers"
+    - "separate tread and cushion recipe/compound batch identities"
+    - "actual supplied preparations and their full wet composition/assays"
+    - "actual acceptance tests and declared storage/shelf-life conditions without universal thresholds"
+    - "first manufacturing quality-release gate and unique new Q cohort"
+    - "separate WIP/finished/returned-stock mass and burden carry"
+    - "actual packaging/release-liner removal and reuse/return boundary"
+    - "complete native identity limitations and supplier/provider compatibility"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference output is 1 kg net uncured two-layer rubber at first manufacturing acceptance, excluding removable liners/packaging; use cp_release and cp_stock to distinguish new production Q from finished stock, reacceptance and dispatch."
+  - id: one_division
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "declared row unit"
+    rule: "Collection protocols retain unnormalized raw numerators with complete same-cohort WIP/stock burden carry. report_once is the sole A_i/Q operation; card expressions and aggregation rules describe that same report operation and never divide successively."
+  - id: raw_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual measured basis"
+      uuid: ""
+    required_unit: "declared raw unit"
+    rule: "Mass from volume requires actual compatible density and conditions. Only a rate is multiplied by duration; already integrated gas/liquid volume receives no extra time. Preserve utility mass, state and enthalpy separately, and formulation wet mass versus component assays without duplicate inputs."
+process_map:
+  - id: p_camelback
+    name: "Integrated uncured cushion-backed camelback manufacture"
+    inclusion: "required"
+    inclusion_condition: "Selected two-layer profile and route; separate layer/stage ledgers retained"
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow; first quality release"
+process_inventory:
+  - id: p_camelback
+    label: "Integrated uncured cushion-backed camelback manufacture"
+    inputs:
+      product:
+        - row_id: natural_rubber
+          role: "Dry natural rubber recipe charge"
+          name: "Dry natural rubber"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_natural_rubber / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: sbr
+          role: "Dry styrene-butadiene rubber recipe charge"
+          name: "Dry styrene-butadiene rubber"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_sbr / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: br
+          role: "Dry polybutadiene rubber recipe charge"
+          name: "Dry polybutadiene rubber"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_br / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: carbon_black
+          role: "Furnace carbon black recipe charge"
+          name: "Furnace carbon black"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_carbon_black / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: silica
+          role: "Precipitated silica recipe charge"
+          name: "Precipitated silica"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_silica / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: zinc_oxide
+          role: "Zinc oxide recipe charge"
+          name: "Zinc oxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_zinc_oxide / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: stearic_acid
+          role: "Stearic acid recipe charge"
+          name: "Stearic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_stearic_acid / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: sulfur
+          role: "Elemental sulfur recipe charge"
+          name: "Elemental sulfur"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_sulfur / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: cbs
+          role: "N-cyclohexyl-2-benzothiazolesulfenamide recipe charge"
+          name: "N-cyclohexyl-2-benzothiazolesulfenamide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_cbs / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: antioxidant
+          role: "N-(1,3-dimethylbutyl)-N′-phenyl-p-phenylenediamine recipe charge"
+          name: "N-(1,3-dimethylbutyl)-N′-phenyl-p-phenylenediamine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_antioxidant / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: process_oil
+          role: "Mineral rubber process oil recipe charge"
+          name: "Mineral rubber process oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_process_oil / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: wax
+          role: "Microcrystalline petroleum wax recipe charge"
+          name: "Microcrystalline petroleum wax"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_wax / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: tackifier
+          role: "C5 hydrocarbon tackifier resin recipe charge"
+          name: "C5 hydrocarbon tackifier resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual weighed recipe of each tread/cushion batch. Sum complete as-supplied charges for this single material across the two layer subledgers; retain batch destinations, failed batches and losses. No formulation, proportion or compulsory ingredient is inferred from this candidate card."
+          amount:
+            expression: "A_tackifier / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: sulfur_preparation
+          role: "Purchased rubber-bound sulfur preparation"
+          name: "Rubber-bound sulfur predispersion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when that whole preparation is actually purchased. Weigh its full supplied mass and assay sulfur/carrier as subledgers, not extra sulfur/rubber procurement. Do not also charge neat-sulfur or polymer cards for its constituents; any separately bought neat charges remain separate. Record actual product composition, grade and curative state."
+          amount:
+            expression: "A_sulfur_preparation / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: talc
+          role: "Separately acquired anti-tack talc"
+          name: "Talc powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for actual onsite preparation of talc slurry; record dry talc and separately acquired makeup water, mixing energy and losses. Not a second charge for talc already included in a purchased aqueous preparation. Record where anti-tack is used so it does not silently substitute for a clean bonding face."
+          amount:
+            expression: "A_talc / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: anti_tack
+          role: "Whole purchased aqueous anti-tack preparation"
+          name: "Aqueous talc-based anti-tack preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use only if this commercial formulation is actually supplied. Charge the full wet formulation once; measured talc, other actives and carrier water remain constituent subledgers. Onsite dilution water is separately acquired makeup, not duplicate carrier procurement."
+          amount:
+            expression: "A_anti_tack / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: cement
+          role: "Actual rubber cement consumption"
+          name: "Solvent-borne rubber bonding cement"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual layer/end bonding or repair use. Record one whole supplied cement formulation with supplier identity, solvent/solid assay and full wet mass; never assume a solvent recipe or apply the downstream casing cement by default. Each emitted solvent is separately identified and measured in cp_emission."
+          amount:
+            expression: "A_cement / Q; complete matched raw numerator from cp_material and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: lubricant
+          role: "Equipment lubricant makeup"
+          name: "Mineral lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record attributable actual machine/handling lubricant makeup and leaks by stage; lubricant is separate from rubber process oil in the recipe."
+          amount:
+            expression: "A_lubricant / Q; complete matched raw numerator from cp_utility and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: electricity
+          role: "Metered electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Retain actual metered or causally attributed mixing, milling, shaping, cushion application, cooling pumps, dust extraction, tests, rework, warehouse and loading electricity. Stage meter owners and meter coverage must prevent double attribution."
+          amount:
+            expression: "A_electricity / Q; complete matched raw numerator from cp_utility and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: water
+          role: "Fresh process and cooling makeup"
+          name: "Fresh process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meter real external water for mixing dilution, sheet/strip cooling and cleaning separately in stage subledgers. Recirculation is not repeated external withdrawal; purchased preparation carrier is not new water procurement. Record discharges, evaporation and moisture retention separately."
+          amount:
+            expression: "A_water / Q; complete matched raw numerator from cp_utility and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: steam
+          role: "Purchased steam if actually used"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on real purchased steam for process temperature control or actual ancillary service. It is not tyre-vulcanization steam in this uncured strip route. Record supplied mass and enthalpy/conditions and actual condensate return; avoid additionally charging fuel for the same purchased service."
+          amount:
+            expression: "A_steam / Q; complete matched raw numerator from cp_utility and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: hot_water
+          role: "Purchased hot-water service"
+          name: "Hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on a real purchased heat-transfer water service. Record supply/return water masses and temperatures and separately supported net heat; no density is inferred from a secondary flow-property coefficient. Internal utility circulation is not another purchase."
+          amount:
+            expression: "A_hot_water / Q; complete matched raw numerator from cp_utility and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: diesel
+          role: "Actual handling fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual onsite diesel-powered handling or included dispatch use; keep own combustion separate from a purchased transport service and its upstream fuel to avoid duplicate supply. Record actual exhaust by species when included."
+          amount:
+            expression: "A_diesel / Q; complete matched raw numerator from cp_utility and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: release_film
+          role: "Polyethylene release film incoming supply"
+          name: "Polyethylene release film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use only the actual separately supplied removable release film; distinguish it from any permanent rubber backing."
+          amount:
+            expression: "A_release_film / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: release_cloth
+          role: "Coated cotton release fabric incoming supply"
+          name: "Coated cotton release fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this reusable release cloth actually used. Record initial/new supply, reuse cycles, coating/provider limits, returns and losses; do not buy it anew at every reuse."
+          amount:
+            expression: "A_release_cloth / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton incoming supply"
+          name: "Corrugated shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual single corrugated carton composition and mass; this is a concrete unresolved identity, not a generic packaging UUID."
+          amount:
+            expression: "A_carton / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: strapping
+          role: "Polyethylene terephthalate strapping incoming supply"
+          name: "Polyethylene terephthalate strapping"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this actual strapping polymer and gauge; no generic packaging selector."
+          amount:
+            expression: "A_strapping / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: pallet
+          role: "Wooden transport pallet incoming supply"
+          name: "Wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pallet mass, actual reuse/return and ownership; amortize real new pallet provision without treating each internal turn as procurement."
+          amount:
+            expression: "A_pallet / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: returned_strip
+          role: "Previously released strip returned across boundary"
+          name: "\"Camel-back\" strips for retreading rubber tyres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce4921de-ce26-4e35-8d49-4d283f73db0c"
+          property_unit: "Mass / kg"
+          description: "The native Product flow names a manufactured finished camel-back strip, with production mix at plant, no specified recipe, grade, profile dimensions, cure state, geography/locationOfSupply or medium, no CAS, and only reference Mass. The broad native name does not prove the selected cushion-backed uncured profile, actual supplier, site or quantities. Apply this card only to the independently verified uncured extruded tread plus uncured cushion-gum backing for tractor-rear/OTR use; the selected manufacturer page excludes fast-moving commercial vehicles. No native global or CN/HK supply scope is invented. Finished means a finished supplied strip, not a vulcanized tyre. This conditional external return retains original batch mass and carried burdens, does not increase Q and is not a fresh recipe ingredient. Keep physical receipts and incremental rework with the original cohort; purely internal warehouse moves are not external exchanges."
+          amount:
+            expression: "A_returned_strip / Q; complete matched raw numerator from cp_stock and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stock
+              source_ids:
+                - surya-camelback
+                - patent-camelback-1965
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: release_film_out
+          role: "Polyethylene release film leaving with product or returned"
+          name: "Polyethylene release film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual externally supplied/returned packaging mass, separate from net rubber Q; retain the packaging stock/return ledger. No second purchase and no additional rubber output is created."
+          amount:
+            expression: "A_release_film_out / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: release_cloth_out
+          role: "Coated cotton release fabric leaving with product or returned"
+          name: "Coated cotton release fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual externally supplied/returned packaging mass, separate from net rubber Q; retain the packaging stock/return ledger. No second purchase and no additional rubber output is created."
+          amount:
+            expression: "A_release_cloth_out / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: carton_out
+          role: "Corrugated shipping carton leaving with product or returned"
+          name: "Corrugated shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual externally supplied/returned packaging mass, separate from net rubber Q; retain the packaging stock/return ledger. No second purchase and no additional rubber output is created."
+          amount:
+            expression: "A_carton_out / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: strapping_out
+          role: "Polyethylene terephthalate strapping leaving with product or returned"
+          name: "Polyethylene terephthalate strapping"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual externally supplied/returned packaging mass, separate from net rubber Q; retain the packaging stock/return ledger. No second purchase and no additional rubber output is created."
+          amount:
+            expression: "A_strapping_out / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: pallet_out
+          role: "Wooden transport pallet leaving with product or returned"
+          name: "Wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual externally supplied/returned packaging mass, separate from net rubber Q; retain the packaging stock/return ledger. No second purchase and no additional rubber output is created."
+          amount:
+            expression: "A_pallet_out / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: new_camelback
+          role: "New first-released uncured cushion-backed profile"
+          name: "\"Camel-back\" strips for retreading rubber tyres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce4921de-ce26-4e35-8d49-4d283f73db0c"
+          property_unit: "Mass / kg"
+          description: "The native Product flow names a manufactured finished camel-back strip, with production mix at plant, no specified recipe, grade, profile dimensions, cure state, geography/locationOfSupply or medium, no CAS, and only reference Mass. The broad native name does not prove the selected cushion-backed uncured profile, actual supplier, site or quantities. Apply this card only to the independently verified uncured extruded tread plus uncured cushion-gum backing for tractor-rear/OTR use; the selected manufacturer page excludes fast-moving commercial vehicles. No native global or CN/HK supply scope is invented. Finished means a finished supplied strip, not a vulcanized tyre. Q is the unique positive net mass in kg first accepted at the manufacturing quality-release gate for the same product/profile, two-layer route, uncured state and matched cohort; both rubber layers are included and removable release liner/transport packaging are excluded. Q is newly released production, not actual dispatch. Do not add closing finished stock of the same Q as another production output. Keep finished warehousing, packaging, handling and dispatch in a separate real ledger and cancel internal production-to-warehouse handoffs on consolidation. Returns/reinspection do not create new Q. A previously released return retains its original mass and burden; incremental rework is attributed once to the appropriate original cohort, with old-cohort stocks/burdens kept separate from current new production."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_release
+              source_ids:
+                - surya-camelback
+                - patent-camelback-1965
+                - epa-camelback-1973
+            ranges: []
+        - row_id: reaccepted_strip
+          role: "Reaccepted previously released strip leaving boundary"
+          name: "\"Camel-back\" strips for retreading rubber tyres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce4921de-ce26-4e35-8d49-4d283f73db0c"
+          property_unit: "Mass / kg"
+          description: "The native Product flow names a manufactured finished camel-back strip, with production mix at plant, no specified recipe, grade, profile dimensions, cure state, geography/locationOfSupply or medium, no CAS, and only reference Mass. The broad native name does not prove the selected cushion-backed uncured profile, actual supplier, site or quantities. Apply this card only to the independently verified uncured extruded tread plus uncured cushion-gum backing for tractor-rear/OTR use; the selected manufacturer page excludes fast-moving commercial vehicles. No native global or CN/HK supply scope is invented. Finished means a finished supplied strip, not a vulcanized tyre. Conditional real return-loop outlet only; reconcile against returned_strip and original stock. This is the same previously released physical product, never another newly released kg in Q or an avoided-product credit."
+          amount:
+            expression: "A_reaccepted_strip / Q; complete matched raw numerator from cp_stock and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stock
+              source_ids:
+                - surya-camelback
+                - patent-camelback-1965
+            ranges: []
+        - row_id: sold_offcut
+          role: "Actual exported uncured compound offcut"
+          name: "Uncured rubber compound offcut"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if actually sold as a usable compound product; preserve real composition, uncured state, outlet mass and exit value. It is not an accepted camelback strip. In-process trim return remains internal, and waste-classified scrap belongs on its waste card."
+          amount:
+            expression: "A_sold_offcut / Q; complete matched raw numerator from cp_output and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: condensate_return
+          role: "Actual exported condensate"
+          name: "Steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record real condensate crossing back to the utility supplier or another process, with its temperature and enthalpy. It is an external Product outlet in physical closure; internal return circulation cancels on consolidation. Do not assume full steam return."
+          amount:
+            expression: "A_condensate_return / Q; complete matched raw numerator from cp_utility and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: hot_water_return
+          role: "Actual exported heat-transfer return water"
+          name: "Heat-transfer return water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual utility return paired with purchased hot-water service, including mass and temperature. Treat the physical water return and net heat separately without duplicate service burdens."
+          amount:
+            expression: "A_hot_water_return / Q; complete matched raw numerator from cp_utility and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+      waste:
+        - row_id: rubber_scrap
+          role: "Discarded uncured rubber scrap outlet"
+          name: "Discarded uncured rubber scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discarded strip/compound, including failed batches, startup and test material; internal rework is not external waste."
+          amount:
+            expression: "A_rubber_scrap / Q; complete matched raw numerator from cp_output and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: expired_strip
+          role: "Discarded expired camelback strip outlet"
+          name: "Discarded expired camelback strip"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual unusable stock or irreparable returned strips; no new production and no automatic recycling credit."
+          amount:
+            expression: "A_expired_strip / Q; complete matched raw numerator from cp_output and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: captured_dust
+          role: "Captured carbon-black-rich compounding dust outlet"
+          name: "Captured carbon-black-rich compounding dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One actual collected waste stream with measured composition; internal verified return is reconciled instead of counted as both waste and new purchase."
+          amount:
+            expression: "A_captured_dust / Q; complete matched raw numerator from cp_output and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: talc_purge
+          role: "Discarded talc anti-tack slurry outlet"
+          name: "Discarded talc anti-tack slurry"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual separately measured anti-tack purge with solids/water assay; not a residual fitted from total water use."
+          amount:
+            expression: "A_talc_purge / Q; complete matched raw numerator from cp_output and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: cooling_purge
+          role: "Discharged cooling-water purge outlet"
+          name: "Discharged cooling-water purge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure actual external cooling purge; internal circulation does not create a repeated withdrawal/discharge."
+          amount:
+            expression: "A_cooling_purge / Q; complete matched raw numerator from cp_output and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: washwater
+          role: "Oily equipment washwater outlet"
+          name: "Oily equipment washwater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual cleaning wastewater, separately from cooling purge and talc slurry; measured contaminants guide treatment linkage."
+          amount:
+            expression: "A_washwater / Q; complete matched raw numerator from cp_output and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: waste_lubricant
+          role: "Waste mineral lubricating oil outlet"
+          name: "Waste mineral lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual spent equipment lubricant; reconcile inventory, losses and export separately from recipe oil."
+          amount:
+            expression: "A_waste_lubricant / Q; complete matched raw numerator from cp_output and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: waste_carton
+          role: "Discarded corrugated cardboard outlet"
+          name: "Discarded corrugated cardboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual carton damage/offcuts under packaging stock balance."
+          amount:
+            expression: "A_waste_carton / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: waste_film
+          role: "Discarded polyethylene release film outlet"
+          name: "Discarded polyethylene release film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual damaged/used film leaving as waste, separate from liner shipped with the strips."
+          amount:
+            expression: "A_waste_film / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: waste_cloth
+          role: "Discarded coated cotton release fabric outlet"
+          name: "Discarded coated cotton release fabric"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual end-of-use release cloth; retain coating identity and reuse cycles."
+          amount:
+            expression: "A_waste_cloth / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: waste_strapping
+          role: "Discarded PET strapping outlet"
+          name: "Discarded PET strapping"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual PET strapping waste from the packaging ledger."
+          amount:
+            expression: "A_waste_strapping / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: waste_pallet
+          role: "Discarded wooden transport pallet outlet"
+          name: "Discarded wooden transport pallet"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discarded pallet mass, distinct from reusable pallet returned as Product."
+          amount:
+            expression: "A_waste_pallet / Q; complete matched raw numerator from cp_pack and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Water vapour to air emission"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual evaporation from cooling/drying/cleaning after separate moisture and liquid-discharge measurements; no invented reaction water."
+          amount:
+            expression: "A_water_vapour / Q; complete matched raw numerator from cp_emission and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: carbon_black_air
+          role: "Carbon black particulate to air emission"
+          name: "Carbon black particulate to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure actual escaped carbon-black particulate at the declared air boundary; captured dust is a separate waste/internal-return stream."
+          amount:
+            expression: "A_carbon_black_air / Q; complete matched raw numerator from cp_emission and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: toluene_air
+          role: "Toluene to air emission"
+          name: "Toluene to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional only if actual supplied cement/analysis identifies toluene; no solvent composition or emission fraction is presumed."
+          amount:
+            expression: "A_toluene_air / Q; complete matched raw numerator from cp_emission and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: hexane_air
+          role: "n-Hexane to air emission"
+          name: "n-Hexane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional only for analytically identified n-hexane; retain concentration, volume and common gas conditions."
+          amount:
+            expression: "A_hexane_air / Q; complete matched raw numerator from cp_emission and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: co2_air
+          role: "Carbon dioxide, fossil, to air emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only included real fossil combustion; reconcile measured/independently calculated fuel carbon, not a purchased-energy duplicate."
+          amount:
+            expression: "A_co2_air / Q; complete matched raw numerator from cp_emission and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: co_air
+          role: "Carbon monoxide to air emission"
+          name: "Carbon monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual included combustion with species-specific evidence; no default emission factor."
+          amount:
+            expression: "A_co_air / Q; complete matched raw numerator from cp_emission and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: no_air
+          role: "Nitrogen monoxide to air emission"
+          name: "Nitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record NO separately from NO2 if present in actual exhaust; do not relabel aggregate NOx as measured individual NO."
+          amount:
+            expression: "A_no_air / Q; complete matched raw numerator from cp_emission and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+        - row_id: no2_air
+          role: "Nitrogen dioxide to air emission"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record actual NO2 species evidence; unknown speciation remains a disclosed measurement gap, never a fitted closure outlet."
+          amount:
+            expression: "A_no2_air / Q; complete matched raw numerator from cp_emission and cp_stock, divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-camelback-1973
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_scope
+    applies_to: "p_camelback"
+    rule: "Use these rules only for an attributional study context requiring allocation, consistent with the declared study goal. First distinguish a separable black-box line, genuine joint production, shared services and internal trim recycling; these are not interchangeable. No automatic substitution/recycling credit or whole-PEF/ILCD conformity is asserted."
+    source_ids:
+      - ilcd-2010-allocation
+  - rule_id: allocation_causal
+    applies_to: "all inventory rows"
+    rule: "First collect separable stage data and use subdivision/virtual subdivision to assign exclusive ingredient, layer, meter and service burdens. Then determine physical causality separately for each remaining exchange: embodied mass where it determines material use, actual processing/energy demand for mixing/extrusion, and limiting occupied area/volume with duration for storage or limiting mass/volume with distance/time for handling. Justify the actual determining cause; a mass or revenue ratio alone is not evidence for every exchange."
+    source_ids:
+      - ilcd-2010-allocation
+  - rule_id: allocation_residual
+    applies_to: "all inventory rows"
+    rule: "Only the remaining burdens that cannot be assigned by the preceding determining physical causality/virtual subdivision may use justified economic allocation. Use each real co-function output quantity and its market value at the same joint-process exit and specific state/quality/bulk condition; remove subsequent packaging, storage, transport or processing value where those stages are outside that exit. Document price source/period, residual burden pool and reasons no causal assignment is possible; retain uncertainty. Do not freely choose physical versus economic, set a fixed share, turn waste/returns into newly accepted product or grant avoided virgin-product credit. Allocated inventories sum to the original burden."
+    source_ids:
+      - ilcd-2010-allocation
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "p_camelback"
+      flow_role: "new_camelback"
+      record_type: "quality_release_ledger"
+      raw_fields: "cohort/profile; layer batch ids; actual net weights; first release/reinspection flags; test results; liner tare; Q"
+      collection_method: "Quality owner weighs/validates first accepted complete uncured strips using calibrated scales and traces unique lot events. Keep positive new mass, zero-output/failed lots and old return events separately. This protocol collects raw counts/masses and never A/Q. Original aggregation reconciliation (collection still retains undivided raw quantities): sum unique first-positive net accepted kg once as Q; reinspection and dispatch do not add Q."
+      unit: "kg"
+      frequency: "each batch and first acceptance"
+      temporal_coverage: "complete matched actual production/cohort window"
+      site_scope: "declared plant and product/profile/two-layer route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lot release/test records; duplicate-event reconciliation"
+    - protocol_id: cp_material
+      process_id: "p_camelback"
+      flow_role: "individual recipe and formulation inputs"
+      record_type: "recipe_charge_ledger"
+      raw_fields: "actual supplied material/brand/formulation; layer and stage; gross/net charges; assay/solids/moisture; returns; recipe revision; failed lots; internal transfers"
+      collection_method: "Compounding owner retains raw weigh tickets for each tread and cushion batch through nonproductive/final mixing and milling. Record whole purchased preparations once and constituent subledgers separately. Reconcile every ingredient and any additional actual one as its own atomic card; do not turn an unknown recipe into a presumed zero. No normalization here. Original aggregation reconciliation (collection still retains undivided raw quantities): retain raw attributable numerator A_i after stock/cohort attribution; report_once is the only A_i/Q."
+      unit: "kg"
+      frequency: "each charge/batch"
+      temporal_coverage: "all attributable runs including failures and rework"
+      site_scope: "both layer mixing/milling and actual compound storage"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale tickets; supplier CoA; full formulation; stage batch links"
+    - protocol_id: cp_utility
+      process_id: "p_camelback"
+      flow_role: "each utility lubricant and fuel"
+      record_type: "metered_utility_ledger"
+      raw_fields: "stage meter owner/coverage; start/end meters; duration only for rates; integrated volumes; conditions/density/enthalpy; lubricant and fuel stocks; supply and returns"
+      collection_method: "Utility owner collects raw separate mixing, shaping, cushion application, cooling, dust control, tests and ancillary warehouse/handling records. Keep purchased steam/heat separate from onsite generation; record every real utility Product return. Meter shares require cp_allocation evidence. No A/Q at collection. Original aggregation reconciliation (collection still retains undivided raw quantities): raw-unit conversions precede report_once; retain A_i before division."
+      unit: "kg; kWh; MJ; m3"
+      frequency: "meter intervals and batch events"
+      temporal_coverage: "same matched cohort including idle startup failed runs and rework"
+      site_scope: "declared meter/utility boundary for all included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; utility invoices; return meters; heat and fuel records"
+    - protocol_id: cp_output
+      process_id: "p_camelback"
+      flow_role: "each scrap coproduct and liquid outlet"
+      record_type: "physical_outlet_ledger"
+      raw_fields: "stream identity/composition/state; raw weight/volume and density; waste/product decision; recipient; offcut returns; failed/expired material; liquid/solid assays"
+      collection_method: "Production/environment owner records actual cutting/conditioning/testing offcuts, rejects, dust, purges and washwater separately. Track internal trim return to the correct layer batch and real external exports; a stock residual is not a measured outlet. Record all actual additional external Product/utility outlets atomically. No A/Q. Original aggregation reconciliation (collection still retains undivided raw quantities): retain raw outlet A_i; reconcile physical/element ledgers before sole report_once division."
+      unit: "kg; m3"
+      frequency: "each outlet and reconciliation interval"
+      temporal_coverage: "same production/cohort window with failed runs"
+      site_scope: "complete line and pollution-control boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighbridge/waste tickets; recipient; composition assays; return trace"
+    - protocol_id: cp_emission
+      process_id: "p_camelback"
+      flow_role: "each actual elementary species"
+      record_type: "species_measurement_ledger"
+      raw_fields: "chemical species and air medium; concentration/time profile; integrated volume; gas conditions; actual fuel/solvent assays; control capture; moisture and stock changes"
+      collection_method: "Environment owner identifies actual emitted species and obtains measured mass or concentration with matched integrated gas/liquid volume and conditions. Rates alone receive duration; integrated volume never does. Add actual species-specific cards where present; total VOC/COD or closure residual cannot substitute for species or reaction-water evidence. No A/Q. Original aggregation reconciliation (collection still retains undivided raw quantities): convert raw species mass first, then same report_once once; retain unmeasured scope explicitly."
+      unit: "kg; mg/m3; m3"
+      frequency: "representative complete measurement intervals"
+      temporal_coverage: "matched operating failed/rework and control periods"
+      site_scope: "declared outlet and fugitive air boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "analytical methods; sampling calibration; gas basis; capture/outlet reconciliation"
+    - protocol_id: cp_stock
+      process_id: "p_camelback"
+      flow_role: "WIP finished and returned lots"
+      record_type: "mass_and_carried_burden_ledger"
+      raw_fields: "opening/closing WIP by layer/stage; mass and each carried exchange burden; first releases Q; opening/closing finished lots; actual dispatch; customer returns/reacceptance; prior cohort and internal handoffs"
+      collection_method: "Production and warehouse owners jointly reconcile original raw period numerators and stock/carried burdens, including zero-output failures and all rework. Keep production and finished-warehouse accounts separate; cancel handoffs only on consolidation. Closing finished mass already released in Q is not another production outlet. Old returned material retains original burden; assign real incremental rework to its proper original cohort without counting a second release. Do not charge prior-cohort stock to current new Q or discard it. No normalization at collection. Original aggregation reconciliation (collection still retains undivided raw quantities): cohort-match raw A_i with opening carried burdens less closing carried burdens where still unfinished; transfer finished cohorts without adding another Q; use sole report_once only after attribution."
+      unit: "kg; original exchange units"
+      frequency: "each stage/lot event and period boundary"
+      temporal_coverage: "complete declared cohort periods, including carried prior-period WIP/finished/return histories"
+      site_scope: "all included stages plus finished warehouse and dispatch interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "signed stocktake; lot genealogy; per-exchange burden rollforward; return and dispatch records"
+    - protocol_id: cp_pack
+      process_id: "p_camelback"
+      flow_role: "each packaging/release article and real handling"
+      record_type: "packaging_and_handling_ledger"
+      raw_fields: "each article composition; opening/closing unused and attached stock; new external procurement; package mass on released/dispatched/returned lots; damage/waste; return/reuse cycles; real handling/warehouse events"
+      collection_method: "Packaging owner maintains a complete independent physical stock account for each material, including packaging leaving with product, waste, outward returns, incoming reuse and ending stocks. Packaging contributes burdens but never net rubber Q. A reused article is not purchased again. Preserve real packaging, storage and shipping loads; utility/fuel quantities are owned by cp_utility and attributed once, not duplicated here. No A/Q. Original aggregation reconciliation (collection still retains undivided raw quantities): preserve raw packaging/service A_i and complete material rollforward; same sole report_once operation after attribution."
+      unit: "kg; actual handling service units"
+      frequency: "each package/dispatch/return and stocktake"
+      temporal_coverage: "same matched original product cohort with actual storage/dispatch period disclosed"
+      site_scope: "packaging store, production release, finished warehouse and factory loading"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "package weights/BOM; stock and reuse logs; dispatch manifests; stage cost/meter linkage"
+    - protocol_id: cp_allocation
+      process_id: "p_camelback"
+      flow_role: "shared services and any genuine joint products"
+      record_type: "attributional_allocation_evidence"
+      raw_fields: "declared attributional goal; distinguishable stages; per-exchange causal quantities; limiting capacity/time; all real joint outputs and exit-state quantities/prices; residual burden pool; price source and period"
+      collection_method: "LCA owner first separates/subdivides stages and virtually assigns exclusive material/utility burdens. For each still-shared exchange establish its determining physical cause; only remaining unassignable burdens use justified same-process exit-condition market value. Keep the residual pool and reasons inspectable; no fixed allocation shares or credits. Collect raw amounts, never A/Q. Original aggregation reconciliation (collection still retains undivided raw quantities): attribute complete raw A_i before report_once; allocated totals must equal the pre-allocation inventory."
+      unit: "original exchange units; kg; currency"
+      frequency: "each shared service/co-product and relevant price interval"
+      temporal_coverage: "same site, actual exit condition and relevant production/value period"
+      site_scope: "actual joint process and all co-functions, with separate packaging/transport stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "process/meter causal evidence; justified subdivision limits; actual value records; reconciliation"
+  calculation_rules:
+    - id: report_once
+      applies_to: "all inventory rows"
+      rule: "a_i = A_i / Q; A_i is the complete same-product/profile, two-layer route, uncured state and matched-cohort raw numerator after conversion and justified attribution, including failed/zero-output runs, real rework and opening less unfinished closing WIP carried exchange burdens. Keep original finished/return cohorts and real storage/packaging/handling/dispatch burdens in their separate ledgers, cancel internal handoffs and charge incremental return work once to its proper cohort. Q is unique new first-positive accepted net kg from cp_release and must exceed zero; never add same-Q closing finished stock or reacceptance. This is the sole normalization; cards and aggregation_rule point to this same operation, never successive divisions. The reference output is 1 kg."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+        - cp_material
+        - cp_utility
+        - cp_output
+        - cp_emission
+        - cp_stock
+        - cp_pack
+        - cp_allocation
+      output: "a_i"
+      source_ids:
+        - epa-camelback-1973
+        - ilcd-2010-allocation
+    - id: physical_closure
+      applies_to: "all inventory rows"
+      rule: "Keep three explicit audit gates. Production: opening WIP + external mass-bearing production receipts + internal receipts = new first-released Q + actual already-released rework transfers + every other real production Product outlet (including sold compound, exported condensate and heat-transfer return water) + actual waste/elementary mass outlets + closing WIP + other internal transfers out. Finished warehouse: opening finished stock + new Q received + real external returned strips + internal rework receipts = actual external dispatch/reacceptance + transfers to rework + actual waste + closing finished stock. Q already contains same-cohort closing finished stock, which is never another production outlet. Each external crossing is entered once by its receiving/exporting owner; internal movements have equal paired entries. Consolidated line/warehouse/handling physical closure: opening WIP and finished stock + all actual external mass-bearing inputs and returned strips = actual external finished-strip dispatch + all other actual external Product/utility outlets + waste/elementary mass outlets + closing WIP and finished stock; cancel Q and every internal handoff rather than adding the nested ledgers. The reference quantity remains first release, not this physical dispatch mass; never equate the two gates. For each packaging material independently reconcile opening unused/attached/reusable stock + new external procurement + real external return receipts = packaging actually leaving attached to external product dispatch or as real outward return + waste + closing unused/attached/reusable stock. Packaging attached to new Q is only an internal stock transfer if still in the finished warehouse. Include all packaging masses and stocks once in the consolidated physical account, while never adding them to net rubber Q or procuring a reused article twice. Energy and service units are separate from mass closure. Audit each relevant element using actual compositions independently of whole physical mass; actual species or reaction water require independent evidence, never residual fitting."
+      inputs:
+        - cp_material
+        - cp_utility
+        - cp_output
+        - cp_emission
+        - cp_release
+        - cp_stock
+        - cp_pack
+      output: "physical_and_element_accounts"
+      source_ids:
+        - epa-camelback-1973
+    - id: raw_convert
+      applies_to: "all inventory rows"
+      rule: "Use actual assayed supplied formulation mass and separate constituent subledgers; onsite dilution/blending uses separately acquired materials and real energy/loss. Volume times compatible measured density yields mass; matched species concentration times integrated volume yields species mass after unit conversion. Multiply by duration only for a true rate, never an integrated volume. Distinguish water incorporated, physically evaporated, discharged and carried with stock; any actual reaction/species needs independent mechanism/assay evidence, not COD or fitted closure. No normalization occurs in this rule."
+      inputs:
+        - cp_material
+        - cp_utility
+        - cp_emission
+        - cp_stock
+        - cp_pack
+      output: "converted_raw_numerators"
+      source_ids:
+        - epa-camelback-1973
+  data_quality_requirements:
+    - id: dq_native
+      applies_to: "new_camelback"
+      requirement: "The native Product flow names a manufactured finished camel-back strip, with production mix at plant, no specified recipe, grade, profile dimensions, cure state, geography/locationOfSupply or medium, no CAS, and only reference Mass. The broad native name does not prove the selected cushion-backed uncured profile, actual supplier, site or quantities. Apply this card only to the independently verified uncured extruded tread plus uncured cushion-gum backing for tractor-rear/OTR use; the selected manufacturer page excludes fast-moving commercial vehicles. No native global or CN/HK supply scope is invented. Finished means a finished supplied strip, not a vulcanized tyre."
+      evidence: "Full native identity, exact property/unit versions and independent supplied-form evidence"
+    - id: dq_recipe
+      applies_to: "all inventory rows"
+      requirement: "No numerical recipe, yield, utility intensity, emission fraction, layer ratio, cure temperature or shelf life is supplied by this PCR. Collect complete actual BOMs/whole preparations and add missing atomic exchanges. Auxiliary UUID/provider matching remains an actual identity/data task, not proof of missing core methodology."
+      evidence: "Recipe revisions; full supplier formulation; plant measurements and acceptance evidence"
+    - id: dq_period
+      applies_to: "all inventory rows"
+      requirement: "Q is the unique positive net mass in kg first accepted at the manufacturing quality-release gate for the same product/profile, two-layer route, uncured state and matched cohort; both rubber layers are included and removable release liner/transport packaging are excluded. Q is newly released production, not actual dispatch. Do not add closing finished stock of the same Q as another production output. Keep finished warehousing, packaging, handling and dispatch in a separate real ledger and cancel internal production-to-warehouse handoffs on consolidation. Returns/reinspection do not create new Q. A previously released return retains its original mass and burden; incremental rework is attributed once to the appropriate original cohort, with old-cohort stocks/burdens kept separate from current new production."
+      evidence: "cp_release/cp_stock signed mass and burden reconciliation; all zero-output and return events"
+    - id: dq_allocation
+      applies_to: "all inventory rows"
+      requirement: "Retain exchange-specific causal assignments before residual economic allocation; all shares reconcile to the actual original burden. Declare attributional scope and residual uncertainty, not full method-program compliance."
+      evidence: "ilcd-2010-allocation; cp_allocation"
+    - id: dq_packages
+      applies_to: "all inventory rows"
+      requirement: "Keep complete independent physical packaging stock, attachments, return/reuse, waste and outgoing product-package records; do not erase real warehouse/shipping loads, add packaging to Q or procure the same reused material twice."
+      evidence: "cp_pack; cp_stock; cp_utility"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "new_camelback"
+    rule: "Verify both rubber layers remain uncured in the supplied strip and declared profile/Tractor-Rear-OTR scope is supported. The reference UUID is a broad finished-strip identity, not proof of recipe, supplier geography or quantitative provider compatibility; preserve all limitations in this output card and dq_native."
+    source_ids:
+      - surya-camelback
+      - patent-camelback-1965
+  - rule_id: validate_gate
+    applies_to: "all inventory rows"
+    rule: "Q is the unique positive net mass in kg first accepted at the manufacturing quality-release gate for the same product/profile, two-layer route, uncured state and matched cohort; both rubber layers are included and removable release liner/transport packaging are excluded. Q is newly released production, not actual dispatch. Do not add closing finished stock of the same Q as another production output. Keep finished warehousing, packaging, handling and dispatch in a separate real ledger and cancel internal production-to-warehouse handoffs on consolidation. Returns/reinspection do not create new Q. A previously released return retains its original mass and burden; incremental rework is attributed once to the appropriate original cohort, with old-cohort stocks/burdens kept separate from current new production."
+    source_ids:
+      - epa-camelback-1973
+  - rule_id: validate_complete
+    applies_to: "all inventory rows"
+    rule: "Require complete raw period numerators, failed/zero-output runs, WIP/finished/returned inventory and carried burdens, all actual external Product/utility outlets and packaging physical subledgers. Check atomically resolved exchanges, original-unit conversions, whole-preparation nonduplication and physical/element/species evidence independently; do not fit unknown water or emission to closure."
+    source_ids:
+      - epa-camelback-1973
+  - rule_id: validate_allocation
+    applies_to: "all inventory rows"
+    rule: "Check declared attributional applicability, subdivision/virtual subdivision, per-exchange determining physical causality and only then documented residual exit-value allocation. Scientific approval and mapping acceptance require separate review; no fixed share, avoided-product credit or programme-compliance claim is implied."
+    source_ids:
+      - ilcd-2010-allocation
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Qualified supplied uncured cushion-backed camelback strip input to a separately modelled tractor-rear/OTR retreading process"
+  allowed_use: "Same declared profile/layer-state route and explicit first-release basis, with actual provider compatibility and cohort/packaging burden reconciliation"
+  excluded_use: "Pre-cured interchangeable tread, generic compound, whole new/retreaded tyre, innerliner/tube/flap, narrow direct-wound ribbon or fast-moving commercial use; no tyre-kilometre or lifetime equivalence"
+  required_metadata: "All reference qualifiers, actual recipe/formulation and layer identities, full native restrictions, stage owners, site/time, acceptance gate and first Q, WIP/finished/return and packaging physical/burden ledgers, actual providers and attributional allocation evidence"
+  required_quality_disclosure: "Actual measured/estimated/missing quantities, unmeasured species, identity/provider gaps, stock/cohort completeness and residual causal/value uncertainty; packaging and dispatch completeness are explicit"
+  update_trigger: "Product/profile/layer or cure-state change; route/recipe/formulation, site/provider, acceptance gate, stock handling or allocation-method change"
+data_sources:
+  - id: "surya-camelback"
+    type: "handbook"
+    reference: "Surya Rubber Industries, Unconventional Hot Rubber; https://www.suryarubbers.com/products/unconventional-hot-rubber"
+    used_for: "Actual uncured extruded camelback with cushion-gum backing; tractor-rear/OTR scope and fast-moving-commercial-vehicle exclusion; no recipe, cure-setting or performance default."
+  - id: "patent-camelback-1965"
+    type: "literature"
+    reference: "US3223572A, Machine for building a tread on pneumatic tires, 1965, conventional camelback background; https://patents.google.com/patent/US3223572A/en"
+    used_for: "Historical supplied die-profile uncured strip and later tyre mould cure; narrow-ribbon winding invention is not this route. No historic dimensions, service life or settings adopted."
+  - id: "epa-camelback-1973"
+    type: "official_guidance"
+    reference: "US EPA, 1973 Development Document for Tire and Synthetic Segment of Rubber Processing, printed pp.13,15,16,19 (PDF21,23,24,27); https://nepis.epa.gov/Exe/ZyPDF.cgi/20011LOU.PDF?Dockey=20011LOU.PDF"
+    used_for: "Historical dry-compounding/milling, extrusion, cushion application, cooling and genuine trim return, linked explicitly to camelback. Technical synthesis with the manufacturer source, not one factory/SKU; no numeric recipe, yield, efficiency, emission factor, current regulation or LCA allocation inferred."
+  - id: "ilcd-2010-allocation"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook, General guide for LCA, Detailed guidance, First edition March 2010, complete §§7.9.2–7.9.3, printed pp.255–272; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Limited to attributional multifunctional-process situations requiring allocation; subdivision/virtual subdivision and exchange-specific determining physical causality precede residual exit-condition market-value allocation. No free physical/economic choice, automatic recycling credit, fixed share, consequential claim or full-PEF/ILCD compliance claim."
+  - id: "surya-cushion-state"
+    type: "handbook"
+    reference: "Surya Rubber Industries, Unvulcanised Rubber Strip Gum; https://www.suryarubbers.com/products/unvulcanised-rubber-strip-gum"
+    used_for: "Unvulcanized cushion/bonding-gum family identity only; page illustrates a vulcanized-tread use, not the same camelback SKU. No recipe, cure setting, dimensions, pack size or shelf-life default transferred."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:404905ed3c1cf03f78fa12ae6b0cf59b129fdb799132a821df53090aba97463c"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7597"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7597
+          line: 60
+          column: 1
+        end:
+          offset: 11069
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Acquired identified raw solid elastomers, separate ingredients/whole supplied preparations, utilities and packaging entering the integrated two-layer strip line |\n| starting_condition_role | foreground_start |\n| product_classification_scope | A bounded cushion-backed uncured-profile subset of CPC 36115, not all tread or rubber products |\n| recursive_input_rule | Internal compound, strip and trim transfers remain stage subledgers and cancel in the consolidated process; returned finished strips preserve original burdens and never become new virgin purchases or new Q. Do not replace integrated manufacturing by purchase of finished strips. |\n| upstream_dataset_requirement | Independently match each actual supplied material/formulation, energy and packaging by full physical identity, grade/form, route, geography/supply location and exact property/unit; upstream acquisition and transport enter once. A UUID supplies identity, not provider quantities. |\n| disclosure | Declare every stage owner and actual recipe/formulation, included utility generation, failed/rework/return histories, WIP/finished stock mass and burdens, first-release versus dispatch gate, packaging reuse/returns and all actual external outlets. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_integrated | p_camelback | Retain complete actual onsite compounding and profile manufacture of both rubber layers plus real attributable cooling, tests, rework, packaging, storage and handling. Stage records are detailed inside one consolidated unit process; do not replace it with bought finished-strip packing. | surya-camelback; epa-camelback-1973 |\n| boundary_downstream | p_camelback | The selected supplied object is uncured, with factory-applied cushion backing. Casing inspection/buffing/building and whole-tyre mould vulcanization belong to subsequent retreading; pre-cured tread manufacture cannot be treated as this same gate. | surya-camelback; patent-camelback-1965 |\n| boundary_stocks | all inventory rows | Q is the unique positive net mass in kg first accepted at the manufacturing quality-release gate for the same product/profile, two-layer route, uncured state and matched cohort; both rubber layers are included and removable release liner/transport packaging are excluded. Q is newly released production, not actual dispatch. Do not add closing finished stock of the same Q as another production output. Keep finished warehousing, packaging, handling and dispatch in a separate real ledger and cancel internal production-to-warehouse handoffs on consolidation. Returns/reinspection do not create new Q. A previously released return retains its original mass and burden; incremental rework is attributed once to the appropriate original cohort, with old-cohort stocks/burdens kept separate from current new production. | epa-camelback-1973 |\n| boundary_actual_atoms | all inventory rows | Every actual purchased formulation is one complete supplied input; constituents are subledgers. This inventory is a conditional atomic starting set, not a prescribed recipe. Record every additional actual ingredient, auxiliary, fuel, refrigerant, package, external Product/utility return, waste and elementary species on its own card before quantitative use; establish absent/not_applicable cases from real evidence. | epa-camelback-1973 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 265
+              line: 9
+              column: 1
+            end:
+              offset: 358
+              line: 9
+              column: 94
+          text: "# Uncured extruded camel-back strips with cushion backing for tractor-rear and OTR retreading"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7597
+              line: 60
+              column: 1
+            end:
+              offset: 7618
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_58234"
+      family: "allocation"
+      span:
+        start:
+          offset: 58234
+          line: 991
+          column: 1
+        end:
+          offset: 60161
+          line: 999
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_scope | p_camelback | Use these rules only for an attributional study context requiring allocation, consistent with the declared study goal. First distinguish a separable black-box line, genuine joint production, shared services and internal trim recycling; these are not interchangeable. No automatic substitution/recycling credit or whole-PEF/ILCD conformity is asserted. | ilcd-2010-allocation |\n| allocation_causal | all inventory rows | First collect separable stage data and use subdivision/virtual subdivision to assign exclusive ingredient, layer, meter and service burdens. Then determine physical causality separately for each remaining exchange: embodied mass where it determines material use, actual processing/energy demand for mixing/extrusion, and limiting occupied area/volume with duration for storage or limiting mass/volume with distance/time for handling. Justify the actual determining cause; a mass or revenue ratio alone is not evidence for every exchange. | ilcd-2010-allocation |\n| allocation_residual | all inventory rows | Only the remaining burdens that cannot be assigned by the preceding determining physical causality/virtual subdivision may use justified economic allocation. Use each real co-function output quantity and its market value at the same joint-process exit and specific state/quality/bulk condition; remove subsequent packaging, storage, transport or processing value where those stages are outside that exit. Document price source/period, residual burden pool and reasons no causal assignment is possible; retain uncertainty. Do not freely choose physical versus economic, set a fixed share, turn waste/returns into newly accepted product or grant avoided virgin-product credit. Allocated inventories sum to the original burden. | ilcd-2010-allocation |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 265
+              line: 9
+              column: 1
+            end:
+              offset: 358
+              line: 9
+              column: 94
+          text: "# Uncured extruded camel-back strips with cushion backing for tractor-rear and OTR retreading"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 58234
+              line: 991
+              column: 1
+            end:
+              offset: 58274
+              line: 991
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_77035"
+      family: "validation"
+      span:
+        start:
+          offset: 77035
+          line: 1034
+          column: 1
+        end:
+          offset: 79266
+          line: 1043
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | new_camelback | Verify both rubber layers remain uncured in the supplied strip and declared profile/Tractor-Rear-OTR scope is supported. The reference UUID is a broad finished-strip identity, not proof of recipe, supplier geography or quantitative provider compatibility; preserve all limitations in this output card and dq_native. | surya-camelback; patent-camelback-1965 |\n| validate_gate | all inventory rows | Q is the unique positive net mass in kg first accepted at the manufacturing quality-release gate for the same product/profile, two-layer route, uncured state and matched cohort; both rubber layers are included and removable release liner/transport packaging are excluded. Q is newly released production, not actual dispatch. Do not add closing finished stock of the same Q as another production output. Keep finished warehousing, packaging, handling and dispatch in a separate real ledger and cancel internal production-to-warehouse handoffs on consolidation. Returns/reinspection do not create new Q. A previously released return retains its original mass and burden; incremental rework is attributed once to the appropriate original cohort, with old-cohort stocks/burdens kept separate from current new production. | epa-camelback-1973 |\n| validate_complete | all inventory rows | Require complete raw period numerators, failed/zero-output runs, WIP/finished/returned inventory and carried burdens, all actual external Product/utility outlets and packaging physical subledgers. Check atomically resolved exchanges, original-unit conversions, whole-preparation nonduplication and physical/element/species evidence independently; do not fit unknown water or emission to closure. | epa-camelback-1973 |\n| validate_allocation | all inventory rows | Check declared attributional applicability, subdivision/virtual subdivision, per-exchange determining physical causality and only then documented residual exit-value allocation. Scientific approval and mapping acceptance require separate review; no fixed share, avoided-product credit or programme-compliance claim is implied. | ilcd-2010-allocation |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 265
+              line: 9
+              column: 1
+            end:
+              offset: 358
+              line: 9
+              column: 94
+          text: "# Uncured extruded camel-back strips with cushion backing for tractor-rear and OTR retreading"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 77035
+              line: 1034
+              column: 1
+            end:
+              offset: 77057
+              line: 1034
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_integrated"
+      identity_kind: "explicit"
+      unit_id: "normative_7597"
+      source_span:
+        start:
+          offset: 9007
+          line: 75
+          column: 1
+        end:
+          offset: 9371
+          line: 75
+          column: 365
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_downstream"
+      identity_kind: "explicit"
+      unit_id: "normative_7597"
+      source_span:
+        start:
+          offset: 9372
+          line: 76
+          column: 1
+        end:
+          offset: 9699
+          line: 76
+          column: 328
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_stocks"
+      identity_kind: "explicit"
+      unit_id: "normative_7597"
+      source_span:
+        start:
+          offset: 9700
+          line: 77
+          column: 1
+        end:
+          offset: 10580
+          line: 77
+          column: 881
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_actual_atoms"
+      identity_kind: "explicit"
+      unit_id: "normative_7597"
+      source_span:
+        start:
+          offset: 10581
+          line: 78
+          column: 1
+        end:
+          offset: 11067
+          line: 78
+          column: 487
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_58234"
+      source_span:
+        start:
+          offset: 58347
+          line: 995
+          column: 1
+        end:
+          offset: 58758
+          line: 995
+          column: 412
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_causal"
+      identity_kind: "explicit"
+      unit_id: "normative_58234"
+      source_span:
+        start:
+          offset: 58759
+          line: 996
+          column: 1
+        end:
+          offset: 59364
+          line: 996
+          column: 606
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_58234"
+      source_span:
+        start:
+          offset: 59365
+          line: 997
+          column: 1
+        end:
+          offset: 60159
+          line: 997
+          column: 795
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_77035"
+      source_span:
+        start:
+          offset: 77130
+          line: 1038
+          column: 1
+        end:
+          offset: 77526
+          line: 1038
+          column: 397
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_77035"
+      source_span:
+        start:
+          offset: 77527
+          line: 1039
+          column: 1
+        end:
+          offset: 78405
+          line: 1039
+          column: 879
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_77035"
+      source_span:
+        start:
+          offset: 78406
+          line: 1040
+          column: 1
+        end:
+          offset: 78867
+          line: 1040
+          column: 462
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_77035"
+      source_span:
+        start:
+          offset: 78868
+          line: 1041
+          column: 1
+        end:
+          offset: 79264
+          line: 1041
+          column: 397
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7597"
+      source_span:
+        start:
+          offset: 7597
+          line: 60
+          column: 1
+        end:
+          offset: 7618
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7597"
+      source_span:
+        start:
+          offset: 7646
+          line: 64
+          column: 1
+        end:
+          offset: 8934
+          line: 71
+          column: 265
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_58234"
+      source_span:
+        start:
+          offset: 58234
+          line: 991
+          column: 1
+        end:
+          offset: 58274
+          line: 991
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_77035"
+      source_span:
+        start:
+          offset: 77035
+          line: 1034
+          column: 1
+        end:
+          offset: 77057
+          line: 1034
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:404905ed3c1cf03f78fa12ae6b0cf59b129fdb799132a821df53090aba97463c"
+  generated_content_sha256: "sha256:75d27ed979ba57f51f400b0093466dcfc236cbbd1570e0b7486eacd291221323"

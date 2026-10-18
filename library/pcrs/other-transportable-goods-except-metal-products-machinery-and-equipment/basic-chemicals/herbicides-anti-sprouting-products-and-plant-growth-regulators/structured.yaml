@@ -1,10 +1,1115 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34663"
-  title: "Herbicides, anti-sprouting products and plant-growth regulators"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.herbicides-anti-sprouting-products-and-plant-growth-regulators"
+  classification_refs: "CPC 3.0 34663; narrower sole-active soluble-granule formulation scope"
+  covered_products: "One actual monoammonium glyphosate SG using acquired dry salt, supplied Ethomeen T/25, PEG 8000 and water"
+  excluded_products: "Other active substances, counterions or formulants; co-actives; SL, SC and WG; active synthesis or salt formation; downstream use"
+  representative_product: "Example-1 type soluble granules; actual acid-equivalent and salt assay, residual moisture and release specification declared"
+  production_route: "Acquired dry salt → powder preparation; heated surfactant/PEG/water preblend → mixing → basket extrusion → fluid-bed drying → screening → acceptance and supply preparation"
+  market_state: "Net accepted as-supplied soluble granules at formulation-facility gate; actual packaging, country, site and SKU declared"
+functional_unit:
+  what: "Manufacture and supply of the declared monoammonium glyphosate SG"
+  how_much: "1 kg net accepted supplied granules"
+  how_well: "Actual release specification for active/counterion identity, acid-equivalent and salt assay, moisture, dissolution, dustiness, flowability, relevant impurities and storage quality; no efficacy equivalence claim"
+  how_long_or_cycle: "One matched manufacturing and acceptance period; no treatment lifetime"
+  reference_flow_link: "finished_sg"
+system_boundary:
+  rules:
+    - rule_id: b_route
+      applies_to: "foreground"
+      rule: "Keep the three process owners below separate in collection. Include actual powder preparation and reject/fine handling; drying and screening cannot disappear by treating the purchased dry salt as finished SG."
+      source_ids:
+        - monsanto-glyphosate-sg-1994
+    - rule_id: b_utilities
+      applies_to: "utilities and releases"
+      rule: "The heat card denotes one externally supplied heat service for indirect drying, if used, measured as delivered net heat. Electric heating belongs in the process electricity meter. If steam or onsite fuel is the actual boundary exchange, add its own atomic row and model condensate/combustion and emissions explicitly before dataset use; never count both purchased heat and its source energy. Include dust control, actual cleaning and each actual environmental release; absent measurements are not zero."
+      source_ids: []
+    - rule_id: b_supply
+      applies_to: "upstream and downstream"
+      rule: "Link upstream production of acquired ingredients and services once. Foreground is neither active synthesis nor farm application. Any onsite salt formation, new ingredient or materially different utility/route needs explicit scope and inventory extension with evidence."
+      source_ids:
+        - monsanto-glyphosate-sg-1994
+boundary_abstraction:
+  declared_starting_condition: "Acquired dry monoammonium glyphosate, supplied Ethomeen T/25, PEG 8000, formulation water, utilities and actual packaging at formulation site"
+  starting_condition_role: "Foreground begins with supplied ingredients and includes powder preparation, heated preblending, wet mixing, extrusion, drying, screening, quality acceptance and supply preparation"
+  product_classification_scope: "One sole-active monoammonium glyphosate SG; narrower than the mixed CPC 34663 leaf"
+  recursive_input_rule: "Purchased finished SG or externally returned sold material is a distinct whole input with prior burdens and acceptance history; internal recycle is a transfer, not a new purchase or new positive output"
+  upstream_dataset_requirement: "Match whole supplied salt grade and moisture, complete Ethomeen T/25 supply composition, PEG molecular-weight grade, utility technology/geography and packaging supplier; do not use a pure constituent provider for a whole commercial mixture without justified decomposition"
+  disclosure: "Disclose actual site/country, period, SKU, product release state, starting materials, heat supply, mass/active/water balances, returns/rework/WIP, omissions and provider limits. The patent does not establish a factory geography or dryer energy carrier."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Pesticide"
+    uuid: "80d8c492-83e7-4ba8-9cf5-0dbac200513b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "sole active glyphosate"
+    - "monoammonium salt identity and counterion assay"
+    - "SG soluble physical state"
+    - "actual acid-equivalent and salt g/kg"
+    - "residual moisture and carrier composition"
+    - "dry salt supply grade"
+    - "whole supplied Ethomeen T/25 composition and PEG 8000 grade"
+    - "actual route and utility architecture"
+    - "release specification and test results"
+    - "manufacturer/site/country"
+    - "SKU and batch"
+    - "reporting period and accepted-output cohort"
+    - "net/gross masses and packaging BOM"
+    - "upstream provider geography/technology"
+    - "native generic identity limits and classification debt"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net accepted supplied granule mass excluding packaging. All rows use per 1 kg reference flow and the same positive accepted-output cohort collected by cp_acceptance."
+  - id: salt_active_water
+    applies_to: "salt, preblend and granules"
+    required_property_ref:
+      name: "Mass and independently measured composition"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Whole supplied salt/formulant mass, glyphosate acid-equivalent mass, counterion mass and water are different ledgers. Declare assay basis and actual speciation; do not substitute acid for monoammonium salt, dry mass for supplied mass or nominal recipe for recovered output."
+  - id: raw_unit_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Original meter property"
+      uuid: ""
+    required_unit: "original units"
+    rule: "Convert raw units before normalization. Rate × duration is integrated once; already integrated gas/liquid volumes or energy totals receive no further time factor. Volume-to-mass requires independent density at stated temperature, not a flow-property coefficient."
+process_map:
+  - id: p_blend
+    name: "Powder preparation and heated wet blending"
+    inclusion: "required"
+    inclusion_condition: "Every dataset of this route"
+    role: "Foreground ingredient preparation and preblend"
+    quantitative_reference: "Measured wet blend transfer; normalized to terminal accepted SG"
+  - id: p_granulate
+    name: "Extrusion, fluid-bed drying and screening"
+    inclusion: "required"
+    inclusion_condition: "Every dataset of this route"
+    role: "Foreground granule forming and moisture removal"
+    quantitative_reference: "Measured screened-granule transfer; normalized to terminal accepted SG"
+  - id: p_finish
+    name: "Quality acceptance, packaging and supply preparation"
+    inclusion: "required"
+    inclusion_condition: "Every dataset; packaging only when actually supplied"
+    role: "Terminal accepted product and gate delivery state"
+    quantitative_reference: "1 kg net accepted supplied SG"
+process_inventory:
+  - id: p_blend
+    label: "Powder preparation and heated wet blending"
+    inputs:
+      product:
+        - row_id: dry_salt
+          role: "Acquired glyphosate salt"
+          name: "Dry monoammonium glyphosate supplied feed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the complete supplied dry salt feed, actual assay, residual moisture and counterion. The patent used acquired Roundup WSD and powder preparation; no acid-to-salt reaction is within this foreground."
+          amount:
+            expression: "Use cp_blend to retain the complete matched raw-period numerator R_dry_salt, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_blend
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+        - row_id: surfactant
+          role: "Acquired surfactant"
+          name: "Ethomeen T/25, whole supplied surfactant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the complete commercial supplied product, including any carrier or water. Component assays are subledgers, not second purchases. Do not infer a current supplier or replace it with an arbitrary tallow-amine provider."
+          amount:
+            expression: "Use cp_blend to retain the complete matched raw-period numerator R_surfactant, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_blend
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+        - row_id: peg8000
+          role: "Acquired extrusion aid"
+          name: "PEG 8000 extrusion aid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual supplied PEG 8000 grade and composition. Example 1 used Carbowax PEG 8000; other molecular-weight or propylene-oxide grades are not automatically compatible."
+          amount:
+            expression: "Use cp_blend to retain the complete matched raw-period numerator R_peg8000, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_blend
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+        - row_id: formulation_water
+          role: "Added formulation water"
+          name: "Formulation water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure only separately acquired water added for preblending. Moisture already inside purchased salt or surfactant stays in those whole-input subledgers."
+          amount:
+            expression: "Use cp_blend to retain the complete matched raw-period numerator R_formulation_water, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_blend
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+        - row_id: blend_electricity
+          role: "Blending electricity"
+          name: "Electricity for powder preparation and heated blending"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Submeter actual powder preparation, preblend heating, mixing and associated extraction; no laboratory microwave time is an industrial energy quantity."
+          amount:
+            expression: "Use cp_blend to retain the complete matched raw-period numerator R_blend_electricity, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_blend
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_blend
+          role: "Wet blend transfer"
+          name: "Monoammonium glyphosate wet extrusion blend"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Internal wet blend passed to p_granulate; retain its mass, water/active composition and carried burdens. This is not accepted SG and is not a second final reference output."
+          amount:
+            expression: "Use cp_blend to retain the complete matched raw-period numerator R_wet_blend, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_blend
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: p_granulate
+    label: "Extrusion, fluid-bed drying and screening"
+    inputs:
+      product:
+        - row_id: wet_blend_in
+          role: "Incoming wet blend"
+          name: "Monoammonium glyphosate wet extrusion blend"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Match wet_blend by transfer ID, composition and burden ledger. No additional upstream purchase is generated for this internal transfer."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_wet_blend_in, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+        - row_id: granulation_electricity
+          role: "Granulation and drying electricity"
+          name: "Electricity for extrusion, fluid-bed drying and screening"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter extruder, dryer fans, screens, dust control and electric heating if present; allocate shared equipment by measured duty, including failed batches."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_granulation_electricity, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+        - row_id: drying_heat
+          role: "Conditional purchased drying heat"
+          name: "Purchased process heat for indirect fluid-bed drying"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Use only for an actual external heat service, with temperature, return condition and net delivered heat. For electricity-only drying this row is demonstrably absent; steam or fuel exchanges require their own rows and scope."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_drying_heat, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: screened_sg
+          role: "Screened granule transfer"
+          name: "Screened monoammonium glyphosate soluble granules before release"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer to p_finish with moisture and assay; screen passage does not establish final release or new positive output. Record fines/oversize recycle by unique internal IDs."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_screened_sg, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+      waste:
+        - row_id: offspec_granules
+          role: "Rejected granules leaving the system"
+          name: "Rejected monoammonium glyphosate granules for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh only material leaving for treatment. Internal fines or oversize returned to the line are not waste outputs as well as fresh inputs. Retain prior and reprocessing burdens."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_offspec_granules, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+        - row_id: collected_dust
+          role: "Collected dust disposal"
+          name: "Collected monoammonium glyphosate formulation dust for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh this actual formulation-dust waste stream and assay moisture/active. Dust returned internally remains an internal transfer; particulate captured by filters is not an air release."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_collected_dust, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Drying moisture release"
+          name: "Water vapour, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Determine water removal from independent moisture and exhaust/condensate measurements with uncertainty. This formulation route has no assumed reaction water; do not derive unknown water and an unknown waste outlet from one residual."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_water_vapour, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids: []
+            ranges: []
+        - row_id: airborne_salt
+          role: "Actual salt particulate release"
+          name: "Monoammonium glyphosate particulate, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "If present, measure or quantify with a justified method the salt-specific airborne burden and medium. Do not use a field spray fraction; keep dust total and constituent results as reconciled subledgers without double counting."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_airborne_salt, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids: []
+            ranges: []
+        - row_id: airborne_peg
+          role: "Actual PEG particulate release"
+          name: "PEG 8000 particulate, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify actual PEG particulate separately when emitted; captured dust and airborne dust are distinct destinations. Do not infer the constituent fraction from nominal patent percentages."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_airborne_peg, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids: []
+            ranges: []
+        - row_id: airborne_surfactant
+          role: "Actual supplied-surfactant aerosol release"
+          name: "Ethomeen T/25 aerosol, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this physically specific supplied-mixture aerosol if present and disclose constituent/medium uncertainty. Chemical-specific characterization requires actual constituent evidence and separate exchange resolution; do not invent a pure-species factor."
+          amount:
+            expression: "Use cp_granulate to retain the complete matched raw-period numerator R_airborne_surfactant, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_granulate
+              source_ids: []
+            ranges: []
+  - id: p_finish
+    label: "Quality acceptance, packaging and supply preparation"
+    inputs:
+      product:
+        - row_id: screened_sg_in
+          role: "Incoming screened granules"
+          name: "Screened monoammonium glyphosate soluble granules before release"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Match screened_sg transfer identity, assay, moisture and carried burdens; count final accepted supply only in finished_sg."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_screened_sg_in, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids:
+                - monsanto-glyphosate-sg-1994
+            ranges: []
+        - row_id: hdpe_container
+          role: "Conditional HDPE container"
+          name: "HDPE granule container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only the actual supplied HDPE container with mass, resin grade and supplier. It is outside the net product denominator."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_hdpe_container, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+        - row_id: pp_closure
+          role: "Conditional PP closure"
+          name: "Polypropylene container closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one actual closure component; do not infer it from the patent. A different closure material needs its own row."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_pp_closure, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+        - row_id: paper_label
+          role: "Conditional paper label"
+          name: "Paper product label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use actual label BOM, mass and composition; count-to-mass needs representative tare sampling and uncertainty."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_paper_label, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+        - row_id: carton
+          role: "Conditional shipping carton"
+          name: "Corrugated transport carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include one actual corrugated carton when supplied; no generic packaging bundle or assumed package configuration."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_carton, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+        - row_id: finish_electricity
+          role: "Finishing electricity"
+          name: "Electricity for release and filling"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual filling, handling, acceptance and allocated shared auxiliaries."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_finish_electricity, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_water
+          role: "Actual cleaning water"
+          name: "Equipment cleaning water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual water for finishing equipment cleaning, including wash-down after failed batches. Any cleaning in another process stays with that process owner and is added separately."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_cleaning_water, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_sg
+          role: "Accepted supplied monoammonium glyphosate SG"
+          name: "Pesticide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "80d8c492-83e7-4ba8-9cf5-0dbac200513b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The unique terminal Product output. Qualifiers bind this generic native identity to the selected actual SG. Q is net newly accepted supplied product, counted once by acceptance ID and reconciled with dispatch and inventory, excluding internal recycle and repeated acceptance."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - fao-glyphosate-sg-2014
+            ranges: []
+      waste:
+        - row_id: cleaning_effluent
+          role: "Actual cleaning effluent for treatment"
+          name: "Monoammonium glyphosate formulation cleaning effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure whole effluent and active/water composition; retain offsite treatment and downstream releases in the linked treatment dataset, not duplicate direct elementary emissions. COD alone is not a species mass or reaction-water balance."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_cleaning_effluent, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+        - row_id: rejected_finished
+          role: "Unreleased final product leaving for treatment"
+          name: "Rejected finished monoammonium glyphosate SG for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate release failures, returned sold product, rework, held stock and treatment destinations. Do not silently subtract their burdens or count the same kilograms as a second accepted output."
+          amount:
+            expression: "Use cp_finish to retain the complete matched raw-period numerator R_rejected_finished, including assigned failed-run and inherited WIP/return/rework burdens; after raw unit conversions and explicit closing carry-forward, divide by unique positive accepted net supplied mass Q exactly once, per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: a_primary
+    applies_to: "the selected SG"
+    rule: "No saleable co-product is established by the selected sources. Retain full matched burdens of failures, waste and rework with the accepted SG cohort. Internal recycle is neither co-product nor an avoided-product credit."
+    source_ids: []
+  - rule_id: a_shared
+    applies_to: "shared services or actual co-products"
+    rule: "Separate physical submetering first. If shared services remain, document an actual causal allocation basis and reconcile all shares to the original total. A real saleable co-product requires explicit identity, quantity, allocation method and sensitivity review; do not assume mass/economic shares or delete it."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_blend
+      process_id: "p_blend"
+      flow_role: "ingredients, electricity and wet-blend transfer"
+      record_type: "batch_ledger"
+      raw_fields: "batch and transfer IDs; owner; whole supplied masses; assay/counterion; water/carrier fractions; scale tare; electricity meter start/end; rate or integrated-volume flag; temperature; opening/closing WIP quantity and carried burdens; failed runs; internal returns"
+      collection_method: "Owner: blending operator with site metering lead. Calibrated scales and submeters, supplied-product certificates and batch/transfer reconciliation; independently assay relevant composition. Aggregation and burden assignment: Retain raw totals and all internal transfer IDs; assign opening burdens and closing carry-forward to the matched accepted cohort; send raw numerator components to calc_period before one normalization."
+      unit: "kg; kWh; original meter units"
+      frequency: "Every batch and meter interval"
+      temporal_coverage: "Same complete reporting period including startup, failure, cleaning and closure"
+      site_scope: "One actual formulation line and its assigned shared auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scale and meter calibration; full supplier composition; timestamped batch failures and WIP/burden ledger"
+    - protocol_id: cp_granulate
+      process_id: "p_granulate"
+      flow_role: "extrusion, dryer, screen, rejects and releases"
+      record_type: "unit_operation_ledger"
+      raw_fields: "wet_blend transfer ID and mass; moisture/salt assays; dry screened output; fines/oversize/recycle IDs; electricity; delivered heat and return state; water exhaust/condensate; dust capture and emitted species; zero-output operation; opening/closing WIP and inherited burdens"
+      collection_method: "Owner: granulation/dryer operator and environmental measurement lead. Independently weigh transfers/rejects, meter each energy carrier and measure moisture and actual outlet composition/medium with uncertainty. Aggregation and burden assignment: Pair internal transfers without procurement duplication; retain full failure burdens and inventory changes. Keep mass, elements, actual species and water ledgers separate; forward raw assigned burdens once to calc_period."
+      unit: "kg; kWh; MJ; original gas/liquid units"
+      frequency: "Every batch, recycle and meter/emission interval"
+      temporal_coverage: "Complete matched period including failed/zero-output and reprocessed campaigns"
+      site_scope: "One actual extrusion/dryer/screen train and assigned controls"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Moisture/assay methods and uncertainties; exhaust/condensate measurements; heat meters; recycle and waste custody records"
+    - protocol_id: cp_finish
+      process_id: "p_finish"
+      flow_role: "screened transfers, packaging, cleaning and rejects"
+      record_type: "finishing_ledger"
+      raw_fields: "screened_sg transfer ID; supplier/SKU/package BOM; net/gross/tare; measured component masses; electricity; cleaning-water and whole-effluent quantity/composition; release failures; returned sold material; rework routing; stock and carried burdens"
+      collection_method: "Owner: filling supervisor with environmental lead. Weigh actual supplied components and rejected product, submeter electricity/water and sample effluent. Reconcile transfer and external-return identities. Aggregation and burden assignment: Retain all raw inputs/burdens, unreleased output and returned-product inherited burdens. Count packaging outside net Q; transfer assigned burdens to calc_period without a second product normalization."
+      unit: "kg; kWh; count with measured tare"
+      frequency: "Every lot and every cleaning or return event"
+      temporal_coverage: "Complete matched manufacturing/acceptance period and stock reconciliation"
+      site_scope: "One finishing line and assigned site services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Package BOM and tare samples; calibrated scales/meters; waste manifests; returns/rework and stock/burden audit"
+    - protocol_id: cp_acceptance
+      process_id: "p_finish"
+      flow_role: "unique terminal accepted output Q and quality"
+      record_type: "acceptance_ledger"
+      raw_fields: "unique acceptance ID; product/SKU/salt/form/route; gross/tare/net mass; moisture; acid-equivalent and salt assay basis; relevant impurity/quality tests; batch lineage; dispatch and opening/closing accepted stock; returns; repeated release flags"
+      collection_method: "Owner: independent site quality-release officer with stock accountant. Calibrated net weighing and actual release specification tests, reconciled to dispatch and stock; do not infer acceptance from screen passage or sales invoice alone. Aggregation and burden assignment: Q is unique newly accepted net supplied output; exclude repeated acceptance, internal recycle and resale of previously accepted returns. Reconcile opening accepted stock + new acceptance + external returns - dispatch - closing stock - treatment/transfers = 0 with signed movements. For a reworked return, retain its prior burdens and credit history; count only genuinely new accepted mass once. Q must be positive for normalization; Q=0 retains raw burdens for later assignment."
+      unit: "kg net supplied product; g/kg assay"
+      frequency: "Every acceptance and reversal event"
+      temporal_coverage: "Same matched period and documented cross-period cohort lineage"
+      site_scope: "Same actual SG product, route, salt and supplied state at one site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Release officer sign-off; full qualifier/test records; unique ID and dispatch/stock/return reconciliation"
+  calculation_rules:
+    - id: calc_period
+      applies_to: "all raw-period inventory numerators"
+      rule: "For each exchange retain raw measured quantities, convert units, then assign R to the accepted cohort by batch/transfer lineage: include opening WIP and returned-material inherited burdens, current inputs and all failed/zero-output/rework burdens; carry closing WIP/unreleased burdens forward explicitly. Reconcile period totals = assigned-to-Q + closing-carried burdens + separately justified destinations. Negative corrections require linked original IDs. Do not discard failed runs or count internal recycle twice. Then q = R / Q exactly once for positive Q from cp_acceptance; Q=0 prohibits normalized output and retains the raw ledger."
+      inputs:
+        - cp_blend
+        - cp_granulate
+        - cp_finish
+        - cp_acceptance
+      output: "per 1 kg reference flow quantities and explicit carried-burden ledger"
+      source_ids: []
+    - id: calc_mass
+      applies_to: "ingredients, intermediate transfers, granules and all outlets"
+      rule: "At raw-period level reconcile physical mass and independently assayed glyphosate acid-equivalent, ammonium/counterion and relevant elemental ledgers across supplied inputs, product, waste, releases and WIP. Whole purchased formulations include their carrier/water once; component subledgers are not additional procurement. Match internal transfer pairs and prevent duplicate upstream burden. Do not combine kg acid-equivalent with kg salt as if identical."
+      inputs:
+        - cp_blend
+        - cp_granulate
+        - cp_finish
+        - cp_acceptance
+      output: "separate mass/active/counterion/element closure and uncertainty"
+      source_ids: []
+    - id: calc_water
+      applies_to: "physical water and actual species"
+      rule: "Measure supplied free/structural water, added water, remaining product/WIP water, effluent, condensate and vapour independently where applicable. This bounded route is formulation and evaporation, not glyphosate synthesis or neutralisation; no reaction water is presumed. Any actual chemical transformation requires independently supported species/extent and reaction-water evidence and scope reassessment. Do not fit unknown vapour and unknown waste to one closure residual or use COD as a species balance."
+      inputs:
+        - cp_blend
+        - cp_granulate
+        - cp_finish
+      output: "independent physical-water and species account, not a fitted emission factor"
+      source_ids: []
+    - id: calc_units
+      applies_to: "meters, packaging and assay conversions"
+      rule: "Integrate actual rate over its measured interval once; keep integrated volumes unchanged before density conversion. Net package content = gross - measured tare. Component count × measured representative component mass may determine packaging mass with uncertainty. Acid-equivalent or salt mass = assayed fraction on its explicitly stated wet/dry basis × corresponding measured physical mass; use independently documented salt identity/speciation for any molar conversion. No nominal patent ratio, efficacy dose or density inferred from a concentration label is a conversion basis."
+      inputs:
+        - cp_blend
+        - cp_granulate
+        - cp_finish
+        - cp_acceptance
+      output: "converted raw quantities before one normalization"
+      source_ids: []
+  data_quality_requirements:
+    - id: q_identity
+      applies_to: "all exchanges and providers"
+      requirement: "Qualify the exact active/salt/form/route and whole supplied grade; query/direct-read identity is not provider compatibility. Preserve all native name, CAS, comment, geography, medium and property restrictions. Blank auxiliary UUIDs require matching at dataset production, not fabricated identities."
+      evidence: "Supplier certificates, full composition, native direct records and actual provider scope"
+    - id: q_complete
+      applies_to: "period and cohort"
+      requirement: "Retain measured raw numerators, unique positive accepted denominator, failures, returns, rework and opening/closing WIP with carried burdens. Report omissions, detection limits and uncertainty; do not set unknown emissions or inactive rows to zero without evidence."
+      evidence: "Signed ledgers, calibrated measurements and mass/species/water reconciliations"
+    - id: q_release
+      applies_to: "accepted SG"
+      requirement: "Use actual registered/supplier release criteria and methods for assay, dissolution, dustiness, flowability, relevant impurities, moisture and storage quality. FAO 2014 context carries manufacturer/version limits and is not certification of this recipe."
+      evidence: "Actual quality specification, methods, test results and acceptance officer record"
+validation_rules:
+  - rule_id: v_reference
+    applies_to: "reference and terminal product"
+    rule: "finished_sg is the unique selected terminal Product output and has the declared reference UUID, 1 kg net supplied basis and all qualifiers. Internal wet_blend and screened_sg transfers cannot be silently renamed as final output."
+    source_ids: []
+  - rule_id: v_period
+    applies_to: "inventory and calculation"
+    rule: "Require all three process-owner protocols plus cp_acceptance, complete raw-period/burden and WIP/return/rework ledgers, positive unique Q and one normalization. With Q=0 or unresolved cohort assignment, retain raw records and do not report a normalized production dataset."
+    source_ids: []
+  - rule_id: v_balance
+    applies_to: "physical and chemical accounting"
+    rule: "Check complete supplied-input mass, independent active/counterion/element and physical-water accounts, internal-transfer pairing, energy units and real outlet destinations. No COD/residual-fitted reaction water, duplicate component procurement, missing failures or invented emission fractions. Add each actual unlisted material, packaging component, pollutant species or utility as an atomic row with its process owner and evidence before dataset use."
+    source_ids: []
+  - rule_id: v_source
+    applies_to: "evidence and applicability"
+    rule: "Keep patent-laboratory and FAO manufacturer/version limits and native generic classification debt visible. A future site/SKU/provider match, product registration, scientific review or CPC acceptance is not established by this methodology or by format validation."
+    source_ids:
+      - monsanto-glyphosate-sg-1994
+      - fao-glyphosate-sg-2014
+      - unsd-cpc3-2025
+      - wco-hs38-2022
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Supplier-specific upstream SG formulation for a separately modelled agricultural or other authorized use"
+  allowed_use: "Only the qualified monoammonium glyphosate soluble-granule route and supplied state, with complete data-production evidence"
+  excluded_use: "No universal herbicide mix, active synthesis, other salts/forms/routes, efficacy comparison, dose conversion, field release or automatic supplier/geographic proxy"
+  required_metadata: "All reference qualifiers; actual provider/location/technology; raw period and stock/cohort lineage; complete packaging and ingredient composition; heat architecture; allocation; evidence and methods"
+  required_quality_disclosure: "Measurement and representativeness uncertainty; missing auxiliary UUID/provider matches; emission/species resolution; source edition/manufacturer limits; native generic 35499 classification debt; no implied approval"
+  update_trigger: "Change of active, salt, form, supplier grade/formulant, route, utility, packaging, site, release specification, source edition or material evidence"
+data_sources:
+  - id: "monsanto-glyphosate-sg-1994"
+    type: "literature"
+    reference: "EP0582561A1, Monsanto Company, 1994-02-09, printed/PDF page 6, General Process Description and Example 1. https://patentimages.storage.googleapis.com/be/c5/7e/9489c4b260d3e4/EP0582561A1.pdf"
+    used_for: "Acquired dry monoammonium salt, supplied surfactant, PEG 8000, water and mixing/extrusion/drying/screening architecture only. Laboratory disclosure: no industrial yield, recovered final mass, default intensity, geographic representativeness or efficacy equivalence."
+  - id: "fao-glyphosate-sg-2014"
+    type: "official_guidance"
+    reference: "FAO Specifications and Evaluations for Glyphosate, November 2014, 284/SG, printed pages 10–11 (PDF 14–15), complete notes. https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/Specs/Glypho_2014.pdf"
+    used_for: "Independent soluble-granule physical state, acid/salt assay and quality context only. Manufacturer/evaluation scope, integrated reports and current-version caveat retained; no compliance/equivalence or universally adopted numeric limits."
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0 Explanatory Notes, 30 June 2025, page 167, entries 34661–34669. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification names and adjacent leaves only; no manufacturing method, reference quantity or accepted mapping."
+  - id: "wco-hs38-2022"
+    type: "official_guidance"
+    reference: "WCO HS Nomenclature 2022, Chapter 38, PDF page 2, Subheading Notes 1–2. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0638_2022e.pdf"
+    used_for: "Specific substance lists as contrary-boundary context; actual complete composition and purpose require review. No CPC acceptance, general hazard determination or LCA quantity."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:fac1ff430ec6e25ec052cc0dbb2832cf78a8d5568433a8b7b8a040288eb80543"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7266"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7266
+          line: 62
+          column: 1
+        end:
+          offset: 9886
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Acquired dry monoammonium glyphosate, supplied Ethomeen T/25, PEG 8000, formulation water, utilities and actual packaging at formulation site |\n| starting_condition_role | Foreground begins with supplied ingredients and includes powder preparation, heated preblending, wet mixing, extrusion, drying, screening, quality acceptance and supply preparation |\n| product_classification_scope | One sole-active monoammonium glyphosate SG; narrower than the mixed CPC 34663 leaf |\n| recursive_input_rule | Purchased finished SG or externally returned sold material is a distinct whole input with prior burdens and acceptance history; internal recycle is a transfer, not a new purchase or new positive output |\n| upstream_dataset_requirement | Match whole supplied salt grade and moisture, complete Ethomeen T/25 supply composition, PEG molecular-weight grade, utility technology/geography and packaging supplier; do not use a pure constituent provider for a whole commercial mixture without justified decomposition |\n| disclosure | Disclose actual site/country, period, SKU, product release state, starting materials, heat supply, mass/active/water balances, returns/rework/WIP, omissions and provider limits. The patent does not establish a factory geography or dryer energy carrier. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | foreground | Keep the three process owners below separate in collection. Include actual powder preparation and reject/fine handling; drying and screening cannot disappear by treating the purchased dry salt as finished SG. | monsanto-glyphosate-sg-1994 |\n| b_utilities | utilities and releases | The heat card denotes one externally supplied heat service for indirect drying, if used, measured as delivered net heat. Electric heating belongs in the process electricity meter. If steam or onsite fuel is the actual boundary exchange, add its own atomic row and model condensate/combustion and emissions explicitly before dataset use; never count both purchased heat and its source energy. Include dust control, actual cleaning and each actual environmental release; absent measurements are not zero. |  |\n| b_supply | upstream and downstream | Link upstream production of acquired ingredients and services once. Foreground is neither active synthesis nor farm application. Any onsite salt formation, new ingredient or materially different utility/route needs explicit scope and inventory extension with evidence. | monsanto-glyphosate-sg-1994 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 9
+              column: 1
+            end:
+              offset: 328
+              line: 9
+              column: 60
+          text: "# Monoammonium glyphosate soluble granules by wet extrusion"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7266
+              line: 62
+              column: 1
+            end:
+              offset: 7287
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_34325"
+      family: "allocation"
+      span:
+        start:
+          offset: 34325
+          line: 535
+          column: 1
+        end:
+          offset: 35065
+          line: 542
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_primary | the selected SG | No saleable co-product is established by the selected sources. Retain full matched burdens of failures, waste and rework with the accepted SG cohort. Internal recycle is neither co-product nor an avoided-product credit. |  |\n| a_shared | shared services or actual co-products | Separate physical submetering first. If shared services remain, document an actual causal allocation basis and reconcile all shares to the original total. A real saleable co-product requires explicit identity, quantity, allocation method and sensitivity review; do not assume mass/economic shares or delete it. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 9
+              column: 1
+            end:
+              offset: 328
+              line: 9
+              column: 60
+          text: "# Monoammonium glyphosate soluble granules by wet extrusion"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 34325
+              line: 535
+              column: 1
+            end:
+              offset: 34365
+              line: 535
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_44699"
+      family: "validation"
+      span:
+        start:
+          offset: 44699
+          line: 570
+          column: 1
+        end:
+          offset: 46295
+          line: 579
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | reference and terminal product | finished_sg is the unique selected terminal Product output and has the declared reference UUID, 1 kg net supplied basis and all qualifiers. Internal wet_blend and screened_sg transfers cannot be silently renamed as final output. |  |\n| v_period | inventory and calculation | Require all three process-owner protocols plus cp_acceptance, complete raw-period/burden and WIP/return/rework ledgers, positive unique Q and one normalization. With Q=0 or unresolved cohort assignment, retain raw records and do not report a normalized production dataset. |  |\n| v_balance | physical and chemical accounting | Check complete supplied-input mass, independent active/counterion/element and physical-water accounts, internal-transfer pairing, energy units and real outlet destinations. No COD/residual-fitted reaction water, duplicate component procurement, missing failures or invented emission fractions. Add each actual unlisted material, packaging component, pollutant species or utility as an atomic row with its process owner and evidence before dataset use. |  |\n| v_source | evidence and applicability | Keep patent-laboratory and FAO manufacturer/version limits and native generic classification debt visible. A future site/SKU/provider match, product registration, scientific review or CPC acceptance is not established by this methodology or by format validation. | monsanto-glyphosate-sg-1994; fao-glyphosate-sg-2014; unsd-cpc3-2025; wco-hs38-2022 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 9
+              column: 1
+            end:
+              offset: 328
+              line: 9
+              column: 60
+          text: "# Monoammonium glyphosate soluble granules by wet extrusion"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 44699
+              line: 570
+              column: 1
+            end:
+              offset: 44721
+              line: 570
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7266"
+      source_span:
+        start:
+          offset: 8730
+          line: 77
+          column: 1
+        end:
+          offset: 8995
+          line: 77
+          column: 266
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_7266"
+      source_span:
+        start:
+          offset: 8996
+          line: 78
+          column: 1
+        end:
+          offset: 9544
+          line: 78
+          column: 549
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_supply"
+      identity_kind: "explicit"
+      unit_id: "normative_7266"
+      source_span:
+        start:
+          offset: 9545
+          line: 79
+          column: 1
+        end:
+          offset: 9884
+          line: 79
+          column: 340
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_primary"
+      identity_kind: "explicit"
+      unit_id: "normative_34325"
+      source_span:
+        start:
+          offset: 34438
+          line: 539
+          column: 1
+        end:
+          offset: 34694
+          line: 539
+          column: 257
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_shared"
+      identity_kind: "explicit"
+      unit_id: "normative_34325"
+      source_span:
+        start:
+          offset: 34695
+          line: 540
+          column: 1
+        end:
+          offset: 35063
+          line: 540
+          column: 369
+    - pointer: "/validation_rules/0"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_44699"
+      source_span:
+        start:
+          offset: 44794
+          line: 574
+          column: 1
+        end:
+          offset: 45076
+          line: 574
+          column: 283
+    - pointer: "/validation_rules/1"
+      rule_id: "v_period"
+      identity_kind: "explicit"
+      unit_id: "normative_44699"
+      source_span:
+        start:
+          offset: 45077
+          line: 575
+          column: 1
+        end:
+          offset: 45395
+          line: 575
+          column: 319
+    - pointer: "/validation_rules/2"
+      rule_id: "v_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_44699"
+      source_span:
+        start:
+          offset: 45396
+          line: 576
+          column: 1
+        end:
+          offset: 45901
+          line: 576
+          column: 506
+    - pointer: "/validation_rules/3"
+      rule_id: "v_source"
+      identity_kind: "explicit"
+      unit_id: "normative_44699"
+      source_span:
+        start:
+          offset: 45902
+          line: 577
+          column: 1
+        end:
+          offset: 46293
+          line: 577
+          column: 392
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7266"
+      source_span:
+        start:
+          offset: 7266
+          line: 62
+          column: 1
+        end:
+          offset: 7287
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7266"
+      source_span:
+        start:
+          offset: 7315
+          line: 66
+          column: 1
+        end:
+          offset: 8657
+          line: 73
+          column: 270
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_34325"
+      source_span:
+        start:
+          offset: 34325
+          line: 535
+          column: 1
+        end:
+          offset: 34365
+          line: 535
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_44699"
+      source_span:
+        start:
+          offset: 44699
+          line: 570
+          column: 1
+        end:
+          offset: 44721
+          line: 570
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:fac1ff430ec6e25ec052cc0dbb2832cf78a8d5568433a8b7b8a040288eb80543"
+  generated_content_sha256: "sha256:5866be41b00526d0ed71c0ad739ef2bc053b5449f68a5c0634a0dbc444a28cb1"

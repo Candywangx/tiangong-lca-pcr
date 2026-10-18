@@ -1,0 +1,867 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.ground-calcium-cyanamide-fertilizer"
+  classification_refs: "CPC 3.0 34619, proposed narrower only; independently confirm residual membership."
+  covered_products: "Bulk ground technical calcium cyanamide fertilizer; declared actual composition."
+  excluded_products: "Granulated/enriched mixtures; aqueous cyanamide; reagent grade; other nitrogen fertilizers."
+  representative_product: "Ground lime-nitrogen fertilizer, not a fixed commercial SKU or assay."
+  production_route: "Purchased carbide + separated gaseous N2; nitridation, cooling, grinding and bulk dispatch."
+  market_state: "Unpackaged powder; net as-dispatched mass at declared moisture."
+functional_unit:
+  what: "Supply declared ground calcium cyanamide fertilizer at factory gate."
+  how_much: "1 kg net as-dispatched powder, excluding transport containers."
+  how_well: "Lot certificate declares total N, cyanamide-N, other N species, moisture, residual carbide, free lime/carbon and particle size; no universal assay."
+  how_long_or_cycle: "One declared production campaign and factory-gate delivery; no agronomic service duration."
+  reference_flow_link: "finished_powder"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "foreground"
+      rule: "Include receipt, grinding of carbide, nitridation, cooling, product grinding, extraction, indirect cooling if installed, waste transfer and bulk dispatch as one measured foreground unit. Keep stage meters and material balances."
+      source_ids:
+        - alzchem-route
+        - jrc-cww-2016
+    - rule_id: boundary_upstream
+      applies_to: "carbide_in"
+      rule: "Carbide manufacture is an upstream electrothermal process. BREF carbide figures are not nitridation defaults. Do not model upstream recovered CO as a nitridation product or add upstream CO2 again."
+      source_ids:
+        - jrc-lvic-s-2007
+    - rule_id: boundary_complete
+      applies_to: "foreground"
+      rule: "Maintain a species/utility/residue screen. Additional actual fuel, chemical, packaging, pollutant or cooling additive requires its own atomic row and verified identity before a complete dataset is claimed; do not infer absence from this draft list."
+      source_ids:
+        - jrc-cww-2016
+boundary_abstraction:
+  declared_starting_condition: "Purchased technical calcium carbide and separated gaseous nitrogen received at nitridation plant."
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Ground calcium cyanamide subset; no whole-leaf manufacturing claim."
+  recursive_input_rule: "Same-category purchased powder remains an external input with its own upstream dataset; separate regrinding from nitridation; never recurse indefinitely."
+  upstream_dataset_requirement: "Link compatible carbide, N2, electricity and water providers; include their upstream burdens once. Integrated carbide or air separation requires separately measured expansion, not omission or duplicated purchased inputs."
+  disclosure: "Disclose site, period, stock changes, operating/upset states, utility supply, dust recycling, purge destinations and upstream exclusions."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Nitrogen fertiliser ; broad identity restricted here to bulk ground calcium cyanamide fertilizer."
+    uuid: "fc45dbd4-a3a4-420d-849b-a370b5261a84"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - Route
+    - "bulk powder state"
+    - "actual SKU/grade and lot"
+    - "product versus N mass"
+    - "total N and N species"
+    - moisture
+    - "residual CaC2"
+    - "free lime/carbon"
+    - "particle size"
+    - "site and period"
+    - "supplier background bases"
+    - "electricity geography/voltage."
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "finished_powder"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net as-dispatched powder mass; collect using cp_product; subtract transport tare. Keep moisture and nitrogen assay on the same lot basis."
+  - id: nutrient_basis
+    applies_to: "finished_powder"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record kg N separately using measured lot mass and measured N mass fraction. Never substitute kg N for kg fertilizer or assume pure CaCN2 conversion."
+  - id: gas_basis
+    applies_to: "nitrogen_in"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated mass delivery, or volume with documented T/P, wet/dry basis, composition, compressibility and supplier reference conditions; no database density default."
+  - id: power_basis
+    applies_to: "electricity_in"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve actual metered kWh and document electrical-energy conversion 1 kWh = 3.6 MJ. NCV is the platform property label, not a combustion assumption."
+process_map:
+  - id: nitridation
+    name: "Carbide nitridation and powder finishing"
+    inclusion: "required"
+    inclusion_condition: "Declared purchased-carbide powder route"
+    role: "foreground"
+    quantitative_reference: "finished_powder"
+process_inventory:
+  - id: nitridation
+    label: "Carbide nitridation and powder finishing"
+    inputs:
+      product:
+        - row_id: carbide_in
+          role: "Calcium carbide for nitridation"
+          name: "Calcium carbide for nitridation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh technical calcium carbide charged; assay CaC2, free lime, carbon, moisture and impurities. No Bayer-route UUID is assigned."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - alzchem-route
+                - jrc-lvic-s-2007
+            ranges: []
+        - row_id: nitrogen_in
+          role: "Nitrogen"
+          name: "Nitrogen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67bb2ea6-2fd8-43c5-b227-bca12040b773"
+          property_unit: "Mass / kg"
+          description: "Meter delivered gaseous N2 from air separation, including purge and unreacted gas in the nitrogen balance; reconcile measured mass or documented gas-state conversion."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - alzchem-route
+            ranges: []
+        - row_id: electricity_in
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter all reactor heating, grinding, cooling circulation, extraction and bulk handling. Selected identity applies only to China grid-average customer-side 1-35kV; verify actual supply."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - alzchem-route
+            ranges: []
+        - row_id: cooling_water_in
+          role: "Water, tap"
+          name: "Water, tap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6a8b6455-e9bb-4cb9-81ea-5e83413d5fe1"
+          property_unit: "Mass / kg"
+          description: "Meter purchased tap-water makeup for indirect cooling only if installed; exclude internal circulation. Record actual water source and measured density for volume conversion."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_powder
+          role: "Nitrogen fertiliser"
+          name: "Nitrogen fertiliser"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fc45dbd4-a3a4-420d-849b-a370b5261a84"
+          property_unit: "Mass / kg"
+          description: "Accepted ground calcium cyanamide fertilizer powder measured under cp_product. The selected broad nitrogen-fertilizer identity is physically inclusive, formulation unspecified; it does not establish pure CaCN2 or a provider. Source Fertilizer,N quantities and their unclarified nutrient/product mass basis are not adopted. One foreground output preserves actual stage measurements."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_product
+              source_ids:
+                - alzchem-route
+            ranges: []
+      waste:
+        - row_id: dust_out
+          role: "Dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass / kg"
+          description: "Weigh collected cyanamide-bearing dust only when transferred to an external waste receiver; record composition, residual carbide, moisture and acceptance. Internally returned dust remains internal, not an emission."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_residue"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: cooling_purge
+          role: "Indirect cooling-water purge to off-site treatment"
+          name: "Indirect cooling-water purge to off-site treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Meter actual indirect-cooling purge transferred to a treatment operator, if present; preserve destination, composition, biocide use and treatment boundary. Direct environmental discharge requires separately speciated elementary rows."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+      elementary:
+        - row_id: ammonia_air
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measure NH3 released beyond control equipment to outdoor air, unspecified subcompartment; report molecular NH3 mass, not ammonia-N. Assess moisture-related conversion; no positive default or historic reduction factor."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - alzchem-route
+                - jrc-cww-2016
+            ranges: []
+        - row_id: acetylene_air
+          role: "acetylene"
+          name: "acetylene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-911f-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Screen residual-carbide contact with moisture and measure any resulting C2H2 actually released to outdoor air, unspecified subcompartment. Occupational concentration is not a factory emission load."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - icsc-cyanamide-2006
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_fine_air
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measure escaped particles with aerodynamic diameter at most 2.5 micrometres after controls, including documented fugitive sources, to outdoor air unspecified."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_coarse_air
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only the nonoverlapping fraction above 2.5 and at most 10 micrometres, to outdoor air unspecified. If comparable cumulative PM10 and PM2.5 measurements are used, subtract PM2.5; never add this row to cumulative PM10."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_large_air
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record escaped particles above 10 micrometres to outdoor air unspecified; derive by total minus PM10 only for comparable matched measurements. Missing size fractions remain unknown, not zero."
+          amount:
+            expression: "Measured attributable campaign exchange / accepted net powder kg; collect using cp_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_physical
+    applies_to: "nitridation"
+    rule: "Keep the physical mass, nitrogen and carbon balances before burden allocation. Reaction carbon retained in powder is part of its composition; internal dust return is not a co-product. Do not multiply physical outputs by allocation shares."
+    source_ids:
+      - alzchem-route
+      - jrc-cww-2016
+  - rule_id: allocation_subdivide
+    applies_to: "nitridation"
+    rule: "Use stage meters and campaign-specific records to separate other production. No default co-product credit or allocation ratio is supplied. If an external co-product actually arises, document its identity, receiver, physical balance and reviewed allocation decision before modelling its burden."
+    source_ids:
+      - jrc-cww-2016
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "nitridation"
+      flow_role: "finished_powder"
+      record_type: "weighing and assay"
+      raw_fields: "lot; gross; tare; net powder; moisture; total N; cyanamide-N; nitrate/ammonium/urea N; residual CaC2; lime; carbon; particle size; opening/closing stock; unique new acceptance/return/rework lot links; failed/zero-output lots; opening/closing WIP mass/composition and carried burdens"
+      collection_method: "Calibrated net acceptance weighing and representative lot analyses; count each newly accepted physical lot once after rework/withdrawals. Independently reconcile acceptance against dispatch, returns and opening/closing finished stock; retain WIP mass/composition and associated burdens across periods without omission or duplicate counting."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "same powder line and grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sampling method; assay uncertainty; stock ledger"
+    - protocol_id: cp_material
+      process_id: "nitridation"
+      flow_role: "carbide_in; nitrogen_in"
+      record_type: "foreground measurements"
+      raw_fields: "input lot; grade; supplier; delivered and charged mass; stocks; gas state; assay"
+      collection_method: "Calibrated scales and gas mass meters; reconcile charges, delivery and inventory. Record gas conversion and supplier conditions if volumetric."
+      unit: "kg"
+      frequency: "each lot or operating mode; continuous meters where available"
+      temporal_coverage: "same complete campaign as cp_product"
+      site_scope: "all attributable stages within selected foreground"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighing tickets; calibration; supplier assays; gas basis"
+    - protocol_id: cp_energy
+      process_id: "nitridation"
+      flow_role: "electricity_in"
+      record_type: "foreground measurements"
+      raw_fields: "meter start/end; stage; operating hours; grid voltage; geography; provider; shared loads"
+      collection_method: "Read dedicated electricity meters; quantify justified shared loads and reconcile invoices. Preserve kWh and MJ conversion."
+      unit: "kWh"
+      frequency: "each lot or operating mode; continuous meters where available"
+      temporal_coverage: "same complete campaign as cp_product"
+      site_scope: "all attributable stages within selected foreground"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; load attribution; provider boundary"
+    - protocol_id: cp_water
+      process_id: "nitridation"
+      flow_role: "cooling_water_in; cooling_purge"
+      record_type: "foreground measurements"
+      raw_fields: "makeup; purge volume; density; T; circuit; receiver; composition; additives"
+      collection_method: "Meter makeup and actual off-site purge separately; weigh or measure density for water mass. Reconcile circulation, evaporation and stock; identify all added chemicals."
+      unit: "kg; m3"
+      frequency: "each lot or operating mode; continuous meters where available"
+      temporal_coverage: "same complete campaign as cp_product"
+      site_scope: "all attributable stages within selected foreground"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; circuit diagram; treatment contract; analyses"
+    - protocol_id: cp_residue
+      process_id: "nitridation"
+      flow_role: "dust_out"
+      record_type: "foreground measurements"
+      raw_fields: "dust collection mass; internal return; external dispatch; composition; residual carbide; receiver"
+      collection_method: "Weigh separately collected solid dust and retained stocks. Match external manifests and receiver acceptance; do not use total dust capture as atmospheric emissions."
+      unit: "kg"
+      frequency: "each lot or operating mode; continuous meters where available"
+      temporal_coverage: "same complete campaign as cp_product"
+      site_scope: "all attributable stages within selected foreground"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scales; transfer notes; composition and acceptance"
+    - protocol_id: cp_air
+      process_id: "nitridation"
+      flow_role: "ammonia_air; acetylene_air; pm_fine_air; pm_coarse_air; pm_large_air"
+      record_type: "foreground measurements"
+      raw_fields: "source; species/CAS; control train; concentration; gas flow; T/P; wet/dry; test duration; operating mode; size fractions; detection limit"
+      collection_method: "Use matched outlet concentration and gas-flow measurements after controls for each operating mode; characterize fugitives independently. Convert species and flow to common gas conditions; integrate loads over covered operating hours and preserve uncertainty. Integrate a measured volume flow rate over its matched interval; with already integrated gas volume, concentration times that compatible volume is the load and is never multiplied by operating hours again. Retain the raw period load before the single campaign normalization."
+      unit: "kg"
+      frequency: "each lot or operating mode; continuous meters where available"
+      temporal_coverage: "same complete campaign as cp_product"
+      site_scope: "all attributable stages within selected foreground"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "test report; method; calibration; gas conditions; size method; operating coverage"
+  calculation_rules:
+    - id: campaign_basis
+      applies_to: "all inventory rows"
+      rule: "Define one complete same-site/product/grade/state/nitridation-route campaign pool. Retain raw period totals before burden assignment or division, including all attributable startup/shutdown, failed and zero-output batches, cleaning/losses, returns, rework and opening/closing WIP with carried burdens. Q is uniquely counted newly accepted net powder kg from cp_product; reconcile dispatch/stocks independently without a second stock correction. After numerator-unit conversion and justified burden assignment, divide each attributable total by the same positive Q once only; reference output is 1 kg. If Q = 0 preserve all raw totals and stock/fate records without per-kg results, invented output or excluded failed periods."
+      inputs:
+        - cp_product
+        - cp_material
+        - cp_energy
+        - cp_water
+        - cp_residue
+        - cp_air
+      output: "exchange per 1 kg reference flow"
+      source_ids: []
+    - id: element_balance
+      applies_to: "nitridation"
+      rule: "Reconcile whole measured wet streams and independent N/Ca/C/H/O and actual impurity inventories, including stocks/WIP and actual gas/liquid destinations, before allocation. CaC2 + N2 -> CaCN2 + C is an identity, not a yield/recipe, and generates no stoichiometric water; distinguish residual carbide, free carbon/lime and bound cyanamide carbon. For the screened residual-carbide/moisture pathway only where it actually occurs, CaC2 + 2 H2O -> C2H2 + Ca(OH)2 constrains species masses; independently evidence the actual reacted amount, water consumption and formed dry components. Keep measured moisture/free water and dry-component formation/consumption separate. Do not infer water, evaporation, conversion, product yield or missing species from COD or an unexplained closure residual."
+      inputs:
+        - cp_material
+        - cp_product
+        - cp_residue
+        - cp_air
+      output: "physical element balance before allocation"
+      source_ids:
+        - alzchem-route
+        - jrc-lvic-s-2007
+        - jrc-cww-2016
+        - icsc-cyanamide-2006
+  data_quality_requirements:
+    - id: quality_basis
+      applies_to: "all inventory rows"
+      requirement: "Preserve measured basis, supplier product identity and background quantity compatibility independently. A valid flow UUID does not establish a complete provider dataset."
+      evidence: "cp_material; cp_energy; cp_water"
+    - id: quality_unknown
+      applies_to: "all inventory rows"
+      requirement: "Unknown is not zero. Absence requires documented equipment/route and sampling evidence. Limits of detection are retained; no universal yield, moisture, density, composition or emission factor."
+      evidence: "cp_air; cp_product"
+    - id: quality_period
+      applies_to: "nitridation"
+      requirement: "Cover startup, shutdown, normal operation and credible upsets in the campaign; explain unmeasured periods and their uncertainty."
+      evidence: "cp_air; cp_energy; cp_product"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "finished_powder"
+    rule: "Require one powder output at 1 kg, complete qualifiers and resolved product-mass reference identity before usable guidance/dataset acceptance. A measurement pass does not resolve identity."
+    source_ids: []
+  - rule_id: validate_balances
+    applies_to: "nitridation"
+    rule: "Check physical mass/N/Ca/C and stock balances separately from allocated burdens; investigate residuals with uncertainty and detection limits. Internal transfers cancel at equal actual quantities."
+    source_ids:
+      - jrc-cww-2016
+  - rule_id: validate_emissions
+    applies_to: "nitridation"
+    rule: "Verify post-control outdoor loads, molecular NH3/C2H2 bases and nonoverlapping particle bins. Do not add captured waste dust, cumulative PM10, or upstream carbide emissions again. Direct water discharge requires its own verified species and medium."
+    source_ids:
+      - jrc-cww-2016
+      - icsc-cyanamide-2006
+  - rule_id: validate_completeness
+    applies_to: "all inventory rows"
+    rule: "Reject complete-dataset claims with unverified reference/carbide/waste identity, unsupported conversion, unmeasured material pathway or unqualified provider. Independent scientific review remains required."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Compatible bulk ground calcium cyanamide fertilizer input, after identity and quality acceptance."
+  allowed_use: "Declared site/period/assay and purchased-carbide route only."
+  excluded_use: "Whole CPC leaf; granulated/enriched blends; pure substance or kg N substitution; use-stage claims; treating this unfinished draft as an accepted dataset."
+  required_metadata: "Reference qualifiers; boundary; provider links; stocks; collection protocols; identity resolution; operating coverage."
+  required_quality_disclosure: "Uncertainty; actual completeness; unresolved identities; conditional utility/waste identity; allocations and exclusions."
+  update_trigger: "Route, assay, supplier, utility, dust treatment or monitoring change; identity clarification or new independent evidence."
+data_sources:
+  - id: "alzchem-route"
+    type: "literature"
+    reference: "Alzchem, Product calcium cyanamide, Manufacture / Types / Quality; https://www.alzchem.com/en/brands/perlka/product-calcium-cyanamide/"
+    used_for: "Producer route and product-state distinctions; historic plant reduction, assay and temperatures are not universal defaults."
+  - id: "jrc-lvic-s-2007"
+    type: "official_guidance"
+    reference: "European Commission, LVIC-S BREF, August 2007, 7.2.1.1, pp.356-357 (PDF401-402); https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic-s_bref_0907.pdf"
+    used_for: "Upstream carbide manufacture and boundary distinction, and the residual-carbide/water reaction identity in §7.2.1.1; no historic energy/purity, actual hydrolysis extent or emission default."
+  - id: "jrc-cww-2016"
+    type: "official_guidance"
+    reference: "European Commission, CWW BREF, 2016, BAT2 pp.543-544 (PDF573-574); https://publications.jrc.ec.europa.eu/repository/bitstream/JRC103096/jrc103096_cww_bref_10_2016.pdf"
+    used_for: "Horizontal chemical-sector stream inventory and monitoring, not fertilizer-specific factors."
+  - id: "icsc-cyanamide-2006"
+    type: "official_guidance"
+    reference: "ILO/WHO, ICSC1639 Calcium cyanamide, Notes; https://inchem.org/documents/icsc/icsc/eics1639.htm"
+    used_for: "Residual carbide/moisture acetylene screening, no release fraction or LCI factor."
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC3 Explanatory Notes, 30Jun2025, p.165; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "34619 residual label and adjacent identities only; narrower membership still requires controller decision."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:5dabfdbf4fe994c9da3192d3ebc3299fee307e4103500095ea2c323ca16ec3d4"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4426"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4426
+          line: 59
+          column: 1
+        end:
+          offset: 6299
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased technical calcium carbide and separated gaseous nitrogen received at nitridation plant. |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Ground calcium cyanamide subset; no whole-leaf manufacturing claim. |\n| recursive_input_rule | Same-category purchased powder remains an external input with its own upstream dataset; separate regrinding from nitridation; never recurse indefinitely. |\n| upstream_dataset_requirement | Link compatible carbide, N2, electricity and water providers; include their upstream burdens once. Integrated carbide or air separation requires separately measured expansion, not omission or duplicated purchased inputs. |\n| disclosure | Disclose site, period, stock changes, operating/upset states, utility supply, dust recycling, purge destinations and upstream exclusions. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | foreground | Include receipt, grinding of carbide, nitridation, cooling, product grinding, extraction, indirect cooling if installed, waste transfer and bulk dispatch as one measured foreground unit. Keep stage meters and material balances. | alzchem-route, jrc-cww-2016 |\n| boundary_upstream | carbide_in | Carbide manufacture is an upstream electrothermal process. BREF carbide figures are not nitridation defaults. Do not model upstream recovered CO as a nitridation product or add upstream CO2 again. | jrc-lvic-s-2007 |\n| boundary_complete | foreground | Maintain a species/utility/residue screen. Additional actual fuel, chemical, packaging, pollutant or cooling additive requires its own atomic row and verified identity before a complete dataset is claimed; do not infer absence from this draft list. | jrc-cww-2016 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 242
+              line: 9
+              column: 1
+            end:
+              offset: 304
+              line: 9
+              column: 63
+          text: "# Ground calcium cyanamide fertilizer from carbide nitridation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4426
+              line: 59
+              column: 1
+            end:
+              offset: 4447
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_15222"
+      family: "allocation"
+      span:
+        start:
+          offset: 15222
+          line: 284
+          column: 1
+        end:
+          offset: 15995
+          line: 291
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_physical | nitridation | Keep the physical mass, nitrogen and carbon balances before burden allocation. Reaction carbon retained in powder is part of its composition; internal dust return is not a co-product. Do not multiply physical outputs by allocation shares. | alzchem-route, jrc-cww-2016 |\n| allocation_subdivide | nitridation | Use stage meters and campaign-specific records to separate other production. No default co-product credit or allocation ratio is supplied. If an external co-product actually arises, document its identity, receiver, physical balance and reviewed allocation decision before modelling its burden. | jrc-cww-2016 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 242
+              line: 9
+              column: 1
+            end:
+              offset: 304
+              line: 9
+              column: 63
+          text: "# Ground calcium cyanamide fertilizer from carbide nitridation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 15222
+              line: 284
+              column: 1
+            end:
+              offset: 15262
+              line: 284
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_23328"
+      family: "validation"
+      span:
+        start:
+          offset: 23328
+          line: 319
+          column: 1
+        end:
+          offset: 24490
+          line: 328
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | finished_powder | Require one powder output at 1 kg, complete qualifiers and resolved product-mass reference identity before usable guidance/dataset acceptance. A measurement pass does not resolve identity. |  |\n| validate_balances | nitridation | Check physical mass/N/Ca/C and stock balances separately from allocated burdens; investigate residuals with uncertainty and detection limits. Internal transfers cancel at equal actual quantities. | jrc-cww-2016 |\n| validate_emissions | nitridation | Verify post-control outdoor loads, molecular NH3/C2H2 bases and nonoverlapping particle bins. Do not add captured waste dust, cumulative PM10, or upstream carbide emissions again. Direct water discharge requires its own verified species and medium. | jrc-cww-2016, icsc-cyanamide-2006 |\n| validate_completeness | all inventory rows | Reject complete-dataset claims with unverified reference/carbide/waste identity, unsupported conversion, unmeasured material pathway or unqualified provider. Independent scientific review remains required. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 242
+              line: 9
+              column: 1
+            end:
+              offset: 304
+              line: 9
+              column: 63
+          text: "# Ground calcium cyanamide fertilizer from carbide nitridation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 23328
+              line: 319
+              column: 1
+            end:
+              offset: 23350
+              line: 319
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_4426"
+      source_span:
+        start:
+          offset: 5453
+          line: 74
+          column: 1
+        end:
+          offset: 5744
+          line: 74
+          column: 292
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_4426"
+      source_span:
+        start:
+          offset: 5745
+          line: 75
+          column: 1
+        end:
+          offset: 5996
+          line: 75
+          column: 252
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_4426"
+      source_span:
+        start:
+          offset: 5997
+          line: 76
+          column: 1
+        end:
+          offset: 6297
+          line: 76
+          column: 301
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_15222"
+      source_span:
+        start:
+          offset: 15335
+          line: 288
+          column: 1
+        end:
+          offset: 15643
+          line: 288
+          column: 309
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_15222"
+      source_span:
+        start:
+          offset: 15644
+          line: 289
+          column: 1
+        end:
+          offset: 15993
+          line: 289
+          column: 350
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_23328"
+      source_span:
+        start:
+          offset: 23423
+          line: 323
+          column: 1
+        end:
+          offset: 23657
+          line: 323
+          column: 235
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_23328"
+      source_span:
+        start:
+          offset: 23658
+          line: 324
+          column: 1
+        end:
+          offset: 23906
+          line: 324
+          column: 249
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_23328"
+      source_span:
+        start:
+          offset: 23907
+          line: 325
+          column: 1
+        end:
+          offset: 24230
+          line: 325
+          column: 324
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_23328"
+      source_span:
+        start:
+          offset: 24231
+          line: 326
+          column: 1
+        end:
+          offset: 24488
+          line: 326
+          column: 258
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4426"
+      source_span:
+        start:
+          offset: 4426
+          line: 59
+          column: 1
+        end:
+          offset: 4447
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4426"
+      source_span:
+        start:
+          offset: 4475
+          line: 63
+          column: 1
+        end:
+          offset: 5380
+          line: 70
+          column: 155
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_15222"
+      source_span:
+        start:
+          offset: 15222
+          line: 284
+          column: 1
+        end:
+          offset: 15262
+          line: 284
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_23328"
+      source_span:
+        start:
+          offset: 23328
+          line: 319
+          column: 1
+        end:
+          offset: 23350
+          line: 319
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5dabfdbf4fe994c9da3192d3ebc3299fee307e4103500095ea2c323ca16ec3d4"
+  generated_content_sha256: "sha256:b9499468f91e0d9fd0c22c98407468af9b8a727fa0ff7cace6c8e4efd8faaa81"

@@ -1,10 +1,1359 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34646"
-  title: "Potassium nitrate"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.potassium-nitrate"
+  classification_refs: "CPC 3.0 34646; proposed narrower route scope; no accepted mapping"
+  covered_products: "Uncoated crystalline potassium nitrate fertilizer of measured accepted specification; not a formulated mixed fertilizer"
+  excluded_products: "Other KNO3 routes, liquids, mixed salts, coatings or unrepresented formulations"
+  representative_product: "One actual accepted SKU with assay, moisture and particle size; no prescribed grade"
+  production_route: "NaNO3/KCl aqueous conversion, salt separation, crystallisation, drying and dispatch"
+  market_state: "Solid crystals at plant gate; net as-supplied mass with packaging separate"
+functional_unit:
+  what: "Supply crystalline potassium nitrate fertilizer"
+  how_much: "1 kg accepted net as-supplied product"
+  how_well: "Actual SKU KNO3 assay, moisture, Na/Cl/sulfate impurities, N and K analysis, size and acceptance specification"
+  how_long_or_cycle: "Declared production and stock-accounting campaign through plant-gate availability; field use excluded"
+  reference_flow_link: "kn_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "kn_conversion"
+      rule: "Keep stage logs for dissolution/conversion → hot salt separation/washing → crystallisation/centrifuging/washing → indirect drying → acceptance/dispatch within one foreground unit. The formal exchange equation NaNO3 + KCl → KNO3 + NaCl describes conserved species in phase separation, not a guaranteed one-pass conversion or feed recipe."
+      source_ids:
+        - cn-kn-conversion-2009
+    - rule_id: boundary_loops
+      applies_to: "kn_conversion"
+      rule: "Record internal mother liquor, wash water, condensate and dust returns with both endpoints, time, mass and composition; match equal physical transfers and opening/closing stocks. Do not count internal transfers as new upstream purchases or product outputs."
+      source_ids:
+        - cn-kn-conversion-2009
+        - jrc-lvic-aaf-2007
+    - rule_id: boundary_complete
+      applies_to: "kn_conversion"
+      rule: "Include actual utility production upstream, feed and receiver transport, packaging and off-site waste treatment. Review capital goods and each actual ancillary chemical/maintenance stream with evidence-based cut-offs. Where capital is included, identify each physical equipment flow separately and preserve installed mass, useful life, throughput and attributable service; never substitute an annualised service mass for installed physical stock. Record additional observed atomic exchanges before claiming dataset completeness."
+      source_ids:
+        - jrc-ilcd-2010
+    - rule_id: boundary_environment
+      applies_to: "kn_conversion"
+      rule: "The waste-transfer boundary does not remove downstream treatment burden. Locate wastewater and air releases by stage, medium and receiver using the actual stream inventory. No positive emission is inferred from a candidate identity; missing measurement is not zero. On-site combustion requires its fuel and complete species/origin-specific emission inventory; it is not represented by purchased steam."
+      source_ids:
+        - jrc-cww-2016
+boundary_abstraction:
+  declared_starting_condition: "Purchased solid NaNO3 and specified granular KCl with traceable upstream datasets, actual startup salt, water, electricity and external steam"
+  starting_condition_role: "Foreground manufacturing entry, not an upstream burden exemption"
+  product_classification_scope: "Selected solid fertilizer conversion-route subset of CPC 3.0 34646"
+  recursive_input_rule: "Recycle mother liquor, salt wash, wet crystals and recovered dust as internal equal-quantity links; purchased KNO3 cannot replace the claimed manufacturing route"
+  upstream_dataset_requirement: "Providers for materials, utilities, packaging, transport and waste treatment matching composition, state, origin and quantitative basis; identity success is not provider compatibility"
+  disclosure: "Disclose flowsheet, stocks, loops, outlets, off-site receivers, transport, capital assessment, cut-offs and allocation; keep physical and burden ledgers distinct"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Potassium nitrate"
+    uuid: "d92c35ee-88a1-47cf-93e9-2fd499ceee23"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - Site
+    - "period and SKU"
+    - "supplied state and wet/dry basis"
+    - "measured product and both feed compositions"
+    - "KCl grade/origin/provider"
+    - "mother-liquor/crystal loops and stocks"
+    - "separated-salt specification/destination"
+    - "steam pressure/dryness/provider reference"
+    - "grid/voltage"
+    - "water sources"
+    - "packaging construction"
+    - "all waste receivers"
+    - "emission media and measurement bases"
+    - Q
+    - "allocation and cut-offs"
+reference_flows:
+  []
+measurement_rules:
+  - id: measure_product
+    applies_to: "kn_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use 1 kg net accepted supplied product; Q is campaign accepted net product kg, excluding packaging, rejects and internal recycled crystals. Dry KNO3 content and N/K content are additional analyses, never alternate denominators."
+  - id: measure_solution
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record whole wet-stream mass and measured dry/component fractions separately; never add carrier water a second time. Each reported amount uses per 1 kg reference flow."
+  - id: measure_energy
+    applies_to: "steam_import, electricity, condensate_return"
+    required_property_ref:
+      name: "Mass and Net calorific value"
+      uuid: ""
+    required_unit: "kg and MJ"
+    rule: "Keep steam/condensate physical kg distinct from enthalpy service MJ. Calculate heat from measured steam and return states, vents/losses and supplier convention; an MJ property alone is not net delivered heat. Electricity: MJ = kWh × 3.6."
+  - id: measure_particles
+    applies_to: "pm_fine, pm_coarse, pm_large, pm_unsized"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use mutually exclusive dry particle bins or the unsized residual for each outlet/time; collected dust and internal returns are separate. Declare outlet gas-volume standard, humidity, sampling time and abatement."
+  - id: measure_pack
+    applies_to: "pe_liner, pp_sack, waste_pe, waste_pp"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure empty packaging components separately; filled capacity is not sack mass. Keep physically delivered and rejected quantities before allocating service burdens for demonstrated reuse."
+process_map:
+  - id: kn_conversion
+    name: "KNO3 conversion, salt separation, crystallisation and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Selected feeds, route and gate"
+    role: "Foreground unit with independent stage meters"
+    quantitative_reference: "kn_product; 1 kg reference flow"
+process_inventory:
+  - id: kn_conversion
+    label: "KNO3 conversion, salt separation, crystallisation and dispatch"
+    inputs:
+      product:
+        - row_id: returned_kn
+          role: "Potassium nitrate"
+          name: "Potassium nitrate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d92c35ee-88a1-47cf-93e9-2fd499ceee23"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional physically returned uncoated KNO3 of the same identity/SKU for actual reprocessing, never a substitute purchased feed or a second claim of fresh synthesis. Preserve returned wet mass, assay, origin period/lot and inherited upstream burden. Contaminated or transformed returns need their own verified identity; internal rework is a loop, not this external input."
+          amount:
+            expression: "Retain the complete same-scope period physical total for this row; divide once by Q only when Q > 0."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: feed_nano3
+          role: "Sodium nitrate, solid feed"
+          name: "Sodium nitrate, solid feed"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Weigh fresh solid sodium nitrate charged to the loop; record NaNO3 assay, moisture and sulfate/chloride impurities. A nitrate solution needs its own supplied-solution identity and carrier-water accounting before application."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_materials; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - cn-kn-conversion-2009
+                - sqm-nitrates-route
+            ranges: []
+        - row_id: feed_kcl
+          role: "Potassium chloride fertilizer, granular, K2O equivalent ≥60.0% by mass"
+          name: "Potassium chloride fertilizer, granular, K2O equivalent ≥60.0% by mass"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c8585965-5595-48da-9260-2970ed1905cb"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Use this mass-reference identity only for the stated uncoated granular fertilizer-grade feed with compatible Chinese-plant origin, as limited by the native production-mix location. Verify actual KCl assay, moisture and additives; the K2O-equivalent label is not a prescribed assay or pure KCl mass. Match upstream origin/grade and delivery basis; other KCl grades require separately verified identity."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_materials; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - cn-kn-conversion-2009
+                - sqm-nitrates-route
+            ranges: []
+        - row_id: startup_nacl
+          role: "Sodium chloride"
+          name: "Sodium chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a413ea86-0887-42c8-be77-3bee86d5863b"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional fresh salt for initial mother-liquor preparation or documented replacement; this identity requires actual purity ≥99.5%. Keep initial/final liquor stocks; do not charge the full circulating salt every batch or assume recurring make-up."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_materials; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - cn-kn-conversion-2009
+            ranges: []
+        - row_id: water_process
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Meter purchased de-ionised water for dissolution, salt/crystal washing and cleaning. Record quality and supplier; internal wash recycle and recovered condensate are tracked separately and are not fresh-water purchases."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_water; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - cn-kn-conversion-2009
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: water_cooling
+          role: "Potable mains water for cooling-tower make-up"
+          name: "Potable mains water for cooling-tower make-up"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional external make-up for a real indirect cooling circuit. Verify actual water source/treatment and upstream provider; record circulation, evaporation, drift and blowdown separately. Do not treat recirculating water as a repeated external input."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_water; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value (93a60a56-a3c8-11da-a746-0800200c9a66); unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Selected identity is grid-average consumer electricity at <1 kV in CN; other geographies, voltages, supply mixes or delivery interfaces require matching verified identities and backgrounds. Meter mixing, pumps, vacuum equipment, centrifuges, cooling, dryer auxiliaries and packing separately before aggregation. Use a compatible grid/voltage provider; record kWh and convert to MJ by 3.6."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_energy; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: steam_import
+          role: "Purchased process steam for indirect heating"
+          name: "Purchased process steam for indirect heating"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record physical steam kg, absolute/gauge pressure, temperature, dryness and delivery meter. Establish supplier background reference and condensate convention; derive useful heat from the full measured enthalpy ledger. No pressure, MJ/kg or delivered-heat default is supplied. This row remains kg and is not a second purchased-heat exchange."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_energy; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: pe_liner
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional PE liner for actual bagged deliveries; weigh installed liner film and losses, verify PE resin/grade and chemical-product compatibility. The native CPC classification is inconsistent with its film name/CAS/comment; disclose this defect and obtain provider clarification. Do not apply this identity to PET or whole multilayer bags."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_pack; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: pp_sack
+          role: "Woven polypropylene fertilizer sack"
+          name: "Woven polypropylene fertilizer sack"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual PP outer sack excluding the separately weighed PE liner. Collect sack count and sampled empty-sack net mass, seam/closure construction, composition and reuse cycles; inventory the supplied sack mass, not its nominal filled-product capacity. Add any distinct closure material as an atomic exchange."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_pack; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_pe
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional PE liner physically accompanying dispatched product, at its own full measured mass; not part of net KNO3 kg and not an independently saleable co-function. Preserve the physical packaging destination; do not allocate production burden to this auxiliary output or duplicate the upstream film supply. The input row identity restrictions and classification defect apply equally."
+          amount:
+            expression: "Retain the complete same-scope period physical total for this row; divide once by Q only when Q > 0."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: delivered_pp
+          role: "Woven polypropylene fertilizer sack"
+          name: "Woven polypropylene fertilizer sack"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual PP outer sack delivered with product, PE liner excluded. Preserve measured physical kg leaving the boundary with net product; it is packaging disposition, not another fertiliser product or a co-product for allocation. Record stock/reuse and reject destinations separately."
+          amount:
+            expression: "Retain the complete same-scope period physical total for this row; divide once by Q only when Q > 0."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: kn_product
+          role: "Potassium nitrate"
+          name: "Potassium nitrate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d92c35ee-88a1-47cf-93e9-2fd499ceee23"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Accepted dry crystalline fertilizer product at plant gate. Reference amount is 1 kg net supplied product, including measured residual moisture/impurities, excluding packaging. Intermediate wet crystals are internal; retain their stage weighing and assay without a second reference-product exchange."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_product
+              source_ids:
+                - cn-kn-conversion-2009
+                - sqm-nitrates-route
+            ranges: []
+        - row_id: salt_coproduct
+          role: "Recovered sodium-chloride-rich salt with residual nitrate"
+          name: "Recovered sodium-chloride-rich salt with residual nitrate"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only the actually saleable accepted fraction with receiver/specification evidence is a co-product. Weigh total wet salt, dry fraction, NaCl, KNO3/NaNO3 and impurities; a pure sodium chloride identity is not established for this mixed recovered salt. Retain its full physical output even when allocating burdens."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_salt; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt
+              source_ids:
+                - cn-kn-conversion-2009
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: condensate_return
+          role: "Returned steam condensate"
+          name: "Returned steam condensate"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional external return to the steam supplier; measure actual kg, temperature and receiver at the return point. Link to the steam ledger and credit only the provider convention actually used. Process-vapour condensate internally recycled is a distinct internal stream and not this row."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_energy; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+      waste:
+        - row_id: rejected_kn
+          role: "Potassium-nitrate-rich rejected crystals"
+          name: "Potassium-nitrate-rich rejected crystals"
+          flow_type: "waste"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual solid KNO3-rich rejected product leaving for treatment, distinct from NaCl waste and captured dust. Record whole wet mass, moisture, all salt constituents, reason for rejection and receiver. Material redissolved or reworked within the same boundary remains an internal loop and is not an external waste output."
+          amount:
+            expression: "Retain the complete same-scope period physical total for this row; divide once by Q only when Q > 0."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ilcd-2010
+                - jrc-cww-2016
+            ranges: []
+        - row_id: brine_purge
+          role: "Nitrate/chloride-bearing aqueous mother-liquor purge"
+          name: "Nitrate/chloride-bearing aqueous mother-liquor purge"
+          flow_type: "waste"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "External purge/wash effluent from the declared common collection tank to a verified off-site receiver; retain total water and all dissolved species. Record density, volume/mass, nitrate as ion versus N, K, Na, Cl, sulfate and treatment suitability. Separate different receiver/composition streams; do not model this waste transfer as a freshwater emission."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_waste; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - cn-kn-conversion-2009
+                - jrc-cww-2016
+            ranges: []
+        - row_id: cooling_blowdown
+          role: "Cooling-tower blowdown water"
+          name: "Cooling-tower blowdown water"
+          flow_type: "waste"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual cooling-circuit blowdown transferred off site, separate from nitrate mother liquor. Record wet mass, salts, treatment additives and receiver; no industrial-paper-mill wastewater identity is reused. Any actual direct discharge requires separate receiving-medium water/species rows and treatment inventory."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_waste; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: salt_waste
+          role: "Sodium chloride waste"
+          name: "Sodium chloride waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f5950ab1-1f6e-4ff6-a769-242cae592daa"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual rejected NaCl-dominated salt cake leaving for treatment/disposal, exclusive of the saleable fraction; record wet/dry mass and nitrate/K content and receiver. Broad waste identity supports the salt waste physically, not a pure-NaCl assay or a prescribed disposal process."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_salt; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt
+              source_ids:
+                - cn-kn-conversion-2009
+                - jrc-cww-2016
+            ranges: []
+        - row_id: collected_dust
+          role: "Dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only captured nitrate-salt dust that actually leaves for disposal. Record source stage, dry composition and receiver. Captured dust returned internally is recorded in the loop ledger, not added to waste output or airborne emissions."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_waste; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: waste_pe
+          role: "Nitrate-contaminated polyethylene liner waste"
+          name: "Nitrate-contaminated polyethylene liner waste"
+          flow_type: "waste"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional process packaging loss; weigh PE separately with contamination and receiver records. Cleaned PE at a mechanical recycler is not the identity of this untreated contaminated transfer."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_pack; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: waste_pp
+          role: "Nitrate-contaminated polypropylene sack waste"
+          name: "Nitrate-contaminated polypropylene sack waste"
+          flow_type: "waste"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional PP sack loss; exclude PE liner mass and shipped packaging. Record contamination and actual recovery/disposal receiver; do not use the product capacity as waste mass."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_pack; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+      elementary:
+        - row_id: pm_fine
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measured dry escaped particles ≤2.5 micrometres from feed handling, drying, screening and filling after abatement; air, unspecified. Include fugitive releases. Do not infer a fraction from total dust; salt composition informs element balance without duplicating mass as separate gaseous nitrate."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_air; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_coarse
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Dry escaped particles >2.5 and ≤10 micrometres, air unspecified. Derive from measured nested totals only when sampling and bases are compatible; never sum nested PM10 with PM2.5."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_air; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_large
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Dry escaped particles >10 micrometres, air unspecified. Differentiate collected salt dust and actual atmospheric loss; do not assign zero from absence of a size measurement."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_air; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_unsized
+          role: "Particulate matter, particle size unspecified"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Alternative for the portion of measured dry escaped dust lacking defensible size resolution, air unspecified. Use either this row or the resolved size fractions for the same outlet/time/mass, never both. Disclose missing size evidence and resulting LCIA coverage."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_air; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual uncondensed vacuum/dryer vapour and cooling evaporation reaching air unspecified; distinguish measured evaporated molecular water from recovered condensate and liquid drift. Use circuit water/enthalpy records and humidity measurements; disclose residual uncertainty rather than forcing water closure."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_water; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - cn-kn-conversion-2009
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: water_drift
+          role: "Liquid water drift to air"
+          name: "Liquid water drift to air"
+          flow_type: "elementary"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional measured cooling-tower drift, air unspecified. Quantity is only the liquid water component; dry dissolved salt carried by droplets belongs in the mutually exclusive particulate rows. Do not substitute a water-vapour UUID for liquid droplets."
+          amount:
+            expression: "Collect actual campaign quantity for this row and divide by Q using cp_water; no case default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-cww-2016
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_status
+    applies_to: "salt_coproduct, salt_waste"
+    rule: "Determine actual saleable co-function from specification, receiver and market evidence. Split saleable and rejected salt physically; unsaleable salt receives treatment burdens and no product credit. Do not presume all stoichiometric NaCl is saleable."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: allocate_hierarchy
+    applies_to: "kn_conversion"
+    rule: "For the declared attributional LCI, first subdivide separable activities and assign exclusive finishing/packing directly. Allocate remaining shared burdens by demonstrated determining physical causality; chemical stoichiometry alone does not establish that relationship. If it cannot be demonstrated, use period-matched net realisable product revenue at the separation gate with price/quality sensitivity. State quantities, prices, system model and allocation sum explicitly; no default share."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: allocate_physical
+    applies_to: "kn_conversion"
+    rule: "Close the unallocated mass/water/element ledgers first. Apply allocation only to environmental burden contributions in a separate ledger; retain full real KNO3, salt, waste and emission quantities in the physical ledger and equal amounts across internal links. Do not multiply co-product physical outputs by allocation factors."
+    source_ids:
+      - jrc-ilcd-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "kn_conversion"
+      flow_role: "Product acceptance and output"
+      record_type: "foreground_record"
+      raw_fields: "SKU; lot; final accepted net kg; failed/zero-output batches; rework identity; opening/closing WIP and finished stock; dispatch; rejects; external returned mass/assay/inherited burden; moisture; size; Q"
+      collection_method: "Reconcile calibrated weighing/traceable mass and release records of the same SKU; inventory opening/closing product; trace dispatch, returns and rework to unique lots."
+      unit: "kg"
+      frequency: "Each lot; campaign aggregation"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+    - protocol_id: cp_materials
+      process_id: "kn_conversion"
+      flow_role: "Feed and stock"
+      record_type: "foreground_record"
+      raw_fields: "supplier; delivery; issue; return; NaNO3/KCl/NaCl; water; sulfate; additives; opening/closing raw and loop stock; assay uncertainty"
+      collection_method: "Weigh actual receipts and charges; assay components and wet/dry bases; stage-meter and reconcile raw stores and loop stocks; retain total feed and pure-component masses separately."
+      unit: "kg"
+      frequency: "Each batch, start/stop and stocktake"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+    - protocol_id: cp_water
+      process_id: "kn_conversion"
+      flow_role: "Water and loops"
+      record_type: "foreground_record"
+      raw_fields: "water source; purchased kg; meter volume; measured density/T; wash recycle; condensate; cooling circulation; evaporation; drift; moisture; opening/closing water"
+      collection_method: "Use meters/weighing with measured temperature/density; match both ends of every circuit transfer; reconcile water destinations with humidity, condensate recovery and liquid-drift measurement."
+      unit: "kg"
+      frequency: "Continuous or each batch, including start/stop"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+    - protocol_id: cp_energy
+      process_id: "kn_conversion"
+      flow_role: "Steam, condensate and electricity"
+      record_type: "foreground_record"
+      raw_fields: "stage meters; kWh; steam kg; pressure absolute/gauge; T; dryness; condensate kg/T; vent kg; heat loss; supplier reference; enthalpy method"
+      collection_method: "Reconcile calibrated stage, steam and return meters; derive enthalpies using a declared steam-property method and common reference state; distinguish steam mass, net heat and background reference."
+      unit: "kg; kWh; MJ"
+      frequency: "Continuous and supplier billing periods"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+    - protocol_id: cp_salt
+      process_id: "kn_conversion"
+      flow_role: "Separated salt destinations"
+      record_type: "foreground_record"
+      raw_fields: "wet salt kg; dry mass; NaCl; nitrate ion/N; K; Na; chloride; saleable/reject split; buyer; specification; receipt"
+      collection_method: "Weigh and representatively sample separated salt; assay wet/dry bases and major ions; split product/waste by actual acceptance and receipts, not pure-salt assumptions."
+      unit: "kg"
+      frequency: "Each lot and transfer"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+    - protocol_id: cp_waste
+      process_id: "kn_conversion"
+      flow_role: "Waste and receivers"
+      record_type: "foreground_record"
+      raw_fields: "stream origin; wet kg; density; water; nitrate/N; K; Na; Cl; sulfate; dust composition; receiver; treatment route; transfer manifest"
+      collection_method: "Individually weigh solids, dust and aqueous transfers, flow-proportionally sample/analyse; trace external treatment and transport; split differing receiver conditions."
+      unit: "kg"
+      frequency: "Each transfer; matched production interval"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+    - protocol_id: cp_pack
+      process_id: "kn_conversion"
+      flow_role: "Packaging"
+      record_type: "foreground_record"
+      raw_fields: "component resin; empty count and sampled net mass; PE liner; PP sack; closures; filled net kg; rejects; shipped kg; reuse records"
+      collection_method: "Sample empty component masses with calibrated scales; reconcile purchases, use, loss and delivery; separately retain reuse life/cycles; bag capacity or filled mass cannot replace physical packaging mass."
+      unit: "kg"
+      frequency: "Each lot and packaging-specification change"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+    - protocol_id: cp_air
+      process_id: "kn_conversion"
+      flow_role: "Escaped dust"
+      record_type: "foreground_record"
+      raw_fields: "stage; outlet; fugitive source; gas flow; standard T/P; dry/wet gas basis; sample time; filter mass; size distribution; abatement; operating hours"
+      collection_method: "Measure representative post-abatement outlet dust and size with suitable methods; record blanks, detection limits, gas basis and time; separately survey fugitives; retain unsized residual where size is unknown."
+      unit: "kg"
+      frequency: "Cover normal, abnormal and start/stop periods"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+    - protocol_id: cp_assets
+      process_id: "kn_conversion"
+      flow_role: "Capital and completeness"
+      record_type: "foreground_record"
+      raw_fields: "equipment id; installed physical kg; actual material/BOM; life; cumulative throughput; shared service; maintenance; cut-off evidence"
+      collection_method: "Record installed physical mass and service life for each equipment; if included in burdens, calculate attributable service separately and add atomic equipment exchanges. Evidence inclusion/cut-off decisions for unlisted ancillary, treatment and logistics flows."
+      unit: "kg; year"
+      frequency: "Installation/replacement and annual review"
+      temporal_coverage: "Complete declared period, including downtime and stock changes"
+      site_scope: "Same site, route and SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable calibration, batch, analysis, transfer and stock records"
+  calculation_rules:
+    - id: calc_denominator
+      applies_to: "kn_product"
+      rule: "Q = actual accepted net output uniquely counted at final disposition for the complete same-scope period; reconcile acceptance, dispatch, external returns, opening/closing stocks and rework through cp_product, excluding packaging and rejected material. Returns, internal rework and WIP are not new free product; retain all failed/zero-output batches in the same total pool. If Q = 0 do not normalize."
+      inputs:
+        - cp_product
+      output: "Q in kg"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: calc_normalise
+      applies_to: "all inventory rows"
+      rule: "For Q > 0, normalized exchange = complete same-scope attributable period exchange total / Q, divided once; retain original stage totals, failed batches, stock changes and physical/burden carryovers for opening/closing WIP. Reference output is 1 kg; allocate environmental burdens only after physical reconciliation. Q = 0 has no normalized result."
+      inputs:
+        - "campaign quantities"
+        - Q
+      output: "exchange per 1 kg reference flow"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: calc_components
+      applies_to: "kn_conversion"
+      rule: "Component mass = whole wet mass × measured component mass fraction on the declared wet basis. Where assay is dry-basis, multiply measured dry fraction first. Balance total mass and Na/K/N/Cl plus H/O and all material impurity elements from inputs + opening stocks = products + wastes + air losses + closing stocks. NaNO3 + KCl → KNO3 + NaCl is a molar conservation check, not an actual-yield assumption."
+      inputs:
+        - cp_materials
+        - cp_salt
+        - cp_product
+        - cp_air
+      output: "unallocated component ledger"
+      source_ids:
+        - cn-kn-conversion-2009
+        - jrc-ilcd-2010
+    - id: calc_water
+      applies_to: "kn_conversion"
+      rule: "For each process and cooling circuit: external molecular water + opening water = product/wet-salt water + aqueous transfers + external condensate return + vapour + liquid drift + closing water. Internal transfers cancel only after matching both endpoints; retain measured moisture in feeds/products and condensate recovered internally. This exchange reaction has no stoichiometric net water generation."
+      inputs:
+        - cp_water
+        - cp_energy
+        - cp_waste
+      output: "molecular water ledger"
+      source_ids:
+        - jrc-lvic-aaf-2007
+    - id: calc_heat
+      applies_to: "steam_import, condensate_return"
+      rule: "Energy crossing the delivery boundary = sum(steam mass × supply specific enthalpy) − sum(external return mass × return specific enthalpy), with a common enthalpy datum; reconcile vent/condensation/cooling losses and stock/energy changes to obtain useful process heat. Use the verified provider reference convention; never count steam kg and derived heat MJ as two supplies."
+      inputs:
+        - cp_energy
+      output: "kg steam and separate MJ heat ledger"
+      source_ids:
+        - jrc-lvic-aaf-2007
+    - id: calc_emissions
+      applies_to: "pm_fine, pm_coarse, pm_large, pm_unsized"
+      rule: "With a volume flow rate, emission mass = sum(dry concentration × compatible dry standard volume flow rate × interval duration). With already integrated gas volume, emission mass = sum(dry concentration × compatible dry standard volume), without another time multiplier. Preserve raw period emission totals, then divide once by Q. Split nested totals only by compatible measured differences; keep dry PM distinct from liquid/vapour water, with no default size distribution."
+      inputs:
+        - cp_air
+      output: "actual dry released particle kg"
+      source_ids:
+        - jrc-cww-2016
+    - id: calc_service
+      applies_to: "pp_sack, pe_liner"
+      rule: "Physical packaging = measured empty component mass × actual component count; retain physical issued/shipped/lost mass. Any reuse allocation is a separate burden service fraction from documented cycles. Capital service uses each measured installed equipment mass × attributable lifetime service fraction, with installed stock preserved separately."
+      inputs:
+        - cp_pack
+        - cp_assets
+      output: "physical and burden service ledgers"
+      source_ids:
+        - jrc-ilcd-2010
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Check complete native identity and provider quantity basis; blank UUID is not zero amount; classification labels cannot override physical chemistry."
+      evidence: "cp_materials; cp_product"
+    - id: quality_closure
+      applies_to: "kn_conversion"
+      requirement: "Preserve full physical ledger before burden ledger; explain residuals using meter/analysis uncertainty, without forced closure or a universal tolerance."
+      evidence: "cp_materials; cp_water; cp_salt; cp_air"
+    - id: quality_coverage
+      applies_to: "kn_conversion"
+      requirement: "Cover start/stop, releases, waste salt, cleaning, packaging and stocks; record included, not-applicable, unmeasured and actual cut-offs individually; external receipt does not erase burdens."
+      evidence: "cp_waste; cp_pack; cp_assets"
+    - id: quality_no_defaults
+      applies_to: "kn_conversion"
+      requirement: "No default recipe, yield, purity, water/heat/power consumption or emission factor is supplied."
+      evidence: "primary site records; cn-kn-conversion-2009 limitations"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "kn_product"
+    rule: "Require exactly one final KNO3 product output and all reference qualifiers, Q and common wet net kg denominator in both languages. Verify product/grade and reject use of an incompatible route or mixture identity."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-cww-2016
+  - rule_id: validate_balance
+    applies_to: "kn_conversion"
+    rule: "Check raw physical total/element/water balances with stock changes before allocation; conserve internal transfer mass at both endpoints. Include Na/K/N/Cl in sold salt, waste salt, liquor and dust, as well as product; include moisture and uncondensed losses. Investigate residuals against measured uncertainty."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-cww-2016
+  - rule_id: validate_utility
+    applies_to: "steam_import, condensate_return, electricity"
+    rule: "Verify native property/unit, supplier pressure/state/reference and actual quantity conversion separately. An identity UUID is not evidence of a compatible background. Unresolved steam enthalpy/provider data prevents a complete linked dataset, not an invented steam pressure."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-cww-2016
+  - rule_id: validate_destinations
+    applies_to: "salt_coproduct, salt_waste, brine_purge, collected_dust"
+    rule: "Retain real sales/reject evidence and receiver links. Split chemical species analyses from whole wet-stream exchange mass; do not duplicate liquor as elemental emissions, or use a pure salt provider for a contaminated mixed co-product."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-cww-2016
+  - rule_id: validate_particles
+    applies_to: "pm_fine, pm_coarse, pm_large, pm_unsized, water_drift"
+    rule: "Reconcile each escaped-dust parcel once in compatible disjoint size bins or unsized residual; disclose unknown size and medium precision. Captured/recycled dust is not emitted. Keep liquid drift water distinct from vapour and dry salt particles."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-cww-2016
+  - rule_id: validate_completeness
+    applies_to: "kn_conversion"
+    rule: "Check all stage/material/utility/packaging/transport/treatment/capital decisions and actual extra exchanges; report unmeasured quantities, blank identities, provider gaps, checks skipped and remaining coverage. No claim of a complete inventory from a mechanical PCR check alone."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-cww-2016
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Plant-gate KNO3 input with compatible route, grade and delivery basis, retaining evidence and applicability qualifiers."
+  allowed_use: "Selected solid fertilizer sodium-nitrate conversion route with actual site, period, SKU and providers."
+  excluded_use: "Field efficacy or fertilizer-use emissions, other routes or formulated liquids, substitution of pure-active basis, default factory quantities."
+  required_metadata: "Reference qualifiers, Q, flowsheet, physical/burden ledgers, stocks/loops, product/salt composition and destinations, providers/receivers/transport, allocation, cut-offs and methodology version."
+  required_quality_disclosure: "Measurement/analysis methods and uncertainty, temporal/site coverage; blank UUID and provider compatibility debts; particle-size/steam-basis gaps; actual extra exchanges, capital and review scope."
+  update_trigger: "Changes in product/feed composition, route, steam/grid/water, packaging, abatement, receivers, capital, allocation markets or evidence."
+data_sources:
+  - id: "cn-kn-conversion-2009"
+    type: "literature"
+    reference: "CN100532260C, 2009-08-26, description steps1–7 and claims; original Chinese. https://patents.google.com/patent/CN100532260C/zh"
+    used_for: "Original route evidence for conversion, nitrate-bearing hot salt, washing, recycle, crystallisation and drying. Historical patent, no temperature/ratio/yield/water/energy-saving defaults."
+  - id: "sqm-nitrates-route"
+    type: "literature"
+    reference: "SQM Industrial Chemicals, Natural Resources, sodium nitrate & potassium nitrate; undated producer page. https://sqmindustrialchemicals.com/natural-resources/"
+    used_for: "Producer corroboration of sodium nitrate/KCl conversion with crystallisation, refining and drying; its upstream mining case is not a generic input/capacity assumption."
+  - id: "jrc-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "European Commission JRC, LVIC-AAF BREF, August2007, scope and section1.5.1; printed33/PDF61. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-03/LVIC-AAF.pdf?download=1"
+    used_for: "Common energy audits, N/water/steam balances and recycling management; no KNO3-specific emission level, recipe or energy default."
+  - id: "jrc-cww-2016"
+    type: "official_guidance"
+    reference: "European Commission JRC, CWW BREF,2016, BAT2–3, printed543–544/PDF573–574. https://publications.jrc.ec.europa.eu/repository/bitstream/JRC103096/jrc103096_cww_bref_10_2016.pdf"
+    used_for: "Chemical stream/reaction side-product/outlet inventories, salt/N-species characterisation and risk-based monitoring; no positive emission or present compliance inferred from a candidate flow."
+  - id: "jrc-ilcd-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook, General guide for LCA, Detailed guidance, first edition2010, sections7.4.2 and7.9.2–7.9.3; printed197/205/255–264. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Composition/element/energy checks, subdivision, determining physical causality and subsequent economic allocation in attributional LCI; no automatic mass allocation, price/share or closure-tolerance default."
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC Ver3.0 Structure,30Jun2025,34641–34647. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Classification product boundary and adjacent fertilizer distinctions; mapping evidence only, not manufacturing methodology."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:4d0679aff222517a6bf9ac6a6d2eb5ce410ec92565667dc14564ed5a40ffb959"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6767"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6767
+          line: 63
+          column: 1
+        end:
+          offset: 9661
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased solid NaNO3 and specified granular KCl with traceable upstream datasets, actual startup salt, water, electricity and external steam |\n| starting_condition_role | Foreground manufacturing entry, not an upstream burden exemption |\n| product_classification_scope | Selected solid fertilizer conversion-route subset of CPC 3.0 34646 |\n| recursive_input_rule | Recycle mother liquor, salt wash, wet crystals and recovered dust as internal equal-quantity links; purchased KNO3 cannot replace the claimed manufacturing route |\n| upstream_dataset_requirement | Providers for materials, utilities, packaging, transport and waste treatment matching composition, state, origin and quantitative basis; identity success is not provider compatibility |\n| disclosure | Disclose flowsheet, stocks, loops, outlets, off-site receivers, transport, capital assessment, cut-offs and allocation; keep physical and burden ledgers distinct |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | kn_conversion | Keep stage logs for dissolution/conversion → hot salt separation/washing → crystallisation/centrifuging/washing → indirect drying → acceptance/dispatch within one foreground unit. The formal exchange equation NaNO3 + KCl → KNO3 + NaCl describes conserved species in phase separation, not a guaranteed one-pass conversion or feed recipe. | cn-kn-conversion-2009 |\n| boundary_loops | kn_conversion | Record internal mother liquor, wash water, condensate and dust returns with both endpoints, time, mass and composition; match equal physical transfers and opening/closing stocks. Do not count internal transfers as new upstream purchases or product outputs. | cn-kn-conversion-2009; jrc-lvic-aaf-2007 |\n| boundary_complete | kn_conversion | Include actual utility production upstream, feed and receiver transport, packaging and off-site waste treatment. Review capital goods and each actual ancillary chemical/maintenance stream with evidence-based cut-offs. Where capital is included, identify each physical equipment flow separately and preserve installed mass, useful life, throughput and attributable service; never substitute an annualised service mass for installed physical stock. Record additional observed atomic exchanges before claiming dataset completeness. | jrc-ilcd-2010 |\n| boundary_environment | kn_conversion | The waste-transfer boundary does not remove downstream treatment burden. Locate wastewater and air releases by stage, medium and receiver using the actual stream inventory. No positive emission is inferred from a candidate identity; missing measurement is not zero. On-site combustion requires its fuel and complete species/origin-specific emission inventory; it is not represented by purchased steam. | jrc-cww-2016 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 254
+              line: 10
+              column: 1
+            end:
+              offset: 325
+              line: 10
+              column: 72
+          text: "# Crystalline potassium nitrate fertilizer by sodium-nitrate conversion"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6767
+              line: 63
+              column: 1
+            end:
+              offset: 6788
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35558"
+      family: "allocation"
+      span:
+        start:
+          offset: 35558
+          line: 527
+          column: 1
+        end:
+          offset: 36925
+          line: 535
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocate_status | salt_coproduct, salt_waste | Determine actual saleable co-function from specification, receiver and market evidence. Split saleable and rejected salt physically; unsaleable salt receives treatment burdens and no product credit. Do not presume all stoichiometric NaCl is saleable. | jrc-ilcd-2010 |\n| allocate_hierarchy | kn_conversion | For the declared attributional LCI, first subdivide separable activities and assign exclusive finishing/packing directly. Allocate remaining shared burdens by demonstrated determining physical causality; chemical stoichiometry alone does not establish that relationship. If it cannot be demonstrated, use period-matched net realisable product revenue at the separation gate with price/quality sensitivity. State quantities, prices, system model and allocation sum explicitly; no default share. | jrc-ilcd-2010 |\n| allocate_physical | kn_conversion | Close the unallocated mass/water/element ledgers first. Apply allocation only to environmental burden contributions in a separate ledger; retain full real KNO3, salt, waste and emission quantities in the physical ledger and equal amounts across internal links. Do not multiply co-product physical outputs by allocation factors. | jrc-ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 254
+              line: 10
+              column: 1
+            end:
+              offset: 325
+              line: 10
+              column: 72
+          text: "# Crystalline potassium nitrate fertilizer by sodium-nitrate conversion"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35558
+              line: 527
+              column: 1
+            end:
+              offset: 35598
+              line: 527
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48611"
+      family: "validation"
+      span:
+        start:
+          offset: 48611
+          line: 576
+          column: 1
+        end:
+          offset: 50805
+          line: 587
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | kn_product | Require exactly one final KNO3 product output and all reference qualifiers, Q and common wet net kg denominator in both languages. Verify product/grade and reject use of an incompatible route or mixture identity. | jrc-ilcd-2010; jrc-cww-2016 |\n| validate_balance | kn_conversion | Check raw physical total/element/water balances with stock changes before allocation; conserve internal transfer mass at both endpoints. Include Na/K/N/Cl in sold salt, waste salt, liquor and dust, as well as product; include moisture and uncondensed losses. Investigate residuals against measured uncertainty. | jrc-ilcd-2010; jrc-cww-2016 |\n| validate_utility | steam_import, condensate_return, electricity | Verify native property/unit, supplier pressure/state/reference and actual quantity conversion separately. An identity UUID is not evidence of a compatible background. Unresolved steam enthalpy/provider data prevents a complete linked dataset, not an invented steam pressure. | jrc-ilcd-2010; jrc-cww-2016 |\n| validate_destinations | salt_coproduct, salt_waste, brine_purge, collected_dust | Retain real sales/reject evidence and receiver links. Split chemical species analyses from whole wet-stream exchange mass; do not duplicate liquor as elemental emissions, or use a pure salt provider for a contaminated mixed co-product. | jrc-ilcd-2010; jrc-cww-2016 |\n| validate_particles | pm_fine, pm_coarse, pm_large, pm_unsized, water_drift | Reconcile each escaped-dust parcel once in compatible disjoint size bins or unsized residual; disclose unknown size and medium precision. Captured/recycled dust is not emitted. Keep liquid drift water distinct from vapour and dry salt particles. | jrc-ilcd-2010; jrc-cww-2016 |\n| validate_completeness | kn_conversion | Check all stage/material/utility/packaging/transport/treatment/capital decisions and actual extra exchanges; report unmeasured quantities, blank identities, provider gaps, checks skipped and remaining coverage. No claim of a complete inventory from a mechanical PCR check alone. | jrc-ilcd-2010; jrc-cww-2016 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 254
+              line: 10
+              column: 1
+            end:
+              offset: 325
+              line: 10
+              column: 72
+          text: "# Crystalline potassium nitrate fertilizer by sodium-nitrate conversion"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48611
+              line: 576
+              column: 1
+            end:
+              offset: 48633
+              line: 576
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 7880
+          line: 78
+          column: 1
+        end:
+          offset: 8277
+          line: 78
+          column: 398
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_loops"
+      identity_kind: "explicit"
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 8278
+          line: 79
+          column: 1
+        end:
+          offset: 8614
+          line: 79
+          column: 337
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 8615
+          line: 80
+          column: 1
+        end:
+          offset: 9199
+          line: 80
+          column: 585
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_environment"
+      identity_kind: "explicit"
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 9200
+          line: 81
+          column: 1
+        end:
+          offset: 9659
+          line: 81
+          column: 460
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_status"
+      identity_kind: "explicit"
+      unit_id: "normative_35558"
+      source_span:
+        start:
+          offset: 35671
+          line: 531
+          column: 1
+        end:
+          offset: 35988
+          line: 531
+          column: 318
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_35558"
+      source_span:
+        start:
+          offset: 35989
+          line: 532
+          column: 1
+        end:
+          offset: 36539
+          line: 532
+          column: 551
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_35558"
+      source_span:
+        start:
+          offset: 36540
+          line: 533
+          column: 1
+        end:
+          offset: 36923
+          line: 533
+          column: 384
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_48611"
+      source_span:
+        start:
+          offset: 48706
+          line: 580
+          column: 1
+        end:
+          offset: 48986
+          line: 580
+          column: 281
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_48611"
+      source_span:
+        start:
+          offset: 48987
+          line: 581
+          column: 1
+        end:
+          offset: 49366
+          line: 581
+          column: 380
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_utility"
+      identity_kind: "explicit"
+      unit_id: "normative_48611"
+      source_span:
+        start:
+          offset: 49367
+          line: 582
+          column: 1
+        end:
+          offset: 49741
+          line: 582
+          column: 375
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_destinations"
+      identity_kind: "explicit"
+      unit_id: "normative_48611"
+      source_span:
+        start:
+          offset: 49742
+          line: 583
+          column: 1
+        end:
+          offset: 50093
+          line: 583
+          column: 352
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_particles"
+      identity_kind: "explicit"
+      unit_id: "normative_48611"
+      source_span:
+        start:
+          offset: 50094
+          line: 584
+          column: 1
+        end:
+          offset: 50450
+          line: 584
+          column: 357
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_48611"
+      source_span:
+        start:
+          offset: 50451
+          line: 585
+          column: 1
+        end:
+          offset: 50803
+          line: 585
+          column: 353
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 6767
+          line: 63
+          column: 1
+        end:
+          offset: 6788
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6767"
+      source_span:
+        start:
+          offset: 6816
+          line: 67
+          column: 1
+        end:
+          offset: 7807
+          line: 74
+          column: 179
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35558"
+      source_span:
+        start:
+          offset: 35558
+          line: 527
+          column: 1
+        end:
+          offset: 35598
+          line: 527
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48611"
+      source_span:
+        start:
+          offset: 48611
+          line: 576
+          column: 1
+        end:
+          offset: 48633
+          line: 576
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4d0679aff222517a6bf9ac6a6d2eb5ce410ec92565667dc14564ed5a40ffb959"
+  generated_content_sha256: "sha256:14824c0c971c9b303dd9cb13109493aa211c6e9e8c2e006eee5c7c392541eec5"

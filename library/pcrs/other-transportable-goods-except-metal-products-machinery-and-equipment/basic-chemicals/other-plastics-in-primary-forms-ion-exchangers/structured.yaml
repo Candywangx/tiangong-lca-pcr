@@ -1,10 +1,1005 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34790"
-  title: "Other plastics in primary forms; ion exchangers"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.other-plastics-in-primary-forms-ion-exchangers"
+  classification_refs: "CPC 3.0 34790; this specific resin method is narrower; no mapping acceptance implied."
+  covered_products: "New Na-form sulfonate-functionalized styrene-DVB gel beads from the stated solvent-assisted SO3 route, supplied wet after declared drainage."
+  excluded_products: "Unfunctionalized plastics and GPPS; LDPE/PVC/PET; macroporous or acrylic resins; anion/weak-acid/chelating resins; H/Ca/other supplied ionic forms; dry powders; mixed beds; spent/regenerated service resin; onsite monomer polymerization; sulfuric-acid-only or solvent-free sulfonation; pharmaceutical/food/potable conformity claims; installed treatment service."
+  representative_product: "Industrial softening Na-form sulfonated gel beads; actual supplier grade and acceptance conditions declared. IRC120 Na is a market-state example only."
+  production_route: "Purchased gel precursor → DCE swelling and SO3/DCE sulfonation → separation/recovery → hydration → aqueous NaOH conversion → washing/screening/drainage → net delivered wet resin."
+  market_state: "Sodium-form swollen gel beads at the producer dispatch gate, reproducibly drained, no separately pooled shipping water, no transport tare in product mass."
+functional_unit:
+  what: "Supply new Na-form strong-acid gel cation exchanger for subsequent industrial use."
+  how_much: "1 kg actual net delivered accepted wet resin of one grade, ionic form, route and drainage state."
+  how_well: "Verify matrix, gel structure, sulfonate groups, Na-form conversion, bead integrity/size, moisture and actual residual solvent/acid/salt against declared COA limits and methods; no manufacturer typical values are universal limits."
+  how_long_or_cycle: "One complete matched production/storage/delivery period; no treatment capacity or service-life functional equivalence."
+  reference_flow_link: "supplied_resin"
+system_boundary:
+  rules:
+    - rule_id: manufacture_boundary
+      applies_to: "p_resin"
+      rule: "Include every actual receipt, swelling, reagent blending, sulfonation, separation, agent recovery, hydration, sodium conversion, wash, screening, drainage, testing, abatement and utility duty through actual dispatch. Storage, packaging, handling/loading and rework loads remain included, whether or not product leaves in the release period."
+      source_ids:
+        - rohm-haas-so3-sulphonation-1980
+        - dupont-irc120-na-2024
+    - rule_id: actual_atomic_exchanges
+      applies_to: "p_resin"
+      rule: "Each physical product/waste transfer and each environmental species/compartment has one atomic row. Add actual filters, cooling make-up, neutralizers, fuels, packaging components and emissions separately when present. Whole mixed effluent is one waste stream with constituent subledgers; do not duplicate it as direct species emissions."
+      source_ids:
+        - rohm-haas-so3-sulphonation-1980
+    - rule_id: route_separation
+      applies_to: "p_resin"
+      rule: "Solvent-free sulfuric-acid production is a real separate route and cannot inherit this DCE/SO3 inventory. No named commercial grade is assigned this process without site evidence; no food, drinking-water or pharmaceutical conformity follows from the reference."
+      source_ids:
+        - rohm-haas-so3-sulphonation-1980
+        - dupont-irc120-na-2024
+        - lanxess-s1567-2020
+boundary_abstraction:
+  declared_starting_condition: "Purchased virgin nonfunctionalized styrene-DVB gel beads and separate commercial SO3, DCE, NaOH solution and water at resin plant receipt."
+  starting_condition_role: "foreground_starting_point; upstream precursor and reagent production remain required linked background"
+  product_classification_scope: "Only the stated new wet Na-form gel resin within CPC 3.0 34790."
+  recursive_input_rule: "Internal recovered agent and return/rework transfers retain batch identity and burden without a new purchase or new output. Purchased finished resin or spent service resin changes this boundary and is excluded."
+  upstream_dataset_requirement: "Match each actual bead, whole formulation, water, utility, packaging and treatment provider separately with technology, grade, whole-supply quantity, location and time. A UUID is physical identity, not a background dataset or recipe."
+  disclosure: "Declare all recovery, abatement, utility generation interfaces, foreground storage/packing/handling/loading, stock and return boundaries. Utility generation fuels, losses and emissions remain inside linked full modules; no silent truncation."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Cation Exchange Resin"
+    uuid: "8fb3a705-f250-4f6d-afff-46d8ca7bee2b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual site and supply geography"
+    - "matched cohort and reporting period"
+    - "virgin gel precursor and crosslink metric"
+    - "DCE/SO3 route and full commercial feed compositions"
+    - "functional sulfonate and Na fraction"
+    - "actual grade acceptance and residual DCE/free acid/salt"
+    - "drainage and equilibrated moisture method"
+    - "wet net delivered Q and inventory burden carry"
+    - "dry-mass/capacity/bed-volume test conditions"
+    - "actual utilities packaging treatment and dispatch interfaces"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "1 kg terminal actual net delivered wet resin; weighed product includes retained moisture after declared drainage, excludes packaging and separately free liquid. Q is not the quality-release total R."
+  - id: wet_and_capacity
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Dry fraction, Na occupancy, sulfonate capacity and equilibrated bed volume are separately assayed subledgers. Capacity eq/L or meq/g cannot replace wet kg; only a matched state/test/density can support a labelled derived comparison, never an unconditional kg conversion."
+  - id: whole_solution
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Whole external formulations are procured once. Carrier water, active SO3/NaOH and impurities are constituents, not extra purchases. Onsite mixing instead records actual separate feeds and mixing burdens."
+  - id: one_reporting_owner
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: ""
+      uuid: ""
+    required_unit: ""
+    rule: "Protocols collect undivided raw-period numerators and inventory/carry evidence. convert_raw and cohort_ledger precede normalize_period, the only division owner. Cards and aggregation fields refer to that same operation; they are not sequential divisions."
+process_map:
+  - id: p_resin
+    name: "Solvent-assisted gel resin functionalization through actual wet-bead dispatch"
+    inclusion: "required"
+    inclusion_condition: "This method covers manufacture of new strong-acid cation exchange resin from purchased virgin, unfunctionalized styrene-divinylbenzene gel beads: DCE swelling, SO3 dissolved onsite in DCE, sulfonation, separation and actual agent recovery, hydration, NaOH conversion to Na form, washing, screening, controlled drainage, acceptance, storage, packing and dispatch. The terminal gate is actual net delivered wet beads, not newly quality-released production. Upstream bead polymerization is linked background, never silently excluded from cradle-to-gate results."
+    role: "integrated foreground with separate operation and stock ledgers"
+    quantitative_reference: "supplied_resin"
+process_inventory:
+  - id: p_resin
+    label: "Solvent-assisted gel resin functionalization through actual wet-bead dispatch"
+    inputs:
+      product:
+        - row_id: gel_beads
+          role: "Unfunctionalized gel precursor"
+          name: "Poly(styrene-divinylbenzene)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "406f1abc-391a-43d9-841c-47df9f3e5004"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased virgin non-sulfonated crosslinked styrene-DVB gel beads, with actual crosslink definition, size, moisture and residual monomer specified. Native CAS 9052-95-3; production mix at plant; all other name components except the basename/mix are empty. Its comment describes 5–75 mol% DVB based on styrene, gel catalyst-carrier use and large surface/fine pore structures. The use example does not restrict the beads to catalysis; verify a gel precursor, not a macroporous adsorbent or functionalized resin. Do not equate a weight-percent crosslink recipe with that native molar description. No geography, specific supplier, exact crosslink grade or synthesis recipe is supplied. CPC35499 is retained as coarse native classification debt, not the proposed PCR classification. Link the actual upstream bead manufacture once."
+          amount:
+            expression: "A_i / Q once only, using gel_beads raw numerator from cp_feeds and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feeds
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: fresh_so3
+          role: "Fresh sulfonating reagent"
+          name: "Stabilized liquid sulfur trioxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh whole acquired liquid SO3, including actual stabilizer/impurity content. Onsite dissolution in already counted DCE creates no additional purchased reagent solution. Measure unreacted SO3 and acid after hydration independently."
+          amount:
+            expression: "A_i / Q once only, using fresh_so3 raw numerator from cp_feeds and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feeds
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: fresh_dce
+          role: "Fresh swelling solvent and make-up"
+          name: "1,2-Dichloroethane liquid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record all fresh DCE for bead swelling and reagent preparation once. Recovered DCE/SO3 remains a composition-resolved internal transfer, with recovery energy and purge burdens retained. No patent recovery percentage is a site default."
+          amount:
+            expression: "A_i / Q once only, using fresh_dce raw numerator from cp_feeds and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feeds
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: caustic_solution
+          role: "Whole purchased sodium-form conversion solution"
+          name: "Aqueous sodium hydroxide solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record whole purchased aqueous NaOH solution and its measured NaOH/water assay; do not add NaOH-equivalent and carrier-water purchases again. The patent reports a 10% solution in Example 1; actual concentration, dose and residual free acid are measured, not copied. If made onsite, replace this commercial input by separately acquired NaOH and water and include blending burdens."
+          amount:
+            expression: "A_i / Q once only, using caustic_solution raw numerator from cp_feeds and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feeds
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: demin_water
+          role: "Hydration and washing water"
+          name: "Demineralized water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Meter separately supplied water for hydration, washing, rinsing and actual recovery/cleaning. Distinguish water retained in the supplied beads, drainage, evaporation and aqueous effluent. Solution carrier water is already in the whole formulation."
+          amount:
+            expression: "A_i / Q once only, using demin_water raw numerator from cp_feeds and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feeds
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: nitrogen
+          role: "Recovery inert gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual nitrogen for inerting, vacuum recovery and storage if used; preserve gas composition, pressure, temperature, rate integration and final destination. Example 2 supports a recovery operation, not compulsory nitrogen demand or gel-route recovery yield."
+          amount:
+            expression: "A_i / Q once only, using nitrogen raw numerator from cp_utilities and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: electricity
+          role: "Metered electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include receipt, agitation, pumps, vacuum, cooling, recovery, washing, screening, dewatering, storage, packing and loading meters. Allocate shared duties with an evidenced physical driver. Preserve site and supply mix uncertainty."
+          amount:
+            expression: "A_i / Q once only, using electricity raw numerator from cp_utilities and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: imported_heat
+          role: "Non-steam imported heat"
+          name: "Delivered process heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Measure non-steam thermal duty at the declared utility interface including reaction, recovery/distillation and actual heated storage. Steam duty is excluded from this card. Upstream utility fuel and generation losses/emissions belong to the linked complete provider module once."
+          amount:
+            expression: "A_i / Q once only, using imported_heat raw numerator from cp_utilities and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: steam
+          role: "Delivered steam"
+          name: "Process steam"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "If actually used, record physical steam mass, pressure, temperature/enthalpy, condensate return and generation provider. Do not add its heat again as imported_heat. Count cooling make-up or separately purchased refrigerants as separate atomic exchanges when actually present."
+          amount:
+            expression: "A_i / Q once only, using steam raw numerator from cp_utilities and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: ldpe_liner
+          role: "Single bag liner when used"
+          name: "LDPE bag liner"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collect actual liner mass and rejected packaging separately from resin net mass. This is a conditional concrete packaging component, not a statement that the cited commercial SKU uses this packaging. Include actual bag-making background and any other actual components individually."
+          amount:
+            expression: "A_i / Q once only, using ldpe_liner raw numerator from cp_pack and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - dupont-irc120-na-2024
+            ranges: []
+        - row_id: pp_sack
+          role: "Single outer sack when used"
+          name: "Woven polypropylene outer sack"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh actual outer sack; preserve supplier construction and reusable-container allocation when applicable. Packing, handling, warehouse and loading burdens are included even when the packaging material is not this example."
+          amount:
+            expression: "A_i / Q once only, using pp_sack raw numerator from cp_pack and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - dupont-irc120-na-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: supplied_resin
+          role: "Terminal net delivered wet sodium resin"
+          name: "Cation Exchange Resin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8fb3a705-f250-4f6d-afff-46d8ca7bee2b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The terminal Product is 1 kg net actual delivered, accepted sodium-form sulfonated styrene-DVB gel beads, retaining the declared equilibrated bead/interstitial moisture after a reproducible drainage protocol; no separate supernatant or packaging tare. Native name is generic Cation Exchange Resin / 阳离子交换树脂, production mix at plant; route and property-name components are empty, CAS and geography/locationOfSupply absent, Product flow with Mass reference coefficient 1 and no other properties. The complete comment describes negatively charged crosslinked polymer units exchanging bound Na/Ca for K and gastrointestinal/heart-failure use. That use context is disclosed; it supplies no industrial-grade, moisture, ionic-form, pharmaceutical-grade, route or actual provider approval. Native CPC35499 is coarse classification debt. Adopt only the broad cation-resin physical identity; establish this specific Na/sulfonate/gel/wet state by actual COA, not by the UUID."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+                - dupont-irc120-na-2024
+            ranges: []
+        - row_id: returned_condensate
+          role: "Utility condensate crossing the boundary"
+          name: "Steam condensate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual returned condensate at the utility interface; paired provider delivery/return and energy credits must be consistent. It is neither product Q nor a second reclaimed-water purchase."
+          amount:
+            expression: "A_i / Q once only, using returned_condensate raw numerator from cp_utilities and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+      waste:
+        - row_id: aqueous_effluent
+          role: "One physically collected aqueous waste stream"
+          name: "Sodium sulfate-bearing aqueous resin wash effluent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the actual commingled aqueous stream to external treatment; independently assay free acid/base, sulfate, sodium, dissolved DCE/organics, suspended resin and water. Split physically separate destinations into separate rows. The whole waste transfer and its constituent subledger are not simultaneous direct emissions to water. No COD-based species reconstruction."
+          amount:
+            expression: "A_i / Q once only, using aqueous_effluent raw numerator from cp_outlets and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: spent_agent
+          role: "Unrecovered sulfonating-agent waste"
+          name: "Spent sulfur trioxide–1,2-dichloroethane liquid"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual unrecovered spent agent or purge crosses the waste-treatment gate with measured residual SO3/DCE/acid content and physical phase. Internal recovered agent is not this external output. Recovery energy, nitrogen, condensers, residual solvent and treatment are retained; the patent claim of no reaction by-product is not zero effluent or emission evidence."
+          amount:
+            expression: "A_i / Q once only, using spent_agent raw numerator from cp_outlets and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: resin_fines
+          role: "Rejected bead waste"
+          name: "Sulfonated styrene-DVB resin fines"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure broken/rejected resin separately with its ionic form, retained liquid, contamination, treatment and carried burdens. Returned beads sent to rework remain an internal loop; they are not this disposal and cannot create a second accepted production or delivery."
+          amount:
+            expression: "A_i / Q once only, using resin_fines raw numerator from cp_outlets and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+      elementary:
+        - row_id: dce_air
+          role: "DCE released to air"
+          name: "1,2-Dichloroethane, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure actual fugitive and controlled residual DCE to the declared air compartment using species-resolved sampling and integrated exhaust flow. Before/after abatement and recovered solvent must not be counted twice. Do not infer zero release from the solvent-recovery claim."
+          amount:
+            expression: "A_i / Q once only, using dce_air raw numerator from cp_outlets and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: acid_mist_air
+          role: "Actual sulfuric-acid mist to air"
+          name: "Sulfuric acid, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where moisture contact produces acid mist, measure actual H2SO4 to air after control; distinguish it from unhydrated SO3, liquid sulfate waste and sulfur incorporated in resin. If actual SO3 is emitted, add its own elementary row and measurement instead of calling it acid mist by residual closure."
+          amount:
+            expression: "A_i / Q once only, using acid_mist_air raw numerator from cp_outlets and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: water_air
+          role: "Measured water vapor"
+          name: "Water, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Determine actual water vapor from metered or sampled exhaust with temperature/humidity and integrated flow; subtract inlet humidity consistently. It is not a fitted unknown used together with unknown reaction water to close mass."
+          amount:
+            expression: "A_i / Q once only, using water_air raw numerator from cp_outlets and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+        - row_id: nitrogen_air
+          role: "Vented nitrogen"
+          name: "Nitrogen, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Track actual vented nitrogen after recovery/abatement and retained inventories; mixed offgas needs its measured composition. No automatic conversion of every kilogram of purchased nitrogen into an emission."
+          amount:
+            expression: "A_i / Q once only, using nitrogen_air raw numerator from cp_outlets and cp_carry after raw unit conversion; the sole period reporting division is defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - rohm-haas-so3-sulphonation-1980
+            ranges: []
+allocation_rules:
+  - rule_id: physical_tracking
+    applies_to: "p_resin"
+    rule: "Prefer direct grade/batch meters; subdivide shared utility, recovery, cleaning, warehouse and loading duties by evidenced run time, measured duty, mass handled or storage occupancy, retaining causality and uncertainty. Do not allocate by exchange capacity or compare grades solely by eq/L."
+    source_ids:
+      - rohm-haas-so3-sulphonation-1980
+      - dupont-irc120-na-2024
+  - rule_id: recovery_no_credit
+    applies_to: "p_resin"
+    rule: "Internal recovered SO3/DCE, condensate and reworked beads retain paired mass/composition/burden transfers and cancel on consolidation. Waste/resin fines are not automatically co-products. If a real saleable recovered product exits, add its actual row and separately justified allocation before reporting; no default displacement or avoided-treatment credit."
+    source_ids:
+      - rohm-haas-so3-sulphonation-1980
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feeds
+      process_id: "p_resin"
+      flow_role: "whole acquired chemical and precursor inputs"
+      record_type: "foreground_records"
+      raw_fields: "row_id; lot; timestamp; gross and tare; net raw mass; assay; carrier water; purity; precursor gel/crosslink/size; delivery unit; receipt/issue and raw-stock movements"
+      collection_method: "Materials owner records raw weighed receipts, issued whole feeds and opening/closing raw stocks; reconcile actual process consumption, spills, recovery returns and assay subledgers. Do not divide by output. Preserve failed charges, rework and source COA."
+      unit: "kg"
+      frequency: "each batch and meter interval"
+      temporal_coverage: "full matched period including failed/zero-output runs"
+      site_scope: "actual resin site and declared interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated weights, invoices, issue logs and COA"
+    - protocol_id: cp_utilities
+      process_id: "p_resin"
+      flow_role: "electricity heat steam gas and condensate"
+      record_type: "foreground_records"
+      raw_fields: "meter start/end; energy; integrated gas volume or rate/time; composition; temperature; pressure; steam enthalpy; condensate; operation time; shared-duty driver"
+      collection_method: "Utility owner preserves raw interval totals for all manufacturing and actual recovery, failed runs, storage, handling and loading; record each carrier separately and its generation-module boundary. Integrate rates only; already integrated volumes receive no extra duration factor. No A/Q at collection."
+      unit: "kg; MJ; kWh; m3"
+      frequency: "each batch and meter interval"
+      temporal_coverage: "full matched period including failed/zero-output runs"
+      site_scope: "actual resin site and declared interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration, utility invoices, state/density evidence and allocation measurements"
+    - protocol_id: cp_delivery
+      process_id: "p_resin"
+      flow_role: "acceptance drainage wet state and actual dispatch Q"
+      record_type: "foreground_records"
+      raw_fields: "unique lot/cohort; grade; new release R; gross/tare net dispatched wet mass; returned/reversed and re-delivered mass; moisture/drainage method; free liquid; functional groups; Na fraction; residual DCE/acid/salt; capacity test and bed volume"
+      collection_method: "Quality and dispatch owner signs actual lot COA, repeatable equilibration/drainage procedure, calibrated fill mass and delivery notes. Record R separately from actual net external dispatch. Match returns/reversals to original deliveries and burden cohorts; a returned/reaccepted or re-delivered bead is never an additional new production. Do not dry the reporting denominator or infer mass from capacity. No normalization in this protocol."
+      unit: "kg; mass fraction; eq/L; meq/g"
+      frequency: "each batch and meter interval"
+      temporal_coverage: "full matched period including failed/zero-output runs"
+      site_scope: "actual resin site and declared interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "COA, native-identity qualifiers, delivery/return receipts, sample and drainage records"
+    - protocol_id: cp_pack
+      process_id: "p_resin"
+      flow_role: "actual packaging warehouse handling and dispatch materials"
+      record_type: "foreground_records"
+      raw_fields: "component row_id; composition; mass; tare; rejects; reusable turns; lot; warehouse occupancy; loading movements"
+      collection_method: "Packing/logistics owner records undivided actual material quantities and physical handling records for all attributable cohorts, including rejects, returns and held stock. Energy is metered in cp_utilities with operation tags so the same burden is not added twice. Declare gate and dispatch/loading interface."
+      unit: "kg"
+      frequency: "each batch and meter interval"
+      temporal_coverage: "full matched period including failed/zero-output runs"
+      site_scope: "actual resin site and declared interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "packing bills, tare checks, stock and handling logs"
+    - protocol_id: cp_outlets
+      process_id: "p_resin"
+      flow_role: "waste and actual environmental species"
+      record_type: "foreground_records"
+      raw_fields: "stream row_id; phase; destination/medium; gross mass; composition; integrated exhaust or rate/time; sampling conditions; SO3/H2SO4 distinction; nitrogen; water; DCE; filter capture; recovered mass"
+      collection_method: "Environmental owner weighs actual separate waste streams and samples real emitted species after control; preserve independent wet/dry gas basis, detection limits and measured treatment/recovery performance. Whole outsourced waste treatment is linked once. Never derive unknown water and unknown outlet from one residual, or turn a failed assay into zero. No division by Q."
+      unit: "kg; m3"
+      frequency: "each batch and meter interval"
+      temporal_coverage: "full matched period including failed/zero-output runs"
+      site_scope: "actual resin site and declared interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh tickets, treatment manifests, sample analyses and monitoring limits"
+    - protocol_id: cp_carry
+      process_id: "p_resin"
+      flow_role: "WIP finished stocks internal loops and carried burdens"
+      record_type: "foreground_records"
+      raw_fields: "opening/closing raw WIP and finished masses; species/state; lot genealogy; carried burden vector by row_id; current process burdens; newly released R; dispatch Q; recovery/rework returns; failed/zero-output batches; warehouse and dispatch burdens"
+      collection_method: "Production-accounting owner preserves raw masses and unnormalized burdens of opening/closing WIP and finished stocks, including earlier-period burdens and all failed/zero-output/rework activity. Reconcile manufacturing release and finished-store/dispatch ledgers separately; preserve internal transfer mass and carried burden until consolidation. Same-cohort returns cancel the prior dispatch before one re-delivery entry, with added rework burden retained; cross-period corrections identify the original cohort and prior report. Never assume R=Q or divide at collection."
+      unit: "kg; row-native burden units"
+      frequency: "each batch and meter interval"
+      temporal_coverage: "full matched period including failed/zero-output runs"
+      site_scope: "actual resin site and declared interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "inventory reconciliation, cost/physical burden ledger, genealogy and return documents"
+  calculation_rules:
+    - id: convert_raw
+      applies_to: "all inventory rows"
+      rule: "Convert raw weighed units to kg; kWh to MJ using 3.6 MJ/kWh. For actual gas/liquid volume use independently supported density at matching composition/temperature/pressure. Rate times duration is an integrated volume; already integrated volume receives no second time factor. No normalization here."
+      inputs:
+        - cp_feeds
+        - cp_utilities
+        - cp_pack
+        - cp_outlets
+      output: "converted_raw"
+      source_ids:
+        - rohm-haas-so3-sulphonation-1980
+    - id: species_ledger
+      applies_to: "all material rows"
+      rule: "Conserve complete physical mass and C/H/O/S/Na/Cl separately from measured chemical species and water state. Ideal aryl-H + SO3 → aryl-SO3H forms no net water; bound acid + NaOH → bound sodium sulfonate + H2O forms water only to independently measured conversion extent. Residual SO3 hydration consumes water; actual free-acid neutralization has its own assayed species/extent. These are balanced interpretation equations, not default reaction extents or proof of side-reaction absence. Distinguish chemical water, retained bead moisture, swelling/phase redistribution, carrier water, drainage and evaporation. Verify independent sulfur/Na/Cl and functional-group/speciation assays; never fit reaction water and outlet water to the same mass residual or use COD as a species balance."
+      inputs:
+        - converted_raw
+        - cp_feeds
+        - cp_delivery
+        - cp_outlets
+        - cp_carry
+      output: "species_balance"
+      source_ids:
+        - rohm-haas-so3-sulphonation-1980
+        - dupont-irc120-na-2024
+    - id: cohort_ledger
+      applies_to: "all inventory rows"
+      rule: "Maintain raw manufacturing and finished-store ledgers by identical grade/route/Na/wet-state cohort. Manufacturing burden vector B_release = B_open_WIP + B_current_process - B_close_WIP, retaining failed/zero-output and unrecovered loss/rework burdens; no automatic scrap credit. Transfer the actual newly released R and B_release to the finished ledger once. Delivered burden A_i = B_open_FG_i + B_release_i + B_storage_dispatch_i - B_close_FG_i, with separately evidenced other exits/allocations and return corrections disclosed. Match opening stock embodied burdens, actual period storage/packing/loading and closing stock burdens to each lot. Internal release/store transfer cancels on consolidation. Finished closing stock is not added as a second production output of the same R; unshipped stock and its burdens remain carried, outside Q. Physical mass reconciliation uses stocks as stocks, not duplicate external exchanges. Q comes only from cp_delivery. Missing carried burdens or nonpositive Q prevents a per-kg delivered report."
+      inputs:
+        - converted_raw
+        - species_balance
+        - cp_carry
+        - cp_delivery
+        - cp_pack
+        - cp_utilities
+        - cp_outlets
+      output: "A_i; Q"
+      source_ids:
+        - rohm-haas-so3-sulphonation-1980
+        - dupont-irc120-na-2024
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "a_i = A_i / Q once, after raw conversions and complete cohort burden assignment; A_i is the full matched delivered-cohort raw numerator in the row native unit; Q is actual net delivered accepted wet resin kg, not R. Reference output is exactly 1 kg. Flow-card formulas and protocol aggregation name this single reporting operation, never a second A/Q."
+      inputs:
+        - A_i
+        - Q
+        - cp_delivery
+        - cp_carry
+      output: "a_i"
+      source_ids:
+        - rohm-haas-so3-sulphonation-1980
+        - dupont-irc120-na-2024
+  data_quality_requirements:
+    - id: identity_and_state
+      applies_to: "p_resin"
+      requirement: "Verify nonfunctional gel precursor and distinct functionalized final identity, whole formulations, actual ionic conversion and wet drainage test; native generic identity cannot establish actual grade/provider suitability."
+      evidence: "COA, functional-group and ionic assays, full native fields and supplier evidence"
+    - id: period_completeness
+      applies_to: "all inventory rows"
+      requirement: "Account for all actual raw-period feeds, burdens, failed/zero-output operation, rework, returns, WIP/finished stocks and carry. Declare any missing field as uncertainty or unavailable result, never as zero."
+      evidence: "raw logs, stock/burden reconciliations and signed owner reviews"
+    - id: species_independence
+      applies_to: "p_resin"
+      requirement: "Independent mass/element, species and water-state evidence must all hold within documented analytical uncertainty; retain measured side reactions and residuals, not inferred exact closure."
+      evidence: "independent analyses, sampling design, detection limits and uncertainty budget"
+validation_rules:
+  - rule_id: reference_gate
+    applies_to: "p_resin"
+    rule: "Require one terminal Product row supplied_resin with the declared UUID, 1 kg net actual delivered Na-form wet gel state and complete qualifiers; do not substitute unfunctionalized polymer, capacity, dry kg, H form or release R."
+    source_ids:
+      - rohm-haas-so3-sulphonation-1980
+      - dupont-irc120-na-2024
+  - rule_id: complete_period_and_unit
+    applies_to: "all inventory rows"
+    rule: "Require raw conversions, positive matched Q, WIP and finished-stock burden carry, all failed/rework/return records, one normalization and separate species/water balances; unresolved source fields, medium or conversions remain explicit findings."
+    source_ids:
+      - rohm-haas-so3-sulphonation-1980
+      - dupont-irc120-na-2024
+  - rule_id: native_limits_and_routes
+    applies_to: "p_resin"
+    rule: "Preserve all native name components, comments, missing CAS/geography, production-mix/type/property limits and classification debts in both languages. Native generic cation-resin medical use is not grade approval; actual contradictory chemistry/grade/route cannot be adopted. Check actual route against solvent-free counterevidence."
+    source_ids:
+      - rohm-haas-so3-sulphonation-1980
+      - dupont-irc120-na-2024
+      - lanxess-s1567-2020
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Manufacture and actual supply of the stated new wet Na-form resin; combine with separately modelled resin use/regeneration only under its own function and gate."
+  allowed_use: "Route/grade/state/period-qualified supplier inventories and equivalent-boundary comparisons with declared uncertainty."
+  excluded_use: "Universal CPC coverage, any ion exchanger, dry-polymer equivalence, softening service/capacity/lifetime claims, medical/food/potable certification or a supplier recipe inferred from a generic UUID."
+  required_metadata: "actual site and supply geography; matched cohort and reporting period; virgin gel precursor and crosslink metric; DCE/SO3 route and full commercial feed compositions; functional sulfonate and Na fraction; actual grade acceptance and residual DCE/free acid/salt; drainage and equilibrated moisture method; wet net delivered Q and inventory burden carry; dry-mass/capacity/bed-volume test conditions; actual utilities packaging treatment and dispatch interfaces"
+  required_quality_disclosure: "Actual data coverage; Q versus R and stock carry; native contextual/coarse-classification limits; missing auxiliary UUIDs/providers; source age and example inconsistencies; species/conversion uncertainty."
+  update_trigger: "Changes to matrix/crosslink/function/ionic state, sulfonating route/solvent, drainage/moisture, acceptance, site/provider, stock gate, recovery/treatment or primary evidence."
+data_sources:
+  - id: "rohm-haas-so3-sulphonation-1980"
+    type: "literature"
+    reference: "Rohm and Haas, US4209592A (1980-06-24), PDF pp.2–3, printed cols.1–4, Examples 1–3. https://patents.google.com/patent/US4209592A/en"
+    used_for: "SO3/DCE gel sulfonation; separate disclosed hydration/NaOH conversion/washing and recovery operations. Historical lab cases only: Example 3 prose six hours versus Table 2 16 hours, no adopted time, dose, yield, moisture or default capacity; MR Example 1 is not a gel-grade result."
+  - id: "dupont-irc120-na-2024"
+    type: "handbook"
+    reference: "DuPont, AmberLite IRC120 Na, 45-D01246-en Rev.5 (June 2024), pp.1–3. https://www.dupont.com/content/dam/water/amer/us/en/water/public/documents/en/IER-AmberLite-IRC120-Na-PDS-45-D01246-en.pdf"
+    used_for: "Real styrene-DVB gel, sulfonic-acid functional group, shipped Na form and wet-state descriptors; swelling, capacity and particle/shipping densities are distinct measurements. Typical properties not universal acceptance or kg conversion; no claim that this SKU uses the selected process."
+  - id: "lanxess-s1567-2020"
+    type: "handbook"
+    reference: "LANXESS, Lewatit S1567 flyer, 10365-EN 02/2020, Status 01/2020, pp.1–2. https://lanxess.com/-/media/project/lanxess/corporate-internet/products-and-solutions/brands/lewatit/service-center-product-literature/flyer_lewatit_s1567_en.pdf"
+    used_for: "Independent manufacturer counterevidence: commercial monodisperse softening resin uses solvent-free production/sulfonation. Excludes that route from this DCE method; promotional performance and comparative charts are not transferred as factors or grade specifications."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:7a88657583affd21246e03a5aed6705daf958368225648065424ddfe5a3328f8"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6499"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6499
+          line: 59
+          column: 1
+        end:
+          offset: 9041
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased virgin nonfunctionalized styrene-DVB gel beads and separate commercial SO3, DCE, NaOH solution and water at resin plant receipt. |\n| starting_condition_role | foreground_starting_point; upstream precursor and reagent production remain required linked background |\n| product_classification_scope | Only the stated new wet Na-form gel resin within CPC 3.0 34790. |\n| recursive_input_rule | Internal recovered agent and return/rework transfers retain batch identity and burden without a new purchase or new output. Purchased finished resin or spent service resin changes this boundary and is excluded. |\n| upstream_dataset_requirement | Match each actual bead, whole formulation, water, utility, packaging and treatment provider separately with technology, grade, whole-supply quantity, location and time. A UUID is physical identity, not a background dataset or recipe. |\n| disclosure | Declare all recovery, abatement, utility generation interfaces, foreground storage/packing/handling/loading, stock and return boundaries. Utility generation fuels, losses and emissions remain inside linked full modules; no silent truncation. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| manufacture_boundary | p_resin | Include every actual receipt, swelling, reagent blending, sulfonation, separation, agent recovery, hydration, sodium conversion, wash, screening, drainage, testing, abatement and utility duty through actual dispatch. Storage, packaging, handling/loading and rework loads remain included, whether or not product leaves in the release period. | rohm-haas-so3-sulphonation-1980; dupont-irc120-na-2024 |\n| actual_atomic_exchanges | p_resin | Each physical product/waste transfer and each environmental species/compartment has one atomic row. Add actual filters, cooling make-up, neutralizers, fuels, packaging components and emissions separately when present. Whole mixed effluent is one waste stream with constituent subledgers; do not duplicate it as direct species emissions. | rohm-haas-so3-sulphonation-1980 |\n| route_separation | p_resin | Solvent-free sulfuric-acid production is a real separate route and cannot inherit this DCE/SO3 inventory. No named commercial grade is assigned this process without site evidence; no food, drinking-water or pharmaceutical conformity follows from the reference. | rohm-haas-so3-sulphonation-1980; dupont-irc120-na-2024; lanxess-s1567-2020 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 9
+              column: 1
+            end:
+              offset: 339
+              line: 9
+              column: 87
+          text: "# Wet sodium-form sulfonated styrene-DVB gel resin by solvent-assisted SO3 manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6499
+              line: 59
+              column: 1
+            end:
+              offset: 6520
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_29110"
+      family: "allocation"
+      span:
+        start:
+          offset: 29110
+          line: 404
+          column: 1
+        end:
+          offset: 30032
+          line: 411
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| physical_tracking | p_resin | Prefer direct grade/batch meters; subdivide shared utility, recovery, cleaning, warehouse and loading duties by evidenced run time, measured duty, mass handled or storage occupancy, retaining causality and uncertainty. Do not allocate by exchange capacity or compare grades solely by eq/L. | rohm-haas-so3-sulphonation-1980; dupont-irc120-na-2024 |\n| recovery_no_credit | p_resin | Internal recovered SO3/DCE, condensate and reworked beads retain paired mass/composition/burden transfers and cancel on consolidation. Waste/resin fines are not automatically co-products. If a real saleable recovered product exits, add its actual row and separately justified allocation before reporting; no default displacement or avoided-treatment credit. | rohm-haas-so3-sulphonation-1980 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 9
+              column: 1
+            end:
+              offset: 339
+              line: 9
+              column: 87
+          text: "# Wet sodium-form sulfonated styrene-DVB gel resin by solvent-assisted SO3 manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 29110
+              line: 404
+              column: 1
+            end:
+              offset: 29150
+              line: 404
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40195"
+      family: "validation"
+      span:
+        start:
+          offset: 40195
+          line: 441
+          column: 1
+        end:
+          offset: 41411
+          line: 449
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| reference_gate | p_resin | Require one terminal Product row supplied_resin with the declared UUID, 1 kg net actual delivered Na-form wet gel state and complete qualifiers; do not substitute unfunctionalized polymer, capacity, dry kg, H form or release R. | rohm-haas-so3-sulphonation-1980; dupont-irc120-na-2024 |\n| complete_period_and_unit | all inventory rows | Require raw conversions, positive matched Q, WIP and finished-stock burden carry, all failed/rework/return records, one normalization and separate species/water balances; unresolved source fields, medium or conversions remain explicit findings. | rohm-haas-so3-sulphonation-1980; dupont-irc120-na-2024 |\n| native_limits_and_routes | p_resin | Preserve all native name components, comments, missing CAS/geography, production-mix/type/property limits and classification debts in both languages. Native generic cation-resin medical use is not grade approval; actual contradictory chemistry/grade/route cannot be adopted. Check actual route against solvent-free counterevidence. | rohm-haas-so3-sulphonation-1980; dupont-irc120-na-2024; lanxess-s1567-2020 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 9
+              column: 1
+            end:
+              offset: 339
+              line: 9
+              column: 87
+          text: "# Wet sodium-form sulfonated styrene-DVB gel resin by solvent-assisted SO3 manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40195
+              line: 441
+              column: 1
+            end:
+              offset: 40217
+              line: 441
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "manufacture_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_6499"
+      source_span:
+        start:
+          offset: 7823
+          line: 74
+          column: 1
+        end:
+          offset: 8257
+          line: 74
+          column: 435
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "actual_atomic_exchanges"
+      identity_kind: "explicit"
+      unit_id: "normative_6499"
+      source_span:
+        start:
+          offset: 8258
+          line: 75
+          column: 1
+        end:
+          offset: 8668
+          line: 75
+          column: 411
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "route_separation"
+      identity_kind: "explicit"
+      unit_id: "normative_6499"
+      source_span:
+        start:
+          offset: 8669
+          line: 76
+          column: 1
+        end:
+          offset: 9039
+          line: 76
+          column: 371
+    - pointer: "/allocation_rules/0"
+      rule_id: "physical_tracking"
+      identity_kind: "explicit"
+      unit_id: "normative_29110"
+      source_span:
+        start:
+          offset: 29223
+          line: 408
+          column: 1
+        end:
+          offset: 29603
+          line: 408
+          column: 381
+    - pointer: "/allocation_rules/1"
+      rule_id: "recovery_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_29110"
+      source_span:
+        start:
+          offset: 29604
+          line: 409
+          column: 1
+        end:
+          offset: 30030
+          line: 409
+          column: 427
+    - pointer: "/validation_rules/0"
+      rule_id: "reference_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_40195"
+      source_span:
+        start:
+          offset: 40290
+          line: 445
+          column: 1
+        end:
+          offset: 40605
+          line: 445
+          column: 316
+    - pointer: "/validation_rules/1"
+      rule_id: "complete_period_and_unit"
+      identity_kind: "explicit"
+      unit_id: "normative_40195"
+      source_span:
+        start:
+          offset: 40606
+          line: 446
+          column: 1
+        end:
+          offset: 40959
+          line: 446
+          column: 354
+    - pointer: "/validation_rules/2"
+      rule_id: "native_limits_and_routes"
+      identity_kind: "explicit"
+      unit_id: "normative_40195"
+      source_span:
+        start:
+          offset: 40960
+          line: 447
+          column: 1
+        end:
+          offset: 41409
+          line: 447
+          column: 450
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6499"
+      source_span:
+        start:
+          offset: 6499
+          line: 59
+          column: 1
+        end:
+          offset: 6520
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6499"
+      source_span:
+        start:
+          offset: 6548
+          line: 63
+          column: 1
+        end:
+          offset: 7750
+          line: 70
+          column: 259
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_29110"
+      source_span:
+        start:
+          offset: 29110
+          line: 404
+          column: 1
+        end:
+          offset: 29150
+          line: 404
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40195"
+      source_span:
+        start:
+          offset: 40195
+          line: 441
+          column: 1
+        end:
+          offset: 40217
+          line: 441
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7a88657583affd21246e03a5aed6705daf958368225648065424ddfe5a3328f8"
+  generated_content_sha256: "sha256:d325536045ac8b9398d8ee07bfc58f50ad6296fa63ad7a05a57e15d205aa2c5e"

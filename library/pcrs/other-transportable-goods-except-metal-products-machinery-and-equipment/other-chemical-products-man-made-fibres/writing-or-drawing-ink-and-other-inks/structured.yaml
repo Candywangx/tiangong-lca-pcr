@@ -1,10 +1,957 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "35140"
-  title: "Writing or drawing ink and other inks"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.writing-or-drawing-ink-and-other-inks"
+  classification_refs: "CPC 3.0 35140; classification context only; method covers the stated subset, no accepted edge is created here"
+  covered_products: "Aqueous soluble-dye writing ink made by documented physical formulation"
+  excluded_products: "Printing ink; artists colours; raw dye/pigment/resin/solvent; pens; reactive and pigment-dispersion routes"
+  representative_product: "Blue aqueous writing ink; Acid Blue 9 commercial preparation representative, not mandatory universal composition"
+  production_route: "Acquire whole commercial ingredients; dissolve/mix; actual conditioning; release; package/store/handle and dispatch; no assumed reaction"
+  market_state: "Supplied liquid formulation at plant dispatch, including its carrier water; packaging recorded separately"
+functional_unit:
+  what: "Supply the declared aqueous dye writing ink as a whole liquid formulation"
+  how_much: "1 kg net ink actually delivered and accepted at plant dispatch"
+  how_well: "Meet the actual declared product specification and recipient acceptance records; no generic writing length, hazard, permanence or dose"
+  how_long_or_cycle: "One declared matched delivery accounting period; this is a mass reference, not a service-life functional comparison"
+  reference_flow_link: "delivered_ink"
+system_boundary:
+  rules:
+    - rule_id: boundary_physical
+      applies_to: "formulate_dispatch"
+      rule: "Use actual dissolution/mixing records. No pigment grinding, resin synthesis, dye-salt reaction, reaction-water factor or generic recipe is supplied by this method. Additional chemistry needs independent reaction/species evidence and method review."
+      source_ids:
+        - sakura-aqueous-writing-ink-1981
+    - rule_id: boundary_complete
+      applies_to: "formulate_dispatch"
+      rule: "Include attributable preparation, actual filtration, quality rejects, failed/zero-output runs, cleaning, rework, packaging, warehouse, handling, loading and other actual dispatch burdens within the declared boundary. Add each real missing flow atomically. Offsite transport beyond the plant gate is a separately declared module."
+      source_ids: []
+    - rule_id: boundary_stock
+      applies_to: "formulate_dispatch"
+      rule: "Keep production and finished-warehouse mass ledgers separately. Production records new unique quality releases and WIP; do not add the same released lot mass and its closing finished stock as two production outputs. Warehouse records opening stock, internal receipts, actual net dispatch, rejects and closing stock. Consolidation cancels internal releases/receipts. Keep WIP/finished inventory carried burdens, including failure and rework burdens."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased whole commercial ingredients or a compatible whole finished ink at site receipt; physical formulation to actual net plant delivery"
+  starting_condition_role: "Foreground receipt boundary; upstream production is linked, never zero by omission"
+  product_classification_scope: "CPC 35140 context, limited to the declared aqueous soluble-dye writing-ink route; excludes 35130 printing and 35120 artists colours"
+  recursive_input_rule: "Whole purchased ink is one external input with upstream production. Rework and production-to-warehouse handovers are internal links, cancelled on consolidation; do not create circular new purchases or outputs"
+  upstream_dataset_requirement: "Match each actual supply form, route, concentration, geography and reference unit; generic identity UUIDs establish no background provider quantities"
+  disclosure: "Declare receipt, production release, WIP, finished storage, packing, handling, returns, treatment and plant dispatch boundaries with included burdens and explicit exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Writing or drawing ink and other inks"
+    uuid: "7b873d98-a9cc-416f-a9e8-a5888295364b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual ink identity and intended writing function"
+    - "recipe revision and whole supply forms"
+    - "soluble-dye aqueous route"
+    - "carrier/active/water basis"
+    - "product grade and acceptance specification"
+    - "plant and supplier geography"
+    - "matched period and delivery cohort"
+    - "actual net delivery gate"
+    - "opening/closing WIP and finished stock with carried burdens"
+    - "return/rework links"
+    - "packaging and included dispatch scope"
+    - "native identity limitations and provider compatibility"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_ink_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reference is whole supplied ink net of all packaging. Q is actual unique positive net accepted delivery, not newly released production and not dry dye or active mass. Closing undelivered finished ink is excluded from Q."
+  - id: supply_form
+    applies_to: "all material inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure purchased formulations in their complete supplied wet form. Assay and carrier-water quantities are constituent subledgers; never duplicate whole formulation procurement with its constituents. Separate onsite acquisitions and blend burdens remain external inputs."
+  - id: raw_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "declared row unit"
+    rule: "Convert each raw record before the one final normalization. Volume needs same-formulation temperature-specific measured density. Integrate rate over duration once; already integrated liquid/gas volume gets no further time factor. Retain kWh or MJ consistently; steam heat uses measured enthalpy difference."
+process_map:
+  - id: formulate_dispatch
+    name: "Aqueous ink formulation and plant delivery"
+    inclusion: "required"
+    inclusion_condition: "Declared aqueous soluble-dye product; conditional rows only when actually present"
+    role: "foreground_production"
+    quantitative_reference: "1 kg net ink actually delivered"
+process_inventory:
+  - id: formulate_dispatch
+    label: "Aqueous ink formulation and plant delivery"
+    inputs:
+      product:
+        - row_id: dye_blue9
+          role: "C.I. Acid Blue 9 commercial dye preparation"
+          name: "C.I. Acid Blue 9 commercial dye preparation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The supported blue representative uses Water Blue #9. Record the complete acquired preparation, assay, water and salt content; do not replace it with a pure dye mass or a copper-sulphate search hit."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sakura-aqueous-writing-ink-1981
+            ranges: []
+        - row_id: amine_stabilizer
+          role: "N,N,N',N'-tetrakis(2-hydroxypropyl)ethylenediamine commercial preparation"
+          name: "N,N,N',N'-tetrakis(2-hydroxypropyl)ethylenediamine commercial preparation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use only where actually charged; retain whole supply form and assay. A hexamethylenetetramine or triethylamine hit is a different chemical."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sakura-aqueous-writing-ink-1981
+            ranges: []
+        - row_id: ethylene_glycol
+          role: "Ethylene glycol"
+          name: "Ethylene glycol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3685eaf5-415b-46b2-a350-8b8cf548abbf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Identity is a pure industrial substance, CAS 107-21-1, ethylene-oxide hydration, production and industrial input mix at plant; name also mentions electrolyte solvent use. Geography/locationOfSupply and a purity number are unspecified. Use only for a compatible acquired substance; no electrolyte grade or site is inferred. Purchased aqueous dilution is a distinct whole formulation, not this pure row plus duplicated water."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sakura-aqueous-writing-ink-1981
+            ranges: []
+        - row_id: glycerol
+          role: "glycerol"
+          name: "glycerol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "32d6a3cd-fb89-4a48-9594-bb240083042e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "CAS 56-81-5; production mix at plant. Geography/locationOfSupply, grade, purity and manufacturing route are unspecified. Native medical and non-toxicity prose supplies no PCR hazard or performance rule. Match supplier form and route independently; crude glycerol or an aqueous solution is not automatically equivalent."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sakura-aqueous-writing-ink-1981
+            ranges: []
+        - row_id: sodium_benzoate
+          role: "Sodium benzoate commercial preparation"
+          name: "Sodium benzoate commercial preparation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only actual procurement and use; retain preparation concentration. Benzoic acid is not sodium benzoate; no generic preservative dose or safety property is imposed."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sakura-aqueous-writing-ink-1981
+            ranges: []
+        - row_id: surfactant_scourol400
+          role: "Scourol #400 polyoxyethylene alkyl ether preparation"
+          name: "Scourol #400 polyoxyethylene alkyl ether preparation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The historical example names this commercial preparation. Alkyl chain, EO distribution and active content are not supplied; do not infer lauryl ether or pure surfactant. Current supplier identity and actual whole formulation need primary verification before dataset use. Other additives require their own specific atomic row and evidence."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sakura-aqueous-writing-ink-1981
+            ranges: []
+        - row_id: formulation_water
+          role: "Water added to aqueous ink formulation"
+          name: "Water added to aqueous ink formulation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record separately acquired formulation water in the actual supplied grade. Water already present in a purchased dye or additive solution is a constituent subledger, not another external purchase. No deionisation route is presumed."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sakura-aqueous-writing-ink-1981
+            ranges: []
+        - row_id: purchased_ink
+          role: "Writing or drawing ink and other inks"
+          name: "Writing or drawing ink and other inks"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7b873d98-a9cc-416f-a9e8-a5888295364b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional whole purchased finished aqueous writing ink for actual blending or repacking; this is not an atomic pigment, dye, resin or solvent. The generic native identity is production mix at plant, finished manufactured Product, with unspecified geography/locationOfSupply, grade and CAS; its unrelated pharmaceutical comment is a metadata debt. Verify compatibility and upstream production burdens; no recipe is supplied by the UUID. Internal rework never becomes this external purchase."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity supplied to formulation and dispatch operations"
+          name: "Electricity supplied to formulation and dispatch operations"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter mixing, pumping, actual filtration, cleaning, packing, storage, handling, dispatch and rework electricity included in scope. Shared utilities use a recorded physical driver; an unspecified regional supplier is not assumed."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: steam_heat
+          role: "Process heat supplied by steam"
+          name: "Process heat supplied by steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional actual purchased steam heat, measured from steam and returned condensate enthalpies. Do not count the same heat again as electric heating or both fuel and purchased heat. Actual fuel-fired onsite supply needs separate fuel, boiler water and emission rows."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_water
+          role: "Water used for ink equipment cleaning"
+          name: "Water used for ink equipment cleaning"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collect actual cleaning water, including failed batches and changeovers; do not fold it into formulation water. Record actual detergents separately when present."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: glass_bottle
+          role: "Glass bottle for delivered writing ink"
+          name: "Glass bottle for delivered writing ink"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual bottle; weigh the glass component and trace breakage, returns, reuse and attributable manufacture. Bulk delivery uses its actual container, not an invented bottle."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pp_cap
+          role: "Polypropylene bottle cap"
+          name: "Polypropylene bottle cap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual polypropylene closure, separate from glass; liners or seals of another material require separate rows. Do not assume cap polymer from bottle type."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_carton
+          role: "Corrugated cardboard transport carton"
+          name: "Corrugated cardboard transport carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual single carton; weigh declared construction and distinguish inserts, tape and pallet rows when present. Packaging mass is excluded from ink Q but its burden remains."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: fresh_filter
+          role: "Fresh ink filtration cartridge"
+          name: "Fresh ink filtration cartridge"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual production filtration cartridge, with material and size identified from its supplier. Record whole cartridge consumption separately from ink retained in spent cartridges; stability-test filter paper is not production filtration evidence. Split any separately purchased media into its own atomic row."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_ink
+          role: "Writing or drawing ink and other inks"
+          name: "Writing or drawing ink and other inks"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7b873d98-a9cc-416f-a9e8-a5888295364b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Terminal reference output: actual unique accepted net ink delivery at plant dispatch. Native broad name, manufactured state, Product type and Mass agree; name has no specific grade or geography/locationOfSupply and no CAS. Native generalComment says 352 Pharmaceutical products / 352 药品产品, inconsistent metadata explicitly retained as debt, not a pharmaceutical identity or recipe. Only the declared aqueous writing-ink subset is usable here."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - sakura-aqueous-writing-ink-1981
+            ranges: []
+      waste:
+        - row_id: spent_filter
+          role: "Spent ink filtration cartridge"
+          name: "Spent ink filtration cartridge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional real filtration only; include spent cartridge with retained ink and distinguish cartridge consumption. A stability-test filter in a patent is not proof that all plants filter production."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids: []
+            ranges: []
+        - row_id: waste_ink
+          role: "Rejected aqueous dye writing ink sent for treatment"
+          name: "Rejected aqueous dye writing ink sent for treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual final reject mass, composition and treatment route, including failed or zero-output batches; internally reworked ink is a linked internal transfer, not external waste plus a new purchase. No universal hazardous classification is assigned."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids: []
+            ranges: []
+        - row_id: wash_effluent
+          role: "Aqueous effluent from writing-ink equipment cleaning"
+          name: "Aqueous effluent from writing-ink equipment cleaning"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collect the whole effluent stream and its independently measured composition. At a wastewater treatment handoff it is a waste flow; if onsite treatment is included, expand treatment inputs, sludge and individually speciated releases without counting the same untreated load twice."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: water_to_air
+          role: "Water vapour to air from ink operations"
+          name: "Water vapour to air from ink operations"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured or independently supported evaporation to the declared air compartment. Do not equate missing mass with water; no reaction-water amount is invented for physical mixing."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids: []
+            ranges: []
+        - row_id: glycol_to_air
+          role: "Ethylene glycol released to air"
+          name: "Ethylene glycol released to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual ethylene-glycol release to the declared air compartment. Use species-specific evidence; neither a total VOC number nor COD nor a balance residual identifies glycol emission. Other actual species require their own atomic rows."
+          amount:
+            expression: "Attributable exchange reported once for the declared reference flow by the single period calculation in Section 8; retain this card's collection protocol."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_trace
+    applies_to: "formulate_dispatch"
+    rule: "First trace ingredients and production/warehouse/dispatch burdens to actual product-route-state cohorts, then subdivide shared operations using measured drivers. Record driver values and conservation. Do not invent a fixed allocation or credit waste as a co-product."
+    source_ids: []
+  - rule_id: allocation_failures
+    applies_to: "formulate_dispatch"
+    rule: "All attributable failed, zero-output, rejected and rework burdens remain in raw ledgers. A positive delivery cohort may bear them through documented causality; a standalone zero-Q period cannot be divided or silently discarded. Retain it for an explicit linked cohort or report no normalized dataset. Internal reacceptance creates no new production."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_delivery
+      process_id: "formulate_dispatch"
+      flow_role: "terminal delivery and stocks"
+      record_type: "weighing_and_acceptance"
+      raw_fields: "product/recipe/route/state; lot/receipt/return IDs; period; gross/tare/net kg; release records; opening/closing WIP and finished kg; stock burden vectors; transfer/rework links"
+      collection_method: "Owner: dispatch and stock-accounting lead. Reconcile calibrated net delivery weights to unique acceptance and reversal records; retain production, WIP and warehouse ledgers separately. Record all opening/closing masses and their prior carried burdens, failed runs and returns. Reacceptance is not new production; the same physical returned quantity cannot earn a second delivery credit without its reversal. Collect raw quantities only, no A/Q here."
+      unit: "kg"
+      frequency: "each movement and period close"
+      temporal_coverage: "complete matched accounting period and carried-stock history"
+      site_scope: "declared plant and delivery cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; acceptance/return trail; stock valuation and burden transfer reconciliation"
+    - protocol_id: cp_materials
+      process_id: "formulate_dispatch"
+      flow_role: "each acquired ingredient and cleaning water"
+      record_type: "purchase_and_charge_records"
+      raw_fields: "row_id; supplier/lot; whole supply form; gross/tare/net; assay/water/active; charge and loss; returns; opening/closing input and WIP stocks; carried burdens"
+      collection_method: "Owner: formulation materials accountant. Retain every raw-period acquisition and charge including failures, zero-output and rework. Reconcile receipts and input stock to actual consumption; track whole formulations separately from constituent subledgers. Record matched WIP/finished burden transfers without renormalizing; supplier forms and native restrictions are checked. No A/Q in collection."
+      unit: "kg"
+      frequency: "each lot and charge"
+      temporal_coverage: "complete matched period including failed runs and prior-stock history"
+      site_scope: "same plant/product/route/state"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "invoices; charge scales; supplier specification; assay; stock reconciliation"
+    - protocol_id: cp_utilities
+      process_id: "formulate_dispatch"
+      flow_role: "electricity and separately metered steam heat"
+      record_type: "meter_records"
+      raw_fields: "row_id; meter start/end; rate/time or integrated totals; steam/condensate masses and enthalpies; operation; physical driver; failures/rework/storage/dispatch; WIP/finished burden transfers"
+      collection_method: "Owner: utility engineer. Collect raw measured electricity and steam heat independently for the complete operations included, with physical allocation and carried burden links. Record failures and no-output operation. Distinguish integrated volume from rate before conversion. No A/Q in collection."
+      unit: "kWh; MJ"
+      frequency: "meter interval and period close"
+      temporal_coverage: "complete matched period with carried burden history"
+      site_scope: "same plant and included operations"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; allocation drivers; energy balance; stock burden links"
+    - protocol_id: cp_packaging
+      process_id: "formulate_dispatch"
+      flow_role: "each actual packaging component"
+      record_type: "component_records"
+      raw_fields: "row_id; material; component count/mass; rejects/breakage; return/reuse cycles; opening/closing stock and carried burdens; delivery links"
+      collection_method: "Owner: packaging lead. Weigh each actual component separately; reconcile purchases, consumption, reuse, losses and stock to matched deliveries. Preserve packing, storage and handling burdens and product-stock carryovers. Do not divide by Q during collection."
+      unit: "kg"
+      frequency: "each component lot and period"
+      temporal_coverage: "complete delivery period and reusable-container history"
+      site_scope: "same delivery cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "component weights; specifications; reuse and stock reconciliation"
+    - protocol_id: cp_outlets
+      process_id: "formulate_dispatch"
+      flow_role: "each actual waste or elementary outlet"
+      record_type: "weighing_sampling_and_monitoring"
+      raw_fields: "row_id; outlet; wet mass; composition; actual species; medium/compartment; waste receipt; integrated volume or rate/time; measured density; treatment; retained ink; WIP/stock and rework links"
+      collection_method: "Owner: environmental and waste measurement lead. Measure each real outlet independently; retain whole effluent mass and species subledger without double release. Record zero/failure runs and treatment boundaries. Close physical mass/elements independently of species and water evidence; never infer two unknowns from one residual, COD or total VOC. No A/Q in collection."
+      unit: "kg"
+      frequency: "each outlet event or monitoring interval"
+      temporal_coverage: "complete matched period including failures and carryovers"
+      site_scope: "same declared process and outlet compartments"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "waste receipts; laboratory methods; monitor calibration; mass/element and species/water reconciliation"
+  calculation_rules:
+    - id: raw_conversion
+      applies_to: "all inventory rows"
+      rule: "Convert raw numerator units with traceable actual factors before reporting. For measured volume use same-formulation density at the measured temperature; integrate rate over its recorded interval once. An integrated volume is already a total. For purchased steam heat use transferred mass times measured enthalpy difference; use 3.6 MJ per kWh only as an exact unit conversion."
+      inputs:
+        - "raw records"
+        - "measured factors"
+      output: "raw_period_j"
+      source_ids: []
+    - id: delivery_normalization
+      applies_to: "all inventory rows"
+      rule: "Q = unique positive actual net accepted delivered ink kg for the matched product/route/state/cohort, excluding packaging and undelivered stock; returns carry their reversals and cannot be credited twice. For each exchange/burden j, A_j = raw_period_j + opening_WIP_burden_j + opening_finished_burden_j - closing_WIP_burden_j - closing_finished_burden_j, after linked internal-transfer cancellation and documented physical subdivision; opening/closing terms are attributed exchange quantities, not kg of stock substituted for energy. Report a_j = A_j / Q once, only for Q > 0. Include all attributable failed/zero-output, reject, rework, packing, storage, handling and dispatch burdens. Cards and aggregation_rule refer to this same one reporting operation, never successive divisions. Terminal delivered_ink is fixed at 1 kg after this operation."
+      inputs:
+        - raw_period_j
+        - opening_WIP_burden_j
+        - opening_finished_burden_j
+        - closing_WIP_burden_j
+        - closing_finished_burden_j
+        - Q
+        - cp_delivery
+        - cp_materials
+        - cp_utilities
+        - cp_packaging
+        - cp_outlets
+      output: "a_j"
+      source_ids: []
+    - id: physical_reconciliation
+      applies_to: "formulate_dispatch"
+      rule: "For each production and warehouse ledger reconcile physical opening mass + actual external receipts = external outputs + physical closing mass, cancelling internal links on consolidation and including measured air uptake if any. Keep packaging separate from ink. Assayed dye, carrier water and elemental subledgers do not become extra purchases. Actual species, reaction-water formation/consumption and phase/free-water changes need independent evidence; physical mixing alone supplies no reaction-water term. Unknown differences remain quantified uncertainty, not fitted emissions or fitted reaction water."
+      inputs:
+        - "mass and element ledgers"
+        - "species and water measurements"
+        - "stock and transfer records"
+      output: "reconciliation evidence"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Check full native name components, CAS, route, grade/form, geography/locationOfSupply, type/medium and every property before use. Identity is distinct from supplier/background compatibility; preserve the specific limitations in the cards. A missing auxiliary match is disclosed; a contradictory reference or real chemistry is not substituted."
+      evidence: "complete native records; supplier original; route and state audit"
+    - id: quality_complete
+      applies_to: "all inventory rows"
+      requirement: "All raw numerators, denominators and carried burdens cover the same actual product-route-state cohort. Do not omit no-output runs, stock, returns, rework or included warehouse/dispatch. No transferable consumption/emission range is established by one patent; record measured uncertainty and unresolved evidence needs."
+      evidence: "complete period ledgers; stock burden transfers; measurement uncertainty; zero-output records"
+    - id: quality_scope
+      applies_to: "formulate_dispatch"
+      requirement: "Historical patent examples support the stated formulation route only. Verify actual formulation, specifications and acceptance; claim no generic safe, permanent, archival, antimicrobial or other performance from ingredient/native prose."
+      evidence: "sakura-aqueous-writing-ink-1981"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "delivered_ink"
+    rule: "Require a unique Product output linked by reference_flow_link, the declared reference UUID and 1 kg net whole ink. A purchased whole ink may share the generic UUID as an input; never hide it or relabel it as a dye. Check actual aqueous writing scope and native metadata debt."
+    source_ids: []
+  - rule_id: validate_ledger
+    applies_to: "all inventory rows"
+    rule: "Verify positive actual delivery Q, raw-period matching, complete WIP and finished stock burden transfers, transfer cancellation, returns/rework, failure loads and the single reporting division. Reject division by zero, dry-dye denominator substitution, duplicate whole/constituent purchases or extra finished-stock output at production release."
+    source_ids: []
+  - rule_id: validate_physical
+    applies_to: "all inventory rows"
+    rule: "Check complete physical mass/elements separately from actual species and water evidence; check actual medium and supply state, density conditions, integrated-volume treatment, heat units, packaging and treatment boundary. Missing measurements or outlet identity remain explicit incomplete dataset coverage, never fictitious zero emissions."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Declared aqueous writing-ink supply in a downstream model"
+  allowed_use: "Same declared formulation route, state and net plant-delivery basis after applicability review"
+  excluded_use: "Printing ink; artists colours; raw pigment/dye/resin substitution; per-pen dose, writing service equivalence or generic hazard/performance claims"
+  required_metadata: "product/recipe/route/state; supplier forms; site/time/geography; reference gate; Q; WIP/finished stocks and burdens; returns/rework; packaging/dispatch; native limits; provider matches"
+  required_quality_disclosure: "collection owners and methods; full-period completeness; stock burden history; allocation drivers; uncertainty; unresolved UUID/provider/range gaps; no scientific approval implied"
+  update_trigger: "formulation, supplied form, chemistry, production/dispatch gate, energy, packaging, stock practice or evidence changes"
+data_sources:
+  - id: "sakura-aqueous-writing-ink-1981"
+    type: "literature"
+    reference: "Sakura Color Products Corporation. Aqueous ink composition. EP0030389A1, 1981-06-17. https://data.epo.org/publication-server/rest/v1.2/patents/EP0030389NWA1/document.pdf ; retrieved 2026-10-16; PDF p.1, p.9 (printed p.8), p.12-13 (printed p.11-12), Examples 1-2"
+    used_for: "Primary historical patent case: aqueous writing-ink mixing route and separate named commercial ingredients; Example 2 blue representative. Scourol #400 is the Example 1 commercial alkyl-ether preparation, not a specified pure lauryl ether. One source only; no empirical plant ranges, generic recipe, yield, density, energy, emissions, hazard, service life, dose or present supplier approval. Actual plant and supplier evidence remain necessary."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:035116f29a4e76609f74073a9446d944af74ef11fc1547de04c43fcfd9f92045"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5506"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5506
+          line: 64
+          column: 1
+        end:
+          offset: 7931
+          line: 87
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased whole commercial ingredients or a compatible whole finished ink at site receipt; physical formulation to actual net plant delivery |\n| starting_condition_role | Foreground receipt boundary; upstream production is linked, never zero by omission |\n| product_classification_scope | CPC 35140 context, limited to the declared aqueous soluble-dye writing-ink route; excludes 35130 printing and 35120 artists colours |\n| recursive_input_rule | Whole purchased ink is one external input with upstream production. Rework and production-to-warehouse handovers are internal links, cancelled on consolidation; do not create circular new purchases or outputs |\n| upstream_dataset_requirement | Match each actual supply form, route, concentration, geography and reference unit; generic identity UUIDs establish no background provider quantities |\n| disclosure | Declare receipt, production release, WIP, finished storage, packing, handling, returns, treatment and plant dispatch boundaries with included burdens and explicit exclusions |\n\n\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_physical | formulate_dispatch | Use actual dissolution/mixing records. No pigment grinding, resin synthesis, dye-salt reaction, reaction-water factor or generic recipe is supplied by this method. Additional chemistry needs independent reaction/species evidence and method review. | `sakura-aqueous-writing-ink-1981` |\n| boundary_complete | formulate_dispatch | Include attributable preparation, actual filtration, quality rejects, failed/zero-output runs, cleaning, rework, packaging, warehouse, handling, loading and other actual dispatch burdens within the declared boundary. Add each real missing flow atomically. Offsite transport beyond the plant gate is a separately declared module. |  |\n| boundary_stock | formulate_dispatch | Keep production and finished-warehouse mass ledgers separately. Production records new unique quality releases and WIP; do not add the same released lot mass and its closing finished stock as two production outputs. Warehouse records opening stock, internal receipts, actual net dispatch, rejects and closing stock. Consolidation cancels internal releases/receipts. Keep WIP/finished inventory carried burdens, including failure and rework burdens. |  |\n\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 268
+              line: 9
+              column: 1
+            end:
+              offset: 317
+              line: 9
+              column: 50
+          text: "# Writing or drawing ink: aqueous dye formulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5506
+              line: 64
+              column: 1
+            end:
+              offset: 5527
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_27478"
+      family: "allocation"
+      span:
+        start:
+          offset: 27478
+          line: 608
+          column: 1
+        end:
+          offset: 28308
+          line: 617
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_trace | formulate_dispatch | First trace ingredients and production/warehouse/dispatch burdens to actual product-route-state cohorts, then subdivide shared operations using measured drivers. Record driver values and conservation. Do not invent a fixed allocation or credit waste as a co-product. |  |\n| allocation_failures | formulate_dispatch | All attributable failed, zero-output, rejected and rework burdens remain in raw ledgers. A positive delivery cohort may bear them through documented causality; a standalone zero-Q period cannot be divided or silently discarded. Retain it for an explicit linked cohort or report no normalized dataset. Internal reacceptance creates no new production. |  |\n\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 268
+              line: 9
+              column: 1
+            end:
+              offset: 317
+              line: 9
+              column: 50
+          text: "# Writing or drawing ink: aqueous dye formulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 27478
+              line: 608
+              column: 1
+            end:
+              offset: 27518
+              line: 608
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37111"
+      family: "validation"
+      span:
+        start:
+          offset: 37111
+          line: 653
+          column: 1
+        end:
+          offset: 38308
+          line: 663
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | delivered_ink | Require a unique Product output linked by reference_flow_link, the declared reference UUID and 1 kg net whole ink. A purchased whole ink may share the generic UUID as an input; never hide it or relabel it as a dye. Check actual aqueous writing scope and native metadata debt. |  |\n| validate_ledger | all inventory rows | Verify positive actual delivery Q, raw-period matching, complete WIP and finished stock burden transfers, transfer cancellation, returns/rework, failure loads and the single reporting division. Reject division by zero, dry-dye denominator substitution, duplicate whole/constituent purchases or extra finished-stock output at production release. |  |\n| validate_physical | all inventory rows | Check complete physical mass/elements separately from actual species and water evidence; check actual medium and supply state, density conditions, integrated-volume treatment, heat units, packaging and treatment boundary. Missing measurements or outlet identity remain explicit incomplete dataset coverage, never fictitious zero emissions. |  |\n\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 268
+              line: 9
+              column: 1
+            end:
+              offset: 317
+              line: 9
+              column: 50
+          text: "# Writing or drawing ink: aqueous dye formulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37111
+              line: 653
+              column: 1
+            end:
+              offset: 37133
+              line: 653
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_5506"
+      source_span:
+        start:
+          offset: 6728
+          line: 81
+          column: 1
+        end:
+          offset: 7056
+          line: 81
+          column: 329
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5506"
+      source_span:
+        start:
+          offset: 7057
+          line: 82
+          column: 1
+        end:
+          offset: 7433
+          line: 82
+          column: 377
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_5506"
+      source_span:
+        start:
+          offset: 7434
+          line: 83
+          column: 1
+        end:
+          offset: 7927
+          line: 83
+          column: 494
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_trace"
+      identity_kind: "explicit"
+      unit_id: "normative_27478"
+      source_span:
+        start:
+          offset: 27591
+          line: 612
+          column: 1
+        end:
+          offset: 27904
+          line: 612
+          column: 314
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_failures"
+      identity_kind: "explicit"
+      unit_id: "normative_27478"
+      source_span:
+        start:
+          offset: 27905
+          line: 613
+          column: 1
+        end:
+          offset: 28304
+          line: 613
+          column: 400
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_37111"
+      source_span:
+        start:
+          offset: 37206
+          line: 657
+          column: 1
+        end:
+          offset: 37525
+          line: 657
+          column: 320
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_37111"
+      source_span:
+        start:
+          offset: 37526
+          line: 658
+          column: 1
+        end:
+          offset: 37916
+          line: 658
+          column: 391
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_37111"
+      source_span:
+        start:
+          offset: 37917
+          line: 659
+          column: 1
+        end:
+          offset: 38304
+          line: 659
+          column: 388
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5506"
+      source_span:
+        start:
+          offset: 5506
+          line: 64
+          column: 1
+        end:
+          offset: 5527
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5506"
+      source_span:
+        start:
+          offset: 5555
+          line: 68
+          column: 1
+        end:
+          offset: 6653
+          line: 75
+          column: 191
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_27478"
+      source_span:
+        start:
+          offset: 27478
+          line: 608
+          column: 1
+        end:
+          offset: 27518
+          line: 608
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37111"
+      source_span:
+        start:
+          offset: 37111
+          line: 653
+          column: 1
+        end:
+          offset: 37133
+          line: 653
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:035116f29a4e76609f74073a9446d944af74ef11fc1547de04c43fcfd9f92045"
+  generated_content_sha256: "sha256:474833e1a67757299abd858316151c24010dd97f04a6037453c5d8e55894fffe"
