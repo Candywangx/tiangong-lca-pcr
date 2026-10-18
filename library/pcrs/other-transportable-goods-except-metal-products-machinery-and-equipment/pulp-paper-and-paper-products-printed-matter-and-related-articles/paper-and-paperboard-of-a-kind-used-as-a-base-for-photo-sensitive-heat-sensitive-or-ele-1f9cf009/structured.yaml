@@ -695,7 +695,7 @@ dataset_production:
       flow_role: "reference output"
       record_type: "weighing"
       raw_fields: "lot; reel; gross mass; core and wrapper tare; accepted net mass; moisture w; grammage; grade; beginning/end accepted stock"
-      collection_method: "Calibrated reel scale and traceable tare; representative gravimetric moisture sample to documented constant-dry-mass endpoint; record method, temperature, sampling and repeatability. Reconcile accepted production and dispatch stocks. Preserve physical period totals, perform the following aggregation, then divide by Q from cp_mass to produce amounts per 1 kg reference flow: Q = sum accepted net paper mass; exclude returned/rejected lots and packaging"
+      collection_method: "Calibrated reel scale and traceable tare; representative gravimetric moisture sample to documented constant-dry-mass endpoint; record method, temperature, sampling and repeatability. Reconcile accepted production and dispatch stocks. Preserve the following raw physical period total in its native unit; normalize_exchange performs the sole division by Q from cp_mass for final per-reference reporting: Q = sum accepted net paper mass; exclude returned/rejected lots and packaging"
       unit: "kg"
       frequency: "Every lot and moisture sample"
       temporal_coverage: "Same complete declared period"
@@ -706,8 +706,8 @@ dataset_production:
       process_id: "papermaking"
       flow_role: "pulp and individual chemical/maintenance input"
       record_type: "stock and dosing"
-      raw_fields: "row_id; supplier; species/CAS where relevant; grade; supply route; lot; delivered mass; stock changes; formulation; solids; dosing; background reference basis"
-      collection_method: "Reconcile receipts, calibrated dosing scales and beginning/end stores for each atomic material; measure moisture/solids and retain supplier composition documents. Account constituent water exactly once. Preserve physical period totals, perform the following aggregation, then divide by Q from cp_mass to produce amounts per 1 kg reference flow: X_i = receipts + opening stock - closing stock - other-grade transfers; preserve physical total and trace attributable use"
+      raw_fields: "row_id; supplier; species/CAS where relevant; grade; supply route; lot; delivered mass; stock changes; formulation; solids; dosing; background reference basis; actual AKD/reaction-product speciation; independently evidenced reaction extents; H2O formation/consumption; uncertainty"
+      collection_method: "Reconcile receipts, calibrated dosing scales and beginning/end stores for each atomic material; measure moisture/solids and retain supplier composition documents. Account constituent water exactly once. Preserve the following raw physical period total in its native unit; normalize_exchange performs the sole division by Q from cp_mass for final per-reference reporting: X_i = receipts + opening stock - closing stock - other-grade transfers; preserve physical total and trace attributable use Independently collect the actual reaction evidence and H2O formation/consumption terms required by physical_balances; missing extent is not zero or a closure residual."
       unit: "kg"
       frequency: "Each delivery and dosing lot"
       temporal_coverage: "Same complete declared period"
@@ -718,8 +718,8 @@ dataset_production:
       process_id: "papermaking"
       flow_role: "purchased water and external wastewater"
       record_type: "meter and laboratory"
-      raw_fields: "row_id; meter total; volume; temperature; density; receiver; inlet/outlet stock; moisture; COD; BOD; TSS; N/P; constituent analysis"
-      collection_method: "Calibrated water/effluent totalizers; flow-proportional representative composite sampling and documented lab methods. Measure separate actual densities and temperatures for purchased water and wastewater; X_water = V_water*rho_water and X_wastewater = V_wastewater*rho_wastewater, or independently calibrated whole-liquid weighing. Retain each water fraction for the water balance; neither density is defaulted to 1000 kg/m3. Record treatment-inlet composition and trace the receiving external plant. Preserve physical period totals, perform the following aggregation, then divide by Q from cp_mass to produce amounts per 1 kg reference flow: Aggregate net boundary volumes; keep recycled white water separate; reconcile water balance and inlet pollutants with external treatment inputs"
+      raw_fields: "row_id; meter total; volume; temperature; density; receiver; inlet/outlet stock; moisture; COD; BOD; TSS; N/P; constituent analysis; actual AKD/reaction-product speciation; independently evidenced reaction extents; H2O formation/consumption; uncertainty"
+      collection_method: "Calibrated water/effluent totalizers; flow-proportional representative composite sampling and documented lab methods. Measure separate actual densities and temperatures for purchased water and wastewater; X_water = V_water*rho_water and X_wastewater = V_wastewater*rho_wastewater, or independently calibrated whole-liquid weighing. Retain each water fraction for the water balance; neither density is defaulted to 1000 kg/m3. Record treatment-inlet composition and trace the receiving external plant. Preserve the following raw physical period total in its native unit; normalize_exchange performs the sole division by Q from cp_mass for final per-reference reporting: Aggregate net boundary volumes; keep recycled white water separate; reconcile water balance and inlet pollutants with external treatment inputs Independently collect the actual reaction evidence and H2O formation/consumption terms required by physical_balances; missing extent is not zero or a closure residual."
       unit: "m3; kg"
       frequency: "Continuous totals; representative samples"
       temporal_coverage: "Same complete declared period"
@@ -731,7 +731,7 @@ dataset_production:
       flow_role: "grid electricity"
       record_type: "submeter"
       raw_fields: "supply voltage; region; time; meter kWh; preparation/drying/sizing/finishing readings; loads; transformations; other grades"
-      collection_method: "Calibrated submetering with campaign timestamps; reconcile whole-site and grade/stage records, supply interface and transformer boundary. Preserve physical period totals, perform the following aggregation, then divide by Q from cp_mass to produce amounts per 1 kg reference flow: E_MJ = 3.6 * E_kWh; retain separate physical meter total and causal attributable consumption"
+      collection_method: "Calibrated submetering with campaign timestamps; reconcile whole-site and grade/stage records, supply interface and transformer boundary. Preserve the following raw physical period total in its native unit; normalize_exchange performs the sole division by Q from cp_mass for final per-reference reporting: E_MJ = 3.6 * E_kWh; retain separate physical meter total and causal attributable consumption"
       unit: "kWh; MJ"
       frequency: "Continuous and campaign totals"
       temporal_coverage: "Same complete declared period"
@@ -743,7 +743,7 @@ dataset_production:
       flow_role: "delivered steam heat"
       record_type: "enthalpy and supplier definition"
       raw_fields: "steam mass; pressure; temperature; quality; enthalpy; condensate mass and return enthalpy; vent/blowdown; supplier reference state; k_bg; drying/sizing loads"
-      collection_method: "Calibrated steam/condensate meters and pressure/temperature records; use documented thermodynamic tables and measured steam quality; reconcile all return/vent states with supplier energy accounting. Supplier must define how net delivered heat relates to the GCV reference. Preserve physical period totals, perform the following aggregation, then divide by Q from cp_mass to produce amounts per 1 kg reference flow: H_net = (sum m_s*h_s - sum m_r*h_r)/1000; declare reference states for unreturned streams; H_bg = k_bg*H_net only with verified k_bg"
+      collection_method: "Calibrated steam/condensate meters and pressure/temperature records; use documented thermodynamic tables and measured steam quality; reconcile all return/vent states with supplier energy accounting. Supplier must define how net delivered heat relates to the GCV reference. Preserve the following raw physical period total in its native unit; normalize_exchange performs the sole division by Q from cp_mass for final per-reference reporting: H_net = (sum m_s*h_s - sum m_r*h_r)/1000; declare reference states for unreturned streams; H_bg = k_bg*H_net only with verified k_bg"
       unit: "kg; kJ/kg; MJ"
       frequency: "Continuous totals and state readings"
       temporal_coverage: "Same complete declared period"
@@ -755,7 +755,7 @@ dataset_production:
       flow_role: "each packaging input"
       record_type: "weigh and reuse"
       raw_fields: "row_id; net installed mass; core dimensions; packing count; grade; supplier; pallet reuse/replacement and losses"
-      collection_method: "Weigh individual installed components net of offcuts; reconcile issued stock, waste and reuse records; exclude packaging from Q. Preserve physical period totals, perform the following aggregation, then divide by Q from cp_mass to produce amounts per 1 kg reference flow: X_i = attributable component consumption; reuse service and replacement based on actual records without default lifetime"
+      collection_method: "Weigh individual installed components net of offcuts; reconcile issued stock, waste and reuse records; exclude packaging from Q. Preserve the following raw physical period total in its native unit; normalize_exchange performs the sole division by Q from cp_mass for final per-reference reporting: X_i = attributable component consumption; reuse service and replacement based on actual records without default lifetime"
       unit: "kg"
       frequency: "Each packing lot"
       temporal_coverage: "Same complete declared period"
@@ -767,7 +767,7 @@ dataset_production:
       flow_role: "each exported waste"
       record_type: "weighbridge and recipient"
       raw_fields: "row_id; wet mass; dry solids; origin; contamination; receiver; treatment route; internal recovery; stock"
-      collection_method: "Calibrated scales and waste manifests; sample solids/composition, including separately collected paper-cutting dust and its collector opening/closing stocks; reconcile internal returned fibre and exported rejects independently; retain receiver confirmation. Preserve physical period totals, perform the following aggregation, then divide by Q from cp_mass to produce amounts per 1 kg reference flow: X_i = net exported waste mass; no internal broke as an export; record fate without automatic credit"
+      collection_method: "Calibrated scales and waste manifests; sample solids/composition, including separately collected paper-cutting dust and its collector opening/closing stocks; reconcile internal returned fibre and exported rejects independently; retain receiver confirmation. Preserve the following raw physical period total in its native unit; normalize_exchange performs the sole division by Q from cp_mass for final per-reference reporting: X_i = net exported waste mass; no internal broke as an export; record fate without automatic credit"
       unit: "kg"
       frequency: "Each consignment"
       temporal_coverage: "Same complete declared period"
@@ -779,7 +779,7 @@ dataset_production:
       flow_role: "each elementary emission"
       record_type: "measurement and balance"
       raw_fields: "row_id; species; CAS; carbon origin; medium/submedium; sampling location; size bins; concentration; dry/wet gas basis; flow; time; control status; water balance"
-      collection_method: "Representative outlet and fugitive monitoring or an explicitly supported closed balance; retain operating hours, blanks, uncertainty and control conditions. Screen actual cutting/winding sources and controls; measure residual outdoor dust separately from captured material and internal recovery. Do not treat detection limits as zero. Identify fossil/biogenic source independently. Preserve physical period totals, perform the following aggregation, then divide by Q from cp_mass to produce amounts per 1 kg reference flow: X_i = sum c_i*V_i/1000000 for c_i in mg/m3 and matching V_i in m3; use disjoint PM bins; H2O may use closed water balance; no unmeasured emission factor"
+      collection_method: "Representative outlet and fugitive monitoring or an explicitly supported closed balance; retain operating hours, blanks, uncertainty and control conditions. Screen actual cutting/winding sources and controls; measure residual outdoor dust separately from captured material and internal recovery. Do not treat detection limits as zero. Identify fossil/biogenic source independently. Preserve the following raw physical period total in its native unit; normalize_exchange performs the sole division by Q from cp_mass for final per-reference reporting: X_i = sum c_i*V_i/1000000 for c_i in mg/m3 and matching V_i in m3; use disjoint PM bins; H2O may use closed water balance; no unmeasured emission factor"
       unit: "kg"
       frequency: "Representative operating modes and period totals"
       temporal_coverage: "Same complete declared period"
@@ -821,7 +821,7 @@ dataset_production:
         - jrc-pulp-paper-bref-2015
     - id: physical_balances
       applies_to: "material/water/carbon ledgers"
-      rule: "For each conserved quantity: external inputs = accepted paper + dispatched packaging + external wastes + elementary releases + returned utility water + closing-minus-opening stocks + documented residual. Include real dispatched cores, wrappers and pallets even though excluded from Q. Reconcile steam supply/condensate return as a separate physical utility-water circuit when the LCI energy exchange is net heat; do not count supply steam as purchased process water or its condensate as external wastewater. Internal recirculation cancels once, with equal sender/receiver quantities. Use each particulate stream’s actual carried moisture in the water ledger without duplicating vapour; do not invent a moisture fraction or treat a dry particulate metric as extra water. Carbon uses measured elemental fractions; actual biogenic CO2 remains in the inventory."
+      rule: "For whole mass and each actual conserved element: external inputs = accepted paper + dispatched packaging + external wastes + elementary releases + returned utility water + closing-minus-opening stocks + documented residual. Include real dispatched cores, wrappers and pallets even though excluded from Q. Reconcile steam supply/condensate return as a separate physical utility-water circuit when the LCI energy exchange is net heat; do not count supply steam as purchased process water or its condensate as external wastewater. Internal recirculation cancels once, with equal sender/receiver quantities. Use each particulate stream’s actual carried moisture in the water ledger without duplicating vapour; do not invent a moisture fraction or treat a dry particulate metric as extra water. Carbon uses measured elemental fractions; actual biogenic CO2 remains in the inventory. Molecular H2O and reactive dry components follow opening + inputs + evidenced formation = closing + outputs + evidenced consumption; they are not individually conserved unchanged through chemical reactions. For actual AKD use, independently establish hydrolysis and other reaction extents/speciation from actual formulation, stage conditions and measured reactant/product evidence, with uncertainty. Hydrolysis can consume H2O; do not assume a fraction, complete reaction or a CO2 amount/origin. The simplified H2O input-output equation applies only where relevant reactions are absent or independently evidenced negligible within stated uncertainty. Unknown terms remain gaps, never an evaporation or discharge adjustment."
       inputs:
         - cp_mass
         - cp_material
@@ -829,9 +829,11 @@ dataset_production:
         - cp_waste
         - cp_air
         - "measured composition"
-      output: "unallocated kg solids/water/C and explained residual"
+        - "actual formulation and independently evidenced reaction extents"
+      output: "conserved whole-mass/element and reactive-component ledgers, reaction evidence gaps and residual uncertainty"
       source_ids:
         - jrc-pulp-paper-bref-2015
+        - yan-akd-hydrolysis-2019
   data_quality_requirements:
     - id: dq_identity
       applies_to: "every row"
@@ -860,7 +862,7 @@ validation_rules:
     source_ids: []
   - rule_id: validation_rule_3
     applies_to: "foreground_dataset_conformance"
-    rule: "validate_balances: Check unallocated physical mass/water/carbon balances before allocation; explain residuals with measurement uncertainty and stock changes. Require equal internal-link endpoints, disjoint PM fractions and no duplicated treatment/combustion emissions. Real biogenic CO2 must remain visible independent of LCIA or GHG reporting conventions."
+    rule: "validate_balances: Check unallocated physical mass/water/carbon balances before allocation; explain residuals with measurement uncertainty and stock changes. Require equal internal-link endpoints, disjoint PM fractions and no duplicated treatment/combustion emissions. Real biogenic CO2 must remain visible independent of LCIA or GHG reporting conventions. Apply the separate conserved-mass/element and reactive-H2O/component accounts in physical_balances. For actual AKD, independently support reaction extent and relevant water formation/consumption; unknown chemistry cannot pass as zero or a fitted balance term."
     source_ids: []
   - rule_id: validation_rule_4
     applies_to: "foreground_dataset_conformance"
@@ -883,9 +885,13 @@ data_sources:
     type: "literature"
     reference: "Andhra Paper Limited, Andhra Thermal Base Paper (NS), https://andhrapaper.com/product/andhra-thermal-base-paper-ns/ ; product description and Features"
     used_for: "Verifiable real base-paper product before customer coating, with advertised ECF pulp and alkaline sizing. Manufacturer specifications are product-specific; no mill recipe, supplier quantities or non-integrated production route is inferred."
+  - id: "yan-akd-hydrolysis-2019"
+    type: "literature"
+    reference: "Yan, N., Wan, X.-F., Hu, H.-C. and Chai, X.-S. (2019), Kinetic modelling of alkyl ketene dimer hydrolysis during the storage and papermaking process, Can. J. Chem. Eng. 97:2097–2101, DOI 10.1002/cjce.23440; publisher abstract https://onlinelibrary.wiley.com/doi/10.1002/cjce.23440"
+    used_for: "Primary abstract supports considering AKD hydrolysis under aqueous storage/papermaking conditions and chemical H2O consumption, not an actual site/formulation extent, kinetic constant or emission amount. Full kinetic model not acquired or adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:bfca15ccd2b41118f55958750aec8ce48c93e0a19b24c78aaac2abdef1c399be"
+  source_sha256: "sha256:f16b0cfb0f6abe75042f3954920b7fcd0cefe7923aa77cfc4efaa4236591c1ad"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6520"
@@ -984,18 +990,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50432"
+    - unit_id: "normative_52111"
       family: "validation"
       span:
         start:
-          offset: 50432
+          offset: 52111
           line: 555
           column: 1
         end:
-          offset: 51578
+          offset: 53517
           line: 562
           column: 1
-      markdown: "## 9. Validation Rules\n\n- `validate_product`: Require all reference qualifiers and exactly one base_paper output at 1 kg; reject an imaging coating, incompatible furnish or the unsupported mill route [andhra-thermal-base].\n- `validate_measurement`: Q must be positive, finite, net of packaging and common to every normalized row in both languages. Preserve mass/volume/NCV/GCV distinctions and documented conversions; missing steam or chemical supplier-basis compatibility makes the concrete dataset incomplete.\n- `validate_balances`: Check unallocated physical mass/water/carbon balances before allocation; explain residuals with measurement uncertainty and stock changes. Require equal internal-link endpoints, disjoint PM fractions and no duplicated treatment/combustion emissions. Real biogenic CO2 must remain visible independent of LCIA or GHG reporting conventions.\n- `validate_completeness`: Reject unresolved positive-exchange identity or missing upstream/treatment linkage when delivering a complete dataset. An absent exchange needs evidenced nonoccurrence; a pending row, detection limit or unavailable tool is not a passing result.\n\n"
+      markdown: "## 9. Validation Rules\n\n- `validate_product`: Require all reference qualifiers and exactly one base_paper output at 1 kg; reject an imaging coating, incompatible furnish or the unsupported mill route [andhra-thermal-base].\n- `validate_measurement`: Q must be positive, finite, net of packaging and common to every normalized row in both languages. Preserve mass/volume/NCV/GCV distinctions and documented conversions; missing steam or chemical supplier-basis compatibility makes the concrete dataset incomplete.\n- `validate_balances`: Check unallocated physical mass/water/carbon balances before allocation; explain residuals with measurement uncertainty and stock changes. Require equal internal-link endpoints, disjoint PM fractions and no duplicated treatment/combustion emissions. Real biogenic CO2 must remain visible independent of LCIA or GHG reporting conventions. Apply the separate conserved-mass/element and reactive-H2O/component accounts in physical_balances. For actual AKD, independently support reaction extent and relevant water formation/consumption; unknown chemistry cannot pass as zero or a fitted balance term.\n- `validate_completeness`: Reject unresolved positive-exchange identity or missing upstream/treatment linkage when delivering a complete dataset. An absent exchange needs evidenced nonoccurrence; a pending row, detection limit or unavailable tool is not a passing result.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1012,11 +1018,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50432
+              offset: 52111
               line: 555
               column: 1
             end:
-              offset: 50454
+              offset: 52133
               line: 555
               column: 23
           text: "## 9. Validation Rules"
@@ -1088,53 +1094,53 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_50432"
+      unit_id: "normative_52111"
       source_span:
         start:
-          offset: 50456
+          offset: 52135
           line: 557
           column: 1
         end:
-          offset: 50654
+          offset: 52333
           line: 557
           column: 199
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_50432"
+      unit_id: "normative_52111"
       source_span:
         start:
-          offset: 50655
+          offset: 52334
           line: 558
           column: 1
         end:
-          offset: 50943
+          offset: 52622
           line: 558
           column: 289
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_50432"
+      unit_id: "normative_52111"
       source_span:
         start:
-          offset: 50944
+          offset: 52623
           line: 559
           column: 1
         end:
-          offset: 51304
+          offset: 53243
           line: 559
-          column: 361
+          column: 621
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_50432"
+      unit_id: "normative_52111"
       source_span:
         start:
-          offset: 51305
+          offset: 53244
           line: 560
           column: 1
         end:
-          offset: 51576
+          offset: 53515
           line: 560
           column: 272
   diagnostics:
@@ -1176,14 +1182,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50432"
+      unit_id: "normative_52111"
       source_span:
         start:
-          offset: 50432
+          offset: 52111
           line: 555
           column: 1
         end:
-          offset: 50454
+          offset: 52133
           line: 555
           column: 23
 projection_metadata:
@@ -1193,5 +1199,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:bfca15ccd2b41118f55958750aec8ce48c93e0a19b24c78aaac2abdef1c399be"
-  generated_content_sha256: "sha256:76f9aa3332972eb3c377eeb29d907002a295de168a3d199544e74ee5d2d0ab39"
+    sha256: "sha256:f16b0cfb0f6abe75042f3954920b7fcd0cefe7923aa77cfc4efaa4236591c1ad"
+  generated_content_sha256: "sha256:dbba23189d9e69c89407cc82ee267603c526cfac7352e67953fac269c563e8bd"

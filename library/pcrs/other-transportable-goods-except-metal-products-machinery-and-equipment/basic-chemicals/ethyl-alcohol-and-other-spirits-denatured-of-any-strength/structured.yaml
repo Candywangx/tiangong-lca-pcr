@@ -1,10 +1,1065 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34131"
-  title: "Ethyl alcohol and other spirits, denatured, of any strength"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.ethyl-alcohol-and-other-spirits-denatured-of-any-strength"
+  classification_refs: "CPC 3.0:34131; narrower"
+  covered_products: "Bulk nonbeverage ethanol mixtures with actual IPA, MEK, denatonium and water"
+  excluded_products: "Other formula identities; fuel/retail/beverage products; upstream manufacture"
+  representative_product: "Actual accepted SKU of this composition, not a legally assumed common formula"
+  production_route: "Purchased ethanol and denaturants; on-site dissolution/blending; storage/acceptance; bulk loading"
+  market_state: "Liquid full supplied mixture at site gate, excluding tanker mass"
+functional_unit:
+  what: "Supply a declared nonbeverage denatured ethanol formulation"
+  how_much: "1 kg"
+  how_well: "Accepted actual composition, assay basis, water and intended industrial quality; no generic solvent efficacy equivalence"
+  how_long_or_cycle: "One production and gate-delivery cycle; no use lifetime"
+  reference_flow_link: "reference"
+system_boundary:
+  rules:
+    - rule_id: boundary_formulation
+      applies_to: "blend"
+      rule: "Include receipt, dissolution, blending, quality control, tank storage, loading, water-only cleaning and actual noncombustive vapour controls in one foreground unit. Collect each stage separately even though only one final product is output."
+      source_ids:
+        - hmrc-denaturing-2025
+        - jrc-efs-2006
+    - rule_id: boundary_upstream
+      applies_to: "ethanol_feed"
+      rule: "Purchased ethanol and all purchased inputs retain compatible upstream burdens once. Require origin-specific fermentation/synthetic supplier evidence; no physical ethanol conversion occurs here and no fermentation yield, distillation energy or fermentation CO2 is duplicated."
+      source_ids:
+        - ttb-denatured
+        - merck-denatured-103771
+    - rule_id: boundary_emissions
+      applies_to: "blend"
+      rule: "Inventory site-exit species after actual capture plus measured fugitives. Captured/returned solvent remains in the physical ledger, not an elementary emission. External liquid waste and atmospheric ethanol are different exchanges. Do not set zero solely because an abatement device exists."
+      source_ids:
+        - jrc-efs-2006
+    - rule_id: boundary_exclusion
+      applies_to: "blend"
+      rule: "Keep activities outside the stated configuration explicit. Downstream formulation, use, distribution and tanker manufacture are excluded; inbound logistics and purchased-input production need separately documented compatible background links before a cradle-to-gate claim."
+      source_ids:
+        - ttb-denatured
+        - jrc-efs-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased rectified undenatured ethanol, supplier-specific concentration/origin"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "IPA/MEK/denatonium denatured ethanol subset of CPC34131"
+  recursive_input_rule: "Internal same-mixture return is an internal link with equal mass/composition at both ends; purchased already-denatured mixture is outside this starting configuration, not an unburdened recursive input."
+  upstream_dataset_requirement: "Match actual composition, route, carbon origin, country/year, reference quantity and delivery boundary; disclose unavailable provider links."
+  disclosure: "Separate gate-to-gate formulation from background-inclusive results; list omissions and site configuration."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Ethyl alcohol and other spirits, denatured, of any strength"
+    uuid: "0ca960f7-3506-4b71-8503-e6f37e03d77a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "SKU/lot"
+    - "actual ethanol/IPA/MEK/denatonium/water composition and mass or volume basis"
+    - "assay method"
+    - "density and temperature"
+    - "denaturing formula identifier/jurisdiction/version and actual recipe evidence"
+    - "ethanol fermentation/synthetic source and fossil/biogenic carbon fractions"
+    - "impurity/grade"
+    - "bulk delivery"
+    - "supplier/provider boundary"
+    - "utility and emission-control configuration"
+    - "site/reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated net weighing or a traceable calibrated mass meter for accepted mixture; exclude tanker/tare and rejected liquid. Preserve stage meters within the aggregated unit."
+  - id: solution_basis
+    applies_to: "liquid materials and reference"
+    required_property_ref:
+      name: "Mass and composition"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert volume to mass only using measured density of that actual whole solution at its stated temperature: m = rho(T) × V(T), with consistent units. Never use pure-ethanol density for the mixture or sum additive liquid volumes. Retain mass and volume assay bases distinctly."
+  - id: composition_basis
+    applies_to: "recipe and assay"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Use component mass = solution mass × measured mass fraction; verify complete water/solute closure. ABV/proof and GC area-percent are not mass fraction without a validated conversion/calibration for this denatured matrix. Historical absolute-ethanol recipe denominators are not final mixture volume."
+  - id: energy_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain the native database property and provider boundary; metered electrical kWh × 3.6 = MJ. This exact unit conversion does not imply an electricity efficiency or fuel calorific value."
+  - id: gas_basis
+    applies_to: "nitrogen"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use supplied mass or independently measured gas-state conversion with temperature, absolute pressure, wet/dry composition and compressibility; unknown provider volume basis leaves linkage incomplete."
+process_map:
+  - id: blend
+    name: "Denaturation, storage and bulk loading"
+    inclusion: "required"
+    inclusion_condition: "The defined externally supplied ingredients and configuration only"
+    role: "Single aggregated foreground with stage-specific measurements"
+    quantitative_reference: "1 kg"
+process_inventory:
+  - id: blend
+    label: "Denaturation, storage and bulk loading"
+    inputs:
+      product:
+        - row_id: ethanol_feed
+          role: "Rectified ethanol"
+          name: "Rectified ethanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b3d45fa4-4eb4-4d8d-bffc-1ddf22cdc229"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased undenatured ethanol only. Record whole received solution mass, water, ethanol mass/volume fractions, assay basis and temperature, supplier origin and fermentation or synthetic route. The bound flow requires a China production mix at plant and undenatured material before denaturing; other supply geography needs a compatible identity. It does not fix fermentation versus synthetic manufacture, carbon origin, concentration or supplier burden. Link one compatible upstream dataset; do not add a second fermentation foreground."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - merck-denatured-103771
+            ranges: []
+        - row_id: ipa
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual IPA addition, CAS 67-63-0; record purity, solution/carrier water and actual supplied mass. The adopted product requires a China production mix at plant and has no fixed concentration. Another origin or delivery boundary requires a compatible identity; the native Chinese route label does not prove an exclusive manufacturing technology. It is not a printing cleaner or optical-assembly antiseptic mixture."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - eu-denaturing-2017
+                - merck-denatured-103771
+            ranges: []
+        - row_id: mek
+          role: "Methyl ethyl ketone"
+          name: "Methyl ethyl ketone"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual 2-butanone addition, CAS 78-93-3, separately measured supplied material with assay and carrier. No verified compatible product UUID is adopted; diisobutyl ketone and isophorone are different species."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - eu-denaturing-2017
+                - merck-denatured-103771
+            ranges: []
+        - row_id: denatonium
+          role: "Denatonium benzoate"
+          name: "Denatonium benzoate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual denatonium benzoate, CAS 3734-33-6, supplied as solid for on-site dissolution. Record salt identity, anhydrous/hydrate basis, water/assay and calibrated microdose records; carrier solvent is taken from already metered ethanol/water inputs. A purchased proprietary premix is outside this representative supply configuration and requires a separately identified full-mixture input."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - eu-denaturing-2017
+                - merck-denatured-103771
+            ranges: []
+        - row_id: water_recipe
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only separately added mains water that remains in the recipe. Meter actual quantity and water quality; do not add water already contained in purchased ethanol or IPA/MEK. Other treated-water grades need their own identity and treatment inventory."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - hmrc-denaturing-2025
+            ranges: []
+        - row_id: water_clean
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Water-only cleaning of tanks/lines and laboratory glassware within this configuration. Meter separately from recipe water; retain cleaning frequency and final liquid destination. Chemical cleaning agents require an expanded atomic inventory."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "China 1–35 kV user-side grid-average electricity only when the site meter, geography and provider have that boundary. Include pumps, mixers, loading, laboratory, cleaning and installed controls. Record country/year and losses boundary; the UUID is not a universal supplier mix. Other supply voltages/technologies require compatible flow/provider selection."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: nitrogen
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "92233c86-8e75-441c-94de-03cc91bc7c10"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional purchased gaseous air-separation nitrogen (N2; CAS 7727-37-9) for blanketing/loading. Record actual delivered or metered mass, purity, pressure, supplier route, provider boundary and make-up/venting. Collect physical kg independently from calibrated delivery or meter records. If metered by volume, collect gas temperature, absolute pressure, wet/dry basis, composition and compressibility with a validated state conversion; do not infer density from an unverified native coefficient. Before linking a compatible product flow/provider, verify phase, route, grade, delivery boundary and mass reference-quantity support. The selected gaseous N2 product is described as at-plant make-up/headspace gas for inerting. Its qualitative “most vented” and “small make up” comments are not a dose, fraction or normalization: use measured gross external input, actual stock/retention and separately observed venting; internal returns are not new purchases. This identity establishes no air-separation manufacturing dataset, fixed purity/pressure or supplier burden. Actual supplied material and provider reference basis must match before linkage; otherwise retain the concrete exchange with an explicit linkage gap. Never infer gas density, a numerical recipe or a background burden from the name or use comment."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: carbon
+          role: "Activated carbon"
+          name: "Activated carbon"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5cad53b5-252a-4e2f-8197-8be465707405"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual purchased activated-carbon charge for vapour adsorption. Record grade, feedstock origin, moisture, replacement and adsorbate loading. The broad record describes air/water filtration but fixes no raw material, capacity or removal efficiency; match the provider to actual grade. Preserve the native route label “absorption reaction” alongside the comment describing adsorption; it is not evidence of a particular carbon-manufacturing route. Require supplier-confirmed sorbent and installed-system compatibility with actual ethanol/IPA/MEK vapour, moisture and operating conditions. The BREF warns of exothermic incompatibility, including ketones on deeply regenerated carbon; its regenerative twin-bed examples do not establish applicability or efficiency of this externally replaced, nonregenerative bed. No on-site regeneration is covered."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference
+          role: "Ethyl alcohol and other spirits, denatured, of any strength"
+          name: "Ethyl alcohol and other spirits, denatured, of any strength"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ca960f7-3506-4b71-8503-e6f37e03d77a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One accepted bulk mixture: ethanol plus actual IPA, MEK, denatonium and retained water. Measure net supplied liquid mass excluding tanker/transport equipment. This is the only final reference-product output; storage/loading are aggregated to avoid duplicating it. The broad flow contains the declared subset without establishing a legal formula or purity."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product
+              source_ids:
+                - ttb-denatured
+                - merck-denatured-103771
+            ranges: []
+      waste:
+        - row_id: liquid_waste
+          role: "Waste liquid"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Discarded off-spec denatured mixture or captured solvent spill sent to external treatment, not a pure ethanol elementary emission or saleable product. Keep this batch separate from cleaning wastewater. The broad liquid-industrial-waste identity is conditional on actual composition and receiver acceptance; it establishes no treatment provider. Record full liquid mass, component masses and destination."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: wash_waste
+          role: "Waste liquid"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Separately collected aqueous cleaning effluent containing actual ethanol/denaturants, externally treated with declared receiver and chemistry. Use measured full mixture mass; record component concentrations, COD and water fraction for treatment compatibility. This broad identity does not support silicon-ingot or manganese-residue wastewater providers. No direct discharge to water is covered."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: spent_carbon
+          role: "spent activated carbon"
+          name: "spent activated carbon"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aff33890-3f08-40f9-9310-a7f77213de05"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional exported adsorbent with its actual captured solvent and moisture. Record wet mass, dry carbon and adsorbate separately for physical balance, waste classification and receiving regeneration/disposal route. Adsorbed material is not simultaneously an atmospheric release; do not apply a decolorization waste or automatic credit."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+      elementary:
+        - row_id: ethanol_air
+          role: "ethanol"
+          name: "ethanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9349-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Ethanol CAS 64-17-5 actually leaving the site to outdoor air, unspecified subcompartment. Speciate storage, transfer, mixing, loading and ventilation after control; record fossil/biogenic carbon origin independently because this species flow has no carbon-source split. No upstream fermentation CO2 or combustion is inferred."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: ipa_air
+          role: "isopropanol"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual IPA CAS 67-63-0 released to outdoor air, unspecified; keep distinct from ethanol and other propanols. Use measured speciation and controlled/uncontrolled source coverage. No default emission factor or positive emission is implied by the flow identity."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: mek_air
+          role: "methyl ethyl ketone"
+          name: "methyl ethyl ketone"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-afc7-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual MEK CAS 78-93-3 released to outdoor air, unspecified, distinct from supplied mixture, waste solvent, other ketones and total VOC. Do not add total VOC on top of its quantified constituent species."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: nitrogen_air
+          role: "dinitrogen"
+          name: "dinitrogen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aad2-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual nitrogen vent from inerting to outdoor air, unspecified. Reconcile to delivered nitrogen and retained headspace; this is N2, not NOx, N2O or an air-resource input."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+        - row_id: denatonium_air
+          role: "denatonium benzoate"
+          name: "denatonium benzoate"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "455bab38-f4cb-47e2-b11c-de51e4329016"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual aerosol/dust of CAS 3734-33-6 leaving the site to outdoor air, unspecified, during solid dosing. Quantify the chemical fraction after capture, not total particulate mass. Record particle-size/source coverage and prevent duplicate chemical/total-PM accounting. Captured solids returned internally are not external emissions; residues in rinse are in wash_waste."
+          amount:
+            expression: "Measured attributable amount divided by accepted net mixture mass in the same reporting period; retain original stage records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-efs-2006
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "blend"
+    rule: "Directly attribute batch ingredients and separable stage utilities first. For unavoidable shared services use a measured causal physical driver; retain driver, totals, exclusions and sensitivity. Economic allocation requires documented failure of physical causality and actual consistent prices/period. No universal allocation percentage is prescribed."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: allocation_physical
+    applies_to: "blend"
+    rule: "Keep the unallocated total physical mass, C/H/O/N and every actual element, water and process-link ledger distinct from allocated environmental burdens. Record opening/closing stocks, product retained in equipment, adsorbate/moisture, internal paired batches, returns, maintenance removals/replacements and full packing/container physical observations separately. Amortized equipment/container service burdens and allocated environmental inventories cannot replace these gross physical observations or be used to force mass closure. Never multiply physical reference/co-product outputs by burden shares. Internal recovery is not a co-product credit; discarded liquid remains waste. Exported saleable recovered solvent requires separately evidenced identity, quality, buyer/function and allocation boundary before extending this PCR."
+    source_ids:
+      - ghg-product-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "blend"
+      flow_role: "accepted product"
+      record_type: "foreground_record"
+      raw_fields: "SKU; lot; gross/tare/net mass; acceptance; actual assay basis; ethanol/IPA/MEK/denatonium/water; density; temperature; method; uncertainty; tank stock"
+      collection_method: "Calibrated net weighing or mass meter; batch release composition and traceable laboratory calibration. Verify density of this actual mixture at measured temperature. Determine ethanol by matrix-qualified CLEN143 GC-FID, denatonium benzoate by CLEN280 HPLC-UV and water independently by ketone-compatible Karl Fischer with reagent blank/drift, standards and recovery validation for this matrix. TM207 supports IPA/MEK only within its demonstrated matrix/range, not denatonium, water or ethanol mass fraction. Retain method-specific calibration, dilution, duplicate/QC acceptance, recovery, interferences and detection/quantitation limits. CLEN280 yields mg/L solution; convert to kg/kg only with actual same-solution density and temperature. CLEN143 requires measured sample and calibration-standard density at 20 °C for its mass/volume conversion; binary alcohol tables are not a whole-mixture assay. Ketone side reactions invalidate an unqualified standard methanolic KF result. Neither assay standards, method performance ranges nor reference temperatures establish the actual lot purity or recipe."
+      unit: "kg"
+      frequency: "Each lot/event; stage meters over reporting period"
+      temporal_coverage: "Declared complete reporting period, stock opening/closing and abnormal events"
+      site_scope: "Same site, SKU and configuration; segregate actual recipe campaigns"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, representative sampling, source coverage, uncertainty and reconciliation records"
+    - protocol_id: cp_material
+      process_id: "blend"
+      flow_role: "each recipe input"
+      record_type: "foreground_record"
+      raw_fields: "receipt and dosing; supplier/SKU/CAS; solution/active/carrier basis; actual purity; density/temperature; stock; ethanol route; elemental composition including C/H/O/N and actual other elements; carbon content and fossil/biogenic origin of every carbon-bearing ingredient"
+      collection_method: "Reconcile calibrated weighed additions, invoices, lot CoA/SDS and stock changes. Weigh solid microdoses on a validated scale; account on-site carrier using the already measured inputs. Obtain supplier route and origin records; do not infer bio-origin from a generic ethanol name."
+      unit: "kg"
+      frequency: "Each lot/event; stage meters over reporting period"
+      temporal_coverage: "Declared complete reporting period, stock opening/closing and abnormal events"
+      site_scope: "Same site, SKU and configuration; segregate actual recipe campaigns"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, representative sampling, source coverage, uncertainty and reconciliation records"
+    - protocol_id: cp_cleaning
+      process_id: "blend"
+      flow_role: "cleaning water"
+      record_type: "foreground_record"
+      raw_fields: "water meter; cleaning event; water quality; rinse volume/mass; destination; coverage"
+      collection_method: "Separate calibrated water-only cleaning meters from ingredient addition; reconcile the resulting liquid waste and retained tank inventory."
+      unit: "kg"
+      frequency: "Each lot/event; stage meters over reporting period"
+      temporal_coverage: "Declared complete reporting period, stock opening/closing and abnormal events"
+      site_scope: "Same site, SKU and configuration; segregate actual recipe campaigns"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, representative sampling, source coverage, uncertainty and reconciliation records"
+    - protocol_id: cp_energy
+      process_id: "blend"
+      flow_role: "electricity"
+      record_type: "foreground_record"
+      raw_fields: "stage meter kWh; voltage; supplier/country/year; losses boundary; reporting period; shared loads"
+      collection_method: "Read calibrated stage meters; include QA and controls; reconcile site total and attribution driver; retain native kWh and exact MJ conversion."
+      unit: "MJ"
+      frequency: "Each lot/event; stage meters over reporting period"
+      temporal_coverage: "Declared complete reporting period, stock opening/closing and abnormal events"
+      site_scope: "Same site, SKU and configuration; segregate actual recipe campaigns"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, representative sampling, source coverage, uncertainty and reconciliation records"
+    - protocol_id: cp_utility
+      process_id: "blend"
+      flow_role: "nitrogen and activated carbon, separately"
+      record_type: "foreground_record"
+      raw_fields: "utility identity; each delivery/meter; nitrogen state/purity/pressure; carbon grade/origin/moisture; charge/change; supplier baseline"
+      collection_method: "Collect one record per atomic utility. Validate nitrogen gas conversion and activated-carbon grade; no borrowed pressure, adsorption capacity or efficiency."
+      unit: "kg"
+      frequency: "Each lot/event; stage meters over reporting period"
+      temporal_coverage: "Declared complete reporting period, stock opening/closing and abnormal events"
+      site_scope: "Same site, SKU and configuration; segregate actual recipe campaigns"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, representative sampling, source coverage, uncertainty and reconciliation records"
+    - protocol_id: cp_waste
+      process_id: "blend"
+      flow_role: "each external liquid or spent-carbon stream"
+      record_type: "foreground_record"
+      raw_fields: "separate lot; full wet mass; water; ethanol/IPA/MEK/denatonium; COD; dry carbon/adsorbate; waste status; receiver; treatment and receipt"
+      collection_method: "Weigh each exported waste lot and sample actual chemistry; preserve destination and provider acceptance records. Off-spec solvent, aqueous rinse and spent adsorbent must not be collapsed."
+      unit: "kg"
+      frequency: "Each lot/event; stage meters over reporting period"
+      temporal_coverage: "Declared complete reporting period, stock opening/closing and abnormal events"
+      site_scope: "Same site, SKU and configuration; segregate actual recipe campaigns"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, representative sampling, source coverage, uncertainty and reconciliation records"
+    - protocol_id: cp_air
+      process_id: "blend"
+      flow_role: "each emitted species"
+      record_type: "foreground_record"
+      raw_fields: "source/vent; species/CAS; subcompartment; concentration and sampling method; exhaust flow and gas-state basis; operating time; capture/return; fugitives; detection limits; carbon source; powder size; inlet/outlet humidity and wet/dry gas flow; net uptake/release; residual NMVOC basis/overlap"
+      collection_method: "Quantify actual site-exit species with validated monitoring or a site-calibrated storage/transfer mass-balance model, including fugitives and each control path. Integrate compatible species concentration and gas volume over operating time; validate models with measurements. TM207 is a liquid denaturant assay, not an exhaust-air test. Record non-detect limits/coverage, not an assumed zero."
+      unit: "kg"
+      frequency: "Each lot/event; stage meters over reporting period"
+      temporal_coverage: "Declared complete reporting period, stock opening/closing and abnormal events"
+      site_scope: "Same site, SKU and configuration; segregate actual recipe campaigns"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, representative sampling, source coverage, uncertainty and reconciliation records"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "a_j = A_j / P; A_j is attributable measured exchange j for the reporting period; P is accepted net kg of the full supplied mixture from cp_product. Retain each native numerator unit; output exchange per 1 kg reference flow."
+      inputs:
+        - A_j
+        - P
+        - cp_product
+      output: "a_j"
+      source_ids: []
+    - id: solution_mass
+      applies_to: "all inventory rows"
+      rule: "m = rho(T) × V(T), after harmonizing volume and density units for the actual same solution; use calibrated mass directly when available."
+      inputs:
+        - cp_product
+        - cp_material
+        - cp_waste
+      output: "m"
+      source_ids:
+        - merck-denatured-103771
+    - id: component_balance
+      applies_to: "all inventory rows"
+      rule: "For each physical component k: opening stock_k + external input_k = accepted output_k + external waste_k + site-exit emission_k + closing stock_k + documented residual_k. Compute each solution contribution from measured mass fractions, retain signed residual with uncertainty, and cancel equal internal transfers. Apply the ledger to total physical mass, each constituent and C/H/O/N plus every actual other element, including dissolved or hydration water, impurities, gas uptake/release, retained adsorbent, full containers and maintenance observations. Preserve fossil/biogenic carbon separately for every carbon-bearing ingredient and emitted species. Use actual salt/hydrate formula and assay; do not equate denatonium cation to complete benzoate salt or invent purity. No invented yield, element destruction or loss closure."
+      inputs:
+        - cp_product
+        - cp_material
+        - cp_cleaning
+        - cp_utility
+        - cp_waste
+        - cp_air
+      output: "Unallocated physical ledger"
+      source_ids: []
+    - id: electricity_conversion
+      applies_to: "electricity"
+      rule: "Electrical energy in MJ = measured electrical energy in kWh × 3.6; retain supplier quantity boundary."
+      inputs:
+        - cp_energy
+      output: "MJ"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_composition
+      applies_to: "reference"
+      requirement: "Require actual whole-mixture recipe and assay, water/impurities, density/temperature, measured net acceptance and intended grade; a legal label and ethanol-only assay do not define the mixture. Use the independently qualified ethanol, volatile-denaturant, denatonium and ketone-compatible water methods; declare analytical versus industrial grade from actual specifications."
+      evidence: "cp_product; ttb-tm207-2018; clen-ethanol-2023; clen-denatonium-2024; mettler-kf-2012; merck-denatured-103771"
+    - id: quality_provider
+      applies_to: "all inventory rows"
+      requirement: "Verify flow identity separately from dataset amount/reference compatibility. An unresolved non-reference UUID or provider gap stays explicit and prevents a complete background-inclusive claim for that scope."
+      evidence: "cp_material; cp_utility; cp_waste"
+    - id: quality_period
+      applies_to: "all inventory rows"
+      requirement: "Use the same accepted product denominator and period in both languages and every row. Retain stock, rejected batches, abnormal spills, attribution and uncertainty; do not impose historical/single-plant ratios as defaults."
+      evidence: "cp_product; cp_material; cp_energy; cp_waste; cp_air"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference"
+    rule: "Reject undenatured or fuel ethanol as the final mixture; require actual supported constituent set, route and every reference qualifier. Exactly one final product row must equal 1 kg reference flow."
+    source_ids:
+      - ttb-denatured
+      - merck-denatured-103771
+  - rule_id: validate_balance
+    applies_to: "blend"
+    rule: "Reconcile complete physical mass, water, C/H/O/N and all actual element ledgers and equal internal links before burden allocation; disclose residuals, uncertainty and absent supplier origin. Biological CO2 in linked upstream LCI must not be deleted merely because a climate-reporting convention separates it. This noncombustive formulation does not invent a CO2 source."
+    source_ids: []
+  - rule_id: validate_emissions
+    applies_to: "blend"
+    rule: "Check actual medium/submedium, CAS, species mass and source coverage. Keep waste mixtures separate from elementary species, measured emissions separate from captured/internal material, and speciated VOC separate from duplicate totals while retaining any measured, nonoverlapping NMVOC residual on a verified common basis. Net H2O and atmospheric pass-through require separate inlet/outlet observations; wet exhaust is not one chemical species. Particle-size bins/chemical fractions must not overlap in summed elementary exchanges."
+    source_ids:
+      - jrc-efs-2006
+  - rule_id: validate_completeness
+    applies_to: "all inventory rows"
+    rule: "Unresolved identities, provider bases, unmeasured applicable sources or excluded additional plant activities must be reported as incomplete scope. Identity lookup is not methodology approval, chemical/legal suitability or complete dataset validation."
+    source_ids:
+      - ttb-denatured
+      - jrc-efs-2006
+published_dataset_profile:
+  dataset_role: "Site/SKU-specific foreground formulation dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Use only for the declared supplied mixture, composition and bulk boundary; background-inclusive use needs compatible upstream/transport/treatment links."
+  excluded_use: "Pure ethanol equivalent; arbitrary legal denaturing recipe; fuel/beverage use; unsupported whole upstream plant; universal default inventory"
+  required_metadata: "All reference qualifiers; flow/provider bases; full physical ledger; stage collection; allocation; stock; site/year; source limitations"
+  required_quality_disclosure: "UUID gaps, supplier/background gaps, measurement coverage, residuals/uncertainty and configuration exclusions; independent methodology approval remains pending"
+  update_trigger: "Change of recipe/component, upstream source/carbon origin, water/assay basis, supply/utility/control configuration, legal specification or measured balance"
+data_sources:
+  - id: "ttb-denatured"
+    type: "official_guidance"
+    reference: "[TTB Denatured Alcohol](https://www.ttb.gov/regulated-commodities/industrial-alcohol/industrial-alcohol-denatured-alcohol)"
+    used_for: "SDA/CDA nonbeverage distinctions; no recipe or use approval is inferred."
+  - id: "eu-denaturing-2017"
+    type: "official_guidance"
+    reference: "[Commission Implementing Regulation (EU) 2017/1112, Annex](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32017R1112)"
+    used_for: "Historical original act establishes IPA/MEK/denatonium identities and absolute-ethanol basis distinction. Not a current worldwide legal mandate or amount default."
+  - id: "merck-denatured-103771"
+    type: "literature"
+    reference: "[Merck/Supelco product 103771, Properties and General description](https://www.sigmaaldrich.com/US/en/product/mm/103771)"
+    used_for: "Producer original product page read: concrete compound set, distinct assay and density/temperature declarations. Single SKU only; no concentrations, impurity limits, density or packaged form transferred as defaults."
+  - id: "jrc-efs-2006"
+    type: "official_guidance"
+    reference: "[JRC Emissions from Storage BREF, July 2006](https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-03/efs_bref_0706_0.pdf), §§4.1.2.2.3, 4.1.3.15.2, 5.1.1.1 and 5.2.2.2; printed pp.119, 145–146, 259–260, 271 / PDF pp.147, 173–174, 287–288, 299"
+    used_for: "Horizontal liquid storage/transfer and monitoring/control conditions; significance and measurement frequency are case-specific, large-facility conditions retained. No ethanol recipe, universal loss or energy factor."
+  - id: "ttb-tm207-2018"
+    type: "official_guidance"
+    reference: "[TTB SSD:TM:207 Rev.1, issued 23 January 2018](https://www.ttb.gov/media/72467/download?inline=), pp.1–8, Scope, limitations, sample preparation, QC, calculations and reporting"
+    used_for: "Primary HS-GC-MSD volatile-denaturant method, including IPA/MEK; original courtesy copy, not automatically updated. Require actual matrix/range/limit validation; not nonvolatile denatonium, water, ethanol mass-fraction or exhaust-air method."
+  - id: "ghg-product-2011"
+    type: "standard"
+    reference: "[GHG Protocol Product Life Cycle Accounting and Reporting Standard, 2011](https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf), Tables 9.1–9.2 printed p.63 / PDF p.65"
+    used_for: "Subdivision and causal physical allocation hierarchy; no fixed allocation share; the separate physical ledger is a declared foreground collection requirement."
+  - id: "hmrc-denaturing-2025"
+    type: "official_guidance"
+    reference: "[HMRC Excise Notice 473, updated 18 November 2025](https://www.gov.uk/government/publications/excise-notice-473-production-distribution-and-use-of-denatured-alcohol/excise-notice-473-production-distribution-and-use-of-denatured-alcohol), §§3.1, 3.6, 5.3, 13–14 and 20.2"
+    used_for: "Primary separate-receipt/mixing, water-addition and stock-record example. UK-specific and time-specific; no worldwide legal rule, prescribed dose or site-approval claim."
+  - id: "clen-ethanol-2023"
+    type: "official_guidance"
+    reference: "[CLEN ILIADe 143:2023, version 25 July 2023](https://taxation-customs.ec.europa.eu/system/files/2023-09/ILIADe143_Ethanol_v25July2023_CLENmethod.pdf), §§1–8 and Annex, PDF pp.1–7"
+    used_for: "Primary GC-FID ethanol assay separates IPA/MEK; preserve calibration, sample density/20 °C and mass/volume distinction. Original reagent CAS entry is inconsistent with the ethanol identity; verify the actual reagent rather than copying that entry. No lot purity default."
+  - id: "clen-denatonium-2024"
+    type: "official_guidance"
+    reference: "[CLEN ILIADe 280:2024, version 13 February 2024](https://taxation-customs.ec.europa.eu/system/files/2023-09/ILIADe280_DenatoniumB_v25July2023_CLENmethod.pdf), §§1–8 and Annex, PDF pp.1–6"
+    used_for: "Primary HPLC-UV denatonium benzoate assay in denatured alcohol; retain working range, interference separation, calibration, QC and solution mg/L basis. Regulatory absolute-ethanol conversion is separate from whole-mixture mass."
+  - id: "mettler-kf-2012"
+    type: "literature"
+    reference: "[Mettler-Toledo KF Guide 1, August 2012](https://www.mt.com/dam/MT-NA/KarlFischerHelpPage/KF_Guide_1.pdf), §§1.3, 2.1.4–2.1.5 and 2.2.5, printed pp.9–10, 13, 18 / PDF pp.9–10, 13, 18"
+    used_for: "Primary instrument-method guidance on ketone side reactions and special KF reagents. Require actual-matrix blank/recovery and technique qualification; no denatured-lot water value or universal reagent suitability."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:702492ffd74a6d44f5767df2ea1150844f69dc308562483893c5d00217de8580"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6474"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6474
+          line: 60
+          column: 1
+        end:
+          offset: 8751
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_formulation | blend | Include receipt, dissolution, blending, quality control, tank storage, loading, water-only cleaning and actual noncombustive vapour controls in one foreground unit. Collect each stage separately even though only one final product is output. | hmrc-denaturing-2025; jrc-efs-2006 |\n| boundary_upstream | ethanol_feed | Purchased ethanol and all purchased inputs retain compatible upstream burdens once. Require origin-specific fermentation/synthetic supplier evidence; no physical ethanol conversion occurs here and no fermentation yield, distillation energy or fermentation CO2 is duplicated. | ttb-denatured; merck-denatured-103771 |\n| boundary_emissions | blend | Inventory site-exit species after actual capture plus measured fugitives. Captured/returned solvent remains in the physical ledger, not an elementary emission. External liquid waste and atmospheric ethanol are different exchanges. Do not set zero solely because an abatement device exists. | jrc-efs-2006 |\n| boundary_exclusion | blend | Keep activities outside the stated configuration explicit. Downstream formulation, use, distribution and tanker manufacture are excluded; inbound logistics and purchased-input production need separately documented compatible background links before a cradle-to-gate claim. | ttb-denatured; jrc-efs-2006 |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased rectified undenatured ethanol, supplier-specific concentration/origin |\n| starting_condition_role | foreground_start |\n| product_classification_scope | IPA/MEK/denatonium denatured ethanol subset of CPC34131 |\n| recursive_input_rule | Internal same-mixture return is an internal link with equal mass/composition at both ends; purchased already-denatured mixture is outside this starting configuration, not an unburdened recursive input. |\n| upstream_dataset_requirement | Match actual composition, route, carbon origin, country/year, reference quantity and delivery boundary; disclose unavailable provider links. |\n| disclosure | Separate gate-to-gate formulation from background-inclusive results; list omissions and site configuration. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 9
+              column: 1
+            end:
+              offset: 339
+              line: 9
+              column: 76
+          text: "# Purchased-ethanol denaturation with IPA, MEK and denatonium: bulk mixture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6474
+              line: 60
+              column: 1
+            end:
+              offset: 6495
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28338"
+      family: "allocation"
+      span:
+        start:
+          offset: 28338
+          line: 374
+          column: 1
+        end:
+          offset: 29745
+          line: 381
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | blend | Directly attribute batch ingredients and separable stage utilities first. For unavoidable shared services use a measured causal physical driver; retain driver, totals, exclusions and sensitivity. Economic allocation requires documented failure of physical causality and actual consistent prices/period. No universal allocation percentage is prescribed. | ghg-product-2011 |\n| allocation_physical | blend | Keep the unallocated total physical mass, C/H/O/N and every actual element, water and process-link ledger distinct from allocated environmental burdens. Record opening/closing stocks, product retained in equipment, adsorbate/moisture, internal paired batches, returns, maintenance removals/replacements and full packing/container physical observations separately. Amortized equipment/container service burdens and allocated environmental inventories cannot replace these gross physical observations or be used to force mass closure. Never multiply physical reference/co-product outputs by burden shares. Internal recovery is not a co-product credit; discarded liquid remains waste. Exported saleable recovered solvent requires separately evidenced identity, quality, buyer/function and allocation boundary before extending this PCR. | ghg-product-2011 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 9
+              column: 1
+            end:
+              offset: 339
+              line: 9
+              column: 76
+          text: "# Purchased-ethanol denaturation with IPA, MEK and denatonium: bulk mixture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28338
+              line: 374
+              column: 1
+            end:
+              offset: 28378
+              line: 374
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39549"
+      family: "validation"
+      span:
+        start:
+          offset: 39549
+          line: 412
+          column: 1
+        end:
+          offset: 41232
+          line: 421
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference | Reject undenatured or fuel ethanol as the final mixture; require actual supported constituent set, route and every reference qualifier. Exactly one final product row must equal 1 kg reference flow. | ttb-denatured; merck-denatured-103771 |\n| validate_balance | blend | Reconcile complete physical mass, water, C/H/O/N and all actual element ledgers and equal internal links before burden allocation; disclose residuals, uncertainty and absent supplier origin. Biological CO2 in linked upstream LCI must not be deleted merely because a climate-reporting convention separates it. This noncombustive formulation does not invent a CO2 source. |  |\n| validate_emissions | blend | Check actual medium/submedium, CAS, species mass and source coverage. Keep waste mixtures separate from elementary species, measured emissions separate from captured/internal material, and speciated VOC separate from duplicate totals while retaining any measured, nonoverlapping NMVOC residual on a verified common basis. Net H2O and atmospheric pass-through require separate inlet/outlet observations; wet exhaust is not one chemical species. Particle-size bins/chemical fractions must not overlap in summed elementary exchanges. | jrc-efs-2006 |\n| validate_completeness | all inventory rows | Unresolved identities, provider bases, unmeasured applicable sources or excluded additional plant activities must be reported as incomplete scope. Identity lookup is not methodology approval, chemical/legal suitability or complete dataset validation. | ttb-denatured; jrc-efs-2006 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 9
+              column: 1
+            end:
+              offset: 339
+              line: 9
+              column: 76
+          text: "# Purchased-ethanol denaturation with IPA, MEK and denatonium: bulk mixture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39549
+              line: 412
+              column: 1
+            end:
+              offset: 39571
+              line: 412
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_formulation"
+      identity_kind: "explicit"
+      unit_id: "normative_6474"
+      source_span:
+        start:
+          offset: 6568
+          line: 64
+          column: 1
+        end:
+          offset: 6880
+          line: 64
+          column: 313
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6474"
+      source_span:
+        start:
+          offset: 6881
+          line: 65
+          column: 1
+        end:
+          offset: 7234
+          line: 65
+          column: 354
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_6474"
+      source_span:
+        start:
+          offset: 7235
+          line: 66
+          column: 1
+        end:
+          offset: 7572
+          line: 66
+          column: 338
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_exclusion"
+      identity_kind: "explicit"
+      unit_id: "normative_6474"
+      source_span:
+        start:
+          offset: 7573
+          line: 67
+          column: 1
+        end:
+          offset: 7908
+          line: 67
+          column: 336
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_28338"
+      source_span:
+        start:
+          offset: 28451
+          line: 378
+          column: 1
+        end:
+          offset: 28857
+          line: 378
+          column: 407
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_28338"
+      source_span:
+        start:
+          offset: 28858
+          line: 379
+          column: 1
+        end:
+          offset: 29743
+          line: 379
+          column: 886
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_39549"
+      source_span:
+        start:
+          offset: 39644
+          line: 416
+          column: 1
+        end:
+          offset: 39917
+          line: 416
+          column: 274
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_39549"
+      source_span:
+        start:
+          offset: 39918
+          line: 417
+          column: 1
+        end:
+          offset: 40321
+          line: 417
+          column: 404
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_39549"
+      source_span:
+        start:
+          offset: 40322
+          line: 418
+          column: 1
+        end:
+          offset: 40900
+          line: 418
+          column: 579
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_39549"
+      source_span:
+        start:
+          offset: 40901
+          line: 419
+          column: 1
+        end:
+          offset: 41230
+          line: 419
+          column: 330
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6474"
+      source_span:
+        start:
+          offset: 6474
+          line: 60
+          column: 1
+        end:
+          offset: 6495
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6474"
+      source_span:
+        start:
+          offset: 7936
+          line: 71
+          column: 1
+        end:
+          offset: 8749
+          line: 78
+          column: 125
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28338"
+      source_span:
+        start:
+          offset: 28338
+          line: 374
+          column: 1
+        end:
+          offset: 28378
+          line: 374
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39549"
+      source_span:
+        start:
+          offset: 39549
+          line: 412
+          column: 1
+        end:
+          offset: 39571
+          line: 412
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:702492ffd74a6d44f5767df2ea1150844f69dc308562483893c5d00217de8580"
+  generated_content_sha256: "sha256:e6bc124a8fc0fb8f1dc22e9439ea9aef138d109ad58e33e1a7c5fc406b4cee59"

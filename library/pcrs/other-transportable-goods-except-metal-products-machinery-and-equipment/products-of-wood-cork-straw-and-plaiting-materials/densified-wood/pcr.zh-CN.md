@@ -435,7 +435,7 @@ content_maturity: authored_methodology
 | period_normalization | all inventory rows | D = 期间验收调湿后净木材kg；各物理交换期间总量 / D，得到每 1 kg 参考流数量。D必须大于零；缺少现场值时不填造数。 | cp_reference; all collection protocols | 每 1 kg 参考流交换量 |  |
 | hydraulic_conversion | hydraulic_oil | q = V / D；以实测质量换算时，按同牌号实测温度T的密度作V = m / rho(T)。另保留实物油质量m = rho(T)*V和在用库存/排油/损失平衡；不得假设默认密度或从新油输入扣除废油。 | cp_hydraulic; cp_reference | 每kg参考流的m3液压油，及独立实物质量平衡 |  |
 | density_compression | birch_stock, finished_blank | rho = m / V；以配对同含水/温度状态初始rho0及最终rhof验证物理密度提高，同时记录体积变化、绝干木质量损失。压缩比CR = (t0 - tf) / t0；释放回弹SB = (tr - tc) / tc；本件定义的循环压缩损失比R = (tcycle - tf) / (t0 - tf)。均为无量纲比，分母非正时标未定义；tcycle在回到tf对应调湿状态后测量。R是本件明确规定的测试约定，不得与定义不同的文献SR指标直接比较。 | cp_wood; cp_reference; cp_press | 密度和独立回弹/定形恢复测试指标 | usda-wood-handbook-2021; cabral-densification-2022 |
-| physical_balance | manufacture | 分别保留绝干木材、水和碳账：投入+期初库存 = 成品+各残余流+实际排放+期末库存+未解释差额；记录差额/测量不确定性，不以假造排放闭合。木中碳来自实测/可追溯树种数据，无默认含碳率；CO2碳质量按分子质量比12/44核对。 | cp_wood; cp_reference; cp_residues; cp_water; cp_air | 实物平衡及残差 | usda-wood-handbook-2021 |
+| physical_balance | manufacture | 负荷分配前分别核对完整物料质量及元素碳：期初存量+投入=期末存量+输出+报告残差，采用实际组成及全部相关边界穿越。化学反应不生成或消耗总元素碳。另对分子H2O和反应性木材/树脂组分采用期初存量+投入+有证据生成=期末存量+输出+有证据消耗+报告残差。仅量化实际固化/热变化/氧化路径及程度；相变属于转移而非反应。反应项为零须有无该反应的证据；程度未知保持未决，不假定完全固化、通用收率或平衡用排放。分开留存胶/添加剂、木碳和化石碳。内部转移仅在端点匹配时抵消；已包含反应产物的实测输出只计一次。保留不确定性，实物输出不得乘负荷份额。含碳比例采用实测或可追溯树种/组成证据，不设通用默认；CO2碳质量=CO2质量×12/44。 | cp_wood; cp_reference; cp_residues; cp_water; cp_air | 实物平衡及残差 | usda-wood-handbook-2021 |
 
 ### 数据质量要求
 
