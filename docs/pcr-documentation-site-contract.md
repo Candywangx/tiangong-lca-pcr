@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: "2026-10-18"
-lastReviewedNote: "Reviewed fork PCR58 storage and memory repair: candidate required-language Markdown uses the existing native byte-exact download transport through 48 KiB; manifest inline downloads remain 16 KiB. Two static workers bound repeated complete-manifest copies. Complete source content, stable page URLs, supported Next payloads, source binding, download fidelity, provider file/resource gates and product 0.4.7 remain required. Final-source qualification and publication are separate."
-lastReviewedCommit: "41aee0f766ae9a831b2d57b7c3b0ef0c658c9ab8"
+lastReviewedNote: "Reviewed the same-source CI web-build handoff and separate product sealing: complete source/run/attempt/plan/archive/tree and build/SEO evidence bindings, mandatory full/data jobs, unchanged resource budgets and fresh complete qualification. No methodology, dependency, version, publication or provider authority changes."
+lastReviewedCommit: "92e53b455840908bc77c4d660de2367ae783a0e7"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -300,8 +300,17 @@ an arbitrary aggregate-size rejection. Supported Next navigation payloads and
 complete source artifacts remain subject to the existing fidelity contract.
 
 The complete export runs locally or in GitHub qualification and has no project-owned
-elapsed-time acceptance budget. CI bounds its instrumented documentation job to
-60 minutes; stage and total durations remain reported. The old 18-minute full-build
+elapsed-time acceptance budget. CI gives the instrumented `web-build` job and the
+separate `documentation` product-sealing job 60 minutes each; stage and total
+durations remain reported. The first freezes every successful exported byte in a
+complete tree hash and source/run/attempt/qualification-bound archive, with its
+full build log. The second verifies and safely materializes that exact artifact,
+runs vendored SEO and seals the same web bytes. All HTML, Next navigation payloads,
+raw downloads, languages, search and inspector files remain intact. Artifact
+transfer and extraction count against those unchanged job limits. A verified
+routing-only `edgeone.json` is the sole post-verification addition; it is included
+in the transported tree. Final audit files bind that tree and the complete build
+and SEO evidence to the product artifact. The old 18-minute full-build
 cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
 only the sealed-product importer, whose separate 15-minute download/materialization
 deadline, cleanup and atomic handoff remain enforced. The export uses two static workers

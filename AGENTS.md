@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: "2026-10-18"
-lastReviewedCommit: "3faf6707c45abd4dbc6ca4bb72ea4224287dd3ec"
-lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
+lastReviewedCommit: "92e53b455840908bc77c4d660de2367ae783a0e7"
+lastReviewedNote: "Reviewed the same-source CI web-build handoff and separate product sealing: complete source/run/attempt/plan/archive/tree and build/SEO evidence bindings, mandatory full/data jobs, unchanged resource budgets and fresh complete qualification. No methodology, dependency, version, publication or provider authority changes."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -323,6 +323,12 @@ npm run validate
 
 Canonical lint retains full diagnostics in `.reports/pcr-lint.json` and prints a bounded summary.
 Warnings retain their existing severity; report-write failures fail validation. See `builder/README.md`.
+
+CI requires both the instrumented `web-build` producer and the separate
+`documentation` product sealer in full and data lanes. Their complete archive/tree
+handoff binds the actual source, current run/attempt and applicable qualification
+plan, preserving original web bytes and build/SEO evidence without raising budgets.
+The public reusable product artifact output and downstream sealed checks remain.
 
 CI uses the stable `validate` aggregate gate under
 [the engineering qualification contract](docs/typescript-engineering.md#ci-qualification-lanes).

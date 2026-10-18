@@ -19,6 +19,7 @@ import { SUMMARY_LIMIT } from "./summaries.ts";
 import { summarizeExportFiles } from "./export-size.ts";
 import { decodeInlineDownloadUrl, inlineDownloadManifestPath, inlineDownloadUrl } from "./raw-download.ts";
 import { readProductIdentity } from "../../../builder/scripts/product-identity.ts";
+import { productTreeSha256 } from "../../../builder/scripts/product-release.ts";
 import { gettingStartedGuides, gettingStartedGuide } from "../lib/getting-started.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
   root = path.resolve(app, "../.."),
@@ -512,7 +513,12 @@ requireThat(
   files.every((f) => f.bytes < 25_000_000),
   "EdgeOne single-file budget exceeded",
 );
+// Bind every successful exported byte for a verified cross-job handoff.
+const treeSha256 = productTreeSha256(files.map(file => ({
+  ...file, sha256: sha256(fs.readFileSync(path.join(out, file.path))).slice(7),
+})));
 const result = {
+  treeSha256,
   pcrs: manifest.records.length,
   pages: manifest.pages.length,
   sourceDocuments: report.documents.length,
