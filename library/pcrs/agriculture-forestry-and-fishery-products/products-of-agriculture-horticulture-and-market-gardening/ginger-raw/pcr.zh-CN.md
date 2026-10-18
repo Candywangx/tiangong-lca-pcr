@@ -285,15 +285,8 @@ sync_with: pcr.en-US.md
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_yield_reconciliation`
 - 来源：`mass-balance-identity`
-- 数量范围：作物至合格品质量平衡筛查范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1
-  - 上限：1.5
-  - 单位：kg/kg accepted fresh ginger
-  - 基准：合格品加实测收获、整理和分级损失
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 废物流
 
@@ -374,15 +367,8 @@ sync_with: pcr.en-US.md
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_yield_reconciliation`
 - 来源：`mass-balance-identity`
-- 数量范围：关联的进入根茎质量
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1
-  - 上限：1.5
-  - 单位：kg/kg accepted fresh ginger
-  - 基准：与田间交接量严格相等
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力投入（`harvest_energy`）
 
@@ -435,15 +421,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_lots`
 - 来源：`mass-balance-identity`
-- 数量范围：起挖品至合格品质量平衡筛查范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1
-  - 上限：1.4
-  - 单位：kg/kg accepted fresh ginger
-  - 基准：合格品加实测整理与分级损失
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 废物流
 
@@ -496,15 +475,8 @@ sync_with: pcr.en-US.md
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_harvest_lots`
 - 来源：`mass-balance-identity`
-- 数量范围：关联原始批次质量
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1
-  - 上限：1.4
-  - 单位：kg/kg accepted fresh ginger
-  - 基准：与收获交接量严格相等
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 清洗供水（`washing_water`）
 
@@ -583,15 +555,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_batch`
 - 来源：`codex-cxs-218-1999`; `mass-balance-identity`
-- 数量范围：整理品至合格品质量平衡筛查范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1
-  - 上限：1.3
-  - 单位：kg/kg accepted fresh ginger
-  - 基准：合格品加实测降级品与拒收物质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 废物流
 
@@ -611,15 +576,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_batch`
 - 来源：`mass-balance-identity`
-- 数量范围：清洗废水平衡筛查范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.05
-  - 单位：m3/kg prepared fresh rhizomes
-  - 基准：未清洗批次为零；无记录新增水时不得高于供水量
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ### 过程：分选与分级（`sorting_grading`）
 
@@ -644,15 +602,8 @@ sync_with: pcr.en-US.md
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_grading_batch`
 - 来源：`mass-balance-identity`
-- 数量范围：关联分级投入质量
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1
-  - 上限：1.3
-  - 单位：kg/kg accepted fresh ginger
-  - 基准：与前一交接批次严格关联
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力投入（`grading_energy`）
 

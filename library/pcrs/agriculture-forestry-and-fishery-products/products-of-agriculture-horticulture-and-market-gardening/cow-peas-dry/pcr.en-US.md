@@ -872,16 +872,8 @@ Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_drying_records`
 - Sources: `mass-balance-identity`
-- Range: Complete quantitative range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg water
-  - Basis: water removed per 1,000 kg accepted grain
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
 
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ### Process: Grading, routing and farm-gate hand-off (`grading_handoff`)
 

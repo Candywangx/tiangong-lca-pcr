@@ -187,21 +187,6 @@ No additional compulsory exchange; document actual absence or out-of-scope class
 
 ##### Elementary flows
 
-###### Actual land occupation or transformation interface (`grow_land`)
-
-Conditional collection requirement: record actual managed field/yard occupation and any evidenced land transformation with site, prior/new use and time boundaries. Keep occupation (area-time) separate from transformation (area); each final exchange uses its own concrete land-use identity, property and native unit. Do not convert area or area-time to biomass mass, infer transformation from planting alone or assume a standard rotation. Shared land belongs once to actual cohort/period/site consumers.
-
-- Selected flow: Actual land occupation or transformation
-- Flow property / unit: Land use / native area or area-time unit
-- Amount rule: Actual attributable area or area-time under cp_grow, divided by accepted net dispatch mass; occupation and transformation remain separate native exchanges
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_grow`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
-
 #### Outputs
 
 ##### Product flows
@@ -621,6 +606,7 @@ Identify the actual input for this operation from supplier specifications, equip
 | attribution_ledger | all shared burdens | Reconcile the total source burden to allocations across actual output/site/cohort/year/asset/lot consumers and a disclosed residual. Record rework added burden separately from carried burden. | original burden; actual usage/output evidence; declared allocation | assigned and residual burdens without duplicates | |
 | `calculate_direct_release_ledger` | `grow`; `harvest`; `condition`; `grade`; `hold`; `dispatch` | For each unique event, substance and medium, obtain raw release E from measurement or the cited applicable method using activity A and a compatible factor EF; use E = A * EF only for a genuinely simple-factor method, after checking units and abatement scope. Do not add different substances/media; retain an unallocated raw-release ledger. Divide attributed burden totals once by matched positive final reference quantity R; do not renormalize final-reference intensities or allocate a shared event twice. Unexplained material residuals are not automatically emissions and missing factors are not zero. | cp_direct_release_grow; cp_direct_release_harvest; cp_direct_release_condition; cp_direct_release_grade; cp_direct_release_hold; cp_direct_release_dispatch; existing emission cards; supplier coverage; reference quantity | Node/substance/medium-specific raw and attributed amounts and unresolved gaps |  |
 | `aggregate_internal_transfers` | cut_trees; prepared_trees; accepted_grades; held_trees; condition_tree_feed; grade_tree_feed; hold_tree_feed; dispatch_tree_feed; offspec_return | Record paired event-level fresh mass T in kg, activity, lot and state. For positive final dispatch mass R retain T/R × 1 kg in the internal ledger; never force T=R. The four normal fresh-tree handoffs retain verified cut-tree identity ab8a7694-6ea2-4cce-b535-9358f74c1189; downgraded/rework material needs separate compatible identity confirmation, not role-based inheritance. Cancel each pair once within the aggregate boundary, never period stocks, losses, externally sold downgraded goods or actual external purchases. Rework adds only its actual new activity burden without duplicating carried burdens. | cp_harvest; cp_condition; cp_grade; cp_hold; cp_dispatch; transfer_id; paired records | unallocated measured transfer ledger and aggregate inventory without duplicate internal exchanges | |
+| `grow_land_specific_exchanges` | `grow` | Enumerate actual land occupation and each evidenced land transformation separately, with site, land class, from/to state, area and period. Occupation uses area-time; transformation uses area and separate from/to identities under the selected method. Instantiate one concrete elementary exchange per identity and unit; never add the two dimensions, infer transformation from planting, or assume zero land burden from wild origin. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_grow` | Separate atomic exchanges; completeness required |  |
 
 ### Data Quality Requirements
 

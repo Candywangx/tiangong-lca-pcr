@@ -993,15 +993,8 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference and
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cocoa_grade_lot_records`
 - Sources: `fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
-- Range: Cleaning-input screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.35
-  - Upper: 0.55
-  - Unit: kg dried beans/kg fermented wet input
-  - Basis: same-lot wet-to-dry balance; replace with measured input
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage (`cocoa_cleaning_energy`)
 
@@ -1190,15 +1183,8 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference and
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cocoa_storage_records`
 - Sources: `icco-cocoa-processing`; `icco-cocoa-quality-requirements`
-- Range: Storage-input screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.3
-  - Upper: 0.55
-  - Unit: kg dried beans/kg wet reference
-  - Basis: declared wet-to-dry conversion; replace with lot balance
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage (`cocoa_storage_services`)
 

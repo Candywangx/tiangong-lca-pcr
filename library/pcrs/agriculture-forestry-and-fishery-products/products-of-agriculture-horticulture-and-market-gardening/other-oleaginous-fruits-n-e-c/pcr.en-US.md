@@ -614,31 +614,6 @@ Raw activity or stage basis: exact reference amount after grade and state accept
 
 ##### Waste flows
 
-###### Packing rejects and packaging losses (`packing_waste_output`)
-
-Record packing rejects and packaging losses at this node while preserving traceable species, state, batch, and destination evidence.
-
-- Selected flow: Fruit rejected during packing and packaging scrap by material and fate
-- Flow property / unit: Mass / kg
-- Amount rule: measure separately and prevent return or rework from double counting
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: fruit and packaging streams remain separate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: 过程输出 (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packing_lot`
-- Range: Foreground QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg/1,000 kg packed product
-  - Basis: fruit and packaging streams remain separate
-  - Basis kind: 过程输出 (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -676,6 +651,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_perennial_attribution` | perennial route | establishment or replacement total × declared period share | establishment; replacement; productive life; attribution method | amount attributed to declared harvest period |  |
 | `calc_batch_balance` | sorting and packing | incoming mass = accepted + downgraded + rejected + documented loss | matched inputs and outputs | balance difference and flows |  |
 | `calc_soil_emissions` | soil emissions | declared method applied to source-specific nutrients and residues | nutrients; residues; factors; compartments | mass of each specific emission | `ipcc-2019-managed-soils` |
+| `packing_waste_output_specific_exchanges` | `packing_handoff` | Enumerate rejected fruit and each actual packaging-waste material as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_packing_lot` | Separate atomic exchanges; completeness required |  |
 
 ### Data Quality Requirements
 

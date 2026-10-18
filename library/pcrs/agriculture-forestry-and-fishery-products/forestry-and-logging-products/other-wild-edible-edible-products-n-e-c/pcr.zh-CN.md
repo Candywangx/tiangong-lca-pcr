@@ -181,22 +181,6 @@ Range 范围证据要求：本条件角色不规定全类别数值界限。仅�
 
 Range 范围证据要求：本条件角色不规定全类别数值界限。仅在明确具体身份、状态、原生单位、分母及相容路线／场址／期间证据后建立定量筛查；记录界限及不确定性，不裁剪实测值。在此之前明确披露范围筛查不可用，不作为默认零值或完整性声明。
 
-###### 实际可归属的土地占用与转化 (`source_land_use`)
-
-按所选核算方法要求记录有据面积、土地类型、时长和实际转化。分别确定管理及采集影响；野生来源不自动意味着土地使用为零、固定再生期、避免土地使用或库存变化抵扣。各具体占用或转化交换须有自身身份及支持。
-
-- 选定流：实际可归属的土地占用与转化
-- 流属性/单位：实际土地属性 / 适用的 m2.a 或 m2
-- 数量规则：用 cp_source 的实际可归属数量除以 cp_reference 中同一验收发运净质量；分别保留各具体交换及其实际单位。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_source`
-
-Range 范围证据要求：本条件角色不规定全类别数值界限。仅在明确具体身份、状态、原生单位、分母及相容路线／场址／期间证据后建立定量筛查；记录界限及不确定性，不裁剪实测值。在此之前明确披露范围筛查不可用，不作为默认零值或完整性声明。
-
 ###### 本节点实际直接取水 (`source_water_withdrawal`)
 
 仅在本自有节点直接取水时：识别水源／介质、计量体积或质量、返回去向和供水边界。若取水归属其他节点，须配对内部供水转移。不得同时把同一取水记作已包含全部取水负担的外部供应水。
@@ -533,6 +517,7 @@ Range 范围证据：归一化参考按定义等于 1 千克，不是经验产�
 | `retained_components` | 处理材料及组合品 | accepted_net_kg = accepted_botanical_substrate_kg + retained_treatment_matter_kg + permanent_other_components_kg，采用不重叠的质量定义；植物基材包含其声明固有水分。排除运输包装及偶然物；留存处理液中的水须且只能归属一个质量组分。 | measured product composition; botanical/moisture ledger; retained agents; permanent components | 核对一致的整品参考质量 |  |
 | `shared_attribution` | 共享服务记录与独立输出 | assigned_quantity_k = total_quantity * share_k；完整归属记录的份额之和为 1。按分配优先顺序选择驱动，保留全部消费者、期间及排除。返工在保留原负担外仅增加其增量份额。 | total_quantity; complete consumers; driver evidence; share_k | 完整且不重复的数量归属 |  |
 | `direct_release` | 各明确排放物及介质 | 使用测量，或 emission_kg = activity_in_declared_unit * compatible_factor_kg_per_unit，记录范围、期间、物质基准及不确定性。避免与处理／服务数据集重叠。配制产品质量、元素养分质量和化合物排放质量未经明确有据化学计量换算不得互换。 | measured release or compatible activity/factor; actual substance/compartment | 物质特定直接释放 |  |
+| `source_land_use_specific_exchanges` | `source` | 分别枚举实际土地占用及每项有据的土地转化，保留场址、土地类型、转化前后状态、面积和期间。占用使用面积乘时间；转化使用面积，并按所选方法保留独立的转出／转入身份。每个具体身份和单位建立一张基本交换卡；不得把两种量纲相加、仅凭种植推断转化，或因野生来源假定土地负荷为零。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_source` | 逐项独立交换；完成前必须补齐 |  |
 
 ### 数据质量要求
 

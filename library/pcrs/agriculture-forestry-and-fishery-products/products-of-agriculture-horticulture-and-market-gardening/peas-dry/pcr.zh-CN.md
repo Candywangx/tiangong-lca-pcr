@@ -396,15 +396,8 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 - 基准类型： 过程输出 (`process_output`)
 - 证据类型： 采集记录 (`collected_record`)
 - 采集协议： `cp_harvest_batch`
-- 数量范围： 转移核对
-  - 范围角色： QA 校验 (`qa_guardrail`)
-  - 下限： 0.98
-  - 上限： 1.02
-  - 单位： kg input/kg transferred mature crop
-  - 基准： Same field and batch before harvest loss
-  - 基准类型： 过程输出 (`process_output`)
-  - 证据类型： 方法公式 (`method_formula`)
-  - 来源： `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力投入（`harvest_energy`）
 
@@ -568,15 +561,8 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 - 基准类型： 过程输出 (`process_output`)
 - 证据类型： 采集记录 (`collected_record`)
 - 采集协议： `cp_cleaning_lot`
-- 数量范围： 投入核对
-  - 范围角色： QA 校验 (`qa_guardrail`)
-  - 下限： 0.98
-  - 上限： 1.02
-  - 单位： kg input/kg transferred raw grain
-  - 基准： Same lot before cleaning
-  - 基准类型： 过程输出 (`process_output`)
-  - 证据类型： 方法公式 (`method_formula`)
-  - 来源： `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力投入（`cleaning_energy`）
 
@@ -861,16 +847,8 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 - 证据类型： 方法公式 (`method_formula`)
 - 采集协议： `cp_drying_batch`
 - 来源： `mass-balance-identity`
-- 数量范围： 除水量筛选
-  - 范围角色： QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 0.30
-  - 单位： kg water/kg incoming grain
-  - 基准： Same stabilization batch
-  - 基准类型： 过程输出 (`process_output`)
-  - 证据类型： 方法公式 (`method_formula`)
-  - 来源： `mass-balance-identity`
 
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
 该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。

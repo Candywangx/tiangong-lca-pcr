@@ -842,7 +842,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_grade_lot_records`
 - 来源：`fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
-- 数量范围：清洁投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.35；上限：0.55；单位：kg dried beans/kg fermented wet input；基准：同批次湿干平衡，应以实测投入替代；基准类型：参考流（`reference_flow`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力（`cocoa_cleaning_energy`）
 
@@ -993,7 +994,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_storage_records`
 - 来源：`icco-cocoa-processing`; `icco-cocoa-quality-requirements`
-- 数量范围：储存投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.3；上限：0.55；单位：kg dried beans/kg wet reference；基准：声明湿干换算，应以批次平衡替代；基准类型：参考流（`reference_flow`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力（`cocoa_storage_services`）
 

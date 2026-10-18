@@ -392,15 +392,8 @@ Raw activity or stage basis: per 1 kg dry tea.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_output_records`
-- Range: Fresh-shoot plucking input guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 3.0
-  - Upper: 12.0
-  - Unit: kg fresh shoots/kg dry tea
-  - Basis: source-shoot mass reconciled to the dry-tea output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage (`tea_plucking_energy`)
 
@@ -508,15 +501,8 @@ Raw activity or stage basis: per 1 kg dry tea.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_processing_batch_records`
-- Range: Fresh-leaf reception guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 3.0
-  - Upper: 8.0
-  - Unit: kg fresh leaf/kg dry tea
-  - Basis: lot-level mass balance to dry made tea
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Green-leaf handling water (`tea_green_leaf_water`)
 
@@ -561,15 +547,8 @@ Raw activity or stage basis: per 1 kg dry tea.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_processing_batch_records`
-- Range: Prepared-leaf mass-balance guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 2.8
-  - Upper: 8.0
-  - Unit: kg prepared leaf/kg dry tea
-  - Basis: post-reception state before route-specific treatment
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 
@@ -618,15 +597,8 @@ Raw activity or stage basis: per 1 kg dry tea.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_processing_batch_records`
-- Range: Route-input screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 2.8
-  - Upper: 8.0
-  - Unit: kg prepared leaf/kg dry tea
-  - Basis: selected route input reconciled to dry tea
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 
@@ -799,16 +771,8 @@ Raw activity or stage basis: per 1 kg dry tea.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_processing_batch_records`
-- Range: Processing-loss screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1.5
-  - Unit: kg loss/kg dry tea
-  - Basis: mass balance after measured moisture and declared residues
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
 
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Elementary flows
 
@@ -910,15 +874,8 @@ Raw activity or stage basis: per 1 kg dry tea.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_quality_and_storage_records`
-- Range: Grading input reconciliation range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.98
-  - Upper: 1.02
-  - Unit: kg graded input/kg dry tea reference flow
-  - Basis: receiving-to-grade mass reconciliation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage (`tea_grading_energy`)
 
@@ -1047,15 +1004,8 @@ Raw activity or stage basis: per 1 kg dry tea reference flow.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_quality_and_storage_records`
 - Sources: `mass-balance-identity`
-- Range: Gate-output mass-balance acceptance range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.98
-  - Upper: 1.02
-  - Unit: kg gate output/kg reference flow
-  - Basis: final normalized reference-flow reconciliation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 

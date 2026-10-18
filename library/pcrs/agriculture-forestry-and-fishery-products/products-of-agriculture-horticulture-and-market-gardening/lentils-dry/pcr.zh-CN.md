@@ -346,15 +346,8 @@ sync_with: pcr.en-US.md
 - 证据类型: 方法公式 (`method_formula`)
 - 采集协议: `cp_harvest_mass_balance`
 - 来源: `mass-balance-identity`
-- 数量范围: 完整定量QA范围
-  - 范围角色: QA校验 (`qa_guardrail`)
-  - 下限: 500
-  - 上限: 10000
-  - 单位: kg/ha
-  - 基准: 每收获公顷接收的站立作物
-  - 基准类型: 作物周期 (`crop_cycle`)
-  - 证据类型: 方法公式 (`method_formula`)
-  - 来源: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力投入（`harvest_energy`）
 
@@ -439,15 +432,8 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_harvest_mass_balance`
 - 来源: `mass-balance-identity`
-- 数量范围: 完整定量QA范围
-  - 范围角色: QA校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 10000
-  - 单位: kg/ha
-  - 基准: 每公顷回收秸秆和荚壳干物质
-  - 基准类型: 作物周期 (`crop_cycle`)
-  - 证据类型: 方法公式 (`method_formula`)
-  - 来源: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 废物流
 

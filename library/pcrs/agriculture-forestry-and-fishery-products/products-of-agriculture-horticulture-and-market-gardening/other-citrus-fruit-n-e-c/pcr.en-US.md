@@ -499,23 +499,6 @@ Raw activity or stage basis: reference flow of 1,000 kg marketable gate output.
 
 ##### Waste flows
 
-###### Conditioning rejects and wash wastewater (`conditioning_reject_output`)
-
-Record fruit rejects, trim, and wastewater leaving conditioning, with destination and treatment evidence.
-
-- Selected flow: Conditioning reject, trim, or wash wastewater
-- Flow property / unit: Mass or volume / kg fresh material or m3 wastewater
-- Amount rule: Measure or calculate rejects, trim, and wastewater separately where practicable and retain fate.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable gate output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_primary_conditioning_records`
-- Sources: `fao-postharvest-handling-ae075e`
-
 ## 7. Allocation and Co-product Handling
 
 | rule_id | Applies to | Rule | source_ids |
@@ -561,6 +544,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_perennial_attribution` | establishment and replacement | annual attributed amount = documented amount / declared attribution period, adjusted for area and period | establishment; stand age; period; area | annualized orchard amount | `fao-gap-framework-2003`; `iso-14067-2018` |
 | `calc_soil_emissions` | soil nitrous oxide | apply declared factor or measurement to eligible nutrient and residue nitrogen after duplicate-basis removal | nutrient and residue nitrogen; factor or result | emission amount | `ipcc-2019-managed-soils` |
 | `calc_output_reconciliation` | harvest and conditioning | gross harvest = marketable + cull + trim + loss; investigate unexplained residuals | lot weights and fate records | reconciled products and wastes | `fao-postharvest-handling-ae075e` |
+| `conditioning_reject_output_specific_exchanges` | `primary_conditioning` | Enumerate rejected citrus fruit, trimming residues and washing wastewater as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_primary_conditioning_records` | Separate atomic exchanges; completeness required | `fao-postharvest-handling-ae075e` |
 
 ### Data Quality Requirements
 

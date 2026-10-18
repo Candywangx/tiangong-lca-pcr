@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-18
-lastReviewedNote: "Combined upstream PCR #130 source-map-js 1.2.2/Next 16.4.2 and exact Playwright 1.64.1 qualification updates with the fork's bounded inline manifest/Markdown downloads. Preserve same-directory source binding, exact download bytes, distinct filenames and physical fallbacks; no PCR methodology, source/language policy, runtime or publication authority is changed. Source-bound full validation remains required."
-lastReviewedCommit: 3104aee3b8c6128b0e09fb3bb21db3c3d1889f10
+lastReviewedAt: "2026-10-18"
+lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
+lastReviewedCommit: "3faf6707c45abd4dbc6ca4bb72ea4224287dd3ec"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

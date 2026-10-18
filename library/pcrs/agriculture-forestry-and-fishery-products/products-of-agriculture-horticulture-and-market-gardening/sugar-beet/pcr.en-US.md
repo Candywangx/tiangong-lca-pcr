@@ -101,7 +101,7 @@ This is a single-period route with no storage and no replacement events. Batch p
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
 - Selected flow: Sugar-beet planting seed
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Issued seed minus documented returns
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -207,7 +207,7 @@ Raw activity or stage basis: per hectare treated.
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
 - Selected flow: Irrigation water delivered to field
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Metered volume or verified pump flow × duration; rainfall excluded
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -229,6 +229,8 @@ Raw activity or stage basis: per hectare in crop cycle.
   - Sources: `fao-crop-yield-water-2012`
 
 Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+Retain metered m3 and water density; convert to kg once under cr_02 before final normalization.
 
 ###### Electricity, medium voltage input (`field_energy`)
 
@@ -275,7 +277,7 @@ Raw activity or stage basis: per hectare in crop cycle.
 This independent product is an intended output quantified at the declared process boundary, has an explicit hand-off, and is reconciled with adjacent states.
 
 - Selected flow: Mature standing sugar-beet roots
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Lifted roots plus sampled pre-lifting and unharvested loss; soil and tops excluded
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -314,15 +316,8 @@ Raw activity or stage basis: per kg standing mature roots.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_harvest_loss`
 - Sources: `usda-ers-sugarbeet-harvest-loss-2019`
-- Range: Typical-to-screening loss share
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.05
-  - Unit: kg/kg standing roots
-  - Basis: per kg standing mature roots
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `usda-ers-sugarbeet-harvest-loss-2019`
+
+Determine the mass-loss fraction from representative same-field root sampling and matched standing-root mass. National unharvested-area statistics are contextual evidence, not a kg/kg root-loss factor or a universal bound. Report uncertainty and investigate losses without imposing a fixed threshold.
 
 ##### Elementary flows
 
@@ -331,7 +326,7 @@ Raw activity or stage basis: per kg standing mature roots.
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
 - Selected flow: Nitrous oxide to air
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg N2O
 - Amount rule: Declared IPCC tier applied to collected nitrogen inputs and residue N
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -351,6 +346,8 @@ Raw activity or stage basis: per hectare in crop cycle.
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
 
+Report molecular N2O mass. If the selected method reports N2O-N, multiply by 44/28 once; do not reconvert N2O mass.
+
 ### Process: Root lifting and harvest (`harvest_lifting`)
 
 #### Inputs
@@ -362,7 +359,7 @@ Raw activity or stage basis: per hectare in crop cycle.
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
 - Selected flow: Standing mature roots transferred to harvest
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Equal standing_mature_roots for the same field and cycle
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -427,7 +424,7 @@ Raw activity or stage basis: per hectare harvested.
 This independent product is an intended output quantified at the declared process boundary, has an explicit hand-off, and is reconciled with adjacent states.
 
 - Selected flow: Lifted raw sugar-beet roots
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Calibrated load mass corrected for tare and separately measured exported soil/trash
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -453,7 +450,7 @@ Raw activity or stage basis: per hectare harvested.
 This independent product is an intended output quantified at the declared process boundary, has an explicit hand-off, and is reconciled with adjacent states.
 
 - Selected flow: Intentionally collected beet tops
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Measured collected load; zero when retained on field
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -515,7 +512,7 @@ Raw activity or stage basis: per kg harvest root input.
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
 - Selected flow: Lifted roots transferred to conditioning
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Equal lifted_raw_roots for represented loads
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -578,7 +575,7 @@ Raw activity or stage basis: per 1000 kg lifted roots.
 This independent product is an intended output quantified at the declared process boundary, has an explicit hand-off, and is reconciled with adjacent states.
 
 - Selected flow: Farm-conditioned roots ready for grading
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Input minus separated tops/trash, rejected roots and measured loss
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -648,7 +645,7 @@ Raw activity or stage basis: per 1000 kg lifted roots.
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
 - Selected flow: Conditioned roots transferred to grading
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Equal conditioned_roots assigned to the delivery batch
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -712,7 +709,7 @@ Raw activity or stage basis: per 1000 kg reference product.
 This independent product is an intended output quantified at the declared process boundary, has an explicit hand-off, and is reconciled with adjacent states.
 
 - Selected flow: Downgraded roots sent to declared use
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Measured downgraded mass by batch and destination
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -740,7 +737,7 @@ Raw activity or stage basis: per kg grading input.
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
 - Selected flow: Grading-rejected roots
-- Flow property / unit: Mass or energy as stated / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: Measured reject mass linked to recovery, field return, treatment or disposal
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -767,9 +764,9 @@ Raw activity or stage basis: per kg grading input.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| AL-01 | all nodes | Prefer subdivision; assign each field, machine-period and batch burden once. | `mass-balance-identity` |
-| AL-02 | roots and tops | Field-retained tops receive no product allocation. Intentionally collected tops use documented economic allocation with mass sensitivity. | `mass-balance-identity` |
-| AL-03 | grade states | Subdivide when possible; otherwise economically allocate accepted and marketed downgraded roots. Waste receives no product allocation. | `mass-balance-identity` |
+| AL-01 | all nodes | Prefer subdivision and direct attribution of field, machine-period and batch records before allocating shared burdens. | `ghg-protocol-product-standard-2011` |
+| AL-02 | roots and tops | Field-retained tops are not a sold co-product. For intentionally marketed tops, first use subdivision or a justified physical relationship. Economic allocation is a fallback when that relationship is unavailable; document why. | `ghg-protocol-product-standard-2011` |
+| AL-03 | grade states | Separate directly measured grade-specific operations. Allocate remaining shared burdens using a defensible physical relationship, or documented gate-matched market values if unavailable. Retain prices, period, all co-products and sensitivity; assigned shares sum to one. Waste handling remains included without product allocation. | `ghg-protocol-product-standard-2011` |
 | AL-04 | rejects | Reworked material retains accumulated burden and is counted only at final hand-off. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
@@ -845,9 +842,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-crop-yield-water-2012` | official_guidance | FAO, *Crop yield response to water* (2012), https://www.fao.org/4/i2800e/i2800e.pdf | water and route |
 | `fao-sugar-beet-white-sugar-2009` | official_guidance | FAO, *Sugar beet: white sugar* (2009), https://www.fao.org/fileadmin/user_upload/tci/docs/AH1-%28eng%29Sugar%20beet%20white%20sugar.pdf | identity, route, yield |
 | `fao-land-management-root-crops` | official_guidance | FAO land-management/root-harvest guidance, https://www.fao.org/4/x5648e/x5648e0f.htm | harvest, soil, loss |
-| `us-epa-sugarbeet-processing-ap42` | official_guidance | US EPA AP-42 9.10.1.2, https://www.ams.usda.gov/sites/default/files/media/Vinasse.pdf | factory exclusion |
+| `us-epa-sugarbeet-processing-ap42` | official_guidance | US EPA AP-42 9.10.1.2, https://www.epa.gov/sites/default/files/2020-10/documents/c9s10-1b.pdf | factory exclusion |
 | `usda-ers-sugarbeet-harvest-loss-2019` | dataset | USDA ERS sugarbeet harvest (2019), https://www.ers.usda.gov/data-products/chart-gallery/95396 | loss context |
 | `uk-defra-sugar-beet-2024` | dataset | UK Defra, Agriculture in the UK 2024, https://www.gov.uk/government/statistics/agriculture-in-the-united-kingdom-2024/chapter-7-crops | yield/sugar context |
 | `uk-nvz-nitrogen-2026` | official_guidance | UK nitrogen fertiliser guidance, https://www.gov.uk/guidance/using-nitrogen-fertilisers-in-nitrate-vulnerable-zones | N check |
 | `ipcc-2019-managed-soils` | method_factor | IPCC 2019 Refinement, Volume 4 Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | managed-soil N2O |
-| `mass-balance-identity` | method_factor | Conservation-of-mass identity applied to linked foreground records | transfers, balance, allocation |
+| `mass-balance-identity` | method_factor | Conservation-of-mass identity applied to linked foreground records | transfers and balance; not allocation-method selection |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapter 9, pp. 63–66; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | Allocation hierarchy and gate-matched market value; no site allocation fractions |

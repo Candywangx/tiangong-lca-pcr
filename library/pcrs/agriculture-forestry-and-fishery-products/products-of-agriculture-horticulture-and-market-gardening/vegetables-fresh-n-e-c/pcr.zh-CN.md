@@ -344,23 +344,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_crop_inputs`
 - 来源：`ipcc-2019-refinement-agriculture`
 
-###### 田间氨和氮氧化物（`crop_reactive_n_emissions`）
-
-当选定方法或场址记录支持时，分别记录氨和氮氧化物释放。
-
-- 选定流：一种已识别的空气排放：氨（NH3）或方法报告的氮氧化物物种；分别生成交换并保留 NOx 报告基准
-- 流属性/单位：Mass / kg substance
-- 数量规则：使用实测或按方法计算的排放，并在数据包中保留分开的物质身份
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考新鲜蔬菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：氮投入（`n_input`）
-- 证据类型：根据采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_crop_inputs`
-- 来源：`ipcc-2019-refinement-agriculture`
-
 ### 过程：采收与田间收集（`p_harvest_capture`）
 
 #### 输入
@@ -529,24 +512,6 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-
-
-###### 调理废水（`conditioning_wastewater`）
-
-当使用后的水离开纳入的调理边界进入处理或排放时，记录废水。
-
-- 选定流：废水处理服务或废水
-- 流属性/单位：Volume / m3
-- 数量规则：排放或处理体积，并声明处理路线和污染物记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每 1 kg 参考新鲜蔬菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_conditioning_records`
-- 来源：`fao-fresh-produce-hygiene-2003`
 
 
 ###### 调理拒收物和修整物（`conditioning_rejects`）
@@ -826,6 +791,8 @@ sync_with: pcr.en-US.md
 | `rule_reconcile_packaged_output` | packaging and presentation | `product_input = net_reference_output + packaging-process_product_loss + other_declared_product_destinations` and packaging mass is reported separately | product input; net output; losses; package material | net reference flow and package inventory | `iso-14044-2006` |
 | `crop_soil_nitrogen_loss_specific_emission` | `p_crop_production` | 对实际蔬菜作物核对作物周期养分投入、作物带走、土壤留存及方法支持的氮损失路径。氮平衡残差或土壤留存 N 不自动构成向土壤排放的基本流。创建排放前明确实际物质与接收介质，保留原作物归属及最终鲜蔬菜归一化。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_crop_inputs` | 逐物质和介质的排放交换及独立元素台账 | `ipcc-2019-refinement-agriculture` |
 | `packaging_rejects_specific_output` | `p_packaging_presentation` | 对每个蔬菜包装批次，按实际材料称量或核对废弃包装，并与被拒收蔬菜的净质量分开。保留物种、产品状态、组成、包装皮重、实际去向及复用状态。包装内产品拒收物只有在实际作为一股有记录的复合物流交付，且产品与包装比例有依据时，才可保留为一项交换；不得再将这些组分重复计为独立外运废物。按相同批次范围核对投入、合格净产品、拒收物及库存。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | `cp_packaging_records` | 逐实际物流的交换、去向及无重复质量平衡 | `fao-food-loss-waste-2019` |
+| `crop_reactive_n_emissions_specific_exchanges` | `p_crop_production` | 按接收环境分别识别和计算实际氨及各氮氧化物，在数据集完成前为每种物质和接收环境建立一张基本流卡。保留方法报告的 NOx 口径，不得把混合 NOx 或总氮数量改名为单一物种。仅在适用化学计量关系明确时，将该物种的元素氮质量转为化合物质量；已经是化合物质量时不再转换。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_crop_inputs` | 逐项独立交换；完成前必须补齐 | `ipcc-2019-refinement-agriculture` |
+| `conditioning_wastewater_specific_exchanges` | `p_primary_conditioning` | 将蔬菜处理废水、其处理服务及实际环境释放分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_conditioning_records` | 逐项独立交换；完成前必须补齐 | `fao-fresh-produce-hygiene-2003` |
 
 ### 数据质量要求
 

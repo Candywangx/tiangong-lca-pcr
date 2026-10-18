@@ -143,22 +143,6 @@ Record supplied water when used in management, washing or treatment, in the actu
 
 Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
-###### Actual biological production and management inputs (`source_management_inputs`)
-
-Only for owned managed production: identify planting/propagation material, substrate, fertilizer and protection inputs, area, phases and crop/co-product destinations. Separate product mass from nutrient/active-ingredient mass. Do not add cultivated inputs to a wild route or repeat inputs embedded in a purchased feed dataset.
-
-- Selected flow: Actual biological production and management inputs
-- Flow property / unit: Actual management-input property / native unit
-- Amount rule: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_source`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Waste flows
 
 No routine exchange is prescribed. Record actual observed concrete exchanges if this direction/type occurs; do not assume absence from the template proves zero.
@@ -187,22 +171,6 @@ Measure each incidental attached soil, bark, stone or non-target biomass compone
 
 - Selected flow: Actual incidental natural matter removed with the target
 - Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_source`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual attributable land occupation and transformation (`source_land_use`)
-
-Record evidenced area, land class, duration and actual transformation where the selected accounting method requires them. Determine management and harvest effects independently; no universal zero land use, regeneration period, avoided land use or stock-change credit follows from wild origin. Each concrete occupation or transformation exchange requires its own identity and support.
-
-- Selected flow: Actual attributable land occupation and transformation
-- Flow property / unit: Actual land property / m2.a or m2 as applicable
 - Amount rule: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -565,6 +533,8 @@ Separate purchased supply from on-site conversion. Link self-generated electrici
 | `retained_components` | treated materials and compositions | accepted_net_kg = accepted_botanical_substrate_kg + retained_treatment_matter_kg + permanent_other_components_kg, using disjoint mass definitions; botanical substrate includes its declared inherent water. Transport packaging and incidental matter are excluded; retained treatment solution water must belong to exactly one mass component. | measured product composition; botanical/moisture ledger; retained agents; permanent components | reconciled whole-product reference mass |  |
 | `shared_attribution` | shared service records and independent outputs | assigned_quantity_k = total_quantity * share_k; sum of shares = 1 for a fully assigned record. Select the driver using allocation precedence and preserve all consumers, periods and exclusions. Rework receives only its incremental share in addition to retained original burdens. | total_quantity; complete consumers; driver evidence; share_k | complete nonduplicated quantity attribution |  |
 | `direct_release` | each identified emitted substance and compartment | Use a measurement or emission_kg = activity_in_declared_unit * compatible_factor_kg_per_unit with documented scope, period, substance basis and uncertainty. Avoid overlap with treatment/service datasets. Formulated product mass, elemental nutrient mass and compound emission mass are not interchangeable without explicit evidenced stoichiometry. | measured release or compatible activity/factor; actual substance/compartment | substance-specific direct release |  |
+| `source_management_inputs_specific_exchanges` | `source` | For actual owned managed production, enumerate every used propagation material, substrate, fertilizer formulation and crop-protection formulation independently. Preserve each product identity, state, composition, amount, phase and native unit; nutrient and active-substance masses are calculated attributes, not additional purchases. Create one specific input card per actual product. Do not prescribe a recipe, add managed inputs to wild gathering, or repeat inputs embedded in purchased materials. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_source` | Separate atomic exchanges; completeness required |  |
+| `source_land_use_specific_exchanges` | `source` | Enumerate actual land occupation and each evidenced land transformation separately, with site, land class, from/to state, area and period. Occupation uses area-time; transformation uses area and separate from/to identities under the selected method. Instantiate one concrete elementary exchange per identity and unit; never add the two dimensions, infer transformation from planting, or assume zero land burden from wild origin. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_source` | Separate atomic exchanges; completeness required |  |
 
 ### Data Quality Requirements
 

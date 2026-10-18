@@ -193,24 +193,6 @@ process_inventory:
               collection_protocol_id: cp_source
               source_ids: []
             ranges: []
-        - row_id: source_management_inputs
-          role: "Actual biological production and management inputs"
-          name: "Actual biological production and management inputs"
-          flow_type: "product"
-          property_unit: "Actual management-input property / native unit"
-          description: "Only for owned managed production: identify planting/propagation material, substrate, fertilizer and protection inputs, area, phases and crop/co-product destinations. Separate product mass from nutrient/active-ingredient mass. Do not add cultivated inputs to a wild route or repeat inputs embedded in a purchased feed dataset. Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim."
-          amount:
-            expression: "Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_source
-              source_ids: []
-            ranges: []
       waste:
         []
       elementary:
@@ -238,24 +220,6 @@ process_inventory:
           flow_type: "elementary"
           property_unit: "Mass / kg"
           description: "Measure each incidental attached soil, bark, stone or non-target biomass component separately, with its actual source and moisture. Keep its receipts, transfers, stock, return and discard ledger distinct from target removal; purchased-feed foreign matter is carried by its product receipt, not a second natural removal. Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim."
-          amount:
-            expression: "Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_source
-              source_ids: []
-            ranges: []
-        - row_id: source_land_use
-          role: "Actual attributable land occupation and transformation"
-          name: "Actual attributable land occupation and transformation"
-          flow_type: "elementary"
-          property_unit: "Actual land property / m2.a or m2 as applicable"
-          description: "Record evidenced area, land class, duration and actual transformation where the selected accounting method requires them. Determine management and harvest effects independently; no universal zero land use, regeneration period, avoided land use or stock-change credit follows from wild origin. Each concrete occupation or transformation exchange requires its own identity and support. Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim."
           amount:
             expression: "Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately."
             value_mode: "foreground_record"
@@ -697,6 +661,20 @@ dataset_production:
         - "actual substance/compartment"
       output: "substance-specific direct release"
       source_ids: []
+    - id: source_management_inputs_specific_exchanges
+      applies_to: "source"
+      rule: "For actual owned managed production, enumerate every used propagation material, substrate, fertilizer formulation and crop-protection formulation independently. Preserve each product identity, state, composition, amount, phase and native unit; nutrient and active-substance masses are calculated attributes, not additional purchases. Create one specific input card per actual product. Do not prescribe a recipe, add managed inputs to wild gathering, or repeat inputs embedded in purchased materials. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero."
+      inputs:
+        - cp_source
+      output: "Separate atomic exchanges; completeness required"
+      source_ids: []
+    - id: source_land_use_specific_exchanges
+      applies_to: "source"
+      rule: "Enumerate actual land occupation and each evidenced land transformation separately, with site, land class, from/to state, area and period. Occupation uses area-time; transformation uses area and separate from/to identities under the selected method. Instantiate one concrete elementary exchange per identity and unit; never add the two dimensions, infer transformation from planting, or assume zero land burden from wild origin. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero."
+      inputs:
+        - cp_source
+      output: "Separate atomic exchanges; completeness required"
+      source_ids: []
   data_quality_requirements:
     - id: quality_eligibility
       applies_to: "each product, part and route"
@@ -766,7 +744,7 @@ data_sources:
     used_for: "Possible rattan preparation and treatment operations, not required recipes, present permissions or cross-material yields"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f079262045900e3cfef51e482557ac36c5e3ed890ff769887e4398ae720c4e6d"
+  source_sha256: "sha256:6274348206ade6987ced0d10ca855c1ad233d73ccb956e00f3348d8624af6eaa"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7731"
@@ -817,16 +795,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46258"
+    - unit_id: "normative_43307"
       family: "allocation"
       span:
         start:
-          offset: 46258
-          line: 509
+          offset: 43307
+          line: 477
           column: 1
         end:
-          offset: 48635
-          line: 519
+          offset: 45684
+          line: 487
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_precedence` | complete intended output set | First subdivide independently measured operations and directly trace burdens. For remaining shared burdens, use a documented causal physical driver; if no defensible physical relation exists, disclose why and apply gate- and period-matched economic allocation with sensitivity. Enumerate all intended outputs and state precedence; no automatic substitution credits or universal mass allocation across unlike products. |  |\n| `allocation_origin_and_stock` | source, crop co-products and inventory carryover | Purchased feed retains supplier burdens once. Crop by-products and recovered material require explicit origin, handoff and inherited-burden/cut-off decisions; secondary or low-priced material is not automatically burden-free. Carry actual stock burdens across periods; closing stock is not dispatched reference output and later release must not repeat original burdens. |  |\n| `allocation_shared_services` | shared assets, failed trips and periods | Identify all consuming nodes/outputs and service periods; shares of a fully assigned record sum to one. Attribute failed-trip, idle/service and changeover burdens to the evidenced campaign/output set, with no-output periods separately disclosed. An inclusive transport, drying or assembly service excludes duplicate embedded energy/material/asset burdens. |  |\n| `allocation_rework_waste` | rework, downgrade and waste | Internal rework retains original burdens and adds measured incremental work only. Sold downgrades are independent intended exits when actually sold; pending rework is not accepted output. Record waste handling/treatment under the declared boundary without relabelling a discarded stream as saleable to avoid burdens; environmental return has no automatic credit. |  |\n| `allocation_aggregation` | multiple sites, grades and materials | For the same declared product/state and boundary, divide summed attributable inventory totals by summed accepted mass; do not take an unweighted average of site intensities. Unlike species/materials, treated states or compositions require separate datasets or an explicitly identified representative mix with measured proportions; one kilogram is not proof of functional equivalence. |  |\n\n"
       headings:
@@ -845,12 +823,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46258
-              line: 509
+              offset: 43307
+              line: 477
               column: 1
             end:
-              offset: 46298
-              line: 509
+              offset: 43347
+              line: 477
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -865,16 +843,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_96615"
+    - unit_id: "normative_95484"
       family: "validation"
       span:
         start:
-          offset: 96615
-          line: 577
+          offset: 95484
+          line: 547
           column: 1
         end:
-          offset: 99210
-          line: 588
+          offset: 98079
+          line: 558
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_class_scope` | category and route branches | Check actual category eligibility against specific exclusions and the product/part/state/use evidence. Activate every applicable branch and record explicit absence/bypass. A broad category title does not certify every species, composition or treatment; uncertain classification blocks the corresponding dataset applicability claim. |  |\n| `validate_reference` | final output and denominator | Check dispatch_accepted_product is the real output, normalized to 1 kg, with measured positive accepted lot mass, complete gate/composition/state qualifiers and consistent EN/ZH definitions. Packaging, incidental matter, rejected goods and closing stock must not enter the denominator. Retained product components cannot be removed as package tare. |  |\n| `validate_balances` | each node, lot and period | Reconcile measured inputs/opening stock against outputs/closing stock and independently evidenced water/substance changes. Check paired internal transfers and disjoint incidental/target ledgers. Investigate residuals and uncertainty; never manufacture evaporation, pollutant emissions, yield or carbon uptake to force closure. |  |\n| `validate_quantities_units` | all concrete exchanges and calculations | Use each exchange native unit and the common accepted-mass denominator. Moisture conversion applies only to the measured botanical substrate, not an entire treated/composite product. Preserve formulation versus active-ingredient basis, bath stocks, count/volume conversions and direction of losses. Every missing quantity/factor remains a gap, not zero. |  |\n| `validate_output_attribution` | output sets, sites, periods and services | Verify complete intended output handoffs, causal/economic precedence, campaign failed work, site totals, stock carryover and complete shared-consumer shares. Do not double-count source production, treatment, component or packaging supply already represented in upstream/inclusive records. |  |\n| `validate_uuid_and_ranges` | identities and evidence | Before final exchange use, verify concrete UUID, flow type, source/state/gate/provider, property and unit-group support for each actual exchange. No broad-category UUID is inferred from one representative. Every card has an explicit range-evidence requirement; where no compatible numerical evidence exists, disclose unavailable screening and do not claim a default, validation completeness or publication readiness. Do not introduce Flow Sets. |  |\n\n"
       headings:
@@ -893,12 +871,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 96615
-              line: 577
+              offset: 95484
+              line: 547
               column: 1
             end:
-              offset: 96637
-              line: 577
+              offset: 95506
+              line: 547
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1060,145 +1038,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_46258"
+      unit_id: "normative_43307"
       source_span:
         start:
-          offset: 46371
-          line: 513
+          offset: 43420
+          line: 481
           column: 1
         end:
-          offset: 46852
-          line: 513
+          offset: 43901
+          line: 481
           column: 482
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_origin_and_stock"
       identity_kind: "explicit"
-      unit_id: "normative_46258"
+      unit_id: "normative_43307"
       source_span:
         start:
-          offset: 46853
-          line: 514
+          offset: 43902
+          line: 482
           column: 1
         end:
-          offset: 47312
-          line: 514
+          offset: 44361
+          line: 482
           column: 460
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_shared_services"
       identity_kind: "explicit"
-      unit_id: "normative_46258"
+      unit_id: "normative_43307"
       source_span:
         start:
-          offset: 47313
-          line: 515
+          offset: 44362
+          line: 483
           column: 1
         end:
-          offset: 47748
-          line: 515
+          offset: 44797
+          line: 483
           column: 436
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework_waste"
       identity_kind: "explicit"
-      unit_id: "normative_46258"
+      unit_id: "normative_43307"
       source_span:
         start:
-          offset: 47749
-          line: 516
+          offset: 44798
+          line: 484
           column: 1
         end:
-          offset: 48176
-          line: 516
+          offset: 45225
+          line: 484
           column: 428
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_aggregation"
       identity_kind: "explicit"
-      unit_id: "normative_46258"
+      unit_id: "normative_43307"
       source_span:
         start:
-          offset: 48177
-          line: 517
+          offset: 45226
+          line: 485
           column: 1
         end:
-          offset: 48633
-          line: 517
+          offset: 45682
+          line: 485
           column: 457
     - pointer: "/validation_rules/0"
       rule_id: "validate_class_scope"
       identity_kind: "explicit"
-      unit_id: "normative_96615"
+      unit_id: "normative_95484"
       source_span:
         start:
-          offset: 96710
-          line: 581
+          offset: 95579
+          line: 551
           column: 1
         end:
-          offset: 97103
-          line: 581
+          offset: 95972
+          line: 551
           column: 394
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_96615"
+      unit_id: "normative_95484"
       source_span:
         start:
-          offset: 97104
-          line: 582
+          offset: 95973
+          line: 552
           column: 1
         end:
-          offset: 97513
-          line: 582
+          offset: 96382
+          line: 552
           column: 410
     - pointer: "/validation_rules/2"
       rule_id: "validate_balances"
       identity_kind: "explicit"
-      unit_id: "normative_96615"
+      unit_id: "normative_95484"
       source_span:
         start:
-          offset: 97514
-          line: 583
+          offset: 96383
+          line: 553
           column: 1
         end:
-          offset: 97897
-          line: 583
+          offset: 96766
+          line: 553
           column: 384
     - pointer: "/validation_rules/3"
       rule_id: "validate_quantities_units"
       identity_kind: "explicit"
-      unit_id: "normative_96615"
+      unit_id: "normative_95484"
       source_span:
         start:
-          offset: 97898
-          line: 584
+          offset: 96767
+          line: 554
           column: 1
         end:
-          offset: 98330
-          line: 584
+          offset: 97199
+          line: 554
           column: 433
     - pointer: "/validation_rules/4"
       rule_id: "validate_output_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_96615"
+      unit_id: "normative_95484"
       source_span:
         start:
-          offset: 98331
-          line: 585
+          offset: 97200
+          line: 555
           column: 1
         end:
-          offset: 98701
-          line: 585
+          offset: 97570
+          line: 555
           column: 371
     - pointer: "/validation_rules/5"
       rule_id: "validate_uuid_and_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_96615"
+      unit_id: "normative_95484"
       source_span:
         start:
-          offset: 98702
-          line: 586
+          offset: 97571
+          line: 556
           column: 1
         end:
-          offset: 99208
-          line: 586
+          offset: 98077
+          line: 556
           column: 507
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1227,27 +1205,27 @@ normative_context:
           column: 539
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46258"
+      unit_id: "normative_43307"
       source_span:
         start:
-          offset: 46258
-          line: 509
+          offset: 43307
+          line: 477
           column: 1
         end:
-          offset: 46298
-          line: 509
+          offset: 43347
+          line: 477
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_96615"
+      unit_id: "normative_95484"
       source_span:
         start:
-          offset: 96615
-          line: 577
+          offset: 95484
+          line: 547
           column: 1
         end:
-          offset: 96637
-          line: 577
+          offset: 95506
+          line: 547
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1256,5 +1234,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f079262045900e3cfef51e482557ac36c5e3ed890ff769887e4398ae720c4e6d"
-  generated_content_sha256: "sha256:755bb9a31d23b6fa0e393dccb326f073071cc8e5f3bb995f5d481a27b9c3d0a3"
+    sha256: "sha256:6274348206ade6987ced0d10ca855c1ad233d73ccb956e00f3348d8624af6eaa"
+  generated_content_sha256: "sha256:e6b871d051ff261506861fdf958553dcab0f8d5aa92bb7c7bd889b4f6f84bad8"

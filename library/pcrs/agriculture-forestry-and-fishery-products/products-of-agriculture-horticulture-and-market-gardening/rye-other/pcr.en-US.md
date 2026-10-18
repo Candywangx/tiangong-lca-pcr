@@ -310,7 +310,7 @@ Raw activity or stage basis: per 1,000 kg harvested rye grain at the selected ga
 ###### Direct ammonia emission (`direct_ammonia_emission`)
 Direct ammonia is recorded when required by the selected method, local evidence, or study goal.
 - Selected flow: ammonia, emissions to air unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
-- Flow property / unit: Mass / kg N or kg substance
+- Flow property / unit: Mass / kg NH3
 - Amount rule: calculated from accounted N inputs and the selected pathway method
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -321,10 +321,13 @@ Raw activity or stage basis: per 1,000 kg harvested rye grain at the selected ga
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_fertilizer_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`
+
+Final exchange quantity is kg NH3, the mass of the named compound. Keep kg N only in the calculation ledger. When the method reports nitrogen in this species, multiply that species-specific N mass by 17/14 exactly once; do not reconvert compound mass. A combined nitrogen-loss pool cannot be assigned wholly to this species without a supported species split. Normalize the converted attributable mass once to the declared reference output.
+
 ###### Direct nitrate emission (`direct_nitrate_emission`)
 Direct nitrate is recorded when required by the selected method, local evidence, or study goal.
 - Selected flow: nitrate, emissions to fresh water `4d9a8790-3ddd-11dd-8d68-0050c2490048`
-- Flow property / unit: Mass / kg N or kg substance
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: calculated from accounted N inputs and the selected pathway method
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -335,6 +338,9 @@ Raw activity or stage basis: per 1,000 kg harvested rye grain at the selected ga
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_fertilizer_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`
+
+Final exchange quantity is kg NO3-, the mass of the named compound. Keep kg N only in the calculation ledger. When the method reports nitrogen in this species, multiply that species-specific N mass by 62/14 exactly once; do not reconvert compound mass. A combined nitrogen-loss pool cannot be assigned wholly to this species without a supported species split. Normalize the converted attributable mass once to the declared reference output.
+
 ### Process: Harvest and Field Delivery (`harvest_and_field_delivery`)
 #### Inputs
 ##### Product flows

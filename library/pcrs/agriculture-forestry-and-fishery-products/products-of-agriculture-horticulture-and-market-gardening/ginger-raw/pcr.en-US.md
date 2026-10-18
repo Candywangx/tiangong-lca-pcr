@@ -287,15 +287,8 @@ Raw activity or stage basis: per 1 kg accepted fresh raw ginger.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_yield_reconciliation`
 - Sources: `mass-balance-identity`
-- Range: Crop-to-accepted mass-balance screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1
-  - Upper: 1.5
-  - Unit: kg/kg accepted fresh ginger
-  - Basis: accepted output plus measured harvest, conditioning and grading losses
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 
@@ -377,15 +370,8 @@ Raw activity or stage basis: per 1 kg accepted fresh raw ginger.
 - Evidence kind: Method formula (`method_formula`)
 - Collection protocol: `cp_yield_reconciliation`
 - Sources: `mass-balance-identity`
-- Range: Linked incoming rhizome mass
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1
-  - Upper: 1.5
-  - Unit: kg/kg accepted fresh ginger
-  - Basis: exact process-link equality to field hand-off
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage input (`harvest_energy`)
 
@@ -439,15 +425,8 @@ Raw activity or stage basis: per 1 kg accepted fresh raw ginger.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_lots`
 - Sources: `mass-balance-identity`
-- Range: Lifted-to-accepted mass-balance screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1
-  - Upper: 1.4
-  - Unit: kg/kg accepted fresh ginger
-  - Basis: accepted output plus measured conditioning and grading losses
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 
@@ -501,15 +480,8 @@ Raw activity or stage basis: per 1 kg accepted fresh raw ginger.
 - Evidence kind: Method formula (`method_formula`)
 - Collection protocol: `cp_harvest_lots`
 - Sources: `mass-balance-identity`
-- Range: Linked raw-lot mass
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1
-  - Upper: 1.4
-  - Unit: kg/kg accepted fresh ginger
-  - Basis: exact process-link equality to harvest hand-off
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Washing water supplied (`washing_water`)
 
@@ -589,15 +561,8 @@ Raw activity or stage basis: per 1 kg accepted fresh raw ginger.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_batch`
 - Sources: `codex-cxs-218-1999`; `mass-balance-identity`
-- Range: Prepared-to-accepted mass-balance screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1
-  - Upper: 1.3
-  - Unit: kg/kg accepted fresh ginger
-  - Basis: accepted output plus measured downgrade and reject mass
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 
@@ -617,15 +582,8 @@ Raw activity or stage basis: per 1 kg prepared fresh rhizomes.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_batch`
 - Sources: `mass-balance-identity`
-- Range: Wash-effluent balance screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.05
-  - Unit: m3/kg prepared fresh rhizomes
-  - Basis: zero for unwashed lots and no greater than supplied water without documented additions
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ### Process: Sorting and grading (`sorting_grading`)
 
@@ -651,15 +609,8 @@ Raw activity or stage basis: per 1 kg accepted fresh raw ginger.
 - Evidence kind: Method formula (`method_formula`)
 - Collection protocol: `cp_grading_batch`
 - Sources: `mass-balance-identity`
-- Range: Linked grading-input mass
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1
-  - Upper: 1.3
-  - Unit: kg/kg accepted fresh ginger
-  - Basis: exact lot link to the preceding hand-off
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage input (`grading_energy`)
 

@@ -442,7 +442,7 @@ process_inventory:
           name: "Mature standing or windrowed dry-pea crop"
           flow_type: "product"
           property_unit: "Mass / kg harvestable grain equivalent"
-          description: "This input transfers the mature field crop into the declared harvest batch. Raw activity or stage basis: Per harvest batch."
+          description: "This input transfers the mature field crop into the declared harvest batch. Raw activity or stage basis: Per harvest batch. No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value."
           amount:
             expression: "Same-batch transfer from mature_crop"
             value_mode: "foreground_record"
@@ -454,16 +454,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest_batch
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0.98"
-                upper: "1.02"
-                unit: "kg input/kg transferred mature crop"
-                basis: "Same field and batch before harvest loss"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
+            ranges: []
         - row_id: harvest_energy
           role: "Electricity, medium voltage input"
           name: "Electricity, medium voltage"
@@ -623,7 +614,7 @@ process_inventory:
           name: "Threshed raw dry-pea grain"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This input transfers the raw harvested lot into cleaning and grading. Raw activity or stage basis: Per cleaning lot."
+          description: "This input transfers the raw harvested lot into cleaning and grading. Raw activity or stage basis: Per cleaning lot. No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value."
           amount:
             expression: "Same-lot transfer from raw_harvested_grain"
             value_mode: "foreground_record"
@@ -635,16 +626,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_cleaning_lot
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0.98"
-                upper: "1.02"
-                unit: "kg input/kg transferred raw grain"
-                basis: "Same lot before cleaning"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
+            ranges: []
         - row_id: cleaning_energy
           role: "Electricity, medium voltage input"
           name: "Electricity, medium voltage"
@@ -930,7 +912,7 @@ process_inventory:
           name: "Water vapour to air"
           flow_type: "elementary"
           property_unit: "Mass / kg water"
-          description: "This elementary output represents moisture removed from the same batch. Raw activity or stage basis: Per kg stabilized grain."
+          description: "This elementary output represents moisture removed from the same batch. Raw activity or stage basis: Per kg stabilized grain. No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value."
           amount:
             expression: "Input water mass minus output water mass from wet-basis moisture balance"
             value_mode: "calculated_value"
@@ -943,16 +925,7 @@ process_inventory:
               collection_protocol_id: cp_drying_batch
               source_ids:
                 - mass-balance-identity
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.30"
-                unit: "kg water/kg incoming grain"
-                basis: "Same stabilization batch"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
+            ranges: []
   - id: declared_reference_handoff
     label: "Product Measurement at Declared Handoff"
     inputs:
@@ -1315,7 +1288,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:c5713b6ef456f5ba60941fb4d9f74939df8cf989c7990ae0434313cfe11129e8"
+  source_sha256: "sha256:477df46469405e703810e4b840831b482e02f31c65a5a27646711ff5866a6f9c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4744"
@@ -1366,16 +1339,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46733"
+    - unit_id: "normative_47069"
       family: "allocation"
       span:
         start:
-          offset: 46733
-          line: 940
+          offset: 47069
+          line: 918
           column: 1
         end:
-          offset: 47969
-          line: 949
+          offset: 48305
+          line: 927
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_field_outputs` | Grain and straw/pods | Avoid allocation when residue remains managed in-field material. Deliberately removed residue with an evidenced product hand-off is a co-product; use declared physical or economic allocation consistently and disclose sensitivity. | `mass-balance-identity` |\n| `allocation_reject_routes` | Damage, downgrade, rework and rejects | Retain burdens through rework. Treat a downgraded sale/feed hand-off as intended output only with an evidenced destination; otherwise it is waste. Never count accepted and rejected mass together. | `mass-balance-identity` |\n| `allocation_batches` | All batches | Attribute inputs, outputs, clean-out, carryover and changeover to the causing batch. Use processed-mass allocation for shared burdens only when direct metering is absent and never allocate one shared burden twice. | `mass-balance-identity` |\n| `allocation_no_default_substitution` | Co-products | Do not apply avoided-burden credit by default; any downstream substitution reports the unallocated inventory, substituted product, ratio and evidence. | `mass-balance-identity` |\n\n"
       headings:
@@ -1394,12 +1367,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46733
-              line: 940
+              offset: 47069
+              line: 918
               column: 1
             end:
-              offset: 46773
-              line: 940
+              offset: 47109
+              line: 918
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1414,16 +1387,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54575"
+    - unit_id: "normative_54911"
       family: "validation"
       span:
         start:
-          offset: 54575
-          line: 989
+          offset: 54911
+          line: 967
           column: 1
         end:
-          offset: 56485
-          line: 1003
+          offset: 56821
+          line: 981
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | Fail unless output is mature whole dry *Pisum sativum* grain with moisture, grade/destination and route qualifiers. | `ndsu-field-pea-production-2021` |\n| `validate_route_topology` | Process map | Require field, harvest and cleaning nodes; require drying/aeration only when active, and reject unweighted mixed routes. | `saskatchewan-dry-pea-guide` |\n| `validate_nutrient_cardinality` | `field_production` | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `ndsu-field-pea-fertility-2023` |\n| `validate_output_destinations` | Outputs | Require one explicit hand-off for grain, residues, damage/downgrade, rework, foreign matter, rejects and loss; reject double counting. | `mass-balance-identity` |\n| `validate_rework` | Cleaning/stabilization | Link each rework return to source lot, destination and pass; accepted output excludes unresolved reject/rework mass. | `mass-balance-identity` |\n| `validate_batch_mode` | Harvest/cleaning/stabilization | Require batch/campaign boundaries and assign clean-out, carryover and shared energy once. | `mass-balance-identity` |\n| `validate_ranges` | Inventory | Require exactly one complete Range per quantitative card with bounds, unit, denominator/basis, basis kind, evidence and required source ids. | `mass-balance-identity` |\n| `validate_mass_balance` | Harvest/cleaning/drying | Require moisture-corrected reconciliation and review residual above 5%. | `mass-balance-identity` |\n| `validate_drying_condition` | `drying_aeration` | Require input/output moisture and temperature, route, duration and energy; destination limits override the general storage screen. | `saskatchewan-dry-pea-guide` |\n\n"
       headings:
@@ -1442,12 +1415,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54575
-              line: 989
+              offset: 54911
+              line: 967
               column: 1
             end:
-              offset: 54597
-              line: 989
+              offset: 54933
+              line: 967
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1531,171 +1504,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_field_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_46733"
+      unit_id: "normative_47069"
       source_span:
         start:
-          offset: 46846
-          line: 944
+          offset: 47182
+          line: 922
           column: 1
         end:
-          offset: 47157
-          line: 944
+          offset: 47493
+          line: 922
           column: 312
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_reject_routes"
       identity_kind: "explicit"
-      unit_id: "normative_46733"
+      unit_id: "normative_47069"
       source_span:
         start:
-          offset: 47158
-          line: 945
+          offset: 47494
+          line: 923
           column: 1
         end:
-          offset: 47452
-          line: 945
+          offset: 47788
+          line: 923
           column: 295
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_batches"
       identity_kind: "explicit"
-      unit_id: "normative_46733"
+      unit_id: "normative_47069"
       source_span:
         start:
-          offset: 47453
-          line: 946
+          offset: 47789
+          line: 924
           column: 1
         end:
-          offset: 47733
-          line: 946
+          offset: 48069
+          line: 924
           column: 281
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_no_default_substitution"
       identity_kind: "explicit"
-      unit_id: "normative_46733"
+      unit_id: "normative_47069"
       source_span:
         start:
-          offset: 47734
-          line: 947
+          offset: 48070
+          line: 925
           column: 1
         end:
-          offset: 47967
-          line: 947
+          offset: 48303
+          line: 925
           column: 234
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 54670
-          line: 993
+          offset: 55006
+          line: 971
           column: 1
         end:
-          offset: 54873
-          line: 993
+          offset: 55209
+          line: 971
           column: 204
     - pointer: "/validation_rules/1"
       rule_id: "validate_route_topology"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 54874
-          line: 994
+          offset: 55210
+          line: 972
           column: 1
         end:
-          offset: 55071
-          line: 994
+          offset: 55407
+          line: 972
           column: 198
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 55072
-          line: 995
+          offset: 55408
+          line: 973
           column: 1
         end:
-          offset: 55333
-          line: 995
+          offset: 55669
+          line: 973
           column: 262
     - pointer: "/validation_rules/3"
       rule_id: "validate_output_destinations"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 55334
-          line: 996
+          offset: 55670
+          line: 974
           column: 1
         end:
-          offset: 55541
-          line: 996
+          offset: 55877
+          line: 974
           column: 208
     - pointer: "/validation_rules/4"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 55542
-          line: 997
+          offset: 55878
+          line: 975
           column: 1
         end:
-          offset: 55733
-          line: 997
+          offset: 56069
+          line: 975
           column: 192
     - pointer: "/validation_rules/5"
       rule_id: "validate_batch_mode"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 55734
-          line: 998
+          offset: 56070
+          line: 976
           column: 1
         end:
-          offset: 55910
-          line: 998
+          offset: 56246
+          line: 976
           column: 177
     - pointer: "/validation_rules/6"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 55911
-          line: 999
+          offset: 56247
+          line: 977
           column: 1
         end:
-          offset: 56113
-          line: 999
+          offset: 56449
+          line: 977
           column: 203
     - pointer: "/validation_rules/7"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 56114
-          line: 1000
+          offset: 56450
+          line: 978
           column: 1
         end:
-          offset: 56267
-          line: 1000
+          offset: 56603
+          line: 978
           column: 154
     - pointer: "/validation_rules/8"
       rule_id: "validate_drying_condition"
       identity_kind: "explicit"
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 56268
-          line: 1001
+          offset: 56604
+          line: 979
           column: 1
         end:
-          offset: 56483
-          line: 1001
+          offset: 56819
+          line: 979
           column: 216
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1724,27 +1697,27 @@ normative_context:
           column: 136
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46733"
+      unit_id: "normative_47069"
       source_span:
         start:
-          offset: 46733
-          line: 940
+          offset: 47069
+          line: 918
           column: 1
         end:
-          offset: 46773
-          line: 940
+          offset: 47109
+          line: 918
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54575"
+      unit_id: "normative_54911"
       source_span:
         start:
-          offset: 54575
-          line: 989
+          offset: 54911
+          line: 967
           column: 1
         end:
-          offset: 54597
-          line: 989
+          offset: 54933
+          line: 967
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1753,5 +1726,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:c5713b6ef456f5ba60941fb4d9f74939df8cf989c7990ae0434313cfe11129e8"
-  generated_content_sha256: "sha256:c7d2d7524ade06099fd30c7665383de23d9af4192d3b818ae5b8815674569cef"
+    sha256: "sha256:477df46469405e703810e4b840831b482e02f31c65a5a27646711ff5866a6f9c"
+  generated_content_sha256: "sha256:6bacdc947dae2b272bcfafc544d60aea0f310d8e1f71504fdcb64e8ff132df83"

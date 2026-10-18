@@ -354,15 +354,8 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cashew_harvest_lot_records`
-- 数量范围：可采收质量 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：900
-  - 上限：1,400
-  - 单位：每 1,000 kg 合格参考产品的 kg 鲜带壳腰果
-  - 基准：分选和收集损失前的同批次采收质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 废物流
 
@@ -469,15 +462,8 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cashew_drying_conditioning_records`
-- 数量范围：调制输入质量 QA 校验范围
-  - 范围角色：QA 校验范围（`qa_guardrail`）
-  - 下限：900
-  - 上限：1,250
-  - 单位：每 1,000 kg 参考产品的 kg 鲜带壳批次
-  - 基准：水分损失、清理和拒收前的接收批次
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 干燥和清理用水或辅助服务（`cashew_conditioning_water`）
 
@@ -704,15 +690,8 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cashew_storage_records`
-- 数量范围：储存输入质量校验范围
-  - 范围角色：QA 校验范围（`qa_guardrail`）
-  - 下限：900
-  - 上限：1,050
-  - 单位：每 1,000 kg 声明储存交接产品的 kg
-  - 基准：储存损失和包装皮重前的合格批次
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 交流电 (`cashew_storage_energy_electricity`)
 
@@ -755,16 +734,8 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cashew_storage_records`
-- 数量范围：交接输出质量校验范围
-  - 范围角色：QA 校验范围（`qa_guardrail`）
-  - 下限：950
-  - 上限：1,020
-  - 单位：每 1,000 kg 声明交接输出的 kg
-  - 基准：储存核对后的净发货产品
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
 
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 废物流
 

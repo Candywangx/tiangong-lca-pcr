@@ -359,15 +359,8 @@ Raw activity or stage basis: per 1,000 kg accepted fresh farm-gate reference pro
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cashew_harvest_lot_records`
-- Range: Harvest-available mass QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 900
-  - Upper: 1,400
-  - Unit: kg fresh in-shell nuts per 1,000 kg accepted reference product
-  - Basis: same-lot harvest mass before sorting and collection losses
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 
@@ -475,15 +468,8 @@ Raw activity or stage basis: per 1,000 kg accepted fresh farm-gate reference pro
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cashew_drying_conditioning_records`
-- Range: Conditioning-input mass guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 900
-  - Upper: 1,250
-  - Unit: kg fresh in-shell lot per 1,000 kg reference product
-  - Basis: received lot mass before water loss, cleaning, and rejection
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Drying and cleaning water or auxiliary service (`cashew_conditioning_water`)
 
@@ -714,15 +700,8 @@ Raw activity or stage basis: per 1,000 kg declared storage-gate product.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cashew_storage_records`
-- Range: Storage-input mass guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 900
-  - Upper: 1,050
-  - Unit: kg per 1,000 kg declared storage-gate product
-  - Basis: accepted lot before storage loss and packaging tare
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Alternating current (`cashew_storage_energy_electricity`)
 
@@ -766,16 +745,8 @@ Raw activity or stage basis: per 1,000 kg declared gate output.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cashew_storage_records`
-- Range: Gate-output mass guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 950
-  - Upper: 1,020
-  - Unit: kg per 1,000 kg declared gate output
-  - Basis: net dispatched product after storage reconciliation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
 
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 

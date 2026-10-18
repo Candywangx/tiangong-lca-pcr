@@ -570,15 +570,8 @@ Raw activity or stage basis: per 1,000 kg declared conditioning-gate output.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_pistachio_grade_reject_records`
-- Range: Accepted conditioning-output guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 700
-  - Upper: 1,020
-  - Unit: kg per 1,000 kg received conditioning lot
-  - Basis: accepted product after husk removal, grading, and declared rejects
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Product flows
 
@@ -681,15 +674,8 @@ Raw activity or stage basis: per 1,000 kg declared gate output.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_pistachio_storage_records`
-- Range: Storage-input mass guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 980
-  - Upper: 1,100
-  - Unit: kg per 1,000 kg declared gate output
-  - Basis: received stock before storage loss and dispatch reconciliation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity at the equipment supply point (`pistachio_storage_energy_electricity`)
 
@@ -788,15 +774,8 @@ Raw activity or stage basis: per 1,000 kg declared gate output.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_pistachio_storage_records`
-- Range: Gate-output mass guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 950
-  - Upper: 1,020
-  - Unit: kg per 1,000 kg declared gate output
-  - Basis: net dispatched product after stock and loss reconciliation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 

@@ -260,15 +260,8 @@ Raw activity or stage basis: per receiving lot.
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_source_lot`
 - Sources: `mass-balance-identity`
-- Range: Quantitative QA range
-  - Range role: `allowed_range`
-  - Lower: 0
-  - Upper: 2500
-  - Unit: kg/lot normalized to 1,000 kg reference product
-  - Basis: per receiving lot
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage (`receiving_energy`)
 
@@ -459,15 +452,8 @@ Raw activity or stage basis: per run.
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_run_balance`
 - Sources: `mass-balance-identity`
-- Range: Quantitative QA range
-  - Range role: `allowed_range`
-  - Lower: 0
-  - Upper: 2500
-  - Unit: kg/run normalized to 1,000 kg reference product
-  - Basis: per run
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage (`size_reduction_energy`)
 
@@ -609,15 +595,8 @@ Raw activity or stage basis: per forming run.
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_run_balance`
 - Sources: `mass-balance-identity`
-- Range: Quantitative QA range
-  - Range role: `allowed_range`
-  - Lower: 0
-  - Upper: 1500
-  - Unit: kg/run normalized to 1,000 kg reference product
-  - Basis: per forming run
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage (`forming_energy`)
 
@@ -799,15 +778,8 @@ Raw activity or stage basis: per storage lot.
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_storage`
 - Sources: `mass-balance-identity`
-- Range: Quantitative QA range
-  - Range role: `allowed_range`
-  - Lower: 0
-  - Upper: 1500
-  - Unit: kg/lot normalized to 1,000 kg reference product
-  - Basis: per storage lot
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage (`storage_energy`)
 

@@ -406,32 +406,6 @@ sync_with: pcr.en-US.md
 
 ##### Waste flows
 
-###### 整理修边及洗涤残余物 (`conditioning_residues`)
-
-送往实际处理的不可售修边料及废洗液。
-
-分母与范围要求：按每一记录批次或参考产品
-
-原始数量及计算要求：按去向分别计量固体与废水。 原始采集分母类型：process_output。
-
-- 选定流： 送往实际处理的不可售修边料及废洗液 (UUID unresolved)
-- 流属性/单位： 质量 / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议： `cp_conditioning`
-- 数量范围：暂定完整性检验范围
-  - 范围角色：QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 1000000
-  - 单位： kg per lot
-  - 基准：实测相关批次流量；非默认系数
-  - 基准类型：过程输出 (`process_output`)
-  - 证据类型：推理估算 (`reasoned_estimate`)
-
 ##### Elementary flows
 
 
@@ -597,32 +571,6 @@ sync_with: pcr.en-US.md
 
 ##### Waste flows
 
-###### 保藏残余物 (`preservation_residues`)
-
-送往处理的废盐、废盐水或变质原皮。
-
-分母与范围要求：按每一记录批次或参考产品
-
-原始数量及计算要求：分别记录残余物种类和去向。 原始采集分母类型：process_output。
-
-- 选定流： 送往处理的废盐、废盐水或变质原皮 (UUID unresolved)
-- 流属性/单位： 质量 / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议： `cp_preservation`
-- 数量范围：暂定完整性检验范围
-  - 范围角色：QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 1000000
-  - 单位： kg per lot
-  - 基准：实测相关批次流量；非默认系数
-  - 基准类型：过程输出 (`process_output`)
-  - 证据类型：推理估算 (`reasoned_estimate`)
-
 ##### Elementary flows
 
 
@@ -737,6 +685,8 @@ sync_with: pcr.en-US.md
 | `net_reference` | handover | 净原皮 kg = 毛重减去可拆包装和游离盐水；可归属清单除以净质量 | 毛重、包装、游离盐水 | 每 kg 交换量 | `un-cpc-3` |
 | `state_balance` | all nodes | 前态质量加实测水/盐加入量等于后态质量加实测残余及可解释的水分变化；不得采用通用换算系数 | 质量、盐、水及残余物 | 批次平衡 | `fao-hides-2009` |
 | `allocation_sum` | shared outputs | 各节点分摊份额之和为一；动物及共享资产期间不得重复计数 | 实际产物、驱动量及期间 | 可归属负担 | `fao-hides-statistics` |
+| `conditioning_residues_specific_exchanges` | `conditioning` | 将马科动物皮修整残余物和废洗涤水分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_conditioning` | 逐项独立交换；完成前必须补齐 |  |
+| `preservation_residues_specific_exchanges` | `preservation` | 将废盐、废盐水和腐败马科动物原皮分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_preservation` | 逐项独立交换；完成前必须补齐 |  |
 
 ### Data Quality Requirements
 

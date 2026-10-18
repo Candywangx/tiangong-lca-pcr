@@ -568,15 +568,8 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_chestnut_grade_reject_records`
-- 数量范围：合格调理输出校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：700
-  - 上限：1,020
-  - 单位：kg，每 1,000 kg 接收调理批次
-  - 基准：去栗苞、分级并扣除声明拒收物后的合格产品
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 产品流
 
@@ -679,15 +672,8 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_chestnut_storage_records`
-- 数量范围：储存投入质量校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：980
-  - 上限：1,100
-  - 单位：kg，每 1,000 kg 声明交接节点输出
-  - 基准：储存损失和发货核对前的接收库存
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 设备供电点的电力（`chestnut_storage_energy_electricity`）
 
@@ -786,15 +772,8 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_chestnut_storage_records`
-- 数量范围：交接输出质量校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：950
-  - 上限：1,020
-  - 单位：kg，每 1,000 kg 声明交接节点输出
-  - 基准：库存和损失核对后的净发货产品
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 废物流
 

@@ -99,7 +99,7 @@ sync_with: pcr.en-US.md
 该流在声明过程边界处定量记录并与相邻状态核对。
 
 - 选定流: 糖用甜菜种子
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 发出种子减去有记录的退回量
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -205,7 +205,7 @@ sync_with: pcr.en-US.md
 该流在声明过程边界处定量记录并与相邻状态核对。
 
 - 选定流: 输送至田间的灌溉水
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 计量体积或核验泵流量×时间；排除降雨
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -227,6 +227,8 @@ sync_with: pcr.en-US.md
   - 来源: `fao-crop-yield-water-2012`
 
 作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
+
+保留实测 m3 和水密度，按 cr_02 转为 kg 一次后再进行最终归一化。
 
 ###### 中压电力投入（`field_energy`）
 
@@ -272,7 +274,7 @@ sync_with: pcr.en-US.md
 该独立产品产出在声明过程边界处定量记录，拥有明确交接，并与相邻状态核对。
 
 - 选定流: 成熟田间糖用甜菜根
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 起收根加抽样的起收前及未收获损失；排除土壤和叶冠
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -311,15 +313,8 @@ sync_with: pcr.en-US.md
 - 证据类型: 由采集计算 (`calculated_from_collection`)
 - 采集协议: `cp_harvest_loss`
 - 来源: `usda-ers-sugarbeet-harvest-loss-2019`
-- 数量范围: 典型至筛查损失比例
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 0.05
-  - 单位: kg/kg standing roots
-  - 基准: 每 kg 成熟田间根
-  - 基准类型: 过程输出 (`process_output`)
-  - 证据类型: 外部来源 (`external_source`)
-  - 来源: `usda-ers-sugarbeet-harvest-loss-2019`
+
+质量损失比例由同一地块的代表性根部取样和匹配的站立根质量确定。全国未收获面积统计仅作背景，不能作为 kg/kg 根部损失因子或通用界限。报告不确定性并调查损失，不施加固定阈值。
 
 ##### 基本流
 
@@ -328,7 +323,7 @@ sync_with: pcr.en-US.md
 该流在声明过程边界处定量记录并与相邻状态核对。
 
 - 选定流: 排放至空气的一氧化二氮
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg N2O
 - 数量规则: 对采集的氮投入和残余氮应用声明的 IPCC 层级
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -348,6 +343,8 @@ sync_with: pcr.en-US.md
   - 证据类型: 推理估算 (`reasoned_estimate`)
   - 来源:
 
+报告 N2O 化合物质量；方法给出 N2O-N 时乘以 44/28 一次，已是 N2O 质量时不得再次转换。
+
 ### 过程：根起收与收获 (`harvest_lifting`)
 
 #### 输入
@@ -358,7 +355,7 @@ sync_with: pcr.en-US.md
 该流在声明过程边界处定量记录并与相邻状态核对。
 
 - 选定流: 转入收获的成熟田间根
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 等于同地块同周期的 standing_mature_roots
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -422,7 +419,7 @@ sync_with: pcr.en-US.md
 该独立产品产出在声明过程边界处定量记录，拥有明确交接，并与相邻状态核对。
 
 - 选定流: 起收的糖用甜菜原料根
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 校准载荷质量扣除皮重和单独计量的外运土壤/杂物
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -448,7 +445,7 @@ sync_with: pcr.en-US.md
 该独立产品产出在声明过程边界处定量记录，拥有明确交接，并与相邻状态核对。
 
 - 选定流: 有意收集的甜菜叶冠
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 计量收集载荷；留田时为零
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 路线特定 (`route_specific`)
@@ -509,7 +506,7 @@ sync_with: pcr.en-US.md
 该流在声明过程边界处定量记录并与相邻状态核对。
 
 - 选定流: 转入初级整备的起收根
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 等于代表载荷的 lifted_raw_roots
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -571,7 +568,7 @@ sync_with: pcr.en-US.md
 该独立产品产出在声明过程边界处定量记录，拥有明确交接，并与相邻状态核对。
 
 - 选定流: 可供分级的农场整备根
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 投入减分离叶冠/杂物、拒收根和计量损失
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -640,7 +637,7 @@ sync_with: pcr.en-US.md
 该流在声明过程边界处定量记录并与相邻状态核对。
 
 - 选定流: 转入分级的整备根
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 等于分配至交付批次的 conditioned_roots
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -703,7 +700,7 @@ sync_with: pcr.en-US.md
 该独立产品产出在声明过程边界处定量记录，拥有明确交接，并与相邻状态核对。
 
 - 选定流: 送往声明用途的降级根
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 按批次和去向计量降级质量
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -731,7 +728,7 @@ sync_with: pcr.en-US.md
 该流在声明过程边界处定量记录并与相邻状态核对。
 
 - 选定流: 分级拒收根
-- 流属性/单位: Mass or energy as stated / declared unit
+- 流属性/单位：Mass / kg
 - 数量规则: 计量拒收质量并关联回收、还田、处理或处置
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -758,9 +755,9 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| AL-01 | all nodes | 优先细分；每项地块、机器作业期和批次负荷仅归属一次。 | `mass-balance-identity` |
-| AL-02 | roots and tops | 留田叶冠不获产品分配；有意收集的叶冠采用有记录的经济分配并做质量敏感性。 | `mass-balance-identity` |
-| AL-03 | grade states | 尽可能细分；否则按经济价值分配合格根和销售降级根。废物不获产品分配。 | `mass-balance-identity` |
+| AL-01 | all nodes | 优先细分并直接归属地块、机器作业期和批次记录，再对共享负荷分配。 | `ghg-protocol-product-standard-2011` |
+| AL-02 | roots and tops | 留田叶冠不是销售共产品。有意销售的叶冠先采用细分或有依据的物理关系；只有该关系不可用时，才将经济分配作为后备并说明原因。 | `ghg-protocol-product-standard-2011` |
+| AL-03 | grade states | 分别核算可直接计量的等级特定作业；其余共享负荷采用有依据的物理关系，无法适用时采用有记录的同门点市场价值。保留价格、期间、全部共产品和敏感性，分配份额合计为一。废物不接受产品分配，但其处理负荷仍须纳入。 | `ghg-protocol-product-standard-2011` |
 | AL-04 | rejects | 返工物料保留累积负荷且仅在最终交接计数。 | `mass-balance-identity` |
 
 ## 8. 前景数据采集、计算与质量规则
@@ -836,9 +833,10 @@ sync_with: pcr.en-US.md
 | `fao-crop-yield-water-2012` | official_guidance | FAO, *Crop yield response to water* (2012), https://www.fao.org/4/i2800e/i2800e.pdf | water and route |
 | `fao-sugar-beet-white-sugar-2009` | official_guidance | FAO, *Sugar beet: white sugar* (2009), https://www.fao.org/fileadmin/user_upload/tci/docs/AH1-%28eng%29Sugar%20beet%20white%20sugar.pdf | identity, route, yield |
 | `fao-land-management-root-crops` | official_guidance | FAO land-management/root-harvest guidance, https://www.fao.org/4/x5648e/x5648e0f.htm | harvest, soil, loss |
-| `us-epa-sugarbeet-processing-ap42` | official_guidance | US EPA AP-42 9.10.1.2, https://www.ams.usda.gov/sites/default/files/media/Vinasse.pdf | factory exclusion |
+| `us-epa-sugarbeet-processing-ap42` | official_guidance | US EPA AP-42 9.10.1.2, https://www.epa.gov/sites/default/files/2020-10/documents/c9s10-1b.pdf | factory exclusion |
 | `usda-ers-sugarbeet-harvest-loss-2019` | dataset | USDA ERS sugarbeet harvest (2019), https://www.ers.usda.gov/data-products/chart-gallery/95396 | loss context |
 | `uk-defra-sugar-beet-2024` | dataset | UK Defra, Agriculture in the UK 2024, https://www.gov.uk/government/statistics/agriculture-in-the-united-kingdom-2024/chapter-7-crops | yield/sugar context |
 | `uk-nvz-nitrogen-2026` | official_guidance | UK nitrogen fertiliser guidance, https://www.gov.uk/guidance/using-nitrogen-fertilisers-in-nitrate-vulnerable-zones | N check |
 | `ipcc-2019-managed-soils` | method_factor | IPCC 2019 Refinement, Volume 4 Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | managed-soil N2O |
-| `mass-balance-identity` | method_factor | Conservation-of-mass identity applied to linked foreground records | transfers, balance, allocation |
+| `mass-balance-identity` | method_factor | Conservation-of-mass identity applied to linked foreground records | transfers and balance; not allocation-method selection |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapter 9, pp. 63–66; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 分配层级与同门点市场价值；不提供场址分配系数 |

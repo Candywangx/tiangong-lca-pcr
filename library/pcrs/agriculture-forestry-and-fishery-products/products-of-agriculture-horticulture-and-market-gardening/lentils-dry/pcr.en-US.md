@@ -351,15 +351,8 @@ Raw activity or stage basis: per cultivated ha harvested.
 - Evidence kind: Method formula (`method_formula`)
 - Collection protocol: `cp_harvest_mass_balance`
 - Sources: `mass-balance-identity`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 500
-  - Upper: 10000
-  - Unit: kg/ha
-  - Basis: standing crop received per harvested hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage input (`harvest_energy`)
 
@@ -445,15 +438,8 @@ Raw activity or stage basis: per cultivated ha harvested.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_mass_balance`
 - Sources: `mass-balance-identity`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: kg/ha
-  - Basis: recovered straw and pod dry matter per hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ##### Waste flows
 

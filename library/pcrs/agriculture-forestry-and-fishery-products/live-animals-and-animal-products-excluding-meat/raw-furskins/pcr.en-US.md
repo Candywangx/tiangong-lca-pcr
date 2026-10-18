@@ -744,32 +744,6 @@ Denominator and scope requirements：per reference flow
 
 ##### Waste flows
 
-###### Actual handover reject (`handover_reject`)
-
-Record actual discarded material; marketed downgrade is a Product at its own gate.
-
-Denominator and scope requirements：per kg Protective handover output
-
-Raw quantity and calculation requirements: Record actual discarded material; marketed downgrade is a Product at its own gate. Original collection denominator kind: process_output.
-
-- Selected flow: Rejected package or skin for treatment (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_handover`
-- Range: Broad lot-completeness screen, not an empirical factor
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/kg
-  - Basis: per kg Protective handover output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -822,6 +796,7 @@ Separate purchased supply from on-site conversion. Link self-generated electrici
 | c_piece | counted items | Observed lot kg/item = measured homogeneous lot net mass / counted items; never reuse across species, grade, state or configuration. | mass; count; qualifiers | observed kg/item | eu-raw-furskin-heading |
 | c_balance | each lot | Reconcile material output, residues and moisture/state differences with measured input; investigate gaps, not default yields. | input; output; state | kg ledger | fao-hides-skins |
 | c_shared | shared service | Assign metered use or documented service-hour/throughput share once for each actual consumer and period. | burden; use; period | allocated burden | fao-hides-skins |
+| `handover_reject_specific_exchanges` | `handover` | Enumerate rejected raw furskins and each actual packaging-waste material as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_handover` | Separate atomic exchanges; completeness required |  |
 
 ### Data Quality Requirements
 

@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: a9604159d0f0ccb36dfa0a6f7829564bffc072ba
-lastReviewedNote: "PCR #130: reviewed the source-map-js 1.2.2 security lock delta and offline mapping/PostCSS regressions on the explicit PCR #129 development dependency. Runtime pins, static export, language/source fidelity, methodology and product 0.4.7 remain unchanged. Source merge requires PCR #129/PR #126 on main first, exact merge-input revalidation, fresh full qualification and independent review; publication remains separately authorized."
+lastReviewedAt: "2026-10-18"
+lastReviewedCommit: "3faf6707c45abd4dbc6ca4bb72ea4224287dd3ec"
+lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

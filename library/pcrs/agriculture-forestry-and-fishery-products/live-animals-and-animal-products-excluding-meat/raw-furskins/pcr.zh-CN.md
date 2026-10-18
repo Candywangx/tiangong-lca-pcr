@@ -744,32 +744,6 @@ sync_with: pcr.en-US.md
 
 ##### Waste flows
 
-###### 实际交付拒收物 (`handover_reject`)
-
-记录实际弃置材料；可售降级品是其独立交付口的产品。
-
-分母与范围要求：每 kg 防护性交付节点产出
-
-原始数量及计算要求：记录实际弃置材料；可售降级品是其独立交付口的产品。 原始采集分母类型：process_output。
-
-- 选定流: 待处理的拒收包装或皮 (UUID unresolved)
-- 流属性/单位: Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围: 场址特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议: `cp_handover`
-- 数量范围: 宽泛批次完整性筛查，非经验因子
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 1000
-  - 单位: kg/kg
-  - 基准: 每 kg 防护性交付节点产出
-  - 基准类型: 过程输出 (`process_output`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-
 ##### Elementary flows
 
 ## 7. 分配与联产品处理
@@ -822,6 +796,7 @@ sync_with: pcr.en-US.md
 | c_piece | 计件物 | 观测批次 kg/件 = 同质批次测量净质量 / 件数；不得跨物种、等级、状态或形态复用。 | 质量；件数；限定条件 | 观测 kg/件 | eu-raw-furskin-heading |
 | c_balance | 各批 | 将材料产出、残余及水分/状态差与测量投入核对；调查缺口，不套用默认得率。 | 投入；产出；状态 | kg 台账 | fao-hides-skins |
 | c_shared | 共用服务 | 对各真实消费者和期间仅分配一次计量用量或有记录的服务小时/吞吐量份额。 | 负担；用量；期间 | 已分配负担 | fao-hides-skins |
+| `handover_reject_specific_exchanges` | `handover` | 将拒收生毛皮及每种实际废包装材料分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_handover` | 逐项独立交换；完成前必须补齐 |  |
 
 ### 数据质量要求
 

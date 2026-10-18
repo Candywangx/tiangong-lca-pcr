@@ -347,23 +347,6 @@ Raw activity or stage basis: Per 1 kg reference fresh vegetable.
 - Collection protocol: `cp_crop_inputs`
 - Sources: `ipcc-2019-refinement-agriculture`
 
-###### Field ammonia and nitrogen oxides (`crop_reactive_n_emissions`)
-
-Ammonia and nitrogen-oxide releases are recorded separately when the selected method or site records support them.
-
-- Selected flow: one identified air emission: ammonia (NH3) or a method-reported nitrogen oxide species; generate separate exchanges and retain the reported NOx basis
-- Flow property / unit: Mass / kg substance
-- Amount rule: Use recorded or method-calculated emissions and retain separate substance identities in the data package
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: Per 1 kg reference fresh vegetable.
-
-- Normalization basis: per declared reference flow
-- Basis kind: N input (`n_input`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_crop_inputs`
-- Sources: `ipcc-2019-refinement-agriculture`
-
 ### Process: Harvest and field capture (`p_harvest_capture`)
 
 #### Inputs
@@ -536,24 +519,6 @@ Raw activity or stage basis: Per 1 kg reference fresh vegetable.
 
 ##### Waste flows
 
-
-
-###### Conditioning wastewater (`conditioning_wastewater`)
-
-Wastewater is recorded when used water leaves the included conditioning boundary for treatment or discharge.
-
-- Selected flow: Wastewater treatment service or wastewater
-- Flow property / unit: Volume / m3
-- Amount rule: Discharged or treated volume, with treatment route and pollutant records declared
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: Per 1 kg reference fresh vegetable.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_conditioning_records`
-- Sources: `fao-fresh-produce-hygiene-2003`
 
 
 ###### Conditioning rejects and trimmings (`conditioning_rejects`)
@@ -837,6 +802,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `rule_reconcile_packaged_output` | packaging and presentation | `product_input = net_reference_output + packaging-process_product_loss + other_declared_product_destinations` and packaging mass is reported separately | product input; net output; losses; package material | net reference flow and package inventory | `iso-14044-2006` |
 | `crop_soil_nitrogen_loss_specific_emission` | `p_crop_production` | Reconcile crop-cycle nutrient inputs, crop removal, soil storage and the method-supported nitrogen-loss pathways for the actual vegetable crop. A residual nitrogen balance or retained soil N is not automatically an elementary emission to soil. Establish the actual substance and receiving medium before creating any release; retain original crop attribution and final fresh-vegetable normalization. This is a mandatory identification and calculation requirement, not an exchange. Before dataset completeness, instantiate one concrete elementary card per actual substance and receiving compartment. Retain kg substance separately from kg elemental N; convert only from the method-reported basis using the documented composition or stoichiometric fraction of the identified species. Never equate all nitrogen with a chosen compound or add elemental-N and compound masses as separate releases. Preserve source activity, factor units, period, uncertainty, boundary and original normalization; link to an existing matching card instead of counting a duplicate. Verify a compatible UUID or explicitly register the concrete unresolved identity. Missing identity, method or activity evidence does not establish zero or justify omission. | `cp_crop_inputs` | separate substance/compartment emissions and elemental ledgers | `ipcc-2019-refinement-agriculture` |
 | `packaging_rejects_specific_output` | `p_packaging_presentation` | For each vegetable packaging batch, weigh or reconcile discarded packaging by actual material separately from rejected vegetable net mass. Retain species, product state, composition, packaging tare, actual destination and reuse status. A packaged-product reject may remain one exchange only if it is physically transferred as one documented composite stream with fruit/vegetable and packaging fractions evidenced; do not also export those fractions as independent waste exchanges. Reconcile input, accepted net product, rejects and stocks on the same batch scope. This is a mandatory collection and calculation requirement, not an inventory exchange. Before dataset completeness, create one physically specific card for each actual exported stream, including composition, state, native quantity/property, destination and evidenced product/waste role. Use only a compatible verified UUID, or explicitly register the concrete unresolved identity. Do not invent a packaging recipe, assume segregation, infer zero from missing evidence or omit a required stream. A real single mixed stream may remain one composition-defined identity only with collection/transfer evidence and compatible treatment; never duplicate it with its component exports. Keep separately handled liquid and solid streams distinct. Preserve original attribution, period, mass/water balances, reference denominator and treatment/service boundaries; link existing matching exchanges rather than count duplicates. Former aggregate ranges are not individual-stream defaults or limits. | `cp_packaging_records` | actual stream-specific exchanges, destinations and nonduplicated mass balance | `fao-food-loss-waste-2019` |
+| `crop_reactive_n_emissions_specific_exchanges` | `p_crop_production` | Identify and calculate each actual ammonia and nitrogen-oxide species separately by receiving compartment. Instantiate one elementary card per substance and compartment before dataset completion. Retain the method-reported NOx convention; a mixed NOx or total-N quantity cannot be relabelled as one species. Convert species-specific elemental-N mass to compound mass only with the applicable stoichiometry; do not reconvert compound mass. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_crop_inputs` | Separate atomic exchanges; completeness required | `ipcc-2019-refinement-agriculture` |
+| `conditioning_wastewater_specific_exchanges` | `p_primary_conditioning` | Enumerate vegetable-conditioning wastewater, its treatment service and any actual environmental release as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_conditioning_records` | Separate atomic exchanges; completeness required | `fao-fresh-produce-hygiene-2003` |
 
 ### Data Quality Requirements
 

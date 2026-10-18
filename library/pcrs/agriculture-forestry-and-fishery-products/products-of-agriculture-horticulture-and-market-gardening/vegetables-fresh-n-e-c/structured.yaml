@@ -411,25 +411,6 @@ process_inventory:
               source_ids:
                 - ipcc-2019-refinement-agriculture
             ranges: []
-        - row_id: crop_reactive_n_emissions
-          role: "Field ammonia and nitrogen oxides"
-          name: "one identified air emission: ammonia (NH3) or a method-reported nitrogen oxide species; generate separate exchanges and retain the reported NOx basis"
-          flow_type: "elementary"
-          property_unit: "Mass / kg substance"
-          description: "Ammonia and nitrogen-oxide releases are recorded separately when the selected method or site records support them. Raw activity or stage basis: Per 1 kg reference fresh vegetable."
-          amount:
-            expression: "Use recorded or method-calculated emissions and retain separate substance identities in the data package"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "n_input"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_crop_inputs
-              source_ids:
-                - ipcc-2019-refinement-agriculture
-            ranges: []
   - id: p_harvest_capture
     label: "Harvest and field capture"
     inputs:
@@ -608,25 +589,6 @@ process_inventory:
                 - fao-fresh-produce-hygiene-2003
             ranges: []
       waste:
-        - row_id: conditioning_wastewater
-          role: "Conditioning wastewater"
-          name: "Wastewater treatment service or wastewater"
-          flow_type: "waste"
-          property_unit: "Volume / m3"
-          description: "Wastewater is recorded when used water leaves the included conditioning boundary for treatment or discharge. Raw activity or stage basis: Per 1 kg reference fresh vegetable."
-          amount:
-            expression: "Discharged or treated volume, with treatment route and pollutant records declared"
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_conditioning_records
-              source_ids:
-                - fao-fresh-produce-hygiene-2003
-            ranges: []
         - row_id: conditioning_rejects
           role: "Conditioning rejects and trimmings"
           name: "Conditioning reject or organic waste"
@@ -1049,6 +1011,22 @@ dataset_production:
       output: "actual stream-specific exchanges, destinations and nonduplicated mass balance"
       source_ids:
         - fao-food-loss-waste-2019
+    - id: crop_reactive_n_emissions_specific_exchanges
+      applies_to: "p_crop_production"
+      rule: "Identify and calculate each actual ammonia and nitrogen-oxide species separately by receiving compartment. Instantiate one elementary card per substance and compartment before dataset completion. Retain the method-reported NOx convention; a mixed NOx or total-N quantity cannot be relabelled as one species. Convert species-specific elemental-N mass to compound mass only with the applicable stoichiometry; do not reconvert compound mass. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero."
+      inputs:
+        - cp_crop_inputs
+      output: "Separate atomic exchanges; completeness required"
+      source_ids:
+        - ipcc-2019-refinement-agriculture
+    - id: conditioning_wastewater_specific_exchanges
+      applies_to: "p_primary_conditioning"
+      rule: "Enumerate vegetable-conditioning wastewater, its treatment service and any actual environmental release as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero."
+      inputs:
+        - cp_conditioning_records
+      output: "Separate atomic exchanges; completeness required"
+      source_ids:
+        - fao-fresh-produce-hygiene-2003
   data_quality_requirements:
     - id: req_identity_qualifiers
       applies_to: "all datasets"
@@ -1170,7 +1148,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:5238371ddd3dc78b509814c770749b80d76740839a1cce008607cc1e3e5c2d39"
+  source_sha256: "sha256:4824355c1efee7b5929a5d1297ffa51a312c9f91e27bc59325c707c30c32861b"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5689"
@@ -1221,16 +1199,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_45740"
+    - unit_id: "normative_44018"
       family: "allocation"
       span:
         start:
-          offset: 45740
-          line: 792
+          offset: 44018
+          line: 757
           column: 1
         end:
-          offset: 47454
-          line: 803
+          offset: 45732
+          line: 768
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `rule_single_output_crop_allocation` | crop production with one declared marketable output | Assign the full crop-cycle inventory to the declared reference product when no intentional co-product or secondary marketed output is reported. | `iso-14044-2006` |\n| `rule_grade_output_allocation` | grading, sorting, and multiple marketed grades | Report every intentional marketed grade or co-product. Apply physical mass allocation as the default when outputs have comparable fresh-material function; use an explicitly justified alternative only when mass does not represent the relevant causal relationship. | `iso-14044-2006`; `fao-food-loss-waste-2019` |\n| `rule_residue_not_coproduct` | field residue, rejects, and non-marketed losses | Treat residues and rejects as waste or destination-specific material unless they are intentionally marketed or transferred as a declared co-product with its own hand-off. | `fao-food-loss-waste-2019` |\n| `rule_shared_input_allocation` | shared machinery, infrastructure, or utilities | Allocate shared records to the declared crop cycle and output set using documented area, time, mass, or activity drivers; retain the driver and contributing outputs. | `iso-14044-2006` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1249,12 +1227,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 45740
-              line: 792
+              offset: 44018
+              line: 757
               column: 1
             end:
-              offset: 45780
-              line: 792
+              offset: 44058
+              line: 757
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1269,16 +1247,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_67390"
+    - unit_id: "normative_67754"
       family: "validation"
       span:
         start:
-          offset: 67390
-          line: 853
+          offset: 67754
+          line: 820
           column: 1
         end:
-          offset: 69188
-          line: 867
+          offset: 69552
+          line: 834
           column: 1
       markdown: "## 9. Validation Rules\n\nThe following checks are normative for every foreground data package using this PCR:\n\n- `rule_validate_residual_category`: reject the package when a narrower named CPC vegetable category applies or when the species or cultivar and edible part are absent.\n- `rule_validate_fresh_whole_state`: reject processed, frozen, salted, pickled, fermented, dried, powdered, canned, juiced, preserved, seed, planting-material, feed, or waste products.\n- `rule_validate_reference_qualifiers`: require all `Required qualifiers` and require the reference amount to be 1 kg net fresh product at the declared hand-off.\n- `rule_validate_process_completeness`: require `p_crop_production` and `p_harvest_capture`; require each conditional process when its inclusion condition is true and do not count an omitted conditional process as an unexplained gap.\n- `rule_validate_nutrient_disclosure`: when `crop_nutrient_or_amendment` is present, require actual product identity, applied mass, declared nutrient basis, application timing, and upstream dataset or evidence reference.\n- `rule_validate_mass_reconciliation`: require crop, conditioning, grading, and packaging balances to close within the declared measurement tolerance; investigate unaccounted mass.\n- `rule_validate_allocation`: require all intentional marketed grades or co-products to be listed once and require the selected allocation driver and output set to be disclosed.\n- `rule_validate_emission_calculation`: require substance-specific units, factor or measurement method, nutrient basis, and source evidence for every calculated elementary flow.\n- `rule_validate_protocol_coverage`: require every collected or calculated row to reference a declared collection protocol and every protocol to identify temporal and site scope.\n\n"
       headings:
@@ -1297,12 +1275,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 67390
-              line: 853
+              offset: 67754
+              line: 820
               column: 1
             end:
-              offset: 67412
-              line: 853
+              offset: 67776
+              line: 820
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1360,184 +1338,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "rule_single_output_crop_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_45740"
+      unit_id: "normative_44018"
       source_span:
         start:
-          offset: 45853
-          line: 796
+          offset: 44131
+          line: 761
           column: 1
         end:
-          offset: 46112
-          line: 796
+          offset: 44390
+          line: 761
           column: 260
     - pointer: "/allocation_rules/1"
       rule_id: "rule_grade_output_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_45740"
+      unit_id: "normative_44018"
       source_span:
         start:
-          offset: 46113
-          line: 797
+          offset: 44391
+          line: 762
           column: 1
         end:
-          offset: 46508
-          line: 797
+          offset: 44786
+          line: 762
           column: 396
     - pointer: "/allocation_rules/2"
       rule_id: "rule_residue_not_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_45740"
+      unit_id: "normative_44018"
       source_span:
         start:
-          offset: 46509
-          line: 798
+          offset: 44787
+          line: 763
           column: 1
         end:
-          offset: 46793
-          line: 798
+          offset: 45071
+          line: 763
           column: 285
     - pointer: "/allocation_rules/3"
       rule_id: "rule_shared_input_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_45740"
+      unit_id: "normative_44018"
       source_span:
         start:
-          offset: 46794
-          line: 799
+          offset: 45072
+          line: 764
           column: 1
         end:
-          offset: 47064
-          line: 799
+          offset: 45342
+          line: 764
           column: 271
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_45740"
+      unit_id: "normative_44018"
       source_span:
         start:
-          offset: 47066
-          line: 801
+          offset: 45344
+          line: 766
           column: 1
         end:
-          offset: 47452
-          line: 801
+          offset: 45730
+          line: 766
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 67500
-          line: 857
+          offset: 67864
+          line: 824
           column: 1
         end:
-          offset: 67668
-          line: 857
+          offset: 68032
+          line: 824
           column: 169
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 67669
-          line: 858
+          offset: 68033
+          line: 825
           column: 1
         end:
-          offset: 67853
-          line: 858
+          offset: 68217
+          line: 825
           column: 185
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 67854
-          line: 859
+          offset: 68218
+          line: 826
           column: 1
         end:
-          offset: 68015
-          line: 859
+          offset: 68379
+          line: 826
           column: 162
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 68016
-          line: 860
+          offset: 68380
+          line: 827
           column: 1
         end:
-          offset: 68249
-          line: 860
+          offset: 68613
+          line: 827
           column: 234
     - pointer: "/validation_rules/4"
       rule_id: "validation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 68250
-          line: 861
+          offset: 68614
+          line: 828
           column: 1
         end:
-          offset: 68470
-          line: 861
+          offset: 68834
+          line: 828
           column: 221
     - pointer: "/validation_rules/5"
       rule_id: "validation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 68471
-          line: 862
+          offset: 68835
+          line: 829
           column: 1
         end:
-          offset: 68651
-          line: 862
+          offset: 69015
+          line: 829
           column: 181
     - pointer: "/validation_rules/6"
       rule_id: "validation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 68652
-          line: 863
+          offset: 69016
+          line: 830
           column: 1
         end:
-          offset: 68829
-          line: 863
+          offset: 69193
+          line: 830
           column: 178
     - pointer: "/validation_rules/7"
       rule_id: "validation_rule_8"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 68830
-          line: 864
+          offset: 69194
+          line: 831
           column: 1
         end:
-          offset: 69007
-          line: 864
+          offset: 69371
+          line: 831
           column: 178
     - pointer: "/validation_rules/8"
       rule_id: "validation_rule_9"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 69008
-          line: 865
+          offset: 69372
+          line: 832
           column: 1
         end:
-          offset: 69186
-          line: 865
+          offset: 69550
+          line: 832
           column: 179
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1566,27 +1544,27 @@ normative_context:
           column: 243
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_45740"
+      unit_id: "normative_44018"
       source_span:
         start:
-          offset: 45740
-          line: 792
+          offset: 44018
+          line: 757
           column: 1
         end:
-          offset: 45780
-          line: 792
+          offset: 44058
+          line: 757
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_67390"
+      unit_id: "normative_67754"
       source_span:
         start:
-          offset: 67390
-          line: 853
+          offset: 67754
+          line: 820
           column: 1
         end:
-          offset: 67412
-          line: 853
+          offset: 67776
+          line: 820
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1595,5 +1573,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:5238371ddd3dc78b509814c770749b80d76740839a1cce008607cc1e3e5c2d39"
-  generated_content_sha256: "sha256:0ace1304a0271c683d72ca8c86c17b5a756385bcf8a61bac74b5ff5ef177b9a6"
+    sha256: "sha256:4824355c1efee7b5929a5d1297ffa51a312c9f91e27bc59325c707c30c32861b"
+  generated_content_sha256: "sha256:330b90e296e60a897d722f2c9db46f385fe1b75512b88e2446dcf0aae8de6d16"

@@ -311,7 +311,7 @@ translation_status: aligned
 ###### 直接氨排放（`direct_ammonia_emission`）
 所选方法、本地证据或研究目标要求时，记录直接氨排放。
 - 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
-- 流属性/单位：Mass / kg N or kg substance
+- 流属性/单位：Mass / kg NH3
 - 数量规则：根据已核算的氮投入和路径方法计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -322,10 +322,13 @@ translation_status: aligned
 - 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_fertilizer_input_records`
 - 来源：`ipcc-2019-managed-soils-n2o`
+
+最终交换数量为 kg NH3，即该化合物的质量；kg N 仅保留在计算台账中。方法以该物种所含氮质量报告时，仅将该物种的氮质量乘以 17/14 一次；已经是化合物质量的数值不得再次转换。没有有据的物种拆分时，不得将合并氮损失全部归为此物种。转换后的可归属质量按声明参考产出归一化一次。
+
 ###### 直接硝酸盐排放（`direct_nitrate_emission`）
 所选方法、本地证据或研究目标要求时，记录直接硝酸盐排放。
 - 选定流：硝酸根 `4d9a8790-3ddd-11dd-8d68-0050c2490048`
-- 流属性/单位：Mass / kg N or kg substance
+- 流属性/单位：Mass / kg NO3-
 - 数量规则：根据已核算的氮投入和路径方法计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -336,6 +339,9 @@ translation_status: aligned
 - 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_fertilizer_input_records`
 - 来源：`ipcc-2019-managed-soils-n2o`
+
+最终交换数量为 kg NO3-，即该化合物的质量；kg N 仅保留在计算台账中。方法以该物种所含氮质量报告时，仅将该物种的氮质量乘以 62/14 一次；已经是化合物质量的数值不得再次转换。没有有据的物种拆分时，不得将合并氮损失全部归为此物种。转换后的可归属质量按声明参考产出归一化一次。
+
 ### 过程：收获与田间交接（`harvest_and_field_delivery`）
 #### 输入
 ##### 产品流

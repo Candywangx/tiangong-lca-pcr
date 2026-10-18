@@ -493,23 +493,6 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 整理拒收物和清洗废水（`conditioning_reject_output`）
-
-记录整理过程离开的拒收水果、修整物和废水，并保留去向和处理证据。
-
-- 选定流：整理拒收物、修整物或清洗废水＼
-- 流属性/单位：质量或体积 / kg fresh material 或 m3 wastewater
-- 数量规则：可行时分别计量或计算拒收物、修整物和废水，并保留去向。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售交接产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_primary_conditioning_records`
-- 来源：`fao-postharvest-handling-ae075e`
-
 ## 7. 分配与共产品处理
 
 | rule_id | 适用对象 | 规则 | source_ids |
@@ -555,6 +538,7 @@ sync_with: pcr.en-US.md
 | `calc_perennial_attribution` | establishment and replacement | 年度归属量 = 已记录数量 / 声明归属期，并按面积和期间调整 | 建植；树龄；期间；面积 | 年度化果园数量 | `fao-gap-framework-2003`; `iso-14067-2018` |
 | `calc_soil_emissions` | soil nitrous oxide | 删除重复基准后，对适用养分和残余物氮应用声明因子或测量结果 | 养分和残余物氮；因子或结果 | 排放量 | `ipcc-2019-managed-soils` |
 | `calc_output_reconciliation` | harvest and conditioning | 采收总量 = 可销售量 + 次果 + 修整物 + 损失；调查未解释残差 | 批次称量和去向记录 | 核对后的产品和废物量 | `fao-postharvest-handling-ae075e` |
+| `conditioning_reject_output_specific_exchanges` | `primary_conditioning` | 将柑橘拒收果、修整残余物和清洗废水分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_primary_conditioning_records` | 逐项独立交换；完成前必须补齐 | `fao-postharvest-handling-ae075e` |
 
 ### 数据质量要求
 

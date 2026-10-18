@@ -387,15 +387,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_output_records`
-- Range: 鲜梢采摘投入质量控制范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 3.0
-  - Upper: 12.0
-  - Unit: kg fresh shoots/kg dry tea
-  - Basis: 来源茶梢与干茶产出平衡
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力（`tea_plucking_energy`）
 
@@ -503,15 +496,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_processing_batch_records`
-- Range: 鲜叶接收质量控制范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 3.0
-  - Upper: 8.0
-  - Unit: kg fresh leaf/kg dry tea
-  - Basis: 批次鲜叶到干成品的质量平衡
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 鲜叶处理用水（`tea_green_leaf_water`）
 
@@ -556,15 +542,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_processing_batch_records`
-- Range: 准备叶质量平衡控制范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 2.8
-  - Upper: 8.0
-  - Unit: kg prepared leaf/kg dry tea
-  - Basis: 路线处理前的接收后状态
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### Waste flows
 
@@ -613,15 +592,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_processing_batch_records`
-- Range: 路线投入筛选范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 2.8
-  - Upper: 8.0
-  - Unit: kg prepared leaf/kg dry tea
-  - Basis: 路线投入与干茶平衡
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### Waste flows
 
@@ -793,15 +765,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_processing_batch_records`
-- Range: 制茶损失筛选范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1.5
-  - Unit: kg loss/kg dry tea
-  - Basis: 已计水分和残余后的质量平衡
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### 基本流
 
@@ -903,15 +868,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_quality_and_storage_records`
-- Range: 分级投入平衡范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.98
-  - Upper: 1.02
-  - Unit: kg graded input/kg dry tea reference flow
-  - Basis: 接收至分级的质量平衡
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ###### 中压电力（`tea_grading_energy`）
 
@@ -1040,15 +998,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_quality_and_storage_records`
 - Sources: `mass-balance-identity`
-- Range: 门点产出质量平衡接受范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.98
-  - Upper: 1.02
-  - Unit: kg gate output/kg reference flow
-  - Basis: 最终参考流归一和质量平衡
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
 ##### Waste flows
 

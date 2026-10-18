@@ -406,32 +406,6 @@ Raw quantity and calculation requirements: Weigh prepared raw hide; no liming, d
 
 ##### Waste flows
 
-###### Conditioning trims and wash residues (`conditioning_residues`)
-
-Nonmarketable trim and spent wash to actual treatment.
-
-Denominator and scope requirements：per recorded lot or reference product
-
-Raw quantity and calculation requirements: Measure material and wastewater separately by destination. Original collection denominator kind: process_output.
-
-- Selected flow: Nonmarketable trim and spent wash to actual treatment (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_conditioning`
-- Range: Provisional completeness screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: kg per lot
-  - Basis: measured relevant lot flow; not a default factor
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 
@@ -597,32 +571,6 @@ Raw quantity and calculation requirements: Weigh output with moisture and retain
 
 ##### Waste flows
 
-###### Preservation residues (`preservation_residues`)
-
-Spent salt, brine or spoiled raw hide to treatment.
-
-Denominator and scope requirements：per recorded lot or reference product
-
-Raw quantity and calculation requirements: Record separate residue identities and destinations. Original collection denominator kind: process_output.
-
-- Selected flow: Spent salt, brine or spoiled raw hide to treatment (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_preservation`
-- Range: Provisional completeness screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: kg per lot
-  - Basis: measured relevant lot flow; not a default factor
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 
@@ -737,6 +685,8 @@ Identify the actual input for this operation from supplier specifications, equip
 | `net_reference` | handover | Net hide kg = gross weighed lot minus detachable package and free brine; divide attributable inventory by net mass | gross, package, brine | exchanges per kg | `un-cpc-3` |
 | `state_balance` | all nodes | Before mass plus measured water/salt = after mass plus measured residues and explained moisture change; no universal conversion | masses, salt, water, residues | lot balance | `fao-hides-2009` |
 | `allocation_sum` | shared outputs | Shares sum to one per node; animal and shared-asset periods not counted twice | actual outputs, drivers, periods | attributable burdens | `fao-hides-statistics` |
+| `conditioning_residues_specific_exchanges` | `conditioning` | Enumerate equine-hide trimming residues and spent wash water as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_conditioning` | Separate atomic exchanges; completeness required |  |
+| `preservation_residues_specific_exchanges` | `preservation` | Enumerate spent salt, spent brine and spoiled equine raw hides as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_preservation` | Separate atomic exchanges; completeness required |  |
 
 ### Data Quality Requirements
 

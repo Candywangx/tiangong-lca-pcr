@@ -399,15 +399,8 @@ Raw activity or stage basis: Per harvest batch.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_batch`
-- Range: Transfer reconciliation
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.98
-  - Upper: 1.02
-  - Unit: kg input/kg transferred mature crop
-  - Basis: Same field and batch before harvest loss
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage input (`harvest_energy`)
 
@@ -573,15 +566,8 @@ Raw activity or stage basis: Per cleaning lot.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cleaning_lot`
-- Range: Input reconciliation
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.98
-  - Upper: 1.02
-  - Unit: kg input/kg transferred raw grain
-  - Basis: Same lot before cleaning
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ###### Electricity, medium voltage input (`cleaning_energy`)
 
@@ -869,16 +855,8 @@ Raw activity or stage basis: Per kg stabilized grain.
 - Evidence kind: Method formula (`method_formula`)
 - Collection protocol: `cp_drying_batch`
 - Sources: `mass-balance-identity`
-- Range: Moisture-removal screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.30
-  - Unit: kg water/kg incoming grain
-  - Basis: Same stabilization batch
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
 
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
 
 ### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
 This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.

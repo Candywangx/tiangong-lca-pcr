@@ -510,24 +510,6 @@ translation_status: aligned
 ##### 废物流
 
 
-###### 整理次品和废水（`conditioning_culls_and_wastewater`）
-
-记录初级整理移出的水果、固体物和废水及其声明的处理或排放路线。
-
-- 选定流：进入声明处理或排放的整理次品或废水（unmapped）
-- 流属性/单位：质量或体积 / kg 或 m3
-- 数量规则：带处理或排放归宿的实测批次产出
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 声明门合格新鲜菠萝产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_conditioning_and_gate_records`
-- 来源：`fao-postharvest-handling-ae075e`；`mass-balance-identity`
-
-
 ###### 整理损失（`conditioning_loss`）
 
 在相同质量和质量基础上核对整理输入、合格输出和移出物料。
@@ -658,6 +640,7 @@ translation_status: aligned
 | `calc_nutrient_basis` | fertilizer and amendments | `nutrient mass = product mass × declared nutrient fraction`；分别保留产品和养分。 | product mass; label or analysis fraction | kg nutrient and kg product | `fao-gap-framework-2003` |
 | `calc_managed_soil_emission` | soil emissions | 将选定方法层级应用于养分、改良剂、残余物和土壤投入；仅在需要时换算 N2O-N 并披露因子。 | inputs; factor; conversion | emission by substance and compartment | `ipcc-2019-refinement`；`emep-eea-2023-guidebook` |
 | `calc_output_reconciliation` | harvest and conditioning | `input mass = accepted output + culls + residues + measured loss`，先统一声明基准。 | input; output; culls; residues; loss | mass-balance result and discrepancy | `mass-balance-identity` |
+| `conditioning_culls_and_wastewater_specific_exchanges` | `pineapple_primary_conditioning` | 将菠萝拒收果、分离固体残余物和处理废水分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_conditioning_and_gate_records` | 逐项独立交换；完成前必须补齐 | `fao-postharvest-handling-ae075e`; `mass-balance-identity` |
 
 ### 数据质量要求
 

@@ -518,24 +518,6 @@ Raw activity or stage basis: 1,000 kg accepted fresh pineapple output at declare
 ##### Waste flows
 
 
-###### Conditioning culls and wastewater (`conditioning_culls_and_wastewater`)
-
-Record removed fruit, solids, and wastewater from primary conditioning with their declared treatment or discharge route.
-
-- Selected flow: Conditioning cull or wastewater to declared treatment or discharge (unmapped)
-- Flow property / unit: Mass or volume / kg or m3
-- Amount rule: measured batch output with treatment or discharge fate
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh pineapple output at declared gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_conditioning_and_gate_records`
-- Sources: `fao-postharvest-handling-ae075e`; `mass-balance-identity`
-
-
 ###### Conditioning loss (`conditioning_loss`)
 
 Reconcile the conditioning input, accepted output, and removed material on the same quality and mass basis.
@@ -666,6 +648,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_nutrient_basis` | fertilizer and amendments | `nutrient mass = product mass × declared nutrient fraction`; retain product and nutrient separately. | product mass; label or analysis fraction | kg nutrient and kg product | `fao-gap-framework-2003` |
 | `calc_managed_soil_emission` | soil emissions | Apply the selected method tier to nutrient, amendment, residue, and soil inputs; convert N2O-N only when required and disclose the factor. | inputs; factor; conversion | emission by substance and compartment | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
 | `calc_output_reconciliation` | harvest and conditioning | `input mass = accepted output + culls + residues + measured loss` after aligning the declared basis. | input; output; culls; residues; loss | mass-balance result and discrepancy | `mass-balance-identity` |
+| `conditioning_culls_and_wastewater_specific_exchanges` | `pineapple_primary_conditioning` | Enumerate rejected pineapple fruit, removed solid residues and conditioning wastewater as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_conditioning_and_gate_records` | Separate atomic exchanges; completeness required | `fao-postharvest-handling-ae075e`; `mass-balance-identity` |
 
 ### Data Quality Requirements
 
