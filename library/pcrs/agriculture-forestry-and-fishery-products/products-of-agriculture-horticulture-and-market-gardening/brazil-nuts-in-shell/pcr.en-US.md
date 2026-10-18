@@ -1,8 +1,970 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.brazil-nuts-in-shell
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
+content_maturity: authored_methodology
+translation_status: aligned
 ---
 
 # Brazil nuts, in shell
+
+## 1. Scope and Applicability
+
+This PCR guides a foreground data package for Brazil nuts collected from managed or wild Brazil-nut tree systems and transferred as Brazil nuts in shell at a declared farm, primary-conditioning, storage, or hand-off gate. It covers tree or forest-unit management, seasonal pod collection, pod opening that leaves the hard shell intact, cleaning, grading, storage, and the declared gate hand-off.
+
+The canonical reference-flow identity is the platform record `Brazil nuts, in shell`, classified as CPC 3.0 `01377`, with the platform qualifier `Production mix, at farm gate; Fresh, unprocessed produce`. The in-shell reference is the individual seed with its hard shell retained after the woody capsule has been opened. An unopened woody capsule is an intermediate fruit, not the in-shell reference product. Declare any cleaning, conditioning or storage before the selected hand-off.
+
+This PCR applies to conventional, organic, rain-fed, irrigated, mixed-crop, and smallholder or estate routes when the cultivar or cultivar group, geography, tree age, crop year, harvest maturity, pod status, shell condition, moisture basis, quality state, and gate are disclosed. It excludes nursery operations except as upstream inputs, shell removal, splitting or hatcheting, kernel processing, oil extraction, roasted or otherwise processed brazil-nut products, shell processing, retail packaging, consumer use, and transport or storage after the declared gate. It does not select an `Other` or n.e.c. product category.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.brazil-nuts-in-shell` |
+| classification_refs | CPC 3.0 `01377`, Brazil nuts, in shell; mapping relation: broader |
+| covered_products | Brazil-nut seeds after woody-capsule opening, with each hard shell retained, at the declared fresh, conditioned or stored hand-off |
+| excluded_products | Shelled or split Brazil nuts; Brazil-nut kernel, Brazil-nut oil, roasted or otherwise processed Brazil-nut products, pod or shell products after hand-off, and post-gate logistics or retail products |
+| representative_product | Mature or declared-maturity Brazil nuts in shell with source forest or plantation unit, collection season, pod status, moisture or freshness state, grade, accepted mass, reject mass, and gate declared |
+| production_route | Managed biological production or wild forest-unit collection, seasonal pod fall and collection, pod opening while retaining the shell, primary conditioning, grading, optional storage, and declared hand-off |
+| market_state | Fresh, unprocessed produce at farm gate or pod-opened/conditioned in-shell lot at a declared extended gate, with collection season, geography, maturity, pod status, shell condition, grade, and fate records |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Brazil nuts in shell at the declared gate, with the hard shell retained and pod status declared |
+| How much | 1,000 kg net accepted brazil-nuts in shell |
+| How well | Cultivar or cultivar group; production country, region, and climate; tree age and productive status; crop year; fresh or conditioned state; pod status; shell integrity; maturity; size or grade; accepted, downgraded, rejected, and loss mass; pod fate; and gate |
+| How long or cycle | One declared crop year within the perennial tree productive life; establishment, immature years, replacement, and removal are allocated over the declared tree-life and accepted-output basis |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1000 |
+| Reference product flow | Brazil nuts, in shell |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | cultivar or cultivar group; tree block and geography; establishment year, tree age, productive status, and replacement events; soil and climate; irrigation status and water source; crop year or averaging period; harvest maturity; in-shell seed state after woody-capsule opening; pod status; moisture basis; shell condition; size or grade; accepted, downgraded, rejected, and loss mass; pod destination; storage duration and condition; and gate |
+
+The required qualifiers must be declared in dataset metadata, process notes, the reference-flow comment, product description, or an equivalent data-package field. Net product mass excludes container tare. The platform identity is the fresh, unprocessed farm-gate product flow after woody-capsule opening. Opening the capsule is required to obtain the individual in-shell seeds; any further grading, drying, or storage is an extended gate and must retain that qualifier rather than being represented as a new product category. A shelled or split Brazil nut must not be used as the reference product for this PCR.
+
+Each foreground dataset must explicitly select one actual route, declared gate, product state and output row. Reconcile the selected terminal route with `reference_product_at_declared_handoff`; normalize that handoff output to the reference quantity and retain preceding-stage outputs as measured transfers. Raw weighing, mass reconciliation and lot traceability requirements continue to apply.
+
+The sole reference output is `reference_product_at_declared_handoff`, receiving the selected actual route product at the declared gate. Existing route-output ids identify the source and physical state; they are no longer individually fixed to the reference quantity.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | accepted reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Express the reference as net accepted brazil-nuts in shell at the declared gate and exclude container tare. |
+| `fresh_or_pod-opened_gate` | reference and gate outputs | Mass and declared product state | kg and declared state | Keep unopened woody capsules separate from in-shell seeds. Only seeds with their hard shell retained can be the reference; reconcile capsule opening, removed pod mass and losses before normalization. |
+| `yield_and_output_basis` | forest, harvest, conditioning, and storage outputs | Mass and area | kg and ha | Record harvested fruit, accepted grades, pod, field loss, rejects, foreign material, storage losses, and unexplained losses for the same tree-year, lot, or reporting period before normalization. |
+| `moisture_and_freshness_basis` | harvested, conditioned, stored, and accepted brazil-nuts | Mass and moisture or freshness descriptor | kg and declared fraction or class | Preserve as-received mass and moisture or freshness class. Convert between states only with measured mass and a transparent water or dry-matter equation. |
+| `shell_and_maturity_quality` | accepted in-shell product | declared quality properties | declared unit | Retain maturity class, shell integrity, cracks, germination, mold, insect damage, foreign material, size or grade, and freshness as attributes; do not substitute a universal quality default. |
+| `tree_life_allocation_basis` | establishment, replacement, and immature-tree inputs | area, time, or mass activity property | ha, tree-year, or kg product | Allocate perennial establishment, immature years, replacement trees, and removal over the declared tree life and accepted output basis; disclose non-bearing years and replacement events. |
+| `nutrient_product_and_n_basis` | nutrient and soil-amendment inputs | product and nutrient mass | kg product and kg N, P2O5, or K2O | Record formulated product mass and documented nutrient content separately. Nitrogen emission calculations use declared kg N. |
+| `water_basis` | irrigation and wet handling | volume or mass | m3 or kg | Distinguish delivered irrigation water, natural-resource withdrawal, drainage or consumption indicators, and optional wet-cleaning water. A rain-fed or dry-conditioning route records a justified zero for supplied water. |
+| `energy_inventory` | forest, harvest, pod opening, grading, and storage | mass, volume, or energy | kg, L, MJ, or kWh | Preserve carrier, unit, operation, equipment, period, and conversion basis. Keep fuel, electricity, and thermal conditioning energy distinguishable. |
+| `packaging_quantity` | optional in-scope storage packaging | mass or item count | kg, g, or item | Record packaging material mass or item count with package capacity, reuse status, and lot assignment when packaging crosses the declared gate boundary. |
+
+## 5. System Boundary
+
+The default foreground boundary runs from the declared tree-and-forest starting condition through perennial tree management, harvest and collection, and the fresh farm-gate hand-off of accepted brazil-nuts in shell. Capsule opening that leaves each seed hard shell intact is required before every in-shell reference gate. Include further cleaning, grading and storage only when they occur before the declared gate. Upstream production of planting material, fertilizers, crop-protection products, supplied irrigation water, energy carriers, machinery services, and packaging uses representative background datasets. Shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed brazil-nut products, retail, post-gate transport, and post-gate storage are outside the default boundary.
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | tree-and-forest site before or at establishment, with planting material and purchased management inputs crossing the foreground boundary; prior land use and existing tree history are disclosed |
+| starting_condition_role | start of managed perennial brazil-nut production and tree-asset accounting |
+| product_classification_scope | CPC 3.0 `01377`, Brazil nuts, in shell; shelled, split, kernel, oil, shell, and downstream processed brazil-nut products are outside this PCR |
+| recursive_input_rule | Same-category planting material or retained brazil-nuts crossing the boundary are recorded as upstream inputs and are not recursively expanded into another in-shell product output. Internal hand-offs between forest, harvest, conditioning, grading, and storage are process links and are not additional market outputs. |
+| upstream_dataset_requirement | Use representative upstream datasets for nursery material, nutrient products, crop protection, irrigation supply, fuel, electricity, pod opening or grading services, packaging, machinery services, and waste treatment when these inputs cross the boundary. |
+| disclosure | cultivar and tree block; geography, soil, climate, and land history; establishment year, tree age, productive life, and replacement; irrigation source and quality; nutrient and crop-protection records; harvest maturity; in-shell seed state after woody-capsule opening; moisture or freshness; shell quality; grade, reject, pod, and storage records; gate; and any intended pod co-product hand-off |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_tree_to_farm_gate` | all conforming datasets | Include perennial tree establishment, immature years, productive management, harvest, collection, and the declared fresh farm-gate hand-off of accepted brazil-nuts in shell. | `fao-brazil-nut-fruit-structure`; `iso-14044-2006` |
+| `boundary_dehusking_extension` | extended post-harvest route | Include woody-capsule opening before the in-shell reference hand-off. Include cleaning, grading and storage only when actually performed before the declared gate; disclose the resulting physical state. | `fao-brazil-nut-fruit-structure`; `codex-tree-nuts-hygiene-cxc-6-1972` |
+| `boundary_perennial_tree_disclosure` | establishment and replacement | Allocate establishment, immature years, replacement trees, and removal over the declared tree life and accepted-output basis; disclose life, non-bearing years, intercropping, and replacement events. | `fao-brazil-nut-fruit-structure`; `iso-14044-2006` |
+| `boundary_no_shell_removal` | in-shell product | Retain the hard shell in the product boundary. Exclude hatcheting or shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed brazil-nut products, and shell processing. | `codex-tree-nuts-hygiene-cxc-6-1972`; `fao-brazil-nut-fruit-structure` |
+| `boundary_quality_and_fate` | all outputs | Separate accepted in-shell brazil-nuts, pod, downgraded lots, rejected fruit, foreign material, dust, water loss, storage loss, and unexplained loss by measured mass and declared fate. | `fao-brazil-nut-fruit-structure`; `mass-balance-identity` |
+
+## 6. Process Inventory Structure
+
+The foreground route is batch-based at harvest, pod opening, grading, and storage, even when tree management is recorded continuously. Each harvest round, conditioning batch, grade lot, and storage receipt receives a batch or campaign identifier with a declared start, end, input set, output set, cleaning or changeover event, and reporting period. Shared equipment and shared-run burdens are assigned once to the relevant batch or campaign.
+
+For a multi-site forest-collection dataset, enumerate every contributing forest management unit, collection crew, receiving point, and conditioning location. Link site-level inputs, pod yields, quality evidence, and outputs to the common farm-gate boundary, then report the aggregation and representativeness decision. A site must not be omitted or counted twice because several collection points share one receiving ledger.
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `brazil-nut_forest_establishment_and_management` | Brazil nut managed biological production and forest-unit management | required | multi-site aggregation of contributing forest units | foreground | tree-year inputs and accepted output basis |
+| `brazil-nut_harvest_and_collection` | Brazil nut harvest and collection | required |  | foreground | collected woody capsules before required opening for the in-shell seed reference |
+| `brazil-nut_primary_conditioning_and_grading` | Brazil nut pod opening, material treatment, primary conditioning, and grading | required | woody capsules must be opened before the in-shell seed reference; include other conditioning only when performed | primary conditioning and stabilization | received lot and grade outputs |
+| `brazil-nut_storage_and_gate_handoff` | Brazil nut storage and gate hand-off | conditional | include when storage or a post-harvest gate is part of the declared foreground boundary | storage and delivery hand-off | 1,000 kg declared gate output |
+| declared_reference_handoff | Product Measurement at Declared Handoff | required |  | foreground | reference_product_at_declared_handoff |
+
+### Process: Brazil nut Tree Establishment and Management (`brazil-nut_forest_establishment_and_management`)
+
+#### Inputs
+
+##### Product flows
+
+###### Brazil nut planting and replacement material (`brazil-nut_planting_material`)
+
+Record seedlings, planting material, replacement trees, stakes, and attributable establishment materials by block and event. Annualize them over the declared tree life and accepted in-shell output.
+
+- Selected flow: brazil-nut nursery plants and replacement planting material
+- Flow property / unit: Item count or mass / item or kg
+- Amount rule: measured quantity by tree block and establishment or replacement event, annualized over accepted output
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted brazil-nuts in shell.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_brazil-nut_forest_lifecycle_records`
+- Range: Provisional planting-material screening estimate
+  - Range role: Default estimate (`default_estimate`)
+  - Lower: 0.1
+  - Upper: 100
+  - Unit: kg or planting units per 1,000 kg reference product
+  - Basis: broad first-pass perennial-tree establishment and replacement estimate
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Urea fertilizer (`brazil_nut_forest_establishment_and_management_agricultural_nutrient_inputs_urea`)
+
+**Collection scope and applicability for brazil_nut_forest_establishment_and_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
+Raw activity or stage basis: per 1,000 kg accepted brazil-nuts in shell.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_forest_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_forest_input_records`
+- Sources: `ipcc-2019-afolu`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Ammonium sulfate fertilizer (`brazil_nut_forest_establishment_and_management_agricultural_nutrient_inputs_ammonium_sulfate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_forest_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_forest_input_records`
+- Sources: `ipcc-2019-afolu`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Triple superphosphate fertilizer (`brazil_nut_forest_establishment_and_management_agricultural_nutrient_inputs_triple_superphosphate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Triple superphosphate fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_forest_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_forest_input_records`
+- Sources: `ipcc-2019-afolu`; `fao-fertilizer-identities`
+
+###### Potassium chloride fertilizer (`brazil_nut_forest_establishment_and_management_agricultural_nutrient_inputs_potassium_chloride`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Potassium chloride fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_forest_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_forest_input_records`
+- Sources: `ipcc-2019-afolu`; `fao-fertilizer-identities`
+
+###### Cattle manure applied as fertilizer (`brazil_nut_forest_establishment_and_management_agricultural_nutrient_inputs_cattle_manure`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Cattle manure applied as fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_forest_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_forest_input_records`
+- Sources: `ipcc-2019-afolu`; `fao-organic-nutrients`
+
+###### Composted plant residues applied to soil (`brazil_nut_forest_establishment_and_management_agricultural_nutrient_inputs_plant_compost`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Composted plant residues applied to soil
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_forest_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_forest_input_records`
+- Sources: `ipcc-2019-afolu`; `fao-organic-nutrients`
+
+###### Supplied irrigation water (`brazil-nut_irrigation_water`)
+
+Record water delivered to each tree block by source and crop year. A verified rain-fed route may record zero supplied irrigation with a water-balance explanation.
+
+- Selected flow: irrigation water supplied to brazil-nut trees
+- Flow property / unit: Volume or mass / m3 or kg
+- Amount rule: metered or documented delivered irrigation by block and crop year
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted brazil-nuts in shell.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_irrigation_records`
+- Range: Provisional irrigation screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 2,000
+  - Unit: m3 per 1,000 kg reference product
+  - Basis: broad annual supplied irrigation range; rain-fed routes may be zero
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity at the equipment supply point (`brazil_nut_field_energy_electricity`)
+
+**Collection scope and applicability for brazil_nut_field_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Record fuel and electricity used for pumps, field equipment, access, collection support, and tree management separately by carrier and operation.
+Raw activity or stage basis: per 1,000 kg accepted brazil-nuts in shell.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
+###### Diesel fuel supplied to equipment (`brazil_nut_field_energy_diesel`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Gasoline supplied to equipment (`brazil_nut_field_energy_gasoline`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Gasoline supplied to equipment
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-forest-equipment`
+
+##### Waste flows
+
+#### Outputs
+
+##### Elementary flows
+
+##### Waste flows
+
+###### Forest pruning and fallen-fruit residue (`brazil-nut_forest_residue`)
+
+Record pruned branches, fallen nuts, damaged nuts, and other forest residues only when they cross the foreground boundary or receive a defined treatment. Distinguish residue retained on soil from removed or transferred biomass.
+
+- Selected flow: brazil-nut forest residue and removed biomass
+- Flow property / unit: Mass / kg
+- Amount rule: measured or documented residue mass by block and fate
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted brazil-nuts in shell.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_forest_lifecycle_records`
+- Range: Forest-residue screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1,000
+  - Unit: kg per 1,000 kg reference product
+  - Basis: removed or treated forest biomass; retained soil residue may be recorded as zero crossing the boundary
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Brazil nut Harvest and Collection (`brazil-nut_harvest_and_collection`)
+
+#### Inputs
+
+##### Product flows
+
+###### Whole brazil-nuts available for collection (`brazil-nut_harvest_available`)
+
+Record mature or otherwise declared-maturity whole fruit available to the harvest operation before collection loss and hand-off.
+
+- Selected flow: Brazil-nut unopened woody capsules before collection; exact UUID unresolved
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured harvested fruit mass before pod opening or conditioning
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg accepted brazil-nuts in shell.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_harvest_lot_records`
+- Range: Harvest-input mass guardrail
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1,000
+  - Upper: 1,400
+  - Unit: kg per 1,000 kg accepted reference product
+  - Basis: harvested whole-fruit mass before field and quality losses
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity at the equipment supply point (`brazil_nut_harvest_energy_electricity`)
+
+**Collection scope and applicability for brazil_nut_harvest_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Record climbing, cutting, collection, field transport, and handling energy by harvest round and equipment.
+Raw activity or stage basis: per 1,000 kg accepted brazil-nuts in shell.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
+###### Diesel fuel supplied to equipment (`brazil_nut_harvest_energy_diesel`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+##### Waste flows
+
+
+#### Outputs
+
+##### Waste flows
+
+###### Uncollected or damaged harvest fruit (`brazil-nut_harvest_loss`)
+
+Record fruit left in the field, damaged during harvest, over-mature fruit, and other collection losses with the actual fate.
+
+- Selected flow: brazil-nut harvest loss and damaged fruit
+- Flow property / unit: Mass / kg
+- Amount rule: field-scale or lot-register mass not transferred to the next process
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted brazil-nuts in shell.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_harvest_lot_records`
+- Range: Harvest-loss screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 300
+  - Unit: kg per 1,000 kg accepted reference product
+  - Basis: uncollected, damaged, or otherwise non-accepted harvest fruit
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Brazil nut Depoding, Primary Conditioning, and Grading (`brazil-nut_primary_conditioning_and_grading`)
+
+Woody-capsule opening is required before the individual in-shell seed reference. It removes the woody capsule while leaving each seed hard shell intact; shell removal, splitting, and kernel recovery are outside this PCR. Include further conditioning only when actually performed before the declared gate.
+The pod opening and primary conditioning step is the material treatment node; its treated output and all residual destinations are recorded separately.
+
+#### Inputs
+
+##### Product flows
+
+###### Whole brazil-nuts received for conditioning (`brazil-nut_conditioning_input`)
+
+Record the incoming lot state, pod status, maturity, and mass at the conditioning boundary.
+
+- Selected flow: Brazil-nut unopened woody capsules received for opening; exact UUID unresolved
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured lot receipt mass, with in-shell seed state after woody-capsule opening declared
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_dehusking_conditioning_records`
+- Range: Conditioning-input mass guardrail
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1,000
+  - Upper: 1,400
+  - Unit: kg per 1,000 kg accepted conditioning-gate product
+  - Basis: received whole-fruit lot before pod opening and grading losses
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity at the equipment supply point (`brazil_nut_conditioning_energy_electricity`)
+
+**Collection scope and applicability for brazil_nut_conditioning_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Record electricity, fuel, or human-powered equipment activity used for pod opening, cleaning, grading, and changeover.
+Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
+###### Diesel fuel supplied to equipment (`brazil_nut_conditioning_energy_diesel`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+##### Product flows
+
+###### Conditioning water or cleaning service (`brazil-nut_conditioning_water`)
+
+Record optional cleaning water only when it crosses the foreground boundary. Dry pod opening and cleaning may record a justified zero.
+
+- Selected flow: process or cleaning water
+- Flow property / unit: Volume or mass / m3 or kg
+- Group selection: deferred until the actual cleaning or washing function is recorded
+- Amount rule: metered water used by conditioning batch
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_dehusking_conditioning_records`
+- Range: Conditioning-water screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 5
+  - Unit: m3 per 1,000 kg accepted conditioning-gate product
+  - Basis: optional wet cleaning; dry routes may be zero
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted brazil-nuts in shell (`brazil-nut_conditioned_accepted_output`)
+
+Record accepted individual Brazil-nut seeds after woody-capsule opening, with each hard shell retained, grade, maturity, pod status, and declared gate.
+The accepted brazil-nut lot is the intended output of this conditioning process.
+
+- Selected flow: Brazil nuts, in shell `5eada32e-7ae8-44ae-9f1e-66f84b193b84`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+Raw output measurement and reconciliation: measured net accepted lot output excluding tare
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg declared conditioning-gate output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_grade_reject_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+##### Product flows
+
+###### Marketed brazil-nut pod co-product (`brazil-nut_pod_coproduct`)
+
+Record a pod stream only when it is intentionally transferred to a declared recipient; otherwise record it as residue or waste below.
+
+- Selected flow: brazil-nut pod and fibrous biomass
+- Flow property / unit: Mass / kg
+- Amount rule: measured pod mass and declared destination by batch
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_pod_destination_records`
+- Range: Marketed pod co-product screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1,000
+  - Unit: kg per 1,000 kg received lot
+  - Basis: measured destination-specific pod mass
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Brazil nut pod and removed biomass (`brazil-nut_pod_output_or_residue`)
+
+Record removed pod and associated fibrous material separately from shell-retained product. A marketed or transferred pod stream is an intended co-product; retained, composted, or discarded pod is a residue or waste route.
+
+- Selected flow: brazil-nut pod and fibrous residue
+- Flow property / unit: Mass / kg
+- Amount rule: measured or documented pod mass and destination by batch
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_pod_destination_records`
+- Range: Husk-output screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 100
+  - Upper: 1,000
+  - Unit: kg per 1,000 kg received whole-fruit lot
+  - Basis: removed pod and fibrous material; actual value depends on maturity and incoming state
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Downgraded and rejected brazil-nuts (`brazil-nut_grade_rejects`)
+
+Record cracked, moldy, insect-damaged, immature, over-mature, contaminated, or otherwise off-spec brazil-nuts, with rework, recovery, treatment, or disposal destination.
+
+- Selected flow: rejected or downgraded brazil-nuts in shell
+- Flow property / unit: Mass / kg
+- Amount rule: measured mutually exclusive grade, downgrade, rework, and reject masses
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg received conditioning lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_grade_reject_records`
+- Range: Reject and downgrade screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 250
+  - Unit: kg per 1,000 kg received conditioning lot
+  - Basis: rejected, downgraded, reworked, or recovered fruit
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+### Process: Brazil nut Storage and Gate Hand-off (`brazil-nut_storage_and_gate_handoff`)
+
+This process is conditional. Include it when storage, dispatch preparation, or a post-harvest gate is part of the declared foreground boundary.
+
+#### Inputs
+
+##### Product flows
+
+###### Brazil nuts received for storage (`brazil-nut_storage_input`)
+
+Record opening stock or lot receipt, product state, pod status, moisture or freshness, grade, and storage start.
+
+- Selected flow: Brazil nuts, in shell `5eada32e-7ae8-44ae-9f1e-66f84b193b84`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured stock receipt mass excluding tare
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg declared gate output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_storage_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+###### Electricity at the equipment supply point (`brazil_nut_storage_energy_electricity`)
+
+**Collection scope and applicability for brazil_nut_storage_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Record electricity, fuel, cooling, ventilation, or other storage energy by facility and storage period.
+Raw activity or stage basis: per 1,000 kg declared gate output.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
+###### Diesel fuel supplied to equipment (`brazil_nut_storage_energy_diesel`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_energy_records`
+- Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+##### Product flows
+
+###### Wooden pallet (`brazil_nut_storage_packaging_wood_pallet`)
+
+**Collection scope and applicability for brazil_nut_storage_packaging.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Record packaging only when it crosses the declared gate boundary or is attributable to the stored lot.
+Raw activity or stage basis: per 1,000 kg declared gate output.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Record composition, net mass, reuse cycles and return losses; attribute reusable items by actual use and separate packaging from product mass. Keep distinct treatment destinations separate without assuming recycling credits.
+
+- Selected flow: Wooden pallet
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_storage_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_storage_records`
+- Sources: `fao-package-identities`
+
+###### Wooden crate (`brazil_nut_storage_packaging_wood_crate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Record composition, net mass, reuse cycles and return losses; attribute reusable items by actual use and separate packaging from product mass. Keep distinct treatment destinations separate without assuming recycling credits.
+
+- Selected flow: Wooden crate
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_brazil_nut_storage_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil_nut_storage_records`
+- Sources: `fao-package-identities`
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted brazil-nuts at declared gate (`brazil-nut_gate_output`)
+
+Record net dispatched in-shell seeds after woody-capsule opening, with grade, freshness or moisture, and gate declared.
+
+- Selected flow: Brazil nuts, in shell `5eada32e-7ae8-44ae-9f1e-66f84b193b84`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+Raw output measurement and reconciliation: measured net dispatch mass excluding tare
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg declared gate output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_storage_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+##### Waste flows
+
+###### Storage loss and damaged product (`brazil-nut_storage_loss`)
+
+Record spoilage, drying or freshness loss, pests, breakage, and other storage losses with treatment or disposal fate.
+
+- Selected flow: brazil-nut storage loss or damaged product
+- Flow property / unit: Mass / kg
+- Amount rule: stock reconciliation and measured damaged or removed mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg declared gate output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_brazil-nut_storage_records`
+- Range: Storage-loss screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: kg per 1,000 kg declared gate output
+  - Basis: storage spoilage, handling damage, freshness loss, and unexplained residual under investigation
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+
+### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
+This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
+#### Inputs
+##### Product flows
+###### Actual route product at handoff (`actual_route_product_for_handoff`)
+Record the accepted product delivered by the actual terminal route and reconcile it with handoff weighing and lot records.
+- Selected flow: Brazil nuts, in shell
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net product mass at the actual handoff, normalized to the reference quantity; do not sum preceding-stage quantities, other routes or co-products
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+This measurement node adds no waste inputs.
+##### Elementary flows
+This measurement node adds no resource inputs.
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+- Selected flow: Brazil nuts, in shell
+- Flow property / unit: Mass / kg
+- Amount rule: 1000 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+Confirm the product UUID independently for the actual state. Until confirmed, retain unresolved identity instead of inheriting a UUID from a preceding stage or another route.
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+Record actual losses at the operation where they occur; do not duplicate them here.
+##### Elementary flows
+Record actual emissions at the operation where they occur; do not duplicate them here.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | applies_to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_01` | tree management and harvest with an intended pod output | Prefer process subdivision when tree, harvest, pod opening, pod collection, and nut records are independently available. When pod is deliberately collected and transferred as an intended co-product, allocate shared burdens by measured dry-matter mass; if dry-matter data are unavailable, use measured as-received mass and disclose the limitation. | `iso-14044-2006`; `fao-brazil-nut-fruit-structure` |
+| `allocation_02` | pod retained on site or discarded | If pod remains on the field, is composted without an intended product hand-off, or is discarded as residue, do not assign a co-product credit. Retain its mass and fate as residue or waste and assign shared burden to the intended in-shell brazil-nut output. | `iso-14044-2006`; `mass-balance-identity` |
+| `allocation_03` | premium, standard, and downgraded in-shell grades | Use physical mass allocation between mutually exclusive accepted grade outputs when common conditioning burdens cannot be subdivided. Grade-specific operations remain with the grade receiving them; do not allocate the same lot to both a grade row and an aggregate output row. | `iso-14044-2006`; `mass-balance-identity` |
+| `allocation_04` | perennial tree periods and phases | Annualize establishment, immature years, replacement, intercropping attribution, and removal over the declared tree life and accepted output basis. Link every input and output to a crop year or lifecycle phase; do not count a replacement event in both the original and replacement tree phases. | `fao-brazil-nut-fruit-structure`; `iso-14044-2006` |
+| `allocation_05` | downgraded, reworked, rejected, and recovered lots | Keep rejected and downgraded lots separate from accepted product. Rework retains the producing-node burden and is linked once; recovered or intentionally marketed material requires a declared destination and allocation decision; discarded material receives its declared treatment burden. | `mass-balance-identity`; `iso-14044-2006` |
+| `allocation_06` | batch, campaign, and changeover attribution | Link tree, harvest, conditioning, pod opening, grading, and storage inputs and outputs to the batch or campaign that generated them. Record cleaning and changeover events once and do not allocate shared-run burdens to more than one batch without a documented driver. | `mass-balance-identity`; `iso-14044-2006` |
+
+The hard shell remains part of the in-shell reference product and is not a separate co-product in this PCR. Kernel, oil, and shell-removal outputs belong to downstream brazil-nut-product PCRs and must not be introduced into this inventory. No output may be counted both as a marketed pod co-product and as forest or conditioning residue.
+
+Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_brazil-nut_forest_lifecycle_records` | `brazil-nut_forest_establishment_and_management` | tree asset, land, planting, replacement, intercropping, residue | tree block and asset register | block area; planting year; cultivar; tree count; replacement; removal; branch and pod residue; tree phase; accepted output | block register, field log, and annual reconciliation; Raw aggregation and attribution: link block records to crop year and accepted output | ha, item, kg, tree-year | event and annual | full declared tree life or documented representative period | every contributing tree block | per declared reference flow | signed field register, GIS or survey area, replacement evidence |
+| `cp_brazil-nut_forest_input_records` | `brazil-nut_forest_establishment_and_management` | nutrient, amendment, crop protection | input application record | product name; formulation; nutrient content; active ingredient; amount; date; block; purpose; method | invoice, application log, and supplier record; Raw aggregation and attribution: aggregate by product, nutrient, block, and crop year | kg product, kg nutrient, kg active ingredient | every application | crop year | every contributing block | per declared reference flow | invoice, product label, application log |
+| `cp_brazil-nut_irrigation_records` | `brazil-nut_forest_establishment_and_management` | irrigation and water | irrigation meter or water ledger | source; volume; block; date; meter; water quality; withdrawal and return | meter, pump record, or transparent water balance; Raw aggregation and attribution: reconcile delivery, withdrawal, and declared consumption | m3 or kg | event and monthly | crop year | every irrigated block | per declared reference flow | meter calibration, pump log, water ledger |
+| `cp_brazil-nut_energy_records` | all field, harvest, conditioning, and storage processes | energy and carrier | fuel, electricity, and equipment record | carrier; amount; equipment; operation; lot or block; date; duration; conversion factor | invoice, meter, fuel log, or equipment record; Raw aggregation and attribution: aggregate by carrier, operation, lot, and period | L, kg, MJ, or kWh | event and monthly | crop year and declared post-harvest period | each operation and facility | per declared reference flow | invoice, meter, fuel log, equipment specification |
+| `cp_brazil-nut_emission_records` | `brazil-nut_forest_establishment_and_management` | direct and indirect field emissions | emission calculation input record | nutrient input; residue; soil condition; crop-protection record; species; method; factor | calculation workbook linked to raw records; Raw aggregation and attribution: retain substance, receiving medium, factor, and source `brazil_nut_field_emissions_specific_emission`: Record calculated emissions from nutrient application, residue handling, crop-protection use, and managed soil using the selected method and receiving medium. calculated from documented inputs, residue fate, soil condition, and method factor This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `ipcc-2019-afolu` | kg substance | annual and event | crop year | every contributing block | per declared reference flow | calculation review, factor version, source citation |
+| `cp_brazil-nut_harvest_lot_records` | `brazil-nut_harvest_and_collection` | harvest, collection, field loss, residue | harvest-lot register | block; harvest round; maturity; harvested mass; uncollected mass; debris; pod status; destination | weighbridge, field scale, and lot log; Raw aggregation and attribution: reconcile available, collected, lost, and residue mass | kg, date, lot | every collection round | harvest season | every contributing block | per declared reference flow | scale calibration, lot ticket, field inspection |
+| `cp_brazil-nut_dehusking_conditioning_records` | `brazil-nut_primary_conditioning_and_grading` | pod opening, cleaning, water, energy, moisture, batch yield | conditioning batch record | input mass; pod status; method; duration; energy; water; output state; output mass; pod mass; cleaning loss; wastewater | batch log, meter, scale, moisture or freshness test, and water balance; Raw aggregation and attribution: link all inputs and outputs to one batch and gate `brazil_nut_conditioning_residuals_specific_emission`: Record wastewater, dust, soil, fibers, and wash solids only when they cross the boundary or receive treatment; identify receiving medium and fate. measured residual mass or calculated from batch water and solids balance This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability.  | kg, %, hours, L, kWh | every batch | declared post-harvest period | each conditioning facility or farm unit | per declared reference flow | calibrated scale, batch ticket, freshness or moisture test |
+| `cp_brazil-nut_pod_destination_records` | `brazil-nut_primary_conditioning_and_grading` | pod co-product, residue, or waste | destination and transfer record | pod mass; dry matter or moisture; destination; recipient; price or use; fate; transfer date | scale, transfer record, and destination confirmation; Raw aggregation and attribution: separate intended output from residue and waste | kg and declared fraction | every transfer | conditioning period | each pod destination | per declared reference flow | receipt, transfer note, destination evidence |
+| `cp_brazil-nut_grade_reject_records` | `brazil-nut_primary_conditioning_and_grading` | grade, downgrade, reject, foreign material | inspection and grade record | lot; maturity; pod status; shell condition; mold; insects; foreign material; accepted mass; rework; fate | inspection, sampling, and scale record; Raw aggregation and attribution: mutually exclusive grade and reject states | kg, %, grade code | every lot | declared post-harvest period | each grading point | per declared reference flow | inspection sheet, sample plan, scale calibration |
+| `cp_brazil-nut_storage_records` | `brazil-nut_storage_and_gate_handoff` | storage input, loss, packaging, gate output | stock and dispatch ledger | opening stock; receipts; lot; product state; moisture or freshness; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate | stock ledger, dispatch ticket, and storage log; Raw aggregation and attribution: opening + receipts = dispatch + closing + loss | kg, %, days, kWh, item | receipt, inspection, and dispatch | declared storage period | each storage facility | per declared reference flow | stock reconciliation, dispatch ticket, freshness or moisture and pest record |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_01` | perennial tree inputs | Allocate tree establishment, immature years, replacement, intercropping share, and removal over the declared tree-life basis and accepted output by crop year. | tree asset register; tree life; crop-year output; intercropping driver | annualized tree input per reference flow | `fao-brazil-nut-fruit-structure`; `iso-14044-2006` |
+| `calc_02` | every harvest, conditioning, and storage lot | `opening mass + inputs = accepted outputs + pod co-product + rejects + residues + measured losses`; investigate any unexplained residual. | lot weights and fates | reconciled mass balance | `mass-balance-identity` |
+| `calc_03` | whole-fruit to pod-opened lots | `pod-opened mass = whole-fruit input mass − measured pod and non-product losses`; do not infer pod mass from an unrelated average when a lot record exists. | input/output mass; pod record; loss record | state- and fate-corrected product mass | `mass-balance-identity`; `fao-brazil-nut-fruit-structure` |
+| `calc_04` | marketed pod co-product | If pod is intended and transferred, apply measured dry-matter mass allocation to shared harvest and pod opening burdens; if not intended, model residue fate without co-product credit. | brazil-nut mass; pod mass; moisture or dry matter; declared destination | allocated burdens and co-product share | `iso-14044-2006` |
+| `calc_05` | grades, downgraded, reworked, and rejected lots | Grade outputs must be mutually exclusive. Accepted output equals input less pod, declared downgraded, rework, reject, foreign-material, water-loss, and unexplained-loss terms; rework is linked once. | batch input; grade and reject records | normalized output rows | `mass-balance-identity` |
+| `calc_06` | storage | `opening stock + receipts − dispatches − closing stock = measured storage loss`; storage loss is not accepted gate output. | stock ledger; dispatches; closing stock; loss records | storage loss per storage duration | `mass-balance-identity` |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `quality_01` | flow identity | Use the verified `Brazil nuts, in shell` UUID with Mass and kg. Preserve the fresh farm-gate or explicitly extended-gate qualifier and do not substitute shelled, split, kernel, or water identities. | platform identity record; dataset metadata |
+| `quality_02` | tree and harvest quantities | Use calibrated scales, meters, or transparent documented estimates. Record a justified zero when a route does not use irrigation, wet cleaning, packaging, or storage. | calibration record; field and lot logs |
+| `quality_03` | pod and product state | Measure or document whole-fruit, pod-opened-with-shell, and conditioned states separately. Retain pod moisture or dry-matter basis where allocation or conversion uses it. | batch record; scale; moisture or freshness test |
+| `quality_04` | completeness | Reconcile tree inputs, harvest outputs, pod destination, conditioning outputs, rejects, residues, water loss, storage loss, and gate dispatches. | mass-balance workbook; stock ledger |
+| `quality_05` | temporal and perennial representativeness | Cover the declared crop year and report tree phase, productive age, replacement events, intercropping, abnormal weather, and averaging method. | crop-year register; tree lifecycle record |
+| `quality_06` | co-products and fate | Evidence every intended pod hand-off, downgraded destination, rework loop, reject treatment, and residue fate. Do not assign credits to an unverified destination. | transfer note; destination record; treatment record |
+| `quality_07` | geography and technology | Disclose country, region, climate, soil, irrigation regime, harvest practice, pod opening method, grading method, storage condition, pod fate, and gate. | site description; process notes; facility record |
+| `quality_08` | uncertainty and estimates | Label provisional ranges as replaceable candidate-stage estimates and replace them with measured or source-backed values before reviewed or published use. | review record; updated foreground dataset |
+
+## 9. Validation Rules
+
+| rule_id | applies_to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validation_01` | reference flow | Reference product is the verified `Brazil nuts, in shell` UUID with Mass and kg. The dataset declares individual in-shell seeds after woody-capsule opening and does not substitute unopened capsules, shelled kernels or split brazil-nuts. | `codex-tree-nuts-hygiene-cxc-6-1972` |
+| `validation_02` | process map | Every required process is present; pod opening and any actually performed cleaning, grading, and storage processes are present when the declared gate or route requires them. | `fao-brazil-nut-fruit-structure` |
+| `validation_03` | perennial production | Tree establishment, immature years, productive phase, replacement, intercropping attribution, and removal are linked to declared crop years and are not double-counted. | `fao-brazil-nut-fruit-structure`; `iso-14044-2006` |
+| `validation_04` | harvest and collection | Harvested, collected, uncollected, damaged, residue, and accepted brazil-nut masses are mutually reconciled; maturity and hand-off state are declared. | `mass-balance-identity` |
+| `validation_05` | pod opening and quality | Whole-fruit input, pod, accepted in-shell product, grade, downgraded/rework, reject, foreign material, water loss, and residuals are mutually exclusive and mass-balanced. | `mass-balance-identity`; `fao-brazil-nut-fruit-structure` |
+| `validation_06` | storage and gate | Opening stock, receipts, dispatches, closing stock, storage damage, product state, storage duration, and gate output reconcile. Storage losses are excluded from accepted output. | `mass-balance-identity`; `fao-brazil-nut-fruit-structure` |
+| `validation_07` | allocation and rework | Pod allocation, grade allocation, downgraded routes, rework loops, rejected-material treatment, and any intercropping attribution are explicit and no burden or output is counted twice. | `iso-14044-2006` |
+| `validation_08` | evidence and disclosure | All important quantitative flows have a foreground collection rule and candidate range or method constraint; estimates, unresolved identities, gate state, pod fate, and evidence limitations are disclosed. | `fao-brazil-nut-fruit-structure`; `mass-balance-identity` |
+| `validation_09` | batch and campaign records | Every harvest round, conditioning batch, grade lot, and storage receipt has a declared boundary, linked inputs and outputs, cleaning or changeover status, and reporting period; shared-run burdens are not counted twice. | `mass-balance-identity` |
+| `validation_10` | multi-site aggregation | Enumerate every contributing forest unit, collection crew, receiving point, and conditioning location; link site-level inputs, outputs, and evidence to the common boundary and document the representativeness decision without omitting or double-counting a site. | `mass-balance-identity` |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | `secondary_dataset` for a reviewed brazil-nut-in-shell foreground dataset; may be promoted to `background_dataset` only after the required review and publication gates |
+| downstream_use | Construction and validation of process and lifecyclemodel projections for brazil-nuts in shell at the declared fresh farm-gate or extended pod-opened, conditioned, or storage gate |
+| allowed_use | Tree management, harvest, collection, pod opening, cleaning, grading, storage, and gate modelling when the declared product state, pod status, maturity, quality, crop year, geography, and allocation treatment are retained |
+| excluded_use | Shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed brazil-nut products, shell products, retail products, consumer use, post-gate logistics, and unreported product categories |
+| required_metadata | reference UUID; Mass property and Units of mass unit group; CPC 3.0 `01377`; cultivar; geography; tree phase and age; crop year; irrigation; maturity; in-shell seed state after woody-capsule opening; pod fate; shell and grade quality; accepted, rejected, residue, loss, and storage records |
+| required_quality_disclosure | measurement versus estimate; freshness or moisture method; mass-balance completeness; tree-life and intercropping allocation; pod co-product allocation; rework and reject fate; storage duration; data period; geography; technology; and unresolved identity gaps |
+| update_trigger | new crop-year records, material change in tree phase or replacement, change in harvest or pod opening technology, new intended pod route, changed storage practice, evidence-backed range replacement, or platform identity revision |
+
+## 11. Data Sources
+
+The crop sources below support qualitative identity and handling context within their stated scope. They do not establish the provisional reasoned screening estimates in this PCR, which require site measurements and reviewed evidence before use as model quantities. Agronomic activity records remain specific to the actual crop and site.
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `ipcc-2019-afolu` | method_factor | IPCC 2019 Refinement to the 2006 IPCC Guidelines, AFOLU, https://efdb.ipcc-nggip.iges.or.jp/public/2019rf/index.html | managed-soil and agricultural emission calculation method context |
+| `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://committee.iso.org/standard/38498.html | allocation hierarchy, data quality, boundary, and disclosure rules |
+| `mass-balance-identity` | method_factor | Conservation-of-mass method identity for lot reconciliation | harvest, pod opening, grading, storage, reject, residue, and water-loss reconciliation |
+| `fao-brazil-nut-fruit-structure` | official_guidance | FAO, Brazil nuts, https://www.fao.org/forestry/nwfp/statistics/brazil-nuts | crop identity, harvest or primary handling and storage context only; not quantitative inventory coefficients |
+| `codex-tree-nuts-hygiene-cxc-6-1972` | standard | Codex Alimentarius, Code of Hygienic Practice for Tree Nuts, CXC 6-1972, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/zh/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B6-1972%252FCXC_006e.pdf | hygiene, product-state and handling context; not default LCA quantities or crop-specific yield factors |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-forest-equipment` | official_guidance | FAO Appropriate technologies for forest harvesting, https://www.fao.org/4/x5596E/x5596e06.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |

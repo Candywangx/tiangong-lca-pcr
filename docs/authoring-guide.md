@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-16
-lastReviewedCommit: 176c63d6b115f3116a2ceda7172833ef0f83f7df
-lastReviewedNote: "PCR #117: bounded npm graph/Actions discovery coordinates root/core Ajv and reuses full qualification; runtime pins, readers, assets, locks, methodology and product/publication authority remain unchanged."
+lastReviewedAt: "2026-10-18"
+lastReviewedCommit: "5f0c9a8786d99b2594064726e31b571da73672e2"
+lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
 ---
 
 # Authoring Guide

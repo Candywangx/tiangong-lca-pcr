@@ -1,8 +1,778 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.cottonseed-other
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Cottonseed, other
+
+## 1. Scope and Applicability
+
+This PCR covers whole, fuzzy, non-planting cottonseed separated from harvested seed cotton during ginning and delivered at a declared gin or farm hand-off. Cotton cultivation, harvest, seed-cotton handling and ginning are included because lint and cottonseed are inseparable intended co-products until the gin stand. Declare cultivar, geography, crop year, irrigation, harvest system, gin technology, cottonseed moisture, foreign matter, delinting state, storage/aeration, allocation and gate.
+
+Exclude planting seed, mechanically or chemically delinted seed, linters, hulls, oil, cake, meal, crushing, extraction, feed formulation and downstream transport. A delinted commodity requires another route and identity.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.cottonseed-other |
+| classification_refs | CPC 3.0: 01432 Cottonseed, other; mapping relation: narrower |
+| covered_products | whole non-planting cottonseed separated during ginning, retaining natural fuzz |
+| excluded_products | planting or delinted seed; lint, linters, hulls, oil, cake, meal and formulated feed |
+| representative_product | fuzzy gin-run cottonseed not intended for planting |
+| production_route | managed cotton cultivation and harvest, seed-cotton handling, cleaning and mechanical gin separation |
+| market_state | whole fuzzy cottonseed at gin/farm hand-off with moisture, foreign matter, storage, lot, grade and gate declared |
+
+Rainfed/irrigated cultivation, picker/stripper harvest, saw/roller gins and optional short-term aerated storage are alternatives and shall remain distinct unless combined with production weights.
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | whole fuzzy non-planting cottonseed separated at the gin |
+| How much | 1,000 kg as-received cottonseed |
+| How well | declared cultivar, crop year, moisture wet basis, foreign matter, fuzz/delinting state, grade, storage/aeration and acceptance specification |
+| How long or cycle | one matched crop cycle and gin campaign or traceable gin lot |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1000 |
+| Reference product flow | Cottonseed, other, production mix at farm gate, fresh unprocessed |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | non-planting use; whole/fuzzy state; delinting excluded; cultivar; crop year; geography; moisture wet basis; foreign matter; grade; storage/aeration; gin technology; gate; allocation |
+
+The fixed UUID applies only to whole non-planting cottonseed in this fresh/unprocessed farm-gate identity.
+
+Each foreground dataset must explicitly select one actual route, declared gate, product state and output row. Reconcile the selected terminal route with `reference_product_at_declared_handoff`; normalize that handoff output to the reference quantity and retain preceding-stage outputs as measured transfers. Raw weighing, mass reconciliation and lot traceability requirements continue to apply.
+
+The sole reference output is `reference_product_at_declared_handoff`, receiving the selected actual route product at the declared gate. Existing route-output ids identify the source and physical state; they are no longer individually fixed to the reference quantity.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass_as_received` | reference cottonseed | Mass | kg | Report as-received mass and measured wet-basis moisture; retain dry-matter conversions. |
+| `field_to_seed_cotton_conversion` | field inventory | Area and mass | ha and kg | Reconcile area to same-cycle accepted seed cotton before conversion to the gin lot. |
+| `gin_mass_balance` | ginning | Mass | kg | Reconcile seed cotton to lint, cottonseed, useful recovery, waste and moisture change. |
+| `nutrient_content_basis` | nutrient supply | Product and nutrient mass | kg product; kg N; kg P2O5; kg K2O | Preserve product, formulation, assay and basis without double counting. |
+| `allocation_value_basis` | co-products | Mass and economic value | kg and declared currency | Use matched quantities and representative prices; disclose quality and sensitivity. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | prepared cotton field at crop-cycle start, with seed and purchased inputs crossing the boundary |
+| starting_condition_role | start of managed biological cotton production |
+| product_classification_scope | non-planting cottonseed corresponding to CPC 01432 |
+| recursive_input_rule | planting seed links to a distinct seed-production dataset and shall not recurse to this PCR |
+| upstream_dataset_requirement | compatible planting material, nutrient, crop-protection, irrigation, energy, water, packaging and treatment datasets |
+| disclosure | geography; cultivar; dates; area; yield; irrigation; harvest; seed-cotton storage; gin; lot balance; moisture; foreign matter; fuzz state; storage; co-product prices; allocation; gate |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_crop_cycle` | cultivation and harvest | Include establishment, field management, irrigation where used, harvest and direct field emissions through seed-cotton hand-off. | `feedipedia-cottonseed`; `ncc-seedcotton-handling` |
+| `boundary_ginning` | ginning | Include receiving, unloading, drying/conditioning, cleaning, gin separation, conveying, on-site aeration/storage and handling through gate. | `cotton-ginners-handbook-2016`; `cottonseed-storage-2018` |
+| `boundary_product_state` | reference | Reference seed is whole and fuzzy; exclude delinting, crushing, extraction, meal/feed and planting-seed conditioning. | `feedipedia-cottonseed`; `cottonseed-storage-2018` |
+| `boundary_route_alternatives` | all routes | Keep cultivation, harvest, gin and storage alternatives separate unless combined with production weights. | `cotton-ginners-handbook-2016` |
+| `boundary_single_period` | all routes | Use one reporting period for each matched crop and gin campaign; no inventory carry-over or cross-period attribution is permitted. |  |
+| `boundary_direct_emissions` | field and gin | Include managed-soil and reported gin particulate emissions from matched activity records. | `ipcc-2019-managed-soils`; `cotton-ginners-handbook-2016` |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `cotton_field_production` | Cotton cultivation and harvest | required | always | managed production and seed-cotton harvest | hectare and accepted seed-cotton mass |
+| `cotton_ginning` | Seed-cotton receiving, cleaning and ginning | required | always | material treatment by separation of lint and cottonseed in batch production or continuous operation; alternative technology route delta is declared | incoming lot and reconciled outputs |
+| `cottonseed_handling_storage` | Cottonseed primary conditioning, grading, preservation, packaging and storage | conditional | occurs before declared gate | primary conditioning, grading/sorting, preservation/stabilization and packaging presentation before hand-off | incoming lot and accepted terminal mass |
+| declared_reference_handoff | Product Measurement at Declared Handoff | required |  | foreground | reference_product_at_declared_handoff |
+
+### Process: Cotton cultivation and harvest (`cotton_field_production`)
+
+#### Inputs
+
+##### Product flows
+
+###### Cotton planting seed (`cotton_planting_seed_input`)
+
+Record cultivar-specific planting seed; never use the non-planting reference identity.
+
+- Selected flow: Cottonseed, seed for planting `5ec327e3-1046-4478-9010-0733b798aa56`
+- Flow property / unit: Mass / kg
+- Amount rule: measured seed mass by cultivar, treatment and sowing event
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per cultivated hectare and crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity`
+- Range: Provisional sowing-rate screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 2
+  - Upper: 40
+  - Unit: kg/ha
+  - Basis: one crop cycle; actual establishment system governs
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Irrigation water (`field_irrigation_input`)
+
+Record applied irrigation separately from rainfall; verified rainfed fields record zero.
+
+- Selected flow: Irrigation water supply
+- Flow property / unit: Volume / m3
+- Amount rule: metered or calculated applied irrigation water
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare and crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity`
+- Range: Provisional irrigation screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 15000
+  - Unit: m3/ha
+  - Basis: one crop cycle; rainfed route may be zero
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`field_energy_input_diesel`)
+
+Actual diesel field machinery for cotton establishment, crop care and harvest; attribute shared cotton outputs under the existing allocation rules.
+
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_field_activity`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_activity`
+- Sources: `route-energy-fao`
+
+Apply `field_energy_input_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Harvested seed cotton (`harvested_seed_cotton_output`)
+
+Record accepted seed cotton containing lint and seed before ginning.
+
+- Selected flow: Harvested seed cotton before ginning
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted mass with moisture and trash fraction
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare and crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest_balance`
+- Range: Provisional seed-cotton yield screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 300
+  - Upper: 10000
+  - Unit: kg/ha
+  - Basis: accepted as-harvested seed cotton for one crop cycle
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Field residues and rejected seed cotton (`field_residue_waste_output`)
+
+Record stalks, roots, leaves, fallen bolls and rejected material by destination.
+
+- Selected flow: Cotton field residues and rejected seed cotton
+- Flow property / unit: Mass / kg
+- Amount rule: field balance by residue class, removal and fate
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare and crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_harvest_balance`
+- Range: Provisional exported-residue screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 10000
+  - Unit: kg/ha
+  - Basis: material physically leaving the field boundary
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+###### Nitrous oxide to air (`field_n2o_air_output`)
+
+Calculate managed-soil nitrous oxide from matched nutrient and residue records.
+
+- Selected flow: Nitrous oxide, emissions to air, unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- Flow property / unit: Mass / kg N2O
+- Amount rule: applicable method for direct and indirect nitrogen pathways
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare and crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: N input (`n_input`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Broad method-result screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: kg N2O/ha
+  - Basis: one crop cycle; method result governs
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Ammonia to air (`field_ammonia_air_output`)
+
+Calculate volatilization only from fertilizer products and events actually recorded.
+
+- Selected flow: Ammonia, emissions to air, unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- Flow property / unit: Mass / kg NH3
+- Amount rule: method calculation by nutrient product and event
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare and crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: N input (`n_input`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_emissions`
+- Sources: `emep-eea-2023-guidebook`
+- Range: Broad method-result screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 250
+  - Unit: kg NH3/ha
+  - Basis: one crop cycle; method result governs
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Nitrate to water (`field_nitrate_water_output`)
+
+Calculate or monitor nitrate loss only with an applicable method or field balance.
+
+- Selected flow: Nitrate, emissions to water, unspecified `fe0acd60-3ddc-11dd-aa31-0050c2490048`
+- Flow property / unit: Mass / kg nitrate
+- Amount rule: monitored loss or method calculation from matched nitrogen and water records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare and crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: N input (`n_input`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Broad method-result screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1500
+  - Unit: kg nitrate/ha
+  - Basis: one crop cycle; method result governs
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Seed-cotton receiving, cleaning and ginning (`cotton_ginning`)
+
+#### Inputs
+
+##### Product flows
+
+###### Harvested seed cotton (`seed_cotton_input`)
+
+Use the same measured lot identity and condition as the field output.
+
+- Selected flow: Harvested seed cotton before ginning
+- Flow property / unit: Mass / kg
+- Amount rule: receiving-scale mass with moisture, trash, origin and lot link
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per gin lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_gin_lot_balance`
+- Range: Seed-cotton input balance
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1500
+  - Upper: 5000
+  - Unit: kg/1,000 kg cottonseed
+  - Basis: incoming as-received seed cotton for a reconciled gin lot
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Alternating current (`gin_energy_input_electricity`)
+
+Actual electric gin machinery, conveying fans and controls. Drying heat requires identification of the installed burner/supply; retain existing cottonseed/lint allocation and do not assign whole-gin energy to both products.
+
+Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_gin_utility`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_gin_utility`
+- Sources: `cotton-gin-energy`
+
+Apply `gin_energy_input_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
+
+###### Gin process water (`gin_process_water_input`)
+
+Record water for moisture conditioning and cleaning; inactive routes record zero.
+
+- Selected flow: Process water supply
+- Flow property / unit: Volume / m3
+- Amount rule: metered or batch-calculated net water entering the gin
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted cottonseed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_gin_utility`
+- Range: Provisional process-water screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 5
+  - Unit: m3/1,000 kg cottonseed
+  - Basis: gin process only; inactive route may be zero
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Gin-run cottonseed (`gin_run_cottonseed_output`)
+
+Record accepted whole fuzzy cottonseed as an intended co-product before delinting, crushing or seed conditioning.
+
+- Selected flow: Cottonseed, other, production mix at farm gate, fresh unprocessed `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: measured accepted mass at declared moisture, foreign matter and gate
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per gin lot; scale to 1,000 kg reference.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_gin_lot_balance`
+- Sources: `cottonseed-storage-2018`
+- Range: Provisional author cottonseed/lint ratio estimate; cited national averages do not establish these endpoints
+  - Range role: Typical range (`typical_range`)
+  - Lower: 1100
+  - Upper: 1800
+  - Unit: kg cottonseed/1,000 kg lint
+  - Basis: same reconciled gin lot
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Cotton lint co-product (`cotton_lint_output`)
+
+Record accepted lint as an intended co-product at its bale gate, grade and moisture.
+
+- Selected flow: Ginned cotton lint
+- Flow property / unit: Mass / kg
+- Amount rule: measured bale mass linked to the gin lot
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per gin lot and 1,000 kg cottonseed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_gin_lot_balance`
+- Range: Lint co-product screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 400
+  - Upper: 1000
+  - Unit: kg lint/1,000 kg cottonseed
+  - Basis: same reconciled gin lot
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Gin trash and rejected material (`gin_residual_waste_output`)
+
+Record burrs, sticks, leaf, soil and rejected seed separately by destination.
+
+- Selected flow: Cotton gin trash and rejected material
+- Flow property / unit: Mass / kg
+- Amount rule: measured or reconciled mass by material class and destination
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted cottonseed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_gin_lot_balance`
+- Range: Provisional gin-residual screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1000
+  - Unit: kg/1,000 kg cottonseed
+  - Basis: residuals leaving the gin lot balance
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+###### Gin particulate matter to air (`gin_particulate_air_output`)
+
+Record measured or permit-calculated particulate by size fraction; do not substitute generic dust.
+
+- Selected flow: Reported particulate matter from cotton ginning to air
+- Flow property / unit: Mass / kg
+- Amount rule: monitoring or permit method by particle-size fraction
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted cottonseed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_gin_emissions`
+- Sources: `cotton-ginners-handbook-2016`
+- Range: Provisional particulate screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 20
+  - Unit: kg/1,000 kg cottonseed
+  - Basis: reported controlled or uncontrolled basis
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Cottonseed primary conditioning, grading, preservation, packaging and storage (`cottonseed_handling_storage`)
+
+#### Inputs
+
+##### Product flows
+
+###### Gin-run cottonseed transfer (`cottonseed_transfer_input`)
+
+Use the same lot identity and condition as the gin output.
+
+- Selected flow: Cottonseed, other, production mix at farm gate, fresh unprocessed `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- Flow property / unit: Mass / kg
+- Amount rule: measured incoming fuzzy-cottonseed mass, moisture and temperature
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per storage lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_storage_lot`
+- Range: Storage-lot input balance
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1000
+  - Upper: 1200
+  - Unit: kg/1,000 kg accepted cottonseed
+  - Basis: incoming wet mass before loss and rejection
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Alternating current (`storage_energy_input_electricity`)
+
+Actual electric cottonseed conveying, aeration and temperature control over the declared storage period; no-storage routes require no invented storage load.
+
+Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_storage_lot`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_storage_lot`
+- Sources: `route-energy-fao`
+
+Apply `storage_energy_input_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted stored cottonseed (`accepted_cottonseed_output`)
+
+Record accepted whole fuzzy cottonseed at the terminal gate.
+
+- Selected flow: Cottonseed, other, production mix at farm gate, fresh unprocessed `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: measured accepted mass with moisture, temperature, foreign matter and duration
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: 1,000 kg reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_storage_lot`
+- Sources: `cottonseed-storage-2018`
+- Range: Reference output check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1000
+  - Upper: 1000
+  - Unit: kg
+  - Basis: reference flow at final declared gate
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `pcr-reference-definition`
+
+##### Waste flows
+
+###### Storage loss and rejected cottonseed (`storage_loss_waste_output`)
+
+Record spoiled, heated, contaminated or rejected seed by destination.
+
+- Selected flow: Rejected or lost cottonseed from storage
+- Flow property / unit: Mass / kg
+- Amount rule: mass-balance difference supported by inspection and disposition
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted cottonseed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_storage_lot`
+- Range: Provisional storage-loss screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 200
+  - Unit: kg/1,000 kg accepted cottonseed
+  - Basis: declared storage period and moisture basis
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+
+### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
+This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
+#### Inputs
+##### Product flows
+###### Actual route product at handoff (`actual_route_product_for_handoff`)
+Record the accepted product delivered by the actual terminal route and reconcile it with handoff weighing and lot records.
+- Selected flow: Cottonseed, other, production mix at farm gate, fresh unprocessed
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net product mass at the actual handoff, normalized to the reference quantity; do not sum preceding-stage quantities, other routes or co-products
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+This measurement node adds no waste inputs.
+##### Elementary flows
+This measurement node adds no resource inputs.
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+- Selected flow: Cottonseed, other, production mix at farm gate, fresh unprocessed
+- Flow property / unit: Mass / kg
+- Amount rule: 1000 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+Confirm the product UUID independently for the actual state. Until confirmed, retain unresolved identity instead of inheriting a UUID from a preceding stage or another route.
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+Record actual losses at the operation where they occur; do not duplicate them here.
+##### Elementary flows
+Record actual emissions at the operation where they occur; do not duplicate them here.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_gin_coproducts` | cultivation and ginning | Treat lint and cottonseed as intended co-products. Subdivide metered process burdens first; allocate remaining inseparable burdens by economic value using matched quantities and representative prices. | `cottonseed-storage-2018` |
+| `allocation_sensitivity` | lint/cottonseed | Report mass-allocation sensitivity and prices, currency, period, moisture, grades and value shares; no default substitution credit. |  |
+| `allocation_residuals` | gin/storage outputs | Give no co-product credit to waste. Treat recovered material as product only with intended use, positive value and separate hand-off. |  |
+| `allocation_shared_assets` | shared infrastructure | Attribute by measured use, runtime, throughput or another causal driver and count each burden once. |  |
+| `allocation_rework_rejects` | rejects | Return rework to its node; downgraded saleable output remains product and discarded material remains waste. |  |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `field_nutrient_inputs_specific_input` | `cp_field_activity` | Operation cotton_field_production: Record all mineral fertilizers, organic fertilizers and nutrient-bearing amendments once, preserving product, assay and event. Original quantity method: collect each applied product once and calculate nutrients from assay |
+| `field_crop_protection_input_specific_input` | `cp_field_activity` | Operation cotton_field_production: Record each actual formulation by active ingredient, concentration and event. Original quantity method: measured formulation by product and application event |
+| `cottonseed_packaging_input_specific_input` | `cp_storage_lot` | Operation cottonseed_handling_storage: Record packaging that remains with product at hand-off and preserve reuse cycles. Original quantity method: measured packaging divided by verified reuse cycles |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `field_energy_input_identification` | `cp_field_activity` | Actual diesel field machinery for cotton establishment, crop care and harvest; attribute shared cotton outputs under the existing allocation rules. Raw activity or stage basis: per cultivated hectare and crop cycle. (`route-energy-fao`) |
+| `gin_energy_input_identification` | `cp_gin_utility` | Actual electric gin machinery, conveying fans and controls. Drying heat requires identification of the installed burner/supply; retain existing cottonseed/lint allocation and do not assign whole-gin energy to both products. Raw activity or stage basis: per 1,000 kg accepted cottonseed. (`cotton-gin-energy`) |
+| `storage_energy_input_identification` | `cp_storage_lot` | Actual electric cottonseed conveying, aeration and temperature control over the declared storage period; no-storage routes require no invented storage load. Raw activity or stage basis: per 1,000 kg accepted cottonseed. (`route-energy-fao`) |
+
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_field_activity` | `cotton_field_production` | inputs | collected | field; area; cultivar; dates; product; assay; amount; meter; carrier | invoices, logs and meters; Raw aggregation and attribution: sum by field and identity Route-specific requirements: `field_energy_input_identification`: Actual diesel field machinery for cotton establishment, crop care and harvest; attribute shared cotton outputs under the existing allocation rules. Raw activity or stage basis: per cultivated hectare and crop cycle. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `field_nutrient_inputs_specific_input`: Operation cotton_field_production: Record all mineral fertilizers, organic fertilizers and nutrient-bearing amendments once, preserving product, assay and event. Original quantity method: collect each applied product once and calculate nutrients from assay Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `field_crop_protection_input_specific_input`: Operation cotton_field_production: Record each actual formulation by active ingredient, concentration and event. Original quantity method: measured formulation by product and application event Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | ha; kg; L; m3; kWh; MJ | each event | full crop cycle | each field/farm | per declared reference flow | invoices, calibration, logs, field map |
+| `cp_harvest_balance` | `cotton_field_production` | seed cotton/residues | collected/calculated | field; mass; module; moisture; trash; reject; residue; fate | scales, tickets, samples, balance; Raw aggregation and attribution: sum accepted lot; separate fate | kg; % | each harvest/lot | full harvest | each field/harvest unit | per declared reference flow | scale checks, tickets, samples |
+| `cp_field_emissions` | `cotton_field_production` | soil emissions | calculated | N products; assay; timing; residues; soil; climate; irrigation; factors | approved method on matched records; Raw aggregation and attribution: calculate pathways then sum | kg | crop cycle | full crop cycle | each field | per declared reference flow | input trace, factors, worksheet |
+| `cp_gin_lot_balance` | `cotton_ginning` | input/outputs/residuals | collected/calculated | lot; origin; input/output mass/moisture/grade; reject; destination | scales, sampling, reconciliation; Raw aggregation and attribution: reconcile lot then aggregate | kg; %; item | each lot/shift | full campaign | each gin line/site | per declared reference flow | calibration, tickets, grade, balance |
+| `cp_gin_utility` | `cotton_ginning` | energy/water | collected/calculated | meter; purchase; runtime; power; water; period | meters, invoices, runtime; Raw aggregation and attribution: allocate shared total once Route-specific requirements: `gin_energy_input_identification`: Actual electric gin machinery, conveying fans and controls. Drying heat requires identification of the installed burner/supply; retain existing cottonseed/lint allocation and do not assign whole-gin energy to both products. Raw activity or stage basis: per 1,000 kg accepted cottonseed. (`cotton-gin-energy`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kWh; MJ; kg; L; m3 | shift/bill | full campaign | each gin/meter | per declared reference flow | calibration, invoice, log |
+| `cp_gin_emissions` | `cotton_ginning` | particulate | measured/calculated | source; control; fraction; concentration; flow; runtime; factor | test or approved permit method; Raw aggregation and attribution: calculate by source/fraction without overlap | kg; mg/m3; m3; h | test/period | representative campaign | each source | per declared reference flow | report, permit, controls, runtime |
+| `cp_storage_lot` | `cottonseed_handling_storage` | cottonseed/energy/package/loss | collected/calculated | lot; mass; moisture; temperature; foreign matter; duration; runtime; package; reject | scales, probes, meters, logs; Raw aggregation and attribution: reconcile input, accepted, reject, moisture Route-specific requirements: `storage_energy_input_identification`: Actual electric cottonseed conveying, aeration and temperature control over the declared storage period; no-storage routes require no invented storage load. Raw activity or stage basis: per 1,000 kg accepted cottonseed. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `cottonseed_packaging_input_specific_input`: Operation cottonseed_handling_storage: Record packaging that remains with product at hand-off and preserve reuse cycles. Original quantity method: measured packaging divided by verified reuse cycles Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; %; C; h; kWh; item | receipt/daily/dispatch | full storage period | each bin/pile/site | per declared reference flow | calibration, monitoring, inspection, ticket |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_field_normalization` | field flows | field flow / accepted seed-cotton mass × seed-cotton need per 1,000 kg cottonseed | field flow, area, yield, gin balance | normalized field flow |  |
+| `calc_gin_balance` | gin lot | input = lint + cottonseed + recovered outputs + waste + moisture reconciliation | matched mass/moisture | reconciled yield | `cotton-ginners-handbook-2016` |
+| `calc_storage_balance` | storage | incoming dry matter = accepted + rejected/lost dry matter ± justified uncertainty | mass and moisture | accepted seed/loss | `cottonseed-storage-2018` |
+| `calc_economic_allocation` | co-products | share_i = quantity_i × price_i / sum(quantity × price) | quantities, grades, prices | burden shares |  |
+| `calc_shared_services` | shared assets | total service × documented causal share, counted once | total and driver | node/lot amount |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | reference | Prove non-planting, whole/fuzzy state, cultivar, crop year, moisture, foreign matter, grade, storage and gate. | specification, lot ticket, inspection |
+| `dq_traceability` | chain | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | concrete flow identity evidence |
+| `dq_mass_balance` | gin/storage | Reconcile wet and dry balances and investigate gaps beyond justified uncertainty. | scales, moisture tests, balance |
+| `dq_allocation` | co-products | Retain quantities, grades, prices, period, currency, shares and mass sensitivity. | sales/market evidence, worksheet |
+| `dq_temporal` | all | Cover a complete crop cycle and gin/storage period; disclose proxies and abnormal events. | dates and exception log |
+| `dq_completeness` | all cards | Report applicable value or documented zero/not-applicable and retain concrete selections for sets. | completeness and binding evidence |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_reference_identity` | reference | Reject planting, delinted or crushed seed and derived products; require whole fuzzy non-planting cottonseed and qualifiers. |  |
+| `validate_process_chain` | map | Require cultivation/harvest and ginning; include storage only when before gate and impose no inactive-route amount. |  |
+| `validate_gin_balance` | ginning | Require matched input and complete lint, cottonseed, useful output, waste and moisture reconciliation. | `cotton-ginners-handbook-2016` |
+| `validate_coproduct_allocation` | crop/gin | Require explicit lint/cottonseed attribution, economic inputs and mass sensitivity; reject double allocation. |  |
+| `validate_flow_identitys` | inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+| `validate_ranges` | cards | Require role, bounds, unit, basis and evidence; lower <= upper and inactive conditional routes impose no amount. |  |
+| `validate_reject_routing` | rejects | Route each off-spec stream once and exclude rejected mass from accepted output. |  |
+| `validate_shared_burdens` | shared services | Require a causal driver and prove each shared burden is counted once. |  |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | foreground cottonseed production dataset with explicit co-product attribution |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | LCA of whole fuzzy non-planting cottonseed at the declared gin/farm gate |
+| excluded_use | planting or delinted seed; lint, linters, hulls, oil, cake, meal, crushing, extraction or feed manufacture |
+| required_metadata | cultivar; geography; crop year; irrigation; harvest; gin; lot; moisture; foreign matter; fuzz state; storage; gate; balance; allocation |
+| required_quality_disclosure | coverage, uncertainty, proxies, mixed origins, unresolved identities, allocation sensitivity and representativeness |
+| update_trigger | material change in region, production, harvest, gin, yield, moisture/storage, product state, price or allocation |
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `feedipedia-cottonseed` | extension_guidance | Feedipedia, Cotton seeds, https://feedipedia.review.fao.org/node/742 | identity, route, uses and exclusions |
+| `cotton-ginners-handbook-2016` | handbook | National Cotton Council, Cotton Ginners Handbook, https://journal.cotton.org/article/20-2-154/ | gin boundary, separation, moisture, energy, waste and air emissions |
+| `cottonseed-storage-2018` | literature | Ashley et al., Cottonseed Air-Handling and Storage Requirements, Journal of Cotton Science 22:47-59, https://www.cotton.org/journal/2018-22/1/47.cfm | co-product ratio, moisture, aeration, handling and storage |
+| `ncc-seedcotton-handling` | extension_guidance | National Cotton Council, Recommendations for Handling Seedcotton Exposed to Excessive Rainfall, https://www.cotton.org/tech/quality/rainfallandseedcotton.cfm | harvest moisture, seed-cotton storage and seed condition |
+| `ipcc-2019-managed-soils` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11 | managed-soil emissions |
+| `emep-eea-2023-guidebook` | method_factor | EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023 | fertilizer ammonia |
+| `pcr-reference-definition` | standard | This PCR, Reference Flow section | exact 1,000 kg output range |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `cotton-gin-energy` | handbook | Funk and Hardin (2017), Energy Utilization and Conservation in Cotton Gins, Cotton Ginners Handbook. https://www.cotton.org/journal/2017-21/2/156.cfm | Electric conveying/gin equipment and separate drying demand; no per-bale intensity or fuel identity is imposed. |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

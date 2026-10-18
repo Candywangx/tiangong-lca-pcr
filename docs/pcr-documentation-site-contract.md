@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-13
-lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
-lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
+lastReviewedAt: "2026-10-18"
+lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
+lastReviewedCommit: "5f0c9a8786d99b2594064726e31b571da73672e2"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -74,9 +74,28 @@ exact release metadata bytes. Old snapshots are never rewritten by migration.
 ## Losslessness and generated artifacts
 
 The core document bundle contains the complete manifest, verified structured
-projection, declared languages and original artifact buffers. Raw downloads copy
-those buffers byte for byte. Exact-byte download hashes are distinct from the
+projection, declared languages and original artifact buffers. Downloads preserve those buffers byte for byte. Exact-byte download hashes are distinct from the
 existing normalized-text projection fingerprint.
+
+Current candidate PCRs with authored methodology and no release history may use
+native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
+`pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
+each required-language Markdown limit is 32,768 original bytes. Eligibility comes
+from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
+These bounded downloads preserve each original filename and work without
+JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
+byte to the pinned source. Current candidate HTTP URLs for these artifacts may
+change with this transport; use each record's current download links.
+Published/deprecated current artifacts, all release/history/revision artifacts,
+optional-language Markdown, larger files and structured projections retain
+physical downloads. When different source artifacts have identical inline bytes,
+only the first uses that data URL; later artifacts retain physical URLs so source
+identity and download filenames remain unambiguous. Physical responses keep
+attachment/noindex headers; inline bytes create no separately indexable HTTP
+resource. Source-relative links reuse the same source-bound download and filename.
+The exporter verifies rendered download anchors, and sealed-site qualification
+checks the largest available inline artifact per filename without
+JavaScript in Chromium, Firefox and WebKit.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -86,7 +105,7 @@ Unsupported source constructs, missing required files and stale projections
 cannot become empty successful output.
 
 Generated metadata lives in `.generated/site.json`; page HTML and complete
-structured data are separate artifacts read only at build time. Public downloads
+structured data are separate artifacts read only at build time. Physical downloads
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
@@ -153,7 +172,7 @@ Each real document has its own canonical URL. Hreflang lists only verified,
 existing counterparts at the same version. Current complete public candidates
 may be indexed with their status visible. Scaffolds, unavailable translations,
 internal revisions, search/filter permutations and raw downloads are not normal
-indexing targets. Raw download responses carry attachment and noindex headers.
+indexing targets. Physical raw download responses carry attachment and noindex headers.
 Distinct historical versions are not blindly canonicalized to different text.
 
 ## Reader navigation and presentation
@@ -378,6 +397,44 @@ fails initialization and remains retryable. Export key order, terms, posting IDs
 slot positions, complete records, tokenization, text buckets, ranking and both
 browser budgets remain unchanged. The shared codec is an emitted TypeScript
 browser module with the same executable MIME/noindex checks as the Worker.
+
+Search manifest version 4 retains `sparseMaps` markers and reads its initial flat
+`[term, scoreVectorLength, position, postingList, ...]` representation. New v4
+exports set both `scoreMasks: true` and `postingDeltas: true`. Each marked term is
+`[term, header, postingList, ...]`: `header = scoreVectorLength * 512 + slotMask`,
+with at most nine slots. Posting lists follow occupied slot order. Numeric-only
+lists store the first ID and then signed differences from the preceding ID;
+mixed/string lists stay verbatim. Decoding restores the original ID order,
+duplicates, slot positions, trailing nulls and complete engine export strings.
+Non-safe or negative restored IDs, impossible masks, incorrect posting counts,
+unpaired or foreign encoding flags fail initialization and remain retryable.
+
+The Worker continues to read v1/v2, the existing nested v3 and original flat v4;
+it decodes marked maps strictly by declared version and encoding flags. Generation
+verifies exact original engine export strings before publishing every shard and
+logs actual raw/gzip language totals at the unchanged budget gate. Native fallback,
+full records, tokenization, scores, ranking, 2 MB text buckets and 20 MB raw/4 MB
+gzip budgets are unchanged. No dependency or remote service is added, and wire
+compression does not claim to reduce the restored engine's resident memory.
+
+### Inspector data transport
+
+The field inspector groups complete generated records into versioned JSON packs,
+using positional entries `[key, manifest, structured]`. Each record carries its
+exact transport key; current records and historical releases have distinct keys.
+Packs target at most 1,000,000 bytes and 32 records. A single larger record stays
+whole and must satisfy the unchanged 25 MB file limit. No PCR field, scalar type,
+array position, object-key order or empty value is removed. Generation requires
+each decoded record to serialize exactly as its original generated data; export
+verification repeats that comparison against the shipped pack for every record.
+The reader retains support for older unkeyed single-record payloads, rejects
+unknown versions, duplicate or missing keys and malformed records, and preserves
+the inspector's visible retry behavior. Browser qualification exercises the actual
+inspector in both languages and for available historical releases.
+
+This is lossless file packing to reduce the number of exported transport files.
+Server-side record data, byte-exact raw downloads, complete static HTML and every
+native Next navigation payload remain intact. No hosting rewrite is required.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading

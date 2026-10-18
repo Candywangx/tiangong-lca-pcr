@@ -21,9 +21,9 @@ checkPaths:
   - .docpact/config.yaml
   - builder/**
   - classifications/**
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
-lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
+lastReviewedAt: "2026-10-18"
+lastReviewedCommit: "5f0c9a8786d99b2594064726e31b571da73672e2"
+lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
 ---
 
 # Classification Policy

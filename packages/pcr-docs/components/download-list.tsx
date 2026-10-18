@@ -30,7 +30,7 @@ export function DownloadList({
       <ul className="pcr-downloads" style={{ marginBlockStart: '0.75rem' }}>
         {downloads.map((download) => (
           <li key={download.url} className="pcr-download">
-            <a className="pcr-download-name" href={download.url} download>
+            <a className="pcr-download-name" href={download.url} download={download.name}>
               {download.name}
             </a>
             <span className="pcr-download-meta">

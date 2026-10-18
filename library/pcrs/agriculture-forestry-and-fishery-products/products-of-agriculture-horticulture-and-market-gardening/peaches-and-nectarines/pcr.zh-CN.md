@@ -1,8 +1,569 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.peaches-and-nectarines
 language: zh-CN
-status: scaffold
+status: candidate
+content_maturity: authored_methodology
+translation_status: aligned
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 桃和油桃
+
+## 1. 范围与适用性
+
+本 PCR 适用于结果期果园生产的桃和油桃（Prunus persica），产品在声明的农场交接点或首次市场交接点以新鲜、可销售水果状态交付。
+
+范围包括果园管理、灌溉、养分和作物保护投入、修剪与疏果、采收、田间处理，以及交接点前的场内分选、冷却和包装。默认排除苗木生产、果园建园、交接点后运输、零售、消费者使用和终端处理；加工、干制、罐藏、冷冻、榨汁或其他转化水果也排除。
+
+## 2. 产品类别识别
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.peaches-and-nectarines |
+| classification_refs | CPC 3.0 01345 — Peaches and nectarines; mapping relation: exact |
+| covered_products | 果园生产的散装或包装鲜桃和鲜油桃，在声明首次市场交接点交付 |
+| excluded_products | 苗木；除非年化的果园建园；加工水果；下游配送、零售、消费者使用和终端处理 |
+| representative_product | 1 kg 净可销售鲜桃或鲜油桃，声明物种、品种、成熟度/质量等级、生产体系、地理位置和收获年份 |
+| production_route | 受管理的多年生果园生产 → 采收与田间处理 → 可选场内分选、冷却和包装 |
+| market_state | 声明交接点的新鲜、可销售采收水果；包装不计入产品质量 |
+
+## 3. 参考流
+
+| 字段 | 值 |
+| --- | --- |
+| What | 声明的农场交接点或首次市场交接点的 1 kg 净可销售鲜桃或鲜油桃 |
+| How much | 1 kg 净产品输出；不包括次品、田间损失、过程拒收物和包装 |
+| How well | 声明物种、品种、新鲜状态、采收成熟度、质量/市场等级、生产体系和产品状态 |
+| How long or cycle | 一个声明作物周期和收获季；披露报告期、果园树龄和年化约定 |
+| reference_flow_link | marketable_fresh_fruit |
+
+| 字段 | 值 |
+| --- | --- |
+| 参考数量 | 1 |
+| 参考产品流 | 声明首次市场交接点的可销售鲜桃或鲜油桃（语义候选；） |
+| 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| 参考单位 | kg |
+| 必需限定信息 | species; cultivar; fresh market state; harvest maturity; quality or market grade; production system; production geography; harvest year or crop cycle; declared hand-off; net product-mass basis; on-site sorting/cooling/packing status |
+| 绑定模式 | 省略：参考产品保持未映射，直到前景身份解析完成 |
+
+构建前景数据包时，所有必需限定信息都必须在数据集元数据、过程说明、参考流备注、产品说明或等效字段中声明。
+
+## 4. 计量与单位规则
+| rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | reference product | Mass | kg | 按净可销售水果质量归一化，不包括容器、次品和废物水果。 |
+| `water_volume` | irrigation and washing water | Volume | m3 | 将计量或有记录依据的水量统一为 m3。 |
+| `nutrient_basis` | fertilizer and amendments | Product mass and nutrient basis | kg product; kg N/P/K | 记录实际产品和声明或实测养分基准。 |
+
+## 5. 系统边界
+
+### 边界概化
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | 准备开展声明作物周期的结果期果园区块 |
+| starting_condition_role | 固定年度前景边界；已有果园资本和此前建园默认排除，除非声明年化情景 |
+| product_classification_scope | 从果园生产到声明交接点的栽培鲜桃和鲜油桃 |
+| recursive_input_rule | 不递归建模同类别采收水果；独立包装路线购买采收水果时记录上游水果数据集 |
+| upstream_dataset_requirement | 外购投入使用关联背景或二级数据集，并解析身份和地理位置 |
+| disclosure | 声明果园树龄、结果面积、物种/品种、灌溉水源、生产体系、作物周期、产量、损失去向和场内处理 |
+
+### 边界规则
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `boundary_starting_condition` | orchard production | 从结果期果园作物周期开始；建园和苗木默认排除，除非年化并披露。 | `source_ucanr_peach_nectarine_cultural`; `source_iso_14044` |
+| `boundary_management_and_harvest` | orchard and harvest | 纳入作物管理、灌溉、养分和作物保护、修剪/疏果、采收和田间处理。 | `source_ucanr_peach_nectarine_cultural`; `source_ucanr_peach_fertilizer` |
+| `boundary_optional_packhouse` | on-site conditioning | 交接点前发生时纳入场内分选、冷却和包装，否则披露为下游。 | `source_usda_ams_fresh_fruit_grades` |
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
+| --- | --- | --- | --- | --- | --- |
+| `orchard_management` | 结果期果园管理 | required | 每个声明作物周期 | 受管理的生物生产 | 每作物周期/每 1 kg 净输出 |
+| `harvest_field_handling` | 采收与田间处理 | required | 声明输出的所有采收水果 | 移除成熟水果并转移状态 | 每项采收作业/每 1 kg 净输出 |
+| `onsite_sort_cool_pack` | 场内分选、冷却和包装 | conditional | 交接点前实施时 | 处理并呈现市场水果 | 每设施运行/每 1 kg 净输出 |
+
+### 过程：结果期果园管理 (`orchard_management`)
+
+#### 输入
+##### 产品流
+
+###### 灌溉水 (`orchard_irrigation_water`)
+
+供给灌溉水作为产品投入跨越果园边界，并与直接环境取水区分。
+
+- 选定流: 用于作物生产的灌溉供水（语义候选；）
+- 流属性/单位: Volume / m3
+- 流集分组: `irrigation-water`
+- 数量规则: 按作物周期分配的计量或供应商记录水量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_orchard_inputs`
+- 来源: `source_ucanr_peach_nectarine_cultural`
+- 数量范围: 暂定灌溉筛选范围
+  - 范围角色: QA 校验 (`qa_guardrail`)
+  - 下限: 50
+  - 上限: 600
+  - 单位: m3
+  - 基准: 每 1,000 kg 净可销售水果输出
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估算 (`reasoned_estimate`)
+
+###### 尿素肥料（`orchard_management_agricultural_nutrient_inputs_urea`）
+
+**orchard_management_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+逐一采集每种肥料产品。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_orchard_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_orchard_inputs`
+- 来源：`source_ucanr_peach_fertilizer`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 硫酸铵肥料（`orchard_management_agricultural_nutrient_inputs_ammonium_sulfate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_orchard_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_orchard_inputs`
+- 来源：`source_ucanr_peach_fertilizer`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 重过磷酸钙肥料（`orchard_management_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_orchard_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_orchard_inputs`
+- 来源：`source_ucanr_peach_fertilizer`；`fao-fertilizer-identities`
+
+###### 氯化钾肥料（`orchard_management_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_orchard_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_orchard_inputs`
+- 来源：`source_ucanr_peach_fertilizer`；`fao-fertilizer-identities`
+
+###### 作为肥料施用的牛粪（`orchard_management_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_orchard_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_orchard_inputs`
+- 来源：`source_ucanr_peach_fertilizer`；`fao-organic-nutrients`
+
+###### 施入土壤的植物残体堆肥（`orchard_management_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_orchard_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_orchard_inputs`
+- 来源：`source_ucanr_peach_fertilizer`；`fao-organic-nutrients`
+
+###### 柴油 (`orchard_machinery_fuel_diesel`)
+
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`orchard_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_orchard_inputs`采集`orchard_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_orchard_inputs`
+- 来源：`route-energy-fao`
+
+##### 废物流
+
+##### 基本流
+
+###### 果园土地占用 (`orchard_land_occupation`)
+
+记录果园面积和占用时间，并将其分配到声明作物周期。
+
+- 选定流: 结果期果园土地占用（语义候选；）
+- 流属性/单位: Area-time / m2*a
+- 数量规则: 果园面积乘以占用时间并分配到作物周期
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 由采集记录计算 (`calculated_from_collection`)
+- 采集协议: `cp_orchard_inputs`
+- 来源: `source_ucanr_peach_nectarine_cultural`
+
+#### 输出
+##### 产品流
+
+###### 达到采收成熟度的水果 (`fruit_at_harvest_maturity`)
+
+达到声明采收成熟度的水果作为可采收毛作物离开果园管理过程。
+
+- 选定流: 达到采收成熟度的桃或油桃，毛作物输出（语义候选；）
+- 流属性/单位: Mass / kg
+- 数量规则: 来自果园和采收记录的毛作物质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_records`
+- 来源: `source_usda_ams_fresh_fruit_grades`; `source_ucanr_peach_nectarine_cultural`
+
+##### 废物流
+
+###### 果园残余物和去除水果 (`orchard_residues`)
+
+修剪木、疏果和其他残余物作为废物或单独声明的回收流记录。
+
+- 选定流: 果园修剪、疏果和作物残余物（语义候选；）
+- 流属性/单位: Mass / kg wet or fresh mass
+- 数量规则: 按作物周期和去向称量或记录残余物质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_orchard_inputs`
+- 来源: `source_ucanr_peach_nectarine_cultural`
+
+##### 基本流
+
+
+### 过程：采收与田间处理 (`harvest_field_handling`)
+
+#### 输入
+##### 产品流
+
+###### 可采收水果 (`harvestable_fruit`)
+
+达到声明采收成熟度的毛水果在扣除损失前进入采收与田间处理。
+
+- 选定流: 用于采收的达到成熟度的桃或油桃（语义候选；）
+- 流属性/单位: Mass / kg
+- 数量规则: 可供采收作业使用的毛水果质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_records`
+- 来源: `source_ucanr_peach_nectarine_cultural`
+
+###### 柴油 (`harvest_machinery_fuel_diesel`)
+
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`harvest_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_harvest_records`采集`harvest_field_handling`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_harvest_records`
+- 来源：`route-energy-fao`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 送往处理的采收水果 (`harvested_fruit`)
+
+采收收集的水果作为毛采收水果离开并进入下一个声明过程。
+
+- 选定流: 用于处理的毛采收桃或油桃（语义候选；）
+- 流属性/单位: Mass / kg
+- 数量规则: 称量的毛采收质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_records`
+- 来源: `source_ucanr_peach_nectarine_cultural`
+
+##### 废物流
+
+###### 采收损失和受损水果 (`harvest_losses`)
+
+采收期间掉落、受损、腐败或未采集的水果作为废物记录并注明去向。
+
+- 选定流: 桃或油桃采收损失和受损水果（语义候选；）
+- 流属性/单位: Mass / kg
+- 数量规则: 按称量、计数换算或有记录依据的采收损失估算
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_records`
+- 来源: `source_ucanr_peach_nectarine_cultural`
+
+##### 基本流
+
+
+### 过程：场内分选、冷却和包装 (`onsite_sort_cool_pack`)
+
+#### 输入
+##### 产品流
+
+###### 用于处理的毛采收水果 (`gross_fruit_to_packhouse`)
+
+当交接点前纳入分选、冷却或包装时，毛采收水果进入本条件性过程。
+
+- 选定流: 用于场内处理的毛采收桃或油桃（语义候选；）
+- 流属性/单位: Mass / kg
+- 数量规则: 纳入设施或包装线接收的质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_packhouse_records`
+- 来源: `source_usda_ams_fresh_fruit_grades`
+
+###### 冷却和包装用电 (`packhouse_electricity`)
+
+记录边界内冷却、分选线、照明和包装设备用电。
+
+- 选定流: 场内水果处理和包装的电力供应（语义候选；）
+- 流属性/单位: Energy / kWh
+- 流集分组: `electricity-supply`
+- 数量规则: 设施电表记录或有记录依据的吞吐量分配
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_packhouse_records`
+- 来源: `source_usda_ams_fresh_fruit_grades`
+
+###### 清洗或工艺用水，条件性 (`packhouse_process_water`)
+
+仅当清洗或湿法处理在交接点前发生时记录用水。
+
+- 选定流: 场内水果处理工艺用水（语义候选；）
+- 流属性/单位: Volume / m3
+- 流集分组: `process-water`
+- 数量规则: 按纳入运行分配的计量或供应商记录水量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_packhouse_records`
+- 来源: `source_usda_ams_fresh_fruit_grades`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 交接点的净可销售鲜果 (`marketable_fresh_fruit`)
+
+通过声明成熟度和市场质量筛选的水果作为 PCR 参考产品离开；包装和拒收物不计入。
+
+- 选定流: 声明首次市场交接点的可销售鲜桃或鲜油桃（语义候选；）
+- 流属性/单位: Mass / kg
+原始产出计量与核对要求：纳入分选和处理后的净称量产品质量
+
+- 数量规则：1 千克
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_packhouse_records`
+- 来源: `source_usda_ams_fresh_fruit_grades`
+
+##### 废物流
+
+###### 分选拒收物和包装损失 (`packhouse_rejects`)
+
+分选、冷却或包装中拒收的水果作为废物记录并注明下游去向。
+
+- 选定流: 桃或油桃分选拒收物和场内包装损失（语义候选；）
+- 流属性/单位: Mass / kg
+- 数量规则: 按设施运行和去向称量或记录拒收质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每 1 kg 净可销售水果输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_packhouse_records`
+- 来源: `source_usda_ams_fresh_fruit_grades`; `source_iso_14044`
+
+##### 基本流
+
+
+## 7. 分配与共产品处理
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `allocation_subdivision` | separable blocks, species, cultivars, or runs | 记录允许时分别测量桃和油桃活动以避免分配。 | `source_iso_14044` |
+| `allocation_shared_crop_output` | jointly managed outputs | 无法细分时按有记录依据的净可销售质量分配，并披露组合、基准和敏感性。 | `source_iso_14044` |
+| `allocation_residue_route` | culls, residues, and diverted fruit | 无单独产品交接依据时将次品和残余物作为废物，不自动施加避免负荷信用。 | `source_iso_14044` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+## 8. 前景数据采集、计算与质量规则
+
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `orchard_machinery_fuel_specific_input` | `cp_orchard_inputs` | 作业 orchard_management：记录拖拉机、喷雾机、割草机或其他移动果园机械在场内消耗的燃料。 原数量方法：按作物周期分配的燃料领用记录或设备日志 |
+| `harvest_machinery_fuel_specific_input` | `cp_harvest_records` | 作业 harvest_field_handling：记录交接点前采收机械或田间运输设备消耗的燃料。 原数量方法：按采收作业分配的燃料日志或领用记录 |
+| `primary_packaging_materials_specific_input` | `cp_packhouse_records` | 作业 onsite_sort_cool_pack：当初级容器或包装构成交接点新鲜水果市场状态时记录。 原数量方法：分配至纳入产品的实际材料质量或容器数量 |
+
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_orchard_inputs` | `orchard_management` | orchard inputs, land, water, residues | invoices, meters, spray logs, field records | block_id; species; cultivar; area; irrigation; electricity; fuel; fertilizer and nutrient basis; crop protection; residues | Collect primary records and reconcile to block and cycle；原始汇总与分配：Sum by block and cycle; disclose shared-record allocation `orchard_machinery_fuel_specific_input`: 作业 orchard_management：记录拖拉机、喷雾机、割草机或其他移动果园机械在场内消耗的燃料。 原数量方法：按作物周期分配的燃料领用记录或设备日志 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; L; m3; kWh; MJ; m2 | Each application or meter period | Complete crop cycle and harvest year | Each block or documented aggregation | 每声明的参考流 | invoices; meters; logs; area records |
+| `cp_harvest_records` | `harvest_field_handling` | gross harvest, fuel, losses | harvest tickets, weighbridge, bin and fuel logs | block_id; harvest date; species; cultivar; gross mass; fuel; damaged fruit; destination | Weigh and reconcile to receiving and loss records；原始汇总与分配：Sum by lot and retain assumptions `harvest_machinery_fuel_specific_input`: 作业 harvest_field_handling：记录交接点前采收机械或田间运输设备消耗的燃料。 原数量方法：按采收作业分配的燃料日志或领用记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; L; MJ | Each lot or shift | Harvest window in crop cycle | Block, crew, or contractor | 每声明的参考流 | weigh tickets; fuel receipts; supervisor approval |
+| `cp_packhouse_records` | `onsite_sort_cool_pack` | conditioning, packaging, rejects, net output | facility meters, run sheets, pack-out reports | run_id; incoming mass; net mass; species; cultivar; grade; electricity; water; package mass/count; rejects | Collect facility records and reconcile mass balance；原始汇总与分配：Sum by run and allocate shared services by throughput or mass `primary_packaging_materials_specific_input`: 作业 onsite_sort_cool_pack：当初级容器或包装构成交接点新鲜水果市场状态时记录。 原数量方法：分配至纳入产品的实际材料质量或容器数量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; kWh; m3; item | Each run or operating day | Declared inclusion period and harvest season | Included facility or line | 每声明的参考流 | meters; QA records; waste receipts |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_net_marketable_output` | harvest and packing | Net marketable output = gross fruit − losses − rejects − declared diversions; do not subtract transferred streams twice. | gross fruit; losses; rejects | kg net marketable fruit | `source_usda_ams_fresh_fruit_grades`; `source_iso_14044` |
+| `calc_crop_cycle_normalization` | all flows | Crop-cycle amount / kg net marketable output for the same declared scope. | crop-cycle amount; net output | amount per kg reference flow | `source_iso_14044` |
+| `calc_nutrient_basis` | fertilizer and amendments | Convert actual products using label, analysis, or supplier certificate; retain product and nutrient masses. | product mass; concentration | kg product and kg N/P/K | `source_ucanr_peach_fertilizer` |
+
+### 数据质量要求
+
+| requirement_id | 适用对象 | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity_and_qualifiers` | reference product and cycle records | 声明物种、品种、生产体系、地理位置、收获年份、成熟度/质量等级、交接点和场内处理状态。 | metadata; product description; grade records |
+| `dq_mass_balance` | harvest and packing | 核对毛水果、可销售产品、损失、拒收物和转移物，调查未解释差异。 | weigh tickets; pack-out; waste receipts |
+| `dq_temporal_and_site_coverage` | orchard and facility aggregation | 覆盖完整作物周期并识别所有贡献区块或设施，披露缺失范围。 | crop calendar; block register; run list |
+
+## 9. 校验规则
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `validation_reference_qualifiers` | reference flow and metadata | 缺少必需限定信息、声明交接点或净产品质量基准的数据集应拒绝。 | `source_usda_ams_fresh_fruit_grades` |
+| `validation_crop_cycle_completeness` | orchard and harvest | 检查投入、采收批次、可销售输出和已知损失具有相同时间和场址范围。 | `source_ucanr_peach_nectarine_cultural`; `source_iso_14044` |
+| `validation_water_exclusivity` | irrigation water | 同一水量不得同时作为供给灌溉水和直接环境取水计入。 | `source_iso_14044` |
+| `validation_product_mass_balance` | harvest and conditioning | 要求毛水果到净可销售输出、损失和拒收物的质量平衡。 | `source_iso_14044` |
+
+## 10. 发布数据集画像
+
+| 字段 | 值 |
+| --- | --- |
+| dataset_role | 主要前景作物生产数据集；审查后可作为二级数据集发布 |
+| downstream_use | 支持声明交接点鲜桃和鲜油桃的过程与生命周期模型构建 |
+| allowed_use | 限定信息、边界、地理位置、作物周期和质量相容时用于果园和采收比较 |
+| excluded_use | 加工水果、零售或消费者足迹、交接点后运输或不同产品状态 |
+| required_metadata | species; cultivar; production system; geography; orchard age; area; harvest year/cycle; hand-off; grade; net mass; loss routes |
+| required_quality_disclosure | 场址和期间覆盖；实测与估算投入；产量/损失核对；养分基准；分配；排除项 |
+| update_trigger | 新作物周期证据、生产或灌溉变化、市场状态约定变化、新因子指导或边界/身份不一致 |
+
+## 11. 数据源
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `source_usda_ams_fresh_fruit_grades` | official_guidance | USDA AMS, Nectarines Grades and Standards, https://www.ams.usda.gov/grades-standards/nectarines-grades-and-standards | 新鲜市场状态、成熟度和质量等级限定信息 |
+| `source_ucanr_peach_nectarine_cultural` | extension_guidance | UC IPM, Cultural Tips for Growing Peach and Nectarine, https://ipm.ucanr.edu/home-and-landscape/cultural-tips-for-growing-peach-and-nectarine/ | 果园、灌溉、修剪、疏果、采收、卫生和过程分解 |
+| `source_ucanr_peach_fertilizer` | extension_guidance | UC IPM, Fertilizer Applications — Peach, https://ipm.ucanr.edu/agriculture/peach/fertilizer-applications/ | 养分投入采集和分次施用审查 |
+| `source_ucanr_nectarine_ipm` | extension_guidance | UC IPM, Pest Management Guidelines — Nectarine, https://ipm.ucanr.edu/pdf/pmg/pmgnectarine.pdf | 作物保护和杂草管理纳入及披露 |
+| `source_iso_14044` | standard | ISO 14044:2006, https://www.iso.org/standard/38498.html | 边界、分配、数据质量和质量平衡规则 |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

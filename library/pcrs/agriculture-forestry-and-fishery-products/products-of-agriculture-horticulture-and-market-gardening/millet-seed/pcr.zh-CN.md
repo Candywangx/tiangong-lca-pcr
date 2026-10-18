@@ -1,8 +1,934 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.millet-seed
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
+content_maturity: authored_methodology
+translation_status: aligned
 ---
 
-# 待补充
+# 小米播种种子
+
+## 1. 范围与适用性
+
+本 PCR 为 CPC 3.0 `01181` 项下专门为种子用途种植的小米建立前景数据包。范围从源种子批次或其他声明的起始条件开始，覆盖田间繁育、收获、种子处理、质量检验、可选处理、包装、储存和声明的种子门。适用于已声明等级和质量状态的认证、基础、登记、质量声明、自留或其他可比小米播种种子批次。
+
+未专门为种子用途种植的商品小米，以及制麦芽、食品、饲料、淀粉、乙醇、下游小米种植、零售、资本货物、育种研究和没有小米种子产品输出的种子加工服务不在默认范围内，除非明确加入研究范围。
+
+## 2. 产品类别身份
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.millet-seed` |
+| classification_refs | CPC 3.0 `01181`，`Millet, seed`; mapping relation: exact |
+| covered_products | 专门为播种种植的小米种子，包括声明的认证、基础、登记、质量声明、自留或其他可比种子批次 |
+| excluded_products | 非种用小米；制麦芽、食品、饲料、淀粉和乙醇用小米；下游小米种植；育种研究；以及没有小米种子产品输出的种子加工服务 |
+| representative_product | 在声明水分基准、包装状态和种子门，已接收、清选、分级并可选处理的小米播种种子 |
+| production_route | 小米种子繁育或受控生产，随后收获、处理、质量放行、可选处理、包装、储存和门交接 |
+| market_state | 已获播种接收的小米种子批次，具有声明的等级、种类或品种、质量属性、处理状态、包装状态、地理范围和门 |
+
+## 3. 参考流
+
+| 字段 | 值 |
+| --- | --- |
+| What | 声明种子门的已接收小米播种种子 |
+| How much | 1 kg 净接收种子 |
+| How well | 小米种类或品种；种子或认证等级；水分基准；物理纯度；发芽率或活力；处理状态；包装状态；地理范围；作物周期；声明门 |
+| How long or cycle | 一个声明的小米种子生产作物周期；当储存位于门内时另行声明储存时间 |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| 字段 | 值 |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Millet, seed |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | millet variety or type; seed or certification class; treatment status; moisture basis; physical purity; germination or viability; geography; crop cycle; declared seed gate; packaging state |
+
+构建数据包时，`Required qualifiers` 中的限定信息必须写入数据集元数据、过程说明、参考流注释、产品描述或等效字段。参考流以质量为基准。种子数量只有在提供实测千粒重或其他透明数量到质量换算时才可使用。
+
+每份前景数据包须声明实际路线、终端产品状态和交接门，保留原始称量、质量平衡及批次追溯记录。以该门的唯一交接参考输出归一化，前序工序采用实测转移数量。
+
+唯一参考输出为 `reference_product_at_declared_handoff`，由下列实际路线在声明交接门的产品承接。原路线输出编号用于追溯实际来源和物理状态，不再分别固定为参考数量。
+
+## 4. 计量与单位规则
+| rule_id | 适用于 | 必需属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | 参考产品 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 参考流表示声明门的净接收小米播种种子，并排除容器皮重。 |
+| `seed_count_conversion` | 种子数量记录 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg and seeds | 只有使用记录的千粒重、批次数量或透明的批次特定因子时，才可将数量换算为质量。 |
+| `seed_quality_attributes` | 接收种子和源批次 | 声明质量属性 | 声明单位 | 将种类或品种、等级、水分、物理纯度、发芽率或活力、处理状态和批次放行状态作为属性保留，不使用通用默认值替代。 |
+| `moisture_basis` | 收获、处理、储存和交付种子 | 质量和声明水分分数 | kg and declared fraction | 保留原始质量和水分基准。只有依据实测水分并使用明确的干物质和水质量方程，才能在基准之间转换。 |
+| `fertilizer_n_basis` | 养分投入和土壤排放 | 质量 | kg product and kg nutrient | 分开记录配方养分产品质量和养分质量；氮计算使用声明的 kg N 投入。 |
+| `water_basis` | 灌溉和取水 | 体积或质量 | m3 or kg | 区分供给的灌溉水、自然资源取水和单独报告的消耗指标。 |
+| `energy_inventory` | 田间、处理、储存和交付能源 | 能源或载能体质量 | kWh, MJ, L, or kg | 保留能源载体、计量单位、作业、过程和换算基准。 |
+| `packaging_quantity` | 包装投入 | 质量或件数 | kg, g, or item | 记录包装质量或件数，并在需要换算时记录包装容量或批次归属。 |
+| `land_basis` | 耕地使用 | 面积-时间 | ha·crop cycle or declared area-time unit | 记录种植面积和作物周期占用；不得以土地占用代理土地转化。 |
+
+## 5. 系统边界
+
+### 边界抽象
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | 源种子批次或其他声明的小米种子生产起始材料 |
+| starting_condition_role | 小米种子身份和作物生产起始条件 |
+| product_classification_scope | CPC 3.0 `01181`，Millet, seed；非种用小米和下游小米产品不在范围内 |
+| recursive_input_rule | 用于建立作物的同类别种子投入记录为声明的起始投入，不递归展开。进入处理的收获种子作物是中间交接，不是第二个参考输出。 |
+| upstream_dataset_requirement | 购入源种子、养分产品、作物保护产品、灌溉水供应、能源载体、包装材料、处理材料和废物处理服务需要代表性上游数据集或书面排除说明。 |
+| disclosure | 小米种类或品种；种子等级；源批次；田块和地理范围；作物周期；灌溉；养分和作物保护记录；收获质量和水分；处理、检验、处理剂、包装、储存、拒收、损失和门 |
+
+| rule_id | 适用于 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `boundary_field_to_seed_gate` | 前景边界 | 纳入源种子、小米种子生产、收获、处理、质量检验、可选处理、包装，以及到达声明种子门所需的储存或交付。 | `fao-seed-systems`; `fao-seeds` |
+| `boundary_gate_definition` | 参考产品 | 默认使用种子厂或处理设施门。交付种子门必须有储存或交付记录、损失记录和门交接记录。 | `fao-seeds`; `mass-balance-identity` |
+| `boundary_seed_quality` | 接收种子 | 当身份、分级、质量检验、处理状态和批次放行决定输出是否为接收的小米播种种子时，应纳入这些过程。 | `fao-seed-systems`; `usda-seed-cleaning-handling` |
+| `boundary_input_completeness` | 田间和处理 | 对源种子、养分、作物保护、灌溉、田间能源、土地、处理能源、处理剂、包装、储存和范围内直接排放，提供采集值、合理零值或书面排除。 | `ipcc-2019-cropland`; `ipcc-2019-managed-soils-n2o` |
+| `boundary_output_separation` | 所有输出 | 按实测或核算质量和去向区分接收种子、收获中间种子作物、筛下物、拒收种子、粉尘、残余物、包装废物、储存损失和未解释损失。 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `millet_seed_multiplication` | Millet Seed Multiplication | required |  | foreground | 处理前收获的小米种子作物 |
+| `millet_seed_conditioning_and_treatment` | Millet Seed Conditioning and Treatment | required |  | foreground | 已接收、清选并可选处理的小米播种种子 |
+| `millet_seed_storage_and_delivery` | Millet Seed Storage and Delivery | conditional | 当储存或交付属于声明门，或实质改变交付参考流时纳入 | foreground | 交付的接收小米种子 |
+| declared_reference_handoff | 声明交接门的产品计量 | required |  | foreground | reference_product_at_declared_handoff |
+
+### 过程：小米种子繁育（`millet_seed_multiplication`）
+
+#### 输入
+##### 产品流
+
+###### 繁育用源种子批次（`source_seed_lot_for_multiplication`）
+
+记录建立小米种子路线的声明源批次。批次身份、等级、处理、水分和来源位置应与本周期接收输出分开。
+
+- 选定流：小米，种子 `8a2d72cb-ab4f-4c21-a783-c62f81599895`
+- 流属性/单位：Mass / kg
+- 数量规则：按田块或生产单元计量源批次质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 收获小米种子作物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_source_seed_lot_records`
+- 来源：`fao-seed-systems`; `umn-small-grain-seeding-rate`
+
+###### 尿素肥料（`millet_seed_multiplication_agricultural_nutrient_inputs_urea`）
+
+**millet_seed_multiplication_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+逐一采集每种肥料产品。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
+原始活动或阶段基准：每 1,000 kg 收获小米种子作物.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`ipcc-2019-cropland`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 硫酸铵肥料（`millet_seed_multiplication_agricultural_nutrient_inputs_ammonium_sulfate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`ipcc-2019-cropland`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 重过磷酸钙肥料（`millet_seed_multiplication_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`ipcc-2019-cropland`；`fao-fertilizer-identities`
+
+###### 氯化钾肥料（`millet_seed_multiplication_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`ipcc-2019-cropland`；`fao-fertilizer-identities`
+
+###### 作为肥料施用的牛粪（`millet_seed_multiplication_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`ipcc-2019-cropland`；`fao-organic-nutrients`
+
+###### 施入土壤的植物残体堆肥（`millet_seed_multiplication_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`ipcc-2019-cropland`；`fao-organic-nutrients`
+
+###### 供给的灌溉水（`irrigation_water_supplied`）
+
+按田块和水源记录供给的灌溉水。经证实的雨养路线以支持证据记录合理零值。
+
+- 选定流：供给小米种子田的灌溉水
+- 流属性/单位：Mass or volume / kg or m3
+- 数量规则：按田块和水源计量或有证据的灌溉供水
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 收获小米种子作物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_irrigation_records`
+- 来源：`ipcc-2019-cropland`
+
+###### 设备供电点的电力（`field_energy_electricity`）
+
+**field_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+记录田间作业和泵送使用的燃料、电力和其他直接能源。
+原始活动或阶段基准：每 1,000 kg 收获小米种子作物.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_field_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field_energy_records`
+- 来源：`ipcc-2019-cropland`；`fao-agricultural-energy`
+
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
+###### 供应设备的柴油（`field_energy_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_field_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field_energy_records`
+- 来源：`ipcc-2019-cropland`；`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+##### 废物流
+
+通常不需要废物投入。只有再利用有机改良剂或回用水以废物衍生投入跨越田间边界时才记录。
+
+##### 基本流
+
+###### 耕地占用（`cultivated_land_occupation`）
+
+记录声明小米种子作物周期的耕地占用。土地转化是独立问题，不得从占用量推断。
+
+- 选定流：耕地占用
+- 流属性/单位：Area-time / ha·crop cycle
+- 数量规则：种植面积乘以声明作物周期占用基准
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 接收小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：作物周期（`crop_cycle`）
+- 证据类型：根据采集计算（`calculated_from_collection`）
+- 采集协议：`cp_land_use_records`
+- 来源：`ipcc-2019-cropland`
+
+###### 自然水资源取水（`natural_water_withdrawal`）
+
+保持自然资源取水与供给灌溉产品投入区分。
+
+- 选定流：从声明自然水源取出的水资源
+- 流属性/单位：Mass or volume / kg or m3
+- 数量规则：按水源实测或根据泵送记录计算取水量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 接收小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：根据采集计算（`calculated_from_collection`）
+- 采集协议：`cp_irrigation_records`
+- 来源：`ipcc-2019-cropland`
+
+#### 输出
+##### 产品流
+
+###### 收获的小米种子作物（`harvested_millet_seed_crop`）
+
+记录处理前收获的小米种子作物。收获水分、杂质和处理状态可能不同，必须与已接收清选种子分开。
+
+- 选定流：处理前收获的小米种子作物
+- 流属性/单位：Mass / kg
+- 数量规则：按声明水分基准计量收获质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：田间过程输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvested_seed_mass`
+- 数量范围：田间输出身份校验范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 田间过程参考输出
+  - 基准：田间过程输出身份
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
+
+###### 离开边界的田间残余物（`field_residue_leaving_boundary`）
+
+仅当秸秆、颖壳或其他残余物跨越声明边界时记录，并声明去向。
+
+- 选定流：跨越声明边界的小米田间残余物
+- 流属性/单位：Mass / kg
+- 数量规则：残余物质量和去向的实测记录
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 收获小米种子作物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field_residue_records`
+
+##### 废物流
+
+###### 送往处理的田间废物（`field_waste_sent_to_treatment`）
+
+仅用于离开田间边界并进入声明处理路线的田间废物流。
+
+- 选定流：送往处理的田间废物
+- 流属性/单位：Mass / kg
+- 数量规则：废物质量和处理去向的实测记录
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 收获小米种子作物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field_residue_records`
+
+##### 基本流
+
+###### 直接土壤氧化亚氮排放（`direct_soil_nitrous_oxide_emission`）
+
+根据声明养分投入使用选定方法层级计算直接土壤排放，并披露物种和换算基准。
+
+- 选定流：排放到空气的氧化亚氮
+- 流属性/单位：Mass / kg N2O or kg N2O-N
+- 数量规则：将选定方法层级应用于采集的氮投入和管理背景
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 kg N 投入以及每 1 kg 接收小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：氮投入（`n_input`）
+- 证据类型：方法公式（`method_formula`）
+- 来源：`ipcc-2019-managed-soils-n2o`
+
+###### 氨挥发（`ammonia_volatilization`）
+
+当选定土壤排放方法和管理背景支持时记录氨排放。
+
+- 选定流：排放到空气的氨
+- 流属性/单位：Mass / kg NH3
+- 数量规则：将场址或区域方法应用于采集的养分记录
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 kg N 投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型：氮投入（`n_input`）
+- 证据类型：方法公式（`method_formula`）
+- 来源：`ipcc-2019-managed-soils-n2o`
+
+###### 向水体淋失的硝酸盐（`nitrate_leaching_to_water`）
+
+当选定方法以及采集的养分、土壤、水和管理记录支持时记录硝酸盐淋失。
+
+- 选定流：排放到水体的硝酸盐
+- 流属性/单位：Mass / kg nitrate
+- 数量规则：将选定淋失方法应用于采集的养分和场址记录
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 kg N 投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型：氮投入（`n_input`）
+- 证据类型：方法公式（`method_formula`）
+- 来源：`ipcc-2019-managed-soils-n2o`
+
+###### 田间能源产生的化石二氧化碳（`fossil_carbon_dioxide_from_field_energy`）
+
+依据声明因子源由田间燃料和能源记录计算化石二氧化碳。
+
+- 选定流：排放到空气的化石二氧化碳
+- 流属性/单位：Mass / kg CO2
+- 数量规则：采集燃料或能源数量乘以声明排放因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每燃料清单以及每 1 kg 接收小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：根据采集计算（`calculated_from_collection`）
+- 采集协议：`cp_field_energy_records`
+
+### 过程：小米种子处理和处理剂应用（`millet_seed_conditioning_and_treatment`）
+
+#### 输入
+##### 产品流
+
+###### 收获的小米种子作物投入（`harvested_millet_seed_crop_input`）
+
+记录送入处理的收获作物，包括批次、接收质量、水分以及源田块或供应商。
+
+- 选定流：处理前收获的小米种子作物
+- 流属性/单位：Mass / kg
+- 数量规则：按声明水分基准计量批次接收质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每接收的清选小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_input_records`
+
+###### 交流电 (`conditioning_energy_electricity`)
+
+种子清选、分级、检测、处理、包装的实际电机，以及确有安装的干燥风机。干燥热源另行确认，不根据除水需求推定燃烧器燃料。
+
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_conditioning_energy_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_conditioning_energy_records`
+- 来源：`route-energy-fao`
+
+执行第8节`conditioning_energy_identification`要求。不继承原集合卡的数值范围或默认值。
+
+###### 木制板条箱（`packaging_materials_wood_crate`）
+
+**packaging_materials 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+记录跨越种子设施边界的袋、内衬、标签、封口或其他包装材料。
+原始活动或阶段基准：每包装的接收小米种子输出.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：木制板条箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_packaging_input_records`
+- 来源：`usda-seed-cleaning-handling`；`fao-package-identities`
+
+###### 瓦楞纸板箱（`packaging_materials_corrugated_box`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：瓦楞纸板箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_packaging_input_records`
+- 来源：`usda-seed-cleaning-handling`；`fao-package-identities`
+
+###### 聚乙烯包装薄膜（`packaging_materials_pe_film`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：聚乙烯包装薄膜
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_packaging_input_records`
+- 来源：`usda-seed-cleaning-handling`；`fao-package-identities`
+
+###### 处理用水（`conditioning_water_use`）
+
+仅当处理用水跨越设施边界或是实质性过程投入时记录。
+
+- 选定流：小米种子处理用过程水
+- 流属性/单位：Mass or volume / kg or m3
+- 数量规则：按活动计量或有证据的处理用水
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每接收的清选小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_water_records`
+
+##### 废物流
+
+通常不需要废物投入。只有在声明废物衍生状态和边界交接时才纳入回收或再利用材料。
+
+#### 输出
+##### 产品流
+
+###### 接收的小米播种种子（`accepted_millet_seed_for_sowing`）
+
+记录在声明种子门放行的已清选、分级、检验并可选处理的小米播种种子。
+
+- 选定流：小米，种子 `8a2d72cb-ab4f-4c21-a783-c62f81599895`
+- 流属性/单位：Mass / kg
+原始产出计量与核对要求：记录放行批次质量以及水分、纯度、发芽率或活力、处理、包装和门属性
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：PCR 参考输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_accepted_seed_mass`
+- 数量范围：同阶段产出计量对账
+  - 范围角色：质量检查边界（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同阶段净验收产出
+  - 基准：同阶段称重分子与分母的计量一致性；不是阶段产率或相对最终参考输出的固定比值
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
+
+##### 废物流
+
+###### 筛下物和拒收种子（`screenings_and_rejected_seed`）
+
+将筛下物、非规格种子、破碎粒和拒收批次作为独立流记录，每个流都必须有去向。
+
+- 选定流：离开处理过程的筛下物或拒收小米种子
+- 流属性/单位：Mass / kg
+- 数量规则：批次质量和去向的实测或核算记录
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每接收的清选小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_reject_and_screening_records`
+- 来源：`usda-seed-cleaning-handling`; `mass-balance-identity`
+
+###### 处理粉尘和清扫物（`conditioning_dust_and_sweepings`）
+
+记录作为废物或独立材料流离开设施的粉尘、颖壳和清扫物。
+
+- 选定流：处理粉尘、颖壳或清扫物
+- 流属性/单位：Mass / kg
+- 数量规则：收集质量或有记录的质量平衡残差及去向
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每接收的清选小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_reject_and_screening_records`
+- 来源：`usda-seed-cleaning-handling`; `mass-balance-identity`
+
+##### 基本流
+
+###### 处理产生的化石二氧化碳（`fossil_carbon_dioxide_from_conditioning`）
+
+依据声明因子源由处理燃料或能源记录计算化石二氧化碳。
+
+- 选定流：排放到空气的化石二氧化碳
+- 流属性/单位：Mass / kg CO2
+- 数量规则：处理燃料或能源乘以声明排放因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每接收的清选小米种子输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：根据采集计算（`calculated_from_collection`）
+- 采集协议：`cp_conditioning_energy_records`
+
+### 过程：小米种子储存和交付（`millet_seed_storage_and_delivery`）
+
+#### 输入
+##### 产品流
+
+###### 储存电力（`storage_electricity`）
+
+记录声明储存期间维持或处理小米种子使用的电力。
+
+- 选定流：储存电力
+- 流属性/单位：Energy / kWh or MJ
+- 数量规则：按储存期间和储存质量计量储存电力
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：声明储存期间每 kg 交付小米种子.
+
+- 归一化基准：每声明的参考流
+- 基准类型：储存时间（`storage_duration`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_storage_energy_records`
+
+###### 交付运输服务（`delivery_transport_service`）
+
+仅当声明参考门为交付种子时记录交付运输。
+
+- 选定流：小米种子交付货运服务
+- 流属性/单位：Transport service / tonne-km or route-specific service unit
+- 数量规则：运输路线、交付质量和承运服务记录的实测值
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：路线特定（`route_specific`）
+原始活动或阶段基准：每 tonne-km 或声明的交付种子路线.
+
+- 归一化基准：每声明的参考流
+- 基准类型：运输服务（`transport_service`）
+- 证据类型：根据采集计算（`calculated_from_collection`）
+- 采集协议：`cp_delivery_transport_records`
+
+##### 废物流
+
+#### 输出
+##### 产品流
+
+###### 交付的接收小米种子（`delivered_accepted_millet_seed`）
+
+仅当交付是声明参考门时记录交付批次。同一批次不得在种子设施门和交付门重复计数。
+
+- 选定流：小米，种子 `8a2d72cb-ab4f-4c21-a783-c62f81599895`
+- 流属性/单位：Mass / kg
+原始产出计量与核对要求：记录具有门和水分属性的交付批次质量
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：路线特定（`route_specific`）
+原始活动或阶段基准：交付参考输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_delivered_seed_mass`
+
+##### 废物流
+
+###### 储存损失或损坏种子（`storage_loss_or_damaged_seed`）
+
+按批次和去向记录储存种子损失、损坏或劣变；它不是接收种子输出。
+
+- 选定流：储存损失或损坏的小米种子
+- 流属性/单位：Mass / kg
+- 数量规则：按批次和去向进行库存核对及损失质量测量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 kg 储存小米种子.
+
+- 归一化基准：每声明的参考流
+- 基准类型：储存时间（`storage_duration`）
+- 证据类型：根据采集计算（`calculated_from_collection`）
+- 采集协议：`cp_storage_loss_records`
+
+##### 基本流
+
+###### 储存和交付产生的化石二氧化碳（`storage_and_delivery_fossil_carbon_dioxide`）
+
+仅当条件过程纳入时，根据储存和交付能源计算化石二氧化碳。
+
+- 选定流：排放到空气的化石二氧化碳
+- 流属性/单位：Mass / kg CO2
+- 数量规则：储存和交付能源乘以声明排放因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：路线特定（`route_specific`）
+原始活动或阶段基准：每 kg 交付小米种子.
+
+- 归一化基准：每声明的参考流
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：根据采集计算（`calculated_from_collection`）
+- 采集协议：`cp_delivery_transport_records`
+
+
+### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
+该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
+#### 输入
+##### 产品流
+###### 实际路线的交接产品（`actual_route_product_for_handoff`）
+记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
+- 选定流：粟类种子
+- 流属性 / 单位：质量 / kg
+- 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
+- 数值来源模式：前景记录（`foreground_record`）
+- 特异性：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+该计量节点不产生新的废物投入。
+##### 基本流
+该计量节点不产生新的资源投入。
+#### 输出
+##### 产品流
+###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
+- 选定流：粟类种子
+- 流属性 / 单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 特异性：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+实际状态的产品 UUID 须独立核实；当前未确认时保持待核实，不继承前序或其他路线的 UUID。
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+实际损失已在发生工序记录；不得在此重复记录。
+##### 基本流
+实际排放已在发生工序记录；不得在此重复记录。
+
+## 7. 分配和联产品处理
+
+| rule_id | 适用于 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `allocation_avoid_subdivision` | 田间、处理、储存和交付过程 | 当路线可以拆分时，分别记录生产、处理、处理剂、包装、储存、拒收物和按去向处理，以避免分配。 | `iso-14044-2006` |
+| `allocation_intended_outputs` | 有意生产的产品输出 | 当残余物、降级种子或其他流被有意销售或转移为产品时，只有在产品状态有证据支持后才能识别去向并采用声明方法。 | `iso-14044-2006`; `mass-balance-identity` |
+| `allocation_seed_quality` | 接收种子和降级批次 | 除非替代输出被有意生产、单独识别并包含在声明门内，否则不得把种子质量负担分配给商品小米或降级流。 | `iso-14044-2006` |
+| `allocation_fallback` | 多个有意输出 | 当无法拆分时，采用声明的质量、物理属性、经济或其他可辩护方法，披露理由并以实质不同的方法进行敏感性测试。 | `iso-14044-2006` |
+| `allocation_reject_fate` | 拒收物、残余物、废物和储存损失 | 保持田间残余物、处理拒收物、包装废物、储存损失、回收和处置相互区分；没有去向和替代证据不得抵扣被替代产品。 | `mass-balance-identity` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+## 8. 前景数据采集、计算和质量规则
+
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_products_specific_input` | `cp_crop_protection_records` | 作业 millet_seed_multiplication：记录用于杂草、害虫或病害管理的配方产品和有效成分。 - 选定流：已命名作物保护产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获小米种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-seed-systems` 原数量方法：按产品和有效成分记录施用量 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `conditioning_energy_identification` | `cp_conditioning_energy_records` | 种子清选、分级、检测、处理、包装的实际电机，以及确有安装的干燥风机。干燥热源另行确认，不根据除水需求推定燃烧器燃料。 原始活动或阶段基准：每接收的清选小米种子输出. (`route-energy-fao`) |
+
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_source_seed_lot_records` | `millet_seed_multiplication` | 源种子批次 | 批次接收记录 | 批次；种类或品种；等级；处理；质量；水分；来源 | 证书、接收记录、校准秤；原始汇总与分配：按单元汇总并归一化 | kg 和属性 | 每批次 | 作物周期 | 田块或生产单元 | 每声明的参考流 | 证书、记录、秤 |
+| `cp_nutrient_input_records` | `millet_seed_multiplication` | 养分和改良投入 | 施用记录 | 产品；配方；养分；质量；日期；田块；方法 | 发票、标签、施用日志；原始汇总与分配：按田块汇总 | kg 产品和 kg 养分 | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 发票、标签、记录 |
+| `cp_irrigation_records` | `millet_seed_multiplication` | 灌溉和取水 | 计量或水源记录 | 水源；仪表；读数；体积；日期；田块；泵送能源 | 校准仪表、泵送日志、水源记录；原始汇总与分配：区分供水和取水 | m3、kg、kWh | 事件或月度 | 作物周期 | 田块和水源 | 每声明的参考流 | 校准、读数 |
+| `cp_field_energy_records` | `millet_seed_multiplication` | 田间燃料和电力 | 燃料或公用事业记录 | 作业；载能体；数量；机器；日期；田块 | 燃料日志、仪表、发票、遥测；原始汇总与分配：分配能源且不得重复计数 | L、kg、MJ、kWh | 作业或计费周期 | 作物周期 | 田块或单元 | 每声明的参考流 | 仪表、发票、日志 |
+| `cp_crop_protection_records` | `millet_seed_multiplication` | 作物保护 | 施用记录 | 产品；有效成分；剂量；面积；日期；田块；目标 | 标签和施用日志；原始汇总与分配：按产品和成分汇总 `crop_protection_products_specific_input`: 作业 millet_seed_multiplication：记录用于杂草、害虫或病害管理的配方产品和有效成分。 - 选定流：已命名作物保护产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获小米种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-seed-systems` 原数量方法：按产品和有效成分记录施用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg 产品、kg 有效成分、ha | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 标签、记录 |
+| `cp_land_use_records` | `millet_seed_multiplication` | 土地占用 | 田块面积记录 | 田块；种植面积；日期；周期 | 田块记录、GIS、农场登记；原始汇总与分配：计算面积-时间并归一化 | ha 和作物周期 | 每周期 | 作物周期 | 田块 | 每声明的参考流 | 田图、GIS |
+| `cp_harvested_seed_mass` | `millet_seed_multiplication` | 收获种子作物 | 收获记录 | 田块；日期；质量；水分；路线；拒收物 | 校准秤和收获记录；原始汇总与分配：处理前核对 | kg 和水分分数 | 每次收获 | 作物周期 | 田块和接收点 | 每声明的参考流 | 秤、收获记录 |
+| `cp_field_residue_records` | `millet_seed_multiplication` | 田间残余物和废物 | 残余物记录 | 流；质量；去向；日期；田块 | 秤、票据、田间日志；原始汇总与分配：按去向和边界汇总 | kg | 每事件 | 作物周期 | 田块 | 每声明的参考流 | 秤、票据 |
+| `cp_conditioning_input_records` | `millet_seed_conditioning_and_treatment` | 收获种子投入 | 批次接收记录 | 批次；投入质量；水分；来源；日期 | 批次表和校准秤；原始汇总与分配：核对接收与输出 | kg 和水分分数 | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 批次表、秤 |
+| `cp_conditioning_energy_records` | `millet_seed_conditioning_and_treatment` | 处理能源 | 仪表或设备记录 | 活动；能源；数量；作业；期间 | 仪表、账单、设备日志；原始汇总与分配：按作业汇总并归一化 按路线确认要求：`conditioning_energy_identification`: 种子清选、分级、检测、处理、包装的实际电机，以及确有安装的干燥风机。干燥热源另行确认，不根据除水需求推定燃烧器燃料。 原始活动或阶段基准：每接收的清选小米种子输出. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kWh、MJ、kg、L | 活动或间隔 | 处理活动期 | 设施 | 每声明的参考流 | 仪表、账单、日志 |
+| `cp_conditioning_water_records` | `millet_seed_conditioning_and_treatment` | 处理用水 | 仪表或设施记录 | 水源；仪表；数量；日期；活动 | 仪表、账单、设施日志；原始汇总与分配：汇总跨边界用水 | m3 或 kg | 活动或间隔 | 处理活动期 | 设施 | 每声明的参考流 | 仪表、账单 |
+| `cp_seed_treatment_records` | `millet_seed_conditioning_and_treatment` | 处理材料 | 处理记录 | 产品；有效成分；剂量；处理质量；批次 | 处理日志、标签、供应商证书；原始汇总与分配：按产品和批次汇总 `seed_treatment_material_specific_input`: 记录每种处理产品和有效成分。输出处理状态是必需限定信息。 按处理批次记录处理产品质量和有效成分含量 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-seeds` | kg 产品、kg 有效成分、kg 种子 | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 日志、标签 |
+| `cp_packaging_input_records` | `millet_seed_conditioning_and_treatment` | 包装 | 包装领用记录 | 类型；件数；容量；质量；批次 | 库存记录或包装日志；原始汇总与分配：按容量或质量换算 | 件和 kg | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 包装日志 |
+| `cp_accepted_seed_mass` | `millet_seed_conditioning_and_treatment` | 接收种子 | 放行记录 | 批次；质量；水分；纯度；发芽率；处理；门 | 校准秤和质量检验；原始汇总与分配：按声明基准汇总 | kg 和属性 | 每批次 | 处理活动期 | 设施和门 | 每声明的参考流 | 秤、检验、放行记录 |
+| `cp_reject_and_screening_records` | `millet_seed_conditioning_and_treatment` | 拒收物、筛下物、粉尘和清扫物 | 拒收记录 | 批次；流；质量；去向 | 秤或质量平衡；原始汇总与分配：按流和去向汇总 | kg | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 秤、日志、去向记录 |
+| `cp_packaging_waste_records` | `millet_seed_conditioning_and_treatment` | 包装废物 | 废物记录 | 材料；质量；去向；期间 | 秤或承包商记录；原始汇总与分配：按材料和去向汇总 `packaging_waste_specific_output`: 按材料和去向记录包装边角料、损坏包装和废弃包装。 废物质量和声明处理或回收去向的实测记录 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | kg | 每次发运或活动 | 处理活动期 | 设施 | 每声明的参考流 | 秤票、承包商记录 |
+| `cp_conditioning_emission_records` | `millet_seed_conditioning_and_treatment` | 处理排放 | 排放记录 | 物质；介质；质量或因子；活动 | 粉尘日志、维护记录、计算；原始汇总与分配：按物种和介质汇总 `conditioning_dust_emission_to_air_specific_output`: 只有在有实测或记录的设施排放证据时记录直接粉尘排放。收集粉尘和排放粉尘不是同一流。 设施排放实测值或声明方法的排放计算 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | kg | 活动或期间 | 处理活动期 | 设施 | 每声明的参考流 | 日志、计算 |
+| `cp_storage_energy_records` | `millet_seed_storage_and_delivery` | 储存电力 | 库存或公用事业记录 | 批次；仪表；数量；期间；储存质量 | 仪表或账单；原始汇总与分配：按质量和时间分配 | kWh 或 MJ | 期间 | 储存时间 | 储存地点 | 每声明的参考流 | 仪表、账单 |
+| `cp_delivery_transport_records` | `millet_seed_storage_and_delivery` | 交付运输 | 运输记录 | 路线；距离；车辆；燃料或 tonne-km；质量 | 承运商发票、发运记录、燃料日志；原始汇总与分配：汇总服务并归一化 | kg 燃料或 tonne-km | 每次发运 | 交付期间 | 路线 | 每声明的参考流 | 发票、发运、日志 |
+| `cp_storage_loss_records` | `millet_seed_storage_and_delivery` | 储存损失 | 损失记录 | 批次；损失质量；类别；去向；期间 | 库存核对和秤；原始汇总与分配：按去向汇总 | kg | 每批次或期间 | 储存时间 | 储存地点 | 每声明的参考流 | 库存、处置记录 |
+| `cp_delivered_seed_mass` | `millet_seed_storage_and_delivery` | 交付种子 | 交付记录 | 批次；质量；日期；门；接收方；水分 | 发运记录和校准秤；原始汇总与分配：汇总且不得重复计数 | kg 和水分分数 | 每次发运 | 交付期间 | 声明门 | 每声明的参考流 | 发运、秤 |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+
+### 计算规则
+
+| rule_id | 适用于 | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `normalize_to_accepted_seed` | 所有前景行 | 将每个实测或计算数量除以同一声明门和水分基准下的净接收种子质量。 | 投入记录；接收种子记录 | 每 1 kg 参考流的数量 | `mass-balance-identity` |
+| `convert_seed_moisture_basis` | 收获、处理、储存和交付质量 | 仅依据记录质量和水分，使用明确干物质和水质量方程转换。 | 收获、接收、质量和交付记录 | 声明基准质量 | `mass-balance-identity`; `usda-seed-cleaning-handling` |
+| `calculate_seed_conditioning_yield` | 处理产出 | 接收种子质量除以收获种子作物投入质量，并分别保留拒收物、水分变化和未解释部分。 | 处理投入；接收质量；拒收记录 | 收率、拒收比例、未解释比例 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
+| `calculate_land_occupation` | 土地占用 | 种植面积乘以声明作物周期占用并归一化到接收种子。 | 土地记录；接收种子质量 | 参考流面积-时间 | `ipcc-2019-cropland` |
+| `calculate_water_withdrawal` | 取水 | 必要时换算计量体积，并将水源取水与供给灌溉水分开。 | 灌溉记录 | 参考流资源取水 | `ipcc-2019-cropland` |
+| `calculate_managed_soil_emissions` | 氮排放 | 将选定方法层级应用于养分投入及声明的土壤、气候和管理背景，并披露物种换算。 | 养分记录；方法因子 | 按物种排放 | `ipcc-2019-managed-soils-n2o` |
+| `calculate_field_energy_emissions` | 田间能源 | 将记录燃料或能源乘以声明因子并归一化到接收种子。 | 田间能源；因子 | 田间能源排放 | `ipcc-2019-cropland` |
+| `calculate_conditioning_energy_emissions` | 处理能源 | 将处理燃料或能源乘以声明因子并归一化。 | 处理能源；因子 | 处理排放 | `usda-seed-cleaning-handling` |
+| `calculate_storage_delivery_emissions` | 储存和交付 | 对纳入的储存和交付能源使用声明因子，并归一化到声明门。 | 储存能源；运输记录；因子 | 储存和交付排放 | `mass-balance-identity` |
+| `reconcile_field_outputs` | 田间生产 | 在声明水分基准上，将收获种子作物、残余物、田间废物和记录损失与田间记录核对。 | 收获、残余物和废物记录 | 田间输出平衡 | `mass-balance-identity` |
+| `reconcile_conditioning_outputs` | 处理 | 将接收质量和水分与接收种子、筛下物、拒收物、粉尘、包装废物和记录损失核对。 | 处理投入、接收种子和拒收记录 | 处理平衡 | `mass-balance-identity`; `usda-seed-cleaning-handling` |
+| `reconcile_storage_outputs` | 储存 | 将储存质量与声明期间的交付种子、储存损失和期末库存核对。 | 储存、交付和损失记录 | 储存平衡 | `mass-balance-identity` |
+
+### 数据质量要求
+
+| requirement_id | 适用于 | 要求 | 证据 |
+| --- | --- | --- | --- |
+| `dq_seed_identity` | 参考产品和源批次 | 声明小米种类或品种、种子等级、处理状态、水分基准、物理纯度、发芽率或活力以及批次身份。 | 证书、批次记录、质量检验 |
+| `dq_mass_records` | 所有质量行 | 每个质量值标明日期、场址或批次、单位、相关水分基准以及计量设备或来源记录。 | 校准、地磅票、批次表 |
+| `dq_temporal_coverage` | 作物周期和储存数据 | 覆盖声明作物周期和储存期间，并披露单季或多季汇总。 | 有日期的田间、投入、收获、储存和放行记录 |
+| `dq_input_completeness` | 田间和处理投入 | 对源种子、养分、作物保护、灌溉、土地、能源、处理剂、包装、储存和范围内直接排放进行量化、合理零值或书面排除。 | 台账、标签、仪表、日志、发票 |
+| `dq_quality_release` | 接收种子输出 | 保留批次放行基准、质量检验方法、水分、纯度、发芽率或活力、处理状态、包装状态和门。 | 检验、证书、放行记录 |
+| `dq_reject_and_fate` | 拒收物、残余物、废物和储存损失 | 每个非参考流都有实测或核算质量和声明去向；不得从名称推断产品状态。 | 拒收日志、残余物、发运、处理或处置记录 |
+| `dq_mass_balance` | 所有过程 | 在声明水分基准上核对田间、处理和储存输出，并披露未解释部分。 | 秤记录、批次表、库存核对 |
+| `dq_binding_coordinate` | 每个清单交换 | 核对实际物质或产品身份、状态、方向、流类型、属性、单位和适用边界；仅保留已核实匹配的 UUID，其余身份明确留空并逐行登记。 | 身份核验记录 |
+
+## 9. 验证规则
+
+| rule_id | 适用于 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `validation_reference_flow` | 参考产品 | 核对已核验的小米播种种子 UUID、所有限定信息、水分基准和声明门；最终交换必须保留该 UUID。 | `fao-seed-systems`; `mass-balance-identity` |
+| `validation_scope` | 边界 | 核对数据集为小米播种种子，不得静默包含非种用小米、制麦芽、食品、饲料、乙醇或下游种植。 | `fao-seed-systems` |
+| `validation_process_map` | 过程清单 | 核对种子繁育、处理和质量放行，以及纳入的储存或交付分别建模并有明确交接。 | `fao-seed-systems`; `usda-seed-cleaning-handling` |
+| `validation_flow_coordinates` | 清单行 | 核对每个参数化行符合其流集的流类型、方向、坐标、分组、属性、单位、使用情境和地理约束。 | `mass-balance-identity` |
+| `validation_nutrients_and_emissions` | 养分和土壤排放 | 核对养分产品质量、养分质量、方法层级、因子、物种、单位和换算；模块不提供因子或产品事实。 | `ipcc-2019-managed-soils-n2o` |
+| `validation_water_and_land` | 灌溉、取水和土地 | 保持供给灌溉产品投入、自然取水和土地占用区分并避免重复计算。 | `ipcc-2019-cropland` |
+| `validation_quality_release` | 接收种子 | 核对小米身份、种子等级、质量属性、处理状态、批次放行、包装状态、水分基准和门。 | `fao-seed-systems`; `usda-seed-cleaning-handling` |
+| `validation_reject_fate` | 拒收物和废物 | 核对每个拒收种子、筛下物、残余物、粉尘、包装废物和储存损失都有去向；不得将产品投入流集分配给废物。 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
+| `validation_mass_balance` | 所有输出 | 核对田间、处理和储存平衡在声明水分基准上相符，且接收种子未在两个交接点重复计算。 | `mass-balance-identity` |
+| `validation_allocation` | 有意联产品 | 核对任何有意联产品均被单独识别、去向有证据且分配或替代处理已披露。 | `iso-14044-2006` |
+
+## 10. 已发布数据集概况
+
+| 字段 | 值 |
+| --- | --- |
+| dataset_role | unit_process |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | 当小米种子等级、种类或品种、路线、质量属性、地理范围、水分、处理、包装、储存范围和交付门相符时用于下游 LCA 构建 |
+| excluded_use | 非种用小米；制麦芽、食品、饲料、淀粉或乙醇加工；下游小米种植；以及缺少种子质量或交付门限定信息的数据集 |
+| required_metadata | 参考流；CPC 范围；小米种类或品种；种子等级；地理范围；作物周期；水分；纯度；发芽率或活力；处理；包装；门；流集选择；采集覆盖；DQR |
+| required_quality_disclosure | 批次和田块覆盖、计量记录、质量放行证据、计算规则、结构坐标和流集引用、固定 UUID 证据、排除项、水分基准核对、质量平衡结果和数据质量评分 |
+| update_trigger | 路线、种类或品种、种子等级、处理技术、处理剂、包装、储存、参考限定信息、具体流身份核验约、采集覆盖或数据质量发生实质变化 |
+
+## 11. 数据来源
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `fao-seed-systems` | official_guidance | FAO, What are seed systems?, <https://www.fao.org/agriculture/crops/thematic-sitemap/theme/compendium/tools-guidelines/what-are-seed-systems/en/> | 种子身份、繁育、质量属性和种子系统边界 |
+| `fao-seeds` | official_guidance | FAO Seeds portal, <https://www.fao.org/seeds/en/> | 种子生产、质量保证、储存和批次披露 |
+| `usda-seed-cleaning-handling` | handbook | USDA, Mechanical Seed Cleaning and Handling, <https://www.govinfo.gov/content/pkg/GOVPUB-A-PURL-gpo23714/pdf/GOVPUB-A-PURL-gpo23714.pdf> | 清选、分级、干燥、储存、筛下物、拒收物和处理记录 |
+| `umn-small-grain-seeding-rate` | extension_guidance | University of Minnesota Extension, Seeding rate for small grains, <https://extension.umn.edu/agriculture/crop-production/small-grains/seeding-rate-for-small-grains> | 小米播种率计算、发芽率、种子计数和批次千粒重背景 |
+| `ipcc-2019-cropland` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 5 Cropland, <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch05_Cropland.pdf> | 耕地管理、残余物处理、土地和作物管理方法 |
+| `ipcc-2019-managed-soils-n2o` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11, <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | 管理土壤氮排放和因子选择 |
+| `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines | 分配层级、数据质量和敏感性要求 |
+| `mass-balance-identity` | method_factor | 将质量守恒作为田间、处理、包装、储存、拒收物、损失和参考流核对的 PCR 计算身份。 | 输出核对、归一化和 QA 校验范围 |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
