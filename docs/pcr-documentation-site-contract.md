@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-15
-lastReviewedNote: "Reviewed bounded native inline downloads for current unpublished authored candidates: manifests up to 16384 exact bytes and required English/Chinese Markdown up to 32768 exact bytes. Same-directory manifests bind eligibility to the pinned Git source; duplicate inline bytes retain distinct source/filename identities through physical fallback. Published/history/optional-language/projection downloads and navigation payloads remain intact. Complete export and source-bound qualification remain required."
-lastReviewedCommit: 6b99296b0b935404abdf900b2566fe2ff59a966d
+lastReviewedAt: 2026-10-18
+lastReviewedNote: "Combined upstream PCR #130 source-map-js 1.2.2/Next 16.4.2 and exact Playwright 1.64.1 qualification updates with the fork's bounded inline manifest/Markdown downloads. Preserve same-directory source binding, exact download bytes, distinct filenames and physical fallbacks; no PCR methodology, source/language policy, runtime or publication authority is changed. Source-bound full validation remains required."
+lastReviewedCommit: 3104aee3b8c6128b0e09fb3bb21db3c3d1889f10
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

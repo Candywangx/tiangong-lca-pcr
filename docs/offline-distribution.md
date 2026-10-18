@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
-lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
+lastReviewedAt: 2026-10-17
+lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
+lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo

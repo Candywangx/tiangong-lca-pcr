@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 3372bc9f3a0e3dcb41595a05f31c6d4114be08ef
-lastReviewedNote: "Reviewed PCR #114 combined 0.4.7 qualification repair: the POSIX signal-test fixture publishes readiness atomically and reaps its owned subprocess group before deleting temporary files. Controlled failure now exits with the original assertion instead of hanging; complete instrumented engineering tests and strict types pass locally. Production runner, coverage semantics, CI budgets, runtime pins and candidate methodology are unchanged; fresh complete CI and publication remain required."
+lastReviewedAt: 2026-10-17
+lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
+lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -334,6 +334,11 @@ code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
 reusable release invocation select full mode, including empty product tags.
 Do not satisfy a failed qualification with prior-attempt shard artifacts or
 report compact portable tests as complete corpus qualification.
+
+Bounded npm/Actions monitoring follows `docs/dependency-maintenance.md` and
+reuses that full qualification. The root/core Ajv declarations remain
+coordinated; discovery never grants reader/snapshot adoption, product release
+or methodology authority.
 
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)

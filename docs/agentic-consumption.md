@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
-lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
+lastReviewedAt: 2026-10-17
+lastReviewedCommit: a9604159d0f0ccb36dfa0a6f7829564bffc072ba
+lastReviewedNote: "PCR #130: reviewed the source-map-js 1.2.2 security lock delta and offline mapping/PostCSS regressions on the explicit PCR #129 development dependency. Runtime pins, static export, language/source fidelity, methodology and product 0.4.7 remain unchanged. Source merge requires PCR #129/PR #126 on main first, exact merge-input revalidation, fresh full qualification and independent review; publication remains separately authorized."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 3372bc9f3a0e3dcb41595a05f31c6d4114be08ef
-lastReviewedNote: "Reviewed PCR #114 combined 0.4.7 qualification repair: the POSIX signal-test fixture publishes readiness atomically and reaps its owned subprocess group before deleting temporary files. Controlled failure now exits with the original assertion instead of hanging; complete instrumented engineering tests and strict types pass locally. Production runner, coverage semantics, CI budgets, runtime pins and candidate methodology are unchanged; fresh complete CI and publication remain required."
+lastReviewedAt: 2026-10-17
+lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
+lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -376,7 +376,9 @@ JavaScript filenames. Browsers receive emitted JavaScript, never TypeScript sour
 
 The `browser` suite is an explicit part of `all`/`root`, using the existing Node
 test runner and pinned Playwright library rather than a second test-runner contract.
-Install its exact matching engines with `npm run browser:install`; Linux CI uses
+Qualification currently uses exact Playwright 1.64.1; the root dependency, runtime
+preflight and receipt version remain coordinated, with fresh engine evidence when
+they change. Install its exact matching engines with `npm run browser:install`; Linux CI uses
 Playwright's `install --with-deps` so missing system libraries fail qualification.
 Tests exercise the actual compiled Viewer assets in Chromium, Firefox and WebKit:
 lazy detail fetch, literal filtering, language selection, escaped Markdown,
@@ -481,7 +483,7 @@ missing metadata, document/asset/navigation failures and failed HTTP responses
 remain blocking; case counts and functional assertions are unchanged.
 
 The Playwright [Request contract](https://playwright.dev/docs/api/class-request)
-and pinned [Firefox network implementation](https://github.com/microsoft/playwright/blob/v1.63.0/packages/playwright-core/src/server/firefox/ffNetworkManager.ts)
+and pinned [Firefox network implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/firefox/ffNetworkManager.ts)
 provide request identity and engine cancellation semantics. Exact WebKit strings
 and prefetch evidence were also reproduced against the pinned browser runtime in
 [PCR #106](https://github.com/tiangong-lca/pcr/issues/106#issuecomment-6064168510).

@@ -13,6 +13,48 @@ function steps(name:string){const value=job(name).steps;assert.ok(Array.isArray(
 function text(value:unknown){assert.equal(typeof value,'string');return value as string;}
 function step(name:string,title:string){const value=steps(name).find(value=>value.name===title);assert.ok(value,title);return value;}
 
+test('only the generated root lock uses focused existence obligations while semantic routes remain', () => {
+ const config = object(parse(readFileSync(path.join(process.cwd(), '.docpact/config.yaml'), 'utf8')) as unknown);
+ assert.ok(Array.isArray(config.rules)); const rules = config.rules.map(object);
+ const matching = (filename: string) => rules.filter(rule => {
+  assert.ok(Array.isArray(rule.triggers));
+  return rule.triggers.map(object).some(trigger => path.posix.matchesGlob(filename, text(trigger.path)));
+ });
+ const obligations = (filename: string) => matching(filename).flatMap(rule => {
+  assert.ok(Array.isArray(rule.requiredDocs)); return rule.requiredDocs.map(object);
+ });
+ const lock = matching('package-lock.json');
+ assert.deepEqual(lock.map(rule => rule.id), ['pcr-root-generated-lock']);
+ assert.deepEqual(obligations('package-lock.json'), [
+  { path: 'docs/dependency-maintenance.md', mode: 'must_exist' },
+  { path: 'docs/typescript-engineering.md', mode: 'must_exist' },
+ ]);
+ const covered = object(config.coverage).include; assert.ok(Array.isArray(covered));
+ assert.ok(covered.includes('package-lock.json'));
+ const domains = object(config.ownership).domains; assert.ok(Array.isArray(domains));
+ const owners = domains.map(object).filter(domain => {
+  const include = object(domain.paths).include; assert.ok(Array.isArray(include));
+  return include.some(pattern => path.posix.matchesGlob('package-lock.json', text(pattern)));
+ });
+ assert.deepEqual(owners.map(domain => domain.ownerRepo), ['pcr']);
+ for (const [filename, expected] of [
+  ['package.json', ['pcr-builder-contract', 'typescript-engineering']],
+  ['packages/pcr-core/package.json', ['pcr-consumption-contract']],
+  ['packages/pcr-docs/package-lock.json', ['pcr-consumption-contract', 'pcr-documentation-site']],
+  ['builder/lib/markdown-projection.ts', ['normative-source-context', 'pcr-builder-contract']],
+  ['scripts/engineering/ci-plan.ts', ['typescript-engineering']],
+  ['.github/workflows/validate.yml', ['pcr-bootstrap-contract', 'typescript-engineering']],
+ ] as const) {
+  assert.deepEqual(matching(filename).map(rule => text(rule.id)).sort(), [...expected].sort(), filename);
+  assert.ok(obligations(filename).some(doc => doc.mode === 'review_or_update'), filename);
+ }
+ // A lock beside semantic edits cannot absorb those edits' separate obligations.
+ assert.ok([...obligations('package-lock.json'), ...obligations('package.json')]
+  .some(doc => doc.mode === 'review_or_update'));
+ for (const filename of ['package-lock.backup.json', 'nested/package-lock.json', 'config/unregistered.json'])
+  assert.deepEqual(matching(filename), [], filename);
+});
+
 test('always-present aggregate requires the entire declared graph and trusted workflow inputs',()=>{
  const gate=job('validate');assert.equal(gate.if,'always()');assert.deepEqual(gate.needs,CI_JOBS);
  assert.equal(object(workflow.env).CI_WORKFLOW_INPUTS,'${{ toJSON(inputs) }}');

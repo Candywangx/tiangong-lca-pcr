@@ -1,0 +1,63 @@
+version: 2
+updates:
+  # Root lock plus the core's independent Ajv declaration; no new core lock.
+  - package-ecosystem: npm
+    directories:
+      - /
+      - /packages/pcr-core
+    target-branch: main
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+      timezone: Asia/Shanghai
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
+    groups:
+      ajv:
+        patterns: [ajv]
+      builder-runtime-minor-and-patch:
+        patterns: ["remark-*", unified, yaml]
+        update-types: [minor, patch]
+      qualification-tools-minor-and-patch:
+        dependency-type: development
+        update-types: [minor, patch]
+    commit-message:
+      prefix: chore(deps)
+  - package-ecosystem: npm
+    directory: /packages/pcr-docs
+    target-branch: main
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:20"
+      timezone: Asia/Shanghai
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
+    groups:
+      site-runtime-minor-and-patch:
+        dependency-type: production
+        update-types: [minor, patch]
+      site-tools-minor-and-patch:
+        dependency-type: development
+        update-types: [minor, patch]
+    commit-message:
+      prefix: chore(deps)
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: main
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:40"
+      timezone: Asia/Shanghai
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: chore(deps)

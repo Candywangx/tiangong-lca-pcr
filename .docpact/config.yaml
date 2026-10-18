@@ -1,8 +1,8 @@
 version: 1
 layout: repo
-lastReviewedAt: "2026-10-13"
-lastReviewedCommit: "3372bc9f3a0e3dcb41595a05f31c6d4114be08ef"
-lastReviewedNote: "Reviewed PCR #114 combined 0.4.7 qualification repair: the POSIX signal-test fixture publishes readiness atomically and reaps its owned subprocess group before deleting temporary files. Controlled failure now exits with the original assertion instead of hanging; complete instrumented engineering tests and strict types pass locally. Production runner, coverage semantics, CI budgets, runtime pins and candidate methodology are unchanged; fresh complete CI and publication remain required."
+lastReviewedAt: "2026-10-17"
+lastReviewedCommit: "624741de9e066c15b7a9577c953c335cf48a246d"
+lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
 
 catalog:
   repos:
@@ -21,6 +21,7 @@ catalog:
         - docs/agentic-consumption.md
         - docs/typescript-engineering.md
         - docs/semantic-projection-contract.md
+        - docs/dependency-maintenance.md
       workspaceIntegrationRequired: true
 
 ownership:
@@ -45,6 +46,7 @@ ownership:
           - tests/agent/**
           - package-lock.json
           - .github/workflows/**
+          - .github/dependabot.yml
           - docs/**
       ownerRepo: pcr
     - id: builder-cli-and-schemas
@@ -99,6 +101,7 @@ coverage:
     - packages/**
     - skills/**
     - .github/workflows/**
+    - .github/dependabot.yml
     - .github/ISSUE_TEMPLATE/**
     - library/catalog.yaml
     - library/indexes/**
@@ -173,6 +176,7 @@ docInventory:
     - docs/offline-distribution.md
     - docs/agentic-consumption.md
     - docs/typescript-engineering.md
+    - docs/dependency-maintenance.md
 
 repo:
   id: pcr
@@ -396,8 +400,6 @@ rules:
         kind: source-accounted-coverage
       - path: package.json
         kind: validation-entrypoint
-      - path: package-lock.json
-        kind: toolchain-dependencies
       - path: .github/workflows/**
         kind: engineering-qualification
     requiredDocs:
@@ -410,6 +412,19 @@ rules:
       - path: README.md
         mode: review_or_update
     reason: Runtime pins, strict source migration, complete test discovery and artifact qualification must remain explicit during the TypeScript refactor.
+
+  - id: pcr-root-generated-lock
+    scope: repo
+    repo: pcr
+    triggers:
+      - path: package-lock.json
+        kind: generated-dependency-resolution
+    requiredDocs:
+      - path: docs/dependency-maintenance.md
+        mode: must_exist
+      - path: docs/typescript-engineering.md
+        mode: must_exist
+    reason: Generated root dependency resolution requires available maintenance and qualification guidance; compatibility review and complete exact-source CI remain required without rewriting unchanged contract metadata.
 
   - id: normative-source-context
     scope: repo
@@ -437,3 +452,16 @@ rules:
       - path: docs/authoring-guide.md
         mode: review_or_update
     reason: Normative source context, citation identities, compatibility and complete guidance must remain one explicit contract.
+
+  - id: pcr-dependency-maintenance
+    scope: repo
+    repo: pcr
+    triggers:
+      - path: .github/dependabot.yml
+        kind: dependency-discovery
+      - path: docs/dependency-maintenance.md
+        kind: maintenance-guide
+    requiredDocs:
+      - path: docs/dependency-maintenance.md
+        mode: review_or_update
+    reason: Discovery scope and traffic need focused guidance while semantic manifest, lock, reader, asset and publication rules stay intact.
