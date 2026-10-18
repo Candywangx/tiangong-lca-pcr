@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: "2026-10-18"
-lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
-lastReviewedCommit: "3faf6707c45abd4dbc6ca4bb72ea4224287dd3ec"
+lastReviewedNote: "Reviewed fork PCR58 storage repair: candidate required-language Markdown uses the existing native byte-exact download transport through 48 KiB; manifest eligibility remains 16 KiB. Complete source content, stable page URLs, supported Next payloads, source binding, download fidelity, provider file/resource gates and product 0.4.7 remain required. Final-source qualification and publication are separate."
+lastReviewedCommit: "80959d888a2f2b106f32d02c2bcde73fcae21092"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -80,7 +80,7 @@ existing normalized-text projection fingerprint.
 Current candidate PCRs with authored methodology and no release history may use
 native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
 `pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
-each required-language Markdown limit is 32,768 original bytes. Eligibility comes
+each required-language Markdown limit is 49,152 original bytes. Eligibility comes
 from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
 These bounded downloads preserve each original filename and work without
 JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
