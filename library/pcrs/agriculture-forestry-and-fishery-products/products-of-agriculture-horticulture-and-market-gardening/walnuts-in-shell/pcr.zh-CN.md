@@ -898,7 +898,7 @@ translation_status: aligned
 | rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_01` | 多年生树木投入 | 按声明树木寿命基准及各作物年度的合格产出，分配树木建植、未结果年份、补植、间作份额和清除。 | 树木资产登记；树木寿命；作物年度产出；间作分配驱动 | 每参考流的年度化树木投入 | `ucdavis-walnut-harvest-processing`; `iso-14044-2006` |
-| `calc_02` | 每个采收、调理和储存批次 | `opening mass + inputs = accepted outputs + hull co-product + rejects + residues + measured losses`；调查任何未解释差额。 | 批次称重和去向 | 核对后的质量平衡 | `mass-balance-identity` |
+| `calc_02` | 每个采收、调理和储存批次 | `期初质量 + 投入 = 合格输出 + 青皮联产品 + 拒收物 + 残余 + 实测损失 + 期末质量`；调查任何未解释差额。各项须匹配同一批次、期间和含水率基准；期末库存既不是已发运输出，也不是损失。 | 批次称重和去向 | 核对后的质量平衡 | `mass-balance-identity` |
 | `calc_03` | 完整果实转为去外果皮批次 | `dehulled mass = whole-fruit input mass − measured hull and non-product losses`；存在批次记录时，不得用无关平均值推断外果皮质量。 | 投入／输出质量；外果皮记录；损失记录 | 经状态及去向校正的产品质量 | `mass-balance-identity`; `ucdavis-walnut-harvest-processing` |
 | `calc_04` | 销售外果皮副产品 | 外果皮属于预期输出且已转移时，对共用采收和去外果皮负荷按实测干物质质量分配；不属于预期输出时，仅建模残余物去向，不给予副产品抵扣。 | 核桃质量；外果皮质量；水分或干物质；声明去向 | 分配后的负荷和副产品份额 | `iso-14044-2006` |
 | `calc_05` | 等级、降级、返工和拒收批次 | 等级输出必须互斥。合格输出等于投入减去外果皮、声明的降级、返工、拒收、异物、水分损失和未解释损失项；返工仅链接一次。 | 批次投入；分级和拒收记录 | 归一化输出行 | `mass-balance-identity` |
