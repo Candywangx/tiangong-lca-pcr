@@ -1,10 +1,1026 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34550"
-  title: "Animal or vegetable fats and oils and their fractions, chemically modified, except those hydrogenated, inter-esterified, re-esterified or elaidinized; inedible mixtures or preparations of animal or vegetable fats or oils"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.animal-or-vegetable-fats-and-oils-and-their-fractions-chemically-modified-except-those-d5db5640"
+  classification_refs: "CPC 3.0:34550; narrower"
+  covered_products: "Bulk epoxidized soybean triglyceride oil; declared oxirane/iodine/acid values, water content, grade and assay"
+  excluded_products: "Other source oils, chemical modifications, formulated mixtures and alternative routes listed in section 1"
+  representative_product: "Bulk epoxidized soybean oil, without added formulation water or solvent"
+  production_route: "Solvent-free peracetic acid formed from hydrogen peroxide and acetic acid, catalysed by sulfuric acid; actual stage sequence declared"
+  market_state: "Bulk liquid at manufacturer dispatch gate; reusable tanks are not product mass"
+functional_unit:
+  what: "Supply a declared grade of epoxidized soybean oil as an industrial material; no universal downstream functional equivalence claimed"
+  how_much: "1 kg accepted net bulk product"
+  how_well: "Supplier/customer specification with source oil, route, oxirane oxygen, iodine value, acid value, moisture and residual peroxide declared"
+  how_long_or_cycle: "One declared production reporting period at the dispatch gate; no use-life default"
+  reference_flow_link: "finished_oil"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "foreground"
+      rule: "Include all controlled receipt, epoxidation, phase split, recovery, actual neutralisation/washing, drying/stripping, filtration, product storage/loading, cooling/vacuum, cleaning and physical emission-control operations."
+      source_ids:
+        - fraunhofer-igb-epoxidation
+        - ashland-peracetic-epoxidation-1967
+        - ec-jrc-ofc-bref-2006
+    - rule_id: boundary_upstream
+      applies_to: "purchased supply and external treatment"
+      rule: "Link purchased materials/utilities and actual off-site treatment to representative nonzero providers. This gate-to-gate inventory alone is not a cradle-to-grave result."
+      source_ids:
+        - ec-jrc-ilcd-handbook-2010
+    - rule_id: boundary_scope_extension
+      applies_to: "additional operation"
+      rule: "A different route, on-site combustion/oxidation, direct wastewater discharge, formulation or packaging manufacture requires an evidenced extension; disclose transport and packaging separately from the bulk reference product."
+      source_ids:
+        - ec-jrc-ofc-bref-2006
+        - arkema-bulk-epoxidized-soybean-oil-2020
+boundary_abstraction:
+  declared_starting_condition: "Qualified refined soybean oil and actual reagents/utilities received at the epoxidation facility; prior agriculture, extraction and refining are upstream"
+  starting_condition_role: "Purchased technosphere products, not burden-free raw material"
+  product_classification_scope: "Narrow peracetic epoxidized-soybean-oil subset of CPC 34550; classification is mapping context"
+  recursive_input_rule: "Internal rework/acid recycle are ledger links with equal transfer amounts at both ends, not additional external exchanges. Purchased same-category oil needs one upstream dataset and finite termination; add its atomic input explicitly before modelling it"
+  upstream_dataset_requirement: "Match actual oil origin/refining, assay, whole-solution versus active basis, energy interface, geography, time and treatment receiver"
+  disclosure: "Grade, route, stage sequence, assays, utility origin, emission-control technology, recycle, stock, co-product/waste receivers, allocation, excluded operations and unresolved interfaces"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Animal or vegetable fats and oils and their fractions, chemically modified, except those hydrogenated, inter-esterified, re-esterified or elaidinized, inedible mixtures or preparations of animal or vegetable fats or oils"
+    uuid: "d2b9b37c-727f-427d-a809-50c97fb48f79"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Soybean triglyceride origin"
+    - "solvent-free peracetic route"
+    - "actual catalyst"
+    - "product CAS/grade"
+    - "fatty-acid and epoxide distribution"
+    - "oxirane oxygen"
+    - "iodine value"
+    - "acid value"
+    - moisture
+    - "residual acid/peroxide"
+    - "net bulk mass"
+    - "site/period"
+    - "provider quantity basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated net dispatch weighing and stock reconciliation for one defined grade; all inventory rows are per 1 kg reference flow."
+  - id: commercial_active_basis
+    applies_to: "aqueous reagent and recovered acid"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep gross commercial solution, assay-defined active chemical and carrier water separately. Active mass equals solution mass times measured mass fraction; volume needs measured density and temperature. Do not infer native concentration or reference quantity from the name alone."
+  - id: utility_basis
+    applies_to: "electricity, indirect heat and steam"
+    required_property_ref:
+      name: "Native property and measured interface"
+      uuid: ""
+    required_unit: "MJ; kg"
+    rule: "Electricity uses native Net calorific value/MJ with 1 kWh = 3.6 MJ. Heat requires net delivered useful energy; steam is measured mass with pressure/temperature/quality and a compatible provider. Do not add heat to the electricity that generated it or duplicate steam mass and supplier heat burden."
+process_map:
+  - id: epoxidation_workup
+    name: "Integrated peracetic epoxidation and workup"
+    inclusion: "required"
+    inclusion_condition: "Covered route and declared gate boundary"
+    role: "Foreground unit; stage measurements retained"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: epoxidation_workup
+    label: "Integrated peracetic epoxidation and workup"
+    inputs:
+      product:
+        - row_id: soybean_oil
+          role: "Refined soybean oil feed"
+          name: "Soya bean oil, refined"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a113893c-4722-4285-b86e-fddcc8b54e46"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure net external refined soybean oil charged; disclose triglyceride origin, refining, fatty-acid profile, iodine value, moisture and free fatty acids. Internal oil rework is in the physical ledger, not a second purchased input."
+          amount:
+            expression: "Record the attributable exchange from cp_materials per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - fraunhofer-igb-epoxidation
+                - ashland-peracetic-epoxidation-1967
+            ranges: []
+        - row_id: hydrogen_peroxide
+          role: "Hydrogen peroxide reagent"
+          name: "Hydrogen peroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c566e036-2e0c-4f44-b4c2-08dc00af93c2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Physical identity is H2O2, CAS 7722-84-1; the generic UUID has no concentration specification. Its native CPC 34140 carboxylic-acid classification conflicts with the peroxide name/CAS; record this source metadata conflict and clarify it before release. Conditional chemical identity does not resolve the pending supplier quantity basis. Record commercial solution mass, measured assay and carrier water separately in the physical ledger. This inventory row reports active H2O2 mass only when the supplier background explicitly uses kg active H2O2; otherwise quantity/background linkage is pending. Never interpret this UUID as kg whole commercial solution, infer purity or density, or change the actual recipe to fit a 30% lookup. Carrier water embedded in that supplier solution is not also purchased process water."
+          amount:
+            expression: "Record the attributable exchange from cp_materials per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - fraunhofer-igb-epoxidation
+                - ashland-peracetic-epoxidation-1967
+            ranges: []
+        - row_id: acetic_acid
+          role: "Fresh acetic acid"
+          name: "Acetic acid (acetic acid)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cf748a4-30e8-4efd-aec4-05beb20604dc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This selected industrial synthesis record requires purity at least 99.8%. Use only for a qualifying fresh glacial-acetic-acid lot; measured assay, whole delivered mass and provider reference basis remain distinct. Another assay or recovered aqueous acid requires another verified interface. Acetic acid is regenerated by epoxidation; do not equate gross circulation with stoichiometric consumption."
+          amount:
+            expression: "Record the attributable exchange from cp_materials per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - fraunhofer-igb-epoxidation
+                - ashland-peracetic-epoxidation-1967
+            ranges: []
+        - row_id: sulfuric_acid
+          role: "Sulfuric acid catalyst"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The selected record specifies industrial concentrated sulfuric acid, 93–98%. Record actual lot assay and delivered solution mass; track sulfur through aqueous phase, neutralisation and residue. No catalyst dose is prescribed."
+          amount:
+            expression: "Record the attributable exchange from cp_materials per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - fraunhofer-igb-epoxidation
+                - ashland-peracetic-epoxidation-1967
+            ranges: []
+        - row_id: calcium_hydroxide
+          role: "Calcium hydroxide for conditional neutralisation"
+          name: "hydrated lime"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ef11ca4-62b6-4a66-b5d9-76d6539ec86e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only when the actual finishing process neutralises residual sulfuric acid with industrial hydrated lime. Record Ca(OH)2 assay, dry reagent mass and any added slurry water; another neutralising reagent is a separately inventoried exchange. The historic patent supports the operation, not a default dose or a universal neutralisation choice."
+          amount:
+            expression: "Record the attributable exchange from cp_materials per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - fraunhofer-igb-epoxidation
+                - ashland-peracetic-epoxidation-1967
+            ranges: []
+        - row_id: process_water
+          role: "Deionised process-water supply"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collect externally supplied deionised water for washing, solution preparation, cleaning and cooling-loop makeup at separate stage meters. No generic density is used: weigh or convert metered volume using measured water temperature and a documented density method. Exclude embedded reagent water and recirculating cooling throughput from this external input."
+          amount:
+            expression: "Record the attributable exchange from cp_materials per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+        - row_id: electricity
+          role: "Purchased low-voltage electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "The selected user-side grid-average record is below 1 kV. Meter reaction agitation, cooling, vacuum, separation, filtration, recovery, transfer and emission control separately where practicable; remove unrelated plant loads. Its native property is Net calorific value, not a renamed generic energy property. Retain the supplier geography, voltage and period; incompatible supplies need another interface."
+          amount:
+            expression: "Record the attributable exchange from cp_energy per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+        - row_id: purchased_heat
+          role: "Purchased indirect manufacturing heat"
+          name: "Heat for manufacturing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e7543af8-5dd2-4066-ad1e-3e2a5b563405"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Measure net useful heat crossing the supplier/foreground interface for conditioning, recovery and vacuum drying, including return-state subtraction and heat-meter calibration. The broad heat identity does not establish a net-delivery basis: provider useful-heat definition and supply/return enthalpy must match before linking a quantity. Electric heating is already electricity and is not counted again here."
+          amount:
+            expression: "Record the attributable exchange from cp_energy per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+        - row_id: direct_steam
+          role: "Process steam injected for stripping"
+          name: "Process steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "41a70607-cc98-4ae8-8556-e33cdf13157e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only if steam actually contacts the oil during stripping. Record delivered steam mass, pressure, temperature, quality, provider reference basis and downstream condensate; do not infer delivery enthalpy from an MJ property or select a pressure-specific UUID without evidence. Indirect heat and this material steam are distinct interfaces and must not duplicate supplier energy."
+          amount:
+            expression: "Record the attributable exchange from cp_materials per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - ashland-peracetic-epoxidation-1967
+            ranges: []
+        - row_id: filter_medium
+          role: "Conditional filtration cloth replacement"
+          name: "Filter cloth"
+          flow_type: "product"
+          flow_ref:
+            uuid: "117b035a-6255-425d-92b9-6c65ff1be2ab"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual external replacement filtration cloth is an input; record fabric composition, grade, service life and dry mass consumed in the reporting period. Do not substitute polypropylene resin for fabricated cloth. A permanent cleanable filter without cloth gives this row documented non-applicability."
+          amount:
+            expression: "Record the attributable exchange from cp_materials per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - fraunhofer-igb-epoxidation
+                - ashland-peracetic-epoxidation-1967
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_oil
+          role: "Conforming bulk epoxidized soybean oil"
+          name: "Animal or vegetable fats and oils and their fractions, chemically modified, except those hydrogenated, inter-esterified, re-esterified or elaidinized, inedible mixtures or preparations of animal or vegetable fats or oils"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d2b9b37c-727f-427d-a809-50c97fb48f79"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Exactly 1 kg reference flow. The broad database name is retained; PCR qualifiers restrict it to bulk soybean-triglyceride oil epoxidized by the covered peracetic route. Record accepted net product mass and grade; it is neither one pure molecular species nor an aqueous active-ingredient solution. Exclude packaging tare and separately sold recovered acid."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - fraunhofer-igb-epoxidation
+                - arkema-bulk-epoxidized-soybean-oil-2020
+            ranges: []
+        - row_id: recovered_acid
+          role: "Recovered acetic-acid aqueous solution"
+          name: "Recovered acetic-acid aqueous solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only recovered acetic-acid solution actually transferred to an external buyer is a co-product. Record net solution mass, acid assay, residual peroxide, sulfuric acid, oil contamination, acceptance specification and receiver. Internal acid recycle is a measured internal loop, not this output; fresh glacial-acid UUIDs with a synthesis/purity restriction are not its identity."
+          amount:
+            expression: "Record the attributable exchange from cp_residues per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+                - ashland-peracetic-epoxidation-1967
+            ranges: []
+      waste:
+        - row_id: wash_liquor
+          role: "Epoxidation aqueous mother liquor for off-site treatment"
+          name: "Epoxidation aqueous mother liquor for off-site treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One separately collected liquid waste stream from aqueous-phase separation, washing and captured condensate when demonstrably collected together. Record solution mass, density if using volume, acid/peroxide/oil/salt composition, COD or TOC, pH, batch coverage and receiver. Keep physically segregated streams separate in the actual dataset. Off-site liquid transfer is not also an elementary discharge at this foreground gate."
+          amount:
+            expression: "Record the attributable exchange from cp_residues per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+        - row_id: filter_waste
+          role: "Spent oil-contaminated filtration cloth"
+          name: "Spent oil-contaminated filtration cloth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the actual discharged cloth, retained oil/reagent contamination, wet mass, receiver and treatment acceptance. This is separate from detached filter cake. Clean mechanically recycled polypropylene waste is not a substitute for contaminated cloth."
+          amount:
+            expression: "Record the attributable exchange from cp_residues per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+        - row_id: filter_residue
+          role: "Oil-contaminated calcium-salt filter cake"
+          name: "Oil-contaminated calcium-salt filter cake"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only if calcium neutralisation and filtration actually produce a separately removed cake; measure its moisture, oil, calcium salts and receiver conditions. Do not use a generic metal-processing sludge or count oil retained on cloth again in this row."
+          amount:
+            expression: "Record the attributable exchange from cp_residues per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - ashland-peracetic-epoxidation-1967
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+      elementary:
+        - row_id: acetic_air
+          role: "Acetic acid release to outdoor air"
+          name: "acetic acid"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-92c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "CAS 64-19-7; outdoor air, unspecified. Quantify post-control point and fugitive releases of acetic acid as species mass, not total organic carbon or undifferentiated NMVOC. Determine positive, absent or unmeasured status from site evidence; no positive emission factor is prescribed."
+          amount:
+            expression: "Record the attributable exchange from cp_emissions per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+        - row_id: peracetic_air
+          role: "Peracetic acid release to outdoor air"
+          name: "peracetic acid"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "6cb14c5a-6f8a-4fe3-a04d-c113bdc8b48d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "CAS 79-21-0; outdoor air, unspecified. Include only actual residual peracetic acid crossing the environment boundary after recovery/control; it is not acetic acid and is not assigned its UUID. Determine positive, absent or unmeasured status from site evidence; no positive emission factor is prescribed."
+          amount:
+            expression: "Record the attributable exchange from cp_emissions per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+        - row_id: oxygen_air
+          role: "Oxygen from peroxide decomposition to outdoor air"
+          name: "oxygen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9745-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "CAS 7782-44-7; outdoor air, unspecified. Determine actual decomposition/venting and distinguish it from peroxide oxygen retained in epoxy groups and from ambient ventilation oxygen. No default decomposition fraction. Determine positive, absent or unmeasured status from site evidence; no positive emission factor is prescribed."
+          amount:
+            expression: "Record the attributable exchange from cp_emissions per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+        - row_id: water_vapour
+          role: "Water vapour to outdoor air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "CAS 7732-18-5; outdoor air, unspecified. Measure or reconcile only vapour discharged after condensation; captured condensate belongs to internal reuse or liquid waste, not both this row and wash liquor. Determine positive, absent or unmeasured status from site evidence; no positive emission factor is prescribed."
+          amount:
+            expression: "Record the attributable exchange from cp_emissions per 1 kg reference flow; apply the declared normalization and interface rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-jrc-ofc-bref-2006
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_physical_ledger
+    applies_to: "physical mass/water/carbon balances"
+    rule: "Retain full measured physical inputs, product/co-product outputs, wastes, emissions and inventory changes before environmental allocation. Never multiply physical co-product or internal-link quantities by the allocation share."
+    source_ids:
+      - ec-jrc-ofc-bref-2006
+      - ec-jrc-ilcd-handbook-2010
+  - rule_id: allocation_avoidance
+    applies_to: "shared plant resources and co-products"
+    rule: "First subdivide using stage meters and directly assigned batch records. Where multifunctionality remains, document a study-consistent determining physical relationship; use economic allocation only for the unresolved share with contemporaneous quality-specific receiver values and sensitivity. No universal mass allocation or zero-burden co-product default."
+    source_ids:
+      - ec-jrc-ilcd-handbook-2010
+  - rule_id: allocation_recovery
+    applies_to: "recycled/recovered acid and off-spec oil"
+    rule: "Internal recycle retains its load within the process and receives no avoided-product credit. A marketable external recovered acid needs acceptance, composition and allocation; discarded acid or off-spec oil is waste, not an invented sale. Keep allocated environmental accounts separate and disclose any study-level substitution."
+    source_ids:
+      - ec-jrc-ilcd-handbook-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "epoxidation_workup"
+      flow_role: "finished_oil"
+      record_type: "Measured foreground records"
+      raw_fields: "grade; batch; tare/gross/net dispatch mass; beginning/end accepted-product and off-spec/rework stocks; inter-period and external transfers; accepted net production P; failed/zero-output batch identifiers; oxirane oxygen; iodine/acid values; moisture; peroxide; actual product composition and assay uncertainty"
+      collection_method: "Use calibrated net scales/tank reconciliation and traceable lot acceptance tests. Determine raw accepted net production P for one documented grade and complete reporting pool by reconciling production, dispatch, stocks and transfers; do not treat dispatch from opening accepted stock as new production or count internal rework twice. Keep failed and zero-output batches in the matched pool. Retain raw kg totals; normalize only through normalize_period."
+      unit: "kg"
+      frequency: "Each batch/transfer; representative full emission profile"
+      temporal_coverage: "Same declared complete production period"
+      site_scope: "One site, one declared route/grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, certificates, timestamps, raw tests and reconciliation; record missing data"
+    - protocol_id: cp_materials
+      process_id: "epoxidation_workup"
+      flow_role: "reagent and water input"
+      record_type: "Measured foreground records"
+      raw_fields: "lot; supplier; native reference basis; commercial solution mass; active assay; carrier water; density/temperature; external receipt and charge; stage; recycle/rework transfers; beginning/end stocks; residual reagent species and reaction-extent evidence; steam pressure/temperature/quality"
+      collection_method: "Use calibrated weighing/meters, analytical assays, supplier certificates and complete stage records. Retain stock-reconciled raw attributable material totals for the same production pool as P, including failed batches, zero-output batches, cleaning and rework. Keep commercial solution mass, active amount and carrier water separately; internal transfers remain equal ledger links. Do not divide totals in this protocol; apply normalize_period once."
+      unit: "kg"
+      frequency: "Each batch/transfer; representative full emission profile"
+      temporal_coverage: "Same declared complete production period"
+      site_scope: "One site, one declared route/grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, certificates, timestamps, raw tests and reconciliation; record missing data"
+    - protocol_id: cp_energy
+      process_id: "epoxidation_workup"
+      flow_role: "electricity and heat"
+      record_type: "Measured foreground records"
+      raw_fields: "meter; stage; interval; voltage; supplier; supply/return flow and enthalpy; heat losses; shared loads; energy reference basis"
+      collection_method: "Use calibrated electricity and net-heat meters covering the same complete production pool as P, including failed/zero-output batches, rework, cleaning and changeovers. Retain raw totals and documented causal load apportionment; preserve supplier reference quantities and supply/return heat states. Convert kWh to MJ once using 3.6 MJ/kWh, then apply normalize_period once; do not divide in this protocol."
+      unit: "MJ"
+      frequency: "Each batch/transfer; representative full emission profile"
+      temporal_coverage: "Same declared complete production period"
+      site_scope: "One site, one declared route/grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, certificates, timestamps, raw tests and reconciliation; record missing data"
+    - protocol_id: cp_residues
+      process_id: "epoxidation_workup"
+      flow_role: "co-product and segregated waste"
+      record_type: "Measured foreground records"
+      raw_fields: "origin stage; receiver; net wet mass; density; moisture; individual acid/peroxide/oil/salt composition and assay uncertainty; residual H2O2/peracid; organic material and calcium/sulfur species; cloth/cake separation; COD/TOC as aggregate indicators; pH; beginning/end stocks; transfers and actual reaction/side-product evidence"
+      collection_method: "Use calibrated transfer weighing, representative species/composition sampling and actual treatment/sales acceptance for the same complete production pool as P; follow failed batches, rework and waste manifests. Retain raw co-product and segregated waste totals with stock changes, full physical amounts before allocation and separate internal transfers. Do not divide in this protocol; apply normalize_period once."
+      unit: "kg"
+      frequency: "Each batch/transfer; representative full emission profile"
+      temporal_coverage: "Same declared complete production period"
+      site_scope: "One site, one declared route/grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, certificates, timestamps, raw tests and reconciliation; record missing data"
+    - protocol_id: cp_emissions
+      process_id: "epoxidation_workup"
+      flow_role: "outdoor species emissions"
+      record_type: "Measured foreground records"
+      raw_fields: "species/CAS; point/fugitive source; stage; species mass concentration or verified conversion; gas volume flow rate or already integrated gas volume; interval boundaries and duration; temperature/pressure; wet/dry basis; incoming species background where relevant; control capture; condensate; uncertainty; absent/present/unmeasured status"
+      collection_method: "Use species-resolved interval sampling and matched gas-volume monitoring over the same complete production pool as P, including failed/zero-output batches, rework, reaction, transfers, recovery, drying and cleaning. Include separately evidenced fugitives and independently supported water/peroxide species balances. Apply species_integration to obtain raw external species mass once; captured material and incoming ambient background are not process releases. Retain raw species totals and measurement gaps; normalize only through normalize_period."
+      unit: "kg"
+      frequency: "Each batch/transfer; representative full emission profile"
+      temporal_coverage: "Same declared complete production period"
+      site_scope: "One site, one declared route/grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, certificates, timestamps, raw tests and reconciliation; record missing data"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For each non-reference exchange i, q_i = Q_i / P exactly once. Q_i is its raw stock-reconciled attributable amount for the complete reporting pool, before any per-kg division; P is accepted net production in kg for that same grade and pool from cp_product. Include all matched failed/zero-output batches, off-spec production, rework, cleaning and starts/stops in the attributable totals; do not select only successful batches. Internal transfers are not new external exchanges. If P is zero, the per-kg result is undefined: retain the totals for a justified matched pool with positive accepted output or report unavailable; never report zero burden or divide by zero. Keep finished_oil exactly 1 kg. Preserve full physical co-product/waste quantities; environmental allocation is a separate account after reconciliation. Each protocol retains raw period totals. The aggregation column declares the final per 1 kg reference-flow basis; it does not direct another division. Apply normalization once, only through normalize_period, to the stock-reconciled complete matched pool. Carry burdens with the corresponding raw-material, work-in-progress, rework and finished-product stocks across periods; do not pair old-stock dispatches with current processing alone."
+      inputs:
+        - cp_product
+        - cp_materials
+        - cp_energy
+        - cp_residues
+        - cp_emissions
+      output: "exchange per 1 kg reference flow, or explicitly unavailable when P is zero"
+      source_ids:
+        - ec-jrc-ilcd-handbook-2010
+    - id: assay_accounting
+      applies_to: "hydrogen_peroxide, acetic_acid, sulfuric_acid, recovered_acid"
+      rule: "Active mass = measured commercial solution mass × measured active mass fraction; carrier water is reconciled separately. Use active normalization for H2O2 only with a supplier active-kg interface; otherwise retain pending linkage."
+      inputs:
+        - cp_materials
+        - cp_residues
+      output: "separate solution/active/water amounts"
+      source_ids:
+        - ec-jrc-ofc-bref-2006
+    - id: species_integration
+      applies_to: "acetic_air, peracetic_air, oxygen_air, water_vapour"
+      rule: "Obtain raw species mass from the time integral of matched species mass concentration C_i(t) and gas volume flow rate Q(t). For measured interval gas volumes V_j, use the sum of flow-weighted C_i,j times V_j after explicit unit conversion; V_j already includes duration and must not be multiplied by time again. Use concentration times flow rate times interval duration only when a representative constant or compatible interval-average basis is established. Match temperature, pressure and wet/dry basis, and separate process-generated oxygen/water from independently established incoming background. Add separately evidenced fugitives once; captured material is not emitted. Carbon concentration is not species mass without verified speciation/conversion."
+      inputs:
+        - cp_emissions
+      output: "raw attributable external species mass before normalize_period"
+      source_ids:
+        - ec-jrc-ofc-bref-2006
+    - id: physical_reconciliation
+      applies_to: "unallocated ledger"
+      rule: "On the unallocated physical ledger, opening stock plus all external physical inputs equals closing stock plus all external physical outputs, with uncertainty; total mass and each relevant element are conserved. For each reactive species separately, opening stock plus external input plus actual formation equals closing stock plus external output plus actual consumption. Independently establish peroxide/peracid reaction and decomposition, epoxide oxygen retained in oil, water formation/consumption, acid regeneration/neutralisation and organic side-product formation/consumption from actual site assays/speciation and an independently supported reaction-extent model or direct measurement. Keep commercial carrier water, internal recycle, co-products, waste and vapour distinct. Do not infer formation/consumption from a closure residual, COD/TOC alone, assumed complete conversion, default decomposition/yield or a fixed product/feed ratio; unresolved species balances remain unresolved."
+      inputs:
+        - cp_product
+        - cp_materials
+        - cp_residues
+        - cp_emissions
+      output: "distinct total-mass/element and reactive-species balances, evidence and residual uncertainty"
+      source_ids:
+        - ec-jrc-ofc-bref-2006
+        - fraunhofer-igb-epoxidation
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all interfaces"
+      requirement: "Verify actual lot/SKU, assay, native field restrictions, CAS, composition, reference property/unit and supplier/receiver compatibility. A flow UUID proves no foreground amount or compatible background by itself."
+      evidence: "cp_materials; cp_product; cp_residues"
+    - id: dq_completeness
+      applies_to: "whole period and process"
+      requirement: "Retain off-spec production, cleaning, starts/stops, recovery and stock changes. Missing emissions/assays are unmeasured, not zero; add every actually occurring omitted atomic flow before releasing a dataset."
+      evidence: "cp_product; cp_emissions"
+    - id: dq_balance
+      applies_to: "physical and environmental accounts"
+      requirement: "Keep measured balances and allocated environmental loads separately; disclose measurement uncertainty and unresolved balance residuals without forcing closure."
+      evidence: "cp_materials; cp_residues; cp_energy"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "dataset reference"
+    rule: "Require exactly one finished_oil product output of 1 kg and complete product/route qualifiers; the broad name cannot expand this PCR to mixed preparations or excluded modified oils."
+    source_ids:
+      - unsd-cpc-3-2025
+      - fraunhofer-igb-epoxidation
+  - rule_id: validate_interfaces
+    applies_to: "inventory"
+    rule: "Reject unsupported assays, pure/solution conversion, grade/route/CAS/compartment contradictions and unverified supplier quantity bases. Blank UUIDs and unmeasured emissions remain explicit review items; no nearby product or wrong environmental medium substitution."
+    source_ids:
+      - ec-jrc-ilcd-handbook-2010
+  - rule_id: validate_accounting
+    applies_to: "balance and allocation"
+    rule: "Check equal internal transfers; full physical product/co-product/waste masses and stocks before allocation; one complete production pool including failed/zero-output/rework burdens; raw Q_i and accepted P normalized exactly once; no duration multiplier on already integrated gas volume; separate conserved total mass/elements from independently evidenced reactive formation/consumption; commercial carrier water and bilingual denominators. Missing quantity or species evidence remains unavailable/review-required, without borrowed recipe, yield, energy or emission defaults."
+    source_ids:
+      - ec-jrc-ofc-bref-2006
+      - ec-jrc-ilcd-handbook-2010
+published_dataset_profile:
+  dataset_role: "foreground process dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Covered site/grade/route with complete supplier interfaces and actual measurements; review-required candidate guidance"
+  excluded_use: "Whole CPC 34550 coverage; food equivalence; whole commercial H2O2 solution inferred from chemical UUID; alternative reaction route; cradle-to-grave or comparative assertion from this unit alone"
+  required_metadata: "Reference qualifiers; actual plant route; assay and net mass bases; source period; native providers; full physical balances; allocation and extension boundary"
+  required_quality_disclosure: "Missing UUIDs, pending provider quantities, detection limits, measurements, balance residuals, temporal coverage, review and translation maturity"
+  update_trigger: "Changed oil source, catalyst, acid route, formulation, assay, heat interface, treatment, receiver or new authoritative evidence"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 Structure, 30 June 2025, subclass 34550. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Classification wording and named exclusions; narrower mapping is a candidate interpretation"
+  - id: "fraunhofer-igb-epoxidation"
+    type: "official_guidance"
+    reference: "Fraunhofer IGB, Preparation of triglyceride and fatty acid epoxides. https://www.igb.fraunhofer.de/en/research/chemical-and-biotechnological-processes/industrial-biotechnology/bioprocess-engineering/establishment-and-scale-up-of-technical-enzyme-processes/preparation-of-triglyceride-and-fatty-acid-epoxides.html"
+    used_for: "Conventional peracid chemistry, side reactions, salt burden and product characterization; no process quantities"
+  - id: "ashland-peracetic-epoxidation-1967"
+    type: "literature"
+    reference: "W. H. French / Ashland Oil & Refining Company, US3360531A, 26 December 1967, columns 9–10 Table I solvent-free cases and conventional Run 1; workup discussed at column 8–9. https://patents.google.com/patent/US3360531A/en"
+    used_for: "Original historical physical route/recycle/workup evidence only; example recipes and performance are not defaults or operating instructions"
+  - id: "ec-jrc-ofc-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission, Organic Fine Chemicals BREF, August 2006, §4.3.1.4 printed 183 / PDF 213; §§5.2.1.1.2–5.2.1.1.5 printed 380–382 / PDF 410–412. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/ofc_bref_0806.pdf"
+    used_for: "General chemical plant physical balances and waste/emission measurements; no factory-specific recipe or numerical emission defaults"
+  - id: "ec-jrc-ilcd-handbook-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook General guide for LCA Detailed guidance, March 2010, §7.9.3 printed 257–258 / PDF 277–278. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Subdivision, determining physical causality and remaining economic allocation; retain study context"
+  - id: "arkema-bulk-epoxidized-soybean-oil-2020"
+    type: "literature"
+    reference: "Arkema USA, 23 April 2020, Vikoflex/Vikolox distribution and bulk delivery announcement. https://www.arkema.com/usa/en/media/news/non-global/countries/americas/20200423-brenntag-distribu/"
+    used_for: "Independent producer confirmation of bulk epoxidized soybean oil identity/delivery only; does not prove its plant recipe"
+  - id: "hairma-esbo-epd-2022"
+    type: "literature"
+    reference: "Hairma (Nantong) Technology, EPD S-P-06253, 17 May 2022, PDF pages 3, 5–8 / printed pages 2, 4–7. https://www.environdec.com/library/epd6253"
+    used_for: "Counterevidence: formic-acid route, plant-specific inventories and different classification label; not transferred to this peracetic method"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:dd2bfcaeb3a7a9956869e0ed209ff4c8826788dedcfba73ab2a4752e147bb13b"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6039"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6039
+          line: 61
+          column: 1
+        end:
+          offset: 8224
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_complete` | foreground | Include all controlled receipt, epoxidation, phase split, recovery, actual neutralisation/washing, drying/stripping, filtration, product storage/loading, cooling/vacuum, cleaning and physical emission-control operations. | `fraunhofer-igb-epoxidation`; `ashland-peracetic-epoxidation-1967`; `ec-jrc-ofc-bref-2006` |\n| `boundary_upstream` | purchased supply and external treatment | Link purchased materials/utilities and actual off-site treatment to representative nonzero providers. This gate-to-gate inventory alone is not a cradle-to-grave result. | `ec-jrc-ilcd-handbook-2010` |\n| `boundary_scope_extension` | additional operation | A different route, on-site combustion/oxidation, direct wastewater discharge, formulation or packaging manufacture requires an evidenced extension; disclose transport and packaging separately from the bulk reference product. | `ec-jrc-ofc-bref-2006`; `arkema-bulk-epoxidized-soybean-oil-2020` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Qualified refined soybean oil and actual reagents/utilities received at the epoxidation facility; prior agriculture, extraction and refining are upstream |\n| starting_condition_role | Purchased technosphere products, not burden-free raw material |\n| product_classification_scope | Narrow peracetic epoxidized-soybean-oil subset of CPC 34550; classification is mapping context |\n| recursive_input_rule | Internal rework/acid recycle are ledger links with equal transfer amounts at both ends, not additional external exchanges. Purchased same-category oil needs one upstream dataset and finite termination; add its atomic input explicitly before modelling it |\n| upstream_dataset_requirement | Match actual oil origin/refining, assay, whole-solution versus active basis, energy interface, geography, time and treatment receiver |\n| disclosure | Grade, route, stage sequence, assays, utility origin, emission-control technology, recycle, stock, co-product/waste receivers, allocation, excluded operations and unresolved interfaces |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 332
+              line: 10
+              column: 1
+            end:
+              offset: 404
+              line: 10
+              column: 73
+          text: "# Bulk epoxidized soybean oil by solvent-free peracetic-acid epoxidation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6039
+              line: 61
+              column: 1
+            end:
+              offset: 6060
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28226"
+      family: "allocation"
+      span:
+        start:
+          offset: 28226
+          line: 393
+          column: 1
+        end:
+          offset: 29582
+          line: 401
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_physical_ledger` | physical mass/water/carbon balances | Retain full measured physical inputs, product/co-product outputs, wastes, emissions and inventory changes before environmental allocation. Never multiply physical co-product or internal-link quantities by the allocation share. | `ec-jrc-ofc-bref-2006`; `ec-jrc-ilcd-handbook-2010` |\n| `allocation_avoidance` | shared plant resources and co-products | First subdivide using stage meters and directly assigned batch records. Where multifunctionality remains, document a study-consistent determining physical relationship; use economic allocation only for the unresolved share with contemporaneous quality-specific receiver values and sensitivity. No universal mass allocation or zero-burden co-product default. | `ec-jrc-ilcd-handbook-2010` |\n| `allocation_recovery` | recycled/recovered acid and off-spec oil | Internal recycle retains its load within the process and receives no avoided-product credit. A marketable external recovered acid needs acceptance, composition and allocation; discarded acid or off-spec oil is waste, not an invented sale. Keep allocated environmental accounts separate and disclose any study-level substitution. | `ec-jrc-ilcd-handbook-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 332
+              line: 10
+              column: 1
+            end:
+              offset: 404
+              line: 10
+              column: 73
+          text: "# Bulk epoxidized soybean oil by solvent-free peracetic-acid epoxidation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28226
+              line: 393
+              column: 1
+            end:
+              offset: 28266
+              line: 393
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_41014"
+      family: "validation"
+      span:
+        start:
+          offset: 41014
+          line: 432
+          column: 1
+        end:
+          offset: 42406
+          line: 440
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | dataset reference | Require exactly one finished_oil product output of 1 kg and complete product/route qualifiers; the broad name cannot expand this PCR to mixed preparations or excluded modified oils. | `unsd-cpc-3-2025`; `fraunhofer-igb-epoxidation` |\n| `validate_interfaces` | inventory | Reject unsupported assays, pure/solution conversion, grade/route/CAS/compartment contradictions and unverified supplier quantity bases. Blank UUIDs and unmeasured emissions remain explicit review items; no nearby product or wrong environmental medium substitution. | `ec-jrc-ilcd-handbook-2010` |\n| `validate_accounting` | balance and allocation | Check equal internal transfers; full physical product/co-product/waste masses and stocks before allocation; one complete production pool including failed/zero-output/rework burdens; raw Q_i and accepted P normalized exactly once; no duration multiplier on already integrated gas volume; separate conserved total mass/elements from independently evidenced reactive formation/consumption; commercial carrier water and bilingual denominators. Missing quantity or species evidence remains unavailable/review-required, without borrowed recipe, yield, energy or emission defaults. | `ec-jrc-ofc-bref-2006`; `ec-jrc-ilcd-handbook-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 332
+              line: 10
+              column: 1
+            end:
+              offset: 404
+              line: 10
+              column: 73
+          text: "# Bulk epoxidized soybean oil by solvent-free peracetic-acid epoxidation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 41014
+              line: 432
+              column: 1
+            end:
+              offset: 41036
+              line: 432
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_6039"
+      source_span:
+        start:
+          offset: 6133
+          line: 65
+          column: 1
+        end:
+          offset: 6485
+          line: 65
+          column: 353
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6039"
+      source_span:
+        start:
+          offset: 6486
+          line: 66
+          column: 1
+        end:
+          offset: 6752
+          line: 66
+          column: 267
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_scope_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_6039"
+      source_span:
+        start:
+          offset: 6753
+          line: 67
+          column: 1
+        end:
+          offset: 7101
+          line: 67
+          column: 349
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_physical_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_28226"
+      source_span:
+        start:
+          offset: 28339
+          line: 397
+          column: 1
+        end:
+          offset: 28692
+          line: 397
+          column: 354
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_avoidance"
+      identity_kind: "explicit"
+      unit_id: "normative_28226"
+      source_span:
+        start:
+          offset: 28693
+          line: 398
+          column: 1
+        end:
+          offset: 29150
+          line: 398
+          column: 458
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_28226"
+      source_span:
+        start:
+          offset: 29151
+          line: 399
+          column: 1
+        end:
+          offset: 29580
+          line: 399
+          column: 430
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_41014"
+      source_span:
+        start:
+          offset: 41109
+          line: 436
+          column: 1
+        end:
+          offset: 41387
+          line: 436
+          column: 279
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_41014"
+      source_span:
+        start:
+          offset: 41388
+          line: 437
+          column: 1
+        end:
+          offset: 41722
+          line: 437
+          column: 335
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_accounting"
+      identity_kind: "explicit"
+      unit_id: "normative_41014"
+      source_span:
+        start:
+          offset: 41723
+          line: 438
+          column: 1
+        end:
+          offset: 42404
+          line: 438
+          column: 682
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6039"
+      source_span:
+        start:
+          offset: 6039
+          line: 61
+          column: 1
+        end:
+          offset: 6060
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6039"
+      source_span:
+        start:
+          offset: 7129
+          line: 71
+          column: 1
+        end:
+          offset: 8222
+          line: 78
+          column: 202
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28226"
+      source_span:
+        start:
+          offset: 28226
+          line: 393
+          column: 1
+        end:
+          offset: 28266
+          line: 393
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_41014"
+      source_span:
+        start:
+          offset: 41014
+          line: 432
+          column: 1
+        end:
+          offset: 41036
+          line: 432
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:dd2bfcaeb3a7a9956869e0ed209ff4c8826788dedcfba73ab2a4752e147bb13b"
+  generated_content_sha256: "sha256:ab117a9a8b3ef2f020ef7756742527b7fca203b5e08bf5f91310504ecf36bc9d"

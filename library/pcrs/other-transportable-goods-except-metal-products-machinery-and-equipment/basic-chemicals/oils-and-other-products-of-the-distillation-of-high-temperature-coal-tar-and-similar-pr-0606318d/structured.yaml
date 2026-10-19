@@ -1,10 +1,1302 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34540"
-  title: "Oils and other products of the distillation of high temperature coal tar, and similar products; pitch and pitch coke, obtained from mineral tars"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.oils-and-other-products-of-the-distillation-of-high-temperature-coal-tar-and-similar-pr-0606318d"
+  classification_refs: "CPC 3.0 34540; proposed narrower relation, independently accepted mapping required"
+  covered_products: "Neat high-temperature coal-tar binder pitch from continuous atmospheric fractional distillation, hot bulk molten delivery"
+  excluded_products: "Crude tar; other-origin/blended/formulated or chemically modified pitch; independent oil products; pitch coke; carbon/electrode products"
+  representative_product: "One actual accepted binder-pitch grade and lot, with origin and molten-state specification"
+  production_route: "Crude tar receipt and measured dehydration; continuous atmospheric fractional distillation; pitch conditioning by separation; hot storage and bulk transfer; actual emission control and residue export"
+  market_state: "Homogeneous molten industrial binder pitch at plant delivery interface, declared temperature and pressure, without package volume"
+functional_unit:
+  what: "Supply an identified coal-tar binder feedstock to downstream carbon manufacture"
+  how_much: "1 m3 accepted net molten pitch at the declared delivery state"
+  how_well: "Actual customer-accepted grade, measured composition/water/insolubles and softening behaviour; no assumed equivalence between grades"
+  how_long_or_cycle: "One bulk supply at the gate; downstream service life is outside this reference"
+  reference_flow_link: "reference_pitch"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground
+      applies_to: "tar_distillation"
+      rule: "Include receipt, actual dehydration, atmospheric cuts, pitch storage/transfer, on-site heaters, cooling/cleaning and actual release control. Aggregate processing and bulk dispatch as one foreground unit while retaining stage meters and internal equal-quantity links; reference_pitch is the single finished output."
+      source_ids:
+        - ifc-coal-tar-2007
+        - rain-pitch-products
+    - rule_id: boundary_interfaces
+      applies_to: "tar_distillation"
+      rule: "Coal carbonisation/crude-tar recovery and downstream oil refining/electrode production stay in separate compatible provider processes. This profile exports contaminated water and sludge to independently modelled treatment interfaces; an on-site final-discharge WWTP requires explicit extension with measured treatment inputs, sludge and each final receiving-water species. Off-site transfer is not an elementary release."
+      source_ids:
+        - jrc-cww-bref-2016
+        - wco-hs-2022-ch27
+    - rule_id: boundary_completeness
+      applies_to: "all inventory rows"
+      rule: "Keep actual start-up, shutdown, upset, cleaning and stock changes in the collection period. Assess all actual fuels, alkalis, lubricants, adsorbents, packaging and release-control consumables; add one atomic row per additional occurrence. Internal condensate/tar recovery and gross circulating cooling water are not externally purchased anew. Unquantified releases and missing matches remain explicit, not zero."
+      source_ids:
+        - jrc-cww-bref-2016
+        - ifc-coal-tar-2007
+boundary_abstraction:
+  declared_starting_condition: "Accepted recovered crude high-temperature coke-oven tar at the distillery receiving interface, with measured entrained water/solids and an upstream dataset"
+  starting_condition_role: "supplied intermediate; coal carbonisation and crude-tar recovery are upstream"
+  product_classification_scope: "A narrower binder-pitch subset of CPC 3.0 34540; other distillation products are coproducts, not additional reference identities"
+  recursive_input_rule: "Record actual external same-category pitch input separately with its supplied state/provider and burden. Internal recovered pitch/tar recycle is an equal-quantity physical link, not a new purchased input. External pitch blending is outside this neat-bottom-product scope."
+  upstream_dataset_requirement: "Use a compatible recovered crude-tar supplier inventory including upstream coking/recovery allocation; verify its ending interface and whether dewatering, storage, heaters or delivery overlap this foreground"
+  disclosure: "Plant/period; source coke-oven route; wet feed and impurities; actual dehydration/cut map; heater/utilities/control configuration; hot delivery state; treatment/export interfaces; physical and burden ledgers and all gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Pitch"
+    uuid: "7d42bfb3-afaa-4b54-a1ab-f2dead883200"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - "High-temperature coke-oven coal origin"
+    - "neat unmodified UVCB binder"
+    - "actual grade/SKU and acceptance method"
+    - "residual water and insolubles"
+    - "atmospheric route/cuts"
+    - "delivery temperature and pressure"
+    - "homogeneous liquid volume excluding voids/containers"
+    - "actual lot density method and temperature"
+    - "matched supplier reference-volume convention"
+    - "upstream allocation"
+    - "reporting period and plant"
+    - "receiver and gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_volume
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Collect accepted net molten volume using cp_product at one declared temperature/pressure state. Use a calibrated liquid meter/tank-volume method validated for actual viscosity and temperature, or traceable net weighing with independently measured same-lot liquid density at that state; retain both mass and volume. No universal density or expansion factor."
+  - id: solution_basis
+    applies_to: "sodium_hydroxide; tar_feed; wastewater; tar_sludge"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep as-supplied wet carrier mass, dry/active/component mass and carrier water distinct. For an assayed solution, component mass equals solution mass times its measured mass fraction; water already in the solution is not a second input."
+  - id: utility_basis
+    applies_to: "gas; electricity; steam; condensate_return; cooling_water; water"
+    required_property_ref:
+      name: "actual declared reference property"
+      uuid: ""
+    required_unit: "actual declared reference unit"
+    rule: "Preserve native gas Volume/m3 and electricity Net calorific value/MJ. Convert metered electricity kWh to MJ using 3.6, with actual supply level. Steam is delivered carrier mass with measured state; liquid return is separately metered. Do not equate kg of steam or an MJ property to net useful heat."
+  - id: species_basis
+    applies_to: "all elementary rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report measured species mass and stated outdoor-air compartment; reconcile gas sampling volume, dry/wet basis, temperature/pressure and any oxygen correction before integrating. NO, NO2 and N2O are distinct; a reported NOx-as-NO2 quantity is not species mass. PM fractions are disjoint."
+process_map:
+  - id: tar_distillation
+    name: "Crude-tar receiving, dehydration, atmospheric fractionation and hot pitch delivery"
+    inclusion: "required"
+    inclusion_condition: "Verified high-temperature coke-oven feed and neat binder pitch route; retain actual equipment/cut stages"
+    role: "foreground production"
+    quantitative_reference: "1 m3 reference_pitch"
+process_inventory:
+  - id: tar_distillation
+    label: "Crude-tar receiving, dehydration, atmospheric fractionation and hot pitch delivery"
+    inputs:
+      product:
+        - row_id: tar_feed
+          role: "Coal tar"
+          name: "Coal tar"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7b09995f-2ee9-4584-b244-c2d84ea75585"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted crude high-temperature coke-oven coal tar at receipt. Measure wet net mass, entrained water, solids, ash and elemental composition; obtain its upstream burden and separation boundary. The broad coal-tar identity has no default heating value."
+          amount:
+            expression: "Collect same-period physical amount under cp_material; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Purchased CN 1–35 kV grid-average alternating current at the user interface only when the actual supply matches. The selected native location of supply is CN; use a separately verified compatible flow/provider for another geography or voltage. Record location/provider and period; retain meter levels and prevent double counting of the plant meter and internal submeters."
+          amount:
+            expression: "Collect same-period physical amount under cp_utility; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Fossil gaseous natural gas burned in the actual distillation heater. Match supplier reference volume to meter temperature, absolute pressure, dry/wet state, composition and compressibility; the database secondary mass coefficient is not density. Other fuels require separate atomic rows and evidence."
+          amount:
+            expression: "Collect same-period physical amount under cp_utility; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: water
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual purchased de-ionised water for preparation, cleaning or utility makeup, conditional on actual use. Weigh or convert a metered liquid volume using measured compatible density; do not apply this identity to untreated cooling makeup or water already inside supplied alkali."
+          amount:
+            expression: "Collect same-period physical amount under cp_utility; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: cooling_water
+          role: "Industrial cooling makeup water"
+          name: "Industrial cooling makeup water"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Actual fresh makeup entering the on-site cooling circuit. Measure source, water quality, volume and blowdown; circulating flow is an internal service and is not purchased again. An electricity-based brewery cooling service cannot represent this water."
+          amount:
+            expression: "Collect same-period physical amount under cp_utility; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: steam
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional delivered steam mass for actual indirect heating or direct injection. Collect supply pressure (gauge/absolute), temperature, dryness, mass and supplier boundary; retain liquid return separately. A pressure-specific 11.0 MPaG candidate is unavailable without matching conditions. Steam mass and heat service must not both carry the same burden."
+          amount:
+            expression: "Collect same-period physical amount under cp_utility; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Aqueous sodium hydroxide for tar neutralisation"
+          name: "Aqueous sodium hydroxide for tar neutralisation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional caustic solution for the documented corrosion-control route. Collect actual supplied solution mass, NaOH mass fraction, carrier water, impurities and dosage; if made on site, record solid NaOH and added water separately instead. Do not assume a universal recipe or pharmaceutical-route compatibility."
+          amount:
+            expression: "Collect same-period physical amount under cp_material; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_pitch
+          role: "Pitch"
+          name: "Pitch"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7d42bfb3-afaa-4b54-a1ab-f2dead883200"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Neat, unmodified high-temperature coal-tar binder pitch, delivered as homogeneous molten bulk at declared temperature and pressure. Its UVCB identity is not one pure PAH. Exclude water, solvent, petroleum or wood-tar additions and container volume; determine accepted net volume with cp_product."
+          amount:
+            expression: "1 m3"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: light_oil
+          role: "Coal-tar light distillate oil"
+          name: "Coal-tar light distillate oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual primary light distillate leaving the unit; assay composition and distillation interval. Do not substitute cracked petroleum coking gas oil or wash oil. Further isolated pure benzene belongs to its downstream separation process."
+          amount:
+            expression: "Collect same-period physical amount under cp_material; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: naphthalene_oil
+          role: "Coal-tar naphthalene oil fraction"
+          name: "Coal-tar naphthalene oil fraction"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual naphthalene-rich mixed fraction, not pure naphthalene, naphthol or petroleum naphtha. Record the actual cut and composition without importing historical concentration or yield."
+          amount:
+            expression: "Collect same-period physical amount under cp_material; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: middle_oil
+          role: "Coal-tar middle creosote oil fraction"
+          name: "Coal-tar middle creosote oil fraction"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional separately recovered middle creosote fraction, before any subsequent blending or refining. Identify PAH/phenolic composition and cut boundaries; do not use tall oil or turpentine."
+          amount:
+            expression: "Collect same-period physical amount under cp_material; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: heavy_oil
+          role: "Anthracene oil"
+          name: "Anthracene oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1a17fbe6-a61c-4ace-8fee-e101f643d18a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional recovered coal-tar anthracene oil mixture at the distillation gate; CAS 90640-80-5 is a mixture identity, not pure anthracene. Retain physical delivered mass and actual grades even after allocation."
+          amount:
+            expression: "Collect same-period physical amount under cp_material; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: condensate_return
+          role: "Liquid utility steam condensate return"
+          name: "Liquid utility steam condensate return"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured liquid return to the utility supplier, with pressure, temperature and enthalpy state. It is not steam or milk condensate. Directly injected steam retained in process water does not also leave as this return."
+          amount:
+            expression: "Collect same-period physical amount under cp_utility; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+      waste:
+        - row_id: wastewater
+          role: "Coal-tar distillation oily wastewater to external treatment"
+          name: "Coal-tar distillation oily wastewater to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual segregated contaminated water exported to an independently modelled treatment interface. Collect water, oil, suspended solids, BOD/COD, individual PAH, salts and ammonium where present, wet mass and recipient acceptance. The stream is not an elementary release to freshwater or electrolytic manganese-residue washwater."
+          amount:
+            expression: "Collect same-period physical amount under cp_waste; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: tar_sludge
+          role: "Coal-tar distillation sediment sludge"
+          name: "Coal-tar distillation sediment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separated PAH-bearing tar/solid/water sludge sent to a documented receiver. Measure wet mass, water, ash, composition and hazard/treatment conditions. Recovered pitch is not waste merely because it is a distillation residue; a native 31.4 MJ/kg residue grade is not established."
+          amount:
+            expression: "Collect same-period physical amount under cp_waste; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+      elementary:
+        - row_id: benzene_air
+          role: "benzene"
+          name: "benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9202-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual benzene released from storage, transfer or process vents after capture; include measured fugitive and stack contributions without a total-VOC double count."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: naphthalene_air
+          role: "naphthalene"
+          name: "naphthalene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a682-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual naphthalene released after recovery/control; distinguish retained naphthalene in product/waste and emitted mass."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: bap_air
+          role: "benzo[a]pyrene"
+          name: "benzo[a]pyrene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9221-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual benzo[a]pyrene in released vapour/aerosol, with sampling phase recovery and matrix validation. This is one species, not total PAH or all tar fume."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: pm25_air
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual PM2.5 leaving the boundary, with sampled aerodynamic size and condensable/filterable convention. Retained collected material stays in its recycle/waste ledger."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: pmcoarse_air
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual non-overlapping PM2.5–PM10 size fraction. Subtract nested totals only with matched methods, time and moisture conventions; do not invent a split."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: pmover10_air
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual particles larger than PM10 leaving the boundary; keep distinct from smaller fractions and captured tar aerosol."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: co2_air
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual net fossil CO2 generated by the on-site natural-gas heater and any actual organic destruction control. Remove incoming carrier-air CO2 on a documented consistent basis; do not infer distillation destroys all tar carbon."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: co_air
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual fossil carbon monoxide from the heater or actual combustion control; measured species mass, not CO2 equivalent."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: no2_air
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual NO2 species mass. An NOx total reported as NO2-equivalent cannot populate both NO and NO2; unresolved speciation or quantity conventions remain gaps."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: no_air
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual nitrogen monoxide species mass from combustion; reconcile with measured NO2 and the stated NOx basis without including N2O."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: so2_air
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual SO2 released from the heater or control train, conditional on fuel/composition and actual monitoring; not total SOx or a stratospheric compartment."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: methane_air
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual fossil methane leaks or unburned releases; no delayed-emission correction flow and no conversion from NMVOC totals."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: n2o_air
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual nitrous oxide when demonstrated by the heater/control assessment; quantify or document evidence-backed absence, and keep separate from NOx."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: hcl_air
+          role: "hydrogen chloride"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual hydrogen chloride release where entrained ammonium chloride decomposes and neutralisation/capture does not retain it. It is gaseous HCl, not aqueous chloride or an assumed neutralisation yield."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: water_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual water vapour released from process/cooling/combustion, distinguishing carrier humidity, evaporated feed water and chemically formed water. Do not also count the same mass as wastewater or condensate return."
+          amount:
+            expression: "Collect same-period physical amount under cp_air; per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-coal-tar-2007
+                - jrc-cww-bref-2016
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "tar_distillation"
+    rule: "Preserve the unallocated physical network and use measured subdivision/direct attribution first. For remaining joint burdens, test and justify determining physical causality (e.g. measured cut-specific separation/heating duty); mass alone is not proof of energy causality. If no defensible physical relationship is available, use coproduct economic values at the same distillation gate and condition, with comparable reporting-period net prices and sensitivity. No fixed fractions or automatic burden-free tar/pitch."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: allocation_ledgers
+    applies_to: "all inventory rows"
+    rule: "Let delivered pitch and all actual saleable cuts have physical quantities and stocks; retain them without multiplying by allocation shares. Attribute direct burdens to their causes. Economic share for product j is its same-gate production-equivalent net revenue divided by the sum for all eligible actual coproducts; reconcile stocks/deliveries and justify inferred intermediate prices. Allocate only the remaining joint environmental burdens. Shares at each stage must sum to one. Waste fees are not coproduct revenue."
+    source_ids:
+      - ilcd-detailed-2010
+      - jrc-cww-bref-2016
+  - rule_id: allocation_upstream
+    applies_to: "tar_feed"
+    rule: "Verify whether supplier tar burdens are already allocated at the coking/recovery stage. Preserve that upstream stage and never apply the distillery fraction a second time to the physical feed or coproduct masses. Confirm treatment responsibility for exported residuals; no avoided-product credit without an explicit compatible consequential method and displacement evidence."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: allocation_rule_4
+    applies_to: "foreground_burden_allocation"
+    rule: "For a pitch-specific linked LCI, retain the complete physical ledger and construct a separate attribution view: B_pitch = B_direct_pitch + alpha_pitch * B_joint, using a justified stage-specific share and dividing by accepted pitch volume. Upstream supplier tar burdens already allocated at coking/recovery remain that provider input; the distillery may attribute its resulting joint environmental burden across its own fractions, without repeating the same stage share. Attributed supplier-input equivalents are burden-accounting entries, not changed feed masses or scaled physical coproduct outputs. Do not present the unallocated collection inventory alone as a fully attributed single-product dataset. ilcd-detailed-2010"
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "tar_distillation"
+      flow_role: "reference_pitch"
+      record_type: "acceptance_record"
+      raw_fields: "lot/SKU; origin; route; composition; water; ash/QI/TI; softening test and method; molten T/p; calibrated delivered net volume; net mass; density and density T; opening/closing inventory; rejects/returns; supplier convention"
+      collection_method: "Calibrated liquid flowmeter or tank-volume method validated for hot pitch viscosity/state, excluding vessel and voids; independently reconcile traceable net weighing and same-lot density at the declared state. Assay actual acceptance properties with documented representative sampling, laboratory method, matrix/precision and grade criteria; no assumed density."
+      unit: "m3"
+      frequency: "each delivery/lot and stock closure"
+      temporal_coverage: "whole common reporting period"
+      site_scope: "actual receiving-to-delivery foreground"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; meter viscosity/T range; tank table or weigh tickets; density laboratory record; acceptance originals"
+    - protocol_id: cp_material
+      process_id: "tar_distillation"
+      flow_role: "tar_feed; sodium_hydroxide; light_oil; naphthalene_oil; middle_oil; heavy_oil"
+      record_type: "measured_material_record"
+      raw_fields: "stage/lot; gross/tare net wet mass; cut interval/T/p; composition; water/active fraction; contamination; stocks; delivery/receiver; internal transfer pairs; actual source"
+      collection_method: "Use calibrated mass readings or net weighing and representative sealed samples; record each actual fraction and supplied solution separately. Retain rejected/off-spec lots and water carried in mixtures. Record unchanged stock bases and matching internal interfaces."
+      unit: "kg"
+      frequency: "batch or continuous meter interval and inventory closure"
+      temporal_coverage: "same whole reporting period as cp_product"
+      site_scope: "receipt, cuts and accepted external transfers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "weighing calibration; assays and sample/method validity; stock records; supplier/recipient acceptance"
+    - protocol_id: cp_utility
+      process_id: "tar_distillation"
+      flow_role: "electricity; gas; water; cooling_water; steam; condensate_return"
+      record_type: "metered_utility_record"
+      raw_fields: "meter/stage; voltage; kWh/MJ; gas volume/T/p/humidity/composition/Z; liquid water volume/density; steam supply mass/T/p/dryness; liquid return mass/T/p; direct injection; supplier quantity definition; heat-state method; period/stocks"
+      collection_method: "Read calibrated utility meters and record supplier boundaries. Convert gas/liquid volume only on measured compatible state bases. Retain steam carrier and return enthalpy separately; heat interpretation requires a validated state-property method and complete measured supply/return/loss balance, not a database coefficient. Internal cooling circulation is retained for equipment balances."
+      unit: "declared row unit"
+      frequency: "meter intervals covering all operating modes"
+      temporal_coverage: "same whole reporting period as cp_product"
+      site_scope: "heater, distillation, storage, cooling and transfer"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter and supplier originals; state/quality records; property-method validity; utilities reconciliation"
+    - protocol_id: cp_waste
+      process_id: "tar_distillation"
+      flow_role: "wastewater; tar_sludge"
+      record_type: "transfer_record"
+      raw_fields: "actual source/receiver; wet mass; water/solids/oil; BOD/COD method; individual PAH; chloride/ammonium where present; hazard class; treatment acceptance; stock; sampling uncertainty"
+      collection_method: "Weigh each segregated export and obtain documented receiver/treatment data; assay representative oily water/sludge with matrix-validated methods, distinguishing wastewater pollutant content from final receiving-environment release."
+      unit: "kg"
+      frequency: "each transfer and representative composition campaign"
+      temporal_coverage: "same whole reporting period as cp_product"
+      site_scope: "exact external treatment interface"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "weighed transfers; accredited/validated analyses; treatment/receiver records; stock closure"
+    - protocol_id: cp_air
+      process_id: "tar_distillation"
+      flow_role: "all elementary rows"
+      record_type: "measured_emission_record"
+      raw_fields: "species/CAS; source/control; carrier-air inlet/outlet O2/N2/H2O/CO2; actual reaction and extent evidence; sample phase; dry/wet gas flow; T/p/O2; concentration basis; time; stack/fugitive mode; humidity; PM aerodynamic intervals/filterable-condensable basis; detection/recovery/uncertainty; actual operation hours"
+      collection_method: "Measure controlled outlet species and gas flow on matched bases, covering actual heating, storage, transfer and upset modes; integrate concentration times flow over time. Use validated source-specific fugitive measurements or a disclosed substantiated engineering estimate with its uncertainty. Total-VOC/PAH or tar-fume screening is a completeness check, not one species exchange; bulk mass-balance residuals alone are not accurate emission measurements."
+      unit: "kg"
+      frequency: "representative operating-mode campaigns and monitored intervals"
+      temporal_coverage: "same whole reporting period as cp_product, including upsets"
+      site_scope: "all actual outdoor releases after control"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "sampling train/phase recovery and matrix validation; flow meter/calibration; method/detection/uncertainty; mode coverage and actual hours"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Divide each same-period unallocated physical exchange by the same-period accepted molten pitch volume in m3 at the declared state; reference_pitch is fixed at 1 m3. Apply environmental attribution in a separate ledger, then divide attributed burdens by that same volume. Preserve all physical coproduct outputs and internal transfers. All protocols use one representative operating period including actual maintenance/start-up/shutdown and stock movements. Raw readings remain separated by stage, lot and operating mode before aggregation. The aggregation denominator is accepted net molten pitch volume at the single declared delivery state; missing temperature/density/provider conventions prevent a complete linked package. This method requires future actual SKU/site/supplier measurements and supplies no invented survey or plant data. ifc-coal-tar-2007; jrc-cww-bref-2016 Retain raw unnormalised interval amounts and sum the complete reporting-period numerator before one application of normalize_period; never average interval ratios or divide a pre-normalised amount again. Include failed and zero-output interval inputs, waste and releases in the same applicable period pool. Reconcile accepted deliveries, returns/cancellations, reacceptance and opening/closing stocks by lot; credit each net accepted volume once, and do not count internal rework passes as new output. Carry inventory burdens consistently so old-stock deliveries are not paired with current processing alone. If accepted net reference volume is zero, preserve the pool and disclose the unresolved unit result instead of dividing by zero or discarding the burdens. Protocol aggregation labels describe the final per-reference basis, not a second division."
+      inputs:
+        - cp_product
+        - "relevant collection protocol"
+      output: "physical exchange and separately attributed burden per reference flow"
+      source_ids:
+        - ilcd-detailed-2010
+        - jrc-cww-bref-2016
+  data_quality_requirements:
+    - id: quality_physical
+      applies_to: "all inventory rows"
+      requirement: "Reconcile unallocated inputs plus opening stocks with all external products, waste, air releases and closing stocks using measured composition and equal-quantity internal links. Keep total-mass and elemental C/H/O/N/S conservation separate from reactive-species bookkeeping. Retain measured carrier-air inlet and outlet O2/N2/H2O/CO2 in the engineering combustion sub-balance, independently of the pollutant exchange list; reconcile net fossil CO2 and water-vapour releases with incoming carrier components and actually formed species without duplication. For water, opening H2O + incoming H2O + actual H2O formation equals closing H2O + outgoing H2O + actual H2O consumption; substantiate reaction terms from actual chemistry and measured reaction extent. Do not enforce water or dry matter as if each were an element conserved through reaction. Do not count mixture water twice, use COD as carbon, or fit reaction terms or emissions to a residual. Retain discrepancies against measured uncertainty, not an invented tolerance."
+      evidence: "actual assays, carrier-air inlet/outlet composition, actual reaction evidence, stock closure and physical network; jrc-cww-bref-2016"
+    - id: quality_energy
+      applies_to: "utility and heater stages"
+      requirement: "Retain electrical input, gas measured calorific basis, material/steam/return sensible and latent enthalpy, useful duties and evidenced losses on common reference states. Match actual heater and supplier conventions; do not duplicate steam-carrier and heat-service burdens. Distillation does not mean the feed carbon is completely combusted. Unproved state conversions cannot support a complete heat link."
+      evidence: "stage meters, declared property methods, measured state/composition and supplier boundary"
+    - id: quality_releases
+      applies_to: "all elementary rows"
+      requirement: "Screen all actual emitted species from feed/impurity/heater/control evidence; extend atomic rows for actual additional PAH/VOC, ammonia, sulfur or other species and any on-site final aqueous releases. Reconcile individual VOC/PAH to totals on identical mass conventions without representing both as duplicate elementary masses. PM2.5, PM2.5–10 and >PM10 are disjoint. When particle-bound PAH is included in measured PM, retain its species-specific emission but identify it as a PM constituent so its mass is counted once in the physical balance. Retained dust/aerosol and recovered tar are not outdoor emission."
+      evidence: "source sampling, actual feed and operating/control map; ifc-coal-tar-2007"
+    - id: quality_links
+      applies_to: "all inventory rows"
+      requirement: "UUID physical identity is separate from supplier/treatment dataset, geographic/voltage scope, quantity basis and amount. Resolve blank identities and verify actual provider conventions before making complete linked-data claims. Unavailable monitoring, site/SKU/grade or provider basis is disclosed rather than replaced by a database coefficient."
+      evidence: "native identities and independently collected supplier/receiver and quantity records"
+    - id: quality_carbon
+      applies_to: "combustion and material stages"
+      requirement: "Preserve carbon retained in pitch/cuts/residues versus emitted fossil species. If actual additional biogenic input is present, reassess scope and record biogenic carbon flows separately; do not delete biogenic CO2 because a GHG reporting convention omits it. Carbon-neutral or free-coproduct assumptions are not authorized."
+      evidence: "composition-based physical carbon ledger, emission originals and supplier attribution"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference_pitch"
+    rule: "Require one finished reference output at 1 m3 homogeneous molten neat binder pitch and matching bilingual quantity/volume convention. Verify high-temperature coal origin, atmospheric route, grade, T/p, density measurement and provider volume basis. Reject petroleum/wood blends, cold bulk void volume and nominal 1 kg substitutions."
+    source_ids:
+      - ifc-coal-tar-2007
+      - wco-hs-2022-ch27
+  - rule_id: validate_balance
+    applies_to: "all inventory rows"
+    rule: "Check complete unallocated physical mass/water/elemental balances, stocks and same-quantity internal transfers independently from allocated burdens. Do not multiply coproduct output quantities by their allocation share. Missing measurements/species and unexplained residuals remain unresolved; an aggregate balance does not prove emission completeness."
+    source_ids:
+      - jrc-cww-bref-2016
+      - ilcd-detailed-2010
+  - rule_id: validate_allocation
+    applies_to: "tar_feed; tar_distillation"
+    rule: "Verify the upstream coking/recovery allocation status, non-overlapping interface, direct-attribution evidence, joint-burden criterion, same-gate cut quantities/prices and stage share sums. A nominal scaffold or classification leaf is no upstream methodology evidence."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: validate_inventory
+    applies_to: "all inventory rows"
+    rule: "Verify each atomic row's physical identity, CAS/route, official Chinese display, flow type, reference property/unit and receiving compartment. Require actual occurrence/absence, amount and provider compatibility independently. No correction flow, unrelated waste stream, or positive amount inferred merely from a successful identity search."
+    source_ids:
+      - jrc-cww-bref-2016
+      - ifc-coal-tar-2007
+  - rule_id: validate_emissions
+    applies_to: "all elementary rows"
+    rule: "Verify species mass versus analytical equivalents, non-overlapping PM fractions, phase recovery, sampling/flow state, normal and abnormal mode coverage, and all actual additional species. N2O is outside NOx and NO2-equivalent does not prove NO2 species. Statutory guideline concentrations are neither default emissions nor plant survey data."
+    source_ids:
+      - ifc-coal-tar-2007
+      - jrc-cww-bref-2016
+published_dataset_profile:
+  dataset_role: "primary distillery foreground with separate physical and allocated-burden ledgers"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Compatible hot bulk neat coal-tar binder-pitch supply with actual composition, state, quantity and linked upstream/treatment evidence"
+  excluded_use: "Full CPC34540 coverage; oil/pitch-coke/electrode manufacture; other-origin or formulated pitch; default density/yield/energy/recipe; incomplete linked-data or methodology-approval claims"
+  required_metadata: "all reference qualifiers; site/SKU/grade/period; actual process/control/treatment map; physical conservation and staged allocation; supplier interfaces; original methods"
+  required_quality_disclosure: "actual measured and estimated fields; sampling/uncertainty and uncovered modes; pending identities and provider states; native metadata conflicts; incomplete quantity/species links"
+  update_trigger: "Changed feed origin, atmospheric route/cut scheme, product modification/grade/delivery state, heater/control/treatment configuration, supplier definition, or allocation method"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "2025-06-30 original structure, LF1457–1458 (3454/34540); broad mixed leaf, narrower proposal only, not process evidence or accepted mapping."
+  - id: "wco-hs-2022-ch27"
+    type: "official_guidance"
+    reference: "https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0527_2022e.pdf?la=en"
+    used_for: "2022, PDF2 headings2706/2707/2708; classification context distinguishing crude tar, distillates and pitch/coke; no formal CPC-HS equivalence asserted."
+  - id: "ifc-coal-tar-2007"
+    type: "official_guidance"
+    reference: "https://www.ifc.org/content/dam/ifc/doc/2000/2007-large-vol-inorganic-compounds-coaltar-ehs-guidelines-en.pdf"
+    used_for: "2007-12-10; PDF/printed1,6–7,9–10,18,28–29, coal-tar paragraphs and general monitoring only. Qualitative route/coproduct/corrosion-control and release screening; no historical yield, concentration limit, industry capacity, single-plant quantity or other chemical benchmark adopted as recipe/factor."
+  - id: "jrc-cww-bref-2016"
+    type: "official_guidance"
+    reference: "https://publications.jrc.ec.europa.eu/repository/handle/JRC103096"
+    used_for: "2016, chemical-sector CWW BREF, section3.1.5.2.4 (PDF138–139/printed108–109) and BAT2–5 (PDF573–574/printed543–544). Inventory, stock, stream characterization and monitoring context; bulk balances insufficiently accurate alone for emissions. Generic methods, not pitch-specific numeric defaults."
+  - id: "ilcd-detailed-2010"
+    type: "official_guidance"
+    reference: "https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "First edition2010, sections7.9.2–7.9.3.3 (PDF276–277,283–284/printed256–257,263–264); multifunctionality hierarchy, justified physical causality and same-gate economic fallback. No fixed pitch fraction or full-framework conformity claim."
+  - id: "rain-pitch-products"
+    type: "literature"
+    reference: "https://www.raincarbon.com/products-and-services/carbon-products/coal-tar-and-petroleum-distillation-products"
+    used_for: "Manufacturer original product catalogue, accessed2026-10-14; Pitch Products/Coal Tar Pitch. Current binder grades/uses and coal-tar-distillation origin, distinguished from separately offered petroleum/specialty products. No universal specification, formula, site amount or emissions evidence."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:4b3fcf8e548ccce909dac59acb414a1008ff6cabaaf389135114ba529b4f71f6"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7183"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7183
+          line: 64
+          column: 1
+        end:
+          offset: 9995
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Accepted recovered crude high-temperature coke-oven tar at the distillery receiving interface, with measured entrained water/solids and an upstream dataset |\n| starting_condition_role | supplied intermediate; coal carbonisation and crude-tar recovery are upstream |\n| product_classification_scope | A narrower binder-pitch subset of CPC 3.0 34540; other distillation products are coproducts, not additional reference identities |\n| recursive_input_rule | Record actual external same-category pitch input separately with its supplied state/provider and burden. Internal recovered pitch/tar recycle is an equal-quantity physical link, not a new purchased input. External pitch blending is outside this neat-bottom-product scope. |\n| upstream_dataset_requirement | Use a compatible recovered crude-tar supplier inventory including upstream coking/recovery allocation; verify its ending interface and whether dewatering, storage, heaters or delivery overlap this foreground |\n| disclosure | Plant/period; source coke-oven route; wet feed and impurities; actual dehydration/cut map; heater/utilities/control configuration; hot delivery state; treatment/export interfaces; physical and burden ledgers and all gaps |\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_foreground | tar_distillation | Include receipt, actual dehydration, atmospheric cuts, pitch storage/transfer, on-site heaters, cooling/cleaning and actual release control. Aggregate processing and bulk dispatch as one foreground unit while retaining stage meters and internal equal-quantity links; reference_pitch is the single finished output. | `ifc-coal-tar-2007`; `rain-pitch-products` |\n| boundary_interfaces | tar_distillation | Coal carbonisation/crude-tar recovery and downstream oil refining/electrode production stay in separate compatible provider processes. This profile exports contaminated water and sludge to independently modelled treatment interfaces; an on-site final-discharge WWTP requires explicit extension with measured treatment inputs, sludge and each final receiving-water species. Off-site transfer is not an elementary release. | `jrc-cww-bref-2016`; `wco-hs-2022-ch27` |\n| boundary_completeness | all inventory rows | Keep actual start-up, shutdown, upset, cleaning and stock changes in the collection period. Assess all actual fuels, alkalis, lubricants, adsorbents, packaging and release-control consumables; add one atomic row per additional occurrence. Internal condensate/tar recovery and gross circulating cooling water are not externally purchased anew. Unquantified releases and missing matches remain explicit, not zero. | `jrc-cww-bref-2016`; `ifc-coal-tar-2007` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 333
+              line: 10
+              column: 1
+            end:
+              offset: 373
+              line: 10
+              column: 41
+          text: "# High-temperature coal-tar binder pitch"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7183
+              line: 64
+              column: 1
+            end:
+              offset: 7204
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35884"
+      family: "allocation"
+      span:
+        start:
+          offset: 35884
+          line: 557
+          column: 1
+        end:
+          offset: 38357
+          line: 567
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_hierarchy | tar_distillation | Preserve the unallocated physical network and use measured subdivision/direct attribution first. For remaining joint burdens, test and justify determining physical causality (e.g. measured cut-specific separation/heating duty); mass alone is not proof of energy causality. If no defensible physical relationship is available, use coproduct economic values at the same distillation gate and condition, with comparable reporting-period net prices and sensitivity. No fixed fractions or automatic burden-free tar/pitch. | `ilcd-detailed-2010` |\n| allocation_ledgers | all inventory rows | Let delivered pitch and all actual saleable cuts have physical quantities and stocks; retain them without multiplying by allocation shares. Attribute direct burdens to their causes. Economic share for product j is its same-gate production-equivalent net revenue divided by the sum for all eligible actual coproducts; reconcile stocks/deliveries and justify inferred intermediate prices. Allocate only the remaining joint environmental burdens. Shares at each stage must sum to one. Waste fees are not coproduct revenue. | `ilcd-detailed-2010`; `jrc-cww-bref-2016` |\n| allocation_upstream | tar_feed | Verify whether supplier tar burdens are already allocated at the coking/recovery stage. Preserve that upstream stage and never apply the distillery fraction a second time to the physical feed or coproduct masses. Confirm treatment responsibility for exported residuals; no avoided-product credit without an explicit compatible consequential method and displacement evidence. | `ilcd-detailed-2010` |\n\nFor a pitch-specific linked LCI, retain the complete physical ledger and construct a separate attribution view: B_pitch = B_direct_pitch + alpha_pitch * B_joint, using a justified stage-specific share and dividing by accepted pitch volume. Upstream supplier tar burdens already allocated at coking/recovery remain that provider input; the distillery may attribute its resulting joint environmental burden across its own fractions, without repeating the same stage share. Attributed supplier-input equivalents are burden-accounting entries, not changed feed masses or scaled physical coproduct outputs. Do not present the unallocated collection inventory alone as a fully attributed single-product dataset. `ilcd-detailed-2010`\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 333
+              line: 10
+              column: 1
+            end:
+              offset: 373
+              line: 10
+              column: 41
+          text: "# High-temperature coal-tar binder pitch"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35884
+              line: 557
+              column: 1
+            end:
+              offset: 35924
+              line: 557
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_51120"
+      family: "validation"
+      span:
+        start:
+          offset: 51120
+          line: 599
+          column: 1
+        end:
+          offset: 53283
+          line: 609
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | reference_pitch | Require one finished reference output at 1 m3 homogeneous molten neat binder pitch and matching bilingual quantity/volume convention. Verify high-temperature coal origin, atmospheric route, grade, T/p, density measurement and provider volume basis. Reject petroleum/wood blends, cold bulk void volume and nominal 1 kg substitutions. | `ifc-coal-tar-2007`; `wco-hs-2022-ch27` |\n| validate_balance | all inventory rows | Check complete unallocated physical mass/water/elemental balances, stocks and same-quantity internal transfers independently from allocated burdens. Do not multiply coproduct output quantities by their allocation share. Missing measurements/species and unexplained residuals remain unresolved; an aggregate balance does not prove emission completeness. | `jrc-cww-bref-2016`; `ilcd-detailed-2010` |\n| validate_allocation | tar_feed; tar_distillation | Verify the upstream coking/recovery allocation status, non-overlapping interface, direct-attribution evidence, joint-burden criterion, same-gate cut quantities/prices and stage share sums. A nominal scaffold or classification leaf is no upstream methodology evidence. | `ilcd-detailed-2010` |\n| validate_inventory | all inventory rows | Verify each atomic row's physical identity, CAS/route, official Chinese display, flow type, reference property/unit and receiving compartment. Require actual occurrence/absence, amount and provider compatibility independently. No correction flow, unrelated waste stream, or positive amount inferred merely from a successful identity search. | `jrc-cww-bref-2016`; `ifc-coal-tar-2007` |\n| validate_emissions | all elementary rows | Verify species mass versus analytical equivalents, non-overlapping PM fractions, phase recovery, sampling/flow state, normal and abnormal mode coverage, and all actual additional species. N2O is outside NOx and NO2-equivalent does not prove NO2 species. Statutory guideline concentrations are neither default emissions nor plant survey data. | `ifc-coal-tar-2007`; `jrc-cww-bref-2016` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 333
+              line: 10
+              column: 1
+            end:
+              offset: 373
+              line: 10
+              column: 41
+          text: "# High-temperature coal-tar binder pitch"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 51120
+              line: 599
+              column: 1
+            end:
+              offset: 51142
+              line: 599
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_7183"
+      source_span:
+        start:
+          offset: 8578
+          line: 79
+          column: 1
+        end:
+          offset: 8981
+          line: 79
+          column: 404
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_7183"
+      source_span:
+        start:
+          offset: 8982
+          line: 80
+          column: 1
+        end:
+          offset: 9489
+          line: 80
+          column: 508
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_7183"
+      source_span:
+        start:
+          offset: 9490
+          line: 81
+          column: 1
+        end:
+          offset: 9993
+          line: 81
+          column: 504
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_35884"
+      source_span:
+        start:
+          offset: 35997
+          line: 561
+          column: 1
+        end:
+          offset: 36582
+          line: 561
+          column: 586
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_35884"
+      source_span:
+        start:
+          offset: 36583
+          line: 562
+          column: 1
+        end:
+          offset: 37192
+          line: 562
+          column: 610
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_35884"
+      source_span:
+        start:
+          offset: 37193
+          line: 563
+          column: 1
+        end:
+          offset: 37627
+          line: 563
+          column: 435
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_rule_4"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_35884"
+      source_span:
+        start:
+          offset: 37629
+          line: 565
+          column: 1
+        end:
+          offset: 38355
+          line: 565
+          column: 727
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_51120"
+      source_span:
+        start:
+          offset: 51215
+          line: 603
+          column: 1
+        end:
+          offset: 51632
+          line: 603
+          column: 418
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_51120"
+      source_span:
+        start:
+          offset: 51633
+          line: 604
+          column: 1
+        end:
+          offset: 52073
+          line: 604
+          column: 441
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_51120"
+      source_span:
+        start:
+          offset: 52074
+          line: 605
+          column: 1
+        end:
+          offset: 52419
+          line: 605
+          column: 346
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_51120"
+      source_span:
+        start:
+          offset: 52420
+          line: 606
+          column: 1
+        end:
+          offset: 52849
+          line: 606
+          column: 430
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_51120"
+      source_span:
+        start:
+          offset: 52850
+          line: 607
+          column: 1
+        end:
+          offset: 53281
+          line: 607
+          column: 432
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7183"
+      source_span:
+        start:
+          offset: 7183
+          line: 64
+          column: 1
+        end:
+          offset: 7204
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7183"
+      source_span:
+        start:
+          offset: 7232
+          line: 68
+          column: 1
+        end:
+          offset: 8505
+          line: 75
+          column: 238
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35884"
+      source_span:
+        start:
+          offset: 35884
+          line: 557
+          column: 1
+        end:
+          offset: 35924
+          line: 557
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_51120"
+      source_span:
+        start:
+          offset: 51120
+          line: 599
+          column: 1
+        end:
+          offset: 51142
+          line: 599
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4b3fcf8e548ccce909dac59acb414a1008ff6cabaaf389135114ba529b4f71f6"
+  generated_content_sha256: "sha256:885e1606d3dcc2481274df669c20d58df1a9b55327b7d725985df62d9f76ae85"

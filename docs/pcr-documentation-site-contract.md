@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: "2026-10-18"
-lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
-lastReviewedCommit: "3faf6707c45abd4dbc6ca4bb72ea4224287dd3ec"
+lastReviewedNote: "Reviewed the same-source CI web-build handoff and separate product sealing: complete source/run/attempt/plan/archive/tree and build/SEO evidence bindings, mandatory full/data jobs, unchanged resource budgets and fresh complete qualification. No methodology, dependency, version, publication or provider authority changes."
+lastReviewedCommit: "92e53b455840908bc77c4d660de2367ae783a0e7"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -80,7 +80,7 @@ existing normalized-text projection fingerprint.
 Current candidate PCRs with authored methodology and no release history may use
 native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
 `pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
-each required-language Markdown limit is 32,768 original bytes. Eligibility comes
+each required-language Markdown limit is 49,152 original bytes. Eligibility comes
 from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
 These bounded downloads preserve each original filename and work without
 JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
@@ -300,11 +300,20 @@ an arbitrary aggregate-size rejection. Supported Next navigation payloads and
 complete source artifacts remain subject to the existing fidelity contract.
 
 The complete export runs locally or in GitHub qualification and has no project-owned
-elapsed-time acceptance budget. CI bounds its instrumented documentation job to
-60 minutes; stage and total durations remain reported. The old 18-minute full-build
+elapsed-time acceptance budget. CI gives the instrumented `web-build` job and the
+separate `documentation` product-sealing job 60 minutes each; stage and total
+durations remain reported. The first freezes every successful exported byte in a
+complete tree hash and source/run/attempt/qualification-bound archive, with its
+full build log. The second verifies and safely materializes that exact artifact,
+runs vendored SEO and seals the same web bytes. All HTML, Next navigation payloads,
+raw downloads, languages, search and inspector files remain intact. Artifact
+transfer and extraction count against those unchanged job limits. A verified
+routing-only `edgeone.json` is the sole post-verification addition; it is included
+in the transported tree. Final audit files bind that tree and the complete build
+and SEO evidence to the product artifact. The old 18-minute full-build
 cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
 only the sealed-product importer, whose separate 15-minute download/materialization
-deadline, cleanup and atomic handoff remain enforced. The export uses four workers
+deadline, cleanup and atomic handoff remain enforced. The export uses two static workers
 with a 4 GB Node heap ceiling per process and retains the 6 GB process-tree memory
 guard; a heap ceiling is not proof of total resident memory.
 

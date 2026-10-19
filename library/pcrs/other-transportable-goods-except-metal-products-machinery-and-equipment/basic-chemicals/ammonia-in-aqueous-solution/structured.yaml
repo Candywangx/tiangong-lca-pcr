@@ -1,10 +1,853 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34652"
-  title: "Ammonia, in aqueous solution"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.ammonia-in-aqueous-solution"
+  classification_refs: "CPC 3.0 34652; proposed narrower production-route scope; acceptance pending"
+  covered_products: "Bulk aqueous NH3 solution, no added solute, declared measured concentration"
+  excluded_products: "Anhydrous ammonia and incompatible routes/formulations listed in section 1"
+  representative_product: "Actual accepted SKU; no default concentration"
+  production_route: "Closed absorption of manufactured anhydrous ammonia in purchased DI water"
+  market_state: "Bulk aqueous liquid at plant gate, net solution mass"
+functional_unit:
+  what: "Supply the declared aqueous ammonia solution"
+  how_much: "1 kg accepted net as-supplied whole solution"
+  how_well: "Actual NH3 assay, water, impurities and acceptance specification; temperature and density recorded"
+  how_long_or_cycle: "One matched site, grade, route and stock-accounting period through actual plant-gate handover"
+  reference_flow_link: "aq_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "aq_absorption"
+      rule: "Include receiving, actual vaporisation, absorption, concentration adjustment, indirect cooling, vent recovery, cleaning, failed runs, storage and plant-gate loading. Keep stage meters within one foreground process."
+      source_ids:
+        - hill-process-2021
+        - hill-handling-2021
+    - rule_id: boundary_losses
+      applies_to: "aq_absorption"
+      rule: "Close captured/recovered/disposed NH3 separately from atmospheric NH3; offsite wastewater treatment is a linked downstream activity, not a foreground air or water emission. Actual direct environmental discharge requires added receiving-medium species rows."
+      source_ids:
+        - hill-handling-2021
+        - lvic-balance-2007
+    - rule_id: boundary_extensions
+      applies_to: "aq_absorption"
+      rule: "Do not silently omit any actual utility, chemical, packaging, direct emission or waste outside the stated route. Extend with verified atomic rows and original method evidence or declare the case inapplicable."
+      source_ids:
+        - lvic-balance-2007
+boundary_abstraction:
+  declared_starting_condition: "Received manufactured anhydrous ammonia, purchased DI water, electricity and imported indirect cooling with traceable upstream supply"
+  starting_condition_role: "Foreground conversion gate; cradle-to-gate result requires linked upstream supply and waste treatment"
+  product_classification_scope: "CPC 34652 route subset, not all possible recovered or formulated ammonia solutions"
+  recursive_input_rule: "Returned internal solution is a loop, not new upstream ammonia; purchased finished aqueous solution dilution is outside this route"
+  upstream_dataset_requirement: "Match ammonia synthesis route and purity, DI production and delivery, actual grid supply and cooling service; link waste destination without double counting"
+  disclosure: "Actual process configuration, grade, sources, stock burdens, omissions, medium, geography and utility provider conventions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Aqueous ammonia"
+    uuid: "058124f8-5e84-4070-b6c0-4bacac3a0024"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Site and period"
+    - "grade and measured NH3 mass fraction"
+    - "water and impurities"
+    - "net solution basis"
+    - "acceptance Q"
+    - "density temperature method"
+    - "feed route and provider"
+    - "stock/rework burdens"
+    - "cooling service reference"
+    - "electricity region voltage and delivery mix"
+    - "emissions media and wet/dry gas basis"
+    - "waste receiver"
+    - allocation
+    - "plant-gate condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: measure_reference
+    applies_to: "aq_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use 1 kg net accepted supplied whole solution; report Q in kg. Do not divide again by NH3 fraction."
+  - id: measure_materials
+    applies_to: "nh3_feed, di_water, ammoniacal_liquor"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Whole purchased streams cross the boundary once. NH3, water and impurities are component subledgers, never duplicate purchases. Convert liquid volume using independently measured density at matching temperature and composition."
+  - id: measure_energy
+    applies_to: "electricity, cooling_service"
+    required_property_ref:
+      name: "Net calorific value for electricity; delivered cooling duty for cooling"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Electricity kWh × 3.6 = MJ. Cooling is integrated coolant mass × measured enthalpy difference; verify service basis independently of the database property label."
+  - id: measure_emissions
+    applies_to: "nh3_air, water_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use matching concentration × integrated gas volume, without extra duration; integrate flow rate over time only for rate records. Retain T/P and wet/dry basis and NH3 versus N convention."
+process_map:
+  - id: aq_absorption
+    name: "Closed absorption, acceptance and bulk dispatch"
+    inclusion: "required"
+    inclusion_condition: "Declared route and actual conditional utilities"
+    role: "One integrated foreground unit; independent stage records and internal loops"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: aq_absorption
+    label: "Closed absorption, acceptance and bulk dispatch"
+    inputs:
+      product:
+        - row_id: nh3_feed
+          role: "Ammonia, anhydrous"
+          name: "Ammonia, anhydrous"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a0e3299b-9484-4ec3-89d3-cd1e2d6c2225"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure the entire received manufactured anhydrous-ammonia stream, including its actual impurities. Production mix at plant; no native geography or CAS is declared. Retain supplier NH3 assay, water, physical state, temperature/pressure and upstream synthesis route; do not assume the record fixes any purity or burden."
+          amount:
+            expression: "Complete attributable period feed kg, converted from actual custody-transfer mass or compatible volume/density; normalize the matched raw period total by Q once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - hill-process-2021
+            ranges: []
+        - row_id: di_water
+          role: "Deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Purchased deionised water, production mix at plant, ion exchange or reverse osmosis, CAS 7732-18-5; geography unspecified. Include absorption/dilution water and actual water for cleaning or water-only vent scrubbing. Supplier production and delivery remain upstream; no direct abstraction is implied."
+          amount:
+            expression: "Complete purchased/consumed period kg reconciled to stocks; distinguish incorporation, scrubbing and cleaning submeter totals without duplicating purchases; divide the matched raw period total by Q once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - hill-process-2021
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Native identity is CN, <1 kV, consumption mix to user, grid-average supply. Apply this UUID only to that supply. Meter ammonia receiving/vaporisation when used, absorption pumps, controls, storage and loading. Imported cooling service energy is excluded from this meter after documented separation; another region/voltage needs a separately verified identity and provider."
+          amount:
+            expression: "Complete attributable meter kWh multiplied by 3.6 to MJ; preserve every meter and utility allocation before divide the matched raw period total by Q once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - lvic-balance-2007
+            ranges: []
+        - row_id: cooling_service
+          role: "Indirect process cooling service"
+          name: "Indirect process cooling service"
+          flow_type: "product"
+          property_unit: "Delivered cooling duty / MJ; property and unit-group UUID unresolved"
+          description: "Conditional purchased indirect cooling duty at the process heat exchanger. Keep supply/return temperatures, pressure, coolant composition and integrated flow. A database NCV/MJ label does not establish delivered cooling duty; require the supplier service reference and matching enthalpy basis. No brewery energy range or coefficient of performance is a default. A facility without this service documents absence; on-site utility production requires a complete separately evidenced extension."
+          amount:
+            expression: "Measured net delivered period cooling MJ from the supplier-compatible enthalpy difference times integrated coolant mass; retain heat losses and boundary; divide the matched raw period total by Q once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling
+              source_ids:
+                - lvic-balance-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: aq_product
+          role: "Aqueous ammonia"
+          name: "Aqueous ammonia"
+          flow_type: "product"
+          flow_ref:
+            uuid: "058124f8-5e84-4070-b6c0-4bacac3a0024"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The only reference product output is accepted aqueous NH3 solution in bulk at plant gate, not pure NH3 or isolated NH4OH. Native CAS 1336-21-6, production mix at plant, no fixed concentration, treatment route or geography. State actual grade and NH3 mass fraction; product identity does not provide a supplier background dataset."
+          amount:
+            expression: "1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product
+              source_ids:
+                - hill-process-2021
+            ranges: []
+      waste:
+        - row_id: ammoniacal_liquor
+          role: "Ammonia-containing aqueous cleaning liquor"
+          name: "Ammonia-containing aqueous cleaning liquor"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One aqueous waste stream combines compatible captured spill, water-scrubber purge and cleaning liquor only where actually collected in the same receiver. Keep incompatible streams as separate added atomic exchanges. Record whole wet kg, NH3-equivalent/total N and water separately, receiver and treatment; neither an ammonia-nitrogen index nor unrelated industrial wash water is its identity. Internal recovered solution never crosses this boundary twice."
+          amount:
+            expression: "Complete exported wet waste kg and independently assayed component kg, including failures and spills; no offsite-treatment emissions booked at this foreground outlet; divide the matched raw period total by Q once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - hill-handling-2021
+            ranges: []
+      elementary:
+        - row_id: nh3_air
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 7664-41-7, emissions to air, unspecified subcompartment, as kg NH3. Include actual stack, fugitive, tank breathing, relief, loading and maintenance losses after control. Document the receiving-air location; a known finer compartment needs the corresponding verified flow. Air is external ambient air, not indoor exposure. No correction flow, default positive emission or regulatory reporting percentage is used."
+          amount:
+            expression: "Independent measured/modelled NH3 period kg using calibrated concentration and matching integrated gas volume; rate is integrated over duration only when it is a rate. Never derive both NH3 and water loss from one residual; divide the matched raw period total by Q once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - hill-handling-2021
+            ranges: []
+        - row_id: water_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 7732-18-5, emissions to air unspecified, water vapour only. Measure net process water added to outgoing gas above incoming moisture on compatible wet/dry and temperature/pressure bases; liquid entrainment is a different exchange. No freshwater discharge or water withdrawal is represented by this flow."
+          amount:
+            expression: "Independent humidity/condensate and integrated gas records give net period emitted kg; phase change does not create reaction water; divide the matched raw period total by Q once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - lvic-balance-2007
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_physical
+    applies_to: "aq_absorption"
+    rule: "Preserve whole physical input/output and internal-loop masses before allocating environmental burdens. Recovered internal NH3/water is not a co-product or avoided purchase credit. Wet waste keeps whole physical mass."
+    source_ids:
+      - lvic-balance-2007
+  - rule_id: allocation_shared
+    applies_to: "aq_absorption"
+    rule: "Prefer dedicated submetering and physical assignment. Where utilities are shared, document measured causal drivers and shares summing to one; retain unallocated totals and assign failed-run/stock burdens to the matched pool. No mass multiplier is applied to physical co-product output."
+    source_ids:
+      - lvic-balance-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "aq_absorption"
+      flow_role: "aq_product"
+      record_type: "lot and stock ledger"
+      raw_fields: "lot IDs; accepted net kg; NH3 fraction; water; impurities; temperature; density; acceptance; dispatch; returns; opening/closing stock and WIP; carried burdens"
+      collection_method: "Calibrated scales/tank meters, temperature-matched density, retained-sample assay, supplier CoA/site QC and unique lot acceptance ledger; Raw aggregation rule: Reconcile Q and each burden movement; a parcel is accepted once after rework, not once per pass"
+      unit: "kg; kg/kg; deg C"
+      frequency: "each batch and stock close"
+      temporal_coverage: "Complete declared period including failures and zero-output runs"
+      site_scope: "Same site grade state route pool and actual utility/waste boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, timestamps, chain of custody, original logs, inventory reconciliation and uncertainty"
+    - protocol_id: cp_materials
+      process_id: "aq_absorption"
+      flow_role: "nh3_feed; di_water"
+      record_type: "custody transfer and consumption"
+      raw_fields: "delivery mass; volume; density; T/P; NH3 assay; water and impurity fractions; source route; provider; opening/closing feed stocks; stage water meters"
+      collection_method: "Calibrated transfer masses, compatible density/temperature and supplier assays; separate actual ingredient and cleaning-water meters; Raw aggregation rule: Reconcile complete external consumption and stocks, retain component subledgers without extra exchanges"
+      unit: "kg; m3; kg/m3; deg C; kPa; kg/kg"
+      frequency: "each delivery and batch"
+      temporal_coverage: "Complete declared period including failures and zero-output runs"
+      site_scope: "Same site grade state route pool and actual utility/waste boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, timestamps, chain of custody, original logs, inventory reconciliation and uncertainty"
+    - protocol_id: cp_electricity
+      process_id: "aq_absorption"
+      flow_role: "electricity"
+      record_type: "meter and utility assignment"
+      raw_fields: "meter start/end; kWh; voltage; grid region; delivered mix; utility boundaries; submeter shares; failed-run and standby usage"
+      collection_method: "Calibratable submeters and bills; separate service-embedded energy from this unit electricity; Raw aggregation rule: Sum complete period meter differences before 3.6 conversion and pool assignment"
+      unit: "kWh; MJ"
+      frequency: "continuous totals and period close"
+      temporal_coverage: "Complete declared period including failures and zero-output runs"
+      site_scope: "Same site grade state route pool and actual utility/waste boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, timestamps, chain of custody, original logs, inventory reconciliation and uncertainty"
+    - protocol_id: cp_cooling
+      process_id: "aq_absorption"
+      flow_role: "cooling_service"
+      record_type: "service receipt and enthalpy measurements"
+      raw_fields: "provider; service reference; integrated coolant mass; flow rates and duration when used; supply/return T/P; composition; heat capacity/enthalpy method; losses; boundary"
+      collection_method: "Calibrated heat meter and supply/return enthalpy with supplier service definition; NCV label is insufficient; Raw aggregation rule: Integrate rates only; sum net delivered duty, not both service and its embedded resources"
+      unit: "kg; kg/s; s; deg C; kPa; kJ/kg; MJ"
+      frequency: "continuous and period close"
+      temporal_coverage: "Complete declared period including failures and zero-output runs"
+      site_scope: "Same site grade state route pool and actual utility/waste boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, timestamps, chain of custody, original logs, inventory reconciliation and uncertainty"
+    - protocol_id: cp_waste
+      process_id: "aq_absorption"
+      flow_role: "ammoniacal_liquor"
+      record_type: "waste manifest and assay"
+      raw_fields: "wet kg; NH3 equivalent; total N; water; impurity species; sample time; compatible receiver; destination; return/recovery; stock"
+      collection_method: "Weigh whole exported liquor, independently assay and retain transfer and treatment acceptance records; Raw aggregation rule: Sum exported wet kg once; internal recovery cancels; reconcile components and carried burdens"
+      unit: "kg; kg/kg"
+      frequency: "each removal and stock close"
+      temporal_coverage: "Complete declared period including failures and zero-output runs"
+      site_scope: "Same site grade state route pool and actual utility/waste boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, timestamps, chain of custody, original logs, inventory reconciliation and uncertainty"
+    - protocol_id: cp_emissions
+      process_id: "aq_absorption"
+      flow_role: "nh3_air; water_air"
+      record_type: "source test and event log"
+      raw_fields: "outlet; NH3 concentration; humidity in/out; gas flow rate/duration or integrated volume; T/P; wet/dry basis; controls; loading/relief/maintenance events; species convention; uncertainty"
+      collection_method: "Calibrated source/fugitive and humidity methods covering vents, storage/loading and nonroutine events; retain nondetect handling; Raw aggregation rule: Sum nonoverlapping species/outlet/event amounts on compatible bases; no unexplained residual emission factor"
+      unit: "kg; mg/m3; m3; m3/s; s; deg C; kPa"
+      frequency: "test campaign plus complete operating/event log"
+      temporal_coverage: "Complete declared period including failures and zero-output runs"
+      site_scope: "Same site grade state route pool and actual utility/waste boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, timestamps, chain of custody, original logs, inventory reconciliation and uncertainty"
+  calculation_rules:
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "For Q > 0: x_i = B_i / Q. B_i is the matched attributable raw period total after unit conversion and opening/closing burden transfers. For Q = 0, no x_i. aq_product = 1 kg/kg."
+      inputs:
+        - B_i
+        - Q
+      output: "normalized exchange"
+      source_ids:
+        - lvic-balance-2007
+    - id: calc_components
+      applies_to: "nh3_feed, aq_product, ammoniacal_liquor"
+      rule: "m_NH3eq = m_whole × measured w_NH3eq. N mass uses the declared stoichiometric N/NH3 molecular-mass ratio or independently measured N. Water = whole mass × independently measured water fraction, not an unmeasured balance remainder."
+      inputs:
+        - m_whole
+        - w_NH3eq
+        - "measured water fraction"
+        - "molecular mass convention"
+      output: "component subledgers"
+      source_ids:
+        - hill-process-2021
+        - hill-spec-2020
+    - id: calc_balances
+      applies_to: "aq_absorption"
+      rule: "For total physical mass and each element: external material input + all opening physical stocks = actual accepted net plant-gate supply + exported waste + environmental emissions + all closing physical stocks + documented residual. Q excludes retained finished stock. Electricity and indirect cooling services have separate energy ledgers; coolant circulation outside the process material boundary is not raw material input. Internal loops cancel. Retain NH3-equivalent, total N, H, O and water ledgers; investigate residuals against uncertainty without forcing closure."
+      inputs:
+        - "all external mass"
+        - "opening stock"
+        - "closing stock"
+        - assays
+        - "emission records"
+      output: "physical balance residuals"
+      source_ids:
+        - lvic-balance-2007
+    - id: calc_water_species
+      applies_to: "aq_absorption"
+      rule: "Aqueous acid-base speciation is not procurement of pure NH4OH or proof of net reaction-water production. Track actual dissolved NH3/NH4+ convention, evaporation/condensation and water phase separately. Do not invent reaction water, dry-organic generation or COD-derived water. Any additional reaction needs an independently measured/reaction-supported extent and balanced species ledger."
+      inputs:
+        - "species convention"
+        - assays
+        - "phase measurements"
+        - "reaction evidence if applicable"
+      output: "independent water and species ledgers"
+      source_ids:
+        - lvic-balance-2007
+        - yara-solution
+    - id: calc_gas
+      applies_to: "nh3_air, water_air"
+      rule: "m = concentration × integrated compatible gas volume with stated unit conversion; if only gas rate exists, V = integral(rate dt). Water uses net outgoing minus incoming humidity. Never multiply integrated volume by time again or double-count measured and modelled outlets."
+      inputs:
+        - concentration
+        - "integrated volume"
+        - "gas rate if used"
+        - "duration if used"
+        - humidity
+        - "T/P"
+        - "wet/dry basis"
+      output: "raw species kg"
+      source_ids:
+        - lvic-balance-2007
+    - id: calc_cooling
+      applies_to: "cooling_service"
+      rule: "H_MJ = sum[m_coolant × (h_return - h_supply)] / 1000 for h in kJ/kg, net of boundary-consistent corrections. This duty is distinct from electricity input and an NCV label. No unmeasured COP converts it to electricity."
+      inputs:
+        - "integrated coolant mass"
+        - "supply enthalpy"
+        - "return enthalpy"
+        - "boundary corrections"
+      output: "raw delivered cooling MJ"
+      source_ids:
+        - lvic-balance-2007
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify complete native identity, CAS when declared, all name components, medium, route, grade, geography and exact property/unit basis. A valid UUID does not establish background dataset compatibility."
+      evidence: "Direct native records; provider declarations"
+    - id: quality_pool
+      applies_to: "all inventory rows"
+      requirement: "Complete matched period and stock/burden trail, retained failures, duplicate-free Q and unit conversions before one normalization are mandatory."
+      evidence: "Original pool and stock reconciliation"
+    - id: quality_ranges
+      applies_to: "all inventory rows"
+      requirement: "No generic recipe, yield, energy, density or emission ranges are established. Collect site values and uncertainty; unresolved empirical range needs remain explicit, not fabricated priors."
+      evidence: "Source scope and actual collection records"
+    - id: quality_completeness
+      applies_to: "aq_absorption"
+      requirement: "Verify the no-additive bulk route and conditional utility/emission/waste applicability, including nonroutine events. Ordinary auxiliary identity gaps require an explicit provider/flow resolution before the corresponding dataset link is complete."
+      evidence: "Flow diagram; test reports; utility and receiver evidence"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "aq_product"
+    rule: "Require exactly one reference product output linked to aq_product, 1 kg whole accepted solution, measured grade/concentration and positive unique Q for normalization. Active NH3 and N remain analyses."
+    source_ids:
+      - lvic-balance-2007
+  - rule_id: validate_pool
+    applies_to: "all inventory rows"
+    rule: "Check complete failed/zero-output/rework/WIP coverage, opening/closing burden transfers and once-only normalization; no Q = 0 per-kg result."
+    source_ids:
+      - lvic-balance-2007
+  - rule_id: validate_balances
+    applies_to: "aq_absorption"
+    rule: "Check independently supported whole mass, N/H/O, component and phase-water ledgers before allocation. Investigate uncertainty/residuals; no unknown outlet and reaction water fitted together."
+    source_ids:
+      - lvic-balance-2007
+  - rule_id: validate_identity
+    applies_to: "all inventory rows"
+    rule: "Recheck each exact native identity/property/unit and regional, grade, route, mix and receiving-medium limitation. Unresolved auxiliary links are explicit incompleteness, not silently matched substitutes."
+    source_ids:
+      - lvic-balance-2007
+  - rule_id: validate_no_duplicates
+    applies_to: "aq_absorption"
+    rule: "Check internal recovery cancellation, whole solution versus components, imported service versus embedded resources, and waste transfer versus treatment emissions. Do not duplicate any physical or burden exchange."
+    source_ids:
+      - lvic-balance-2007
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Declared aqueous ammonia supply to chemical or NOx-control users at matching concentration and delivery basis"
+  allowed_use: "Only the declared route/grade/site/period with complete linked upstream and waste scope"
+  excluded_use: "Pure ammonia mass, nutrient-only fertilizer service, consumer cleaning blend, recovered ammonia, downstream NOx abatement credit or generic route average"
+  required_metadata: "All reference qualifiers, native flow restrictions, provider compatibility, stock burdens, boundary and allocation"
+  required_quality_disclosure: "Coverage, raw measurements, uncertainty, missing auxiliary UUIDs/providers, unresolved range needs and residuals"
+  update_trigger: "Changed concentration, route, supply region/voltage, provider, cooling, emission control or waste destination"
+data_sources:
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 structure, 30 June 2025, row 34652; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Classification label only; no process, recipe or acceptance decision"
+  - id: "hill-process-2021"
+    type: "handbook"
+    reference: "Hill Brothers, Ammonium Hydroxide Manufacturing Process, Rev.12/2021, p.1; https://www.hillbrothers.com/wp-content/uploads/2021/12/AmmoniumHydroxide-ManufacturingProcess-PP-12-7-2021.pdf"
+    used_for: "Closed water/anhydrous-ammonia production, concentration QC with temperature/specific gravity, and shipment CoA. Single producer example; no generic grade, recipe, yield, energy or certification requirement."
+  - id: "hill-spec-2020"
+    type: "handbook"
+    reference: "Hill Brothers, Aqua Ammonia Industrial Grade Product Specifications, Rev.12/2020, p.1; https://www.hillbrothers.com/wp-content/uploads/2021/01/AquaAmmonia-Industrial-Grade-PS-12-17-2020.pdf"
+    used_for: "Assay expressed as NH3 weight fraction; density depends on grade and temperature. Listed specification/density numbers are not defaults and do not demonstrate actual site compliance."
+  - id: "hill-handling-2021"
+    type: "handbook"
+    reference: "Hill Brothers, Aqua Ammonia General Safety and Handling, Rev.4/2021, p.1; https://www.hillbrothers.com/wp-content/uploads/2021/04/AquaAmmonia-GeneralSafetyHandling-4-26-2021.pdf"
+    used_for: "Tank vapour control, contained spills and loading-area collection support the loss boundary. Handling guidance provides no quantified emissions factor or assumed abatement performance."
+  - id: "yara-solution"
+    type: "handbook"
+    reference: "Yara Australia, Ammonia solution, accessed 2026-10-16; https://www.yara.com.au/chemical-and-environmental-solutions/nox-reduction-for-industrial-plants/reagents-for-nox-control/ammonia-solution/"
+    used_for: "Independent producer corroboration of ammonia-gas dissolution and bulk liquid delivery. Use-performance claims, concentration examples and logistics are not foreground quantity defaults."
+  - id: "lvic-balance-2007"
+    type: "official_guidance"
+    reference: "European Commission, LVIC-AAF BREF, August 2007, section 1.4.6, printed p.19 / PDF p.47; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic_aaf.pdf"
+    used_for: "General method for nitrogen, water and utility balances. Historical integrated-chemical context; examples are not aqueous-ammonia recipes, utility benchmarks or sector-specific BAT limits. Collection and normalization formulas here are PCR accounting rules, not copied plant quantities."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1e09669bd01a3c5410e4730c3ceff9bf042ff5a1f0382849e1b9690139aaec42"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6359"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6359
+          line: 64
+          column: 1
+        end:
+          offset: 8322
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received manufactured anhydrous ammonia, purchased DI water, electricity and imported indirect cooling with traceable upstream supply |\n| starting_condition_role | Foreground conversion gate; cradle-to-gate result requires linked upstream supply and waste treatment |\n| product_classification_scope | CPC 34652 route subset, not all possible recovered or formulated ammonia solutions |\n| recursive_input_rule | Returned internal solution is a loop, not new upstream ammonia; purchased finished aqueous solution dilution is outside this route |\n| upstream_dataset_requirement | Match ammonia synthesis route and purity, DI production and delivery, actual grid supply and cooling service; link waste destination without double counting |\n| disclosure | Actual process configuration, grade, sources, stock burdens, omissions, medium, geography and utility provider conventions |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_complete | aq_absorption | Include receiving, actual vaporisation, absorption, concentration adjustment, indirect cooling, vent recovery, cleaning, failed runs, storage and plant-gate loading. Keep stage meters within one foreground process. | hill-process-2021; hill-handling-2021 |\n| boundary_losses | aq_absorption | Close captured/recovered/disposed NH3 separately from atmospheric NH3; offsite wastewater treatment is a linked downstream activity, not a foreground air or water emission. Actual direct environmental discharge requires added receiving-medium species rows. | hill-handling-2021; lvic-balance-2007 |\n| boundary_extensions | aq_absorption | Do not silently omit any actual utility, chemical, packaging, direct emission or waste outside the stated route. Extend with verified atomic rows and original method evidence or declare the case inapplicable. | lvic-balance-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 10
+              column: 1
+            end:
+              offset: 307
+              line: 10
+              column: 44
+          text: "# Bulk aqueous ammonia by closed absorption"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6359
+              line: 64
+              column: 1
+            end:
+              offset: 6380
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_17647"
+      family: "allocation"
+      span:
+        start:
+          offset: 17647
+          line: 225
+          column: 1
+        end:
+          offset: 18386
+          line: 232
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_physical | aq_absorption | Preserve whole physical input/output and internal-loop masses before allocating environmental burdens. Recovered internal NH3/water is not a co-product or avoided purchase credit. Wet waste keeps whole physical mass. | lvic-balance-2007 |\n| allocation_shared | aq_absorption | Prefer dedicated submetering and physical assignment. Where utilities are shared, document measured causal drivers and shares summing to one; retain unallocated totals and assign failed-run/stock burdens to the matched pool. No mass multiplier is applied to physical co-product output. | lvic-balance-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 10
+              column: 1
+            end:
+              offset: 307
+              line: 10
+              column: 44
+          text: "# Bulk aqueous ammonia by closed absorption"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 17647
+              line: 225
+              column: 1
+            end:
+              offset: 17687
+              line: 225
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_27759"
+      family: "validation"
+      span:
+        start:
+          offset: 27759
+          line: 265
+          column: 1
+        end:
+          offset: 29114
+          line: 275
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | aq_product | Require exactly one reference product output linked to aq_product, 1 kg whole accepted solution, measured grade/concentration and positive unique Q for normalization. Active NH3 and N remain analyses. | lvic-balance-2007 |\n| validate_pool | all inventory rows | Check complete failed/zero-output/rework/WIP coverage, opening/closing burden transfers and once-only normalization; no Q = 0 per-kg result. | lvic-balance-2007 |\n| validate_balances | aq_absorption | Check independently supported whole mass, N/H/O, component and phase-water ledgers before allocation. Investigate uncertainty/residuals; no unknown outlet and reaction water fitted together. | lvic-balance-2007 |\n| validate_identity | all inventory rows | Recheck each exact native identity/property/unit and regional, grade, route, mix and receiving-medium limitation. Unresolved auxiliary links are explicit incompleteness, not silently matched substitutes. | lvic-balance-2007 |\n| validate_no_duplicates | aq_absorption | Check internal recovery cancellation, whole solution versus components, imported service versus embedded resources, and waste transfer versus treatment emissions. Do not duplicate any physical or burden exchange. | lvic-balance-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 10
+              column: 1
+            end:
+              offset: 307
+              line: 10
+              column: 44
+          text: "# Bulk aqueous ammonia by closed absorption"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 27759
+              line: 265
+              column: 1
+            end:
+              offset: 27781
+              line: 265
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_6359"
+      source_span:
+        start:
+          offset: 7420
+          line: 79
+          column: 1
+        end:
+          offset: 7714
+          line: 79
+          column: 295
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_6359"
+      source_span:
+        start:
+          offset: 7715
+          line: 80
+          column: 1
+        end:
+          offset: 8049
+          line: 80
+          column: 335
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_extensions"
+      identity_kind: "explicit"
+      unit_id: "normative_6359"
+      source_span:
+        start:
+          offset: 8050
+          line: 81
+          column: 1
+        end:
+          offset: 8320
+          line: 81
+          column: 271
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_17647"
+      source_span:
+        start:
+          offset: 17760
+          line: 229
+          column: 1
+        end:
+          offset: 18038
+          line: 229
+          column: 279
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_shared"
+      identity_kind: "explicit"
+      unit_id: "normative_17647"
+      source_span:
+        start:
+          offset: 18039
+          line: 230
+          column: 1
+        end:
+          offset: 18384
+          line: 230
+          column: 346
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_27759"
+      source_span:
+        start:
+          offset: 27854
+          line: 269
+          column: 1
+        end:
+          offset: 28112
+          line: 269
+          column: 259
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_pool"
+      identity_kind: "explicit"
+      unit_id: "normative_27759"
+      source_span:
+        start:
+          offset: 28113
+          line: 270
+          column: 1
+        end:
+          offset: 28314
+          line: 270
+          column: 202
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_27759"
+      source_span:
+        start:
+          offset: 28315
+          line: 271
+          column: 1
+        end:
+          offset: 28565
+          line: 271
+          column: 251
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_27759"
+      source_span:
+        start:
+          offset: 28566
+          line: 272
+          column: 1
+        end:
+          offset: 28834
+          line: 272
+          column: 269
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_no_duplicates"
+      identity_kind: "explicit"
+      unit_id: "normative_27759"
+      source_span:
+        start:
+          offset: 28835
+          line: 273
+          column: 1
+        end:
+          offset: 29112
+          line: 273
+          column: 278
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6359"
+      source_span:
+        start:
+          offset: 6359
+          line: 64
+          column: 1
+        end:
+          offset: 6380
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6359"
+      source_span:
+        start:
+          offset: 6408
+          line: 68
+          column: 1
+        end:
+          offset: 7347
+          line: 75
+          column: 140
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_17647"
+      source_span:
+        start:
+          offset: 17647
+          line: 225
+          column: 1
+        end:
+          offset: 17687
+          line: 225
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_27759"
+      source_span:
+        start:
+          offset: 27759
+          line: 265
+          column: 1
+        end:
+          offset: 27781
+          line: 265
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1e09669bd01a3c5410e4730c3ceff9bf042ff5a1f0382849e1b9690139aaec42"
+  generated_content_sha256: "sha256:597edacbcbfadf6df2240a9aa14244271fb12129c01a3fd55076565711e8a7ec"

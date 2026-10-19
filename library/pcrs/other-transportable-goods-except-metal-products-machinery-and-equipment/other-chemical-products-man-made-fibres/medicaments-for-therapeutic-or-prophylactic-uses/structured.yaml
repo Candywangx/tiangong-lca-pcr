@@ -1,10 +1,1054 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "35260"
-  title: "Medicaments, for therapeutic or prophylactic uses"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.medicaments-for-therapeutic-or-prophylactic-uses"
+  classification_refs: "CPC3.0:35260; narrower"
+  covered_products: "Acarbose50mg uncoated tablets, dry blend/direct compression,100-count closed bottle"
+  excluded_products: "Other medicines, APIs as final product, other routes, strengths, dosage forms and pack presentations"
+  representative_product: "Actual qualifying50mg tablet SKU; historical PRECOSE100-count bottle is physical presentation evidence only, with no inferred proprietary route"
+  production_route: "Receipt/dispensing → dry blending/lubrication → direct compression/dedusting → bottle filling/closure/labelling → testing/unique new release"
+  market_state: "Complete tightly closed100-tablet bottle with actual closure, label and any evidenced seal/leaflet/outer packaging; net-tablet mass excludes packaging"
+functional_unit:
+  what: "Supply the specified finished acarbose tablet product"
+  how_much: "1kg net accepted finished tablets in100-tablet bottles at new quality release"
+  how_well: "Actual approved product specification and batch acceptance: identity, labelled50mg content, assay/uniformity, moisture, physical integrity, dissolution/disintegration and package integrity; no clinical equivalence claim"
+  how_long_or_cycle: "One declared representative manufacturing/release cohort and period; no treatment course or patient lifetime"
+  reference_flow_link: "finished_tablets"
+system_boundary:
+  rules:
+    - rule_id: b_gate
+      applies_to: "formulation"
+      rule: "Include receipt, dispensing/sieving when used, blending/lubrication, compression, dedusting, filling/closure/labelling, actual pre-release storage/handling, quality tests, cleaning/changeover, HVAC/dehumidification, abatement, failed/zero-output runs and rework. Keep stage records within one aggregated foreground process."
+      source_ids:
+        - huadong-acarbose-direct-compression-2007
+        - ifc-pharma-biotech-2007
+    - rule_id: b_release_gate
+      applies_to: "finished_tablets"
+      rule: "Q is unique positive newly quality-released packed-tablet net mass, not actual deliveries. In the production account never add closing finished stocks from the same Q as another output. Finished-goods storage/dispatch has its own opening/closing mass and carried burdens, real packaging/handling/shipping loads, returns and deliveries. When combined, cancel internal release handovers once and do not treat Q and deliveries as equal. Returned previously released goods create no new Q on reacceptance. Their physical return/restore handovers, historical burdens and new reinspection/rework loads remain in a separately linked finished-goods restoration subaccount; never charge an unrelated new-release cohort or omit these loads. Never-released WIP rework remains within the production cohort and enters Q only at its first accepted release."
+      source_ids:
+        - ifc-pharma-biotech-2007
+    - rule_id: b_completion
+      applies_to: "all inventory rows"
+      rule: "The cards are an explicit initial stream map, not a cut-off list. A concrete site must add each actual cleaning formulation, fuel, refrigerant, filter, desiccant, secondary pack, waste packaging and direct species as separate atomic exchanges before claiming completeness. Record a whole purchased formulation once; constituents/carrier water are analyses. Preserve all actual burdens; zero requires evidence."
+      source_ids:
+        - ifc-pharma-biotech-2007
+    - rule_id: b_outlets
+      applies_to: "formulation"
+      rule: "Base profile exports wastewater and solid wastes to evidenced receivers and has no on-site API synthesis, combustion or effluent treatment. If any is actually within the declared boundary, extend all associated inputs and species/medium-specific outputs rather than omitting them. Treatment emissions occur at the declared treatment boundary, not again at the waste-transfer row."
+      source_ids:
+        - ifc-pharma-biotech-2007
+boundary_abstraction:
+  declared_starting_condition: "Received qualified API/excipients and complete purchased packaging articles; no upstream API reactor inside this foreground"
+  starting_condition_role: "foreground_gate_input"
+  product_classification_scope: "CPC35260 narrower finished-tablet subset only"
+  recursive_input_rule: "Internal same-batch returns/rework retain identity and burden without new production. Purchased finished tablets/repacking are outside this route; purchased premixes remain one whole input with compatible upstream burdens, never duplicated as constituent purchases."
+  upstream_dataset_requirement: "API fermentation/purification, excipient manufacture, actual packaging manufacture, transport and utilities require compatible supplier/state/geography/period references; waste transfers require actual treatment receivers"
+  disclosure: "Release gate, upstream starting states, complete formula and pack, actual pre/post-release storage boundary, stage meters, WIP/carried burdens, returns/rework, support systems and destinations"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Acarbose tablet"
+    uuid: "e0ae1660-e0d6-4830-aadd-126c4c1a6aa4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Manufacturer/site/country/period"
+    - "actual SKU/lot and approved specification"
+    - "complete formula and each acquired ingredient grade/state/assay/moisture"
+    - "direct-compression route evidence"
+    - "uncoated50mg strength"
+    - "measured whole-tablet net mass"
+    - "100 tablets/bottle and complete packaging bill"
+    - "unique new release gate and cohort"
+    - "failed/reworked/returned batches"
+    - "opening/closing WIP and carried burdens"
+    - "finished-stock/dispatch account"
+    - "utilities/geography/provider"
+    - "waste and emissions destinations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use1kg net whole-tablet mass at unique new packed-product quality release. cp_release measures Q; include API, excipients and actual moisture, exclude all packaging and destroyed samples."
+  - id: count_mass
+    applies_to: "finished_tablets"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "For each same-SKU/lot cohort measure net whole-tablet mass from calibrated tare-corrected weighing or representative counted tablet samples. Q=sum(N_lot×measured mean tablet mass_lot in kg).100 tablets/bottle converts counts only;50mg active/tablet never substitutes for whole-tablet mass. Do not pool incompatible configurations."
+  - id: electricity_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record raw metered kWh or MJ.1kWh=3.6MJ from the exact native energy unit chain; preserve CN,<1kV,grid-average to-user restrictions and do not interpret NCV as a fuel dose."
+  - id: raw_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual declared property"
+      uuid: ""
+    required_unit: "kg; MJ"
+    rule: "Convert raw quantities before the sole normalize_period operation. A rate multiplied by its matching duration yields a total; an already integrated liquid/gas volume gets no extra time factor. Volume-to-mass needs independently measured density at actual state, never a secondary native-property factor assumed to be density."
+process_map:
+  - id: formulation
+    name: "Dry formulation through packed-product quality release"
+    inclusion: "required"
+    inclusion_condition: "All qualifying product cohorts"
+    role: "foreground"
+    quantitative_reference: "finished_tablets"
+process_inventory:
+  - id: formulation
+    label: "Dry formulation through packed-product quality release"
+    inputs:
+      product:
+        - row_id: acarbose_api
+          role: "Acarbose API powder"
+          name: "acarbose"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f6cb86c-01e5-46a5-85ff-a546e3f38bce"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the whole purchased powder, including actual residual moisture and impurities. Native CAS56180-94-0 and amorphous-powder identity support fermentation-derived acarbose; the awkward English producing-organism wording is not a yield or purity factor. Retain supplier, assay basis, residual solvents, route, grade and upstream fermentation/purification burdens. Assayed active mass is a subledger, never a second purchase."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredients
+              source_ids:
+                - fda-precose-label-2015
+                - huadong-acarbose-direct-compression-2007
+            ranges: []
+        - row_id: mcc
+          role: "Microcrystalline cellulose filler"
+          name: "Microcrystalline cellulose"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b4f87810-9ef0-44c8-a735-e696c40653e9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual whole supplied filler mass and pharmaceutical grade, particle-size distribution and moisture. The broad native record does not fix grade or supplier; its plant-fibre70%/30% commentary supplies no composition, dosage or crystallinity default for this input."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredients
+              source_ids:
+                - fda-precose-label-2015
+                - huadong-acarbose-direct-compression-2007
+            ranges: []
+        - row_id: native_starch
+          role: "Native starch filler"
+          name: "Starch"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e5842f16-31b3-4ea4-b16a-f7b06beeb6c3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual separately acquired native starch. Record botanical origin, grade, moisture and whole supply mass. Broad granular plant-starch identity is compatible but not proof of pharmaceutical qualification. It does not identify pregelatinised starch or a purchased co-processed excipient mixture."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredients
+              source_ids:
+                - fda-precose-label-2015
+                - huadong-acarbose-direct-compression-2007
+            ranges: []
+        - row_id: compressible_starch
+          role: "Compressible starch excipient"
+          name: "Compressible starch excipient"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual separately purchased compressible starch. Confirm modification/pregelatinisation, botanical origin, composition, moisture and SKU; a native-starch flow is not silently substituted for a physically modified grade. A purchased mixture is recorded whole once, with constituents as analyses only."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredients
+              source_ids:
+                - huadong-acarbose-direct-compression-2007
+            ranges: []
+        - row_id: colloidal_silica
+          role: "Colloidal silicon dioxide glidant"
+          name: "Colloidal anhydrous silicon dioxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual pharmaceutical glidant grade only; record surface treatment, form, moisture and whole acquired mass. Quartz sand, crystalline silica, silicate and a generic industrial route are not assumed equivalent."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredients
+              source_ids:
+                - fda-precose-label-2015
+                - huadong-acarbose-direct-compression-2007
+            ranges: []
+        - row_id: magnesium_stearate
+          role: "Magnesium stearate lubricant"
+          name: "Magnesium stearate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "569f27cc-2b97-4005-a20b-00b68d70ede3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Native CAS557-04-0 powder/direct-tablet-pressing identity is compatible. Record actual pharmaceutical grade, fatty-acid distribution, plant/animal origin, moisture and supplier. No ideal-pure-stearate assay or lubricant ratio is prescribed."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredients
+              source_ids:
+                - fda-precose-label-2015
+                - huadong-acarbose-direct-compression-2007
+            ranges: []
+        - row_id: electricity
+          role: "Electricity for formulation and packaging"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Retain mixing, compression, dedusting, HVAC/dehumidification, cleaning, quality control, pre-release holding and packaging electricity, including attributable idle/failed runs. Native identity is explicitly CN, <1kV, grid-average consumption mix to user. It covers only that actual supply; other geography, voltage or generation requires a reviewed replacement, while all measured electricity remains in the inventory."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: cleaning_water
+          role: "Treated process water for cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record supplied treated water for equipment/facility cleaning and actual on-site purification losses/energy if included. Native geography, grade and treatment route are unspecified; it does not establish sterile water, injection water, tap-water treatment or a supplier. No manufacturing granulation water is assumed for the direct-compression route."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: bottle_body
+          role: "Primary100-tablet bottle body"
+          name: "Primary100-tablet bottle body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual bottle body, weighed without closure or contents. Confirm material, layers, dimensions, supplier and pharmaceutical-contact specification; do not infer HDPE or glass from a label that says only bottle."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fda-precose-label-2015
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: bottle_closure
+          role: "Tablet-bottle closure"
+          name: "Tablet-bottle closure"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately supplied closure; record polymer/metal, liner construction and mass. If supplied as one inseparable assembly, retain the assembly mass and avoid counting its liner again."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fda-precose-label-2015
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: bottle_seal
+          role: "Bottle-mouth tamper seal"
+          name: "Bottle-mouth tamper seal"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual separately supplied seal, retaining complete laminate/coating composition and mass. It is not universally required by the historical label; absence requires actual packaging evidence."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fda-precose-label-2015
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: bottle_label
+          role: "Printed bottle label"
+          name: "Printed bottle label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual supplied printed label as one article; record substrate, adhesive/ink already included by its provider, mass and reject labels. Do not separately repurchase constituents already included in that article."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fda-precose-label-2015
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: leaflet
+          role: "Printed paper product leaflet"
+          name: "Printed paper product leaflet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual leaflet, with measured mass, paper and print supplier boundary. Electronic information is not silently given the mass or impacts of a paper leaflet."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fda-precose-label-2015
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: shipping_carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated shipping carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual single corrugated carton used before the selected release gate; record measured mass, composition and bottle count. Post-release transport packaging remains in the finished-goods account when that extension is claimed, never omitted or charged twice."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fda-precose-label-2015
+                - ifc-pharma-biotech-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_tablets
+          role: "Released bottle-packed acarbose50mg tablets"
+          name: "Acarbose tablet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0ae1660-e0d6-4830-aadd-126c4c1a6aa4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Exactly one terminal Product output:1kg net finished tablets including all excipients and actual moisture, excluding every packaging component.100 tablets per tightly closed bottle is the supply configuration;50mg is the labelled active content per tablet, not tablet mass. Native production mix at plant has unspecified geography/route/strength/pack; its CPC35240 classification disagrees with its explicit tablet name/comment. Retain that classification debt; no CAS is given for the formulated product, and the API CAS is not copied to the mixture. Qualify the narrower finished product through actual batch and packaging records."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_release
+              source_ids:
+                - fda-precose-label-2015
+                - huadong-acarbose-direct-compression-2007
+            ranges: []
+      waste:
+        - row_id: rejected_tablets
+          role: "Discarded acarbose tablets"
+          name: "Discarded acarbose tablets"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual discarded off-spec tablets and destroyed quality-control samples; retain active content, excipients, wet mass, destination and treatment acceptance. Reworkable tablets remaining within this gate are internal, not this waste and not new output."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: collected_dust
+          role: "Discarded tablet-formulation dust"
+          name: "Discarded acarbose formulation dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collected powder actually discarded from weighing, mixing, compression and dedusting; measure composition/moisture and receiver. Powder legitimately returned internally is tracked by batch with no new purchase or output; it is not emitted dust."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - ifc-pharma-biotech-2007
+            ranges: []
+        - row_id: cleaning_effluent
+          role: "Exported tablet-line cleaning effluent"
+          name: "Acarbose tablet-line cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole wastewater exported to treatment, separately measuring water, suspended solids, acarbose and cleaning constituents, COD/TOC and destination. COD/BOD is an analytical oxygen-demand indicator, not an effluent mass, active-mass measurement or elementary emission identity."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - ifc-pharma-biotech-2007
+            ranges: []
+      elementary:
+        - row_id: dust_air
+          role: "Residual formulation particulate to air"
+          name: "Acarbose formulation particulate to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual post-control particulate released to the declared air compartment, including fugitives. Retain particle-size basis, active/species composition, air conditions and abatement records. Do not add collected filter dust again or assume every particle is pure API. An unresolved native UUID does not permit omission."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ifc-pharma-biotech-2007
+            ranges: []
+allocation_rules:
+  - rule_id: a_single_product
+    applies_to: "formulation"
+    rule: "This profile has one reference product. Separate other products/strengths/routes and use stage submeters or documented physical causal drivers for shared HVAC, cleaning, equipment and quality control; retain the raw shared totals and allocation fractions. Do not allocate by clinical potency, dose or patient outcome."
+    source_ids:
+      - ifc-pharma-biotech-2007
+      - jrc-ilcd-2010-allocation
+  - rule_id: a_rework
+    applies_to: "all inventory rows"
+    rule: "Keep actual internal recovery/rework loads and failed-run burdens in the matched cohort once. Waste transfer earns no assumed avoided-product credit. A sold second product or solvent/material recovery outside this single-output profile needs an explicit reviewed multi-output extension, not renaming a co-product as waste."
+    source_ids:
+      - ifc-pharma-biotech-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "formulation"
+      flow_role: "Quality-unit owner: denominator and release identity"
+      record_type: "foreground_record"
+      raw_fields: "SKU; lot; route; strength; pack; net tablet mass; measured mean tablet mass; counted tablets/bottles; first release ID/time; prior-release/return IDs; destroyed sample count; Q; opening/closing finished stock; deliveries"
+      collection_method: "Record unique new accepted fully packed tablets with calibrated tare-corrected weighing and lot-specific counted checks. Match release ledger to production and packaging records; exclude rejects, destroyed samples and previously released returns. Retain raw Q, count and mass records without dividing inputs."
+      unit: "kg; tablet; bottle"
+      frequency: "Each lot and reporting period"
+      temporal_coverage: "Full matched production/release period including start/end cut-off"
+      site_scope: "Quality unit and final packing station"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration/tare records; batch release and packing reconciliation; duplicate-release audit"
+    - protocol_id: cp_ingredients
+      process_id: "formulation"
+      flow_role: "Materials and manufacturing owner: ingredients"
+      record_type: "foreground_record"
+      raw_fields: "Ingredient identity/SKU/lot; complete supply form; supplier route/grade; full formula; gross/tare/net acquisitions; returns; raw-material opening/closing stocks; issued amount; assay basis; moisture; premix components"
+      collection_method: "Reconcile actual consumed whole commercial supplies from receipts, issues and stock ledgers; supplier returns retain their exact disposition. Keep active/water/component analyses separate from procurement. Preserve all raw converted masses for failed runs, rework and matched lots; no A/Q here."
+      unit: "kg"
+      frequency: "Each receipt/issue/lot"
+      temporal_coverage: "Complete representative period and linked lots"
+      site_scope: "Receiving/dispensing/blending; materials owner"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Invoices; approved batch formula; CoAs; scales; stock and issue records"
+    - protocol_id: cp_utilities
+      process_id: "formulation"
+      flow_role: "Engineering owner: utilities and support systems"
+      record_type: "foreground_record"
+      raw_fields: "Meter IDs/readings; kWh/MJ; water mass or volume/density/state; start/end; voltage; country; supplier; HVAC/dehumidification/idle hours; raw shared loads and allocation drivers"
+      collection_method: "Capture full raw differential meter totals for every actual stage and attributable support operation, including failed/zero-output runs, cleaning and holding. Derive unmetered shares only with documented causal evidence and preserve totals. Rates require duration; integrated totals do not. Keep numerator units and provider boundary explicit; no output division."
+      unit: "MJ; kWh; kg; m3"
+      frequency: "Continuous meters; period/lot reconciliation"
+      temporal_coverage: "Same product/route/state cohort and complete period"
+      site_scope: "Utilities/HVAC/cleaning/QC/packing within gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration; bills; supply contracts; allocation worksheets; density evidence"
+    - protocol_id: cp_packaging
+      process_id: "formulation"
+      flow_role: "Packaging owner: complete pack supply"
+      record_type: "foreground_record"
+      raw_fields: "SKU;100-tablet bottle configuration; body/closure/seal/label/leaflet/carton IDs; layers/materials; supplied component masses/counts; rejects; stock changes; provider boundary"
+      collection_method: "Weigh each actual acquired article/component and reconcile issues, wastage and opening/closing stock with packed bottles. Include supplied coatings/inks/liners once; never guess material or pack mass from the historical label. Segregate pre-release packaging from later shipping-pack account without deleting either. Collect raw totals only."
+      unit: "kg; item"
+      frequency: "Each component lot and packing run"
+      temporal_coverage: "Matched production and packing cohort"
+      site_scope: "Packing line and packaging stores"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Supplier specifications/BOM; component weighing; packing records; rejects"
+    - protocol_id: cp_wip
+      process_id: "formulation"
+      flow_role: "Production accounting owner: WIP/rework and carried burdens"
+      record_type: "foreground_record"
+      raw_fields: "Opening/closing WIP by stage/lot; mass/composition; opening carried burdens by exchange; raw new period loads; closing carried burdens by exchange; failed/zero-output runs; internal return IDs; release handover IDs"
+      collection_method: "Maintain unnormalised mass and exchange-burden ledgers by the same product/route/state cohort. Retain complete opening and complete closing carried burdens, including unconsumed opening carry still in closing WIP, using traceable process progress/physical drivers. The reporting equation adds complete opening carry and subtracts complete closing carry once, without separately subtracting unconsumed opening carry again. Keep failed-run and rework loads once; internal circulation is not a new external purchase/output. Retain all raw ledger entries; do not divide by Q."
+      unit: "kg; MJ and each original exchange unit"
+      frequency: "Every lot movement and period cut-off"
+      temporal_coverage: "Full period plus preceding WIP carry-in and future carry-out links"
+      site_scope: "Manufacturing, QA and accounting joint sign-off"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Lot genealogy; signed WIP count; stage completion and burden worksheets"
+    - protocol_id: cp_wastes
+      process_id: "formulation"
+      flow_role: "Environmental owner: discarded streams"
+      record_type: "foreground_record"
+      raw_fields: "Stream/lot; wet mass; moisture; API and other composition; QC destroys; collected dust; wastewater; COD/TOC; receiver and treatment; transfers and returned waste"
+      collection_method: "Measure every actual discarded stream and destination before mixing where necessary; distinguish retained/reworked solids, collected waste and actual emissions. Wastewater is whole wet transfer; analytical species are subledgers. Retain raw period totals, failed runs and treatment-chain references without division or assumed credit."
+      unit: "kg; analytical units retained"
+      frequency: "Each transfer with representative sampling"
+      temporal_coverage: "Complete matched period including cleanouts and rejected lots"
+      site_scope: "Waste/effluent gate and actual receivers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Weigh tickets; manifests; lab methods; receiver acceptance; zero-output run log"
+    - protocol_id: cp_emissions
+      process_id: "formulation"
+      flow_role: "Environmental monitoring owner: air releases"
+      record_type: "foreground_record"
+      raw_fields: "Actual air compartment; vent/fugitive ID; particulate/active composition; particle size; concentrations; gas state; flow-rate/time or integrated volume; control performance; detection limits; monitoring coverage"
+      collection_method: "Use calibrated post-control measurements or an independently justified species-specific model with full temporal coverage including upsets. Concentration times matched integrated gas volume gives raw mass; a rate is integrated once. Do not infer species, API fraction, water formation or emitted mass from COD, inventory residual or guideline limits. Retain raw masses and uncertainty, no A/Q."
+      unit: "kg; raw concentration/volume units retained"
+      frequency: "Representative normal/upset sampling and continuous records as applicable"
+      temporal_coverage: "Complete matched period and documented extrapolation coverage"
+      site_scope: "Every actual included air outlet and fugitives"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sampling protocols; detection limits; full composition and control evidence"
+    - protocol_id: cp_finished_goods
+      process_id: "formulation"
+      flow_role: "Logistics/accounting owner: separate post-release ledger"
+      record_type: "foreground_record"
+      raw_fields: "Opening/closing finished stock and carried burdens; release receipts; deliveries; returns; reacceptance IDs; actual warehouse energy; storage duration; added packaging; handling/shipping loads; destinations"
+      collection_method: "Record all actual post-release operations in a separate account. Retain inventory burdens and cohort linkage; unreleased WIP is separate. If an expanded delivery system is reported, combine with production only after internal handovers cancel and a delivery denominator with its own opening/closing stock burdens is declared. Never silently replace production Q by delivery quantity or omit included loads."
+      unit: "kg; item; MJ; duration; transport units"
+      frequency: "Each movement and period cut-off"
+      temporal_coverage: "Actual finished-stock/dispatch period with carried-burden links"
+      site_scope: "Post-release warehouse/dispatch, separately owned"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Warehouse counts; stock valuation by exchange; dispatch/return records; bills"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For each exchange e, first convert raw units and reconcile the complete matched cohort: A_e = raw period attributable burden_e + complete opening WIP carried burden_e - complete closing WIP carried burden_e. Keep failed/zero-output and rework burdens once. Q is unique positive newly quality-released packed-tablet net mass. Report a_e=A_e/Q once per1kg reference flow. Card formulas and protocol aggregation labels describe this same reporting operation, never a second division. With Q=0 retain the raw burden/carry ledger and report no finite unit dataset."
+      inputs:
+        - cp_release
+        - cp_ingredients
+        - cp_utilities
+        - cp_packaging
+        - cp_wip
+        - cp_wastes
+        - cp_emissions
+      output: "One normalized inventory per1kg net released tablets"
+      source_ids:
+        - ifc-pharma-biotech-2007
+    - id: physical_balance
+      applies_to: "formulation"
+      rule: "Keep unallocated physical mass, dry solids, water, active and relevant elemental balances separate from burden allocation. Opening WIP + actual incoming materials = unique newly released tablets + closing WIP + actual discarded/air/water outlets, allowing evidenced transfers; packaging has its own balance and finished stocks from Q are not a second production output. Dry blending/compression prescribes no chemical reaction water. Investigate independent measured moisture/evaporation/cleaning water and any actual degradation species; never solve unknown reaction water and unknown outlet from the same residual."
+      inputs:
+        - cp_ingredients
+        - cp_release
+        - cp_wip
+        - cp_wastes
+        - cp_emissions
+      output: "Independent raw mass/composition closure and explained uncertainty"
+      source_ids:
+        - ifc-pharma-biotech-2007
+    - id: finished_goods_reconcile
+      applies_to: "finished_tablets"
+      rule: "Production Q enters finished-goods stock as an internal receipt once; deliveries follow their own opening stock + release receipts + physical returns - closing stock - actual losses ledger. Previously released returns retain historical burdens and no new Q. If reporting actual delivery, attribute opening/closing finished-stock burdens and all included warehouse/packing/handling/dispatch loads to that delivery cohort and cancel internal release transfers; undelivered goods are excluded from delivered Q. This is a separate extension, not a second normalization of the base production inventory."
+      inputs:
+        - cp_finished_goods
+        - cp_release
+        - cp_wip
+      output: "Separate release and delivery ledgers with internal cancellation"
+      source_ids:
+        - ifc-pharma-biotech-2007
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Confirm full native name components, CAS where present, form/route/grade/geography/type, all properties and exact referenced property/unit-group versions. Flow identity is separate from supplier/background and quantitative compatibility. Reference tablet35240 classification debt remains explicit; no automatic mapping."
+      evidence: "Native originals and supplier/batch evidence"
+    - id: dq_completeness
+      applies_to: "formulation"
+      requirement: "Retain the full formula, purchased supply states, complete packaging, all raw period inputs/burdens, failed and zero-output runs, rework, WIP and carried burdens. Verify all included supports/outlets; missing quantities require collection, not zero substitution."
+      evidence: "Signed material/energy/stock reconciliation and stage records"
+    - id: dq_temporal
+      applies_to: "formulation"
+      requirement: "Match site, product, direct-compression route, strength, packaging, release gate and cohort across numerator/denominator. Document representativeness, uncertainty and extrapolation; retain all limitations."
+      evidence: "Meter dates; lot genealogy; sampling/calibration and uncertainty records"
+validation_rules:
+  - rule_id: v_reference
+    applies_to: "finished_tablets"
+    rule: "Reject a missing reference identity, wrong dosage form/strength/route/pack or absent net-tablet weighing/count conversion. Confirm the explicit link selects exactly one terminal Product output consistent with reference UUID in both languages. Do not hide an intermediate/co-product with the same UUID."
+    source_ids:
+      - fda-precose-label-2015
+      - huadong-acarbose-direct-compression-2007
+  - rule_id: v_gate_stock
+    applies_to: "formulation"
+    rule: "Check unique new release IDs, raw Q>0 and exact cohort. Fail duplicate returned/reaccepted production, omitted failed-run/rework burdens, missing WIP/finished-stock carry ledgers, production Q plus same-Q closing finished-stock output, unexplained release-delivery equality or any repeated A/Q division."
+    source_ids:
+      - ifc-pharma-biotech-2007
+  - rule_id: v_mass_species
+    applies_to: "all inventory rows"
+    rule: "Check unallocated mass/water/active and relevant element balances independently from allocation and actual species evidence. Reject pure-active output as whole tablets, duplicate formulation constituents, integrated-volume times time, COD as species/mass, assumed reaction-water closure or waste transferred and emitted twice."
+    source_ids:
+      - ifc-pharma-biotech-2007
+  - rule_id: v_provider
+    applies_to: "all inventory rows"
+    rule: "Review native and provider restrictions, complete actual formula/pack records, raw fields/protocol ownership and all conditional occurrences. Empty auxiliary UUIDs require matching before concrete dataset use, not fabricated evidence. A method/format check does not grant clinical, scientific, GMP or mapping approval."
+    source_ids:
+      - ifc-pharma-biotech-2007
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Traceable environmental modelling of the same qualified finished tablet product, with exact gate and mass basis"
+  allowed_use: "Supplier/site-specific secondary formulation inventory and background links with explicit scope/quality disclosure"
+  excluded_use: "Clinical selection/dosing, efficacy comparisons, default medical equivalence, manufacturing recipe/operating settings, all-medicament proxies, API or other dosage-form substitution and automatic regulatory/scientific approval"
+  required_metadata: "All reference qualifiers; source/projection identity; actual full formula and supply/pack BOM evidence; stage boundary, release/cohort and separate finished-stock account; allocation; providers/receivers; raw protocol records"
+  required_quality_disclosure: "Historical FDA presentation and independent patent-route evidence do not identify one proprietary SKU recipe; native tablet classification debt; unspecified native ingredient grade/geography; explicit CN<1kV electricity limit; unresolved auxiliary identities; site data/coverage/uncertainty and review status"
+  update_trigger: "Change in active/strength/formulation, route, dosage form, net-mass/count basis, pack configuration, release/delivery gate, utility/provider/geography, stock treatment or waste/emission boundary"
+data_sources:
+  - id: "fda-precose-label-2015"
+    type: "official_guidance"
+    reference: "FDA, PRECOSE label,03/2015, NDA020482 supplement027, Reference ID3713301, pp1,12–13. https://www.accessdata.fda.gov/drugsatfda_docs/label/2015/020482s027lbl.pdf"
+    used_for: "Historical acarbose50mg tablet identity, excipient names,100-tablet bottle and moisture/storage presentation only. Not current-label verification, tablet mass, proprietary route, complete pack composition, clinical equivalence or a recipe/operating default."
+  - id: "huadong-acarbose-direct-compression-2007"
+    type: "literature"
+    reference: "Hangzhou Zhongmei Huadong Pharmaceutical, CN101019874A, published2007-08-22, specification pp3–4/5, PDF pp6–7; retained Chinese scanned original. https://patents.google.com/patent/CN101019874A/zh"
+    used_for: "Applicant evidence for a feasible acarbose dry-blend/direct-compression route and separate filler/glidant/lubricant roles. No patent quantity, mixing order/time prescription, yield, environmental factor or linkage to the historical FDA product is adopted."
+  - id: "ifc-pharma-biotech-2007"
+    type: "official_guidance"
+    reference: "IFC/World Bank Group, EHS Guidelines for Pharmaceuticals and Biotechnology Manufacturing,30 April2007, §§1.1,2.1, AnnexA secondary manufacturing, pp1–5,12,19. https://www.ifc.org/content/dam/ifc/doc/2000/2007-pharma-biotech-ehs-guidelines-en.pdf"
+    used_for: "Qualitative formulation/packaging, HVAC, dust, cleaning effluent, waste and monitoring coverage; site collection design. Sector guidance is not an emission measurement, mandatory universal operation, regulatory compliance conclusion or clinical evidence. Release/WIP/stock accounting equations are explicit PCR author modelling rules, not quoted IFC equations."
+  - id: "jrc-ilcd-2010-allocation"
+    type: "handbook"
+    reference: "European Commission JRC, ILCD Handbook General guide Detailed guidance, first edition March 2010, section 7.9.3, PDF pp277–278 / printed pp257–258; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Virtual subdivision and determining physical causality for attributional shared-service burden assignment only. No product-specific route, composition, yield, emission or utility factor, fixed allocation share, substitution credit or full PEF conformity is supplied. Stock and normalization rules remain PCR-specific consistency reasoning."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:34e59cad7e7e529894f31d63ef699fe71165cdb2e4f94f47624b0b5377dc0979"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6381"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6381
+          line: 61
+          column: 1
+        end:
+          offset: 9836
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received qualified API/excipients and complete purchased packaging articles; no upstream API reactor inside this foreground |\n| starting_condition_role | foreground_gate_input |\n| product_classification_scope | CPC35260 narrower finished-tablet subset only |\n| recursive_input_rule | Internal same-batch returns/rework retain identity and burden without new production. Purchased finished tablets/repacking are outside this route; purchased premixes remain one whole input with compatible upstream burdens, never duplicated as constituent purchases. |\n| upstream_dataset_requirement | API fermentation/purification, excipient manufacture, actual packaging manufacture, transport and utilities require compatible supplier/state/geography/period references; waste transfers require actual treatment receivers |\n| disclosure | Release gate, upstream starting states, complete formula and pack, actual pre/post-release storage boundary, stage meters, WIP/carried burdens, returns/rework, support systems and destinations |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_gate | formulation | Include receipt, dispensing/sieving when used, blending/lubrication, compression, dedusting, filling/closure/labelling, actual pre-release storage/handling, quality tests, cleaning/changeover, HVAC/dehumidification, abatement, failed/zero-output runs and rework. Keep stage records within one aggregated foreground process. | `huadong-acarbose-direct-compression-2007`; `ifc-pharma-biotech-2007` |\n| b_release_gate | finished_tablets | Q is unique positive newly quality-released packed-tablet net mass, not actual deliveries. In the production account never add closing finished stocks from the same Q as another output. Finished-goods storage/dispatch has its own opening/closing mass and carried burdens, real packaging/handling/shipping loads, returns and deliveries. When combined, cancel internal release handovers once and do not treat Q and deliveries as equal. Returned previously released goods create no new Q on reacceptance. Their physical return/restore handovers, historical burdens and new reinspection/rework loads remain in a separately linked finished-goods restoration subaccount; never charge an unrelated new-release cohort or omit these loads. Never-released WIP rework remains within the production cohort and enters Q only at its first accepted release. | `ifc-pharma-biotech-2007` |\n| b_completion | all inventory rows | The cards are an explicit initial stream map, not a cut-off list. A concrete site must add each actual cleaning formulation, fuel, refrigerant, filter, desiccant, secondary pack, waste packaging and direct species as separate atomic exchanges before claiming completeness. Record a whole purchased formulation once; constituents/carrier water are analyses. Preserve all actual burdens; zero requires evidence. | `ifc-pharma-biotech-2007` |\n| b_outlets | formulation | Base profile exports wastewater and solid wastes to evidenced receivers and has no on-site API synthesis, combustion or effluent treatment. If any is actually within the declared boundary, extend all associated inputs and species/medium-specific outputs rather than omitting them. Treatment emissions occur at the declared treatment boundary, not again at the waste-transfer row. | `ifc-pharma-biotech-2007` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 9
+              column: 1
+            end:
+              offset: 349
+              line: 9
+              column: 71
+          text: "# Direct-compressed acarbose50mg uncoated tablets in100-tablet bottles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6381
+              line: 61
+              column: 1
+            end:
+              offset: 6402
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26725"
+      family: "allocation"
+      span:
+        start:
+          offset: 26725
+          line: 398
+          column: 1
+        end:
+          offset: 27633
+          line: 405
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_single_product | formulation | This profile has one reference product. Separate other products/strengths/routes and use stage submeters or documented physical causal drivers for shared HVAC, cleaning, equipment and quality control; retain the raw shared totals and allocation fractions. Do not allocate by clinical potency, dose or patient outcome. | ifc-pharma-biotech-2007; jrc-ilcd-2010-allocation |\n| a_rework | all inventory rows | Keep actual internal recovery/rework loads and failed-run burdens in the matched cohort once. Waste transfer earns no assumed avoided-product credit. A sold second product or solvent/material recovery outside this single-output profile needs an explicit reviewed multi-output extension, not renaming a co-product as waste. | `ifc-pharma-biotech-2007` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 9
+              column: 1
+            end:
+              offset: 349
+              line: 9
+              column: 71
+          text: "# Direct-compressed acarbose50mg uncoated tablets in100-tablet bottles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26725
+              line: 398
+              column: 1
+            end:
+              offset: 26765
+              line: 398
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39704"
+      family: "validation"
+      span:
+        start:
+          offset: 39704
+          line: 438
+          column: 1
+        end:
+          offset: 41357
+          line: 447
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | finished_tablets | Reject a missing reference identity, wrong dosage form/strength/route/pack or absent net-tablet weighing/count conversion. Confirm the explicit link selects exactly one terminal Product output consistent with reference UUID in both languages. Do not hide an intermediate/co-product with the same UUID. | `fda-precose-label-2015`; `huadong-acarbose-direct-compression-2007` |\n| v_gate_stock | formulation | Check unique new release IDs, raw Q>0 and exact cohort. Fail duplicate returned/reaccepted production, omitted failed-run/rework burdens, missing WIP/finished-stock carry ledgers, production Q plus same-Q closing finished-stock output, unexplained release-delivery equality or any repeated A/Q division. | `ifc-pharma-biotech-2007` |\n| v_mass_species | all inventory rows | Check unallocated mass/water/active and relevant element balances independently from allocation and actual species evidence. Reject pure-active output as whole tablets, duplicate formulation constituents, integrated-volume times time, COD as species/mass, assumed reaction-water closure or waste transferred and emitted twice. | `ifc-pharma-biotech-2007` |\n| v_provider | all inventory rows | Review native and provider restrictions, complete actual formula/pack records, raw fields/protocol ownership and all conditional occurrences. Empty auxiliary UUIDs require matching before concrete dataset use, not fabricated evidence. A method/format check does not grant clinical, scientific, GMP or mapping approval. | `ifc-pharma-biotech-2007` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 9
+              column: 1
+            end:
+              offset: 349
+              line: 9
+              column: 71
+          text: "# Direct-compressed acarbose50mg uncoated tablets in100-tablet bottles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39704
+              line: 438
+              column: 1
+            end:
+              offset: 39726
+              line: 438
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_6381"
+      source_span:
+        start:
+          offset: 7585
+          line: 76
+          column: 1
+        end:
+          offset: 8007
+          line: 76
+          column: 423
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_release_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_6381"
+      source_span:
+        start:
+          offset: 8008
+          line: 77
+          column: 1
+        end:
+          offset: 8918
+          line: 77
+          column: 911
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_completion"
+      identity_kind: "explicit"
+      unit_id: "normative_6381"
+      source_span:
+        start:
+          offset: 8919
+          line: 78
+          column: 1
+        end:
+          offset: 9396
+          line: 78
+          column: 478
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_outlets"
+      identity_kind: "explicit"
+      unit_id: "normative_6381"
+      source_span:
+        start:
+          offset: 9397
+          line: 79
+          column: 1
+        end:
+          offset: 9834
+          line: 79
+          column: 438
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_single_product"
+      identity_kind: "explicit"
+      unit_id: "normative_26725"
+      source_span:
+        start:
+          offset: 26838
+          line: 402
+          column: 1
+        end:
+          offset: 27244
+          line: 402
+          column: 407
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_26725"
+      source_span:
+        start:
+          offset: 27245
+          line: 403
+          column: 1
+        end:
+          offset: 27631
+          line: 403
+          column: 387
+    - pointer: "/validation_rules/0"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_39704"
+      source_span:
+        start:
+          offset: 39799
+          line: 442
+          column: 1
+        end:
+          offset: 40208
+          line: 442
+          column: 410
+    - pointer: "/validation_rules/1"
+      rule_id: "v_gate_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_39704"
+      source_span:
+        start:
+          offset: 40209
+          line: 443
+          column: 1
+        end:
+          offset: 40573
+          line: 443
+          column: 365
+    - pointer: "/validation_rules/2"
+      rule_id: "v_mass_species"
+      identity_kind: "explicit"
+      unit_id: "normative_39704"
+      source_span:
+        start:
+          offset: 40574
+          line: 444
+          column: 1
+        end:
+          offset: 40970
+          line: 444
+          column: 397
+    - pointer: "/validation_rules/3"
+      rule_id: "v_provider"
+      identity_kind: "explicit"
+      unit_id: "normative_39704"
+      source_span:
+        start:
+          offset: 40971
+          line: 445
+          column: 1
+        end:
+          offset: 41355
+          line: 445
+          column: 385
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6381"
+      source_span:
+        start:
+          offset: 6381
+          line: 61
+          column: 1
+        end:
+          offset: 6402
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6381"
+      source_span:
+        start:
+          offset: 6430
+          line: 65
+          column: 1
+        end:
+          offset: 7512
+          line: 72
+          column: 210
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26725"
+      source_span:
+        start:
+          offset: 26725
+          line: 398
+          column: 1
+        end:
+          offset: 26765
+          line: 398
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39704"
+      source_span:
+        start:
+          offset: 39704
+          line: 438
+          column: 1
+        end:
+          offset: 39726
+          line: 438
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:34e59cad7e7e529894f31d63ef699fe71165cdb2e4f94f47624b0b5377dc0979"
+  generated_content_sha256: "sha256:70066acd45d2ab4f59f5d8d80673c1b9cba47dc9e0cb51ebda6a19f0ec50fa89"

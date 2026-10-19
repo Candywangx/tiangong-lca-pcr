@@ -1,10 +1,1618 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34643"
-  title: "Monoammonium phosphate"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.monoammonium-phosphate"
+  classification_refs: "CPC 3.0:34643 Monoammonium phosphate; proposed narrower granulated fertilizer scope, subject to separate mapping acceptance"
+  covered_products: "Granular fertilizer-grade MAP from phosphoric acid and anhydrous ammonia; measured actual grade, moisture and coating"
+  excluded_products: "DAP; triammonium salts; technical/food-grade crystals; liquid/polyphosphate fertilizers; other NP/PK/NPK products; fertilizer dry blends"
+  representative_product: "Cooled granular MAP released at producer gate, bulk or in declared packaging, with net product mass excluding tare"
+  production_route: "Aqueous H3PO4 ammoniation in a pre-neutraliser and/or pipe reactor; granulation loop, drying, sizing, cooling, actual conditioning and emission control"
+  market_state: "Finished fertilizer granules at factory gate; actual particle size, assay, moisture, coating, packaging and geography declared"
+functional_unit:
+  what: "Supply qualified granular MAP fertilizer at the producer gate"
+  how_much: "1 kg net as-delivered product"
+  how_well: "Actual total N, total and available phosphate expressed on declared P2O5 basis, moisture, grain-size specification, coating and batch acceptance declared"
+  how_long_or_cycle: "One declared representative reporting period; no field-use service life is asserted"
+  reference_flow_link: "map_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "map_production"
+      rule: "Include all actual stages from receipt to released gate product, their utilities, emission controls, cleaning, losses, starts/shutdowns and handling. Keep separate stage meters even within the integrated unit."
+      source_ids:
+        - eu-jrc-map-2007
+    - rule_id: boundary_upstream
+      applies_to: "external exchanges"
+      rule: "Link acid, ammonia, actual sulfuric acid, water, fuels, electricity, steam, coating, packaging, equipment materials and separately modelled inbound freight to compatible backgrounds. Included on-site upstream production must add its full actual inventory; it cannot disappear at an artificial gate."
+      source_ids:
+        - eu-jrc-map-2007
+        - jrc-ilcd-2010
+    - rule_id: boundary_recycle
+      applies_to: "internal transfers"
+      rule: "Track full fines, crushed oversize, captured dust and recovered liquor at both sending/receiving stages, with matched quantities, stocks and composition. Count only external make-up and actual losses in the integrated LCI; no negative purchase or avoided-production credit for internal recycle."
+      source_ids:
+        - eu-jrc-map-2007
+    - rule_id: boundary_fates
+      applies_to: "exported residues and emissions"
+      rule: "Identify every external fate. This template's aqueous purge is a waste sent for off-site treatment; an operated on-site treatment/final discharge requires its added atomic reagents, sludge and individual water/pollutant exchanges to the actual receiving medium. No wastewater transfer may also be counted as direct discharge."
+      source_ids:
+        - eu-jrc-map-2007
+    - rule_id: boundary_extension
+      applies_to: "actual site completeness"
+      rule: "Conditional rows require applicability and measured positive amount or a documented true zero. Add one atomic row per actual unlisted ingredient, liner, fuel, treatment reagent, waste or emission. An absent UUID or monitoring result never justifies deletion or a fabricated zero."
+      source_ids:
+        - eu-jrc-map-2007
+        - jrc-ilcd-2010
+boundary_abstraction:
+  declared_starting_condition: "Received aqueous phosphoric acid, anhydrous ammonia, actual additives and utilities at the MAP plant; no phosphate-rock digestion in this foreground unit"
+  starting_condition_role: "Explicit foreground gate; upstream acid/ammonia manufacture and extraction linked separately"
+  product_classification_scope: "Granular fertilizer MAP subset of CPC 3.0:34643; classification does not extend chemistry to DAP or other fertilizer routes"
+  recursive_input_rule: "Purchased finished MAP for actual reprocessing is a separately identified upstream input with origin and content; internally circulating fines, oversize and scrubber liquor are internal transfers, not repeated purchases or co-products"
+  upstream_dataset_requirement: "Match technology, geography, grade/concentration, reference property, quantity basis, transport and treatment boundaries for each external input/output; integrate co-located upstream units explicitly or link them without duplication"
+  disclosure: "State configuration, acid quality, utilities, stock adjustments, internal recycle, monitoring coverage, treatment/purge destinations, packaging, equipment/service allocation, exclusions and all pending quantities/identities"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Monoammonium phosphate"
+    uuid: "90d4a1dc-fa9b-4f22-9c97-8acb0a457d0d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "MAP chemical identity"
+    - "fertilizer grade"
+    - "granular state"
+    - "reaction configuration"
+    - "phosphoric-acid source/concentration"
+    - "NH3 purity/state"
+    - "actual N and total/available P2O5 analytical bases"
+    - "product moisture"
+    - "grain size"
+    - "coating composition"
+    - "gate/packaging condition"
+    - geography
+    - "reporting period"
+    - "suppliers and quantity bases"
+    - "control and purge destinations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "map_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "P = accepted net as-delivered MAP output kg in cp_output. Retain inherent moisture and coating; exclude packaging tare. All rows and protocols use per 1 kg reference flow."
+  - id: product_nutrient_basis
+    applies_to: "map_product; phosphoric_acid_input; ammonia_input"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep product mass, dry solids, contained MAP, N, elemental P and total/available P2O5 separate. For assays in percent divide by 100 before multiplication. Available P2O5 is a nutrient-test result, not total P for conservation. Declare analytical method and molecular-mass convention for P/P2O5/H3PO4 conversions; no default grade or reaction yield."
+  - id: solution_carrier
+    applies_to: "phosphoric_acid_input; sulfuric_acid_input; wastewater_output; sludge_output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain whole wet stream, active solute and carrier water in the physical ledger. Match each supplier exchange to delivered solution or contained-chemical basis explicitly; water already inside a purchased solution is not another independent purchased supply."
+  - id: gas_volume
+    applies_to: "natural_gas_input"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Convert measured volume to supplier reference state using absolute pressure, temperature, composition, wet/dry correction and compressibility. Mass needs measured/traceable density, not a secondary flow coefficient. Record LHV/HHV and their own reference state."
+  - id: steam_heat
+    applies_to: "steam_input; condensate_return"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep supply and return kg separate. Net heat is the measured sum of mass times enthalpy entering minus leaving the supplier boundary, with steam quality and make-up/loss/return terms declared; match provider kg or net-MJ definition before linking. No assumed pressure, enthalpy, loss or return fraction."
+  - id: energy_service
+    applies_to: "electricity_input; road_transport_input; stainless_steel_input"
+    required_property_ref:
+      name: "Row-specific property"
+      uuid: ""
+    required_unit: "MJ; kg*km; kg"
+    rule: "Electricity MJ = 3.6 × kWh; transport kg*km = 1000 × t*km. Capital kg-equivalent is a service-period burden allocation, never a claim that a whole installed machine is consumed each reporting period. Preserve original physical masses and service lives."
+process_map:
+  - id: map_production
+    name: "Integrated MAP ammoniation, granulation, drying, conditioning and gate delivery"
+    inclusion: "required"
+    inclusion_condition: "This phosphoric-acid/anhydrous-ammonia granular route"
+    role: "Foreground with stage-specific physical and utility ledgers; internal transfers retained and reconciled"
+    quantitative_reference: "1 kg net as-delivered accepted MAP"
+process_inventory:
+  - id: map_production
+    label: "Integrated MAP ammoniation, granulation, drying, conditioning and gate delivery"
+    inputs:
+      product:
+        - row_id: phosphoric_acid_input
+          role: "Phosphoric acid"
+          name: "Phosphoric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9396269a-cf0d-4b38-ae6d-ab6b91e1dc87"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Receive aqueous orthophosphoric acid, including fresh acid used in scrubbers. Weigh the whole delivered solution and assay H3PO4, total P, water, F and suspended matter. Declare solution kg as this row basis; supplier background must use that same concentration or an explicit contained-acid conversion with carrier-water accounting. Do not count returned scrubber acid again as fresh input."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_materials, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: ammonia_input
+          role: "Ammonia, anhydrous, liquid"
+          name: "Ammonia, anhydrous, liquid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6928be4f-282b-4448-8f2a-f8c746621303"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh received anhydrous liquid NH3 and reconcile tank stocks, purity and any vaporisation before injection; measure losses separately. Aqueous ammonia cannot use this identity."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_materials, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: sulfuric_acid_input
+          role: "Sulfuric acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional grade-control acid only when charged: use the verified 93–98% solution identity only within that assay interval. Record solution mass, H2SO4 assay and carrier water; retain sulfate in product and residues. A materially different sulfate compound fertiliser requires a new applicability assessment. The record comment misdescribes an oxidation step; use neither that description nor any recipe as process evidence."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_materials, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - us-epa-ap42-map-1993
+            ranges: []
+        - row_id: makeup_water_input
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record fresh purchased tap-water make-up to reaction, cooling and scrubbing; this identity applies only to treated piped supply. Weigh or convert metered volume using documented density and conditions. Record pond/recycled water internally; other external water sources require separate atomic rows and their own backgrounds."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_materials, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: electricity_input
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter all operated stages, fans, pumps, crushing, cooling, control and packing. This UUID is grid-average customer-side 1–35 kV AC with native Net calorific value property; use MJ = 3.6 times measured kWh. This UUID is restricted to CN; other geographies, voltages, supply mixes or delivery interfaces require matching verified identities/backgrounds and loss boundaries."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_utilities, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: natural_gas_input
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional pipeline gas to an actual on-site dryer burner or boiler. Native reference is Volume, not Mass. Record metered m3, absolute pressure, temperature, dry/wet basis, composition, Z and supplier reference conditions; convert to the background m3 definition. Measure heating value independently. The secondary mass coefficient of 1 is not density."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_utilities, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: steam_input
+          role: "Steam, in chemical industry"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7734613a-3ef2-47ce-aff0-9a1bd67906c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional externally supplied chemical-industry steam, recorded as actual kg. Record supply pressure, temperature, quality, mass, supplier background basis and condensate return. Quantity compatibility requires the supplier definition and the measured enthalpy ledger; neither a mass UUID nor an MJ/GCV label proves net delivered heat. On-site steam stays internal and its fuel, water, electricity and emissions remain included."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_steam, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: mineral_oil_input
+          role: "Mineral Oil"
+          name: "Mineral Oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e4d87634-a041-48d6-b071-da57551c8ab5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional pure petroleum mineral-oil coating component or maintenance lubricant. Record function, grade, CAS, purchased mass, stocks and destination in product, spent oil or emissions. This UUID does not represent a multicomponent anticaking formulation. A purchased formulation requires one separate whole-preparation row, actual full wet mass and a compatible full-formulation identity/background; keep component/water composition in its physical ledger without buying those components again. Separately purchased and dosed ingredients require separate atomic rows."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_materials, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: pp_sack_input
+          role: "Unlined woven polypropylene fertiliser sack"
+          name: "Unlined woven polypropylene fertiliser sack"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional for bagged delivery: weigh actual empty unlined PP sacks, count filled and damaged bags and reconcile tare; packaging is outside product net mass but its supply burden is included. Liners, stitching and other materials, if present, require separate atomic rows. No seed-bag recipe is transferable."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_packaging, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: stainless_steel_input
+          role: "Stainless steel"
+          name: "Stainless steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9a0998b6-b8a6-4fcc-8099-be847ca5b3cd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional stainless parts in actual maintenance or capital equipment: verify Cr ≥10.5% and C ≤1.2% and the actual grade against supplier data. Record full installed/replaced mass and service life separately from the burden-equivalent kg assigned to this period. This is one material component, not a whole machine or universal proxy for all infrastructure."
+          amount:
+            expression: "Full physical kg retained in cp_capital; attributable service-period burden-equivalent kg divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_capital
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: road_transport_input
+          role: "Road Transport"
+          name: "Road Transport"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9425f2bf-e734-4884-be1b-645473a3e82d"
+          property_unit: "mass*distance 118f2a40-50ec-457c-aa60-9bc6b6af9931 / kg*km"
+          description: "Conditional separately modelled inbound freight by a 30-ton diesel truck, matching this identity. Record actual load, distances, utilisation, empty returns and supplier boundary; use kg*km, converting t*km by 1000. Other modes require their own rows; do not add transport already included in delivered supply datasets."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_transport, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transport
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: map_product
+          role: "Monoammonium phosphate"
+          name: "Monoammonium phosphate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "90d4a1dc-fa9b-4f22-9c97-8acb0a457d0d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted cooled granular fertilizer-grade MAP at the factory gate, including inherent moisture and declared coating, excluding packaging tare. P is accepted net output kg in the reporting period, corrected for stocks without counting internal recycle as production. Product assay and market grade are measured, not inferred from the broad identity."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - mosaic-map-spec-2024
+            ranges: []
+        - row_id: condensate_return
+          role: "Steam condensate returned to external supplier"
+          name: "Steam condensate returned to external supplier"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional supplier return, measured kg with pressure, temperature, contamination and destination. Keep full physical return; credit only through a documented matching steam-supply model, never by subtracting condensate kg from steam kg to estimate heat."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_steam, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+      waste:
+        - row_id: wastewater_output
+          role: "MAP scrubber purge wastewater sent to off-site treatment"
+          name: "MAP scrubber purge wastewater sent to off-site treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional non-returned aqueous purge exported for treatment: measure full wet mass, dissolved/suspended solids, total N/P/F/S, pH and receiver. It is not an elementary emission; no direct-to-water pollutant rows represent this same transfer. If on-site final discharge occurs, add measured individual pollutants and water to the actual receiving compartment instead of claiming the transfer inventory is complete."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_residues, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: sludge_output
+          role: "Dewatered MAP scrubber purge sludge"
+          name: "Dewatered MAP scrubber purge sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual purge-treatment sludge removed from the site: weigh wet cake, dry solids, N/P/F and contaminants and verify receiver/treatment classification. Do not substitute biological or paper sludge and do not subtract sludge twice from the same wastewater mass. On-site dewatering requires its actual reagents and utilities as additional atomic inputs."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_residues, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: offspec_output
+          role: "Discarded off-spec granular MAP"
+          name: "Discarded off-spec granular MAP"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional unrecoverable MAP removed as waste: weigh and assay actual wet material and verify disposal. Recycled fines and crushed oversize are internal, while saleable downgraded MAP is a separate measured co-product with a verified product identity and allocation review, not this waste row."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_residues, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: pp_sack_waste
+          role: "Damaged empty polypropylene sack waste"
+          name: "Damaged empty polypropylene sack waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional packing loss; weigh PP sack waste separately from spilled fertiliser, retained packaging and any liner waste. Record contamination, receiver and recovery route with no automatic avoided-product credit."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_packaging, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: spent_oil_output
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual maintenance lubricant waste. Measure full contaminated oil mass and assay water/solids where relevant; reconcile virgin oil, stocks, retained coating/lubricant and actual loss destinations. This flow does not specify a treatment route: retain receiver and actual recovery/disposal evidence. Do not represent incorporated coating oil as spent lubricant."
+          amount:
+            expression: "Actual attributable reporting-period waste mass from cp_residues, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+      elementary:
+        - row_id: ammonia_air
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Gaseous NH3 leaving the site after controls; include neutraliser, granulator, dryer and handling releases. Convert NH3-N to NH3 only with the declared molecular-mass basis. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: hydrogen_fluoride_air
+          role: "hydrogen fluoride"
+          name: "hydrogen fluoride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9804-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure gaseous HF species, not total fluoride-as-F. If monitoring reports only total F, establish speciation or retain a quantitative unresolved emission; do not assign the total to HF and SiF4 simultaneously. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-map-1993
+            ranges: []
+        - row_id: silicon_tetrafluoride_air
+          role: "silicium tetrafluoride"
+          name: "silicium tetrafluoride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a706-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure gaseous SiF4 separately from HF and particulate fluoride; keep chemical mass distinct from contained-F mass. A fluoride aggregate does not establish this species amount. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-map-1993
+            ranges: []
+        - row_id: pm_fine_air
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure emitted particulate mass ≤2.5 micrometres, including actual filterable/condensable definition. Retained cyclone dust is internal recycle, not an emission. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: pm_middle_air
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure the exclusive 2.5–10 micrometre fraction; where nested PM10 and PM2.5 share a compatible test basis, use their nonnegative difference and preserve uncertainty. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: pm_coarse_air
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure the >10 micrometre emitted fraction; use total minus PM10 only on compatible measurements. No invented particle-size split from total dust; unresolved fractions prevent a complete size-resolved claim. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: fossil_co2_air
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual fuel/carbon releases; reconcile fuel carbon, inlet CO2 and other C destinations. Do not apply a default complete-oxidation fraction or count the same stack twice. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: nitric_oxide_air
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured NO species mass. An NOx-as-NO2 aggregate cannot be copied into NO kg without a measured species split and molecular conversion. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: nitrogen_dioxide_air
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured NO2 species mass, excluding NO and N2O. Do not add a NOx aggregate to this pair of species rows. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: sulfur_dioxide_air
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual SO2 from combustion or sulfur-bearing feed; balance sulfur retained in product/waste and emitted. Sulfur oxides as an aggregate are not this species identity. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: fossil_co_air
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional incomplete-combustion CO; include starts and shutdowns and preserve fossil origin in the carbon balance. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: fossil_methane_air
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional methane slip and on-site gas leakage. Use actual species mass and fossil origin; do not use a delayed-emission correction flow. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: nitrous_oxide_air
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual combustion N2O; it is separate from NOx and is not a soil-use emission within this gate boundary. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: water_vapour_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net site-added water vapour to air from drying, reaction and combustion, excluding measured inlet-air moisture. Keep product water, external wastewater and returned condensate separate; do not silently omit evaporation to close the water balance. Compartment: outdoor air, unspecified; retain actual release height/location and refine identity if required."
+          amount:
+            expression: "Actual attributable reporting-period amount for this row from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-jrc-map-2007
+            ranges: []
+        - row_id: formaldehyde_air
+          role: "formaldehyde"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional individual combustion VOC from actual gas-fired equipment; screen this species by source testing and fuel/burner evidence. Record actual emitted mass, including abnormal modes; no default positive amount or zero is assumed. Compartment: outdoor air, unspecified; refine for actual release conditions."
+          amount:
+            expression: "Actual attributable reporting-period species mass from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+        - row_id: benzene_air
+          role: "benzene"
+          name: "benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9202-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional individual combustion VOC from actual gas-fired equipment; screen this species by source testing and fuel/burner evidence. Record actual emitted mass, including abnormal modes; no default positive amount or zero is assumed. Compartment: outdoor air, unspecified; refine for actual release conditions."
+          amount:
+            expression: "Actual attributable reporting-period species mass from cp_air, divided by P."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - us-epa-ap42-gas-2026
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_physical
+    applies_to: "map_production"
+    rule: "Retain the complete unallocated physical ledger first. Internal fines, liquor and captured dust have full physical amounts and no co-product credit. Do not multiply product, residue or internal-transfer physical masses by an environmental-burden share."
+    source_ids:
+      - eu-jrc-map-2007
+      - jrc-ilcd-2010
+  - rule_id: allocation_campaign
+    applies_to: "shared equipment and utilities"
+    rule: "Subdivide by actual product, chemistry, market state and campaign first. Meter direct consumption; allocate truly shared burdens by a demonstrated causal driver such as actual load/runtime or measured heat duty. Preserve all starts, failed batches, cleaning, zero-output batches, rework and WIP attributable to that same product pool. Do not allocate all energy only to successful hours or divide by output twice."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: allocation_external
+    applies_to: "actual co-products"
+    rule: "No co-product split is presumed. Saleable downgraded product or recovered external outputs require measured quantity, usable quality, genuine destination and separate identity. First assess subdivision within the stated attributional model, then demonstrable physical causality; use documented gate market values only for remaining inseparable burdens, with period, prices and sensitivity. Burden shares must sum to one. No automatic waste/recycling substitution credits."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: allocation_capital
+    applies_to: "capital and replacement parts"
+    rule: "Keep full physical installed/replaced material and actual end-of-life fate separate from the service-period burden share. Use recorded life/throughput, utilisation and replacement dates to assign only the attributable service; do not book a whole machine each period, or discard infrastructure because it is not consumed with feedstock."
+    source_ids:
+      - jrc-ilcd-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "map_production"
+      flow_role: "accepted product denominator and stocks"
+      record_type: "acceptance and stock ledger"
+      raw_fields: "batch and pool ids; new accepted net weights; tare; moisture; coating; total N; total P; available P2O5; grain size; opening/closing stocks and WIP; shipments; losses; rework links"
+      collection_method: "Calibrated net weighing and lot assays; reconcile production acceptance against movements without re-counting re-accepted rework; Period aggregation retained before final normalization: Preserve raw masses; P is newly accepted net output kg counted once; reference output = 1 kg; per 1 kg reference flow"
+      unit: "kg; mass fraction"
+      frequency: "Every batch and stock close"
+      temporal_coverage: "Complete declared period, including zero-output/failed batches"
+      site_scope: "Same site/product/state/route pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, certificates, acceptance IDs, stock bridge, WIP burden carryover"
+    - protocol_id: cp_materials
+      process_id: "map_production"
+      flow_role: "fresh acid, NH3, actual additives, make-up water"
+      record_type: "receipt, stock, charge and assay records"
+      raw_fields: "batch; supplier; SKU; chemical/CAS; whole delivered mass; concentration; water; N/P/F/S/C; opening/closing inventory; returns; internal transfers; destinations; provider reference amount/property"
+      collection_method: "Calibrated weighbridge/tank/meter and traceable density; laboratory assays; charge and stock reconciliation; full formulation sheet when supplied as a preparation; Period aggregation retained before final normalization: Retain full raw wet totals and solute/water quantities; fresh net consumption after stocks/returns; attribute to pool; divide once by P; per 1 kg reference flow"
+      unit: "kg; m3; mass fraction"
+      frequency: "Each receipt/charge and period close"
+      temporal_coverage: "All operation in reporting pool"
+      site_scope: "Same site/product/state/route pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Supplier COA/SDS, density conditions, assays, calibrated meters, full wet/active reconciliation"
+    - protocol_id: cp_utilities
+      process_id: "map_production"
+      flow_role: "electricity and on-site gas"
+      record_type: "meter and operating log"
+      raw_fields: "initial/final readings; stage; uptime; starts/failures; AC voltage/supply mix; gas T/absolute p/Z/wet-dry composition; LHV/HHV; supplier reference state; shared driver"
+      collection_method: "Read calibrated sub-meters, retain invoice cross-checks and supplier definitions; separately measure shared demand and stage runtime; Period aggregation retained before final normalization: Preserve raw totals and conditions; reconcile site meters; allocate true shared burdens; convert reference units; divide once by P; per 1 kg reference flow"
+      unit: "kWh; MJ; m3; K; Pa"
+      frequency: "Time series plus each campaign and stock close"
+      temporal_coverage: "Entire period including idle/start/failed operation attributed to pool"
+      site_scope: "Actual stages at this site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibrations, gas analysis, supply contracts and causal-driver records"
+    - protocol_id: cp_steam
+      process_id: "map_production"
+      flow_role: "purchased steam and returned condensate"
+      record_type: "supply-return meter and enthalpy ledger"
+      raw_fields: "external vs internal supply; kg; pressure; temperature; steam quality; return kg/T/p; make-up; losses; supplier reference kg or MJ and boundary; enthalpy method"
+      collection_method: "Calibrated mass meters and T/p/quality measurements; traceable thermodynamic property method with actual state; match supply and return intervals and supplier definition; Period aggregation retained before final normalization: Retain supply and return mass independently; calculate measured net boundary heat; assign service demand; divide once by P; per 1 kg reference flow"
+      unit: "kg; MJ; K; Pa"
+      frequency: "Time series over each operating mode"
+      temporal_coverage: "Whole reporting period including starts and purge"
+      site_scope: "Actual supplier/site interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter/thermometer certificates, enthalpy method, supplier amount and return-credit contract"
+    - protocol_id: cp_air
+      process_id: "map_production"
+      flow_role: "individual air species and particle fractions"
+      record_type: "stack/fugitive tests and species balance"
+      raw_fields: "source; species/CAS; c; integrated V or flow rate; test interval; dry/wet/T/p; oxygen correction; uptime; detection limits; control bypass; size fractions; inlet moisture; carbon origin"
+      collection_method: "Representative source tests at actual control outlets; match concentration and carrier conditions; integrate measured flow rates only over their intervals; assess handling fugitives, bypass and abnormal modes; Period aggregation retained before final normalization: Preserve raw results; integrate species masses without duplicate time multiplication; pool only compatible samples; attribute and divide once by P; per 1 kg reference flow"
+      unit: "mg/m3; m3; m3/h; h; kg"
+      frequency: "Each source/operating-mode survey and continuous records where available"
+      temporal_coverage: "Whole period with documented test extrapolation and uncertainty"
+      site_scope: "All actual site release points; exclude upstream stacks already in backgrounds"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Test method, accredited reports, flow/time basis, uncertainty, source coverage and actual compartment"
+    - protocol_id: cp_residues
+      process_id: "map_production"
+      flow_role: "external purge, sludge and discarded MAP"
+      record_type: "waste/transfer and assay records"
+      raw_fields: "wet kg; dry fraction; dissolved/suspended material; N/P/F/S/C; stock; receiver; treatment; recycle route; legal waste classification"
+      collection_method: "Weigh each physically separate external stream, sample representative composition and reconcile receiver manifests; distinguish on-site internal settling from exported waste; Period aggregation retained before final normalization: Keep full wet raw masses; do not duplicate separated solids in the same wastewater total; attribute and divide once by P; per 1 kg reference flow"
+      unit: "kg; mass fraction"
+      frequency: "Each removal and close"
+      temporal_coverage: "Entire reporting period"
+      site_scope: "All actual residual destinations"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Weigh slips, laboratory methods, receiver permits/receipts and material balance"
+    - protocol_id: cp_packaging
+      process_id: "map_production"
+      flow_role: "PP sacks, packaging waste and attached packaging"
+      record_type: "purchase, tare and packing records"
+      raw_fields: "composition; SKU; individual empty mass; count; opening/closing stock; filled/damaged/returned count; spill mass; actual liner/stitching; destination"
+      collection_method: "Weigh representative empty components on calibrated scales; count actual units and reconcile packing losses; keep fertilizer spill separate; Period aggregation retained before final normalization: Preserve counts and full physical packaging kg; packaging attached to product leaves with it but stays outside net P; attribute burden and divide once by P; per 1 kg reference flow"
+      unit: "kg; items"
+      frequency: "Each packing lot and close"
+      temporal_coverage: "Whole reporting period"
+      site_scope: "Actual delivery mode at this site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Empty-component weighing, BOM, supplier data, bag reconciliation and waste receipts"
+    - protocol_id: cp_capital
+      process_id: "map_production"
+      flow_role: "stainless components and other actual equipment materials"
+      record_type: "equipment and maintenance ledger"
+      raw_fields: "installed physical kg by material/grade; replacements; commissioning/retirement; service life; throughput/runtime; shared driver; end-of-life fate; embodied dataset boundary"
+      collection_method: "Trace equipment BOM or measured/traceable component masses, actual maintenance and operational capacity; inventory all other actual materials as separate rows; Period aggregation retained before final normalization: Preserve complete physical masses separately; assign recorded service-period burden-equivalent mass; divide once by P; per 1 kg reference flow"
+      unit: "kg; years; h; kg throughput"
+      frequency: "Each installation/replacement and annual service review"
+      temporal_coverage: "Full service history supporting this period"
+      site_scope: "Included production and control assets"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Asset BOM, service-life evidence, replacement record and burden ledger avoiding double counting"
+    - protocol_id: cp_transport
+      process_id: "map_production"
+      flow_role: "separately modelled inbound road freight"
+      record_type: "consignment and route records"
+      raw_fields: "actual mode/truck; shipment kg; leg distance; load; utilisation; empty returns; supplier delivery boundary"
+      collection_method: "Actual carrier records and route distances; match 30-ton diesel-truck identity only when applicable; other modes separate; Period aggregation retained before final normalization: Preserve shipment totals; calculate service once per actual leg; attribute and divide once by P; per 1 kg reference flow"
+      unit: "kg; km; kg*km"
+      frequency: "Each consignment"
+      temporal_coverage: "All inbound deliveries in pool"
+      site_scope: "Actual upstream-to-gate legs absent from supplier background"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Consignment records, route evidence, supplier boundary comparison"
+  calculation_rules:
+    - id: period_normalisation
+      applies_to: "all inventory rows"
+      rule: "Keep A_period as the complete raw attributable reporting-period amount in the row's reference unit. After any explicit service/shared burden assignment and supplier-basis conversion, normalized exchange = A_period / P, once only. P must be positive. If P = 0 retain A_period without any normalized result. The fixed map_product row is 1 kg."
+      inputs:
+        - A_period
+        - P
+        - cp_output
+        - "applicable protocol"
+      output: "Exchange per 1 kg reference flow and retained raw total"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: output_reconciliation
+      applies_to: "map_product"
+      rule: "P is sum of newly accepted net product weights, excluding tare and duplicate rework acceptances. Independently reconcile with shipments plus closing less opening finished-product stock and measured post-acceptance losses/transfers. Reconcile WIP separately by stage and carry measured embodied burdens across periods. Explain discrepancies; do not apply both production and shipment stock adjustments to the same P."
+      inputs:
+        - cp_output
+        - "acceptance ids"
+        - "stock movements"
+      output: "P and explicit stock/WIP bridge"
+      source_ids:
+        - eu-jrc-map-2007
+        - jrc-ilcd-2010
+    - id: composition_bridge
+      applies_to: "phosphoric_acid_input; sulfuric_acid_input; ammonia_input; map_product; wastewater_output; sludge_output"
+      rule: "Contained species kg = whole stream kg × measured species mass fraction. Water and all measured solutes/solids partition the whole stream on one compatible analytical basis. Keep total P separate from available P2O5. Convert chemical/element bases using declared molecular masses, assay definitions and provenance. No commodity grade is assumed to be pure MAP."
+      inputs:
+        - cp_materials
+        - cp_output
+        - cp_residues
+        - "assay basis"
+      output: "Wet, dry, active, elemental and water ledger"
+      source_ids:
+        - eu-jrc-map-2007
+        - mosaic-map-spec-2024
+    - id: supplier_quantity_bridge
+      applies_to: "external exchanges"
+      rule: "Retain period demand D in its actual kg/m3/MJ and the supplier reference amount s with property, concentration and state. Convert D into the supplier's declared quantity basis explicitly, then require D_converted / s provider units. Do not multiply period demand by supplier reference amount. Do not add carrier water or upstream formulation ingredients again when included in purchased whole-solution/preparation background. Unknown compatibility leaves the dataset link pending."
+      inputs:
+        - "applicable collection protocol"
+        - "provider definition"
+        - "measured composition/state"
+      output: "Compatible provider demand and conversion evidence"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: air_integration
+      applies_to: "ammonia_air; hydrogen_fluoride_air; silicon_tetrafluoride_air; pm_fine_air; pm_middle_air; pm_coarse_air; fossil_co2_air; nitric_oxide_air; nitrogen_dioxide_air; sulfur_dioxide_air; fossil_co_air; fossil_methane_air; nitrous_oxide_air; water_vapour_air; formaldehyde_air; benzene_air"
+      rule: "Species kg = sum(c_mg_per_m3 × V_integrated_m3) / 1000000. If the input is flow rate rather than integrated volume, first integrate flow_rate_m3_per_h × interval_h. Never multiply an already integrated V by operating hours again. Align T/p/wet-dry/O2 reference and represented operating modes before summation; preserve detection limits and uncertainty."
+      inputs:
+        - cp_air
+        - c
+        - "V or flow_rate and interval"
+      output: "Species kg over full period before normalisation"
+      source_ids:
+        - eu-jrc-map-2007
+        - us-epa-ap42-gas-2026
+    - id: conservative_balances
+      applies_to: "map_production"
+      rule: "Reconcile measured whole streams and independent N/P/F/S/C inventories, stock/WIP and documented air-carrier terms. Water balance includes inlet water, product/residue water, condensate, measured net vapour and evidence-backed chemical generation/consumption. NH3 + H3PO4 to NH4H2PO4 produces no stoichiometric water; combustion water requires actual fuel H/composition and supported reaction calculation. Track coating/fuel organic dry matter and all measured carbon destinations. COD or an unexplained residual cannot create water, evaporation, yield or a missing species. Explain residuals against declared measurement uncertainty."
+      inputs:
+        - cp_materials
+        - cp_output
+        - cp_air
+        - cp_residues
+        - cp_steam
+        - "opening/closing stocks"
+      output: "Full physical mass, water and element ledgers, residuals and uncertainty"
+      source_ids:
+        - eu-jrc-map-2007
+        - us-epa-ap42-gas-2026
+    - id: particulate_speciation
+      applies_to: "pm_fine_air; pm_middle_air; pm_coarse_air; hydrogen_fluoride_air; silicon_tetrafluoride_air; nitric_oxide_air; nitrogen_dioxide_air"
+      rule: "Only on compatible tests, PM2.5-10 = PM10 minus PM2.5, and PM>10 = total particulate minus PM10. Keep these three exclusive fractions; do not add nested totals again. HF/SiF4 must be measured or validly speciated from F; NO/NO2 from an NOx-as-NO2 result needs actual species fractions and molecular conversion. Keep particulate F/N/P content as composition of dust in the elemental ledger, not another copy of dust mass. Missing speciation stays pending, never an invented ratio."
+      inputs:
+        - cp_air
+        - "species/size methods"
+      output: "Mutually exclusive emissions with correct chemical bases"
+      source_ids:
+        - eu-jrc-map-2007
+        - us-epa-ap42-map-1993
+    - id: capital_service
+      applies_to: "stainless_steel_input"
+      rule: "Retain physical installed mass K and full actual replacements. Attribute only the service used in this pool using demonstrated lifetime output or lifetime operating service and recorded utilisation; document residual life, replacement timing and shared drivers. The assigned equivalent kg affects burden linking, not chemical physical balances. No default K, lifetime or allocation share."
+      inputs:
+        - cp_capital
+        - "actual service records"
+      output: "Physical asset ledger plus attributable burden equivalent before division by P"
+      source_ids:
+        - jrc-ilcd-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "every exchange"
+      requirement: "Verify chemical/material identity, full name fields, CAS, route, physical state, type, compartment, reference property/unit and supplier quantity definition together. Generic product identity may be physically limited by this PCR only when no contradictory native field exists."
+      evidence: "Direct identity records, suppliers, assays and conversion evidence"
+    - id: dq_pool
+      applies_to: "all inventory rows"
+      requirement: "Retain full original period totals, zero-output/failed batches, starts, rework/WIP and causal shared allocation; positive accepted P normalizes once. Each protocol belongs only to map_production and its actual rows."
+      evidence: "Signed period ledger, operating log, stock/WIP bridge and burden ledger"
+    - id: dq_physical
+      applies_to: "map_production"
+      requirement: "Independent total mass, water and N/P/F/S/C checks include full physical outputs, stocks, purge destinations and documented reaction generation/consumption; uncertainty is stated and unexplained residuals remain findings."
+      evidence: "Calibrations, lab records, physical process map and balances"
+    - id: dq_monitoring
+      applies_to: "direct releases"
+      requirement: "Assess all source points and operating modes including fugitive and bypass releases; quantify coverage, detection limits, size/species uncertainty, time extrapolation and actual medium. Screen actual additional VOCs/trace pollutants and add each applicable species separately; this checklist is not a waiver for unlisted pollutants."
+      evidence: "Sampling plan, permits, source tests and source-to-row matrix"
+    - id: dq_background
+      applies_to: "upstream and treatment links"
+      requirement: "Supplier dataset technology/geography/time and kg/m3/MJ definitions, solution/active basis and embedded transport/returns must match. Missing values are future collection requirements; an unverified supplier conversion cannot be represented as a complete link."
+      evidence: "Provider reference quantities and actual collection/conversion records"
+    - id: dq_completeness
+      applies_to: "complete dataset"
+      requirement: "Review actual BOM, utilities, capital, emissions, packaging and waste destinations. Add each actual missing atomic exchange; document true zeros, measurement gaps and uncertainty. Report unresolved UUIDs honestly without removing rows."
+      evidence: "Site survey, chemical register, manifests and completeness register"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference and all rows"
+    rule: "Require the stated MAP reference identity/Mass/kg and one map_product reference output, correct actual chemistry and granular fertilizer state. Fail substitutions of DAP, triammonium salts, other NP/NPK products or an incompatible product grade/route."
+    source_ids:
+      - un-cpc3-2025
+      - eu-jrc-map-2007
+  - rule_id: validate_denominator
+    applies_to: "all inventory rows"
+    rule: "Require positive measured accepted P and one complete same-product/state/route reporting pool. Include failed/zero-output batches, starts and rework/WIP; preserve raw totals and normalize exactly once. If the pool has P = 0 retain totals without a per-kg result."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: validate_protocol
+    applies_to: "collection protocols"
+    rule: "Every protocol must belong to the actual single process map_production, match its inventory rows, define original units and period aggregation, and preserve supplier reference quantities independently from consumption."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: validate_assay
+    applies_to: "inputs and product"
+    rule: "Fail conflation of whole wet product/solution with pure MAP, active acid, available phosphate or nutrient mass, or duplicate supply of embedded carrier/components. Require assay-specific total element and water balances."
+    source_ids:
+      - eu-jrc-map-2007
+      - mosaic-map-spec-2024
+  - rule_id: validate_energy
+    applies_to: "utilities"
+    rule: "Require native property units, actual gas reference conditions/density/heat basis, actual steam supply-return mass and enthalpy plus supplier definition, and actual electricity voltage/supply. Identity success alone does not prove quantity/background compatibility."
+    source_ids:
+      - eu-jrc-map-2007
+      - us-epa-ap42-gas-2026
+  - rule_id: validate_emissions
+    applies_to: "air and any actual water/soil release"
+    rule: "Require integrated concentration-volume or rate-time calculation, correct medium, physical species and carbon origin; no duplicate total/size fractions, NOx+NO+NO2 or fluoride aggregates+species. No missing monitoring is a zero. Actual treatment/direct discharges need their full extended inventory."
+    source_ids:
+      - eu-jrc-map-2007
+      - us-epa-ap42-gas-2026
+  - rule_id: validate_conservation
+    applies_to: "map_production"
+    rule: "Require independently checked mass/water/N/P/F/S/C and stock/WIP bridges, stated uncertainties and explained residuals. Do not fabricate reaction water, evaporation or product yield to force closure."
+    source_ids:
+      - eu-jrc-map-2007
+      - us-epa-ap42-gas-2026
+  - rule_id: validate_burdens
+    applies_to: "co-products, wastes, equipment and shared services"
+    rule: "Preserve full unallocated physical transfers/outputs and service masses; distinguish attributed burdens, verify shares and genuine destinations, retain replacement/service history and avoid automatic recycling credits or whole-machine-per-period demand."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: validate_completeness
+    applies_to: "dataset claims"
+    rule: "Identify unresolved UUIDs, supplier compatibility and missing measurement/speciation explicitly. Add all actual omitted atomic exchanges and matching backgrounds before declaring a site dataset complete. Candidate methodology is not scientific approval or a licence to publish incomplete measured data."
+    source_ids:
+      - jrc-ilcd-2010
+published_dataset_profile:
+  dataset_role: "Foreground granular fertilizer-grade MAP manufacture, 1 kg net as-delivered accepted product at producer gate"
+  downstream_use: "secondary_dataset; background_dataset after appropriate independent review and completion of the actual dataset"
+  allowed_use: "Matching granular fertilizer supply chains with actual route, grade, moisture, coating, geography and provider quantities stated"
+  excluded_use: "Technical/food crystals, liquid products, DAP/other NP/PK/NPK routes or dry blending; per-kg values from a zero-output pool; field-use fertilizer emissions or downstream delivery claims outside the boundary"
+  required_metadata: "PCR id; product UUID; route/configuration; producer/site; reporting pool/period; actual assays and test methods; moisture/grain size/coating; gate and packaging; raw totals/P; stock/WIP/rework; supplier identities/reference quantities; energy conditions; monitoring and destinations; allocation/equipment service"
+  required_quality_disclosure: "Physical versus burden ledgers; balance residuals/uncertainties; survey and monitoring coverage; zero/non-detect treatment; failed batches/WIP; unresolved identities, quantities and provider links; exclusions; source versions; scientific review pending until independently completed"
+  update_trigger: "Product chemistry, assay/state, acid or NH3 source, reactor/dryer/control configuration, utility supply/basis, packing mode, waste fate, actual emissions, allocation/service life or flow-identity change"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, row 34643. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv ; repository-retained official original consulted 2026-10-15."
+    used_for: "Classification context only; no manufacturing default or identity duplication"
+  - id: "eu-jrc-map-2007"
+    type: "official_guidance"
+    reference: "European Commission, LVIC-AAF BAT Reference Document, August 2007, §§7.2.1, 7.2.3–7.2.6, 7.2.8–7.2.9; printed pp.285,287–289 / PDF pp.313,315–317. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic_aaf.pdf ; retained original consulted 2026-10-15."
+    used_for: "MAP/DAP reaction/granulation route and controls; distinguish nitrophosphate and dry blending. NPK case quantities, temperatures and utility examples are not MAP defaults"
+  - id: "us-epa-ap42-map-1993"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 §8.5.3 Ammonium Phosphate, July 1993, reformatted January 1995, §§8.5.3.1–3 and Figure 8.5.3-1, PDF pp.1–4. https://www.epa.gov/sites/default/files/2020-09/documents/8.5.3_ammonium_phosphate.pdf ; retrieved 2026-10-15."
+    used_for: "Granulated phosphate scope; process and species checklist, recycle and conditioning context. Historical US plant concentrations, feed splits, efficiencies and factors are not recipes or defaults"
+  - id: "mosaic-map-spec-2024"
+    type: "literature"
+    reference: "The Mosaic Company, Monoammonium Phosphate 11-52-0 Specification Sheet, ©2024, p.1 including limitation below table. https://mosaicco.com/fileLibrary/publicFiles/0-Monoammonium-Phosphate-11-52-0-Specification-Sheet.pdf ; retrieved 2026-10-15."
+    used_for: "Producer evidence of commercial nutrient-guarantee basis and incomplete composition disclosure, not actual assay, pure-MAP content or a universal grade"
+  - id: "us-epa-ap42-gas-2026"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 §1.4 Natural Gas Combustion, retained October 2026 (header 10/26) original, pp.1–3, especially §1.4.3. https://www.epa.gov/sites/default/files/2020-09/documents/1.4_natural_gas_combustion.pdf ; retained original consulted 2026-10-15."
+    used_for: "Conditional gas combustion species and source-test checklist only; boiler/furnace factors and default fuel properties are not transferred to a MAP dryer"
+  - id: "jrc-ilcd-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook, General Guide for Life Cycle Assessment, Detailed Guidance, first edition March 2010, physical inventory/allocation context printed p.80 / PDF100, §7.9.3 printed p.257 / PDF277. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf ; retained original consulted 2026-10-15."
+    used_for: "Attributional inventory, physical versus allocated burdens, physical causality and residual market-value allocation; collection/calculation protocols are explicit operational requirements of this PCR, not literature default quantities"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:57240c8b669f0b96428fe3448c5c0d7c3e40f5391a9a78fafea909dfb0ae4b9d"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6678"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6678
+          line: 63
+          column: 1
+        end:
+          offset: 9840
+          line: 84
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received aqueous phosphoric acid, anhydrous ammonia, actual additives and utilities at the MAP plant; no phosphate-rock digestion in this foreground unit |\n| starting_condition_role | Explicit foreground gate; upstream acid/ammonia manufacture and extraction linked separately |\n| product_classification_scope | Granular fertilizer MAP subset of CPC 3.0:34643; classification does not extend chemistry to DAP or other fertilizer routes |\n| recursive_input_rule | Purchased finished MAP for actual reprocessing is a separately identified upstream input with origin and content; internally circulating fines, oversize and scrubber liquor are internal transfers, not repeated purchases or co-products |\n| upstream_dataset_requirement | Match technology, geography, grade/concentration, reference property, quantity basis, transport and treatment boundaries for each external input/output; integrate co-located upstream units explicitly or link them without duplication |\n| disclosure | State configuration, acid quality, utilities, stock adjustments, internal recycle, monitoring coverage, treatment/purge destinations, packaging, equipment/service allocation, exclusions and all pending quantities/identities |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_complete | map_production | Include all actual stages from receipt to released gate product, their utilities, emission controls, cleaning, losses, starts/shutdowns and handling. Keep separate stage meters even within the integrated unit. | eu-jrc-map-2007 |\n| boundary_upstream | external exchanges | Link acid, ammonia, actual sulfuric acid, water, fuels, electricity, steam, coating, packaging, equipment materials and separately modelled inbound freight to compatible backgrounds. Included on-site upstream production must add its full actual inventory; it cannot disappear at an artificial gate. | eu-jrc-map-2007; jrc-ilcd-2010 |\n| boundary_recycle | internal transfers | Track full fines, crushed oversize, captured dust and recovered liquor at both sending/receiving stages, with matched quantities, stocks and composition. Count only external make-up and actual losses in the integrated LCI; no negative purchase or avoided-production credit for internal recycle. | eu-jrc-map-2007 |\n| boundary_fates | exported residues and emissions | Identify every external fate. This template's aqueous purge is a waste sent for off-site treatment; an operated on-site treatment/final discharge requires its added atomic reagents, sludge and individual water/pollutant exchanges to the actual receiving medium. No wastewater transfer may also be counted as direct discharge. | eu-jrc-map-2007 |\n| boundary_extension | actual site completeness | Conditional rows require applicability and measured positive amount or a documented true zero. Add one atomic row per actual unlisted ingredient, liner, fuel, treatment reagent, waste or emission. An absent UUID or monitoring result never justifies deletion or a fabricated zero. | eu-jrc-map-2007; jrc-ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 229
+              line: 9
+              column: 1
+            end:
+              offset: 274
+              line: 9
+              column: 46
+          text: "# Granular monoammonium phosphate manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6678
+              line: 63
+              column: 1
+            end:
+              offset: 6699
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39896"
+      family: "allocation"
+      span:
+        start:
+          offset: 39896
+          line: 618
+          column: 1
+        end:
+          offset: 41773
+          line: 627
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_physical | map_production | Retain the complete unallocated physical ledger first. Internal fines, liquor and captured dust have full physical amounts and no co-product credit. Do not multiply product, residue or internal-transfer physical masses by an environmental-burden share. | eu-jrc-map-2007; jrc-ilcd-2010 |\n| allocation_campaign | shared equipment and utilities | Subdivide by actual product, chemistry, market state and campaign first. Meter direct consumption; allocate truly shared burdens by a demonstrated causal driver such as actual load/runtime or measured heat duty. Preserve all starts, failed batches, cleaning, zero-output batches, rework and WIP attributable to that same product pool. Do not allocate all energy only to successful hours or divide by output twice. | jrc-ilcd-2010 |\n| allocation_external | actual co-products | No co-product split is presumed. Saleable downgraded product or recovered external outputs require measured quantity, usable quality, genuine destination and separate identity. First assess subdivision within the stated attributional model, then demonstrable physical causality; use documented gate market values only for remaining inseparable burdens, with period, prices and sensitivity. Burden shares must sum to one. No automatic waste/recycling substitution credits. | jrc-ilcd-2010 |\n| allocation_capital | capital and replacement parts | Keep full physical installed/replaced material and actual end-of-life fate separate from the service-period burden share. Use recorded life/throughput, utilisation and replacement dates to assign only the attributable service; do not book a whole machine each period, or discard infrastructure because it is not consumed with feedstock. | jrc-ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 229
+              line: 9
+              column: 1
+            end:
+              offset: 274
+              line: 9
+              column: 46
+          text: "# Granular monoammonium phosphate manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39896
+              line: 618
+              column: 1
+            end:
+              offset: 39936
+              line: 618
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_59681"
+      family: "validation"
+      span:
+        start:
+          offset: 59681
+          line: 673
+          column: 1
+        end:
+          offset: 62762
+          line: 687
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference and all rows | Require the stated MAP reference identity/Mass/kg and one map_product reference output, correct actual chemistry and granular fertilizer state. Fail substitutions of DAP, triammonium salts, other NP/NPK products or an incompatible product grade/route. | un-cpc3-2025; eu-jrc-map-2007 |\n| validate_denominator | all inventory rows | Require positive measured accepted P and one complete same-product/state/route reporting pool. Include failed/zero-output batches, starts and rework/WIP; preserve raw totals and normalize exactly once. If the pool has P = 0 retain totals without a per-kg result. | jrc-ilcd-2010 |\n| validate_protocol | collection protocols | Every protocol must belong to the actual single process map_production, match its inventory rows, define original units and period aggregation, and preserve supplier reference quantities independently from consumption. | jrc-ilcd-2010 |\n| validate_assay | inputs and product | Fail conflation of whole wet product/solution with pure MAP, active acid, available phosphate or nutrient mass, or duplicate supply of embedded carrier/components. Require assay-specific total element and water balances. | eu-jrc-map-2007; mosaic-map-spec-2024 |\n| validate_energy | utilities | Require native property units, actual gas reference conditions/density/heat basis, actual steam supply-return mass and enthalpy plus supplier definition, and actual electricity voltage/supply. Identity success alone does not prove quantity/background compatibility. | eu-jrc-map-2007; us-epa-ap42-gas-2026 |\n| validate_emissions | air and any actual water/soil release | Require integrated concentration-volume or rate-time calculation, correct medium, physical species and carbon origin; no duplicate total/size fractions, NOx+NO+NO2 or fluoride aggregates+species. No missing monitoring is a zero. Actual treatment/direct discharges need their full extended inventory. | eu-jrc-map-2007; us-epa-ap42-gas-2026 |\n| validate_conservation | map_production | Require independently checked mass/water/N/P/F/S/C and stock/WIP bridges, stated uncertainties and explained residuals. Do not fabricate reaction water, evaporation or product yield to force closure. | eu-jrc-map-2007; us-epa-ap42-gas-2026 |\n| validate_burdens | co-products, wastes, equipment and shared services | Preserve full unallocated physical transfers/outputs and service masses; distinguish attributed burdens, verify shares and genuine destinations, retain replacement/service history and avoid automatic recycling credits or whole-machine-per-period demand. | jrc-ilcd-2010 |\n| validate_completeness | dataset claims | Identify unresolved UUIDs, supplier compatibility and missing measurement/speciation explicitly. Add all actual omitted atomic exchanges and matching backgrounds before declaring a site dataset complete. Candidate methodology is not scientific approval or a licence to publish incomplete measured data. | jrc-ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 229
+              line: 9
+              column: 1
+            end:
+              offset: 274
+              line: 9
+              column: 46
+          text: "# Granular monoammonium phosphate manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 59681
+              line: 673
+              column: 1
+            end:
+              offset: 59703
+              line: 673
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_6678"
+      source_span:
+        start:
+          offset: 8072
+          line: 78
+          column: 1
+        end:
+          offset: 8340
+          line: 78
+          column: 269
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6678"
+      source_span:
+        start:
+          offset: 8341
+          line: 79
+          column: 1
+        end:
+          offset: 8717
+          line: 79
+          column: 377
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_6678"
+      source_span:
+        start:
+          offset: 8718
+          line: 80
+          column: 1
+        end:
+          offset: 9074
+          line: 80
+          column: 357
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_fates"
+      identity_kind: "explicit"
+      unit_id: "normative_6678"
+      source_span:
+        start:
+          offset: 9075
+          line: 81
+          column: 1
+        end:
+          offset: 9473
+          line: 81
+          column: 399
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_6678"
+      source_span:
+        start:
+          offset: 9474
+          line: 82
+          column: 1
+        end:
+          offset: 9838
+          line: 82
+          column: 365
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_39896"
+      source_span:
+        start:
+          offset: 40009
+          line: 622
+          column: 1
+        end:
+          offset: 40337
+          line: 622
+          column: 329
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_campaign"
+      identity_kind: "explicit"
+      unit_id: "normative_39896"
+      source_span:
+        start:
+          offset: 40338
+          line: 623
+          column: 1
+        end:
+          offset: 40826
+          line: 623
+          column: 489
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_external"
+      identity_kind: "explicit"
+      unit_id: "normative_39896"
+      source_span:
+        start:
+          offset: 40827
+          line: 624
+          column: 1
+        end:
+          offset: 41361
+          line: 624
+          column: 535
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_capital"
+      identity_kind: "explicit"
+      unit_id: "normative_39896"
+      source_span:
+        start:
+          offset: 41362
+          line: 625
+          column: 1
+        end:
+          offset: 41771
+          line: 625
+          column: 410
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 59776
+          line: 677
+          column: 1
+        end:
+          offset: 60108
+          line: 677
+          column: 333
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 60109
+          line: 678
+          column: 1
+        end:
+          offset: 60435
+          line: 678
+          column: 327
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_protocol"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 60436
+          line: 679
+          column: 1
+        end:
+          offset: 60717
+          line: 679
+          column: 282
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_assay"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 60718
+          line: 680
+          column: 1
+        end:
+          offset: 61020
+          line: 680
+          column: 303
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_energy"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 61021
+          line: 681
+          column: 1
+        end:
+          offset: 61360
+          line: 681
+          column: 340
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 61361
+          line: 682
+          column: 1
+        end:
+          offset: 61765
+          line: 682
+          column: 405
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 61766
+          line: 683
+          column: 1
+        end:
+          offset: 62050
+          line: 683
+          column: 285
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_burdens"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 62051
+          line: 684
+          column: 1
+        end:
+          offset: 62396
+          line: 684
+          column: 346
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 62397
+          line: 685
+          column: 1
+        end:
+          offset: 62760
+          line: 685
+          column: 364
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6678"
+      source_span:
+        start:
+          offset: 6678
+          line: 63
+          column: 1
+        end:
+          offset: 6699
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6678"
+      source_span:
+        start:
+          offset: 6727
+          line: 67
+          column: 1
+        end:
+          offset: 7999
+          line: 74
+          column: 241
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39896"
+      source_span:
+        start:
+          offset: 39896
+          line: 618
+          column: 1
+        end:
+          offset: 39936
+          line: 618
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_59681"
+      source_span:
+        start:
+          offset: 59681
+          line: 673
+          column: 1
+        end:
+          offset: 59703
+          line: 673
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:57240c8b669f0b96428fe3448c5c0d7c3e40f5391a9a78fafea909dfb0ae4b9d"
+  generated_content_sha256: "sha256:4a5ffd59a21deceef6de5fbc7b3763242c9b80854b82c63069adc7e913006f77"

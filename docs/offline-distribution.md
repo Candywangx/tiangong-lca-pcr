@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
-lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
+lastReviewedAt: "2026-10-18"
+lastReviewedCommit: "92e53b455840908bc77c4d660de2367ae783a0e7"
+lastReviewedNote: "Reviewed the same-source CI web-build handoff and separate product sealing: complete source/run/attempt/plan/archive/tree and build/SEO evidence bindings, mandatory full/data jobs, unchanged resource budgets and fresh complete qualification. No methodology, dependency, version, publication or provider authority changes."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -279,8 +279,14 @@ the unified source or move any existing tag.
 environment. It binds canonical owner/repository IDs, tag/event/workflow/checkout
 SHAs and `main` ancestry. Its reusable qualification workflow runs complete Linux
 validation, documentation/source/SEO checks and offline distribution on Linux,
-Windows and macOS. The documentation job builds the website once and seals the
-two npm packages and web archive from the same source. The publish job downloads
+Windows and macOS. `web-build` builds the complete website once and transports its
+verified bytes in a source/run/attempt/qualification-bound archive. A separate
+`documentation` job safely materializes that exact artifact, runs the vendored
+SEO checker and seals the two npm packages and the identical web archive. Build,
+handoff and SEO audit evidence accompanies the immutable product artifact; it
+does not replace its existing release manifest or checksum contract. Both jobs
+retain their 60-minute limits and are required in both qualification lanes.
+The public product artifact output and publication guards remain unchanged. The publish job downloads
 the exact Actions artifact ID produced by that qualification and rechecks source
 identity after environment admission. Product publication is globally serialized.
 

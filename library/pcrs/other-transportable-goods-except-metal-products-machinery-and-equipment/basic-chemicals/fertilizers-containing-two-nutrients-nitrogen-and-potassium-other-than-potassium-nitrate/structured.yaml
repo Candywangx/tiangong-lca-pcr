@@ -1,10 +1,1072 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34647"
-  title: "Fertilizers containing two nutrients: nitrogen and potassium; other than potassium nitrate"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.fertilizers-containing-two-nutrients-nitrogen-and-potassium-other-than-potassium-nitrate"
+  classification_refs: "CPC 3.0 34647; proposed narrower subset, independent mapping acceptance pending"
+  covered_products: "Binderless dry roller-compacted AS/KCl solid composite granules, no intentional P or pesticide addition; sulfur retained"
+  excluded_products: "KNO3, separate-granule blends, wet/binder/coated/liquid routes and other feed chemistries"
+  representative_product: "One actual accepted AS/KCl NK SKU with measured composition; no prescribed grade"
+  production_route: "Dry mixing → roller compaction → crushing/sizing → classification and fines return → acceptance/storage/bulk loading"
+  market_state: "Net bulk fertilizer at plant gate, actual retained moisture/impurities included; no delivery sacks"
+functional_unit:
+  what: "Supply a solid composite-granule fertilizer containing N and K, excluding potassium nitrate"
+  how_much: "1 kg accepted net supplied bulk product"
+  how_well: "Declared actual N and K/K2O-equivalent assays, sulfur, moisture, homogeneity, size, hardness/attrition, storage stability and agreed acceptance"
+  how_long_or_cycle: "One complete manufacturing/storage period through plant-gate release; no field response or agronomic lifetime claim"
+  reference_flow_link: "nk_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_stages
+      applies_to: "compact"
+      rule: "Include actual reception, feed preparation, weighing/mixing, force feeding, roller hydraulics, crushing, sizing, classification, all recirculation passes, dust control, storage, bulk loading and final release. Aggregate one foreground unit while retaining separate stage records."
+      source_ids:
+        - toray-nk-compaction-2019
+        - sahut-compaction-1999
+    - rule_id: boundary_actual
+      applies_to: "all inventory rows"
+      rule: "No intentional binder/water/coating/thermal route is modelled. Ancillary contained cleaning and maintenance remain actual exchanges. Additional observed exchanges or chemical transformations require source-supported atomic extension and review; an exclusion cannot hide an operated stage."
+      source_ids:
+        - eu-jrc-lvic-aaf-2007
+        - toray-nk-compaction-2019
+    - rule_id: boundary_capital
+      applies_to: "compact"
+      rule: "Declare actual capital/equipment scope and any exclusion rationale with sensitivity. If included, retain measured asset quantity, materials, service period, capacity and allocation separately from operational service; no fictitious per-kg machine mass or default life. External transport and treatment cannot be implied by feed identity."
+      source_ids:
+        - sahut-compaction-1999
+boundary_abstraction:
+  declared_starting_condition: "Purchased AS/KCl particles, actual hydraulic-fluid formulation and cleaning water at receipt; metered delivered electricity"
+  starting_condition_role: "Foreground upstream-product interface, not a cradle-to-gate cut-off"
+  product_classification_scope: "Only the dry binderless uncoated AS/KCl composite-granule subset of NK excluding KNO3"
+  recursive_input_rule: "External same-category material requires measured quantity, history and compatible provider; internal mixture/compacts/fines remain equal two-sided transfers, no second purchase or credit"
+  upstream_dataset_requirement: "Link actual feed manufacture, conditioning, utilities, maintenance materials, inbound transport and external waste treatment; disclose missing providers, do not erase burdens"
+  disclosure: "Site/period, complete stage coverage, stock/WIP/burden carryover, capital and transport boundaries, exclusions, sampling, grade and provider basis"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Fertilizers containing two nutrients: nitrogen and potassium, other than potassium nitrate"
+    uuid: "1dfc674e-e405-47ee-8abd-b118ec240fa5"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Actual SKU and complete feed recipe"
+    - "AS/KCl grades and supplier upstream routes"
+    - "whole supplied mass and constituent assays"
+    - "no intentional P/pesticide/KNO3"
+    - "N chemical forms and total N"
+    - "K versus K2O reporting and assay methods"
+    - "S and Cl"
+    - "moisture and free acidity"
+    - "feed/product size distributions"
+    - "compression/crushing/sizing and recycle records"
+    - "hardness/attrition/homogeneity and storage acceptance"
+    - "bulk delivery"
+    - "site and period"
+    - "final gate B"
+    - "feed/WIP/finished-stock boundaries and carried burdens"
+    - "native electricity CN/voltage and supplier references"
+    - "KCl/oil volume conventions"
+    - "water/air measurements"
+    - "waste destinations"
+    - "allocation/capital scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_product
+    applies_to: "nk_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "B is the unique net newly completed accepted bulk product crossing the final release gate during the period. Weigh gross/tare with calibrated scales; exclude already completed opening-stock resale, internal return passes, discarded off-grade and any containers. Count each finally accepted lot once. Record actual moisture, not a hypothetical dry fertilizer."
+  - id: period_pool
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Consistent native property"
+      uuid: ""
+    required_unit: "per 1 kg reference flow"
+    rule: "Retain the complete same SKU/state/route raw production pool including start/stop, failed/zero-output batches, cleaning, rework, feed/WIP/stock changes and carried burdens. Convert raw units then attribute burdens and divide once by positive B. If total B=0, retain totals without a normalized result."
+  - id: feed_basis
+    applies_to: "feed_as; feed_kcl; nk_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Whole supplied material is the exchange; N, K, K2O, S, Cl, moisture and conditioning are measured subledgers. K2O is a reporting equivalent, not an actual oxide reagent. Preserve elemental and oxide bases with documented molar conversion; do not count constituent water or active salts twice."
+  - id: provider_basis
+    applies_to: "feed_kcl; hydraulic_oil; electricity; cleaning_water"
+    required_property_ref:
+      name: "Native reference property"
+      uuid: ""
+    required_unit: "native unit"
+    rule: "Separate physical identity from supplier background quantity. For Volume/m3 define solid/bulk/liquid basis, packing, temperature, moisture and measured compatible density; native secondary property ratios supply no density. Match electricity CN/<1kV/user mix; other supplies need compatible verified links."
+  - id: air_basis
+    applies_to: "pm25; pm2510; pm10plus; ammonia_air; water_vapour"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use compatible concentration times already integrated gas volume, or integrate concentration times gas-flow rate over time. Never multiply integrated volume by time again. Preserve wet/dry, normal/actual, temperature, pressure and detection basis; no overlapping PM total and bins."
+process_map:
+  - id: compact
+    name: "Receipt, dry mixing, compaction, crushing/sizing/classification, recycle/dust control, storage and bulk dispatch"
+    inclusion: "required"
+    inclusion_condition: "Actual binderless dry AS/KCl route; auxiliaries conditional on operation"
+    role: "foreground"
+    quantitative_reference: "1 kg accepted net bulk NK product"
+process_inventory:
+  - id: compact
+    label: "Receipt, dry mixing, compaction, crushing/sizing/classification, recycle/dust control, storage and bulk dispatch"
+    inputs:
+      product:
+        - row_id: feed_as
+          role: "Ammonium sulphate"
+          name: "Ammonium sulphate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7f128b59-9df7-4b5d-ad0f-00103b916cf7"
+          property_unit: "Mass / kg"
+          description: "Purchased solid ammonium sulphate particles, not ammonium persulphate, aqueous slurry or nitrogen-equivalent mass. Record the complete supplied solid including moisture and impurities, actual N/S assay, free acidity, size distribution and supplier manufacture. The broad finished-product native record imposes no geography or synthesis route; do not infer one from another AS record or transplant the patent caprolactam example."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_feed; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: feed_kcl
+          role: "Potassium chloride"
+          name: "Potassium chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c0f36a80-f6a0-4926-9a92-9c80f5fcb662"
+          property_unit: "Volume / m3"
+          description: "Purchased fertilizer-grade KCl particles, CAS 7447-40-7, including supplied conditioning and moisture. Retain measured supplied kg for physical K/Cl balances. Native reference is Volume/m3; retain independently measured compatible supplier volume, solid/bulk convention, packing, moisture, temperature and density. Unspecified provider volume leaves background linkage incomplete. The English comment describes sylvite/brine production; its Chinese mineral-word mistranslation does not change the consistent KCl name/CAS/classification. No specific geography, nutrient grade or density is encoded. Incompatible additives require scope review."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_feed; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value / MJ"
+          description: "This identity is explicitly CN, below 1 kV, grid-average consumption mix delivered to the user. Use only for that actual supply; another location, voltage or generator needs its compatible verified flow/provider before dataset completion. Meter reception, grinding if used, blending, force feed, roller hydraulics, crushing, sizing, screens, recycling conveyors, dust fans and bulk loading; retain idle/start/stop energy. Native property is Net calorific value/MJ. Convert metered kWh once by 3.6 MJ/kWh without inventing fuel efficiency."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_energy; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Hydraulic Fluid"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30691a38-a947-4b41-991e-194f6c9aa88f"
+          property_unit: "Volume / m3"
+          description: "Conditional whole purchased petroleum-oil-compatible hydraulic-fluid formulation for the actual roller-pressure circuit. The native lubricant classification is under preparations containing at least 70% petroleum oils, while its broad comment also mentions synthetic base oil: require actual supplier composition compatible with that category; do not extend this identity to water-glycol or synthetic-ester hydraulic fluids. Record oil grade, complete additives, actual replacements/top-ups, opening/closing circuit inventory and losses. Native reference Volume/m3 has no route or geography limit; match actual supplier temperature/volume definition and independently measured density when mass is needed. Secondary coefficients are not measured density. Do not inventory the base oil and additives again as duplicate purchases."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_maintenance; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: cleaning_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Conditional contained ancillary cleaning water, not intentional process humidification or binder water. Record the complete cleaning event, including no-output periods, mass or calibrated volume with measured compatible density, and wastewater destination. Native supplied treated water has no geography limit. Direct environmental discharge requires treatment/emission methods and additional atomic species rows before dataset completion."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_water; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: humidity_uptake
+          role: "Atmospheric water vapour absorbed into NK solids"
+          name: "Atmospheric water vapour absorbed into NK solids"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional measured environmental moisture uptake. It is neither purchased water nor a negative vapour emission. Independently determine uptake using moisture/air measurements with stock and temperature coverage; do not infer it from an unexplained mass residual. The searched Volume-based resource water record does not establish a compatible mass exchange, so UUID remains unresolved."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_water; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+    outputs:
+      product:
+        - row_id: nk_product
+          role: "Fertilizers containing two nutrients: nitrogen and potassium, other than potassium nitrate"
+          name: "Fertilizers containing two nutrients: nitrogen and potassium, other than potassium nitrate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1dfc674e-e405-47ee-8abd-b118ec240fa5"
+          property_unit: "Mass / kg"
+          description: "Only final accepted bulk AS/KCl composite granules are this reference output. Native name is broad manufactured NK fertilizer at plant; no fixed recipe, CAS, geography or competing granulation route is imposed. The optional pesticide list is not a required formulation; this method excludes pesticide addition. Record actual accepted nutrient composition, moisture, strength, size distribution and route. Intermediate blend/compacts and recycled fines remain internal transfers within compact, never second reference outputs."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - un-cpc-3-2025
+                - toray-nk-compaction-2019
+            ranges: []
+      waste:
+        - row_id: reject_nk
+          role: "Discarded ammonium sulphate and potassium chloride NK granules"
+          name: "Discarded ammonium sulphate and potassium chloride NK granules"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual discarded off-specification granules cross this waste boundary. Record complete moisture, N/K/S/Cl composition and receiver. Reworked lots and internal fines are internal transfers. A sale as fertilizer is a product function requiring separate identity/allocation review, not a waste disposal or automatic avoided-product credit. Do not substitute ammonium-chloride waste."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_waste; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: captured_dust
+          role: "Dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass / kg"
+          description: "Only separately collected AS/KCl process dust actually leaving for external management. The broad native waste-dust identity has no material-treatment/geography limit; constrain actual composition, moisture, contamination and receiver. Captured dust returned to compact is an equal internal transfer and not an external waste or air emission. No native housekeeping sentence is a monitoring frequency or quantity default."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_waste; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: waste_oil
+          role: "Waste oil"
+          name: "Waste oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a68e97a-21fe-43f7-a86e-3e39b653e10a"
+          property_unit: "Mass / kg"
+          description: "Conditional spent hydraulic lubricating oil generated by in-plant equipment maintenance, consistent with the native as-generated maintenance lubricating/cutting-oil category. Constrain this row to the actual hydraulic lubricating stream, including additives/water/contamination and external receiver. Not recycled oil sold as product and not a combined waste collection."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_maintenance; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: cleaning_effluent
+          role: "Contained NK equipment-cleaning wastewater"
+          name: "Contained NK equipment-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional separately collected aqueous cleaning stream sent to a named external wastewater receiver. Meter whole wet stream; sample dissolved N/K/S/Cl and suspended solids separately. These subledgers are not duplicate wet exchanges. No electrolytic-manganese washing-water identity or manure candidate is compatible. Unknown treatment/provider remains disclosed, not zero burden."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_water; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+      elementary:
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Residual released particles up to 2.5 micrometres after actual controls, plus attributable fugitives. Native medium: emissions to outdoor air, unspecified subcompartment; not indoor exposure, resource uptake or a correction flow. Record actual source/height/location and use a more specific compatible flow only after verification. Measure full period mass without default release; do not add total PM to the size bins."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_air; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: pm2510
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only the non-overlapping 2.5–10 micrometre fraction, not total PM10. Native medium: emissions to outdoor air, unspecified subcompartment; not indoor exposure, resource uptake or a correction flow. Record actual source/height/location and use a more specific compatible flow only after verification. Measure full period mass without default release; do not add total PM to the size bins."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_air; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: pm10plus
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only particles greater than 10 micrometres; retain this interval even when a monitoring regime focuses on finer PM. Native medium: emissions to outdoor air, unspecified subcompartment; not indoor exposure, resource uptake or a correction flow. Record actual source/height/location and use a more specific compatible flow only after verification. Measure full period mass without default release; do not add total PM to the size bins."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_air; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: ammonia_air
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional independently measured NH3 gas, CAS 7664-41-7, from actual solids storage/handling or cleaning; no assumed positive emission or default factor. Convert ammonia-N to NH3 only with a documented molar basis. Native medium: emissions to outdoor air, unspecified subcompartment; not indoor exposure, resource uptake or a correction flow. Record actual source/height/location and use a more specific compatible flow only after verification. Measure full period mass without default release; do not add total PM to the size bins."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_air; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional independently measured molecular water vapour, CAS 7732-18-5; distinguish free-water evaporation, bound-water release and any separately proven chemical formation. No dryer is assumed and the mass residual is not evaporation. Native medium: emissions to outdoor air, unspecified subcompartment; not indoor exposure, resource uptake or a correction flow. Record actual source/height/location and use a more specific compatible flow only after verification. Measure full period mass without default release; do not add total PM to the size bins."
+          amount:
+            expression: "Collect the actual attributable complete-period quantity using cp_air; report per 1 kg reference flow only with positive B. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - toray-nk-compaction-2019
+                - sahut-compaction-1999
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "compact"
+    rule: "Subdivide by actual SKU/state/route and stage meters before allocation. Share common electricity/maintenance by documented measured causation or service duty; retain complete failed and idle burden pools and justify any residual allocation. No default economic/mass fraction."
+    source_ids:
+      - toray-nk-compaction-2019
+      - sahut-compaction-1999
+  - rule_id: allocation_physical
+    applies_to: "all inventory rows"
+    rule: "Keep the complete unallocated physical mass/water/element and internal-transfer ledger separate from the attributed environmental-burden ledger. Never multiply physical product outlets or paired internal transfers by an allocation fraction. Internal returns carry their existing burdens and extra processing energy; no avoided-feed credit."
+    source_ids:
+      - toray-nk-compaction-2019
+      - sahut-compaction-1999
+  - rule_id: allocation_outputs
+    applies_to: "reject_nk; captured_dust; waste_oil"
+    rule: "No routine co-product is presumed. Classify each actual external output once by function, legal/receiver status and composition. A sold off-grade fertilizer or recovered oil product needs separately reviewed identity and allocation; do not silently call it waste or automatically assign substitution credit."
+    source_ids:
+      - toray-nk-compaction-2019
+      - sahut-compaction-1999
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "compact"
+      flow_role: "nk_product"
+      record_type: "foreground_record"
+      raw_fields: "SKU; one-time release event; gross/tare/net B; N forms and total N; K/K2O; S/Cl; moisture; free acidity; feed/product sieves; crush strength/attrition; homogeneity; start/end feed/WIP; finished-stock ledger; carried burdens"
+      collection_method: "Calibrated final net scale and representative lot assays, sieve/strength/storage checks; retain agreed test method, sampling, scale uncertainty and rejected lots"
+      unit: "kg"
+      frequency: "Every batch/stage and associated representative monitoring"
+      temporal_coverage: "Complete period including start/stop, failed/zero-output, rework, storage and WIP"
+      site_scope: "Actual same-SKU/state/route site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, assays/sampling, paired transfer/stock reconciliation and supplier/receiver evidence"
+    - protocol_id: cp_feed
+      process_id: "compact"
+      flow_role: "feed_as; feed_kcl"
+      record_type: "foreground_record"
+      raw_fields: "Supplier; grade/route; complete supplied kg; component/coating/water assay; KCl m3 convention, packing, moisture, temperature and independently measured density; stock/charge/returns; particle sizes; roller settings; pass counts"
+      collection_method: "Calibrated receipt/feed weighing, metered charges and supplier-compatible volume/density tests; reconcile stocks and measured internal transfers; inspect actual granulation route"
+      unit: "kg; m3"
+      frequency: "Every batch/stage and associated representative monitoring"
+      temporal_coverage: "Complete period including start/stop, failed/zero-output, rework, storage and WIP"
+      site_scope: "Actual same-SKU/state/route site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, assays/sampling, paired transfer/stock reconciliation and supplier/receiver evidence"
+    - protocol_id: cp_energy
+      process_id: "compact"
+      flow_role: "electricity"
+      record_type: "foreground_record"
+      raw_fields: "Stage kWh; meter; site/time; CN delivery; voltage; supplier quantity; press/force-feed/crusher/screen/fan/load duty; failed/idle/start/stop energy; common load attribution"
+      collection_method: "Calibrated stage meters and bills, all repeat processing passes; measure common loads separately and preserve conversion and attribution records"
+      unit: "MJ"
+      frequency: "Every batch/stage and associated representative monitoring"
+      temporal_coverage: "Complete period including start/stop, failed/zero-output, rework, storage and WIP"
+      site_scope: "Actual same-SKU/state/route site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, assays/sampling, paired transfer/stock reconciliation and supplier/receiver evidence"
+    - protocol_id: cp_maintenance
+      process_id: "compact"
+      flow_role: "hydraulic_oil; waste_oil"
+      record_type: "foreground_record"
+      raw_fields: "Complete oil formulation; supplier volume/temperature; grade; density; top-up/replacement; opening/closing hydraulic stock; waste wet kg and additives/water; spill/capture; receiver"
+      collection_method: "Meter whole purchased fluid volume; independently measure compatible density for mass; weigh spent oil and reconcile circuit stocks; retain supplier/maintenance/receiver evidence"
+      unit: "m3; kg"
+      frequency: "Every batch/stage and associated representative monitoring"
+      temporal_coverage: "Complete period including start/stop, failed/zero-output, rework, storage and WIP"
+      site_scope: "Actual same-SKU/state/route site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, assays/sampling, paired transfer/stock reconciliation and supplier/receiver evidence"
+    - protocol_id: cp_waste
+      process_id: "compact"
+      flow_role: "reject_nk; captured_dust"
+      record_type: "foreground_record"
+      raw_fields: "Origin; actual full mass; moisture; dry matter; N/K/S/Cl; contamination; each internal return and external waste; receiver/function/treatment; transfer receipt"
+      collection_method: "Weigh each separated dust/reject stream and both ends of every return; independently verify waste status, destination and composition"
+      unit: "kg"
+      frequency: "Every batch/stage and associated representative monitoring"
+      temporal_coverage: "Complete period including start/stop, failed/zero-output, rework, storage and WIP"
+      site_scope: "Actual same-SKU/state/route site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, assays/sampling, paired transfer/stock reconciliation and supplier/receiver evidence"
+    - protocol_id: cp_water
+      process_id: "compact"
+      flow_role: "cleaning_water; cleaning_effluent; humidity_uptake"
+      record_type: "foreground_record"
+      raw_fields: "Complete cleaning cycles; supplied and effluent wet kg or metered m3 with measured density; dissolved ions and suspended solids; feed/product/stock moisture; air humidity, temperature and independent uptake/evaporation observations"
+      collection_method: "Meter full contained cleaning events; representative independent liquid/solid/air sampling and moisture tests; distinguish phase exchange from evidenced reaction water; preserve unexplained residual"
+      unit: "kg"
+      frequency: "Every batch/stage and associated representative monitoring"
+      temporal_coverage: "Complete period including start/stop, failed/zero-output, rework, storage and WIP"
+      site_scope: "Actual same-SKU/state/route site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, assays/sampling, paired transfer/stock reconciliation and supplier/receiver evidence"
+    - protocol_id: cp_air
+      process_id: "compact"
+      flow_role: "pm25; pm2510; pm10plus; ammonia_air; water_vapour"
+      record_type: "foreground_record"
+      raw_fields: "Species/source/location/height; outdoor compartment; non-overlapping size fractions; concentration; integrated gas volume or volume flow/time; pressure; temperature; wet/dry and normal/actual; controls/fugitives; detection limit; represented hours"
+      collection_method: "Measure residual stack and fugitive releases over representative full operating states; match sampling and gas-volume basis, distinguish integrated volume from flow rate; no generic factor or forced balance"
+      unit: "kg"
+      frequency: "Every batch/stage and associated representative monitoring"
+      temporal_coverage: "Complete period including start/stop, failed/zero-output, rework, storage and WIP"
+      site_scope: "Actual same-SKU/state/route site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, assays/sampling, paired transfer/stock reconciliation and supplier/receiver evidence"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Preserve raw matched full-period totals and stock/WIP burden transfers. After compatible raw unit conversion and documented burden attribution, divide each attributable exchange once by positive B. Reference output is exactly 1 kg; B=0 retains totals without a unit inventory."
+      inputs:
+        - cp_product
+        - cp_feed
+        - cp_energy
+        - cp_maintenance
+        - cp_waste
+        - cp_water
+        - cp_air
+      output: "Exchanges per 1 kg reference flow, original totals and carried-burden ledger"
+      source_ids:
+        - toray-nk-compaction-2019
+        - sahut-compaction-1999
+    - id: provider_conversion
+      applies_to: "feed_kcl; hydraulic_oil; cleaning_water"
+      rule: "Keep physical kg and provider-native m3 separately. Use independently measured corresponding mass/volume density for the identical material, packing, moisture and temperature definition; do not use a database secondary coefficient or an unrelated patent density. Resolve unknown provider basis before claiming a complete background link."
+      inputs:
+        - cp_feed
+        - cp_maintenance
+        - cp_water
+      output: "Compatible period kg and m3 before normalization"
+      source_ids:
+        - toray-nk-compaction-2019
+        - sahut-compaction-1999
+    - id: electricity_conversion
+      applies_to: "electricity"
+      rule: "Convert measured kWh using exactly 3.6 MJ/kWh once; retain native Net calorific value property. Include all repeat press/crush/classification passes and actual common loads, then normalize by B once."
+      inputs:
+        - cp_energy
+        - cp_product
+      output: "MJ per 1 kg reference flow"
+      source_ids:
+        - toray-nk-compaction-2019
+        - sahut-compaction-1999
+    - id: physical_balance
+      applies_to: "all inventory rows"
+      rule: "On matched complete period boundaries, complete measured production charges plus opening post-charge stock/WIP and independently measured environmental uptake equal accepted product plus actual discarded solids, contained effluent, actual releases and closing post-charge stock/WIP. Reconcile uncharged feed stocks separately through the receipt ledger. Exclude already released B from closing process stocks; completed-goods warehouse stocks have a separate ledger. Equal internal return transfers cancel only in the aggregate. Balance whole wet mass, dry solids, N/K/S/Cl and actual oil/additive carbon separately; no theoretical recipe or residual-assigned loss."
+      inputs:
+        - cp_product
+        - cp_feed
+        - cp_maintenance
+        - cp_waste
+        - cp_water
+        - cp_air
+      output: "Complete unallocated physical and elemental ledgers"
+      source_ids:
+        - toray-nk-compaction-2019
+        - sahut-compaction-1999
+    - id: water_species
+      applies_to: "all inventory rows"
+      rule: "Separate whole wet inputs from constituent/carrier-water subledgers. Dry compression itself establishes no net chemical water formation or consumption. Measure free-water phase exchange and any structural/bound-water change independently. Evidence of real reaction requires species/stoichiometry and separate generation/consumption evidence and scope review; never fit unknown reaction water and an unknown outlet to one residual, or use COD as dry matter/reaction water."
+      inputs:
+        - cp_feed
+        - cp_water
+        - cp_air
+        - cp_product
+      output: "Water/species ledgers and disclosed residuals"
+      source_ids:
+        - toray-nk-compaction-2019
+        - sahut-compaction-1999
+    - id: air_mass
+      applies_to: "pm25; pm2510; pm10plus; ammonia_air; water_vapour"
+      rule: "Multiply compatible concentration by already integrated gas volume, or integrate concentration times volume flow rate over time. Preserve each represented operating state, wet/dry and pressure/temperature bases. Convert nitrogen-reported NH3 with documented molar mass basis only. Keep PM bins disjoint, captured solids separate, and normalize full attributable mass by B once."
+      inputs:
+        - cp_air
+        - cp_product
+      output: "Species kg per 1 kg reference flow"
+      source_ids:
+        - toray-nk-compaction-2019
+        - sahut-compaction-1999
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify full native name components, route/state/grade, geography where declared, CAS, type/medium and exact reference property/unit version chain. Keep unknowns distinct from contradictions; broad identity does not prove supplier amount, recipe or background suitability."
+      evidence: "cp_product; cp_feed; cp_energy; cp_maintenance"
+    - id: quality_measurement
+      applies_to: "all inventory rows"
+      requirement: "Preserve original calibrated measurements, assay methods, sampling coverage, uncertainty and detection limits. Missing UUID or monitoring is not measured zero; retain actual exchanges and unresolved links. No borrowed patent or maker yield/pressure/recipe/energy/density default."
+      evidence: "cp_product; cp_water; cp_air"
+    - id: quality_period
+      applies_to: "all inventory rows"
+      requirement: "Use complete same-SKU/state/route pools including failed/zero-output batches and rework. Trace opening/closing WIP embodied burdens in a separate carryover ledger so incoming WIP is not free and failed burdens are not discarded. Unresolved carryover allocation remains incomplete dataset evidence."
+      evidence: "cp_product; cp_feed; cp_energy; cp_maintenance"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "nk_product"
+    rule: "Require exactly one final product reference row with compatible broad NK identity and Mass/kg. Verify actual AS/KCl composite-granule state/route, no KNO3 or intentional P/pesticide, positive unique B and all qualifiers. Native broad identity is not universal methodology coverage."
+    source_ids:
+      - un-cpc-3-2025
+      - toray-nk-compaction-2019
+  - rule_id: validate_period
+    applies_to: "all inventory rows"
+    rule: "Check raw totals, failed/zero-output coverage, stock/WIP and burden carryover, internal return equality and one normalization. B=0 cannot yield a normalized inventory. Every collection protocol belongs to compact and covers its actual linked rows."
+    source_ids:
+      - toray-nk-compaction-2019
+      - sahut-compaction-1999
+  - rule_id: validate_physics
+    applies_to: "all inventory rows"
+    rule: "Reconcile complete physical wet/dry mass, molecular/structural/free water, actual species, N/K/S/Cl and oil/additive carbon independently of allocated burdens. No balance-residual emissions, reaction water or hidden assumed outlet. Reject incompatible real reactions or additional routes until reviewed."
+    source_ids:
+      - toray-nk-compaction-2019
+  - rule_id: validate_links
+    applies_to: "feed_kcl; hydraulic_oil; electricity; cleaning_water; reject_nk; cleaning_effluent; humidity_uptake"
+    rule: "Verify provider-native quantities and complete treatment/transport links separately from identities. Explicit electricity CN/user-mix/voltage limits apply only to that record. An ordinary auxiliary identity gap requires disclosure and dataset repair, not deletion or automatic methodology demotion."
+    source_ids:
+      - sahut-compaction-1999
+  - rule_id: validate_air
+    applies_to: "pm25; pm2510; pm10plus; ammonia_air; water_vapour"
+    rule: "Verify actual outdoor species/subcompartment, sampling/volume bases and non-overlapping bins. Total PM is a check, not an added fourth exchange. Separate captured dust, indoor exposure and environmental releases. A maker pollution assertion does not establish measured absence."
+    source_ids:
+      - sahut-compaction-1999
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Verified plant-gate supply inventory for the defined dry AS/KCl compacted NK subtype"
+  allowed_use: "Actual matched bulk supply with complete collected quantities, upstream/treatment links and disclosed review requirements"
+  excluded_use: "Universal NK/NPK coverage, potassium nitrate, nutrient-equivalent agronomic comparison, field emissions, wet/binder/coated/liquid routes or invented quantities"
+  required_metadata: "All reference qualifiers; actual native name/location/property restrictions; raw totals and B; sampling, stock/WIP and carryover; provider references; allocation, capital and transport boundaries"
+  required_quality_disclosure: "Scientific review pending; unresolved auxiliary UUIDs; provider-volume compatibility; measurement uncertainty, detection and completeness; patent/manufacturer evidence limitations"
+  update_trigger: "Changed recipe/feed/conditioning, actual reaction, binder/water/coating/thermal route, package/delivery, grid/geography, provider basis, output function or measurement method"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, p.166. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification only: 34647 excludes potassium nitrate; optional listed substances are not a required recipe or accepted mapping."
+  - id: "eu-jrc-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "European Commission/JRC, LVIC-AAF BREF, August 2007, §7.1 and §7.2.1, printed pp.283/285, PDF pp.311/313. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-03/LVIC-AAF.pdf?download=1"
+    used_for: "Nutrient reporting and separation of mechanical blending/compaction from acid and Odda routes; Figure 7.1 does not describe the dry route. No plant or emission/consumption default."
+  - id: "toray-nk-compaction-2019"
+    type: "literature"
+    reference: "Toray Industries, JP2019043797A, published 22 March 2019, claims 6–14; detailed description on PDF pp.7–10 and examples from p.13. https://patents.google.com/patent/JP2019043797A/en"
+    used_for: "Primary patent evidence for AS/KCl dry mixing, roller briquetting, crushing, sizing, classification, fines return and measured quality attributes. Japanese text is primary; English is machine translation. Claimed/experimental recipe, moisture, density, size, pressure, speed, strength and yields are case limits, not universal defaults; future site acceptance and collection are mandatory."
+  - id: "sahut-compaction-1999"
+    type: "literature"
+    reference: "F.Dehont, Sahut-Conreur, Compaction-granulation of Fertilizer: An Economical Process for a la carte Formulations, Powder Handling & Processing 11(3), July/September 1999, PDF pp.1–3. https://d20854696ijsuu.cloudfront.net/files/22081/download/686683/1-3.pdf"
+    used_for: "Equipment-maker original: dry pressure agglomeration, stages, fines/oversize circulation and dust control; historical qualitative support. Figure includes optional humidification/coating, excluded here; no productivity, yield, density, energy or zero-effluent assertion becomes a default or demonstrated absence."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:ae5f043d5d4f51d72cb2086b3ecba4f7a6b7e74c43158d58cac35473cf8ce3e6"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7217"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7217
+          line: 61
+          column: 1
+        end:
+          offset: 9475
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased AS/KCl particles, actual hydraulic-fluid formulation and cleaning water at receipt; metered delivered electricity |\n| starting_condition_role | Foreground upstream-product interface, not a cradle-to-gate cut-off |\n| product_classification_scope | Only the dry binderless uncoated AS/KCl composite-granule subset of NK excluding KNO3 |\n| recursive_input_rule | External same-category material requires measured quantity, history and compatible provider; internal mixture/compacts/fines remain equal two-sided transfers, no second purchase or credit |\n| upstream_dataset_requirement | Link actual feed manufacture, conditioning, utilities, maintenance materials, inbound transport and external waste treatment; disclose missing providers, do not erase burdens |\n| disclosure | Site/period, complete stage coverage, stock/WIP/burden carryover, capital and transport boundaries, exclusions, sampling, grade and provider basis |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_stages | compact | Include actual reception, feed preparation, weighing/mixing, force feeding, roller hydraulics, crushing, sizing, classification, all recirculation passes, dust control, storage, bulk loading and final release. Aggregate one foreground unit while retaining separate stage records. | toray-nk-compaction-2019; sahut-compaction-1999 |\n| boundary_actual | all inventory rows | No intentional binder/water/coating/thermal route is modelled. Ancillary contained cleaning and maintenance remain actual exchanges. Additional observed exchanges or chemical transformations require source-supported atomic extension and review; an exclusion cannot hide an operated stage. | eu-jrc-lvic-aaf-2007; toray-nk-compaction-2019 |\n| boundary_capital | compact | Declare actual capital/equipment scope and any exclusion rationale with sensitivity. If included, retain measured asset quantity, materials, service period, capacity and allocation separately from operational service; no fictitious per-kg machine mass or default life. External transport and treatment cannot be implied by feed identity. | sahut-compaction-1999 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 400
+              line: 10
+              column: 76
+          text: "# Dry compacted NK fertilizer from ammonium sulphate and potassium chloride"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7217
+              line: 61
+              column: 1
+            end:
+              offset: 7238
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_27382"
+      family: "allocation"
+      span:
+        start:
+          offset: 27382
+          line: 346
+          column: 1
+        end:
+          offset: 28717
+          line: 354
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | compact | Subdivide by actual SKU/state/route and stage meters before allocation. Share common electricity/maintenance by documented measured causation or service duty; retain complete failed and idle burden pools and justify any residual allocation. No default economic/mass fraction. | toray-nk-compaction-2019; sahut-compaction-1999 |\n| allocation_physical | all inventory rows | Keep the complete unallocated physical mass/water/element and internal-transfer ledger separate from the attributed environmental-burden ledger. Never multiply physical product outlets or paired internal transfers by an allocation fraction. Internal returns carry their existing burdens and extra processing energy; no avoided-feed credit. | toray-nk-compaction-2019; sahut-compaction-1999 |\n| allocation_outputs | reject_nk; captured_dust; waste_oil | No routine co-product is presumed. Classify each actual external output once by function, legal/receiver status and composition. A sold off-grade fertilizer or recovered oil product needs separately reviewed identity and allocation; do not silently call it waste or automatically assign substitution credit. | toray-nk-compaction-2019; sahut-compaction-1999 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 400
+              line: 10
+              column: 76
+          text: "# Dry compacted NK fertilizer from ammonium sulphate and potassium chloride"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 27382
+              line: 346
+              column: 1
+            end:
+              offset: 27422
+              line: 346
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40874"
+      family: "validation"
+      span:
+        start:
+          offset: 40874
+          line: 389
+          column: 1
+        end:
+          offset: 42867
+          line: 399
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | nk_product | Require exactly one final product reference row with compatible broad NK identity and Mass/kg. Verify actual AS/KCl composite-granule state/route, no KNO3 or intentional P/pesticide, positive unique B and all qualifiers. Native broad identity is not universal methodology coverage. | un-cpc-3-2025; toray-nk-compaction-2019 |\n| validate_period | all inventory rows | Check raw totals, failed/zero-output coverage, stock/WIP and burden carryover, internal return equality and one normalization. B=0 cannot yield a normalized inventory. Every collection protocol belongs to compact and covers its actual linked rows. | toray-nk-compaction-2019; sahut-compaction-1999 |\n| validate_physics | all inventory rows | Reconcile complete physical wet/dry mass, molecular/structural/free water, actual species, N/K/S/Cl and oil/additive carbon independently of allocated burdens. No balance-residual emissions, reaction water or hidden assumed outlet. Reject incompatible real reactions or additional routes until reviewed. | toray-nk-compaction-2019 |\n| validate_links | feed_kcl; hydraulic_oil; electricity; cleaning_water; reject_nk; cleaning_effluent; humidity_uptake | Verify provider-native quantities and complete treatment/transport links separately from identities. Explicit electricity CN/user-mix/voltage limits apply only to that record. An ordinary auxiliary identity gap requires disclosure and dataset repair, not deletion or automatic methodology demotion. | sahut-compaction-1999 |\n| validate_air | pm25; pm2510; pm10plus; ammonia_air; water_vapour | Verify actual outdoor species/subcompartment, sampling/volume bases and non-overlapping bins. Total PM is a check, not an added fourth exchange. Separate captured dust, indoor exposure and environmental releases. A maker pollution assertion does not establish measured absence. | sahut-compaction-1999 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 400
+              line: 10
+              column: 76
+          text: "# Dry compacted NK fertilizer from ammonium sulphate and potassium chloride"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40874
+              line: 389
+              column: 1
+            end:
+              offset: 40896
+              line: 389
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_7217"
+      source_span:
+        start:
+          offset: 8336
+          line: 76
+          column: 1
+        end:
+          offset: 8697
+          line: 76
+          column: 362
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_actual"
+      identity_kind: "explicit"
+      unit_id: "normative_7217"
+      source_span:
+        start:
+          offset: 8698
+          line: 77
+          column: 1
+        end:
+          offset: 9078
+          line: 77
+          column: 381
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_capital"
+      identity_kind: "explicit"
+      unit_id: "normative_7217"
+      source_span:
+        start:
+          offset: 9079
+          line: 78
+          column: 1
+        end:
+          offset: 9473
+          line: 78
+          column: 395
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_27382"
+      source_span:
+        start:
+          offset: 27495
+          line: 350
+          column: 1
+        end:
+          offset: 27857
+          line: 350
+          column: 363
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_27382"
+      source_span:
+        start:
+          offset: 27858
+          line: 351
+          column: 1
+        end:
+          offset: 28294
+          line: 351
+          column: 437
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_outputs"
+      identity_kind: "explicit"
+      unit_id: "normative_27382"
+      source_span:
+        start:
+          offset: 28295
+          line: 352
+          column: 1
+        end:
+          offset: 28715
+          line: 352
+          column: 421
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_40874"
+      source_span:
+        start:
+          offset: 40969
+          line: 393
+          column: 1
+        end:
+          offset: 41330
+          line: 393
+          column: 362
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_period"
+      identity_kind: "explicit"
+      unit_id: "normative_40874"
+      source_span:
+        start:
+          offset: 41331
+          line: 394
+          column: 1
+        end:
+          offset: 41671
+          line: 394
+          column: 341
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_physics"
+      identity_kind: "explicit"
+      unit_id: "normative_40874"
+      source_span:
+        start:
+          offset: 41672
+          line: 395
+          column: 1
+        end:
+          offset: 42046
+          line: 395
+          column: 375
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_links"
+      identity_kind: "explicit"
+      unit_id: "normative_40874"
+      source_span:
+        start:
+          offset: 42047
+          line: 396
+          column: 1
+        end:
+          offset: 42492
+          line: 396
+          column: 446
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_air"
+      identity_kind: "explicit"
+      unit_id: "normative_40874"
+      source_span:
+        start:
+          offset: 42493
+          line: 397
+          column: 1
+        end:
+          offset: 42865
+          line: 397
+          column: 373
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7217"
+      source_span:
+        start:
+          offset: 7217
+          line: 61
+          column: 1
+        end:
+          offset: 7238
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7217"
+      source_span:
+        start:
+          offset: 7266
+          line: 65
+          column: 1
+        end:
+          offset: 8263
+          line: 72
+          column: 164
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_27382"
+      source_span:
+        start:
+          offset: 27382
+          line: 346
+          column: 1
+        end:
+          offset: 27422
+          line: 346
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40874"
+      source_span:
+        start:
+          offset: 40874
+          line: 389
+          column: 1
+        end:
+          offset: 40896
+          line: 389
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ae5f043d5d4f51d72cb2086b3ecba4f7a6b7e74c43158d58cac35473cf8ce3e6"
+  generated_content_sha256: "sha256:df6f2381cc53ba2c1a71fddeec40748fdeef59926832fcc74838bd4fdcb06930"

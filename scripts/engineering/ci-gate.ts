@@ -2,8 +2,8 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { isReusableContext, verifyCiPlan, type CiPlan } from './ci-plan.ts';
-export const CI_JOBS = ['plan','contracts','test-shards','documentation','offline-distribution','provider-importer','sealed-distribution','sealed-web','source-coverage'] as const;
-const alwaysRequired = new Set(['plan','contracts','documentation','sealed-distribution','sealed-web']);
+export const CI_JOBS = ['plan','contracts','test-shards','web-build','documentation','offline-distribution','provider-importer','sealed-distribution','sealed-web','source-coverage'] as const;
+const alwaysRequired = new Set(['plan','contracts','web-build','documentation','sealed-distribution','sealed-web']);
 export function verifyCiGate(plan: CiPlan, results: unknown) {
   if (plan.mode !== 'full' && plan.mode !== 'data') throw new Error('Unknown qualification lane.');
   if (!results || typeof results !== 'object' || Array.isArray(results)) throw new Error('Missing CI job results.');

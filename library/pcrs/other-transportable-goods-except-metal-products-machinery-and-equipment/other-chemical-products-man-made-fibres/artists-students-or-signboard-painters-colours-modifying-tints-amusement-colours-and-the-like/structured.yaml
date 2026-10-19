@@ -1,10 +1,1094 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "35120"
-  title: "Artists', students' or signboard painters' colours, modifying tints, amusement colours and the like"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.artists-students-or-signboard-painters-colours-modifying-tints-amusement-colours-and-the-like"
+  classification_refs: "CPC 3.0:35120; narrower"
+  covered_products: "PW6 rutile titanium-white wet aqueous acrylic heavy-body artist colour"
+  excluded_products: "CPC35110 industrial/architectural coatings; printing ink; oil/alkyd/solvent/UV colours; dyes; dry pigment; other colours"
+  representative_product: "Heavy-body titanium-white artist colour; GOLDEN item 1380 illustrates product identity only"
+  production_route: "Purchased dry rutile PW6, supplied Extra Heavy Gel Gloss, Universal Dispersant, Heavy Body Defoamer and separately added water; physical dispersion/milling, blending, QC, filling; actual formula required"
+  market_state: "Wet aqueous paste, net contents of filled HDPE pail; first quality release, not actual dispatch"
+functional_unit:
+  what: "Newly quality-released net PW6 acrylic artist colour at the filled-pail production gate"
+  how_much: "1 kg"
+  how_well: "Declared rutile PW6 identity, acrylic binder grade, wet solids/water, actual viscosity test and lot release specification; no universal numeric colour or service target"
+  how_long_or_cycle: "One complete matched production cohort; no use-stage life"
+  reference_flow_link: "o_new"
+system_boundary:
+  rules:
+    - rule_id: sb_manufacture
+      applies_to: "colour_make"
+      rule: "Include receipt and pre-release storage, weighing, dispersion/milling, blending, QC and its consumed samples, rework, pumping, pail filling/closing/labelling, pre-release handling, extraction, cleaning and segregated waste transfer. Include actual ancillary burdens; extend atomic rows for every real addition before claiming completeness."
+      source_ids:
+        - golden-making
+        - golden-diy
+    - rule_id: sb_gate
+      applies_to: "o_new"
+      rule: "Stop at first quality release after filling. Finished-goods warehouse and dispatch are separate ledgers with their actual burdens retained in any expanded study. On consolidation cancel internal handover Q; never add same-cohort closing finished inventory as another output to Q. If switching to a delivery gate, retain opening/closing finished stock and burdens and exclude undelivered goods from delivery Q; that is a separately declared profile."
+      source_ids: []
+    - rule_id: sb_use
+      applies_to: "downstream"
+      rule: "Painting, substrate preparation, dilution, film drying, brush washing and service/end-of-life are outside this manufacturing gate; the delivered wet water is not a factory evaporation emission."
+      source_ids:
+        - golden-water
+    - rule_id: sb_route
+      applies_to: "colour_make"
+      rule: "This is physical dispersion into purchased binder, with no on-site polymerization or cooked-varnish reaction assumed. No reaction water is invented to close mass. Collected washwater goes off-site; on-site treatment, fuel, solvent cleaning, compressed air or other actual equipment requires explicit added operations and individual exchanges."
+      source_ids:
+        - epa-paint
+        - golden-water
+boundary_abstraction:
+  declared_starting_condition: "Receipt of purchased pigment, aqueous gel and formulated additives, separate water and ready-made packaging"
+  starting_condition_role: "Foreground manufacturing start; upstream supply and inbound freight remain background requirements"
+  product_classification_scope: "Narrow PW6 aqueous acrylic artist-colour subset of CPC35120, distinct from CPC35110 and printing ink"
+  recursive_input_rule: "Purchased finished paint/intermediates are explicit supplied articles with independent backgrounds; same-cohort return ledgers cancel internal transfers and do not recursively produce paint"
+  upstream_dataset_requirement: "Actual supplier formulation and pigment grade; utilities by actual geography/technology; each packaging article and off-site waste transport/treatment"
+  disclosure: "Declare all actual operations and additions, cut-offs, meter allocation, stock and return carry, outsourced processing and off-site waste receivers; primary examples supply no default inventory"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Water-Based Paint"
+    uuid: "47411f13-cc57-455b-ba23-dafbaeef17db"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "artist use"
+    - "PW6 rutile and CAS"
+    - "binder/additive commercial grades and lots"
+    - "full supplied masses and composition subledgers"
+    - "wet solids/water"
+    - "actual release specification and tests"
+    - "pail and closure materials/net fill"
+    - "site/geography and period"
+    - "unique first-release cohort Q"
+    - "WIP/return burden carry"
+    - "utility mix and waste receivers"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is unique first quality-released net wet paint mass after filling, excluding pail/closure/label. Q>0; returned/reaccepted product contributes no new Q. Production release and dispatch are not assumed equal."
+  - id: mu_supplied
+    applies_to: "i_pigment; i_gel; i_dispersant; i_defoamer; i_water"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure complete supplied wet mass; active/solids/water are non-additive composition subledgers. No SDS-bound recipe, pigment-volume-concentration or performance inference."
+  - id: mu_volume
+    applies_to: "metered liquids"
+    required_property_ref:
+      name: "Volume and independently measured density"
+      uuid: ""
+    required_unit: "m3 and kg/m3"
+    rule: "Convert integrated volume once using measured same-liquid density at stated temperature. A rate needs actual duration; an already integrated volume gets no extra time factor. No native secondary factor is assumed to be density."
+  - id: mu_energy
+    applies_to: "i_power"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Keep raw meter readings and convert kWh to MJ once; retain source voltage/geography/mix."
+  - id: mu_stock
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass and carried burden"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Match raw numerator and positive first-release cohort once; preserve failed runs, rework, opening/closing WIP and burden carry. Finished inventory is a post-release ledger and is not an extra production output on top of Q."
+process_map:
+  - id: colour_make
+    name: "PW6 dispersion, blending and pail release"
+    inclusion: "required"
+    inclusion_condition: "Declared dry-pigment/purchased-gel route only"
+    role: "Physical manufacturing including associated pre-release operations and return ledger"
+    quantitative_reference: "o_new; 1 kg"
+process_inventory:
+  - id: colour_make
+    label: "PW6 dispersion, blending and pail release"
+    inputs:
+      product:
+        - row_id: i_pigment
+          role: "Dry rutile white pigment"
+          name: "Titanium Dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12525dde-1d7a-4024-9ea3-5b90912a48f8"
+          property_unit: "Mass / kg"
+          description: "Weigh the actual separately purchased PW6 rutile pigment powder, CAS 13463-67-7, including its supplied surface treatment and moisture. Native identity is industrial-grade pigment, production mix at plant, with no declared geography; it includes rutile and anatase. Require a rutile pigment certificate and actual grade/assay. The native CPC 35499 and Chinese synonym 四氧化钛 are metadata debts; CAS and principal name/comment identify TiO2. Do not infer a manufacturing route, food suitability or pigment fraction from that record."
+          amount:
+            expression: "Raw cohort numerator from cp_material; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - golden-product
+            ranges: []
+        - row_id: i_gel
+          role: "Purchased acrylic binder gel"
+          name: "GOLDEN Extra Heavy Gel Gloss, supplied aqueous formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this one complete supplied acrylic gel by its own invoice and lot. It is the declared binder for this bounded route, not dry acrylic resin. Polymer, water, preservative and other constituents inside the gel are composition subledgers, never duplicate purchases. Confirm actual grade and period availability; the historical DIY article does not establish the current formulation or the proprietary recipe of Heavy Body Titanium White."
+          amount:
+            expression: "Raw cohort numerator from cp_material; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - golden-diy
+            ranges: []
+        - row_id: i_dispersant
+          role: "Purchased wetting dispersant"
+          name: "GOLDEN Universal Dispersant, supplied formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the whole separately purchased surfactant formulation used to wet dry PW6. Retain lot, supplier composition disclosure and water/active subledger. Do not substitute one imagined pure surfactant, copy a DIY mixing ratio, or count its water again as fresh water."
+          amount:
+            expression: "Raw cohort numerator from cp_material; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - golden-diy
+            ranges: []
+        - row_id: i_defoamer
+          role: "Purchased heavy-body defoamer"
+          name: "GOLDEN Defoamer Heavy Body, supplied formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this separately purchased formulated additive at actual wet supplied mass. The source lists oils or silicones as possible defoamer types; it does not identify this product as pure silicone or mineral oil. Obtain supplier evidence and record its actual full formulation without inferring a recipe from SDS ranges."
+          amount:
+            expression: "Raw cohort numerator from cp_material; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - golden-diy
+            ranges: []
+        - row_id: i_water
+          role: "Separately added formulation water"
+          name: "Distilled water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only separately acquired distilled water actually added to the dispersion or let-down. Water already delivered inside gel/dispersant/defoamer remains in those supplied masses. Volume requires independently measured temperature-specific water density, not a secondary native property factor."
+          amount:
+            expression: "Raw cohort numerator from cp_material; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - golden-diy
+            ranges: []
+        - row_id: i_cleanwater
+          role: "Cleaning water"
+          name: "Tap water for equipment cleaning"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure actual fresh cleaning water separately from formula water and internal reuse. Include all cohort-attributable vessel, mill, filler and floor cleaning. This route sends collected washwater to an off-site receiver; no on-site RO, flocculation chemical or recovery percentage is assumed."
+          amount:
+            expression: "Raw cohort numerator from cp_material; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - golden-water
+            ranges: []
+        - row_id: i_power
+          role: "Purchased electricity"
+          name: "Purchased alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Meter dispersion, mixing, pumping, filling, extraction, cleaning and pre-release handling, including failed runs and standby attributable to the cohort. Retain actual supply geography, voltage and mix. The inspected CN, <1 kV, consumption-mix-to-user identity is not adopted for an unspecified site. Convert recorded kWh once to MJ using 3.6 MJ/kWh."
+          amount:
+            expression: "Raw cohort numerator from cp_energy; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: i_pail
+          role: "Supplied HDPE paint pail body"
+          name: "HDPE paint pail body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This route fills white HDPE pails. Weigh actual supplied body, including moulding and actual recycled content in its background. A resin row is not a finished pail. The manufacturer lists a 128 oz HDPE pail as a real market example; nominal volume does not establish product net mass or this dataset pack size."
+          amount:
+            expression: "Raw cohort numerator from cp_pack; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - golden-product
+            ranges: []
+        - row_id: i_lid
+          role: "Supplied HDPE closure"
+          name: "HDPE paint pail lid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Apply this specific row only to a documented HDPE lid. Weigh separately from body and net paint; supplier proof is required and the reference product page does not specify closure polymer. A different polymer, gasket, handle or liner requires its own actual atomic row before completeness can be asserted; do not quietly assume it is included or absent."
+          amount:
+            expression: "Raw cohort numerator from cp_pack; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: i_label
+          role: "Supplied paper label"
+          name: "Label, paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7b25a54f-baa6-4593-9670-4240a3315eed"
+          property_unit: "Mass / kg"
+          description: "Weigh the actual finished paper label; declare printing and adhesive within the supplied article background, not a separate fictitious ink purchase by the paint maker. Native name is broad, with no geography/route/comment. Its retained historical classification is provenance, not confirmation of a supplier or active taxonomy."
+          amount:
+            expression: "Raw cohort numerator from cp_pack; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: i_carton
+          role: "Corrugated transport carton"
+          name: "Corrugated fibreboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each actual single supplied carton attributable to the release cohort, including actual packing rejects. Where no secondary carton is used, retain evidence of absence. This specific carton is not a packaging-material selector; additional tape or pallet exchanges require separate cards if present."
+          amount:
+            expression: "Raw cohort numerator from cp_pack; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: i_return
+          role: "Previously released paint returned for rework"
+          name: "Water-Based Paint"
+          flow_type: "product"
+          flow_ref:
+            uuid: "47411f13-cc57-455b-ba23-dafbaeef17db"
+          property_unit: "Mass / kg"
+          description: "Record actual same-product returns crossing back into manufacture, at their measured wet mass. Preserve original release and burden identifiers in a return ledger; this is not a new procurement. Internal transfers and original carried burdens cancel on consolidation. Only incremental rework burdens are added once to the original cohort, with any cross-period restatement disclosed."
+          amount:
+            expression: "Raw cohort numerator from cp_period; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_period
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: o_new
+          role: "Newly accepted artist colour"
+          name: "Water-Based Paint"
+          flow_type: "product"
+          flow_ref:
+            uuid: "47411f13-cc57-455b-ba23-dafbaeef17db"
+          property_unit: "Mass / kg"
+          description: "The sole quantitative reference is first quality release of net PW6 rutile aqueous acrylic heavy-body artist colour in filled pails, before finished-goods storage or dispatch. Native identity is broader: water-based paint, production mix at plant, acrylic or alkyd binder options and unspecified geography. This PCR selects only its physically consistent acrylic/PW6 artist subset, not industrial or architectural paint and not a branded recipe. Native water-soluble, zero-fume and 90%-less-VOC claims are unverified and do not define this inventory or performance."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - golden-product
+            ranges: []
+        - row_id: o_reaccepted
+          role: "Reaccepted returned colour"
+          name: "Water-Based Paint"
+          flow_type: "product"
+          flow_ref:
+            uuid: "47411f13-cc57-455b-ba23-dafbaeef17db"
+          property_unit: "Mass / kg"
+          description: "Measure same-product returns leaving the rework ledger after reacceptance. This real Product output shares the broad UUID with o_new but is not new production and never increases Q. Pair it to i_return and original cohort; incremental losses/rework utilities remain visible. Do not relabel it as waste or hide it to force a unique UUID match."
+          amount:
+            expression: "Raw cohort numerator from cp_period; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_period
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: w_reject
+          role: "Discarded wet artist paint"
+          name: "Rejected PW6 acrylic artist paint paste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh unrecoverable same-product paste with its water/solids composition and receiver. Retained rework and WIP are stock/return ledgers, not this waste. The inspected surface-finishing waste row is not adopted as manufacturing residue without route confirmation."
+          amount:
+            expression: "Raw cohort numerator from cp_outlets; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - golden-water
+            ranges: []
+        - row_id: w_wash
+          role: "Collected equipment washwater"
+          name: "Acrylic paint equipment washwater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wet washwater to the off-site receiver, assays and solids entrainment. It is a technosphere waste, not an elementary water emission; record receiver treatment separately in the background. COD/BOD are quality indicators and cannot supply individual chemical emissions or recipe fractions."
+          amount:
+            expression: "Raw cohort numerator from cp_outlets; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - golden-water
+            ranges: []
+        - row_id: w_dust
+          role: "Captured pigment dust"
+          name: "Captured rutile titanium dioxide pigment dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual captured dry pigment sent off-site. Distinguish retained return-to-batch material from discarded dust and residual stack release. The inspected TiO2 elementary flow is indoor air and cannot represent an outdoor stack release or this waste."
+          amount:
+            expression: "Raw cohort numerator from cp_outlets; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - epa-paint
+            ranges: []
+        - row_id: w_pail
+          role: "Rejected HDPE pail body"
+          name: "Rejected HDPE paint pail body"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh actual rejected bodies and attached paint, with container and paint subledgers. Avoid counting the attached paint again in w_reject; document receiver and net material recovery without a default credit."
+          amount:
+            expression: "Raw cohort numerator from cp_pack; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: w_lid
+          role: "Rejected HDPE lid"
+          name: "Rejected HDPE paint pail lid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected lids separately from bodies and preserve actual material identity. Any lid seal or other discarded packaging material has its own row when present."
+          amount:
+            expression: "Raw cohort numerator from cp_pack; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: e_water
+          role: "Manufacturing water evaporation to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record independently supported manufacturing evaporation only, in the native emissions-to-air-unspecified compartment. Water retained in supplied wet paint is not evaporated here. Downstream painting/drying is outside this gate; do not import those losses or fit evaporation to an unexplained mass residual. Native isotope/synonym noise does not change CAS 7732-18-5 ordinary water identity."
+          amount:
+            expression: "Raw cohort numerator from cp_outlets; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - golden-water
+            ranges: []
+        - row_id: e_tio2
+          role: "Residual pigment release to outdoor air"
+          name: "Titanium dioxide to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Use actual post-control species mass and outdoor compartment supported by sampling or an independently supported species balance. Captured dust is w_dust. No AP-42 percentage or generic particulate total is treated as measured TiO2; do not use the inspected indoor-air UUID."
+          amount:
+            expression: "Raw cohort numerator from cp_outlets; report per reference flow once under section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlets
+              source_ids:
+                - epa-paint
+            ranges: []
+allocation_rules:
+  - rule_id: al_cohort
+    applies_to: "colour_make"
+    rule: "Use direct job/lot metering for this one colour; allocate shared manufacturing support by documented causal driver and retain the full unallocated totals and residual reconciliation. Do not use a generic paint energy split, revenue ratio, solvent credit or artist-use benefit."
+    source_ids: []
+  - rule_id: al_returns
+    applies_to: "i_return; o_reaccepted"
+    rule: "Same-product reacceptance is not a co-product or new saleable production. Pair original mass/burden ids; cancel transferred original burdens and count incremental rework once on the original cohort. Reopened cohorts require a disclosed restatement. A zero-output failure retains its losses/energy in the matched cohort; if Q=0 retain a raw failure record and do not divide or emit a per-kg result."
+    source_ids: []
+  - rule_id: al_waste
+    applies_to: "waste outputs"
+    rule: "Off-spec paste, dust, washwater and rejected packaging are separately measured wastes. Actual recovery and receiver treatment require evidence; none is an automatic negative product burden. Any genuine separately sold co-product requires a distinct boundary/allocation review before this single-product profile is used."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "colour_make"
+      flow_role: "o_new"
+      record_type: "Quality release and calibrated weighing"
+      raw_fields: "lot; product identity; first-release timestamp/id; gross/tare/net kg; acceptance; rejected samples; prior-release id; Q"
+      collection_method: "QC owner and filling supervisor reconcile calibrated net fills to unique first release. Deduplicate prior releases, returns and reacceptance. Keep raw Q in kg, packaging excluded; no division. Finished warehouse handover and dispatch are separate raw ledgers."
+      unit: "kg"
+      frequency: "Each filled lot and release"
+      temporal_coverage: "Complete actual period and traced cohort, including failed/zero-output runs and all periods carrying WIP or returns"
+      site_scope: "Declared site and this PW6 acrylic route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scale calibration, signed release and cohort id audit"
+    - protocol_id: cp_period
+      process_id: "colour_make"
+      flow_role: "i_return; o_reaccepted; WIP"
+      record_type: "Stock and burden ledger"
+      raw_fields: "period; lot; opening/closing WIP kg and composition; carried material/energy/waste burdens by exchange id; internal transfer ids; first release ids; returned/reaccepted kg and original burden ids; Q"
+      collection_method: "Production accountant owns the raw matched-cohort ledger. Record all period activity, zero-output failures, rework and WIP carry; trace opening burdens from prior periods and carry closing burdens forward. Pair return transfers with original cohorts and preserve incremental rework. Collect physical stock and burden ledgers separately, with no A/Q division; final-stock movements after first release do not create production outputs."
+      unit: "kg; MJ"
+      frequency: "Each movement and period close"
+      temporal_coverage: "Complete actual period and traced cohort, including failed/zero-output runs and all periods carrying WIP or returns"
+      site_scope: "Declared site and this PW6 acrylic route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Signed stocktake, prior-period burden ledger and non-duplication reconciliation"
+    - protocol_id: cp_material
+      process_id: "colour_make"
+      flow_role: "purchased ingredients and water"
+      record_type: "Weighing and supplier records"
+      raw_fields: "exchange id; lot; supplied wet kg; receipts/issues/returns; stock; assay/solids/water; supplier article; temperature; volume or rate and duration; density source"
+      collection_method: "Material custodian records raw actual weighed issues and losses, including failed batches and cleaning; reconcile opening and closing raw stock and matched WIP burdens. Keep each complete commercial formulation as one external purchase; composition fractions are a separate non-additive subledger. Retain raw converted numerators without division."
+      unit: "kg"
+      frequency: "Each issue and batch"
+      temporal_coverage: "Complete actual period and traced cohort, including failed/zero-output runs and all periods carrying WIP or returns"
+      site_scope: "Declared site and this PW6 acrylic route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Invoices, scales, supplier CoA and composition disclosure"
+    - protocol_id: cp_energy
+      process_id: "colour_make"
+      flow_role: "i_power"
+      record_type: "Meter and operating log"
+      raw_fields: "meter id; start/end kWh; time; run/failure/rework id; shared support total; causal allocation; WIP carry"
+      collection_method: "Utilities owner collects full attributable actual-period meter numerators and matched carried burdens. Include failed runs, standby, filling, ventilation, cleaning and handling; reconcile shared totals before conversion. Preserve raw kWh and converted MJ, no division."
+      unit: "kWh; MJ"
+      frequency: "Per run and meter interval"
+      temporal_coverage: "Complete actual period and traced cohort, including failed/zero-output runs and all periods carrying WIP or returns"
+      site_scope: "Declared site and this PW6 acrylic route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration, job logs and support allocation reconciliation"
+    - protocol_id: cp_pack
+      process_id: "colour_make"
+      flow_role: "individual packaging rows"
+      record_type: "Packaging count, mass and reject log"
+      raw_fields: "article id; polymer; component; count; measured item kg; used/rejected/recovered count; attached paint; supplier; cohort; carried burdens"
+      collection_method: "Packaging supervisor counts and weighs each supplied article and each waste separately. Retain full packing/repacking/failed-fill quantities, component evidence and coating residue subledgers, matched with WIP carry. Record raw numerators only; include actual ancillary packaging and avoid double-counting article constituents."
+      unit: "kg; count"
+      frequency: "Each fill/packing lot"
+      temporal_coverage: "Complete actual period and traced cohort, including failed/zero-output runs and all periods carrying WIP or returns"
+      site_scope: "Declared site and this PW6 acrylic route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Weighed component samples, supplier bill of materials and reject tickets"
+    - protocol_id: cp_outlets
+      process_id: "colour_make"
+      flow_role: "waste and elementary outputs"
+      record_type: "Weighbridge, sampling and receiver records"
+      raw_fields: "species/stream id; wet kg; water/solid fractions; sample/time; air compartment; control inlet/capture/outlet; destination; receiver; stock and burden carry; uncertainty"
+      collection_method: "Environmental owner collects raw actual wet waste and independently supported emitted-species numerators after controls, including failures and all retained WIP burdens. Distinguish fresh water, retained free water, internal recycle, washwater, capture and evaporation. Do not derive unknown reaction water and unknown emissions from one residual or translate COD into species. This physical blending route has no claimed net reaction-water source. No division in collection."
+      unit: "kg"
+      frequency: "Each outlet movement and sampling interval"
+      temporal_coverage: "Complete actual period and traced cohort, including failed/zero-output runs and all periods carrying WIP or returns"
+      site_scope: "Declared site and this PW6 acrylic route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Waste tickets, receiver acceptance, species methods and independent uncertainty/balance evidence"
+  calculation_rules:
+    - id: calc_conversion
+      applies_to: "all inventory rows"
+      rule: "Perform only required raw conversions: kg=integrated m3 × independently measured kg/m3; integrated volume=rate × actual duration only for a rate; MJ=kWh × 3.6. Composition fractions of purchased gel/additives do not create extra procurement."
+      inputs:
+        - raw_volume
+        - density
+        - temperature
+        - rate
+        - duration
+        - raw_kWh
+      output: "converted raw numerators"
+      source_ids: []
+    - id: calc_cohort
+      applies_to: "all inventory rows"
+      rule: "Build each raw attributable numerator A_i from complete actual-period activity plus opening WIP carried burdens minus closing WIP carried burdens, using traced cohort ids. Preserve zero-output losses and incremental rework. Cancel only documented internal stock/return transfers and original burden duplicates; never delete a real burden. Reopened returned cohorts retain original unique release Q and receive disclosed incremental-burden restatement. Unresolved carry or cross-cohort attribution blocks a complete dataset."
+      inputs:
+        - period_totals
+        - opening_WIP_burdens
+        - closing_WIP_burdens
+        - cohort_ids
+        - return_ids
+      output: "A_i"
+      source_ids: []
+    - id: calc_report
+      applies_to: "all inventory rows"
+      rule: "Report q_i = A_i / Q once for the complete matched positive first-release cohort, after raw conversions and burden carry reconciliation. Q is raw newly accepted net wet paint kg; o_new is 1 kg. Cards and protocol aggregation describe this same reporting operation, not successive divisions. i_return and o_reaccepted retain measured paired loop mass per this same Q and cancel on consolidation; they do not increase Q or represent a second saleable product."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+        - cp_period
+      output: "per 1 kg reference flow"
+      source_ids: []
+    - id: calc_balance
+      applies_to: "all inventory rows"
+      rule: "Reconcile physical wet mass independently before burden normalization: opening WIP + external formulation/cleaning material issues (excluding packaging) + returned paint = closing WIP + newly released Q + reaccepted returned mass + separately measured wastes + separately supported air releases. Packaging has its own supplied/retained/rejected stock balance; energy is not mass. Reconcile water and Ti across actual product/waste/stock species using supplier assay and measured outlet evidence. Physical carrier evaporation is not reaction water. Neither an unknown outlet nor a hypothetical species may be solved by fitting the same unexplained residual."
+      inputs:
+        - raw_mass_ledger
+        - water_subledger
+        - Ti_assay
+        - measured_outlets
+        - WIP
+        - return_ledger
+      output: "mass and element reconciliation with uncertainty"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all rows"
+      requirement: "Keep full supplied product/chemical/phase/grade, native route/geography/medium restrictions and actual supplier compatibility. Broad native identities give no recipe or quantities; unresolved auxiliary UUID is a linkage gap, not zero use. Reference must retain the selected PW6 aqueous acrylic artist scope."
+      evidence: "Supplier specification and identity audit"
+    - id: dq_raw
+      applies_to: "all protocols"
+      requirement: "Retain full actual-period raw records, owner signoff, all failures and stock/burden carry, single calc_report operation and uncertainty. No invented foreground measurements or industry averages."
+      evidence: "Raw and derived ledgers with reproducible reconciliation"
+    - id: dq_formula
+      applies_to: "formulated supplies"
+      requirement: "Confirm each actual commercial grade. Supplier ingredient/active/water composition is a non-additive subledger; SDS ranges do not define recipe or pigment loading. If this named-gel route cannot be demonstrated, do not silently substitute another binder/route."
+      evidence: "Supplier bills, CoA, recipe issue records"
+    - id: dq_sources
+      applies_to: "method evidence"
+      requirement: "The four Golden pages are one manufacturer evidence family. The historical DIY article and water-reclamation case are qualitative only. EPA independently distinguishes physical paint manufacture from cooked varnish; its solvent/particulate/control factors are not adopted. Product viscosity and lightfastness labels are not lifetime or colour-equivalence factors."
+      evidence: "golden-product; golden-diy; golden-water; epa-paint"
+validation_rules:
+  - rule_id: vr_reference
+    applies_to: "o_new"
+    rule: "Require one explicit o_new link, the declared reference UUID, 1 kg net mass and matching bilingual scope. i_return/o_reaccepted are real paired Product exchanges sharing the UUID and cannot be hidden or counted as a second new reference."
+    source_ids: []
+  - rule_id: vr_denominator
+    applies_to: "all inventory rows"
+    rule: "Require Q>0 unique first release, raw A_i and full WIP/return carry with only one calc_report division. Reject Q inferred from dispatch or Q plus same-cohort closing finished stock. An actual delivery study needs its own stock/burden reconciliation."
+    source_ids: []
+  - rule_id: vr_completeness
+    applies_to: "colour_make"
+    rule: "Every actual ingredient, utility, packaging component, rework burden, waste stream and emitted species must be individually present or supported absent. Auxiliary unresolved UUIDs and supplier gaps remain disclosed; no data package can claim complete linked inventory while applicable gaps remain."
+    source_ids: []
+  - rule_id: vr_balance
+    applies_to: "calc_balance"
+    rule: "Require physical mass, water and Ti reconciliation supported independently from actual species evidence, allowing stated measurement uncertainty without assigning unknown chemistry to a residual. Keep waste receiver transfers distinct from elementary emissions."
+    source_ids: []
+  - rule_id: vr_claims
+    applies_to: "dataset profile"
+    rule: "Do not infer service life, coverage, pigment/binder recipe, dry-film function, zero VOC, product safety or scientific approval from identity or finite structural checks."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground physical manufacture of the declared PW6 aqueous acrylic artist colour"
+  downstream_use: "Background-linked manufacturing inventory at first quality release"
+  allowed_use: "Declared product/route/phase cohort only; separate expansion for warehouse/dispatch"
+  excluded_use: "Full CPC35120 coverage, industrial paint or ink proxy, service/colour/lifetime comparison, undisclosed proprietary recipe"
+  required_metadata: "All reference qualifiers, raw period and cohort ids, Q gate, stock/return and burden ledgers, supplier native compatibility, all additional atomic rows"
+  required_quality_disclosure: "Measurement uncertainty, all unresolved links, native metadata debts, historical source limits, allocations, exclusions and missing evidence"
+  update_trigger: "Changed pigment/binder/formulation, supply article, process, packaging, release/delivery gate, site/period or new contrary identity evidence"
+data_sources:
+  - id: "golden-product"
+    type: "handbook"
+    reference: "https://goldenartistcolors.com/products/heavy-body-acrylic-color-titanium-white"
+    used_for: "Manufacturer item 1380: real PW6 rutile heavy-body artist white and HDPE-pail market example. Identity only; no supplied recipe, density, fill-mass conversion, performance equivalence or lifetime adopted."
+  - id: "golden-making"
+    type: "handbook"
+    reference: "https://goldenartistcolors.com/discover-golden/how-we-make-our-paints"
+    used_for: "Manufacturer qualitative mixing, milling, testing and before-shipping QC; no measured site inputs or universal recipe. Same publisher as other Golden pages."
+  - id: "golden-diy"
+    type: "handbook"
+    reference: "https://justpaint.org/just-make-paint/"
+    used_for: "Golden Artist Colors, Just Make Paint, 1 October 2000: purchased acrylic gel, dry-pigment dispersion and separate formulated dispersant/defoamer route, water and packaging functions. Historical DIY method only; no ratio, additive concentration, pH, industrial yield, current product availability or proprietary recipe adopted."
+  - id: "golden-water"
+    type: "handbook"
+    reference: "https://goldenartistcolors.com/resources/golden-manufacturing-water-reclamation-process"
+    used_for: "Ben Gavett manufacturer case: carrier water versus equipment cleaning, washwater and pigment/polymer residue. Qualitative completeness only; its water-use ratio, RO recovery, transport distance, on-site treatment and COD cannot be transferred as this site inventory or species emissions. Same manufacturer evidence family."
+  - id: "epa-paint"
+    type: "official_guidance"
+    reference: "https://www.epa.gov/sites/default/files/2020-10/documents/c06s04.pdf"
+    used_for: "US EPA AP-42 6.4, May 1983 reformatted January 1995, p.1: independent physical dispersion/mixing/packaging versus cooked-varnish process distinction. Solvent-paint archetype; no artist recipe, generic loss/emission/control factors or quantitative default adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:43b0513de5721546132b7c7853f02a45e18136f960d323642fe7a2c8ee0867aa"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5455"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5455
+          line: 60
+          column: 1
+        end:
+          offset: 8150
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt of purchased pigment, aqueous gel and formulated additives, separate water and ready-made packaging |\n| starting_condition_role | Foreground manufacturing start; upstream supply and inbound freight remain background requirements |\n| product_classification_scope | Narrow PW6 aqueous acrylic artist-colour subset of CPC35120, distinct from CPC35110 and printing ink |\n| recursive_input_rule | Purchased finished paint/intermediates are explicit supplied articles with independent backgrounds; same-cohort return ledgers cancel internal transfers and do not recursively produce paint |\n| upstream_dataset_requirement | Actual supplier formulation and pigment grade; utilities by actual geography/technology; each packaging article and off-site waste transport/treatment |\n| disclosure | Declare all actual operations and additions, cut-offs, meter allocation, stock and return carry, outsourced processing and off-site waste receivers; primary examples supply no default inventory |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_manufacture | colour_make | Include receipt and pre-release storage, weighing, dispersion/milling, blending, QC and its consumed samples, rework, pumping, pail filling/closing/labelling, pre-release handling, extraction, cleaning and segregated waste transfer. Include actual ancillary burdens; extend atomic rows for every real addition before claiming completeness. | `golden-making`; `golden-diy` |\n| sb_gate | o_new | Stop at first quality release after filling. Finished-goods warehouse and dispatch are separate ledgers with their actual burdens retained in any expanded study. On consolidation cancel internal handover Q; never add same-cohort closing finished inventory as another output to Q. If switching to a delivery gate, retain opening/closing finished stock and burdens and exclude undelivered goods from delivery Q; that is a separately declared profile. |  |\n| sb_use | downstream | Painting, substrate preparation, dilution, film drying, brush washing and service/end-of-life are outside this manufacturing gate; the delivered wet water is not a factory evaporation emission. | `golden-water` |\n| sb_route | colour_make | This is physical dispersion into purchased binder, with no on-site polymerization or cooked-varnish reaction assumed. No reaction water is invented to close mass. Collected washwater goes off-site; on-site treatment, fuel, solvent cleaning, compressed air or other actual equipment requires explicit added operations and individual exchanges. | `epa-paint`; `golden-water` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 324
+              line: 9
+              column: 1
+            end:
+              offset: 381
+              line: 9
+              column: 58
+          text: "# PW6 rutile titanium-white aqueous acrylic artist colour"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5455
+              line: 60
+              column: 1
+            end:
+              offset: 5476
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26109"
+      family: "allocation"
+      span:
+        start:
+          offset: 26109
+          line: 411
+          column: 1
+        end:
+          offset: 27330
+          line: 419
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_cohort | colour_make | Use direct job/lot metering for this one colour; allocate shared manufacturing support by documented causal driver and retain the full unallocated totals and residual reconciliation. Do not use a generic paint energy split, revenue ratio, solvent credit or artist-use benefit. |  |\n| al_returns | i_return; o_reaccepted | Same-product reacceptance is not a co-product or new saleable production. Pair original mass/burden ids; cancel transferred original burdens and count incremental rework once on the original cohort. Reopened cohorts require a disclosed restatement. A zero-output failure retains its losses/energy in the matched cohort; if Q=0 retain a raw failure record and do not divide or emit a per-kg result. |  |\n| al_waste | waste outputs | Off-spec paste, dust, washwater and rejected packaging are separately measured wastes. Actual recovery and receiver treatment require evidence; none is an automatic negative product burden. Any genuine separately sold co-product requires a distinct boundary/allocation review before this single-product profile is used. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 324
+              line: 9
+              column: 1
+            end:
+              offset: 381
+              line: 9
+              column: 58
+          text: "# PW6 rutile titanium-white aqueous acrylic artist colour"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26109
+              line: 411
+              column: 1
+            end:
+              offset: 26149
+              line: 411
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37492"
+      family: "validation"
+      span:
+        start:
+          offset: 37492
+          line: 452
+          column: 1
+        end:
+          offset: 38992
+          line: 462
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| vr_reference | o_new | Require one explicit o_new link, the declared reference UUID, 1 kg net mass and matching bilingual scope. i_return/o_reaccepted are real paired Product exchanges sharing the UUID and cannot be hidden or counted as a second new reference. |  |\n| vr_denominator | all inventory rows | Require Q>0 unique first release, raw A_i and full WIP/return carry with only one calc_report division. Reject Q inferred from dispatch or Q plus same-cohort closing finished stock. An actual delivery study needs its own stock/burden reconciliation. |  |\n| vr_completeness | colour_make | Every actual ingredient, utility, packaging component, rework burden, waste stream and emitted species must be individually present or supported absent. Auxiliary unresolved UUIDs and supplier gaps remain disclosed; no data package can claim complete linked inventory while applicable gaps remain. |  |\n| vr_balance | calc_balance | Require physical mass, water and Ti reconciliation supported independently from actual species evidence, allowing stated measurement uncertainty without assigning unknown chemistry to a residual. Keep waste receiver transfers distinct from elementary emissions. |  |\n| vr_claims | dataset profile | Do not infer service life, coverage, pigment/binder recipe, dry-film function, zero VOC, product safety or scientific approval from identity or finite structural checks. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 324
+              line: 9
+              column: 1
+            end:
+              offset: 381
+              line: 9
+              column: 58
+          text: "# PW6 rutile titanium-white aqueous acrylic artist colour"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37492
+              line: 452
+              column: 1
+            end:
+              offset: 37514
+              line: 452
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "sb_manufacture"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 6629
+          line: 75
+          column: 1
+        end:
+          offset: 7035
+          line: 75
+          column: 407
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 7036
+          line: 76
+          column: 1
+        end:
+          offset: 7509
+          line: 76
+          column: 474
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_use"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 7510
+          line: 77
+          column: 1
+        end:
+          offset: 7746
+          line: 77
+          column: 237
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 7747
+          line: 78
+          column: 1
+        end:
+          offset: 8148
+          line: 78
+          column: 402
+    - pointer: "/allocation_rules/0"
+      rule_id: "al_cohort"
+      identity_kind: "explicit"
+      unit_id: "normative_26109"
+      source_span:
+        start:
+          offset: 26222
+          line: 415
+          column: 1
+        end:
+          offset: 26531
+          line: 415
+          column: 310
+    - pointer: "/allocation_rules/1"
+      rule_id: "al_returns"
+      identity_kind: "explicit"
+      unit_id: "normative_26109"
+      source_span:
+        start:
+          offset: 26532
+          line: 416
+          column: 1
+        end:
+          offset: 26974
+          line: 416
+          column: 443
+    - pointer: "/allocation_rules/2"
+      rule_id: "al_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_26109"
+      source_span:
+        start:
+          offset: 26975
+          line: 417
+          column: 1
+        end:
+          offset: 27328
+          line: 417
+          column: 354
+    - pointer: "/validation_rules/0"
+      rule_id: "vr_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_37492"
+      source_span:
+        start:
+          offset: 37587
+          line: 456
+          column: 1
+        end:
+          offset: 37854
+          line: 456
+          column: 268
+    - pointer: "/validation_rules/1"
+      rule_id: "vr_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_37492"
+      source_span:
+        start:
+          offset: 37855
+          line: 457
+          column: 1
+        end:
+          offset: 38149
+          line: 457
+          column: 295
+    - pointer: "/validation_rules/2"
+      rule_id: "vr_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_37492"
+      source_span:
+        start:
+          offset: 38150
+          line: 458
+          column: 1
+        end:
+          offset: 38486
+          line: 458
+          column: 337
+    - pointer: "/validation_rules/3"
+      rule_id: "vr_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_37492"
+      source_span:
+        start:
+          offset: 38487
+          line: 459
+          column: 1
+        end:
+          offset: 38783
+          line: 459
+          column: 297
+    - pointer: "/validation_rules/4"
+      rule_id: "vr_claims"
+      identity_kind: "explicit"
+      unit_id: "normative_37492"
+      source_span:
+        start:
+          offset: 38784
+          line: 460
+          column: 1
+        end:
+          offset: 38990
+          line: 460
+          column: 207
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 5455
+          line: 60
+          column: 1
+        end:
+          offset: 5476
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 5504
+          line: 64
+          column: 1
+        end:
+          offset: 6556
+          line: 71
+          column: 211
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26109"
+      source_span:
+        start:
+          offset: 26109
+          line: 411
+          column: 1
+        end:
+          offset: 26149
+          line: 411
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37492"
+      source_span:
+        start:
+          offset: 37492
+          line: 452
+          column: 1
+        end:
+          offset: 37514
+          line: 452
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:43b0513de5721546132b7c7853f02a45e18136f960d323642fe7a2c8ee0867aa"
+  generated_content_sha256: "sha256:287dd37b7d6a710dd67d69ad79a93022e7f3fa6ea4a4b97abb88257cb5c9bf80"

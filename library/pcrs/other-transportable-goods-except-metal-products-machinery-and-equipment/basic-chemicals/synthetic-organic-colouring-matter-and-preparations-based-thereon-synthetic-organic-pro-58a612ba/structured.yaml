@@ -1,10 +1,1251 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34310"
-  title: "Synthetic organic colouring matter and preparations based thereon; synthetic organic products of a kind used as fluorescent brightening agents or as luminophores; colour lakes and preparations based thereon"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.synthetic-organic-colouring-matter-and-preparations-based-thereon-synthetic-organic-pro-58a612ba"
+  classification_refs: "CPC 3.0 34310; narrower; mapping acceptance remains separate"
+  covered_products: "Single-dye Acid Orange 7 sodium-salt powder; declared residual NaCl and moisture"
+  excluded_products: "Liquid or amine salt supply; lakes; blends; other dyes; brighteners; purchase-only formulation"
+  representative_product: "Declared lot of Orange II sodium powder; no nominal assay default"
+  production_route: "Aqueous diazotisation/coupling; salt-out; filter; wash; dry; finish; pack"
+  market_state: "Accepted net supplied powder at factory gate; transport packaging excluded from reference mass"
+functional_unit:
+  what: "Supply Orange II sodium powder for further formulation or dyeing"
+  how_much: "1 kg supplied net powder"
+  how_well: "Meet the declared lot/SKU dye-strength, identity, counterion, moisture and residual-salt acceptance specification; no common performance threshold"
+  how_long_or_cycle: "One production-and-delivery cycle to factory gate; no use-stage durability claim"
+  reference_flow_link: "out_dye"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "foreground_system_boundary"
+      rule: "Include receiving, stage charging, reaction, salt isolation, washing, drying, finishing, dust/acid-gas capture, cleaning and packing. Include measured losses and ancillary utilities, even in unsuccessful batches."
+      source_ids:
+        - jrc-ofc-2006
+    - rule_id: boundary_transfers
+      applies_to: "foreground_system_boundary"
+      rule: "Off-site liquid waste is one technosphere transfer per actual stream/load, with receiver treatment linked. Do not additionally emit the transferred constituents to water at this foreground gate. If wastewater treatment is on-site, revise the process boundary and add treatment chemicals, sludges and actual elementary emissions before use."
+      source_ids:
+        - jrc-ofc-2006
+    - rule_id: boundary_configuration_evidence
+      applies_to: "foreground_system_boundary"
+      rule: "Verify actual cooling circuit and every external loss or supply; add actual atomic exchanges before use. Verify waste loads, receiver and treatment before treating a liquid stream as an off-site technosphere transfer. A literature route or absence of a meter cannot justify zero water, waste or air exchange."
+      source_ids:
+        - jrc-ofc-2006
+    - rule_id: boundary_no_synthetic_union
+      applies_to: "foreground_system_boundary"
+      rule: "Do not borrow membrane or amine-extraction quantities, metal-complex-dye emissions or another colouring product recipe. Actual auxiliary components outside the listed route need separately named, measured and verified atomic rows."
+      source_ids:
+        - jrc-ofc-2006
+        - basf-us4560745-1985
+boundary_abstraction:
+  declared_starting_condition: "Purchased sulfanilic acid, 2-naphthol and individual auxiliary supplies at site receipt; foreground includes synthesis through packed net product"
+  starting_condition_role: "foreground_gate"
+  product_classification_scope: "Only the stated synthetic azo dye powder subset of CPC 34310"
+  recursive_input_rule: "Record externally purchased same-category dye once with verified upstream origin; purchase-only formulation is outside this synthesis PCR. Internal recovered dye does not restart upstream production."
+  upstream_dataset_requirement: "Match each supplied reagent state, assay, provider and reference quantity; include external steam/electricity and waste-treatment burdens; unavailable data remain disclosed"
+  disclosure: "Site, campaign, route, lot grade, meters, internal recovery, utility limits and waste destination; all rejected boundary conditions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "dye"
+    uuid: "08a96ffe-4db5-4405-abdd-d4d03b8b0a55"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - CAS
+    - "sodium counterion"
+    - "lot/SKU"
+    - "dye assay with wet/dry basis and method"
+    - "residual NaCl"
+    - moisture
+    - route
+    - "powder grade and acceptance"
+    - "origin/provider"
+    - gate
+    - "steam state/return baseline"
+    - "waste receiver"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use accepted net supplied powder mass, excluding packaging. Residual salt and moisture remain inside that mass. Collect with cp_product."
+  - id: composition_basis
+    applies_to: "all chemical product inputs and out_dye"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve actual supplied mass; measure active fraction, water and counterions independently; dry-basis assays require a documented moisture conversion. No duplicated carrier-water input."
+  - id: utility_basis
+    applies_to: "in_electricity; in_steam"
+    required_property_ref:
+      name: "Energy; Mass"
+      uuid: ""
+    required_unit: "MJ; kg"
+    rule: "Preserve electricity energy and measured steam mass. Match steam supply pressure, enthalpy, condensate credit and supplier reference basis explicitly; unknown compatibility prevents background linkage."
+  - id: ledger_basis
+    applies_to: "p_dye"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Maintain separate unallocated total wet mass, water, organic carbon, sodium, nitrogen, sulphur and chloride ledgers. Water and dye species have reaction formation/consumption terms; elemental balances conserve atoms. Keep carrier water and internal reaction products separate from purchased exchanges."
+process_map:
+  - id: p_dye
+    name: "Aqueous synthesis, salt isolation and powder finishing"
+    inclusion: "required"
+    inclusion_condition: "Declared route and utility/waste configuration match scope"
+    role: "foreground"
+    quantitative_reference: "1 kg accepted supplied powder"
+process_inventory:
+  - id: p_dye
+    label: "Aqueous synthesis, salt isolation and powder finishing"
+    inputs:
+      product:
+        - row_id: in_sulfanilic
+          role: "Sulfanilic acid"
+          name: "Sulfanilic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "CAS 121-57-3; weighed diazo precursor; declare grade, assay and supplied water."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: in_naphthol
+          role: "2-Naphthol"
+          name: "Naphthol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a201a6a7-1d73-46d3-ac6d-9f02af4cdc78"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The adopted broad naphthol identity explicitly includes both isomers; this row requires actual 2-naphthol, CAS 135-19-3, independently verified assay and supplier background for the beta isomer. The broad dye classification is not compound taxonomy. CAS 135-19-3; weighed coupling reagent; exclude 1-naphthol."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: in_nitrite
+          role: "Sodium nitrite"
+          name: "Sodium nitrite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record weighed nitrite, assay, excess and endpoint test; no assumed stoichiometric consumption."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: in_hcl
+          role: "Hydrochloric acid solution"
+          name: "Hydrochloric Acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a118a682-1600-4855-b959-c78777b75ee8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record delivered solution mass and HCl mass fraction; solution water remains in the physical water ledger."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: in_naoh
+          role: "Sodium hydroxide solution"
+          name: "Sodium Hydroxide solution"
+          flow_type: "product"
+          flow_ref:
+            uuid: "608efe06-bdb9-4927-8485-82637c1b89fd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The adopted solution record specifies distilled-water dilution and chlor-alkali production; verify the actual provider route and supplied concentration separately before linkage. Its drug-manufacturing use context supplies no recipe for this dye. Measure supplied solution for dissolution, pH control and scrubbing separately by stage; assay and carrier water are mandatory."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: in_nacl
+          role: "Sodium chloride"
+          name: "Sodium chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a413ea86-0887-42c8-be77-3bee86d5863b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The adopted identity requires purity at least 99.5%; this is an identity condition, not a universal dose or purity default. Verify actual supplied grade before linking. Measure purchased salting-out or final strength-adjustment salt; distinguish this from salt formed by reaction."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: in_water
+          role: "Deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure purchased liquid water by stage including ice made internally; do not add solution carrier water a second time."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: in_electricity
+          role: "Electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "The adopted identity is grid-average alternating current delivered below 1 kV in China (CN). Use it only for compatible actual metered supply and geography; other voltages, countries or supplier mixes need a separately verified identity and background. The database reference property is Net calorific value, not a claim that electricity is a fuel. Meter reactors, pumps, closed-loop cooling, dryer auxiliaries and dust collection; 1 kWh = 3.6 MJ. Supplier reference-property convention must be checked."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: in_steam
+          role: "Purchased process steam"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7734613a-3ef2-47ce-aff0-9a1bd67906c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The verified record supplies a generic chemical-industry steam mass identity without pressure/return baseline. Physical identity can be retained; actual pressure, enthalpy and provider-background compatibility remain mandatory pending collection. Record inlet steam mass, absolute pressure, temperature, dryness and returned condensate mass/enthalpy; net delivered heat is measured from the enthalpy balance, never inferred from a database MJ field. Confirm indirect heating from the piping diagram; steam and condensate cross the utility boundary separately. Condensate is a measured return, not a dye-product co-product or an automatic avoided-heat credit. Direct steam injection requires a separate process-water balance and revised boundary."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: in_carbon
+          role: "Activated carbon"
+          name: "Activated carbon"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5cad53b5-252a-4e2f-8197-8be465707405"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional clarifying aid only when used; record origin, grade, dose and retained dye, with supplier-specific upstream data. The native route label says absorption while the physical comment describes adsorption; retain that inconsistency for supplier clarification. It does not identify a wood, coal or other feedstock by default."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: in_pe
+          role: "Polyethylene liner film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The physical PE-film identity and CAS 9002-88-4 are compatible; the CPC 29220 luggage classification is a known isolated anomaly, requiring source/provider clarification. Conditional actual PE liner only; record polymer, thickness, grade and supplier, excluding the outer sack mass."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: in_sack
+          role: "Uncoated kraft paper sack"
+          name: "Uncoated kraft paper sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional uncoated kraft outer sack only; actual composite/coated packaging requires separate atomically named components before use."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_dye
+          role: "Acid Orange 7 sodium salt powder"
+          name: "dye"
+          flow_type: "product"
+          flow_ref:
+            uuid: "08a96ffe-4db5-4405-abdd-d4d03b8b0a55"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The adopted dye identity explicitly allows powder use. This PCR restricts it to Acid Orange 7 sodium salt powder, CAS 633-96-5, with measured lot composition; no other dye or background recipe is implied. Its CPC 35120 classification is inconsistent with this broad identity and requires source clarification. 1 kg accepted supplied net powder; measured dye-content, residual salt and moisture belong to this same product. Exclude transport packaging."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product
+              source_ids:
+                - thermo-orangeii-spec
+            ranges: []
+      waste:
+        - row_id: w_mother
+          role: "Saline Acid Orange 7 isolation mother liquor"
+          name: "Saline Acid Orange 7 isolation mother liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure each transferred saline mother-liquor load, composition and licensed receiver. This is a technosphere waste transfer, not a freshwater elementary release."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: w_wash
+          role: "Acid Orange 7 filter-cake wash effluent"
+          name: "Acid Orange 7 filter-cake wash effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Collect and meter wash effluent separately from mother liquor; if the streams share a transfer load, reconcile constituent masses to the combined load without double counting."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ofc-2006
+                - bcho-orangeii-2015
+            ranges: []
+        - row_id: w_scrub
+          role: "Hydrochloric-acid gas scrubber blowdown"
+          name: "Hydrochloric-acid gas scrubber blowdown"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional aqueous scrubber purge; measure HCl capture, chloride and alkali; retained contamination is not also a direct air emission."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: w_carbon
+          role: "Spent activated carbon containing Acid Orange 7"
+          name: "spent activated carbon"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aff33890-3f08-40f9-9310-a7f77213de05"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional solid clarifying waste; wet mass, dry solids, dye loading and receiver route are mandatory."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: w_reject
+          role: "Rejected Acid Orange 7 sodium salt powder"
+          name: "Rejected Acid Orange 7 sodium salt powder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-spec powder only when sent out for disposal; on-site rework stays internal and affects measured yield and energy."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: w_dust
+          role: "Collected Acid Orange 7 powder dust"
+          name: "Collected Acid Orange 7 powder dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate captured dust sent for external treatment from internal return; never count captured mass again as airborne PM."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+      elementary:
+        - row_id: air_hcl
+          role: "Hydrogen chloride to outdoor air"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "CAS 7647-01-0; quantify residual stack and fugitive HCl after abatement over complete batches."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: air_no
+          role: "Nitrogen monoxide to outdoor air"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured molecular NO (CAS 10102-43-9) only; source screening must establish occurrence. An NO2-equivalent NOx total is not this mass."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: air_no2
+          role: "Nitrogen dioxide to outdoor air"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured molecular NO2 (CAS 10102-44-0) only; exclude N2O and do not add an overlapping NOx total."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: air_pm25
+          role: "Particulates less than or equal to 2.5 micrometres to outdoor air"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure dryer, milling and packing emissions leaving the site after collection; diameter class is exclusive."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: air_pm10
+          role: "Particulates greater than 2.5 and less than or equal to 10 micrometres to outdoor air"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use measured exclusive fraction; cumulative PM10 includes PM2.5 and must first be reconciled before subtraction."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: air_pmover10
+          role: "Particulates greater than 10 micrometres to outdoor air"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use measured exclusive fraction; total suspended particulate is a reconciliation check, not an additional emission row."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+        - row_id: air_water
+          role: "Water vapour to outdoor air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual vented drying water, after condensate recovery; this is neither freshwater withdrawal nor liquid-water discharge."
+          amount:
+            expression: "Measured campaign amount divided by accepted supplied net powder mass; retain stage records and conditional absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-ofc-2006
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_no_coproduct_default
+    applies_to: "foreground_burden_allocation"
+    rule: "The declared route has one intended saleable dye. Do not promote residual NaCl, mixed mother liquor or waste to a co-product by assumption. Assign attributable foreground burdens to accepted dye, including rejected batches and waste handling; if an actual independently saleable recovered output exists, retain its concrete output row and apply allocation_physical_ledger."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-ofc-2006
+  - rule_id: allocation_physical_ledger
+    applies_to: "foreground_burden_allocation"
+    rule: "Keep unallocated total wet mass, water, organic carbon, Na, N, S and Cl ledgers separate from allocated environmental burdens. For an actual independently saleable recovered output, first investigate measured subdivision or a justified expanded system. Where neither is possible, document a relevant causal physical relationship; if another relationship is necessary, justify it and test sensitivity. Record shares that sum to one on the declared burden basis. Never multiply physical co-product mass by burden shares; output masses and internal endpoints stay measured."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-ofc-2006
+  - rule_id: allocation_campaigns
+    applies_to: "foreground_burden_allocation"
+    rule: "Use stage meters and validated run times/loads for shared campaigns. Do not allocate merely by different commercial dye strengths, trade names or an unrelated historical plant mix. Record shutdown/cleaning and losses once."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-ofc-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "p_dye"
+      flow_role: "out_dye"
+      record_type: "foreground_record"
+      raw_fields: "lot; SKU; CAS; counterion; net mass Q; returns/reacceptance; opening/closing finished stocks and work in progress; carried inventory burdens; moisture; dye assay/basis and species definition; residual salt; Na/N/S/Cl and organic carbon; acceptance"
+      collection_method: "Calibrated net weighing; representative lot samples with traceable analytical method and certificate; exclude packaging and rejected product"
+      unit: "kg; mass fraction"
+      frequency: "Each batch/load; utility and emission profiles throughout operation"
+      temporal_coverage: "One declared complete representative campaign including cleaning, rejects and stock changes; report dates and coverage gaps"
+      site_scope: "Declared foreground route and shared auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; analytical method; source records; uncertainty; reconciliation"
+    - protocol_id: cp_material
+      process_id: "p_dye"
+      flow_role: "reagents; clarifying aid"
+      record_type: "foreground_record"
+      raw_fields: "chemical; CAS; grade; supplier; stage; gross/tare/net kg; solution assay; carrier water; purity; stock change"
+      collection_method: "Weigh each supply and stage charge; reconcile received stock, consumption, returns and internal recovery; test concentrations"
+      unit: "kg; mass fraction"
+      frequency: "Each batch/load; utility and emission profiles throughout operation"
+      temporal_coverage: "One declared complete representative campaign including cleaning, rejects and stock changes; report dates and coverage gaps"
+      site_scope: "Declared foreground route and shared auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; analytical method; source records; uncertainty; reconciliation"
+    - protocol_id: cp_water
+      process_id: "p_dye"
+      flow_role: "in_water; air_water"
+      record_type: "foreground_record"
+      raw_fields: "stage; water supply kg; ice kg; solution water; wet cake; product moisture; condensate; vent water; stock change"
+      collection_method: "Calibrated meters/weighing; measured density for volume conversion; measure condensate and vent humidity/airflow or use a bounded water-balance residual with propagated uncertainty only when all other water inputs, outputs, stocks and reaction formation/consumption terms have independent evidence; never fit unknown reaction water and vent water to the same residual"
+      unit: "kg"
+      frequency: "Each batch/load; utility and emission profiles throughout operation"
+      temporal_coverage: "One declared complete representative campaign including cleaning, rejects and stock changes; report dates and coverage gaps"
+      site_scope: "Declared foreground route and shared auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; analytical method; source records; uncertainty; reconciliation"
+    - protocol_id: cp_energy
+      process_id: "p_dye"
+      flow_role: "in_electricity; in_steam"
+      record_type: "foreground_record"
+      raw_fields: "stage; meter kWh; steam kg; absolute pressure; temperature; dryness; inlet enthalpy; condensate mass/enthalpy; indirect-heating circuit; cooling diagram and make-up/purge/leak/additive records; supply geography; supplier baseline"
+      collection_method: "Stage-meter full runs and cleaning; calculate net steam heat from measured mass/enthalpy; disclose missing return or supply reference and do not link incompatible backgrounds"
+      unit: "kWh; MJ; kg"
+      frequency: "Each batch/load; utility and emission profiles throughout operation"
+      temporal_coverage: "One declared complete representative campaign including cleaning, rejects and stock changes; report dates and coverage gaps"
+      site_scope: "Declared foreground route and shared auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; analytical method; source records; uncertainty; reconciliation"
+    - protocol_id: cp_pack
+      process_id: "p_dye"
+      flow_role: "in_pe; in_sack"
+      record_type: "foreground_record"
+      raw_fields: "component; supplier; polymer/paper grade; thickness; tare mass; units; rejects; lot"
+      collection_method: "Weigh actual separate components and reconcile package count, losses and supplier specification"
+      unit: "kg"
+      frequency: "Each batch/load; utility and emission profiles throughout operation"
+      temporal_coverage: "One declared complete representative campaign including cleaning, rejects and stock changes; report dates and coverage gaps"
+      site_scope: "Declared foreground route and shared auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; analytical method; source records; uncertainty; reconciliation"
+    - protocol_id: cp_waste
+      process_id: "p_dye"
+      flow_role: "w_mother; w_wash; w_scrub; w_carbon; w_reject; w_dust"
+      record_type: "foreground_record"
+      raw_fields: "stream; stage; transfer kg; measured density; water/dry solids; AO7; sulfanilic acid; 2-naphthol; chloride; sodium; nitrite; total N; total S and sulphate; COD and TOC with analytical bases; pH; receiver; treatment; recovery"
+      collection_method: "Meter/weigh segregated transfers and sample each stream/load; reconcile mother/wash/scrubber mixing. Retain waste manifests and receiver acceptance. Extend analysis for observed contaminants, toxicity and treatment inhibition"
+      unit: "kg; mg/L; mass fraction"
+      frequency: "Each batch/load; utility and emission profiles throughout operation"
+      temporal_coverage: "One declared complete representative campaign including cleaning, rejects and stock changes; report dates and coverage gaps"
+      site_scope: "Declared foreground route and shared auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; analytical method; source records; uncertainty; reconciliation"
+    - protocol_id: cp_air
+      process_id: "p_dye"
+      flow_role: "air_hcl; air_no; air_no2; air_pm25; air_pm10; air_pmover10"
+      record_type: "foreground_record"
+      raw_fields: "source/stage; operating cycle; species; molecular basis; concentration; dry/wet reference; T/P; exhaust volume/time; abatement; fugitive estimate; diameter fractions; uncertainty; detection limit"
+      collection_method: "Sample full charging/reaction/drying/finishing/packing cycles and cleaning, including bypasses. Use species-resolved validated sampling; compute exhaust load from matched concentration and gas volume; source screening determines conditional NO/NO2 presence"
+      unit: "kg; mg/m3; m3"
+      frequency: "Each batch/load; utility and emission profiles throughout operation"
+      temporal_coverage: "One declared complete representative campaign including cleaning, rejects and stock changes; report dates and coverage gaps"
+      site_scope: "Declared foreground route and shared auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; analytical method; source records; uncertainty; reconciliation"
+  calculation_rules:
+    - id: campaign_denominator
+      applies_to: "all inventory rows"
+      rule: "x = raw campaign exchange total / Q; Q is the same positive accepted supplied net powder kg measured by cp_product. Sum raw amounts over the complete compatible route/state/grade campaign, including failed or zero-output batches, cleaning and rework, then divide once; do not average batch ratios or renormalize per-kg values. Reconcile returns, reacceptance, finished stocks and work in progress with their carried burdens so Q is credited once and the attributed burden numerator covers the same output. Internal rework is not new accepted output. If Q is zero, retain the totals and disclose no unit result rather than divide or omit burdens. Keep numerator units. Product output is 1 kg."
+      inputs:
+        - cp_product
+        - "applicable row protocol"
+      output: "x"
+      source_ids:
+        - jrc-ofc-2006
+    - id: composition_ledger
+      applies_to: "all chemical product inputs and out_dye"
+      rule: "Active mass = supplied mass × measured as-supplied active mass fraction; carrier water and residual salt are separate balance components, not duplicate technosphere inputs. Convert dry assay only with matched moisture measurement. Assay reporting as free acid, sodium salt, dry solids or colour strength must be identified; only a validated analytical species conversion can yield sodium-dye mass. The salt species includes its bound Na and S; residual NaCl contains additional Na and Cl. Do not assign the entire unassayed remainder to NaCl or water."
+      inputs:
+        - cp_material
+        - cp_product
+      output: "active mass; water; residual salt"
+      source_ids:
+        - thermo-orangeii-spec
+    - id: physical_balances
+      applies_to: "p_dye"
+      rule: "For total wet mass and conserved elements: unallocated external inputs + opening stocks = external products + transferred wastes + actual releases + closing stocks + disclosed residual. Record total wet mass, Na, N, S, Cl and organic carbon separately. Include reagent and dye-bound Na, sulfanilic/dye S, nitrite and organic N, purchased salt and acid Cl. Organic-carbon changes require species transformation and any transfer to inorganic carbon; COD is an oxygen-demand indicator, not carbon mass. For water or dye species add internal reaction formation and subtract consumption on the relevant ledger: water from diazotisation/neutralisation and dye formation are not extra purchased flows. Internal NaCl formation is not purchased salting salt. Preserve chemical-species and elemental bases, density, uncertainty and stock changes; no assumed yield or fixed reaction-water quantity. Reconcile same-stream internal endpoints and the utility steam/condensate loop separately."
+      inputs:
+        - cp_material
+        - cp_product
+        - cp_water
+        - cp_waste
+        - cp_air
+      output: "balance residual and uncertainty"
+      source_ids:
+        - jrc-ofc-2006
+    - id: delivered_steam_heat
+      applies_to: "in_steam"
+      rule: "Net delivered heat = sum(inlet steam mass × inlet specific enthalpy) − sum(return condensate mass × return specific enthalpy), with a declared common enthalpy reference and supplier return convention. Keep mass and heat records separately."
+      inputs:
+        - cp_energy
+      output: "MJ and steam kg, separately"
+      source_ids:
+        - jrc-ofc-2006
+    - id: air_loads
+      applies_to: "elementary air outputs"
+      rule: "Integrate matched species concentration × exhaust volume across each operating cycle, plus supported fugitives. For nonoverlapping PM fractions subtract cumulative masses only on identical source, time, moisture and sampling bases."
+      inputs:
+        - cp_air
+      output: "kg per species or exclusive PM class"
+      source_ids:
+        - jrc-ofc-2006
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all flows"
+      requirement: "Verify full identity metadata, CAS, route, medium, property and unit; investigate contradictions. UUID confirmation and provider-baseline compatibility are separate checks."
+      evidence: "supplier specification; native identity records"
+    - id: quality_amount
+      applies_to: "all quantities"
+      requirement: "Use traceable actual measurements, assay, water balance and energy meters; disclose detection limits, missing stages and unclosed balances. No transplanted patent/site numbers."
+      evidence: "cp_product; cp_material; cp_water; cp_energy; cp_waste; cp_air"
+    - id: quality_completeness
+      applies_to: "p_dye"
+      requirement: "Screen actual additives, packaging, cleaning agents, direct releases and accidental/bypass conditions; add specific atomic rows with verified identity before claiming a complete dataset. Neither a missing measurement nor missing UUID means zero."
+      evidence: "jrc-ofc-2006"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Exactly one product output is out_dye, with the stated 1 kg net supplied powder basis. Require verified reference UUID/property/unit group and declared sodium counterion, route and lot assay; a free-acid/amine-salt record cannot be substituted."
+    source_ids:
+      - thermo-orangeii-spec
+      - basf-us4560745-1985
+  - rule_id: validate_amounts
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reference, all row denominators, collection aggregation and calculations use identical accepted net powder Q in both languages. Assess measured yield, active fraction, salts, water and net steam heat without invented values."
+    source_ids:
+      - jrc-ofc-2006
+  - rule_id: validate_releases
+    applies_to: "foreground_dataset_conformance"
+    rule: "Prevent duplicate transferred wastewater versus direct water release, captured dust versus airborne PM, and nested PM intervals. Molecular NO/NO2 and NO2-equivalent totals are distinct; never infer N2O from NOx. Preserve any actual biogenic CO2 if an expanded route generates it, independently of climate-reporting conventions."
+    source_ids:
+      - jrc-ofc-2006
+  - rule_id: validate_ledgers
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require independent unallocated total-wet, water, organic-carbon, Na, N, S and Cl reconciliation, with reaction formation/consumption for species and measured external endpoints. Keep allocation shares outside these physical ledgers. Missing chemistry or an unbounded water-balance residual requires review, not a zero or stoichiometric default."
+    source_ids:
+      - jrc-ofc-2006
+      - thermo-orangeii-spec
+  - rule_id: validate_readiness
+    applies_to: "foreground_dataset_conformance"
+    rule: "Missing identities, contradictory metadata, incompatible provider bases and unresolved measurement prevent a complete dataset. Scientific review and mapping acceptance remain separate from completed methodology authoring."
+    source_ids:
+      - thermo-orangeii-spec
+      - jrc-ofc-2006
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Only after identity and quantity verification: declared sodium-powder route at stated dye strength and gate"
+  excluded_use: "Full CPC leaf coverage; equivalence between hues/strengths; other salts, fluid formulations, lakes and purchase-only formulation"
+  required_metadata: "Site; campaign; lot/SKU; CAS/counterion; supplied assay/moisture/salts; route; utilities; receiver; reference identity"
+  required_quality_disclosure: "UUID and background compatibility status; source/measurement coverage; balance residual; allocation; uncertainty; missing exchanges; candidate status"
+  update_trigger: "Route, counterion, strength/formulation, recovery, utility baseline, receiver or emission change"
+data_sources:
+  - id: "jrc-ofc-2006"
+    type: "official_guidance"
+    reference: "[JRC OFC BREF, August 2006](https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/ofc_bref_0806.pdf)"
+    used_for: "Sections 2.5.4 (printed 43–44/PDF 73–74), 4.3.2.4 (198/PDF 228), 5.2.1 (380–381/PDF 410–411): route archetype, distinct waste streams and operation-sensitive measurement. Historical examples and BAT levels are not inventory defaults."
+  - id: "basf-us4560745-1985"
+    type: "literature"
+    reference: "[BASF US4560745A, 1985, original patent](https://patentimages.storage.googleapis.com/0b/5f/8f/4afae7653438da/US4560745.pdf)"
+    used_for: "Example 2, column 4/PDF 3: sulfanilic-acid/2-naphthol coupling. Subsequent diethanolamine-salt extraction is excluded; no case recipe or recovery transferred."
+  - id: "thermo-orangeii-spec"
+    type: "handbook"
+    reference: "[Thermo Scientific Orange II product specification, catalog 416561000](https://assets.thermofisher.com/chem-specs-pdf/retrievePdf?countryCode=cn&erp_type=CN_E1_LCD&rootSku=41656&sku=416561000)"
+    used_for: "Original PDF page 1 printed 14 October 2026: CAS 633-96-5, sodium identity, powder market state and SKU-specific dye-content test. No universal composition or route inferred."
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "[UNSD CPC 3.0 explanatory notes, 30 June 2025](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf)"
+    used_for: "Printed/PDF page 162, subclass 34310: broad classification context only. Supports narrower proposal, not method identity or recipe."
+  - id: "bcho-orangeii-2015"
+    type: "official_guidance"
+    reference: "[23rd Baltic Chemistry Olympiad practical examination, April 2015](https://www.eko.ut.ee/pdf/bcho/bcho2015e.en.pdf)"
+    used_for: "Problem 2, PDF/printed pages 9–12: actual sulfanilic acid/NaNO2/HCl/NaOH/2-naphthol synthesis, NaCl salt-out, filtration, water washing and drying. Laboratory method evidence only; no industrial recipe, yield, cooling configuration or heat factor transferred."
+  - id: "jrc-ilcd-2010"
+    type: "official_guidance"
+    reference: "[JRC ILCD Handbook, General guide for LCA, detailed guidance, 2010](https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf)"
+    used_for: "Section 6.5.3.2, printed 74–80/PDF 94–100: subdivision, justified system expansion and causal physical allocation before other relationships. Method reference only; no fixed dye allocation share or compliance claim."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:9120aa23f4f569cc2f6798450c2ec91010947f5d03e654b67c5b595def10f496"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6165"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6165
+          line: 62
+          column: 1
+        end:
+          offset: 8509
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased sulfanilic acid, 2-naphthol and individual auxiliary supplies at site receipt; foreground includes synthesis through packed net product |\n| starting_condition_role | foreground_gate |\n| product_classification_scope | Only the stated synthetic azo dye powder subset of CPC 34310 |\n| recursive_input_rule | Record externally purchased same-category dye once with verified upstream origin; purchase-only formulation is outside this synthesis PCR. Internal recovered dye does not restart upstream production. |\n| upstream_dataset_requirement | Match each supplied reagent state, assay, provider and reference quantity; include external steam/electricity and waste-treatment burdens; unavailable data remain disclosed |\n| disclosure | Site, campaign, route, lot grade, meters, internal recovery, utility limits and waste destination; all rejected boundary conditions |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_complete` | Include receiving, stage charging, reaction, salt isolation, washing, drying, finishing, dust/acid-gas capture, cleaning and packing. Include measured losses and ancillary utilities, even in unsuccessful batches. | jrc-ofc-2006 |\n| `boundary_transfers` | Off-site liquid waste is one technosphere transfer per actual stream/load, with receiver treatment linked. Do not additionally emit the transferred constituents to water at this foreground gate. If wastewater treatment is on-site, revise the process boundary and add treatment chemicals, sludges and actual elementary emissions before use. | jrc-ofc-2006 |\n| `boundary_configuration_evidence` | Verify actual cooling circuit and every external loss or supply; add actual atomic exchanges before use. Verify waste loads, receiver and treatment before treating a liquid stream as an off-site technosphere transfer. A literature route or absence of a meter cannot justify zero water, waste or air exchange. | jrc-ofc-2006 |\n| `boundary_no_synthetic_union` | Do not borrow membrane or amine-extraction quantities, metal-complex-dye emissions or another colouring product recipe. Actual auxiliary components outside the listed route need separately named, measured and verified atomic rows. | jrc-ofc-2006; basf-us4560745-1985 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 303
+              line: 9
+              column: 1
+            end:
+              offset: 351
+              line: 9
+              column: 49
+          text: "# Salt-isolated Acid Orange 7 sodium salt powder"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6165
+              line: 62
+              column: 1
+            end:
+              offset: 6186
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_30125"
+      family: "allocation"
+      span:
+        start:
+          offset: 30125
+          line: 510
+          column: 1
+        end:
+          offset: 31581
+          line: 518
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocation_no_coproduct_default` | The declared route has one intended saleable dye. Do not promote residual NaCl, mixed mother liquor or waste to a co-product by assumption. Assign attributable foreground burdens to accepted dye, including rejected batches and waste handling; if an actual independently saleable recovered output exists, retain its concrete output row and apply allocation_physical_ledger. | jrc-ilcd-2010; jrc-ofc-2006 |\n| `allocation_physical_ledger` | Keep unallocated total wet mass, water, organic carbon, Na, N, S and Cl ledgers separate from allocated environmental burdens. For an actual independently saleable recovered output, first investigate measured subdivision or a justified expanded system. Where neither is possible, document a relevant causal physical relationship; if another relationship is necessary, justify it and test sensitivity. Record shares that sum to one on the declared burden basis. Never multiply physical co-product mass by burden shares; output masses and internal endpoints stay measured. | jrc-ilcd-2010; jrc-ofc-2006 |\n| `allocation_campaigns` | Use stage meters and validated run times/loads for shared campaigns. Do not allocate merely by different commercial dye strengths, trade names or an unrelated historical plant mix. Record shutdown/cleaning and losses once. | jrc-ilcd-2010; jrc-ofc-2006 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 303
+              line: 9
+              column: 1
+            end:
+              offset: 351
+              line: 9
+              column: 49
+          text: "# Salt-isolated Acid Orange 7 sodium salt powder"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 30125
+              line: 510
+              column: 1
+            end:
+              offset: 30165
+              line: 510
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_42015"
+      family: "validation"
+      span:
+        start:
+          offset: 42015
+          line: 550
+          column: 1
+        end:
+          offset: 43736
+          line: 560
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Exactly one product output is out_dye, with the stated 1 kg net supplied powder basis. Require verified reference UUID/property/unit group and declared sodium counterion, route and lot assay; a free-acid/amine-salt record cannot be substituted. | thermo-orangeii-spec; basf-us4560745-1985 |\n| `validate_amounts` | Reference, all row denominators, collection aggregation and calculations use identical accepted net powder Q in both languages. Assess measured yield, active fraction, salts, water and net steam heat without invented values. | jrc-ofc-2006 |\n| `validate_releases` | Prevent duplicate transferred wastewater versus direct water release, captured dust versus airborne PM, and nested PM intervals. Molecular NO/NO2 and NO2-equivalent totals are distinct; never infer N2O from NOx. Preserve any actual biogenic CO2 if an expanded route generates it, independently of climate-reporting conventions. | jrc-ofc-2006 |\n| `validate_ledgers` | Require independent unallocated total-wet, water, organic-carbon, Na, N, S and Cl reconciliation, with reaction formation/consumption for species and measured external endpoints. Keep allocation shares outside these physical ledgers. Missing chemistry or an unbounded water-balance residual requires review, not a zero or stoichiometric default. | jrc-ofc-2006; thermo-orangeii-spec |\n| `validate_readiness` | Missing identities, contradictory metadata, incompatible provider bases and unresolved measurement prevent a complete dataset. Scientific review and mapping acceptance remain separate from completed methodology authoring. | thermo-orangeii-spec; jrc-ofc-2006 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 303
+              line: 9
+              column: 1
+            end:
+              offset: 351
+              line: 9
+              column: 49
+          text: "# Salt-isolated Acid Orange 7 sodium salt powder"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 42015
+              line: 550
+              column: 1
+            end:
+              offset: 42037
+              line: 550
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_6165"
+      source_span:
+        start:
+          offset: 7205
+          line: 77
+          column: 1
+        end:
+          offset: 7458
+          line: 77
+          column: 254
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_transfers"
+      identity_kind: "explicit"
+      unit_id: "normative_6165"
+      source_span:
+        start:
+          offset: 7459
+          line: 78
+          column: 1
+        end:
+          offset: 7840
+          line: 78
+          column: 382
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_configuration_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_6165"
+      source_span:
+        start:
+          offset: 7841
+          line: 79
+          column: 1
+        end:
+          offset: 8204
+          line: 79
+          column: 364
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_no_synthetic_union"
+      identity_kind: "explicit"
+      unit_id: "normative_6165"
+      source_span:
+        start:
+          offset: 8205
+          line: 80
+          column: 1
+        end:
+          offset: 8507
+          line: 80
+          column: 303
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_no_coproduct_default"
+      identity_kind: "explicit"
+      unit_id: "normative_30125"
+      source_span:
+        start:
+          offset: 30219
+          line: 514
+          column: 1
+        end:
+          offset: 30661
+          line: 514
+          column: 443
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_30125"
+      source_span:
+        start:
+          offset: 30662
+          line: 515
+          column: 1
+        end:
+          offset: 31297
+          line: 515
+          column: 636
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_campaigns"
+      identity_kind: "explicit"
+      unit_id: "normative_30125"
+      source_span:
+        start:
+          offset: 31298
+          line: 516
+          column: 1
+        end:
+          offset: 31579
+          line: 516
+          column: 282
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_42015"
+      source_span:
+        start:
+          offset: 42091
+          line: 554
+          column: 1
+        end:
+          offset: 42406
+          line: 554
+          column: 316
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_amounts"
+      identity_kind: "explicit"
+      unit_id: "normative_42015"
+      source_span:
+        start:
+          offset: 42407
+          line: 555
+          column: 1
+        end:
+          offset: 42671
+          line: 555
+          column: 265
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_releases"
+      identity_kind: "explicit"
+      unit_id: "normative_42015"
+      source_span:
+        start:
+          offset: 42672
+          line: 556
+          column: 1
+        end:
+          offset: 43040
+          line: 556
+          column: 369
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_42015"
+      source_span:
+        start:
+          offset: 43041
+          line: 557
+          column: 1
+        end:
+          offset: 43448
+          line: 557
+          column: 408
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_readiness"
+      identity_kind: "explicit"
+      unit_id: "normative_42015"
+      source_span:
+        start:
+          offset: 43449
+          line: 558
+          column: 1
+        end:
+          offset: 43734
+          line: 558
+          column: 286
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6165"
+      source_span:
+        start:
+          offset: 6165
+          line: 62
+          column: 1
+        end:
+          offset: 6186
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6165"
+      source_span:
+        start:
+          offset: 6214
+          line: 66
+          column: 1
+        end:
+          offset: 7151
+          line: 73
+          column: 149
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_30125"
+      source_span:
+        start:
+          offset: 30125
+          line: 510
+          column: 1
+        end:
+          offset: 30165
+          line: 510
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_42015"
+      source_span:
+        start:
+          offset: 42015
+          line: 550
+          column: 1
+        end:
+          offset: 42037
+          line: 550
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9120aa23f4f569cc2f6798450c2ec91010947f5d03e654b67c5b595def10f496"
+  generated_content_sha256: "sha256:f204c94eb087a22f74e2637c224d18c550d5bce4ba546e78d86a5502058b7f7c"
