@@ -249,7 +249,7 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
 Record this flow at the parent phase boundary and preserve lot, period and destination linkage.
 
 - Selected flow: Electricity
-- Flow property / unit: Mass / kg
+- Flow property / unit: Energy / kWh
 - Amount rule: Metered electricity for cold storage or controlled vernalization; record zero for field-overwintered direct-seeded production
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -953,7 +953,7 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
 Record this flow at the conditioning boundary and preserve lot, period and destination linkage.
 
 - Selected flow: Electricity
-- Flow property / unit: Mass / kg
+- Flow property / unit: Energy / kWh
 - Amount rule: Metered electricity for threshing, conveying, aspiration and dry cleaning
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -1134,7 +1134,7 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
 Record this flow at the lot release boundary and preserve lot, period and destination linkage.
 
 - Selected flow: Electricity
-- Flow property / unit: Mass / kg
+- Flow property / unit: Energy / kWh
 - Amount rule: Metered electricity for conveying, sizing, gravity separation and testing attributable to the lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -1344,6 +1344,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_harvest` | harvest_field_stabilization | harvest, energy, collected material and loss | harvest tickets, meters and field observations | dates; crop mass; fuel; electricity; moisture; drying duration; residues; shattering | weigh transferred material and reconcile field observations; Raw aggregation and attribution: mass-weight by lot after separate route reporting | row unit | each field and harvest run | harvest through stable hand-off | all fields and drying locations | per declared reference flow | weigh tickets, meter logs, moisture tests and loss checks |
 | `cp_conditioning` | threshing_primary_cleaning | received material, energy and separated states | run and meter records | lot; run; received mass; energy; cleaned mass; chaff; foreign matter; dust control | weigh run inputs/outputs and read meters; Raw aggregation and attribution: reconcile by run then aggregate equivalent lots | row unit | each conditioning run | entire conditioning campaign | all conditioning equipment | per declared reference flow | calibrated scales, meter records and cleanout log |
 | `cp_lot_release` | grading_lot_release | grade states, energy, tests and release | lot, test and release records | lot; size fractions; mass; purity; germination; viability; moisture; test sample; rejects; destination; meter | weigh every grade and link accredited or declared test results; Raw aggregation and attribution: accepted output is only released conforming mass; other states remain separate | row unit | each grading run and released lot | grading through farm-gate release | all grading and test locations | per declared reference flow | scale calibration, test report, release certificate and traceability record |
+| `cp_phase1_environment_coverage` | parent_establishment_vernalization | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -1353,6 +1354,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_phase_attribution` | first and reproductive periods | sum uniquely linked operations across all phases of the lot before normalization | field id; crop year; route; lot id; quantities | full-campaign inventory | `cfia-sugar-beet-biology` |
 | `calc_mass_balance` | each material node | received mass = accepted transfers + downgraded + rejected + residue + samples + measured/calculated loss, within uncertainty | node mass records | closure and unexplained difference | `mass-balance-identity` |
 | `calc_managed_soil_emissions` | field phases | apply the declared current method separately to recorded nutrient and residue inputs; retain substance and receiving medium | nutrient and residue records; method factors | substance-specific elementary flows |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_parent_phase`; `cp_reproductive_phase`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 

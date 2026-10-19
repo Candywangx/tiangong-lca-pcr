@@ -85,7 +85,7 @@ This reference UUID denotes the fresh, unprocessed farm-gate product. Verify act
 
 | process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
 | --- | --- | --- | --- | --- | --- |
-| `orchard_establishment_and_renewal` | Orchard establishment and renewal | conditional | Include when new orchard blocks, replanting, tree replacement, or establishment inputs occur in the reporting period; otherwise retain the declared zero-activity condition. | Annualized perennial production asset | per 1 kg fresh figs at farm gate |
+| `orchard_establishment_and_renewal` | Orchard establishment and renewal | conditional | Include the attributable establishment, pre-bearing, renewal and replacement contribution for every represented producing orchard block, including events before the reporting year. New physical event records are required only when such an event occurs; a year with no new event is not a zero annualized lifecycle contribution. Retain original event year, block and the documented service-life attribution under calc_annualized_orchard_establishment. Unknown historical amounts or service life remain explicit evidence gaps, not zero. | Annualized perennial production asset | per 1 kg fresh figs at farm gate |
 | `orchard_management` | Orchard management | required | Include orchard land occupation, irrigation, nutrient and soil-amendment application, plant protection, machinery or fuel use, and associated field emissions for all producing blocks. | Crop production | per 1 kg fresh figs at farm gate |
 | `harvest_and_farm_gate` | Harvest and farm-gate handover | required | Include harvest, in-field collection, cull accounting, and any container required to transfer the unprocessed fresh product at the declared farm gate. | Product output and gate transfer | per 1 kg saleable fresh figs at farm gate |
 
@@ -329,7 +329,7 @@ Raw activity or stage basis: Per 1 kg fresh figs at farm gate.
 Include direct soil N2O from human-induced nitrogen additions or other managed-soil sources covered by the selected IPCC-compatible method.
 
 - Selected flow: Direct nitrous oxide emission to air from managed orchard soil
-- Flow property / unit: Mass / kg N2O-N or kg N2O, with conversion basis disclosed
+- Flow property / unit: Mass / kg N2O
 - Amount rule: Apply the selected documented method to synthetic and organic nutrient inputs, crop-residue nitrogen, and other included N sources; disclose the tier and factors used
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -341,12 +341,14 @@ Raw activity or stage basis: Per 1 kg fresh figs at farm gate.
 - Collection protocol: `cp_soil_emission_calculation`
 - Sources: `ipcc-2019-managed-soils-n2o`
 
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
+
 ###### Nitrate leaching or runoff from managed orchard soils (`nitrate_leaching`)
 
 Include nitrate lost through leaching or runoff when the selected method and site evidence indicate that this pathway is relevant.
 
 - Selected flow: Nitrate emission to water from managed orchard soil
-- Flow property / unit: Mass / kg NO3-N or kg NO3, with conversion basis disclosed
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: Calculate from nitrogen input records and the selected documented leaching or runoff method; disclose if the pathway is not modelled because site evidence shows it is not applicable
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -357,6 +359,8 @@ Raw activity or stage basis: Per 1 kg fresh figs at farm gate.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_soil_emission_calculation`
 - Sources: `ipcc-2019-managed-soils-n2o`
+
+Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ### Process: Harvest and farm-gate handover (`harvest_and_farm_gate`)
 
@@ -463,6 +467,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_nutrient_basis` | `fertilizer_soil_amendment` | For each actual product, retain product mass and declared nutrient basis. Sum nutrient inputs by element or nutrient form without back-calculating an unrecorded formulation. | product mass; label or certificate; N; P2O5; K2O; organic matter | product mass and nutrient totals | `fao-good-agricultural-practices-figs-2008`; `ipcc-2019-managed-soils-n2o` |
 | `calc_managed_soil_emissions` | `ammonia_emission`; `direct_nitrous_oxide_emission`; `nitrate_leaching` | Apply the selected documented tier or emission-factor method to the declared nitrogen activity data. Keep direct, volatilization, and leaching/runoff pathways separate and report the conversion basis. | nutrient N; residue N; soil and climate data where required; selected factors; pathway assumptions | pathway-specific elementary flows | `ipcc-2019-managed-soils-n2o` |
 | `calc_harvest_output_and_culls` | `fresh_figs_farm_gate`; `harvest_culls_and_field_loss` | Gross harvested mass = saleable farm-gate mass + culls + documented field loss or other destinations. Normalize all inputs and outputs to 1 kg saleable fresh figs at farm gate. | gross harvest; saleable mass; cull mass; field-loss estimate; destination records | saleable output and cull/waste amounts | `unece-ffv-17-fresh-figs-2017`; `iso-14044-2006` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_soil_emission_calculation`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -480,7 +485,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validation_reference_flow` | reference flow | Reject a final dataset unless the reference amount is 1 kg fresh figs at farm gate, all required qualifiers are present, and the evidence gap product identity has been resolved to a verified foreground flow. | `unece-ffv-17-fresh-figs-2017`; `iso-14044-2006` |
-| `validation_boundary_start` | system boundary | Check that the dataset declares orchard starting condition, productive status, reporting period, and the inclusion or exclusion of establishment and renewal activities. | `iso-14044-2006` |
+| `validation_boundary_start` | system boundary | Verify the actual annual/perennial starting state and all applicable establishment, nursery/juvenile, renewal/replacement and termination history attributable to the accepted output. No event in the current year or missing historical records does not exclude an attributable burden. Reconcile the declared productive-horizon/output attribution with the existing method, upstream coverage and crop-year operations once; missing applicable evidence blocks completeness, and supported inapplicability is recorded. | `iso-14044-2006` |
 | `validation_input_basis` | nutrient, water, fuel, plant protection, and container rows | Check that each included input has a site record, stated unit and property, normalization basis, collection protocol, and identity status; nutrient cards must retain actual product and nutrient basis. | `fao-good-agricultural-practices-figs-2008`; `fao-crop-evapotranspiration-56-1998` |
 | `validation_flow_binding` | parameterized and evidence gap flows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `iso-14044-2006` |
 | `validation_emission_pathways` | managed-soil elementary outputs | Check that nitrogen activity data, method tier or factors, conversion basis, and pathway assumptions are present for every reported ammonia, N2O, or nitrate flow, and that omitted pathways are explicitly justified. | `ipcc-2019-managed-soils-n2o` |

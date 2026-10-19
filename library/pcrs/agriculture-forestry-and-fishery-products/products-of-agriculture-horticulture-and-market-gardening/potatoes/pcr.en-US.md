@@ -366,7 +366,7 @@ Raw activity or stage basis: per declared crop cycle and per 1,000 kg accepted p
 Calculate nitrate loss only where the selected nutrient-loss method and site conditions support a water pathway; retain the receiving-water context.
 
 - Selected flow: Nitrate emission to water
-- Flow property / unit: Mass / kg nitrate or declared nitrogen basis
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: apply the selected nutrient-loss method to collected nitrogen activity and site conditions
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -378,12 +378,14 @@ Raw activity or stage basis: per declared crop cycle and per 1,000 kg accepted p
 - Collection protocol: `cp_soil_emission_activity`
 - Sources: `ipcc-2019-managed-soils`
 
+Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
+
 ###### Phosphate released to water (`phosphate_to_water_output`)
 
 Calculate phosphate loss only where erosion, runoff, drainage, or another selected method supports the pathway; retain phosphorus basis and receiving-water context.
 
 - Selected flow: Phosphate emission to water
-- Flow property / unit: Mass / kg phosphate or declared phosphorus basis
+- Flow property / unit: Mass / kg PO4
 - Amount rule: apply a declared geographically applicable phosphorus-loss method to collected activity and site conditions
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -394,6 +396,8 @@ Raw activity or stage basis: per declared crop cycle and per 1,000 kg accepted p
 - Evidence kind: Method formula (`method_formula`)
 - Collection protocol: `cp_soil_emission_activity`
 - Sources: `fao-save-and-grow-2011`
+
+Final exchange mass is kg PO4; retain P-based activity, factors and screens in a separate ledger. Convert only the mass of P attributed to this chemical species by 95/31 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ## 7. Allocation and Co-product Handling
 
@@ -418,7 +422,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_field_activity_records` | `potato_cultivation_and_farm_gate_preparation` | planting material, nutrient products, crop protection | field log, invoice, application record, product label | field_id; crop_cycle; product_identity; amount; unit; nutrient_or_active_content; date; application_method | reconcile physical products and application events to each represented field; Raw aggregation and attribution: retain each product identity, sum matched events, and normalize using same-cycle accepted yield | kg; L; kg nutrient | each receipt and application | complete crop cycle | all represented fields | per declared reference flow | invoices; labels; calibrated equipment; field logs |
 | `cp_water_and_energy_records` | `potato_cultivation_and_farm_gate_preparation` | irrigation water and energy carriers | meter, delivery, invoice, tank, machinery, or contractor record | field_id; meter_or_equipment_id; carrier; amount; unit; date; operation; shared_use_basis | reconcile direct and contractor use to fields and crop cycle; Raw aggregation and attribution: retain carriers separately; allocate shared records by documented operating time, area, or measured service | m3; kWh; L; kg; MJ | each event or meter period | complete crop cycle | all included equipment and fields | per declared reference flow | meter calibration; invoices; tank reconciliation; contractor statement |
 | `cp_field_and_harvest_records` | `potato_cultivation_and_farm_gate_preparation` | area, accepted potatoes, secondary output, waste, residue fate | field register, scale ticket, yield monitor, grade record, destination record | field_id; planted_area; harvested_area; harvest_date; gross_tuber_mass; accepted_mass; secondary_mass; waste_mass; residue_fate; destination; moisture_basis | reconcile harvested area and all measured outputs to the same crop cycle; Raw aggregation and attribution: sum by output class and destination; normalize to 1,000 kg accepted potatoes | ha; kg; percent | each field and harvest lot | complete crop cycle through farm-gate loading | all represented fields and lots | per declared reference flow | calibrated scales; area records; grade specification; transfer or waste receipt |
-| `cp_soil_emission_activity` | `potato_cultivation_and_farm_gate_preparation` | managed-soil emissions | nutrient, residue, soil, weather, irrigation, and model records | fertilizer_N; organic_N; residue_N; urea; lime; soil; climate; drainage; factor_set; model_version | calculate each pathway with one declared method from collected activity data; Raw aggregation and attribution: calculate per field, area-weight where justified, then normalize by same-cycle accepted yield | kg N; kg material; kg emission; ha | each event and crop-cycle calculation | complete crop cycle | all represented fields | per declared reference flow | source records; factor provenance; model file; independent unit check |
+| `cp_soil_emission_activity` | `potato_cultivation_and_farm_gate_preparation` | managed-soil emissions | nutrient, residue, soil, weather, irrigation, and model records | fertilizer_N; organic_N; residue_N; urea; lime; soil; climate; drainage; factor_set; model_version | Within each compatible route/product/state, calculate attributable raw totals by field first. Aggregate final intensity = sum(attributable raw quantities) * declared reference quantity / sum(matched accepted final outputs). When source quantities are per-ha rates e_h and y_h, first recover raw totals as e_h*area and y_h*area; do not area-weight field totals again. A per-product intensity is weighted by its matched output, not area or an unweighted mean. Apply existing allocation once, preserve period/throughput and all source-unit conversions, and keep incompatible routes separate. | kg N; kg material; kg emission; ha | each event and crop-cycle calculation | complete crop cycle | all represented fields | per declared reference flow | source records; factor provenance; model file; independent unit check |
 
 ### Calculation Rules
 
@@ -429,6 +433,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_energy_carriers` | operational energy | retain actual carrier quantity; apply documented density or lower/heating-value conversion only when required | carrier identity; quantity; unit; conversion factor | carrier amount and energy by identity |  |
 | `calc_managed_soil_n2o` | soil nitrous oxide | apply the selected IPCC tier or geographically applicable method to fertilizer N, organic N, returned-residue N, volatilization, and leaching pathways | collected nitrogen activity; residue fate; soil and climate; selected factors | kg N2O by pathway | `ipcc-2019-managed-soils` |
 | `calc_output_balance` | harvest outputs | gross harvested tuber mass equals accepted reference potatoes plus secondary usable potatoes plus waste and measured handling loss within declared uncertainty | matched scale and grade records | reconciled output classes | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_soil_emission_activity`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

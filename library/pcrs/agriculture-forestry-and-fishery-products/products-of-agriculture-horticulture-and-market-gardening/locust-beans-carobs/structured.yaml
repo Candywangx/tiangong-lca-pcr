@@ -485,8 +485,8 @@ process_inventory:
           role: "Nitrate release to the declared receiving medium"
           name: "Nitrate pollutant to the declared receiving medium (UUID unresolved; receiving medium required)"
           flow_type: "elementary"
-          property_unit: "Mass / kg nitrate or method-defined nitrogen basis"
-          description: "Record or calculate nitrate release only when supported by measurement or the selected regional method. The foreground package must declare whether the receiving medium is soil or water before resolving the elementary-flow identity. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods."
+          property_unit: "Mass / kg NO3-"
+          description: "Record or calculate nitrate release only when supported by measurement or the selected regional method. The foreground package must declare whether the receiving medium is soil or water before resolving the elementary-flow identity. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods. Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass."
           amount:
             expression: "measured or method-calculated nitrate release linked to the crop-year nutrient and water-balance records"
             value_mode: "calculated_value"
@@ -729,7 +729,7 @@ process_inventory:
           property_unit: "Mass / kg water"
           description: "Calculate water vapour released from the measured input and output moisture balance when drying occurs within the declared boundary. The receiving medium and final elementary-flow identity remain unresolved until the route and identity review are complete. Raw activity or stage basis: per conditioning campaign and per 1,000 kg accepted whole carob pods."
           amount:
-            expression: "water vapour = incoming lot water mass - accepted and downgraded output water mass - water retained in declared rejects, with any measured process-water addition included"
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "technology_specific"
             basis:
@@ -815,7 +815,7 @@ dataset_production:
       process_id: "carob_primary_conditioning"
       flow_role: "incoming raw pods, drying, cleaning, sorting, grading, process water, accepted pods, downgraded pods, rejects, and water loss"
       record_type: "intake ticket, conditioning batch record, moisture test, energy meter, water meter, grade record, reject record, and destination record"
-      raw_fields: "campaign_id; lot_id; input_mass_kg; input_moisture; drying_method; drying_start; drying_end; fuel; electricity; process_water_m3; cleaning_method; grade; accepted_mass_kg; downgraded_mass_kg; reject_mass_kg; reject_class; reject_destination; output_moisture; container_tare; gate"
+      raw_fields: "campaign_id; lot_id; input_mass_kg; input_moisture; drying_method; drying_start; drying_end; fuel; electricity; process_water_m3; cleaning_method; grade; accepted_mass_kg; downgraded_mass_kg; reject_mass_kg; reject_class; reject_destination; output_moisture; container_tare; gate ; all inlet/outlet material water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; wet-basis moisture/density; supported evaporation and uncertainty"
       collection_method: "record each conditioning batch and reconcile moisture, mass, grade, energy, water, and destination records; Raw aggregation and attribution: sum by lot and grade; preserve incoming and output moisture and tare; calculate water loss only after mass and moisture reconciliation Route-specific requirements: carob_conditioning_energy_input_identification: Actual electric fans, conveyors, cleaning and grading equipment; do not impose forced drying on a documented natural-drying route, and identify any heater separately. Raw activity or stage basis: per conditioning campaign and per 1,000 kg accepted whole carob pods. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kg, percent, m3, kWh, L, or MJ as recorded"
       frequency: "each conditioning batch; reconciled each campaign"
@@ -913,7 +913,7 @@ dataset_production:
         - iso-14044-2006
     - id: calc_drying_water_vapour
       applies_to: "drying within primary conditioning"
-      rule: "water vapour = incoming water mass - accepted output water mass - downgraded output water mass - reject water mass + measured process-water addition, with negative results investigated rather than clipped"
+      rule: "Water removed to air = incoming material water + actual external water addition + opening water stock - water in every outgoing accepted/downgraded/reject/residue stream - separately exported liquid water - closing water stock, using matched measured wet masses and moisture fractions or compatible densities. Internal recirculation cancels. Include actual rain uptake/rewetting; separate dry-matter and non-water losses. Establish actual evaporation and receiving air boundary from measurement or a supported closed balance; missing components or unexplained difference do not prove vapour or zero. Normalize once to matched accepted final output."
       inputs:
         - incoming_mass
         - incoming_moisture
@@ -923,6 +923,16 @@ dataset_production:
       output: "water-vapour amount to declared receiving medium"
       source_ids:
         - carob-drying-characteristics-2016
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_carob_orchard_lifecycle_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity_and_qualifiers
       applies_to: "reference flow, product outputs, planting stock, nutrient products, crop protection, and elementary outputs"
@@ -1043,7 +1053,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:9f463b16816e927d38f61b2a75bf8e397967a4245e57fdec3430f44398e54129"
+  source_sha256: "sha256:6b78b39a561558e35753f63818bc60c642835bbb04de1fa727f2d0772ddbc8c7"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8205"
@@ -1094,16 +1104,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46610"
+    - unit_id: "normative_47774"
       family: "allocation"
       span:
         start:
-          offset: 46610
-          line: 639
+          offset: 47774
+          line: 641
           column: 1
         end:
-          offset: 49248
-          line: 651
+          offset: 50412
+          line: 653
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_single_intended_pod_output` | a process with one deliberately transferred whole-pod product output | Assign the process burdens to the single intended whole-pod output. Treat field loss, rejects, and residues as waste only when their destination is not a deliberately transferred product. | `iso-14044-2006` |\n| `allocation_quality_destination_outputs` | conditioning with accepted and downgraded or alternate-destination whole-pod outputs | First subdivide the route when grade-specific operations are independently measured. If common burdens remain shared, allocate them between deliberately transferred whole-pod outputs using mass allocation because the outputs retain the same whole-pod physical identity; use documented economic allocation only when a product-specific study demonstrates that mass does not represent the causal relationship. Report output masses, grade, destination, reference period, and factors. | `iso-14044-2006` |\n| `allocation_rejects_not_products` | field losses, harvest rejects, and conditioning rejects | Do not allocate burdens to a rejected or residue stream merely because it has a possible downstream use. Reclassify it as an intended co-product only when it is deliberately transferred with a declared destination and identity, then apply `allocation_quality_destination_outputs` or a separately justified method. | `iso-14044-2006` |\n| `allocation_perennial_establishment_and_replacement` | planting, establishment, replacement, and immature-tree activity | Annualize attributable events over the documented productive period and assign the annualized amount to the crop-year output basis. Retain original event mass, date, block, and assumption for audit. | `fao-feedipedia-carob`; `carob-macronutrients-water-2005`; `iso-14044-2006` |\n| `allocation_period_and_phase_linkage` | multiple crop years, bearing phases, and replacement events | Link every input, output, establishment event, replacement event, and allocation factor to a declared crop year or life-cycle phase. Never attribute one event to two reporting periods without an explicit reconciliation. | `iso-14044-2006` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1122,12 +1132,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46610
-              line: 639
+              offset: 47774
+              line: 641
               column: 1
             end:
-              offset: 46650
-              line: 639
+              offset: 47814
+              line: 641
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1142,16 +1152,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_69199"
+    - unit_id: "normative_72456"
       family: "validation"
       span:
         start:
-          offset: 69199
-          line: 714
+          offset: 72456
+          line: 717
           column: 1
         end:
-          offset: 71449
-          line: 726
+          offset: 74706
+          line: 729
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_identity_and_state` | reference flow and terminal product output | Confirm that the terminal output is a whole ripe carob pod with pulp and seeds retained, expressed as net kg at the declared gate. A separated seed, pulp, gum, flour, or processed product must fail this PCR identity check. | `fao-feedipedia-carob`; `carob-drying-characteristics-2016` |\n| `validation_period_and_phase_linkage` | perennial production and allocation | Confirm that every establishment, replacement, crop-year, bearing phase, output, and allocation event has a declared period or phase and cannot be attributed twice. | `iso-14044-2006` |\n| `validation_harvest_and_conditioning_mass_balance` | harvest and primary conditioning | Confirm reconciliation of harvestable, collected, accepted, downgraded, rejected, field-loss, other destination, and moisture-loss masses. Unexplained residuals block finalization. | `iso-14044-2006` |\n| `validation_quality_output_attribution` | grading and sorting outputs | Confirm every deliberately transferred grade or destination output has a hand-off, output mass, quality or destination descriptor, and an explicit allocation decision. Rejected material cannot be counted as accepted output. | `iso-14044-2006` |\n| `validation_nutrient_emission_linkage` | nutrient inputs and elementary emissions | Confirm that nutrient-related emissions link to actual product and amendment records, residue and soil data, the selected method tier, and the declared receiving medium. | `ipcc-2019-refinement-vol-4` |\n| `validation_flow_identity_resolution` | parameterized and unmapped inventory rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_boundary_exclusions` | complete foreground dataset | Reject or flag datasets that include kibbling, milling, seed separation, gum, flour, roasting, syrup, downstream storage, transport after the gate, unmanaged wild collection, or packaging end-of-life unless an explicitly reviewed boundary extension is recorded. | `iso-14044-2006` |\n\n"
       headings:
@@ -1170,12 +1180,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 69199
-              line: 714
+              offset: 72456
+              line: 717
               column: 1
             end:
-              offset: 69221
-              line: 714
+              offset: 72478
+              line: 717
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1311,171 +1321,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_single_intended_pod_output"
       identity_kind: "explicit"
-      unit_id: "normative_46610"
+      unit_id: "normative_47774"
       source_span:
         start:
-          offset: 46723
-          line: 643
+          offset: 47887
+          line: 645
           column: 1
         end:
-          offset: 47046
-          line: 643
+          offset: 48210
+          line: 645
           column: 324
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_quality_destination_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_46610"
+      unit_id: "normative_47774"
       source_span:
         start:
-          offset: 47047
-          line: 644
+          offset: 48211
+          line: 646
           column: 1
         end:
-          offset: 47679
-          line: 644
+          offset: 48843
+          line: 646
           column: 633
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rejects_not_products"
       identity_kind: "explicit"
-      unit_id: "normative_46610"
+      unit_id: "normative_47774"
       source_span:
         start:
-          offset: 47680
-          line: 645
+          offset: 48844
+          line: 647
           column: 1
         end:
-          offset: 48110
-          line: 645
+          offset: 49274
+          line: 647
           column: 431
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_perennial_establishment_and_replacement"
       identity_kind: "explicit"
-      unit_id: "normative_46610"
+      unit_id: "normative_47774"
       source_span:
         start:
-          offset: 48111
-          line: 646
+          offset: 49275
+          line: 648
           column: 1
         end:
-          offset: 48513
-          line: 646
+          offset: 49677
+          line: 648
           column: 403
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_period_and_phase_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_46610"
+      unit_id: "normative_47774"
       source_span:
         start:
-          offset: 48514
-          line: 647
+          offset: 49678
+          line: 649
           column: 1
         end:
-          offset: 48858
-          line: 647
+          offset: 50022
+          line: 649
           column: 345
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46610"
+      unit_id: "normative_47774"
       source_span:
         start:
-          offset: 48860
-          line: 649
+          offset: 50024
+          line: 651
           column: 1
         end:
-          offset: 49246
-          line: 649
+          offset: 50410
+          line: 651
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_identity_and_state"
       identity_kind: "explicit"
-      unit_id: "normative_69199"
+      unit_id: "normative_72456"
       source_span:
         start:
-          offset: 69294
-          line: 718
+          offset: 72551
+          line: 721
           column: 1
         end:
-          offset: 69671
-          line: 718
+          offset: 72928
+          line: 721
           column: 378
     - pointer: "/validation_rules/1"
       rule_id: "validation_period_and_phase_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_69199"
+      unit_id: "normative_72456"
       source_span:
         start:
-          offset: 69672
-          line: 719
+          offset: 72929
+          line: 722
           column: 1
         end:
-          offset: 69937
-          line: 719
+          offset: 73194
+          line: 722
           column: 266
     - pointer: "/validation_rules/2"
       rule_id: "validation_harvest_and_conditioning_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_69199"
+      unit_id: "normative_72456"
       source_span:
         start:
-          offset: 69938
-          line: 720
+          offset: 73195
+          line: 723
           column: 1
         end:
-          offset: 70229
-          line: 720
+          offset: 73486
+          line: 723
           column: 292
     - pointer: "/validation_rules/3"
       rule_id: "validation_quality_output_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_69199"
+      unit_id: "normative_72456"
       source_span:
         start:
-          offset: 70230
-          line: 721
+          offset: 73487
+          line: 724
           column: 1
         end:
-          offset: 70548
-          line: 721
+          offset: 73805
+          line: 724
           column: 319
     - pointer: "/validation_rules/4"
       rule_id: "validation_nutrient_emission_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_69199"
+      unit_id: "normative_72456"
       source_span:
         start:
-          offset: 70549
-          line: 722
+          offset: 73806
+          line: 725
           column: 1
         end:
-          offset: 70837
-          line: 722
+          offset: 74094
+          line: 725
           column: 289
     - pointer: "/validation_rules/5"
       rule_id: "validation_flow_identity_resolution"
       identity_kind: "explicit"
-      unit_id: "normative_69199"
+      unit_id: "normative_72456"
       source_span:
         start:
-          offset: 70838
-          line: 723
+          offset: 74095
+          line: 726
           column: 1
         end:
-          offset: 71097
-          line: 723
+          offset: 74354
+          line: 726
           column: 260
     - pointer: "/validation_rules/6"
       rule_id: "validation_boundary_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_69199"
+      unit_id: "normative_72456"
       source_span:
         start:
-          offset: 71098
-          line: 724
+          offset: 74355
+          line: 727
           column: 1
         end:
-          offset: 71447
-          line: 724
+          offset: 74704
+          line: 727
           column: 350
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1504,27 +1514,27 @@ normative_context:
           column: 415
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46610"
+      unit_id: "normative_47774"
       source_span:
         start:
-          offset: 46610
-          line: 639
+          offset: 47774
+          line: 641
           column: 1
         end:
-          offset: 46650
-          line: 639
+          offset: 47814
+          line: 641
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_69199"
+      unit_id: "normative_72456"
       source_span:
         start:
-          offset: 69199
-          line: 714
+          offset: 72456
+          line: 717
           column: 1
         end:
-          offset: 69221
-          line: 714
+          offset: 72478
+          line: 717
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1533,5 +1543,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:9f463b16816e927d38f61b2a75bf8e397967a4245e57fdec3430f44398e54129"
-  generated_content_sha256: "sha256:9dc83467c0205b000870b558ca88a24e9edd59f5cb298303a7907ef7bda6d488"
+    sha256: "sha256:6b78b39a561558e35753f63818bc60c642835bbb04de1fa727f2d0772ddbc8c7"
+  generated_content_sha256: "sha256:1d5cbd2cc2be8faa1739389eb8f266b7a4d70d6c24d3a0851e0d49fcbe3a864c"

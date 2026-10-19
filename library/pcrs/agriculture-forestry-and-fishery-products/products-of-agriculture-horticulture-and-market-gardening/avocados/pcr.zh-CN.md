@@ -75,7 +75,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `boundary_orchard_establishment_to_farm_gate` | all conforming datasets | 纳入场地准备、种植、果园建立、未结果年份、结果期果园管理、收获，以及声明农场交付前进行的调制。 | `fao-gap-framework-2003` |
-| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | 只有在按声明的果园寿命或合格果实输出基准分配后，才将建立期和补植树投入纳入；披露分摊年限和未结果年份。 | `fao-gap-framework-2003`; `iso-14067` |
+| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | 只有在按声明的果园寿命或合格果实输出基准分配后，才将建立期和补植树投入纳入；披露分摊年限和未结果年份。  即使本年没有新事件，也应纳入所代表林/果园应归属的历史建园、未结果期和更新贡献。上述归属记录是必需证据，不是允许省略负担的条件：数量、树龄/寿命或产出历史缺失时应明确保留完整性缺口，不能填零或自动排除。保留原事件，声明的期间/产出方法仅应用一次；另有研究排除须单独论证。 | `fao-gap-framework-2003`; `iso-14067` |
 | `boundary_direct_field_emissions` | managed soil and crop residues | 使用适用于地理位置的方法和养分、灌溉及残余物核算所用的相同采集活动数据，纳入直接和间接养分及残余物相关排放。 | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
 | `boundary_farm_gate_conditioning` | optional conditioning | 仅在农场交付前进行且未被收获记录包含时，纳入清洗、分选、分级、修整或短期农场处理；识别拒收果实和去向。 | `fao-gap-framework-2003` |
 | `boundary_post_farm_gate_exclusion` | downstream activities | 排除场外运输、储存、配送、零售、消费者使用、食品加工、油或果泥制造及包装终端处置，除非研究明确扩展本 PCR 边界。 |  |
@@ -281,8 +281,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_management_records`
 - 来源：`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 供应设备的汽油（`orchard_energy_input_gasoline`）
 
@@ -520,7 +518,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -546,7 +544,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）

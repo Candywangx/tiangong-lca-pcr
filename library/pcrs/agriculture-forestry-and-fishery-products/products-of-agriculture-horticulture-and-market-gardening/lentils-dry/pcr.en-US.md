@@ -220,15 +220,8 @@ Raw activity or stage basis: per cultivated ha in one crop cycle.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_inputs`
 - Sources: `fao-crop-water-needs`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5000
-  - Unit: m3/ha
-  - Basis: delivered irrigation per cultivated hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-crop-water-needs`
+
+For irrigation, distinguish crop evapotranspiration from net irrigation and gross delivered/withdrawn water. Reconcile effective rainfall, soil-water stock change, capillary supply, application efficiency and the actual delivery boundary; use metered site records or a documented water balance. A general crop-water-demand table does not establish a universal irrigation upper bound.
 
 ###### Electricity, medium voltage input (`field_energy`)
 
@@ -267,32 +260,6 @@ Raw activity or stage basis: per cultivated ha in one crop cycle.
 
 ##### Elementary flows
 
-###### Managed-soil nitrous oxide (`soil_n2o`)
-
-Record the stated flow for the linked field or lot and preserve its destination and hand-off.
-
-- Selected flow: Dinitrogen monoxide, to air
-- Flow property / unit: Mass / kg
-- Amount rule: IPCC selected-tier calculation from collected nitrogen and residue records
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per cultivated ha in one crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Method formula (`method_formula`)
-- Collection protocol: `cp_field_emissions`
-- Sources: `ipcc-2019-managed-soils`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg N2O/ha
-  - Basis: direct and indirect N2O per cultivated hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `ipcc-2019-managed-soils`
-
 #### Outputs
 
 ##### Product flows
@@ -313,21 +280,36 @@ Raw activity or stage basis: per cultivated ha in one crop cycle.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_harvest_mass_balance`
 - Sources: `mass-balance-identity`; `ndsu-pulse-field-guide-2019`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 500
-  - Upper: 10000
-  - Unit: kg/ha
-  - Basis: standing mature above-ground crop mass per hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `ndsu-pulse-field-guide-2019`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ##### Waste flows
 
 
 ##### Elementary flows
 
+#### Outputs
+
+##### Elementary flows
+
+###### Managed-soil nitrous oxide (`soil_n2o`)
+
+Record the stated flow for the linked field or lot and preserve its destination and hand-off.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg
+- Amount rule: IPCC selected-tier calculation from collected nitrogen and residue records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated ha in one crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Method formula (`method_formula`)
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ### Process: Harvest and threshing (`harvest_threshing`)
 
@@ -459,15 +441,8 @@ Raw activity or stage basis: per cultivated ha harvested.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_harvest_mass_balance`
 - Sources: `ndsu-pulse-field-guide-2019`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kg/ha
-  - Basis: shattered and uncollected grain per hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ndsu-pulse-field-guide-2019`
+
+The cited guidance does not establish this broad numerical interval for all represented routes. Use matched lot measurements and moisture/loss balances; report quantitative screening unavailable until route-specific evidence supports bounds. Do not substitute the deleted range for a measured yield or loss.
 
 ##### Elementary flows
 
@@ -494,15 +469,8 @@ Raw activity or stage basis: per 1,000 kg cleaned grain output.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_lot`
 - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1000
-  - Upper: 1250
-  - Unit: kg/1000 kg output
-  - Basis: uncleaned input per 1,000 kg cleaned output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ###### Electricity, medium voltage input (`cleaning_energy`)
 
@@ -590,15 +558,8 @@ Raw activity or stage basis: per 1,000 kg cleaned grain output.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_lot`
 - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 250
-  - Unit: kg/1000 kg output
-  - Basis: rejects per 1,000 kg cleaned output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ##### Elementary flows
 
@@ -663,15 +624,8 @@ Raw activity or stage basis: per 1,000 kg graded input.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grading_lot`
 - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 750
-  - Upper: 1000
-  - Unit: kg/1000 kg input
-  - Basis: accepted grain per 1,000 kg graded input
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ###### Intended output downgraded co-product grain (`downgraded_grain`)
 
@@ -689,15 +643,8 @@ Raw activity or stage basis: per 1,000 kg graded input.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grading_lot`
 - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 250
-  - Unit: kg/1000 kg input
-  - Basis: downgraded usable grain per 1,000 kg graded input
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ##### Waste flows
 
@@ -717,15 +664,8 @@ Raw activity or stage basis: per 1,000 kg graded input.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grading_lot`
 - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 250
-  - Unit: kg/1000 kg input
-  - Basis: rejected material per 1,000 kg graded input
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ##### Elementary flows
 
@@ -752,15 +692,8 @@ Raw activity or stage basis: per 1,000 kg final dry lentils.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_stabilization_lot`
 - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1000
-  - Upper: 1250
-  - Unit: kg/1000 kg final
-  - Basis: wet input per 1,000 kg final dry lentils
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ###### Electricity, medium voltage (`stabilization_energy`)
 
@@ -865,15 +798,8 @@ Raw activity or stage basis: per 1,000 kg final dry lentils.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_stabilization_lot`
 - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg/1000 kg final
-  - Basis: rejects per 1,000 kg final dry lentils
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ##### Elementary flows
 
@@ -883,7 +809,7 @@ Record the stated flow for the linked field or lot and preserve its destination 
 
 - Selected flow: Water, to air
 - Flow property / unit: Mass / kg
-- Amount rule: wet-basis inlet/outlet moisture mass balance reconciled with rejects
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per 1,000 kg final dry lentils.
@@ -893,16 +819,8 @@ Raw activity or stage basis: per 1,000 kg final dry lentils.
 - Evidence kind: Method formula (`method_formula`)
 - Collection protocol: `cp_stabilization_lot`
 - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 250
-  - Unit: kg/1000 kg final
-  - Basis: water removed per 1,000 kg final dry lentils
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019`
 
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
 This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
@@ -987,8 +905,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_harvest_mass_balance` | `harvest_threshing` | grain, residues, losses | scale, monitor, samples | field; route; area; masses; moisture; loss | weigh and representative loss sampling; Raw aggregation and attribution: moisture-align and reconcile outputs | kg; %; ha | field/lot | harvest | each field | per declared reference flow | calibration; sampling plan |
 | `cp_conditioning_lot` | `primary_conditioning` | grain and rejects | scale and log | lot; input; output; moisture; pass; reject; destination | weigh every inlet and outlet; Raw aggregation and attribution: sum passes without rework duplication | kg; % | lot/pass | conditioning | each lot | per declared reference flow | calibration; closure |
 | `cp_grading_lot` | `grading_sorting` | accepted, downgrade, reject, rework | ticket and test | lot; grade; colour; moisture; splits; damage; foreign matter; mass; destination | weigh and classify every output; Raw aggregation and attribution: reconcile exclusive destinations | kg; % | lot | grading | each lot | per declared reference flow | ticket; test; calibration |
-| `cp_stabilization_lot` | `stabilization` | grain, water, reject | moisture, scale, operation log | lot; inlet/outlet mass and moisture; reject; airflow; duration; energy | test and weigh before/after; Raw aggregation and attribution: moisture balance with rejects | kg; %; h | lot | intervention | each lot | per declared reference flow | calibrated moisture meter and scale |
+| `cp_stabilization_lot` | `stabilization` | grain, water, reject | moisture, scale, operation log | lot; inlet/outlet mass and moisture; reject; airflow; duration; energy ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation| test and weigh before/after; Raw aggregation and attribution: moisture balance with rejects | kg; %; h | lot | intervention | each lot | per declared reference flow | calibrated moisture meter and scale |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | field_production | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -998,6 +917,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_moisture` | grain/drying | dry solids = wet mass × (1 − moisture fraction); reconcile water in rejects | wet masses and moisture | aligned grain and water removed | `mass-balance-identity`; `manitoba-lentils-production-management` |
 | `calc_n2o` | soil | Apply disclosed IPCC tier and convert N2O-N to N2O by 44/28. | N activity and factors | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | harvest/conditioning/grading | input = exclusive outputs + losses + releases + stock change within uncertainty | linked masses | closure | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_emissions`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 
@@ -1019,7 +945,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `validate_rework` | cleaning/grading | Link each off-spec state to rework, downgrade, recovery or disposal and prevent double counting. | `mass-balance-identity` |
 | `validate_batch` | all runs | Link inputs, outputs, cleaning and changeovers to field/lot/batch and assign shared burdens once. | `mass-balance-identity` |
 | `validate_conditioning` | stabilization | When used, require inlet/outlet moisture, energy, duration, water removed, rejects and closure. | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |
-| `validate_ranges` | all cards | Require exactly one complete Range with lower, upper, unit, denominator/basis, basis kind, evidence kind and source ids, aligned in EN, ZH and structured output. | `mass-balance-identity` |
+| `validate_ranges` | all cards | Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values. | |
 
 ## 10. Published Dataset Profile
 

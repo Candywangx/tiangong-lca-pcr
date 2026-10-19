@@ -251,7 +251,7 @@ translation_status: aligned
 - 采集协议：`cp_almond_energy_records`
 - 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -339,7 +339,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_almond_harvest_records`采集`almond_harvest_and_collection`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -456,8 +456,6 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_almond_conditioning_records`
 - 来源：`usda-almond-commercial-storage`；`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 调理过程用水（`conditioning_process_water`）
 
@@ -591,7 +589,7 @@ translation_status: aligned
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 参考流和输出 | 声明已核验参考流 UUID、品种、壳型、地理位置、果园地块或贡献地点、作物年度、交接点、水分、等级和包装状态。 | 数据集元数据、果园和等级记录 |
 | `dq_temporal_representativeness` | 多年生生产 | 覆盖完整作物年度并披露果园年龄、结果状态、建立、补植和报告期；若宣称多年代表性，需使用有文件支持的多年平均。 | 日期化果园、采收和资产记录 |

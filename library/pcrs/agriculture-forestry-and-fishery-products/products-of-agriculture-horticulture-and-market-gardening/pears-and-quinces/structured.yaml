@@ -850,6 +850,16 @@ dataset_production:
         - destinations
       output: "reconciled outputs"
       source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_orchard_emission_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_product_identity
       applies_to: "reference and outputs"
@@ -936,7 +946,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:c0bb2ed5025e00e2db9b0fe8132da6a2e1a333f0c0cc3d59bc69002327e8d8e6"
+  source_sha256: "sha256:2b17a1c2f6f98a2cf8a351835edb821089c22ce26251cebcb71d3ec18f80f3f0"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3818"
@@ -1035,16 +1045,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50846"
+    - unit_id: "normative_52282"
       family: "validation"
       span:
         start:
-          offset: 50846
-          line: 697
+          offset: 52282
+          line: 698
           column: 1
         end:
-          offset: 52064
-          line: 708
+          offset: 53500
+          line: 709
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_output` | terminal output | One terminal marketable fruit output equals 1,000 kg after scaling and declares species, mix, maturity, grade, and hand-off qualifiers. |  |\n| `validation_orchard_route` | process map | Include management once; include establishment only for its allocation period and handling only before hand-off. |  |\n| `validation_crop_year_reconciliation` | orchard inventory | Area, inputs, emissions, harvest, culls, residue fates, and yields refer to the same crop year and represented blocks. |  |\n| `validation_nutrient_and_emission_basis` | nutrients and emissions | Reconcile nutrient content, residue fate, soil emissions, and factors with the disclosed method and basis. | `ipcc-2019-refinement` |\n| `validation_handling_mass_balance` | handling | Reconcile harvested input with accepted fruit, culls, wastes, and losses within declared uncertainty. |  |\n| `validation_flow_identity` | every flow | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
       headings:
@@ -1063,12 +1073,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50846
-              line: 697
+              offset: 52282
+              line: 698
               column: 1
             end:
-              offset: 50868
-              line: 697
+              offset: 52304
+              line: 698
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1204,80 +1214,80 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_output"
       identity_kind: "explicit"
-      unit_id: "normative_50846"
+      unit_id: "normative_52282"
       source_span:
         start:
-          offset: 50941
-          line: 701
+          offset: 52377
+          line: 702
           column: 1
         end:
-          offset: 51133
-          line: 701
+          offset: 52569
+          line: 702
           column: 193
     - pointer: "/validation_rules/1"
       rule_id: "validation_orchard_route"
       identity_kind: "explicit"
-      unit_id: "normative_50846"
+      unit_id: "normative_52282"
       source_span:
         start:
-          offset: 51134
-          line: 702
+          offset: 52570
+          line: 703
           column: 1
         end:
-          offset: 51296
-          line: 702
+          offset: 52732
+          line: 703
           column: 163
     - pointer: "/validation_rules/2"
       rule_id: "validation_crop_year_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_50846"
+      unit_id: "normative_52282"
       source_span:
         start:
-          offset: 51297
-          line: 703
+          offset: 52733
+          line: 704
           column: 1
         end:
-          offset: 51482
-          line: 703
+          offset: 52918
+          line: 704
           column: 186
     - pointer: "/validation_rules/3"
       rule_id: "validation_nutrient_and_emission_basis"
       identity_kind: "explicit"
-      unit_id: "normative_50846"
+      unit_id: "normative_52282"
       source_span:
         start:
-          offset: 51483
-          line: 704
+          offset: 52919
+          line: 705
           column: 1
         end:
-          offset: 51687
-          line: 704
+          offset: 53123
+          line: 705
           column: 205
     - pointer: "/validation_rules/4"
       rule_id: "validation_handling_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_50846"
+      unit_id: "normative_52282"
       source_span:
         start:
-          offset: 51688
-          line: 705
+          offset: 53124
+          line: 706
           column: 1
         end:
-          offset: 51844
-          line: 705
+          offset: 53280
+          line: 706
           column: 157
     - pointer: "/validation_rules/5"
       rule_id: "validation_flow_identity"
       identity_kind: "explicit"
-      unit_id: "normative_50846"
+      unit_id: "normative_52282"
       source_span:
         start:
-          offset: 51845
-          line: 706
+          offset: 53281
+          line: 707
           column: 1
         end:
-          offset: 52062
-          line: 706
+          offset: 53498
+          line: 707
           column: 218
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1318,15 +1328,15 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50846"
+      unit_id: "normative_52282"
       source_span:
         start:
-          offset: 50846
-          line: 697
+          offset: 52282
+          line: 698
           column: 1
         end:
-          offset: 50868
-          line: 697
+          offset: 52304
+          line: 698
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1335,5 +1345,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:c0bb2ed5025e00e2db9b0fe8132da6a2e1a333f0c0cc3d59bc69002327e8d8e6"
-  generated_content_sha256: "sha256:e231e9ff17fbf2f1202699ed03fad1bd1bf36ecd32ed33ee999217a79e1f5748"
+    sha256: "sha256:2b17a1c2f6f98a2cf8a351835edb821089c22ce26251cebcb71d3ec18f80f3f0"
+  generated_content_sha256: "sha256:0fc94e71018e51cef720c33be2ad18af39d681293f8e9217f9ca01643e09ba3f"

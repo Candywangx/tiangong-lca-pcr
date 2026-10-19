@@ -90,31 +90,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 西瓜种子或幼苗（`planting_material_input`）
-
-西瓜种子或幼苗作为声明一年生作物周期的种植材料进入地块。应记录一次购入种植材料，并将其与形成的作物产出分开。
-
-- 选定流：西瓜种子或移栽苗
-- 流属性/单位：Number of items or mass / seed units or kg
-- 数量规则：按地块和作物周期记录供应商数量及种植材料类型。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每公顷种植面积和每 1,000 kg 可销售农场大门西瓜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_planting_records`
-- 来源：`uga-watermelon-production-b996-2017`
-- 数量范围：暂定种植材料筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.1
-  - 上限：8
-  - 单位：kg seed or 1000 transplants/ha
-  - 基准：等待供应商和田间记录期间的一年生西瓜首轮宽泛种植率
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 废物流
 
 ##### 基本流
@@ -324,7 +299,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_field_operation_records`
 - 来源：`uga-watermelon-production-b996-2017`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -409,8 +384,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_handling_records`
 - 来源：`fao-postharvest-handling`；`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 木制板条箱（`primary_packaging_input_wood_crate`）
 
@@ -520,6 +493,10 @@ sync_with: pcr.en-US.md
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -547,6 +524,7 @@ sync_with: pcr.en-US.md
 | `cp_residue_records` | `watermelon_field_management` | `field_residue_output` | 残余物去向记录 | field_id; residue type; wet or dry basis; amount; destination; date | 田间测量和去向确认；原始汇总与分配：按去向及适用的干物质基准汇总 | kg | 每次残余物事件 | 声明的完整作物周期 | 每个地块 | 每声明的参考流 | 称重记录、堆肥或饲料收据，或还田日志 |
 | `cp_harvest_handling_records` | `harvest_and_farm_gate_preparation` | `harvest_handling_energy_electricity`, `harvest_handling_energy_diesel` | 处理和包装登记 | lot_id; operation; date; energy carrier; quantity; marketable mass | 计量、设备日志或服务记录；原始汇总与分配：按可销售质量分配能源并声明共享服务分配 | kg, kWh, h | 每批次或每项作业 | 最终采收窗口 | 包装或处理场所 | 每声明的参考流 | 计量或服务记录 |
 | `cp_packaging_records` | `harvest_and_farm_gate_preparation` | `primary_packaging_input_wood_crate`, `primary_packaging_input_corrugated_box`, `primary_packaging_input_pe_film` | 包装登记 | lot_id; material; reusable or single-use; unit count; unit mass; losses; reuse cycles | 供应商规格和计数或称重记录；原始汇总与分配：汇总包装质量并记录重复使用分配 | kg, item | 每批次 | 最终采收窗口 | 包装场所 | 每声明的参考流 | 供应商规格和包装记录 |
+| `cp_phase1_environment_coverage` | field_preparation_and_planting | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -558,6 +536,13 @@ sync_with: pcr.en-US.md
 | `calc_managed_soil_emissions` | 管理土壤氮排放 | 对有记录的养分投入和还田残余物应用一种声明的、兼容 IPCC 的方法，并将因子和假设保留在数据集内。 | 养分投入；残余物还田；土壤和气候参数 | 每参考流的基本氮排放 | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | 采收和分级 | `gross harvested = marketable + rejected + documented other destinations`，受称量精度和声明估算不确定度约束 | 采收、分级和去向记录 | 核对后的作物产出和损失记录 | `fao-postharvest-handling` |
 | `calc_reusable_packaging` | 可重复使用初级包装 | 使用供应商或运营方记录，按声明的使用次数分配包装制造和损失；没有有据可查的使用次数时不得给予重复使用抵扣。 | 包装质量；使用次数；损失率 | 每参考流的包装质量 | `fao-postharvest-handling` |
+| `planting_material_input_identity_and_fate` | `field_preparation_and_planting` | 对于本作业原有 planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_planting_records` | 按身份区分的交换和对账活动记录 | `uga-watermelon-production-b996-2017` |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
 
 ### 数据质量要求
 
@@ -608,3 +593,5 @@ sync_with: pcr.en-US.md
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

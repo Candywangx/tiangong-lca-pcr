@@ -269,7 +269,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_cashew_energy_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -618,31 +618,6 @@ translation_status: aligned
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-##### 基本流
-###### 干燥水分损失（`cashew_drying_water_loss`）
-
-根据接收和调制状态的实测质量与水分计算腰果批次移除的水；已有水分数据时不得使用未测量的通用干燥损失。
-
-- 选定流：腰果干燥释放到空气中的水
-- 流属性/单位：质量 / kg 水
-- 数量规则：输入水量加额外加入的水，减去合格、降级、拒收和残余输出所保留的水、其他水去向及水库存增加；每条流的水量按湿质量乘以实测水分分数计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每 1,000 kg 鲜品农场门参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：根据采集计算（`calculated_from_collection`）
-- 采集协议：`cp_cashew_drying_conditioning_records`
-- 数量范围：干燥水分损失筛选范围
-  - 范围角色：QA 校验范围（`qa_guardrail`）
-  - 下限：0
-  - 上限：300
-  - 单位：每 1,000 kg 鲜品参考产品的 kg 水
-  - 基准：接收和调制批次的质量及水分差
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`; `fao-cashew-minor-oil-crops`
 
 ###### 可选调制废水（`cashew_conditioning_wastewater`）
 
@@ -667,6 +642,27 @@ translation_status: aligned
   - 基准：干法路线至可选湿法清理废水的宽范围
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
+
+此卡仅用于向实际处理/排污接收方转移的废水，按匹配水平衡记录路线及体积/质量，不是基本污染物。实际边界内处理或直接环境排放，另须按适用出水数据实测或核算每一有据物质和接收环境，以及方法支持的水返回。采用兼容已核实UUID或明确未决身份；废水体积不是污染物质量，缺少出水组成属于完整性缺口。包含处理服务时承接一次，不将同一下游处理负担重复计入。
+
+##### 基本流
+###### 干燥水分损失（`cashew_drying_water_loss`）
+
+根据接收和调制状态的实测质量与水分计算腰果批次移除的水；已有水分数据时不得使用未测量的通用干燥损失。
+
+- 选定流：腰果干燥释放到空气中的水
+- 流属性/单位：质量 / kg 水
+- 数量规则：输入水量加额外加入的水，减去合格、降级、拒收和残余输出所保留的水、其他水去向及水库存增加；每条流的水量按湿质量乘以实测水分分数计算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1,000 kg 鲜品农场门参考产品.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：根据采集计算（`calculated_from_collection`）
+- 采集协议：`cp_cashew_drying_conditioning_records`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
 
 ### 过程：腰果储存和交接（`cashew_storage_and_gate_handoff`）
 
@@ -703,7 +699,7 @@ translation_status: aligned
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_cashew_storage_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -774,7 +770,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -800,7 +796,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -880,6 +876,7 @@ translation_status: aligned
 | `cp_cashew_grade_and_reject_records` | `cashew_primary_drying_cleaning_and_grading` | 等级、降级、拒收、异物 | 检验和分级记录 | 批次；等级；壳状况；仁缺陷；空壳；霉变；虫害；异物；合格质量；返工；去向 | 检验、抽样和称量记录；原始汇总与分配：等级和拒收状态互斥 | kg、%、等级代码 | 每批次 | 声明后处理期 | 每个分级点 | 每声明的参考流 | 检验单、抽样方案、秤校准 |
 | `cp_cashew_storage_records` | `cashew_storage_and_gate_handoff` | 储存输入、损失、包装、交接输出 | 库存和发货台账 | 期初库存；收货；批次；水分；储存时间；包装；能源；损伤；期末库存；发货质量；交接点 | 库存台账、发货单和储存日志；原始汇总与分配：期初 + 收货 = 发货 + 期末 + 损失 按路线确认要求：`cashew_storage_energy_identification`: 记录批次期间内实际电动储存通风或搬运。无动力储存不假定用电，防虫物质及服务仍单列。 原始活动或阶段基准：每 1,000 kg 声明储存交接产品. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `cashew_storage_packaging_specific_input`: 作业 cashew_storage_and_gate_handoff：仅在声明储存边界内时记录袋、托盘、箱、内衬和搬运能源；重复使用资产按有记录的使用次数或服务寿命分配。 原数量方法：按批次实测包装质量或搬运能源，并处理重复使用和服务寿命 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、%、天、kWh、item | 收货、检查和发货 | 声明储存期 | 每个储存设施 | 每声明的参考流 | 库存核对、发货单、水分和虫害记录 |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | cashew_orchard_establishment_and_management | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -892,9 +889,15 @@ translation_status: aligned
 | `calc_05` | 分级批次 | 合格输出仅等于互斥合格等级的质量之和。将批次输入、加入量和期初库存，与合格输出、单独销售的降级输出、拒收、残余物、实测水和非水损失及期末库存核对。内部返工是转移而非新增销售；调查未解释残差。 | 批次输入；加入量；库存；等级和拒收记录 | 合格输出与完整批次平衡 | `mass-balance-identity` |
 | `calc_06` | 储存 | `期初库存 + 收货 − 发货 − 期末库存 = 实测储存损失`；储存损失不属于合格交接输出。 | 库存台账；发货；期末库存；损失记录 | 按储存时间的储存损失 | `mass-balance-identity` |
 
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `quality_01` | 流身份 | 使用已核实的带壳腰果参考 UUID，并保留鲜品农场门或延伸交接限定信息；不得使用去壳腰果或腰果仁身份。 | 平台身份记录；数据集元数据 |
 | `quality_02` | 果园和采收数量 | 使用校准秤、计量表或透明记录的估算；路线不使用灌溉、湿法清理、包装或储存时记录有说明的零值。 | 校准记录；田间和批次日志 |
@@ -950,3 +953,4 @@ translation_status: aligned
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `cashew-drying-route` | official_guidance | FAO, Minor oil crops: Cashew nut, Harvesting and Post harvest treatment. https://www.fao.org/4/x5043e/x5043e06.htm | 支持不预设动力供热的人工及日晒路线，不采用目标含水率或干燥时长。 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

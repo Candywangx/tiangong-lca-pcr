@@ -24,7 +24,7 @@ system_boundary:
         - fao-gaps-family-agriculture-2007
     - rule_id: boundary_perennial_stand
       applies_to: "perennial stand establishment and replacement"
-      rule: "Include establishment or replacement inputs when they occur in the reporting period; otherwise annualize them only from documented stand-age and productive-phase records, with the chosen treatment disclosed."
+      rule: "Include orchard care and direct crop emissions for the declared production year.  Include the attributable historical establishment, immature-phase and renewal contribution for the represented stand even when no new event occurs this year. The stated attribution records are required evidence, not a condition allowing omission: missing amounts, age/lifetime or output history remain an explicit completeness gap, never zero or an automatic exclusion. Retain the original events and apply the declared period/output method once; preserve any separately justified study exclusion."
       source_ids:
         - osu-currants-gooseberries-production
     - rule_id: boundary_harvest_hand_off
@@ -34,7 +34,7 @@ system_boundary:
         - fao-codex-fresh-produce-primary-production
     - rule_id: boundary_conditional_conditioning
       applies_to: "washing, grading, packing, and short-term cooling"
-      rule: "Include on-farm conditioning, packing, or cooling only when the operator controls the activity and can provide matched activity, output, and waste records; otherwise disclose the activity as outside the foreground boundary."
+      rule: "Include actual conditioning, packing and cooling needed before the declared farm-gate handoff whether performed by the operator or a contractor. Foreground operations use matched activity/output/waste records; already supplied services retain compatible upstream datasets once. Missing records leave a completeness gap and do not move a pre-gate activity outside the product-system boundary. Operations genuinely after the declared gate remain downstream."
       source_ids:
         - fao-codex-fresh-produce-primary-production
     - rule_id: boundary_upstream_inputs
@@ -470,8 +470,8 @@ process_inventory:
           role: "Nitrate loss to water from the production area"
           name: "Nitrate emission to water"
           flow_type: "elementary"
-          property_unit: "Mass / kg nitrate or kg N, with reporting basis declared"
-          description: "Nitrate loss to water is recorded when site conditions and the selected method support a leaching or runoff estimate. Raw activity or stage basis: Per 1 kg net marketable fruit output."
+          property_unit: "Mass / kg NO3-"
+          description: "Nitrate loss to water is recorded when site conditions and the selected method support a leaching or runoff estimate. Raw activity or stage basis: Per 1 kg net marketable fruit output. The final exchange is kg NO3-. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 62/14 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero."
           amount:
             expression: "Calculated from declared nutrient inputs, soil and water conditions, and the applicable leaching or runoff method"
             value_mode: "calculated_value"
@@ -786,6 +786,11 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness."
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_stand_and_planting_records
@@ -971,6 +976,16 @@ dataset_production:
         - "batch output"
       output: "batch electricity per reference output"
       source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_nutrient_and_soil_amendment_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_product_identity
       applies_to: "reference product and all product-state rows"
@@ -1083,9 +1098,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:6ce77b71eab9dfe86dffe1249c6dd80ff0a4f77a6eb8c12106e09433c3ebaf3b"
+  source_sha256: "sha256:a316065fb784471245a49d154526d6c277c4beea54752d857fd7a0affa59c8ea"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6366"
@@ -1096,10 +1115,10 @@ normative_context:
           line: 61
           column: 1
         end:
-          offset: 9602
+          offset: 10205
           line: 84
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | A declared perennial currant or gooseberry stand and its represented fields or production units at the beginning of the crop-year reporting period; establishment or replacement inputs are included when they occur in the period or are annualized from documented records |\n| starting_condition_role | Foreground production starting condition for a crop-year dataset; the stand, land occupation, production system, and productive phase must be identified |\n| product_classification_scope | Fresh currants and gooseberries from managed cultivation, harvest, and optional primary conditioning through the farm-gate hand-off |\n| recursive_input_rule | A same-category fruit input used within the foreground route is recorded as an internal product transfer or as an upstream secondary dataset with its origin disclosed; do not recursively instantiate this PCR for the same product flow |\n| upstream_dataset_requirement | Use declared upstream datasets for planting material, fertilizers and soil amendments, crop-protection products, energy carriers, water supply, packaging, and any contracted service. The PCR does not recreate upstream production processes. |\n| disclosure | The data package must disclose geography, field or unit roster, crop year, stand age or productive phase, production system, irrigation source, nutrient and crop-protection practice, harvest and grading route, cooling or washing, package state, residue fate, co-product route, and farm-gate hand-off. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_crop_year` | cultivation and managed production | Include crop management inputs and outputs for the declared crop year or reporting period and link them to the represented fields or production units. | `fao-gaps-family-agriculture-2007` |\n| `boundary_perennial_stand` | perennial stand establishment and replacement | Include establishment or replacement inputs when they occur in the reporting period; otherwise annualize them only from documented stand-age and productive-phase records, with the chosen treatment disclosed. | `osu-currants-gooseberries-production` |\n| `boundary_harvest_hand_off` | harvest and farm-gate output | End the default foreground boundary at the declared farm-gate hand-off of marketable fresh fruit. Transport after that hand-off and downstream processing are excluded unless explicitly added as a separate scope. | `fao-codex-fresh-produce-primary-production` |\n| `boundary_conditional_conditioning` | washing, grading, packing, and short-term cooling | Include on-farm conditioning, packing, or cooling only when the operator controls the activity and can provide matched activity, output, and waste records; otherwise disclose the activity as outside the foreground boundary. | `fao-codex-fresh-produce-primary-production` |\n| `boundary_upstream_inputs` | purchased inputs and services | Represent upstream production of purchased inputs with declared secondary datasets or supplier records and do not double count their upstream activities in the foreground inventory. | `fao-gaps-family-agriculture-2007` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | A declared perennial currant or gooseberry stand and its represented fields or production units at the beginning of the crop-year reporting period; establishment or replacement inputs are included when they occur in the period or are annualized from documented records |\n| starting_condition_role | Foreground production starting condition for a crop-year dataset; the stand, land occupation, production system, and productive phase must be identified |\n| product_classification_scope | Fresh currants and gooseberries from managed cultivation, harvest, and optional primary conditioning through the farm-gate hand-off |\n| recursive_input_rule | A same-category fruit input used within the foreground route is recorded as an internal product transfer or as an upstream secondary dataset with its origin disclosed; do not recursively instantiate this PCR for the same product flow |\n| upstream_dataset_requirement | Use declared upstream datasets for planting material, fertilizers and soil amendments, crop-protection products, energy carriers, water supply, packaging, and any contracted service. The PCR does not recreate upstream production processes. |\n| disclosure | The data package must disclose geography, field or unit roster, crop year, stand age or productive phase, production system, irrigation source, nutrient and crop-protection practice, harvest and grading route, cooling or washing, package state, residue fate, co-product route, and farm-gate hand-off. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_crop_year` | cultivation and managed production | Include crop management inputs and outputs for the declared crop year or reporting period and link them to the represented fields or production units. | `fao-gaps-family-agriculture-2007` |\n| `boundary_perennial_stand` | perennial stand establishment and replacement |Include orchard care and direct crop emissions for the declared production year.  Include the attributable historical establishment, immature-phase and renewal contribution for the represented stand even when no new event occurs this year. The stated attribution records are required evidence, not a condition allowing omission: missing amounts, age/lifetime or output history remain an explicit completeness gap, never zero or an automatic exclusion. Retain the original events and apply the declared period/output method once; preserve any separately justified study exclusion. | `osu-currants-gooseberries-production` |\n| `boundary_harvest_hand_off` | harvest and farm-gate output | End the default foreground boundary at the declared farm-gate hand-off of marketable fresh fruit. Transport after that hand-off and downstream processing are excluded unless explicitly added as a separate scope. | `fao-codex-fresh-produce-primary-production` |\n| `boundary_conditional_conditioning` | washing, grading, packing, and short-term cooling | Include actual conditioning, packing and cooling needed before the declared farm-gate handoff whether performed by the operator or a contractor. Foreground operations use matched activity/output/waste records; already supplied services retain compatible upstream datasets once. Missing records leave a completeness gap and do not move a pre-gate activity outside the product-system boundary. Operations genuinely after the declared gate remain downstream. | `fao-codex-fresh-produce-primary-production` |\n| `boundary_upstream_inputs` | purchased inputs and services | Represent upstream production of purchased inputs with declared secondary datasets or supplier records and do not double count their upstream activities in the foreground inventory. | `fao-gaps-family-agriculture-2007` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1136,18 +1155,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43903"
+    - unit_id: "normative_44945"
       family: "allocation"
       span:
         start:
-          offset: 43903
-          line: 653
+          offset: 44945
+          line: 655
           column: 1
         end:
-          offset: 45569
-          line: 664
+          offset: 48595
+          line: 670
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision_first` | managed production, harvest, and conditioning | Prefer separate field, harvest, grading, packing, and cooling records so shared burdens can be assigned to measured product states before applying an allocation rule. | `iso-14044-2006` |\n| `allocation_mass_balance` | fruit, downgraded fruit, rejects, and losses | Close the matched fruit mass balance first. Treat a destination with documented intended use and positive transfer as a co-product; treat untransferred or inedible material according to its recorded waste or residue fate. | `mass-balance-identity` |\n| `allocation_perennial_output` | shared perennial stand inputs | Allocate shared stand inputs to declared marketable product and documented co-products using the reviewed, disclosed basis for the dataset. Do not substitute an undocumented economic or mass basis. | `iso-14044-2006` |\n| `allocation_package_and_cooling` | optional packing and cooling | Attribute package and cooling activity to the matched fruit lot or product state that receives the service; do not spread activity to excluded downstream products. | `fao-codex-fresh-produce-primary-production` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision_first` | managed production, harvest, and conditioning | Prefer separate field, harvest, grading, packing, and cooling records so shared burdens can be assigned to measured product states before applying an allocation rule. | `iso-14044-2006` |\n| `allocation_mass_balance` | fruit, downgraded fruit, rejects, and losses | Close the matched fruit mass balance first. Treat a destination with documented intended use and positive transfer as a co-product; treat untransferred or inedible material according to its recorded waste or residue fate. | `mass-balance-identity` |\n| `allocation_perennial_output` | shared perennial stand inputs | Allocate shared stand inputs to declared marketable product and documented co-products using the reviewed, disclosed basis for the dataset. Do not substitute an undocumented economic or mass basis. | `iso-14044-2006` |\n| `allocation_package_and_cooling` | optional packing and cooling | Attribute package and cooling activity to the matched fruit lot or product state that receives the service; do not spread activity to excluded downstream products. | `fao-codex-fresh-produce-primary-production` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1164,12 +1183,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43903
-              line: 653
+              offset: 44945
+              line: 655
               column: 1
             end:
-              offset: 43943
-              line: 653
+              offset: 44985
+              line: 655
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1184,16 +1203,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_61628"
+    - unit_id: "normative_66101"
       family: "validation"
       span:
         start:
-          offset: 61628
-          line: 717
+          offset: 66101
+          line: 724
           column: 1
         end:
-          offset: 63505
-          line: 729
+          offset: 67978
+          line: 736
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_output` | terminal product output | Scale the dataset to exactly 1 kg of net marketable fresh currants or gooseberries and declare the product qualifiers required by the reference flow. |  |\n| `validation_process_route` | process map | Include managed production and harvest once; include primary conditioning only when its activity and hand-off records are inside the declared boundary; do not duplicate embedded inputs. | `fao-codex-fresh-produce-primary-production` |\n| `validation_crop_cycle_reconciliation` | fields, inputs, outputs, and emissions | Confirm that field roster, stand phase, crop inputs, harvest, residues, emissions, and marketable output refer to the same crop year or reporting period. | `fao-gaps-family-agriculture-2007` |\n| `validation_nutrient_and_emission_basis` | nutrient and managed-soil emissions | Reconcile actual product and nutrient records, residue fate, selected emission pathways, factors, and reporting bases; disclose pathways not modelled. | `ipcc-2019-managed-soils-n2o` |\n| `validation_conditioning_balance` | optional conditioning | Reconcile incoming fruit to marketable fruit, documented co-product, rejects, spoilage, and measured losses within uncertainty. | `mass-balance-identity` |\n| `validation_water_and_crop_protection_records` | irrigation and crop protection | Confirm source, application method, water-quality evidence, product identity, application date, and pre-harvest interval or equivalent declaration for included activities. | `fao-codex-fresh-produce-primary-production` |\n| `validation_flow_identity` | every flow | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
       headings:
@@ -1212,12 +1231,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 61628
-              line: 717
+              offset: 66101
+              line: 724
               column: 1
             end:
-              offset: 61650
-              line: 717
+              offset: 66123
+              line: 724
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1256,20 +1275,20 @@ normative_context:
           line: 79
           column: 1
         end:
-          offset: 8627
+          offset: 8998
           line: 79
-          column: 330
+          column: 701
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_harvest_hand_off"
       identity_kind: "explicit"
       unit_id: "normative_6366"
       source_span:
         start:
-          offset: 8628
+          offset: 8999
           line: 80
           column: 1
         end:
-          offset: 8951
+          offset: 9322
           line: 80
           column: 324
     - pointer: "/system_boundary/rules/3"
@@ -1278,181 +1297,194 @@ normative_context:
       unit_id: "normative_6366"
       source_span:
         start:
-          offset: 8952
+          offset: 9323
           line: 81
           column: 1
         end:
-          offset: 9316
+          offset: 9919
           line: 81
-          column: 365
+          column: 597
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_upstream_inputs"
       identity_kind: "explicit"
       unit_id: "normative_6366"
       source_span:
         start:
-          offset: 9317
+          offset: 9920
           line: 82
           column: 1
         end:
-          offset: 9600
+          offset: 10203
           line: 82
           column: 284
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivision_first"
       identity_kind: "explicit"
-      unit_id: "normative_43903"
+      unit_id: "normative_44945"
       source_span:
         start:
-          offset: 44016
-          line: 657
+          offset: 45058
+          line: 659
           column: 1
         end:
-          offset: 44286
-          line: 657
+          offset: 45328
+          line: 659
           column: 271
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_43903"
+      unit_id: "normative_44945"
       source_span:
         start:
-          offset: 44287
-          line: 658
+          offset: 45329
+          line: 660
           column: 1
         end:
-          offset: 44613
-          line: 658
+          offset: 45655
+          line: 660
           column: 327
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_perennial_output"
       identity_kind: "explicit"
-      unit_id: "normative_43903"
+      unit_id: "normative_44945"
       source_span:
         start:
-          offset: 44614
-          line: 659
+          offset: 45656
+          line: 661
           column: 1
         end:
-          offset: 44898
-          line: 659
+          offset: 45940
+          line: 661
           column: 285
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_package_and_cooling"
       identity_kind: "explicit"
-      unit_id: "normative_43903"
+      unit_id: "normative_44945"
       source_span:
         start:
-          offset: 44899
-          line: 660
+          offset: 45941
+          line: 662
           column: 1
         end:
-          offset: 45179
-          line: 660
+          offset: 46221
+          line: 662
           column: 281
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_43903"
+      unit_id: "normative_44945"
       source_span:
         start:
-          offset: 45181
-          line: 662
+          offset: 46223
+          line: 664
           column: 1
         end:
-          offset: 45567
-          line: 662
+          offset: 46609
+          line: 664
           column: 387
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_44945"
+      source_span:
+        start:
+          offset: 46682
+          line: 668
+          column: 1
+        end:
+          offset: 48593
+          line: 668
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_output"
       identity_kind: "explicit"
-      unit_id: "normative_61628"
+      unit_id: "normative_66101"
       source_span:
         start:
-          offset: 61723
-          line: 721
+          offset: 66196
+          line: 728
           column: 1
         end:
-          offset: 61937
-          line: 721
+          offset: 66410
+          line: 728
           column: 215
     - pointer: "/validation_rules/1"
       rule_id: "validation_process_route"
       identity_kind: "explicit"
-      unit_id: "normative_61628"
+      unit_id: "normative_66101"
       source_span:
         start:
-          offset: 61938
-          line: 722
+          offset: 66411
+          line: 729
           column: 1
         end:
-          offset: 62217
-          line: 722
+          offset: 66690
+          line: 729
           column: 280
     - pointer: "/validation_rules/2"
       rule_id: "validation_crop_cycle_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_61628"
+      unit_id: "normative_66101"
       source_span:
         start:
-          offset: 62218
-          line: 723
+          offset: 66691
+          line: 730
           column: 1
         end:
-          offset: 62494
-          line: 723
+          offset: 66967
+          line: 730
           column: 277
     - pointer: "/validation_rules/3"
       rule_id: "validation_nutrient_and_emission_basis"
       identity_kind: "explicit"
-      unit_id: "normative_61628"
+      unit_id: "normative_66101"
       source_span:
         start:
-          offset: 62495
-          line: 724
+          offset: 66968
+          line: 731
           column: 1
         end:
-          offset: 62762
-          line: 724
+          offset: 67235
+          line: 731
           column: 268
     - pointer: "/validation_rules/4"
       rule_id: "validation_conditioning_balance"
       identity_kind: "explicit"
-      unit_id: "normative_61628"
+      unit_id: "normative_66101"
       source_span:
         start:
-          offset: 62763
-          line: 725
+          offset: 67236
+          line: 732
           column: 1
         end:
-          offset: 62980
-          line: 725
+          offset: 67453
+          line: 732
           column: 218
     - pointer: "/validation_rules/5"
       rule_id: "validation_water_and_crop_protection_records"
       identity_kind: "explicit"
-      unit_id: "normative_61628"
+      unit_id: "normative_66101"
       source_span:
         start:
-          offset: 62981
-          line: 726
+          offset: 67454
+          line: 733
           column: 1
         end:
-          offset: 63285
-          line: 726
+          offset: 67758
+          line: 733
           column: 305
     - pointer: "/validation_rules/6"
       rule_id: "validation_flow_identity"
       identity_kind: "explicit"
-      unit_id: "normative_61628"
+      unit_id: "normative_66101"
       source_span:
         start:
-          offset: 63286
-          line: 727
+          offset: 67759
+          line: 734
           column: 1
         end:
-          offset: 63503
-          line: 727
+          offset: 67976
+          line: 734
           column: 218
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1481,27 +1513,51 @@ normative_context:
           column: 318
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43903"
+      unit_id: "normative_44945"
       source_span:
         start:
-          offset: 43903
-          line: 653
+          offset: 44945
+          line: 655
           column: 1
         end:
-          offset: 43943
-          line: 653
+          offset: 44985
+          line: 655
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_61628"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_44945"
       source_span:
         start:
-          offset: 61628
-          line: 717
+          offset: 46223
+          line: 664
           column: 1
         end:
-          offset: 61650
-          line: 717
+          offset: 46609
+          line: 664
+          column: 387
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_44945"
+      source_span:
+        start:
+          offset: 46682
+          line: 668
+          column: 1
+        end:
+          offset: 48593
+          line: 668
+          column: 1912
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_66101"
+      source_span:
+        start:
+          offset: 66101
+          line: 724
+          column: 1
+        end:
+          offset: 66123
+          line: 724
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1510,5 +1566,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:6ce77b71eab9dfe86dffe1249c6dd80ff0a4f77a6eb8c12106e09433c3ebaf3b"
-  generated_content_sha256: "sha256:87dcf650e27aa7ce7c26c924b7e1e19c2d36889202f1d3884b38451885183fea"
+    sha256: "sha256:a316065fb784471245a49d154526d6c277c4beea54752d857fd7a0affa59c8ea"
+  generated_content_sha256: "sha256:df2e260000a613e40d3522af60cbac9828b126192eb885ae9bffa536d09a74b1"

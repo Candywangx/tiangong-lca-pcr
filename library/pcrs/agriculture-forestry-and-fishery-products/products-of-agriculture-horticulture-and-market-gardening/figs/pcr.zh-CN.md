@@ -84,7 +84,7 @@ sync_with: pcr.en-US.md
 
 | process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
 | --- | --- | --- | --- | --- | --- |
-| `orchard_establishment_and_renewal` | 果园建立与更新 | conditional | 当报告期内发生新果园区块、补植、树木更换或建立投入时纳入；否则保留声明的零活动状态。 | 年度化多年生生产资产 | 每 1 kg 农场大门新鲜无花果 |
+| `orchard_establishment_and_renewal` | 果园建立与更新 | conditional | 每个所代表的产果园区均纳入应归属的建园、未结果期、更新和补植贡献，包括报告年度之前的事件。仅当有新事件时采集新的实际事件记录；当年无新事件不等于生命周期年化贡献为零。保留原事件年度、园区及 calc_annualized_orchard_establishment 的有据服务寿命分摊。历史数量或服务寿命未知时明确保留证据缺口，不得填零。 | 年度化多年生生产资产 | 每 1 kg 农场大门新鲜无花果 |
 | `orchard_management` | 果园管理 | required | 对所有生产区块纳入果园土地占用、灌溉、养分和土壤改良剂施用、植物保护、机械或燃料使用以及相关田间排放。 | 作物生产 | 每 1 kg 农场大门新鲜无花果 |
 | `harvest_and_farm_gate` | 采收与农场大门交付 | required | 纳入采收、田间收集、次品核算以及在声明农场大门交付未经加工产品所需的容器。 | 产品产出和大门交付 | 每 1 kg 农场大门可销售新鲜无花果 |
 
@@ -267,7 +267,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_machinery_fuel_records`采集`orchard_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -324,7 +324,7 @@ sync_with: pcr.en-US.md
 纳入人类引起的氮添加或所选与受管理土壤相容的 IPCC 方法覆盖的其他来源产生的直接 N2O。
 
 - 选定流：受管理果园土壤向空气的直接氧化亚氮排放
-- Flow property / unit: 质量 / kg N2O-N 或 kg N2O，并披露换算基础
+- 流属性/单位: Mass / kg N2O
 - Amount rule: 对合成和有机养分投入、作物残体氮及其他纳入的氮源应用有记录的方法；披露 Tier 和所用因子
 - Value mode: 计算值（`calculated_value`）
 - Specificity: 场址特定（`site_specific`）
@@ -336,12 +336,14 @@ sync_with: pcr.en-US.md
 - Collection protocol: `cp_soil_emission_calculation`
 - Sources: `ipcc-2019-managed-soils-n2o`
 
+最终交换为 kg N2O。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 44/28，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
+
 ###### 受管理果园土壤的硝酸盐淋失或径流（`nitrate_leaching`）
 
 当所选方法和场址证据表明该路径相关时，纳入通过淋失或径流损失的硝酸盐。
 
 - 选定流：受管理果园土壤向水体的硝酸盐排放
-- Flow property / unit: 质量 / kg NO3-N 或 kg NO3，并披露换算基础
+- 流属性/单位: Mass / kg NO3-
 - Amount rule: 根据氮投入记录和有记录的淋失或径流方法计算；如果场址证据表明不适用，应披露未建模原因
 - Value mode: 计算值（`calculated_value`）
 - Specificity: 场址特定（`site_specific`）
@@ -352,6 +354,8 @@ sync_with: pcr.en-US.md
 - Evidence kind: 根据采集记录计算（`calculated_from_collection`）
 - Collection protocol: `cp_soil_emission_calculation`
 - Sources: `ipcc-2019-managed-soils-n2o`
+
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ### 过程：采收与农场大门交付（`harvest_and_farm_gate`）
 
@@ -456,6 +460,7 @@ sync_with: pcr.en-US.md
 | `calc_nutrient_basis` | `fertilizer_soil_amendment` | 对每种实际产品保留产品质量和声明的养分基础。按元素或养分形式汇总投入，不对未记录的配方进行反推。 | 产品质量；标签或证书；N；P2O5；K2O；有机质 | 产品质量和养分总量 | `fao-good-agricultural-practices-figs-2008`; `ipcc-2019-managed-soils-n2o` |
 | `calc_managed_soil_emissions` | `ammonia_emission`; `direct_nitrous_oxide_emission`; `nitrate_leaching` | 对声明的氮活动数据应用所选有记录的 Tier 或排放因子方法。保持直接、挥发和淋失/径流路径分离，并报告换算基础。 | 养分氮；残体氮；必要时土壤和气候数据；所选因子；路径假设 | 按路径划分的基本流 | `ipcc-2019-managed-soils-n2o` |
 | `calc_harvest_output_and_culls` | `fresh_figs_farm_gate`; `harvest_culls_and_field_loss` | 总采收量 = 农场大门可销售质量 + 次品 + 有记录的田间损失或其他去向。所有投入和产出按每 1 kg 农场大门可销售新鲜无花果归一化。 | 总采收量；可销售质量；次品质量；田间损失估算；去向记录 | 可销售产出和次品/废物数量 | `unece-ffv-17-fresh-figs-2017`; `iso-14044-2006` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_soil_emission_calculation`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -473,7 +478,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validation_reference_flow` | 参考流 | 除非参考数量为农场大门 1 kg 新鲜无花果、全部必需限定信息齐全，且证据缺口的产品身份已解析为经核实的前景流，否则拒绝最终数据集。 | `unece-ffv-17-fresh-figs-2017`; `iso-14044-2006` |
-| `validation_boundary_start` | 系统边界 | 检查数据集是否声明果园期初状态、生产状态、报告期，以及是否纳入建立和更新活动。 | `iso-14044-2006` |
+| `validation_boundary_start` | 系统边界 | 核对实际一年生/多年生起始状态及归属于合格产出的全部适用建园、育苗/幼龄、更新替换和终止历史。本年无事件或历史记录缺失不能排除应归属负荷。按已有方法核对声明的生产期/产出归属、上游覆盖和当年作业，只计一次；缺少适用证据阻断完整性，确有依据的不适用须记录。 | `iso-14044-2006` |
 | `validation_input_basis` | 养分、水、燃料、植物保护和容器行 | 检查每项投入是否有场址记录、明确的单位和属性、归一化基准、采集协议和身份状态；养分卡必须保留实际产品和养分基础。 | `fao-good-agricultural-practices-figs-2008`; `fao-crop-evapotranspiration-56-1998` |
 | `validation_flow_binding` | 参数化和证据缺口流 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | `iso-14044-2006` |
 | `validation_emission_pathways` | 受管理土壤基本流输出 | 检查每个氨、N2O 或硝酸盐流是否存在氮活动数据、方法 Tier 或因子、换算基础和路径假设；未建模路径必须明确说明理由。 | `ipcc-2019-managed-soils-n2o` |

@@ -99,31 +99,6 @@ This reference UUID denotes the fresh, unprocessed farm-gate product. Verify act
 
 ##### Product flows
 
-###### Seed or transplant planting material (`planting_material_input`)
-
-Record seed or transplant material entering each declared bed or protected unit, distinguishing purchased seed from nursery transplants and preserving the supplier lot and planting date.
-
-- Selected flow: Eggplant seed or transplant planting material
-- Flow property / unit: Mass or viable count / kg, seed, or plant
-- Amount rule: Record supplier lot quantity and planted viable seed or transplant quantity by field, bed, or protected unit.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_establishment_records`
-- Sources: `fao-gap-framework-2003`
-- Range: Planting-material screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.1
-  - Upper: 8
-  - Unit: kg seed or 2,500 plants per 1,000 kg output
-  - Basis: declared planted area and crop-cycle output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Establishment irrigation water (`establishment_irrigation_water`)
 
 Record water applied for bed preparation, seed emergence, or transplant establishment by source and production unit, excluding rainfall unless a water-balance method explicitly includes it.
@@ -611,31 +586,6 @@ Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
 
 ##### Waste flows
 
-###### Downgraded and rejected fruit (`cull_fruit_output`)
-
-Record fruit rejected at harvest, grading, washing, or packing, distinguishing field loss from fruit that reaches a documented recipient, treatment route, composting, feed use, or disposal.
-
-- Selected flow: Downgraded or rejected eggplant fruit
-- Flow property / unit: Mass / kg
-- Amount rule: Weigh culls and rejected fruit by harvest campaign and document each subsequent fate; do not credit a productive use without recipient evidence.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: reference_flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_harvest_grade_records`
-- Sources: `usda-ams-eggplant-standard`; `mass-balance-identity`
-- Range: Cull and reject screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 35
-  - Unit: percent of harvested fruit mass
-  - Basis: harvest and grading mass reconciliation
-  - Basis kind: crop_cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -646,6 +596,10 @@ Raw activity or stage basis: per 1,000 kg marketable fresh eggplant output.
 | `allocation_cull_fates` | culls, downgraded fruit, and residues | Treat culls and residues as waste or residue unless a recipient, intended use, quality, and hand-off are documented. Apply a co-product allocation only when the secondary product has a defined function and the allocation basis is stated. | `iso-14044-2006`; `mass-balance-identity` |
 
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -688,6 +642,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_transport_service` | pre-gate road freight | transport service = transported mass (t) × documented distance (km); state whether return or empty-leg burden is included | mass, distance, load and route record | t*km | `fao-gap-framework-2003` |
 | `calc_reference_normalization` | all inventory rows | normalized value = crop-cycle quantity × 1,000 kg / accepted marketable output at the declared gate | crop-cycle quantity and accepted output mass | quantity per 1,000 kg reference flow | `mass-balance-identity` |
 | `calc_mass_reconciliation` | harvest, culls, residues, and packing | gross harvested mass = accepted output + culls and rejects + field or handling losses + declared residue streams, with measured moisture and tare treatment disclosed | harvest, grade, residue, packaging, and loss records | reconciled crop-cycle mass balance | `mass-balance-identity` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | For the original planting_material_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_establishment_records` | Identity-specific exchanges and reconciled activity records | `fao-gap-framework-2003` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+| `cull_fruit_output_identity_and_fate` | `harvest_and_gate_preparation` | The cull_fruit_output collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred. | `cp_harvest_grade_records` | Identity-specific exchanges and reconciled activity records | `usda-ams-eggplant-standard`; `mass-balance-identity` |
 
 ### Data Quality Requirements
 
@@ -739,3 +696,4 @@ Evidence applicability: cited general farm-record and postharvest frameworks do 
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

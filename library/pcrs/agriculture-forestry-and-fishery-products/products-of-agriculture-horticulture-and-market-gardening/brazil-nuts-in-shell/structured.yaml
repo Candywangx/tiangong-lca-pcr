@@ -404,7 +404,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_brazil_nut_energy_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -531,7 +531,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_brazil_nut_energy_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -639,7 +639,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_brazil_nut_energy_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -838,7 +838,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_brazil_nut_energy_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -1192,6 +1192,18 @@ dataset_production:
       site_scope: "declared handoff gate"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "calibration or weighing tickets, acceptance and lot traceability"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "brazil_nut_forest_establishment_and_management"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calc_01
       applies_to: "perennial tree inputs"
@@ -1255,6 +1267,21 @@ dataset_production:
       output: "storage loss per storage duration"
       source_ids:
         - mass-balance-identity
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
   data_quality_requirements:
     - id: quality_01
       applies_to: "flow identity"
@@ -1396,9 +1423,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm"
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:9ba6b3fd130366e3e86e1b94fdb2a057d5018954eb702919c59d1e7e1f9c5f11"
+  source_sha256: "sha256:16f2e79cd96f2bcf6481922d7d08b3a730d9e9841962dedde1b4a01fcd2abb8d"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_9048"
@@ -1449,16 +1480,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_64537"
+    - unit_id: "normative_63378"
       family: "allocation"
       span:
         start:
-          offset: 64537
-          line: 864
+          offset: 63378
+          line: 861
           column: 1
         end:
-          offset: 67802
-          line: 879
+          offset: 66643
+          line: 876
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | tree management and harvest with an intended pod output | Prefer process subdivision when tree, harvest, pod opening, pod collection, and nut records are independently available. When pod is deliberately collected and transferred as an intended co-product, allocate shared burdens by measured dry-matter mass; if dry-matter data are unavailable, use measured as-received mass and disclose the limitation. | `iso-14044-2006`; `fao-brazil-nut-fruit-structure` |\n| `allocation_02` | pod retained on site or discarded | If pod remains on the field, is composted without an intended product hand-off, or is discarded as residue, do not assign a co-product credit. Retain its mass and fate as residue or waste and assign shared burden to the intended in-shell brazil-nut output. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_03` | premium, standard, and downgraded in-shell grades | Use physical mass allocation between mutually exclusive accepted grade outputs when common conditioning burdens cannot be subdivided. Grade-specific operations remain with the grade receiving them; do not allocate the same lot to both a grade row and an aggregate output row. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_04` | perennial tree periods and phases | Annualize establishment, immature years, replacement, intercropping attribution, and removal over the declared tree life and accepted output basis. Link every input and output to a crop year or lifecycle phase; do not count a replacement event in both the original and replacement tree phases. | `fao-brazil-nut-fruit-structure`; `iso-14044-2006` |\n| `allocation_05` | downgraded, reworked, rejected, and recovered lots | Keep rejected and downgraded lots separate from accepted product. Rework retains the producing-node burden and is linked once; recovered or intentionally marketed material requires a declared destination and allocation decision; discarded material receives its declared treatment burden. | `mass-balance-identity`; `iso-14044-2006` |\n| `allocation_06` | batch, campaign, and changeover attribution | Link tree, harvest, conditioning, pod opening, grading, and storage inputs and outputs to the batch or campaign that generated them. Record cleaning and changeover events once and do not allocate shared-run burdens to more than one batch without a documented driver. | `mass-balance-identity`; `iso-14044-2006` |\n\nThe hard shell remains part of the in-shell reference product and is not a separate co-product in this PCR. Kernel, oil, and shell-removal outputs belong to downstream brazil-nut-product PCRs and must not be introduced into this inventory. No output may be counted both as a marketed pod co-product and as forest or conditioning residue.\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1477,12 +1508,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 64537
-              line: 864
+              offset: 63378
+              line: 861
               column: 1
             end:
-              offset: 64577
-              line: 864
+              offset: 63418
+              line: 861
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1497,16 +1528,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_81844"
+    - unit_id: "normative_86094"
       family: "validation"
       span:
         start:
-          offset: 81844
-          line: 924
+          offset: 86094
+          line: 929
           column: 1
         end:
-          offset: 84741
-          line: 939
+          offset: 88991
+          line: 944
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow | Reference product is the verified `Brazil nuts, in shell` UUID with Mass and kg. The dataset declares individual in-shell seeds after woody-capsule opening and does not substitute unopened capsules, shelled kernels or split brazil-nuts. | `codex-tree-nuts-hygiene-cxc-6-1972` |\n| `validation_02` | process map | Every required process is present; pod opening and any actually performed cleaning, grading, and storage processes are present when the declared gate or route requires them. | `fao-brazil-nut-fruit-structure` |\n| `validation_03` | perennial production | Tree establishment, immature years, productive phase, replacement, intercropping attribution, and removal are linked to declared crop years and are not double-counted. | `fao-brazil-nut-fruit-structure`; `iso-14044-2006` |\n| `validation_04` | harvest and collection | Harvested, collected, uncollected, damaged, residue, and accepted brazil-nut masses are mutually reconciled; maturity and hand-off state are declared. | `mass-balance-identity` |\n| `validation_05` | pod opening and quality | Whole-fruit input, pod, accepted in-shell product, grade, downgraded/rework, reject, foreign material, water loss, and residuals are mutually exclusive and mass-balanced. | `mass-balance-identity`; `fao-brazil-nut-fruit-structure` |\n| `validation_06` | storage and gate | Opening stock, receipts, dispatches, closing stock, storage damage, product state, storage duration, and gate output reconcile. Storage losses are excluded from accepted output. | `mass-balance-identity`; `fao-brazil-nut-fruit-structure` |\n| `validation_07` | allocation and rework | Pod allocation, grade allocation, downgraded routes, rework loops, rejected-material treatment, and any intercropping attribution are explicit and no burden or output is counted twice. | `iso-14044-2006` |\n| `validation_08` | evidence and disclosure | All important quantitative flows have a foreground collection rule and candidate range or method constraint; estimates, unresolved identities, gate state, pod fate, and evidence limitations are disclosed. | `fao-brazil-nut-fruit-structure`; `mass-balance-identity` |\n| `validation_09` | batch and campaign records | Every harvest round, conditioning batch, grade lot, and storage receipt has a declared boundary, linked inputs and outputs, cleaning or changeover status, and reporting period; shared-run burdens are not counted twice. | `mass-balance-identity` |\n| `validation_10` | multi-site aggregation | Enumerate every contributing forest unit, collection crew, receiving point, and conditioning location; link site-level inputs, outputs, and evidence to the common boundary and document the representativeness decision without omitting or double-counting a site. | `mass-balance-identity` |\n\n"
       headings:
@@ -1525,12 +1556,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 81844
-              line: 924
+              offset: 86094
+              line: 929
               column: 1
             end:
-              offset: 81866
-              line: 924
+              offset: 86116
+              line: 929
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1627,236 +1658,236 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 64650
-          line: 868
+          offset: 63491
+          line: 865
           column: 1
         end:
-          offset: 65129
-          line: 868
+          offset: 63970
+          line: 865
           column: 480
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 65130
-          line: 869
+          offset: 63971
+          line: 866
           column: 1
         end:
-          offset: 65488
-          line: 869
+          offset: 64329
+          line: 866
           column: 359
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 65489
-          line: 870
+          offset: 64330
+          line: 867
           column: 1
         end:
-          offset: 65882
-          line: 870
+          offset: 64723
+          line: 867
           column: 394
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 65883
-          line: 871
+          offset: 64724
+          line: 868
           column: 1
         end:
-          offset: 66287
-          line: 871
+          offset: 65128
+          line: 868
           column: 405
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 66288
-          line: 872
+          offset: 65129
+          line: 869
           column: 1
         end:
-          offset: 66694
-          line: 872
+          offset: 65535
+          line: 869
           column: 407
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_06"
       identity_kind: "explicit"
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 66695
-          line: 873
+          offset: 65536
+          line: 870
           column: 1
         end:
-          offset: 67073
-          line: 873
+          offset: 65914
+          line: 870
           column: 379
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 67075
-          line: 875
+          offset: 65916
+          line: 872
           column: 1
         end:
-          offset: 67412
-          line: 875
+          offset: 66253
+          line: 872
           column: 338
     - pointer: "/allocation_rules/7"
       rule_id: "allocation_rule_8"
       identity_kind: "snapshot_local"
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 67414
-          line: 877
+          offset: 66255
+          line: 874
           column: 1
         end:
-          offset: 67800
-          line: 877
+          offset: 66641
+          line: 874
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 81939
-          line: 928
+          offset: 86189
+          line: 933
           column: 1
         end:
-          offset: 82253
-          line: 928
+          offset: 86503
+          line: 933
           column: 315
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 82254
-          line: 929
+          offset: 86504
+          line: 934
           column: 1
         end:
-          offset: 82498
-          line: 929
+          offset: 86748
+          line: 934
           column: 245
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 82499
-          line: 930
+          offset: 86749
+          line: 935
           column: 1
         end:
-          offset: 82764
-          line: 930
+          offset: 87014
+          line: 935
           column: 266
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 82765
-          line: 931
+          offset: 87015
+          line: 936
           column: 1
         end:
-          offset: 82988
-          line: 931
+          offset: 87238
+          line: 936
           column: 224
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 82989
-          line: 932
+          offset: 87239
+          line: 937
           column: 1
         end:
-          offset: 83267
-          line: 932
+          offset: 87517
+          line: 937
           column: 279
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 83268
-          line: 933
+          offset: 87518
+          line: 938
           column: 1
         end:
-          offset: 83546
-          line: 933
+          offset: 87796
+          line: 938
           column: 279
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 83547
-          line: 934
+          offset: 87797
+          line: 939
           column: 1
         end:
-          offset: 83796
-          line: 934
+          offset: 88046
+          line: 939
           column: 250
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 83797
-          line: 935
+          offset: 88047
+          line: 940
           column: 1
         end:
-          offset: 84109
-          line: 935
+          offset: 88359
+          line: 940
           column: 313
     - pointer: "/validation_rules/8"
       rule_id: "validation_09"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 84110
-          line: 936
+          offset: 88360
+          line: 941
           column: 1
         end:
-          offset: 84405
-          line: 936
+          offset: 88655
+          line: 941
           column: 296
     - pointer: "/validation_rules/9"
       rule_id: "validation_10"
       identity_kind: "explicit"
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 84406
-          line: 937
+          offset: 88656
+          line: 942
           column: 1
         end:
-          offset: 84739
-          line: 937
+          offset: 88989
+          line: 942
           column: 334
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1885,27 +1916,27 @@ normative_context:
           column: 412
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_64537"
+      unit_id: "normative_63378"
       source_span:
         start:
-          offset: 64537
-          line: 864
+          offset: 63378
+          line: 861
           column: 1
         end:
-          offset: 64577
-          line: 864
+          offset: 63418
+          line: 861
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_81844"
+      unit_id: "normative_86094"
       source_span:
         start:
-          offset: 81844
-          line: 924
+          offset: 86094
+          line: 929
           column: 1
         end:
-          offset: 81866
-          line: 924
+          offset: 86116
+          line: 929
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1914,5 +1945,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:9ba6b3fd130366e3e86e1b94fdb2a057d5018954eb702919c59d1e7e1f9c5f11"
-  generated_content_sha256: "sha256:50a3f9fb6f015411873e4f444ce4031527d02858bbbd7d116b3e394177588949"
+    sha256: "sha256:16f2e79cd96f2bcf6481922d7d08b3a730d9e9841962dedde1b4a01fcd2abb8d"
+  generated_content_sha256: "sha256:b42c2ca3066768ccb538f90680e3a8f5183cad4e8644a46735e962fc566824de"

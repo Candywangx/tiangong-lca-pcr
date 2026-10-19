@@ -240,8 +240,8 @@ translation_status: aligned
 - 采集协议：`cp_land_and_output_records`
 ###### 灌溉取水（`water_withdrawal`）
 只有支撑输送灌溉水记录的按水源取水才作为基本流记录。
-- 选定流：水 `419682fe-60fb-4b43-be89-bf2824b51104`
-- 流属性/单位：Mass / kg
+- 选定流：声明水类型及自然资源区室的分源自然取水
+- 流属性/单位：Volume / m3
 - 数量规则：根据按水源计量的取水记录计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -252,6 +252,9 @@ translation_status: aligned
 - 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_irrigation_records`
 - 来源：`fao-crop-evapotranspiration-56`
+
+在实际水源取水边界按m³计量，与购买或输送供水量分开。采集淡水或海水、地表水或地下水、地点、资源区室、表计日期和读数及调拨；累计表按期末减期初并保留有据的表计修正。按相同时段汇总分源取水体积，按合格参考产出仅归一化一次。质量观测单列，只有密度及单位有相容证据时才按V=m/rho换算，不得隐含kg与m³等同。未特指水源的泛水身份不能代替实际水源。缺少水源、类型或换算证据时明确记录缺口，不得宣称水清单身份齐全或完整。
+
 #### 输出
 ##### 产品流
 ###### 收获的非播种用黑麦谷物（`harvested_rye_grain`）
@@ -395,12 +398,13 @@ translation_status: aligned
 - 采集协议：`cp_harvest_energy_records`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 只有在收获损失离开收获边界且去向已知时才记录。
 ##### 基本流
 只有在所选方法和流身份确认时才记录粉尘或直接燃烧排放。
+
 #### 输出
 ##### 产品流
 ###### 交给农场门或初级处理交接点的谷物（`grain_at_handoff`）
@@ -476,23 +480,6 @@ translation_status: aligned
 此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
 
 ##### 废物流
-###### 处理筛下物和拒收谷物（`conditioning_screenings_and_rejects`）**
-按物流和去向记录筛下物、异物、拒收谷物和不合格物料；不得将其计入合格参考产品。
-- 选定流：黑麦籽粒废物，来自整理拒收
-- 流属性/单位：Mass / kg
-- 数量规则：实测批次质量和声明去向
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 kg 进入初级处理的谷物.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_conditioning_reject_records`
-- 来源：`fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
-
-本具体卡仅表示废弃籽粒。采集记录中须分别识别物理上独立的异物、颖壳、包装及其他残余物，完成数据集前各自建立交换，不得漏计或加到籽粒数量中。组成、状态及接收路线与公开身份核验兼容前，明确保留废物流UUID未解析。
-
 #### 输出
 ##### 产品流
 ###### 处理后的非播种用黑麦谷物（`conditioned_rye_grain`）
@@ -541,6 +528,27 @@ translation_status: aligned
 - 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_conditioning_reject_records`
 - 来源：`epa-fabric-filter-monitoring-2026`
+
+#### 输出
+
+##### 废物流
+
+###### 处理筛下物和拒收谷物（`conditioning_screenings_and_rejects`）**
+按物流和去向记录筛下物、异物、拒收谷物和不合格物料；不得将其计入合格参考产品。
+- 选定流：黑麦籽粒废物，来自整理拒收
+- 流属性/单位：Mass / kg
+- 数量规则：实测批次质量和声明去向
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 kg 进入初级处理的谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_reject_records`
+- 来源：`fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
+
+本具体卡仅表示废弃籽粒。采集记录中须分别识别物理上独立的异物、颖壳、包装及其他残余物，完成数据集前各自建立交换，不得漏计或加到籽粒数量中。组成、状态及接收路线与公开身份核验兼容前，明确保留废物流UUID未解析。
 
 ### 过程：储存与声明门点交接（`storage_and_declared_gate`）
 #### 输入
@@ -631,22 +639,6 @@ translation_status: aligned
 - 来源：`fao-package-identities`
 
 ##### 废物流
-###### 储存损失或破损谷物（`storage_loss_or_damaged_grain`）**
-包含储存时，按批次、期间、质量、损坏类别和去向记录储存损失。
-- 选定流：黑麦籽粒废物，来自储存拒收
-- 流属性/单位：Mass / kg
-- 数量规则：库存核对或处置质量实测
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 kg 进入储存的谷物.
-
-- 归一化基准：每声明的参考流
-- 基准类型：储存时长（`storage_duration`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_storage_and_handoff_records`
-
-本具体卡仅表示废弃籽粒。采集记录中须分别识别物理上独立的异物、颖壳、包装及其他残余物，完成数据集前各自建立交换，不得漏计或加到籽粒数量中。组成、状态及接收路线与公开身份核验兼容前，明确保留废物流UUID未解析。
-
 ##### 基本流
 没有确认身份和方法时，不增加储存基本流。
 #### 输出
@@ -671,6 +663,26 @@ translation_status: aligned
 ##### 基本流
 能源相关排放只有在能源记录和声明因子均确认时才计算。
 
+#### 输出
+
+##### 废物流
+
+###### 储存损失或破损谷物（`storage_loss_or_damaged_grain`）**
+包含储存时，按批次、期间、质量、损坏类别和去向记录储存损失。
+- 选定流：黑麦籽粒废物，来自储存拒收
+- 流属性/单位：Mass / kg
+- 数量规则：库存核对或处置质量实测
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 kg 进入储存的谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：储存时长（`storage_duration`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_storage_and_handoff_records`
+
+本具体卡仅表示废弃籽粒。采集记录中须分别识别物理上独立的异物、颖壳、包装及其他残余物，完成数据集前各自建立交换，不得漏计或加到籽粒数量中。组成、状态及接收路线与公开身份核验兼容前，明确保留废物流UUID未解析。
+
 ### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
 该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
 #### 输入
@@ -681,7 +693,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -707,7 +719,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -736,6 +748,10 @@ translation_status: aligned
 | `allocation_screenings_and_rejects` | 筛下物、破损谷物和不合格物料 | 将合格谷物、筛下物、拒收物和损失作为不同输出记录并声明去向。没有明确返工或分配决定时，不得将拒收物料计入参考产品。 | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
 | `allocation_substitution` | 残余物或副产品使用 | 只有当被替代产品、路线、市场和证据均已声明时才使用替代法；不得从产品标签或泛化的残余物名称推断替代信用。 | `iso-14044-2006` |
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -770,7 +786,7 @@ translation_status: aligned
 | `cp_declared_gate_output_records` | `storage_and_declared_gate` | declared-gate output | dispatch or gate record | lot; gate; date; mass; moisture; quality; packaging or bulk state | weighbridge, scale, dispatch, or receiving record；原始汇总与分配：sum output lots and preserve gate identity | kg and percent | per shipment or gate event | declared gate period | declared gate | 每声明的参考流 | scale ticket, dispatch record, quality record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
 ### 计算规则
-| 规则编号 | 适用对象 | 公式或规则 | 输入 | 输出 | 来源 |
+| 规则编号 | 适用对象 | Formula or rule | Inputs | Output | 来源 |
 | --- | --- | --- | --- | --- | --- |
 | `normalize_to_declared_gate` | 所有前景流 | 记录的流数量 / 所选声明门点的合格非播种用黑麦谷物质量 × 参考数量 | 所有适用协议；声明门点输出 | 每 1 kg 参考产品的数量 | `mass-balance-identity` |
 | `convert_moisture_basis` | 谷物质量比较 | 干物质质量 = 原始质量 × (1 - 水分比例)；保留原始值、转换值和实测水分基准 | 收获和处理质量；水分记录 | 可比质量基准 | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
@@ -780,9 +796,10 @@ translation_status: aligned
 | `reconcile_conditioning_outputs` | 初级处理 | 处理后合格谷物 + 筛下物 + 拒收物 + 粉尘或实测损失 = 同一水分基准下的处理投入；解释剩余项 | `cp_conditioning_reject_records`; `cp_conditioned_output_records` | 处理收率和损失核对 | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |
 | `allocate_storage_energy` | 储存 | 按记录的批次质量和声明储存时长分配储存能源；有专用计量时避免分配 | `cp_storage_and_handoff_records` | 每个参考输出的储存能源 | `iso-14044-2006` |
 | `conditioning_dust_release_accounting` | 粉尘排放与捕集固体 | 排入空气的粉尘由出口排放和不重叠的无组织排放组成；出口质量由匹配气体状态和时段的浓度与体积计算，或由明确适用的活动量和排放因子计算。捕集固体单独核算回用或处置；不可将其质量直接当作排放，亦不可重复施加已包含的治理效率。保持相同粒径口径和含水率基准，保留原批次质量平衡，并按匹配最终参考产出归一化一次。 | `cp_conditioning_reject_records` | 分别核算的实际排放及捕集固体 | `epa-fabric-filter-monitoring-2026` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_fertilizer_input_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_non_seed_identity` | 参考产品 | 声明参考产品为非播种用黑麦谷物，并写明食品、饲料或工业用途；不得用种子质量声明替代。 | 产品元数据、合同、质量记录或发运记录 |
 | `dq_gate_and_moisture` | 参考流和输出 | 对每个核对的输出记录所选门点、原始质量、水分基准和干物质转换。 | 计量、水分检测、发运和计算记录 |
@@ -834,3 +851,4 @@ translation_status: aligned
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `epa-fabric-filter-monitoring-2026` | official_guidance | US EPA, Monitoring by Control Technique - Fabric Filters, updated 2026-04-06. https://www.epa.gov/air-emissions-monitoring-knowledge-base/monitoring-control-technique-fabric-filters | 捕集固体与出口颗粒物排放的区别及监测依据；不采用通用效率或排放因子 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

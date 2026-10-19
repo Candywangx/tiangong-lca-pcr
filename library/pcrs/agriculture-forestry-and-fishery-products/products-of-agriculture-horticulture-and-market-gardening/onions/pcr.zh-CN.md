@@ -93,32 +93,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 进入作物周期的洋葱种子、种球或移栽苗（`planting_material`）
-
-记录进入声明田块或保护地单元的种子、种球或移栽苗批次。保留材料形态、品种或栽培品种、批次身份、有效数量以及材料是购买还是留用。
-
-- 选定流：洋葱种子、种球或移栽材料＼
-- 流属性/单位：质量或有效种植数量 / kg 或株数
-- 数量规则：按当前作物周期分配的实测种植材料质量或有效数量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售农场交付鳞茎洋葱.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_planting_material_records`
-- 来源：
-
-- 数量范围：暂定种植材料筛选区间
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0.1
-  - 上限：120
-  - 单位：每 1,000 kg 输出的种植材料 kg
-  - 基准：每 1,000 kg 可销售农场交付鳞茎洋葱
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 柴油 (`establishment_machinery_fuel_diesel`)
 
 仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`establishment_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
@@ -127,7 +101,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_establishment_operation_records`采集`field_preparation_and_establishment`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -323,32 +297,6 @@ sync_with: pcr.en-US.md
 
 范围证据需求：不设灌溉供水默认值。FAO 350–550 mm 是作物需水量（ETc），相当于 3500–5500 m3/ha 蒸散，不是计量灌溉量。结合有效降雨、土壤储水变化和其他供水求净灌溉需求，再按记录的效率和损失求实际供水；雨养供水可为零。
 
-###### 从声明的天然或市政水源取水（`water_resource_withdrawal`）
-
-将水源特定的取水量与交付灌溉水产品投入分开记录；取水到田间交付之间的损失在有测量或计算时也应保留。
-
-- 选定流：水资源取水
-- 流属性/单位：体积 / m3
-- 数量规则：按声明水源实测或计算的取水量，并分配到洋葱作物周期
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售农场交付鳞茎洋葱.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_irrigation_and_withdrawal_records`
-- 来源：
-
-- 数量范围：暂定水源取水筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：6500
-  - 单位：每公顷洋葱作物周期的 m3
-  - 基准：一个洋葱作物周期的一公顷
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 泵送和田间作业使用的电力（`field_operation_electricity`）
 
 记录灌溉泵送、保护地运行或其他田间设备跨越边界的电力。将购买电力与燃料分开。
@@ -384,7 +332,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_crop_management_input_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -392,6 +340,37 @@ sync_with: pcr.en-US.md
 - 来源：`route-energy-fao`
 
 ##### 废物流
+
+##### 基本流
+
+###### 从声明的天然或市政水源取水（`water_resource_withdrawal`）
+
+将水源特定的取水量与交付灌溉水产品投入分开记录；取水到田间交付之间的损失在有测量或计算时也应保留。
+
+- 选定流：从明确天然水源直接取用的水；具体来源环境和UUID未决
+- 流属性/单位：体积 / m3
+- 数量规则：按声明水源实测或计算的取水量，并分配到洋葱作物周期
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 可销售农场交付鳞茎洋葱.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：基于采集计算（`calculated_from_collection`）
+- 采集协议：`cp_irrigation_and_withdrawal_records`
+- 来源：
+
+- 数量范围：暂定水源取水筛选区间
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：6500
+  - 单位：每公顷洋葱作物周期的 m3
+  - 基准：一个洋葱作物周期的一公顷
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+仅用于本前景边界负责的直接天然水源取水。选择实际水源/环境及兼容体积或质量身份。市政或其他外购供水属于产品投入，供应商取水由上游覆盖一次，不能作为此基本流输入。保留水源至田间供应台账、泵能耗、输配损失及内部供水转移；不将同一供应商取水或内部交付再计为外部资源取用。缺少水源身份或数量属于完整性缺口。
+
 
 #### 输出
 ##### 产品流
@@ -405,7 +384,7 @@ sync_with: pcr.en-US.md
 根据合成和有机氮投入以及适用的残余物或土壤碳路径，计算土壤直接 N2O 排放。报告所用氮基准和 N2O 或 N2O-N 单位。
 
 - 选定流：管理洋葱土壤向环境空气排放的氧化亚氮
-- 流属性/单位：质量 / kg N2O-N 或 kg N2O
+- 流属性/单位: Mass / kg N2O
 - 数量规则：将声明的 IPCC 方法应用于采集的施氮投入和适用的土壤或气候条件
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -427,12 +406,14 @@ sync_with: pcr.en-US.md
   - 证据类型：外部来源（`external_source`）
   - 来源：`ipcc-2019-managed-soils-n2o`
 
+最终交换为 kg N2O。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 44/28，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
+
 ###### 施氮挥发产生的氨排放（`ammonia_emission`）
 
 根据所声明的氮源和场址条件，记录或计算释放到环境空气的氨。不得使用通用氨排放行来隐藏肥料或有机肥依据。
 
 - 选定流：洋葱作物氮投入向环境空气排放的氨
-- 流属性/单位：质量 / kg NH3-N 或 kg NH3
+- 流属性/单位: Mass / kg NH3
 - 数量规则：根据氮投入记录和有文件依据的挥发因子或实测排放进行计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -453,12 +434,14 @@ sync_with: pcr.en-US.md
   - 基准类型：氮投入（`n_input`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
+最终交换质量为 kg NH3；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 17/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
+
 ###### 管理土壤的硝酸盐淋失或径流（`nitrate_leaching`）
 
 在发生淋失或径流且该路径属于范围时，记录向水体损失的硝酸盐氮或硝酸盐。保留氮源、受纳介质和计算依据。
 
 - 选定流：洋葱作物土壤向水体排放的硝酸盐
-- 流属性/单位：质量 / kg nitrate-N 或 kg nitrate
+- 流属性/单位: Mass / kg NO3-
 - 数量规则：根据采集的施氮投入和有文件依据的分配因子，计算与场址和气候相关的淋失或径流量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -479,12 +462,14 @@ sync_with: pcr.en-US.md
   - 基准类型：氮投入（`n_input`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
+
 ###### 管理土壤的磷酸盐径流（`phosphate_runoff`）
 
 当径流或其他受纳路径发生且有场址记录或有文件依据的方法支持时，记录向水体损失的磷酸盐磷或磷酸盐。
 
 - 选定流：洋葱作物土壤向水体排放的磷酸盐
-- 流属性/单位：质量 / kg phosphate-P 或 kg phosphate
+- 流属性/单位: Mass / kg PO4
 - 数量规则：根据采集的养分投入、土壤测试信息和有文件依据的径流因子，计算场址特定的磷酸盐损失
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -504,6 +489,8 @@ sync_with: pcr.en-US.md
   - 基准：发生径流时每 kg 施用 P 投入
   - 基准类型：氮投入（`n_input`）
   - 证据类型：推理估算（`reasoned_estimate`）
+
+最终交换质量为 kg PO4；按 P 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 P 质量乘 95/31，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ###### 尿素或石灰施用产生的二氧化碳（`urea_lime_co2_emission`）
 
@@ -561,7 +548,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_harvest_and_cure_records`采集`harvest_and_field_curing`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -927,7 +914,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_planting_material_records` | `field_preparation_and_establishment` | planting material | supplier lot record and planting log | material form; cultivar; lot; purchased or retained; mass or viable count; planting date | reconcile supplier documents with field or protected-unit planting log；原始汇总与分配：sum by crop cycle and convert to reference-flow basis | kg or count | each lot and planting event | complete crop cycle | each declared field or protected unit | 每声明的参考流 | lot document; planting log; count or mass check |
 | `cp_establishment_operation_records` | `field_preparation_and_establishment` | establishment fuel | fuel log, invoice, meter or contractor record | operation; equipment; fuel type; quantity; date; treated area | collect primary fuel record and allocate by operation；原始汇总与分配：sum by operation and allocate to onion output `establishment_machinery_fuel_specific_input`: 作业 field_preparation_and_establishment：当前景边界跨越了苗床或种床准备、种植和建植作业的燃料时，记录这些燃料。 原数量方法：按建植作业实测燃料使用量并分配到洋葱作物周期 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | L, kg or MJ | each operation or weekly | complete crop cycle | each declared field or protected unit | 每声明的参考流 | fuel invoice or meter; equipment record |
-| `cp_land_and_site_records` | `field_preparation_and_establishment` | land occupation and transformation | field register, GIS or land-use record | field id; area; land-use history; transformation date; crop-cycle dates | verify area against field register or geospatial record；原始汇总与分配：calculate area-time and flag only current-period transformation | ha and crop-cycle dates | once per crop cycle and on land-use change | current crop cycle and disclosed prior history | each declared field or protected unit | 每声明的参考流 | field map; lease or land-use record; dated change evidence |
+| `cp_land_and_site_records` | `field_preparation_and_establishment` | land occupation and transformation | field register, GIS or land-use record | field id; area; land-use history; transformation date; crop-cycle dates | 按地图/现场记录核对实际面积、占用起止、土地类型及有日期的转化历史。占用采用面积时间、转化采用独立面积事件；按所选声明土地利用/碳归属方法评估与本产出有关的历史事件，不只看报告年事件。保留前后土地状态、证据、不确定性和共享/期间责任；历史缺失为缺口，不能推定零或发生转化。归属数量按匹配合格产出归一化一次。 | ha and crop-cycle dates | once per crop cycle and on land-use change | current crop cycle and disclosed prior history | each declared field or protected unit | 每声明的参考流 | field map; lease or land-use record; dated change evidence |
 | `cp_fertilizer_amendment_records` | `crop_management` | fertilizer and soil amendment | invoice, delivery ticket, label, nutrient plan and application log | product; formulation; mass; N/P/K content; application date; field; operator | reconcile purchase and application records with nutrient plan；原始汇总与分配：sum product mass and nutrient roles without double counting compound products | kg product and kg nutrient | each delivery and application event | complete crop cycle | each declared field or protected unit | 每声明的参考流 | invoice; label or specification; application log |
 | `cp_irrigation_and_withdrawal_records` | `crop_management` | irrigation delivery and source withdrawal | meter, pump log, water balance and source record | source; meter start/end; delivered volume; pumping energy; rainfall; field; date | meter readings or documented ETc/water balance with source separation；原始汇总与分配：sum delivery and withdrawal separately; reconcile losses | m3 | each event or weekly | complete crop cycle | each declared field and water source | 每声明的参考流 | meter calibration; pump log; water permit or source record |
 | `cp_crop_protection_records` | `crop_management` | crop-protection products | product label, invoice and application log | formulation; active substance; mass or volume; date; field; treated area | reconcile purchase and application records；原始汇总与分配：sum by named product and application event `crop_protection_products_specific_input`: 作业 crop_management：记录施用于洋葱作物周期的除草剂、杀虫剂、杀菌剂或其他植保配方。保留配方、有效成分、施用日期和处理面积。 原数量方法：按产品和施用事件汇总配方实测质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg or L product | each application event | complete crop cycle | each declared field or protected unit | 每声明的参考流 | label; invoice; application log |
@@ -947,6 +934,8 @@ sync_with: pcr.en-US.md
 | `calculation_rule_4` | direct and indirect nitrogen emissions | 将所选 IPCC 管理土壤方法应用于每种有文件依据的氮源和路径。先报告 N2O-N；只有报告单位需要时才以 44/28 换算为 N2O。 | synthetic and organic N; residue N; climate and soil conditions; volatilization and leaching activity | kg N2O-N, kg N2O, NH3-N and nitrate-N pathway amounts | `ipcc-2019-managed-soils-n2o` |
 | `calculation_rule_5` | harvested output and co-products | 按批次核对收获鳞茎、可销售输出、次品和残余物。在第一次实测分离点分配共享负荷，并保留每个非销售流的去向。 | lot masses; moisture; grade; destination | marketable output, cull and residue amounts | `iso-14044-2006-allocation` |
 | `calculation_rule_6` | optional conditioning and storage | 对每个纳入的批次，最终可销售输出 = 调制投入 − 次品 − 储存损失；按处理质量分配水、包装、能源，并保留储存时长。 | conditioning input; rejects; losses; handled mass; storage duration | final reference output and loss amounts |  |
+| `planting_material_identity_and_fate` | `field_preparation_and_establishment` | 对于本作业原有 planting_material 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_planting_material_records` | 按身份区分的交换和对账活动记录 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_crop_emission_activity_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

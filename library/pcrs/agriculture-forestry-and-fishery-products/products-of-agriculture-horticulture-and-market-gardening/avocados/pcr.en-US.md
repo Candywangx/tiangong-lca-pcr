@@ -76,7 +76,7 @@ The sole reference output is `reference_product_at_declared_handoff`, receiving 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `boundary_orchard_establishment_to_farm_gate` | all conforming datasets | Include site preparation, planting, orchard establishment, immature years, productive orchard management, harvest, and conditioning performed before the declared farm-gate hand-off. | `fao-gap-framework-2003` |
-| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | Include establishment and replacement-tree inputs only after assigning them to the declared orchard life or accepted fruit output basis; disclose the allocation horizon and non-bearing years. | `fao-gap-framework-2003`; `iso-14067` |
+| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | Include establishment and replacement-tree inputs only after assigning them to the declared orchard life or accepted fruit output basis; disclose the allocation horizon and non-bearing years.  Include the attributable historical establishment, immature-phase and renewal contribution for the represented stand even when no new event occurs this year. The stated attribution records are required evidence, not a condition allowing omission: missing amounts, age/lifetime or output history remain an explicit completeness gap, never zero or an automatic exclusion. Retain the original events and apply the declared period/output method once; preserve any separately justified study exclusion. | `fao-gap-framework-2003`; `iso-14067` |
 | `boundary_direct_field_emissions` | managed soil and crop residues | Include direct and indirect nutrient- and residue-related emissions using a geographically applicable method and the same activity data used for nutrient, irrigation, and residue accounting. | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
 | `boundary_farm_gate_conditioning` | optional conditioning | Include washing, sorting, grading, trimming, or short-term farm handling only when performed before hand-off and not already embedded in the harvest record; identify rejected fruit and destination. | `fao-gap-framework-2003` |
 | `boundary_post_farm_gate_exclusion` | downstream activities | Exclude off-farm transport, storage, distribution, retail, consumer use, food processing, oil or purée manufacture, and packaging end-of-life unless the study explicitly extends beyond this PCR. |  |
@@ -283,8 +283,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_management_records`
 - Sources: `fao-agricultural-energy`
-
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Gasoline supplied to equipment (`orchard_energy_input_gasoline`)
 

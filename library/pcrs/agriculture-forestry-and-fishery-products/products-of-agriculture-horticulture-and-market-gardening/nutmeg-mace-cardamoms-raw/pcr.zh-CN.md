@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Nutmeg, mace, cardamoms, raw `6d4837b1-c271-4aac-89f4-f329d3290c47` |
+| Reference product flow | 实际鲜/干状态的所选肉豆蔻种子、肉豆蔻假种皮或豆蔻蒴果 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -690,7 +690,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： Water to air
 - 流属性/单位：质量 / kg
-- 数量规则：wet input = conditioned output + rejects + samples + moisture loss, all on consistent basis
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
 原始活动或阶段基准：per 1,000 kg raw spice entering conditioning.
@@ -747,7 +747,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Nutmeg, mace, cardamoms, raw `6d4837b1-c271-4aac-89f4-f329d3290c47`
+- 选定流：实际鲜/干状态的所选肉豆蔻种子、肉豆蔻假种皮或豆蔻蒴果
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：1,000 kg net accepted product
 
@@ -768,6 +768,8 @@ sync_with: pcr.en-US.md
   - 基准： per 1,000 kg reference flow
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
+
+身份适用性：按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。
 
 ###### 降级原料香辛料（`downgraded_product`）
 
@@ -844,8 +846,9 @@ sync_with: pcr.en-US.md
 | `cp_establishment` | `stand_establishment` | planting, nutrients, area, survival | invoices and field logs | cohort; crop; material type/count/mass; every nutrient product/composition/mass; area; mortality; replants; dates | reconcile purchases and field records；原始汇总与分配：sum by event; retain product detail | units; kg; ha | every event | full establishment/non-bearing phase | stand/cohort | 每声明的参考流 | invoices, labels, maps, counts |
 | `cp_management` | `productive_management` | annual inputs and emission drivers | meters, invoices, application logs | stand age/area; every nutrient product and N; water; protection product; fuels; electricity; residues; soil class | direct records or documented runtime factors；原始汇总与分配：aggregate by ha-year; retain detail | kg; m3; L; kWh; ha | every event, annual aggregate | full represented year | stand/route | 每声明的参考流 | invoices, labels, meter calibration |
 | `cp_harvest` | `harvest_separation` | harvest and separated states | lot tickets and scales | lot; crop; organ; date; area; input; seed; aril; capsules; residues; destination | weigh every lot/state；原始汇总与分配：aggregate after mass balance | kg | every lot | all harvest rounds | stand/lot | 每声明的参考流 | scale checks, tickets, receipts |
-| `cp_conditioning` | `primary_conditioning` | washing, energy, moisture, yield | batch sheet and meters | lot; method; input mass/moisture; water; energy carrier; time/temperature; output mass/moisture; rejects; re-drying | meter and weigh/test every batch；原始汇总与分配：reconcile input, output, reject and water loss | kg; m3; kWh; MJ; % | every batch | all conditioned lots | farm/unit | 每声明的参考流 | scale, moisture method, meters, batch log |
+| `cp_conditioning` | `primary_conditioning` | washing, energy, moisture, yield | batch sheet and meters | lot; method; input mass/moisture; water; energy carrier; time/temperature; output mass/moisture; rejects; re-drying ；含拒收物/残体的全部进出水；实际加水/降雨；单独液体转出；期初期末水库存；含水率及密度；有据蒸发| meter and weigh/test every batch；原始汇总与分配：reconcile input, output, reject and water loss | kg; m3; kWh; MJ; % | every batch | all conditioned lots | farm/unit | 每声明的参考流 | scale, moisture method, meters, batch log |
 | `cp_dispatch` | `grading_dispatch` | accepted/downgraded/reject | grading and sales records | lot; identity; state; moisture; grade; input; outputs; rework destination; price; gate/date | weigh and link each state；原始汇总与分配：reconcile, then normalize accepted output | kg; currency/kg | every lot | all represented production | farm/lot | 每声明的参考流 | scale, grade spec, invoice |
+| `cp_phase1_environment_coverage` | stand_establishment | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -856,28 +859,35 @@ sync_with: pcr.en-US.md
 | `calc_conditioning_balance` | conditioning | wet input = conditioned output + rejects + samples + moisture loss, all on consistent basis | masses and moisture | reconciled yield/water loss | `iisir-cardamom-2022`; `fao-nutmeg-handling` |
 | `calc_nutmeg_allocation` | seed/mace | share = output mass × matched farm-gate price / total intended-output revenue; repeat by mass | saleable masses and prices | shares summing to one | `iso-14044-2006` |
 | `calc_reference_normalization` | dataset | attributed inventory / accepted mass × 1,000 | attributed inventory; accepted mass | inventory/1,000 kg |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_management`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | all records | Preserve crop/species, organ, stand, harvest period, lot, moisture and route; mixed lots need measured composition. | maps, lot ledger, specification |
 | `dq_temporal` | perennial phases | Cover the full represented year and retain establishment history or remaining-life model. | cohort history and replacement plan |
 | `dq_mass_balance` | separation/conditioning/grading | Investigate unexplained difference above 5% of input rather than forcing closure. | calibrated weights and reconciliation |
 | `dq_moisture` | fresh/dried conversion | Use one documented moisture method and basis; record sampling time. | test and calibration record |
-| `dq_completeness` | inventory | Include every nutrient product below the one card, energy carrier, co-product, downgrade, reject and field-emission driver. | invoices, logs, meters, receipts |
+| `dq_completeness` | inventory | 将种植材料、每种实际肥料/改良剂配方、植保产品、水、能源、产出、降级/拒收、残余和排放驱动与原始记录核对。每种实际肥料/改良剂采用单独原子产品输入卡，保留产品质量、组成和施用记录；养分当量为属性/计算输入，不是重复产品数量。UUID缺失保留明确待核验状态。 | invoices, logs, meters, receipts |
 | `dq_representativeness` | aggregation | Disclose geography, system, route, ages, intercropping and drying technology; justify farm aggregation. | sampling frame and weights |
 
 ## 9. 校验规则
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference flow | Fail if crop/organ, state, moisture basis, grade, period, gate or route is missing, or accepted output is not exactly 1,000 kg. |  |
+| `validate_reference_identity` | reference flow | 按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。 |  |
 | `validate_route_exclusivity` | graph | Fail if nutmeg/cardamom or fresh/ambient/heated routes are silently averaged. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |
 | `validate_period_attribution` | establishment | Fail if phase, stand age, replacement or termination treatment is absent or double counted. | `cerutti-perennial-crops-2016` |
 | `validate_output_set` | nutmeg separation | Fail unless seed, mace and pericarp destinations are declared and intended products allocated. | `fao-nutmeg-handling` |
 | `validate_batch_linkage` | harvest through dispatch | Fail if inputs, cleaning, outputs, re-drying or rejects lack a lot/batch/period link or shared burden is duplicated. |  |
-| `validate_nutrient_cardinality` | each process | Fail if a process has more than one nutrient Product-input card, any nutrient group, or lacks individual actual-product collection for UUID resolution. |  |
+| `validate_nutrient_cardinality` | each process | 每种实际肥料/改良剂配方须有一张原子产品输入卡，含产品质量、组成、施用记录和已核验或明确未决身份。拒绝组或异质产品合并交换、漏实际产品、产品与养分重复数量或虚构UUID；过程没有最多一张卡的限制。 |  |
 | `validate_mass_balance` | separation/conditioning/grading | Fail when output states are not reconciled or rejects are accepted product. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |
 | `validate_boundary` | downstream | Fail if grinding, extraction, commercial-kernel cracking, blending, fumigation or consumer packaging is included. | `fao-nutmeg-handling` |
 
@@ -895,7 +905,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 引用 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `fao-nutmeg-handling` | official_guidance | FAO, *Production, handling and processing of nutmeg and mace*, Section III, https://www.fao.org/4/x5047e/x5047E06.htm | harvest, separation, fresh/dry delivery, drying, grading, rejects |
 | `iisir-nutmeg-2005` | extension_guidance | ICAR-IISR, *Nutmeg*, January 2005, https://www.indianspices.com/sites/default/files/cultivation_practices-nutmeg.pdf | perennial identity, seed/mace co-products, example yields |

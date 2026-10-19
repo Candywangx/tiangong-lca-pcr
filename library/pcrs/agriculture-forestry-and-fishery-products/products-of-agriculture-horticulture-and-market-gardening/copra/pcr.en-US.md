@@ -234,7 +234,7 @@ Raw activity or stage basis: per 1,000 kg mature coconuts.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Internal intermediate — mature whole coconut
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -261,7 +261,7 @@ Raw activity or stage basis: per 1,000 kg process output.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Deferred destination-specific residue identity
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -295,7 +295,7 @@ Raw activity or stage basis: per 1,000 kg mature coconuts.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Internal intermediate — mature whole coconut
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -351,7 +351,7 @@ Raw activity or stage basis: per 1,000 kg delivered nuts.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Foreground-selected freight service
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Transport work / t km
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -370,6 +370,7 @@ Raw activity or stage basis: per 1,000 kg delivered nuts; zero when inactive.
   - Basis kind: (`transport_service`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+Calculate transport work from net transported mass in tonnes multiplied by actual loaded distance in kilometres. Disclose empty returns and payload allocation; do not add a transport service if its complete burden is already in the same contractor operation.
 
 ##### Waste flows
 
@@ -386,7 +387,7 @@ Raw activity or stage basis: per 1,000 kg delivered nuts; zero when inactive.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Internal intermediate — harvested whole coconuts
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -423,7 +424,7 @@ Raw activity or stage basis: per 1,000 kg process output.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Internal intermediate — harvested whole coconuts
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -447,7 +448,7 @@ Raw activity or stage basis: per 1,000 kg ungraded copra.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Foreground-selected process water
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -465,6 +466,8 @@ Raw activity or stage basis: per 1,000 kg ungraded copra; zero when inactive.
   - Basis: per 1,000 kg ungraded copra; zero when inactive
   - Basis kind: (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Retain metered water volume separately and convert it to kg using documented density and conditions; kg = m3 × density in kg/m3. Do not also count the same delivered water as a second resource withdrawal.
 
 ###### Electricity, medium voltage input (`drying_energy`)
 
@@ -513,7 +516,7 @@ Raw activity or stage basis: per 1,000 kg ungraded copra by route.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Internal intermediate — ungraded copra
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -532,31 +535,6 @@ Raw activity or stage basis: sampled dryer output.
   - Basis kind: (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Separated husk and shell (`husk_shell`)
-
-Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
-
-- Selected flow: Deferred destination-specific husk and shell identity
-- Flow property / unit: Mass or applicable service property / declared unit
-- Amount rule: measured or reconciled amount for the linked lot
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-Raw activity or stage basis: per 1,000 kg ungraded copra.
-
-- Normalization basis: per declared reference flow
-- Basis kind: (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_copra_drying`
-- Range: QA or normalization range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 4000
-  - Unit: kg
-  - Basis: per 1,000 kg ungraded copra
-  - Basis kind: (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-
 ##### Waste flows
 
 ###### Drying rejects (`drying_reject`)
@@ -564,7 +542,7 @@ Raw activity or stage basis: per 1,000 kg ungraded copra.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Unresolved until reject destination and treatment are recorded
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -598,7 +576,7 @@ Raw activity or stage basis: per 1,000 kg ungraded copra.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Internal intermediate — ungraded copra
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -693,7 +671,7 @@ Raw activity or stage basis: one reference flow.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Deferred grade- and destination-specific copra identity
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -720,7 +698,7 @@ Raw activity or stage basis: per 1,000 kg accepted copra.
 Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned.
 
 - Selected flow: Unresolved until rework, recovery or disposal destination is recorded
-- Flow property / unit: Mass or applicable service property / declared unit
+- Flow property / unit: Mass / kg
 - Amount rule: measured or reconciled amount for the linked lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -765,6 +743,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_coconut_harvest` | `coconut_harvest` | all cards | lot and meter records | identity, mass, moisture, route, energy, destination | linked weighing, meters and logs; Raw aggregation and attribution: sum by identity then normalize | declared | each lot/run | representative period | each site/route | per declared reference flow | calibration, invoices, traceability |
 | `cp_copra_drying` | `copra_drying` | all cards | lot and meter records | identity, mass, moisture, route, energy, destination | linked weighing, meters and logs; Raw aggregation and attribution: sum by identity then normalize | declared | each lot/run | representative period | each site/route | per declared reference flow | calibration, invoices, traceability |
 | `cp_copra_grading` | `copra_grading` | all cards | lot and meter records | identity, mass, moisture, route, energy, destination | linked weighing, meters and logs; Raw aggregation and attribution: sum by identity then normalize | declared | each lot/run | representative period | each site/route | per declared reference flow | calibration, invoices, traceability |
+| `cp_phase1_environment_coverage` | coconut_production | managed environmental coverage by actual node | site/activity/method ledger | actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -774,6 +753,14 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_dry_matter` | lots | mass × (1 − moisture/100) | mass and moisture | kg dry matter |  |
 | `calc_transport` | field transfer | tonnes × loaded distance | mass, distance | t·km |  |
 | `calc_route_mix` | route aggregate | output-weighted sum of route inventories | route inventory and output | aggregate |  |
+| `husk_shell_identity_and_fate` | `copra_drying` | For the original husk_shell collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_copra_drying` | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 
@@ -813,3 +800,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- |
 | `fao-coconut-postharvest-compendium` | official_guidance | FAO, Coconut: Post-harvest Operations, https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_Coconut.pdf | identity, drying route, moisture, process boundary and quality |
 | `fao-aflatoxin-copra` | official_guidance | FAO, HACCP Manual, Example 3: Copra cake and meal, https://www.fao.org/4/y1390e/y1390e0l.htm | route-dependent safe moisture, mould prevention and validation |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |

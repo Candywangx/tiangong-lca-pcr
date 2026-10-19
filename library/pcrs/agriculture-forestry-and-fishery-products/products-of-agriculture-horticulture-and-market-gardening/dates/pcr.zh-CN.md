@@ -385,7 +385,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_harvest_output_records`采集`date_harvest_farm_gate`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -482,6 +482,7 @@ sync_with: pcr.en-US.md
 | `calc_nutrient_basis` | 营养素和土壤改良剂投入 | 营养素数量 = 实际产品质量 × 声明的营养素分数；保留产品名称、产品质量、营养基准和施用事件 | product_mass；declared_nutrient_fraction；nutrient_basis | 基于营养基准的投入数量 |  |
 | `calc_water_energy_reconciliation` | 灌溉、取水和泵送电力 | 按区块和生产周期核对计量、发票和泵计算值；当供应水和直接取水描述同一体积时不得相加 | meter_records；invoices；source_records；pump_calculation | 核对后的水和电力总量 | `fao-56-crop-evapotranspiration-1998` |
 | `calc_soil_emissions` | 土壤和空气营养相关基本流输出 | 对声明的氮、土壤改良剂、残余物、土壤和气候活动数据采用所选的具有地理适用性的方法层级；披露层级和因子 | nutrient_inputs；organic_amendments；residue_data；soil_and_climate_parameters | 方法计算的排放量 | `ipcc-2019-refinement-vol-4` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_orchard_activity_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

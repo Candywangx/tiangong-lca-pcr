@@ -327,23 +327,6 @@ Raw activity or stage basis: per crop cycle and per 1,000 kg marketable output.
 
 ##### Elementary flows
 
-###### Field residue (`papaya_field_residue`)
-
-Record non-marketable plant material and fruit residue remaining in or removed from the field, with destination and treatment disclosed.
-
-- Selected flow: Papaya field residue
-- Flow property / unit: Mass / kg dry matter or wet biomass
-- Amount rule: Weigh, estimate from documented biomass sampling, or calculate from harvested and marketable balances by field and cycle.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per crop cycle and per 1,000 kg marketable output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_papaya_harvest_records`
-- Sources: `fao-gap-framework-2003`
-
 #### Outputs
 
 ##### Product flows
@@ -458,24 +441,6 @@ Raw activity or stage basis: reference flow of 1 kg marketable output.
 ##### Waste flows
 
 
-###### Gate preparation wastewater or wash loss (`papaya_gate_wastewater`)
-
-Record wastewater or wash-related product loss generated before the declared gate and link it to the treatment or discharge route.
-
-- Selected flow: Papaya gate-preparation wastewater or wash loss
-- Flow property / unit: Mass or volume / kg or m3
-- Amount rule: Measure or reconcile wastewater and wash loss from the gate-preparation batch balance.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable output washed before the declared gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_papaya_gate_records`
-- Sources: `codex-cxc-53-2003`
-
-
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -485,6 +450,10 @@ Raw activity or stage basis: per 1,000 kg marketable output washed before the de
 - `allocation_reusable_containers`: Model reusable harvest containers and crates by recorded service cycles; assign their production burden across documented uses and retain consumed packaging as a separate input. `source_ids`: `iso-14044-2006`, `codex-cxc-53-2003`.
 
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -521,6 +490,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_mass_balance` | harvest and gate preparation | `gross harvested mass = marketable output + rejects + residue or process loss`, with any documented stock change shown separately. | harvest lots, gate batches, reject and residue records | reconciled mass-balance check | `codex-cxc-53-2003` |
 | `calc_reusable_container_burden` | harvest containers and crates | Divide container production burden by documented service cycles and assign the used-cycle share to the represented papaya output. | container mass, material, expected or observed service cycles | container burden per declared output | `iso-14044-2006` |
 | `papaya_gate_rejects_specific_output` | `papaya_gate_preparation` | For each papaya gate-preparation lot, reconcile received fruit, accepted fruit, downgraded fruit, trimming, damaged fruit and handling loss independently from discarded packaging. Identify fruit streams by actual physical state and destination, and packaging by each actual material. Marketable downgraded fruit is not automatically waste; retain its evidenced product/waste role. Preserve the original per-1,000-kg marketable-output activity basis and stage-to-final-output attribution without normalizing twice. This is a mandatory collection and calculation requirement, not an inventory exchange. Before dataset completeness, create one physically specific card for each actual exported stream, including composition, state, native quantity/property, destination and evidenced product/waste role. Use only a compatible verified UUID, or explicitly register the concrete unresolved identity. Do not invent a packaging recipe, assume segregation, infer zero from missing evidence or omit a required stream. A real single mixed stream may remain one composition-defined identity only with collection/transfer evidence and compatible treatment; never duplicate it with its component exports. Keep separately handled liquid and solid streams distinct. Preserve original attribution, period, mass/water balances, reference denominator and treatment/service boundaries; link existing matching exchanges rather than count duplicates. Former aggregate ranges are not individual-stream defaults or limits. | `cp_papaya_gate_records` | actual stream-specific exchanges, destinations and nonduplicated mass balance | `codex-cxc-53-2003` |
+| `papaya_field_residue_identity_and_fate` | `papaya_harvest` | Reconcile crop residue, harvest loss and biomass by measured wet/dry basis and actual fate. Retained or incorporated biomass is an internal residue ledger used to calculate supported decomposition and nutrient pathways, not a purchased resource or an invented elementary biomass exchange. Separately collected material requires its actual product/waste identity and destination; environmental releases require identified substances and receiving compartments. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_papaya_harvest_records` | Identity-specific exchanges and reconciled activity records | `fao-gap-framework-2003` |
+| `papaya_gate_wastewater_identity_and_fate` | `papaya_gate_preparation` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_papaya_gate_records` | Identity-specific exchanges and reconciled activity records | `codex-cxc-53-2003` |
 
 ### Data Quality Requirements
 
@@ -566,3 +537,4 @@ Evidence applicability: cited general farm-record and postharvest frameworks do 
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

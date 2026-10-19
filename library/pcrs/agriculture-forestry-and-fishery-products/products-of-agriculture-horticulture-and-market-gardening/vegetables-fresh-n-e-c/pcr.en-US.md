@@ -99,23 +99,6 @@ The reference identity must cover the actual species, unprocessed state and prod
 
 ##### Product flows
 
-###### Seed or planting material (`crop_seed_or_propagule`)
-
-Seed, transplants, or other planting material crosses the crop-production boundary when supplied to establish the declared crop cycle.
-
-- Selected flow: Declared seed or planting material
-- Flow property / unit: Mass / kg
-- Amount rule: Actual mass or count converted to mass with the declared material basis
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: Per 1 kg reference fresh vegetable.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_crop_inputs`
-- Sources: `fao-crop-production-guidance-2016`
-
 ###### Irrigation water (`crop_irrigation_water`)
 
 Irrigation water is recorded when water is withdrawn or supplied to the crop-production unit for the declared cycle.
@@ -318,7 +301,7 @@ Raw activity or stage basis: Per 1 kg reference fresh vegetable.
 Phosphate released to soil is recorded when the selected method identifies a loss pathway from crop nutrient management.
 
 - Selected flow: Soil phosphate emission
-- Flow property / unit: Mass / kg P
+- Flow property / unit: Mass / kg PO4
 - Amount rule: Apply the declared nutrient-loss method to collected P input and retention records
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -329,6 +312,8 @@ Raw activity or stage basis: Per 1 kg reference fresh vegetable.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_crop_inputs`
 - Sources: `ipcc-2019-refinement-agriculture`
+
+Final exchange mass is kg PO4; retain P-based activity, factors and screens in a separate ledger. Convert only the mass of P attributed to this chemical species by 95/31 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ###### Direct soil nitrous oxide (`crop_direct_n2o`)
 
@@ -765,6 +750,10 @@ Raw activity or stage basis: 1 kg reference fresh vegetable.
 
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 ### Specific input identification before dataset completion
@@ -804,6 +793,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `packaging_rejects_specific_output` | `p_packaging_presentation` | For each vegetable packaging batch, weigh or reconcile discarded packaging by actual material separately from rejected vegetable net mass. Retain species, product state, composition, packaging tare, actual destination and reuse status. A packaged-product reject may remain one exchange only if it is physically transferred as one documented composite stream with fruit/vegetable and packaging fractions evidenced; do not also export those fractions as independent waste exchanges. Reconcile input, accepted net product, rejects and stocks on the same batch scope. This is a mandatory collection and calculation requirement, not an inventory exchange. Before dataset completeness, create one physically specific card for each actual exported stream, including composition, state, native quantity/property, destination and evidenced product/waste role. Use only a compatible verified UUID, or explicitly register the concrete unresolved identity. Do not invent a packaging recipe, assume segregation, infer zero from missing evidence or omit a required stream. A real single mixed stream may remain one composition-defined identity only with collection/transfer evidence and compatible treatment; never duplicate it with its component exports. Keep separately handled liquid and solid streams distinct. Preserve original attribution, period, mass/water balances, reference denominator and treatment/service boundaries; link existing matching exchanges rather than count duplicates. Former aggregate ranges are not individual-stream defaults or limits. | `cp_packaging_records` | actual stream-specific exchanges, destinations and nonduplicated mass balance | `fao-food-loss-waste-2019` |
 | `crop_reactive_n_emissions_specific_exchanges` | `p_crop_production` | Identify and calculate each actual ammonia and nitrogen-oxide species separately by receiving compartment. Instantiate one elementary card per substance and compartment before dataset completion. Retain the method-reported NOx convention; a mixed NOx or total-N quantity cannot be relabelled as one species. Convert species-specific elemental-N mass to compound mass only with the applicable stoichiometry; do not reconvert compound mass. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_crop_inputs` | Separate atomic exchanges; completeness required | `ipcc-2019-refinement-agriculture` |
 | `conditioning_wastewater_specific_exchanges` | `p_primary_conditioning` | Enumerate vegetable-conditioning wastewater, its treatment service and any actual environmental release as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_conditioning_records` | Separate atomic exchanges; completeness required | `fao-fresh-produce-hygiene-2003` |
+| `crop_seed_or_propagule_identity_and_fate` | `p_crop_production` | For the original crop_seed_or_propagule collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_crop_inputs` | Identity-specific exchanges and reconciled activity records | `fao-crop-production-guidance-2016` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_crop_inputs`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -858,3 +849,4 @@ The following checks are normative for every foreground data package using this 
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

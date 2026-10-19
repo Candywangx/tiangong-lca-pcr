@@ -99,31 +99,6 @@ When constructing a foreground data package, every item in `Required qualifiers`
 
 ##### Product flows
 
-###### Planting seed or parent stock (`planting_seed_input`)
-
-Record the seed, parent line, or source stock used to establish the declared vegetable seed crop. Preserve its species, variety or hybrid, seed class, generation, and source rather than treating it as generic grain.
-
-- Selected flow: Planting seed or parent stock for vegetable seed multiplication
-- Flow property / unit: Mass / kg
-- Amount rule: measured seed mass or count converted with lot-specific thousand-seed weight
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per crop cycle and converted to 1 kg released seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_seed_field_activity_records`
-- Sources:
-- Range: Provisional planting-seed screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.01
-  - Upper: 150
-  - Unit: kg/ha
-  - Basis: broad first-pass range across small-seeded vegetable crops, seed-bearing fruit crops, and parent-line multiplication; replace with species and establishment evidence
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Urea fertilizer (`vegetable_seed_field_multiplication_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for vegetable_seed_field_multiplication_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -353,7 +328,7 @@ Raw activity or stage basis: per crop cycle and converted to 1 kg released seed.
 Record direct and indirect soil nitrous-oxide emissions only from a declared geographically applicable method using the nutrient, residue, soil, water, and climate records for the same crop cycle.
 
 - Selected flow: Nitrous oxide emission to air from managed soil
-- Flow property / unit: Mass / kg N2O or kg N2O-N
+- Flow property / unit: Mass / kg N2O
 - Amount rule: calculate from fertilizer and amendment nitrogen, residue nitrogen, and applicable direct or indirect pathways; report the factor set and basis
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -372,6 +347,8 @@ Raw activity or stage basis: per crop cycle and converted to 1 kg released seed.
   - Basis: one crop cycle and declared nitrogen input; replace with selected regional method
   - Basis kind: N input (`n_input`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
 
 ###### Ammonia from seed-crop nutrient management (`field_ammonia_emission`)
 
@@ -403,7 +380,7 @@ Raw activity or stage basis: per crop cycle and converted to 1 kg released seed.
 Record nitrate leaching or runoff only when supported by a monitored balance, an applicable model, or a reviewed inventory method. Keep the water pathway and receiving medium explicit.
 
 - Selected flow: Nitrate emission to water from seed-crop field
-- Flow property / unit: Mass / kg nitrate or kg N as nitrate
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: calculate from nitrogen inputs, soil and water conditions, drainage or runoff, and the selected method; do not infer a loss from fertilizer mass alone
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -422,6 +399,8 @@ Raw activity or stage basis: per crop cycle and converted to 1 kg released seed.
   - Basis: one crop cycle; replace with site water-balance or regional leaching method
   - Basis kind: N input (`n_input`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+The final exchange is kg NO3-. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 62/14 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
 
 ### Process: Vegetable seed harvest and seed extraction (`vegetable_seed_harvest_and_extraction`)
 
@@ -476,31 +455,6 @@ Raw activity or stage basis: per extraction batch and converted to 1 kg released
   - Upper: 200
   - Unit: m3/1,000 kg incoming seed-bearing material
   - Basis: wet routes only; replace with species and equipment records
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Extraction aids or washing agents (`extraction_aid_input`)
-
-Record acids, salts, enzymes, sanitizers, or other extraction aids when they cross the foreground boundary. Preserve the formulation, active substance, and whether it is retained on seed or discharged with wastewater.
-
-- Selected flow: Extraction aid or washing agent for vegetable seed recovery
-- Flow property / unit: Mass of formulation / kg
-- Amount rule: measured product mass by extraction batch and formulation
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per extraction batch and converted to 1 kg released seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_harvest_extraction_records`
-- Sources:
-- Range: Provisional extraction-aid screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg/1,000 kg incoming seed-bearing material
-  - Basis: wet extraction routes only; replace with formulation and batch records
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
@@ -882,31 +836,6 @@ Raw activity or stage basis: per final-preparation batch and converted to 1 kg r
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Coating, encrusting, or pelleting material (`seed_coating_pelleting_input`)
-
-Record coating polymer, mineral, biological, adhesive, filler, or other pelleting material when it is added before release. State whether the quantity is part of the declared net product mass.
-
-- Selected flow: Seed-coating, encrusting, or pelleting material
-- Flow property / unit: Mass / kg
-- Amount rule: measured material mass by formulation and treatment or pelleting batch; distinguish seed mass from final treated mass
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per final-preparation batch and converted to 1 kg released seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_treatment_packaging_records`
-- Sources: `fao-seed-processing-manual`
-- Range: Provisional coating and pelleting screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kg material/1,000 kg released seed
-  - Basis: coating, encrusting, and pelleting routes only; replace with formulation and batch records
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Electricity for treatment, packaging, and storage (`final_preparation_electricity_input`)
 
 Record electricity for treatment, coating, pelleting, weighing, bagging, sealing, labelling, warehouse ventilation, and pre-gate storage when those operations are inside the boundary.
@@ -1021,6 +950,10 @@ Raw activity or stage basis: per final-preparation batch and converted to 1 kg r
 
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 ### Specific input identification before dataset completion
@@ -1062,6 +995,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_treatment_and_packaging_mass` | treatment, coating, pelleting, and packaging | Keep incoming seed, added treatment or coating materials, final net seed, packaging, and waste as separate quantities; report whether additives are included in net product mass | lot ledger; formulation dose; packaging ledger; final mass | treated or packaged lot mass and material inventory | `mass-balance-identity` |
 | `calc_reusable_packaging` | reusable pallets and crates | Packaging mass / documented service cycles, with return loss assigned to the applicable lots | packaging mass; service cycles; loss; lot mass | allocated packaging service per released seed | `iso-14044-2006` |
 | `calc_reference_scaling` | terminal released seed | Scale all foreground quantities by 1 kg / measured accepted released seed, retaining moisture and quality qualifiers | accepted released seed; all normalized quantities | one-kilogram reference-flow inventory | `mass-balance-identity` |
+| `planting_seed_input_identity_and_fate` | `vegetable_seed_field_multiplication` | For the original planting_seed_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_seed_field_activity_records` | Identity-specific exchanges and reconciled activity records |  |
+| `extraction_aid_input_identity_and_fate` | `vegetable_seed_harvest_and_extraction` | For the original extraction_aid_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_harvest_extraction_records` | Identity-specific exchanges and reconciled activity records |  |
+| `seed_coating_pelleting_input_identity_and_fate` | `vegetable_seed_treatment_packaging_and_storage` | For the original seed_coating_pelleting_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_treatment_packaging_records` | Identity-specific exchanges and reconciled activity records | `fao-seed-processing-manual` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_seed_field_emission_activity`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -1119,3 +1056,4 @@ Validation output must report accepted input, checks performed, checks skipped, 
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

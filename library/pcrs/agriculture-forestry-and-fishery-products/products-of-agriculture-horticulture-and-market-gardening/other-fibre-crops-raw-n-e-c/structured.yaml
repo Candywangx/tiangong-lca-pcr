@@ -245,7 +245,7 @@ process_inventory:
           property_unit: "Volume / m3"
           description: "Record water supplied for irrigation by source. Rainfall is site context and is not a supplied product exchange. Raw activity or stage basis: Per hectare crop cycle, subsequently normalized to reference product."
           amount:
-            expression: "Metered or otherwise documented withdrawal by field and period"
+            expression: "Measure the actual supplied-water quantity crossing this product-supply boundary by event/use and matched period, in its declared native unit. A source-abstraction meter is not automatically the delivered-product quantity: reconcile distribution losses, external returns and storage change between the two measurement points. Direct natural abstraction owned by the foreground requires a separate source-specific elementary input and local supply operations; the internal delivery then cancels inside the aggregate boundary, rather than adding a second external water purchase. Purchased water inherits its compatible provider abstraction and supply burdens once. Retain rainfed/no-supply absence evidence; missing delivery/ownership evidence is incomplete, not zero. Attribute and normalize once to accepted final output."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -846,6 +846,11 @@ allocation_rules:
     applies_to: "assets serving multiple nodes"
     rule: "List consuming nodes and periods and attribute once using recorded machine hours, mass processed or other causal service"
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_propagation
@@ -888,7 +893,7 @@ dataset_production:
       process_id: "crop_production"
       flow_role: "irrigation water"
       record_type: "records"
-      raw_fields: "meter reading or documented withdrawal"
+      raw_fields: "meter reading or documented withdrawal ; actual supply boundary and meter location; product delivery; direct-abstraction owner; source-to-delivery losses, returns and storage; provider coverage"
       collection_method: "direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output"
       unit: "m3"
       frequency: "each irrigation period"
@@ -1048,6 +1053,16 @@ dataset_production:
         - stock
       output: "reconciliation result"
       source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_nutrients
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: identity_quality
       applies_to: "reference product"
@@ -1123,9 +1138,13 @@ data_sources:
     type: "standard"
     reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines"
     used_for: "allocation hierarchy and transparency"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:9ae5aad625e5b40cfb4cfd8d7922b8d5712456934f3a3d18c29dce12a8cacf83"
+  source_sha256: "sha256:010e754853509fbb487a165a72fe2a3d06733bed65792153e99fb6b9c2ebcac1"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3981"
@@ -1176,18 +1195,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_39865"
+    - unit_id: "normative_40625"
       family: "allocation"
       span:
         start:
-          offset: 39865
+          offset: 40625
           line: 771
           column: 1
         end:
-          offset: 40988
-          line: 783
+          offset: 43732
+          line: 787
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `mass_balance_first` | all processes | First reconcile inputs, accepted product, co-products, residues, waste and measured moisture change by lot |  |\n| `coproduct_attribution` | intended co-products | Prefer subdivision. If allocation remains necessary, declare physical or economic method, data period and sensitivity for the study goal | `iso-14044-2006` |\n| `residue_classification` | residues and rejects | Only material with intended use and documented handoff is a co-product; waste, soil return and unowned loss receive no product output quantity |  |\n| `multi_period_attribution` | perennial establishment and shared assets | Attribute using evidenced productive years, service or lifetime output, recording replacement and termination; no burden may be counted in multiple periods |  |\n| `shared_asset_attribution` | assets serving multiple nodes | List consuming nodes and periods and attribute once using recorded machine hours, mass processed or other causal service |  |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `mass_balance_first` | all processes | First reconcile inputs, accepted product, co-products, residues, waste and measured moisture change by lot |  |\n| `coproduct_attribution` | intended co-products | Prefer subdivision. If allocation remains necessary, declare physical or economic method, data period and sensitivity for the study goal | `iso-14044-2006` |\n| `residue_classification` | residues and rejects | Only material with intended use and documented handoff is a co-product; waste, soil return and unowned loss receive no product output quantity |  |\n| `multi_period_attribution` | perennial establishment and shared assets | Attribute using evidenced productive years, service or lifetime output, recording replacement and termination; no burden may be counted in multiple periods |  |\n| `shared_asset_attribution` | assets serving multiple nodes | List consuming nodes and periods and attribute once using recorded machine hours, mass processed or other causal service |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1204,11 +1223,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 39865
+              offset: 40625
               line: 771
               column: 1
             end:
-              offset: 39905
+              offset: 40665
               line: 771
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1224,16 +1243,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50117"
+    - unit_id: "normative_54436"
       family: "validation"
       span:
         start:
-          offset: 50117
-          line: 827
+          offset: 54436
+          line: 832
           column: 1
         end:
-          offset: 51623
-          line: 840
+          offset: 55942
+          line: 845
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | severity |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Fixed UUID, Mass property and kg unit must match the named raw fibre product and declared gate | error |\n| `validate_gate_once` | route | Farm and first-preparation handoffs cannot both be reference outputs | error |\n| `validate_ranges` | every flow card | Check nonnegative bounds, lower ≤ upper and process-consistent denominator; inactive conditional routes impose no positive amount | error |\n| `validate_flow_identitys` | parameterized inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | error |\n| `validate_balance` | harvest and preparation | Balance input, products, co-products, residues, waste and stock change on declared moisture basis | error |\n| `validate_outputs` | intended outputs and rejects | Every intended output has a handoff; downgraded, rejected, recovered or waste states have explicit non-duplicated destinations | error |\n| `validate_period_assets` | perennial and shared infrastructure | Periods and consuming nodes are complete; establishment and shared-asset burdens are attributed once | error |\n| `validate_route_delta` | alternative routes | Each alternative declares parent activity and real topology, inventory, calculation or validation delta; mutually exclusive routes are not averaged | error |\n\n"
       headings:
@@ -1252,12 +1271,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50117
-              line: 827
+              offset: 54436
+              line: 832
               column: 1
             end:
-              offset: 50139
-              line: 827
+              offset: 54458
+              line: 832
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1341,171 +1360,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "mass_balance_first"
       identity_kind: "explicit"
-      unit_id: "normative_39865"
+      unit_id: "normative_40625"
       source_span:
         start:
-          offset: 40000
+          offset: 40760
           line: 777
           column: 1
         end:
-          offset: 40152
+          offset: 40912
           line: 777
           column: 153
     - pointer: "/allocation_rules/1"
       rule_id: "coproduct_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_39865"
+      unit_id: "normative_40625"
       source_span:
         start:
-          offset: 40153
+          offset: 40913
           line: 778
           column: 1
         end:
-          offset: 40361
+          offset: 41121
           line: 778
           column: 209
     - pointer: "/allocation_rules/2"
       rule_id: "residue_classification"
       identity_kind: "explicit"
-      unit_id: "normative_39865"
+      unit_id: "normative_40625"
       source_span:
         start:
-          offset: 40362
+          offset: 41122
           line: 779
           column: 1
         end:
-          offset: 40561
+          offset: 41321
           line: 779
           column: 200
     - pointer: "/allocation_rules/3"
       rule_id: "multi_period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_39865"
+      unit_id: "normative_40625"
       source_span:
         start:
-          offset: 40562
+          offset: 41322
           line: 780
           column: 1
         end:
-          offset: 40797
+          offset: 41557
           line: 780
           column: 236
     - pointer: "/allocation_rules/4"
       rule_id: "shared_asset_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_39865"
+      unit_id: "normative_40625"
       source_span:
         start:
-          offset: 40798
+          offset: 41558
           line: 781
           column: 1
         end:
-          offset: 40986
+          offset: 41746
           line: 781
           column: 189
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_40625"
+      source_span:
+        start:
+          offset: 41819
+          line: 785
+          column: 1
+        end:
+          offset: 43730
+          line: 785
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 50210
-          line: 831
+          offset: 54529
+          line: 836
           column: 1
         end:
-          offset: 50365
-          line: 831
+          offset: 54684
+          line: 836
           column: 156
     - pointer: "/validation_rules/1"
       rule_id: "validate_gate_once"
       identity_kind: "explicit"
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 50366
-          line: 832
+          offset: 54685
+          line: 837
           column: 1
         end:
-          offset: 50477
-          line: 832
+          offset: 54796
+          line: 837
           column: 112
     - pointer: "/validation_rules/2"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 50478
-          line: 833
+          offset: 54797
+          line: 838
           column: 1
         end:
-          offset: 50657
-          line: 833
+          offset: 54976
+          line: 838
           column: 180
     - pointer: "/validation_rules/3"
       rule_id: "validate_flow_identitys"
       identity_kind: "explicit"
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 50658
-          line: 834
+          offset: 54977
+          line: 839
           column: 1
         end:
-          offset: 50889
-          line: 834
+          offset: 55208
+          line: 839
           column: 232
     - pointer: "/validation_rules/4"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 50890
-          line: 835
+          offset: 55209
+          line: 840
           column: 1
         end:
-          offset: 51046
-          line: 835
+          offset: 55365
+          line: 840
           column: 157
     - pointer: "/validation_rules/5"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 51047
-          line: 836
+          offset: 55366
+          line: 841
           column: 1
         end:
-          offset: 51237
-          line: 836
+          offset: 55556
+          line: 841
           column: 191
     - pointer: "/validation_rules/6"
       rule_id: "validate_period_assets"
       identity_kind: "explicit"
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 51238
-          line: 837
+          offset: 55557
+          line: 842
           column: 1
         end:
-          offset: 51415
-          line: 837
+          offset: 55734
+          line: 842
           column: 178
     - pointer: "/validation_rules/7"
       rule_id: "validate_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 51416
-          line: 838
+          offset: 55735
+          line: 843
           column: 1
         end:
-          offset: 51621
-          line: 838
+          offset: 55940
+          line: 843
           column: 206
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1534,27 +1566,27 @@ normative_context:
           column: 169
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_39865"
+      unit_id: "normative_40625"
       source_span:
         start:
-          offset: 39865
+          offset: 40625
           line: 771
           column: 1
         end:
-          offset: 39905
+          offset: 40665
           line: 771
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50117"
+      unit_id: "normative_54436"
       source_span:
         start:
-          offset: 50117
-          line: 827
+          offset: 54436
+          line: 832
           column: 1
         end:
-          offset: 50139
-          line: 827
+          offset: 54458
+          line: 832
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1563,5 +1595,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:9ae5aad625e5b40cfb4cfd8d7922b8d5712456934f3a3d18c29dce12a8cacf83"
-  generated_content_sha256: "sha256:b164ac83832f1cb42648a240e253b18575404d1591190efb9b45ea235f855225"
+    sha256: "sha256:010e754853509fbb487a165a72fe2a3d06733bed65792153e99fb6b9c2ebcac1"
+  generated_content_sha256: "sha256:5aea8ec1c5c6bf1aa364d3097bbea9415fc5ab8122a0652ba8c6d4fc4f15beab"

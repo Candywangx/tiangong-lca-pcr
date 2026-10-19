@@ -102,7 +102,7 @@ sync_with: pcr.en-US.md
 - 选定流： Alfalfa seed for sowing
 - 流属性/单位： Mass / kg
 - 身份解析：一次初搜和一次精炼搜索后仍未解析；返回候选为饲草苜蓿、加工苜蓿或其他饲草物种，不是播种用苜蓿种子。
-- 数量规则： measured purchased and used mass, corrected to pure live seed for the seeded area
+- 数量规则：记录实际使用的实体种子产品质量，扣除有据未用退回，保留供应商/批次、处理、纯度及发芽/活力属性。纯活种子当量=实体种子质量×纯度比例×活力比例，仅为独立质量/播量属性，不是外购产品交换质量，也不是另一笔购买。只有纯活种子播量时，须用有据非零批次比例反推实体数量，否则实体种子用量仍不完整；保留原库存、期间和参考产出归属。
 - 数值来源模式： Foreground record (`foreground_record`)
 - 适用范围： Site-specific (`site_specific`)
 原始活动或阶段基准：per hectare newly established stand before stand-life annualization.
@@ -478,15 +478,8 @@ sync_with: pcr.en-US.md
 - 证据类型： Collected record (`collected_record`)
 - 采集协议： `cp_stand_year_records`
 - 来源： `umn-alfalfa-drought-2024`; `usda-ars-alfalfa-irrigation`
-- 数量范围： Source-supported seasonal crop-water screen
-  - 范围角色： Typical range (`typical_range`)
-  - 下限： 4000
-  - 上限： 8000
-  - 单位： m3/ha*a
-  - 基准： seasonal precipitation plus irrigation-equivalent water use per productive hectare-year; report supplied irrigation separately
-  - 基准类型： Crop cycle (`crop_cycle`)
-  - 证据类型： External source (`external_source`)
-  - 来源： `umn-alfalfa-drought-2024`; `usda-ars-alfalfa-irrigation`
+
+所引作物需水量或降水加灌溉背景不是实际灌溉供水量，也不是其有效性上下限。采集声明测点/边界的实际供水；采用计算时须给出完整场址水量平衡，区分有效降雨、土壤蓄水、输配/施用效率及回水。本处不规定供水数值范围；雨养零值须有据，实测量不得被裁剪到文献需水背景内。
 
 ###### 中压电力投入（`annual_field_energy`）
 
@@ -852,10 +845,11 @@ sync_with: pcr.en-US.md
 | `calc_energy` | energy cards | sum carrier quantity × declared net-energy conversion; retain carrier identity and do not add service and fuel representations of the same operation | carrier quantities, electricity, conversion factors, operation ids | MJ by process and period |  |
 | `calc_cut_mass_balance` | each cut | harvest-ready input = accepted fresh output + rejected/lost biomass + separately traced destinations, within stated measurement uncertainty | incoming biomass, accepted mass, rejected mass, other destinations | reconciled cut mass balance | `mass-balance-identity` |
 | `calc_managed_soil_emissions` | nitrogen and amendment emissions | apply the declared inventory-method equations and factors to actual relevant N, urea, lime, residue and renewal activity data; separate species and compartments | recorded activity data, method version and factors | species-specific elementary exchanges | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_stand_year_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | reference product | Confirm fresh, unprocessed, unensiled, undried and unbaled state at farm-gate hand-off. | product description, harvest and dispatch records |
 | `dq_period_completeness` | multi-period attribution | Identify establishment phase, every productive stand-year, every included cut, stand termination and any missing records; document prospective lifetime assumptions. | period index and stand history |
@@ -892,7 +886,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `umn-alfalfa-establishment` | extension_guidance | University of Minnesota Extension, “Alfalfa establishment: Management strategies”, https://extension.umn.edu/agriculture/crop-production/forages/alfalfa-establishment-management-strategies | pure-live-seed basis, seed rate, coating/inoculation, establishment nutrients and perennial establishment records |
 | `umn-alfalfa-fertilizer` | extension_guidance | University of Minnesota Extension, “Alfalfa fertilizer recommendations”, https://extension.umn.edu/agriculture/crop-production/nutrient-management-for-minnesota-crops/fertilizing-alfalfa | soil-test and yield-goal nutrient decisions, lime timing and limits on routine N fertilizer |

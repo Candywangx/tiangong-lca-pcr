@@ -420,8 +420,8 @@ process_inventory:
           role: "Nitrate to receiving water"
           name: "Nitrate to reported water compartment"
           flow_type: "elementary"
-          property_unit: "Mass / kg NO3 or kg NO3-N"
-          description: "Record nitrate leaching or runoff by actual receiving-water compartment and preserve whether the reported basis is nitrate or nitrate-nitrogen. Raw activity or stage basis: per cultivated area and crop cycle."
+          property_unit: "Mass / kg NO3-"
+          description: "Record nitrate leaching or runoff by actual receiving-water compartment and preserve whether the reported basis is nitrate or nitrate-nitrogen. Raw activity or stage basis: per cultivated area and crop cycle. Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass."
           amount:
             expression: "measured or modelled nitrate loss by compartment"
             value_mode: "calculated_value"
@@ -830,7 +830,7 @@ process_inventory:
           property_unit: "Mass / kg water"
           description: "Calculate moisture removed during primary drying from incoming and outgoing mass and moisture measurements; fresh hand-off routes record zero. Raw activity or stage basis: per 1,000 kg accepted product."
           amount:
-            expression: "moisture removed by mass and moisture balance"
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -894,6 +894,11 @@ allocation_rules:
     rule: "Link inputs, outputs, cleaning and changeover events to one run or operating interval; rework retains producing-node burdens and adds only new operations, preventing shared-run double counting."
     source_ids:
       - who-gacp-medicinal-plants
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_cultivation_identity
@@ -996,7 +1001,7 @@ dataset_production:
       process_id: "primary_conditioning"
       flow_role: "drying moisture and dust"
       record_type: "dryer and environmental records"
-      raw_fields: "input/output mass; input/output moisture; run time; controls; dust measurement/model; particle size; air compartment"
+      raw_fields: "input/output mass; input/output moisture; run time; controls; dust measurement/model; particle size; air compartment ; all inlet/outlet material water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; wet-basis moisture/density; supported evaporation and uncertainty"
       collection_method: "same-lot moisture balance plus measured or documented emission model; Raw aggregation and attribution: calculate water removed and dust after controls by run"
       unit: "kg water; kg particulate; particle-size fraction"
       frequency: "each drying run"
@@ -1054,6 +1059,16 @@ dataset_production:
       source_ids:
         - who-gacp-medicinal-plants
         - fairwild-standard
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_field_emissions
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "every lot"
@@ -1098,7 +1113,7 @@ validation_rules:
       - who-gacp-medicinal-plants
   - rule_id: validate_mass_moisture_balance
     applies_to: "conditioning"
-    rule: "Complete mass and moisture balance for each run; fresh routes have zero drying energy and water vapour, and wet routes balance supplied water and wastewater."
+    rule: "Reconcile each actual crop/collection/conditioning run and its stocks on matched material and water-component bases. A fresh route without active drying has no invented drying-energy burden, but independently evidenced natural moisture change or other loss is still recorded and not forced to zero; unexplained wet-mass loss is not automatically vapour. Wet routes separately reconcile supplied water, retained material water and external wastewater."
     source_ids:
       - who-quality-control-herbal-materials
   - rule_id: validate_deferred_elementary_identity
@@ -1130,9 +1145,13 @@ data_sources:
     type: "method_factor"
     reference: "IPCC (2019), 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11"
     used_for: "managed-soil nitrogen emissions and N2O conversion"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:816234c97bc578a9ae41ba75ed1a7cdc6bc2e57797c8faa2bbbc0ef31156a47f"
+  source_sha256: "sha256:8a6b6e42510b5633e804901ac35fcafadf200c9cac37395b9e40b0f54ab65b77"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5200"
@@ -1183,18 +1202,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43868"
+    - unit_id: "normative_45183"
       family: "allocation"
       span:
         start:
-          offset: 43868
-          line: 804
+          offset: 45183
+          line: 807
           column: 1
         end:
-          offset: 44878
-          line: 812
+          offset: 48177
+          line: 819
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_route_exclusivity` | cultivated and wild origin | Do not assign the same material quantity to both origin routes; weight strata by actual accepted mass only after each stratum is complete. | `who-gacp-medicinal-plants`; `fairwild-standard` |\n| `allocation_mass_balance_first` | accepted, downgraded and waste outputs | Record every output and destination separately and apply mass balance first. Allocate only when multiple economically valuable products share inseparable burdens; report method, price period and sensitivity. | `who-quality-control-herbal-materials` |\n| `allocation_rework_and_runs` | batches, continuous periods, rework and changeover | Link inputs, outputs, cleaning and changeover events to one run or operating interval; rework retains producing-node burdens and adds only new operations, preventing shared-run double counting. | `who-gacp-medicinal-plants` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_route_exclusivity` | cultivated and wild origin | Do not assign the same material quantity to both origin routes; weight strata by actual accepted mass only after each stratum is complete. | `who-gacp-medicinal-plants`; `fairwild-standard` |\n| `allocation_mass_balance_first` | accepted, downgraded and waste outputs | Record every output and destination separately and apply mass balance first. Allocate only when multiple economically valuable products share inseparable burdens; report method, price period and sensitivity. | `who-quality-control-herbal-materials` |\n| `allocation_rework_and_runs` | batches, continuous periods, rework and changeover | Link inputs, outputs, cleaning and changeover events to one run or operating interval; rework retains producing-node burdens and adds only new operations, preventing shared-run double counting. | `who-gacp-medicinal-plants` |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1211,12 +1230,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43868
-              line: 804
+              offset: 45183
+              line: 807
               column: 1
             end:
-              offset: 43908
-              line: 804
+              offset: 45223
+              line: 807
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1231,18 +1250,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54415"
+    - unit_id: "normative_59347"
       family: "validation"
       span:
         start:
-          offset: 54415
-          line: 852
+          offset: 59347
+          line: 860
           column: 1
         end:
-          offset: 56341
-          line: 864
+          offset: 61566
+          line: 872
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity_gap` | reference flow | Reference UUID, property UUID and unit-group UUID remain blank until one Tiangong Product flow compatible with category, gate, state and mass property is verified; reject similar species, extracts, formulations and generic biomass substitutes. |  |\n| `validate_origin_exclusivity` | each material quantity | Declare exactly one cultivated or wild-collected origin route; the two routes must not double count. | `who-gacp-medicinal-plants`; `fairwild-standard` |\n| `validate_identity_qualifiers` | reference product | Fail when taxon, plant part, intended use, fresh/dry state, moisture basis, geography or lot is missing; do not merge states without conversion and stratification. | `who-quality-control-herbal-materials` |\n| `validate_nutrient_cardinality` | `managed_cultivation` | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_runs_and_rework` | conditioning runs | Link every input, output, cleaning, changeover, downgrade, rework and discard path to a run/period; exclude rejects from accepted output and prevent shared-burden duplication. | `who-gacp-medicinal-plants` |\n| `validate_mass_moisture_balance` | conditioning | Complete mass and moisture balance for each run; fresh routes have zero drying energy and water vapour, and wet routes balance supplied water and wastewater. | `who-quality-control-herbal-materials` |\n| `validate_deferred_elementary_identity` | nitrate, phosphorus, crop-protection releases, wild biomass and dust | Before final process exchange, expand each umbrella into verified concrete substance/species, property and receiving/source compartment UUIDs; never auto-bind a broad search candidate. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity_gap` | reference flow | Reference UUID, property UUID and unit-group UUID remain blank until one Tiangong Product flow compatible with category, gate, state and mass property is verified; reject similar species, extracts, formulations and generic biomass substitutes. |  |\n| `validate_origin_exclusivity` | each material quantity | Declare exactly one cultivated or wild-collected origin route; the two routes must not double count. | `who-gacp-medicinal-plants`; `fairwild-standard` |\n| `validate_identity_qualifiers` | reference product | Fail when taxon, plant part, intended use, fresh/dry state, moisture basis, geography or lot is missing; do not merge states without conversion and stratification. | `who-quality-control-herbal-materials` |\n| `validate_nutrient_cardinality` | `managed_cultivation` | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_runs_and_rework` | conditioning runs | Link every input, output, cleaning, changeover, downgrade, rework and discard path to a run/period; exclude rejects from accepted output and prevent shared-burden duplication. | `who-gacp-medicinal-plants` |\n| `validate_mass_moisture_balance` | conditioning | Reconcile each actual crop/collection/conditioning run and its stocks on matched material and water-component bases. A fresh route without active drying has no invented drying-energy burden, but independently evidenced natural moisture change or other loss is still recorded and not forced to zero; unexplained wet-mass loss is not automatically vapour. Wet routes separately reconcile supplied water, retained material water and external wastewater. | `who-quality-control-herbal-materials` |\n| `validate_deferred_elementary_identity` | nitrate, phosphorus, crop-protection releases, wild biomass and dust | Before final process exchange, expand each umbrella into verified concrete substance/species, property and receiving/source compartment UUIDs; never auto-bind a broad search candidate. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1259,12 +1278,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54415
-              line: 852
+              offset: 59347
+              line: 860
               column: 1
             end:
-              offset: 54437
-              line: 852
+              offset: 59369
+              line: 860
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1335,132 +1354,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_route_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_43868"
+      unit_id: "normative_45183"
       source_span:
         start:
-          offset: 43981
-          line: 808
+          offset: 45296
+          line: 811
           column: 1
         end:
-          offset: 44236
-          line: 808
+          offset: 45551
+          line: 811
           column: 256
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_mass_balance_first"
       identity_kind: "explicit"
-      unit_id: "normative_43868"
+      unit_id: "normative_45183"
       source_span:
         start:
-          offset: 44237
-          line: 809
+          offset: 45552
+          line: 812
           column: 1
         end:
-          offset: 44564
-          line: 809
+          offset: 45879
+          line: 812
           column: 328
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rework_and_runs"
       identity_kind: "explicit"
-      unit_id: "normative_43868"
+      unit_id: "normative_45183"
       source_span:
         start:
-          offset: 44565
-          line: 810
+          offset: 45880
+          line: 813
           column: 1
         end:
-          offset: 44876
-          line: 810
+          offset: 46191
+          line: 813
           column: 312
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_45183"
+      source_span:
+        start:
+          offset: 46264
+          line: 817
+          column: 1
+        end:
+          offset: 48175
+          line: 817
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity_gap"
       identity_kind: "explicit"
-      unit_id: "normative_54415"
+      unit_id: "normative_59347"
       source_span:
         start:
-          offset: 54510
-          line: 856
+          offset: 59442
+          line: 864
           column: 1
         end:
-          offset: 54813
-          line: 856
+          offset: 59745
+          line: 864
           column: 304
     - pointer: "/validation_rules/1"
       rule_id: "validate_origin_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_54415"
+      unit_id: "normative_59347"
       source_span:
         start:
-          offset: 54814
-          line: 857
+          offset: 59746
+          line: 865
           column: 1
         end:
-          offset: 55026
-          line: 857
+          offset: 59958
+          line: 865
           column: 213
     - pointer: "/validation_rules/2"
       rule_id: "validate_identity_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_54415"
+      unit_id: "normative_59347"
       source_span:
         start:
-          offset: 55027
-          line: 858
+          offset: 59959
+          line: 866
           column: 1
         end:
-          offset: 55288
-          line: 858
+          offset: 60220
+          line: 866
           column: 262
     - pointer: "/validation_rules/3"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_54415"
+      unit_id: "normative_59347"
       source_span:
         start:
-          offset: 55289
-          line: 859
+          offset: 60221
+          line: 867
           column: 1
         end:
-          offset: 55522
-          line: 859
+          offset: 60454
+          line: 867
           column: 234
     - pointer: "/validation_rules/4"
       rule_id: "validate_runs_and_rework"
       identity_kind: "explicit"
-      unit_id: "normative_54415"
+      unit_id: "normative_59347"
       source_span:
         start:
-          offset: 55523
-          line: 860
+          offset: 60455
+          line: 868
           column: 1
         end:
-          offset: 55781
-          line: 860
+          offset: 60713
+          line: 868
           column: 259
     - pointer: "/validation_rules/5"
       rule_id: "validate_mass_moisture_balance"
       identity_kind: "explicit"
-      unit_id: "normative_54415"
+      unit_id: "normative_59347"
       source_span:
         start:
-          offset: 55782
-          line: 861
+          offset: 60714
+          line: 869
           column: 1
         end:
-          offset: 56034
-          line: 861
-          column: 253
+          offset: 61259
+          line: 869
+          column: 546
     - pointer: "/validation_rules/6"
       rule_id: "validate_deferred_elementary_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54415"
+      unit_id: "normative_59347"
       source_span:
         start:
-          offset: 56035
-          line: 862
+          offset: 61260
+          line: 870
           column: 1
         end:
-          offset: 56339
-          line: 862
+          offset: 61564
+          line: 870
           column: 305
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1489,27 +1521,27 @@ normative_context:
           column: 233
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43868"
+      unit_id: "normative_45183"
       source_span:
         start:
-          offset: 43868
-          line: 804
+          offset: 45183
+          line: 807
           column: 1
         end:
-          offset: 43908
-          line: 804
+          offset: 45223
+          line: 807
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54415"
+      unit_id: "normative_59347"
       source_span:
         start:
-          offset: 54415
-          line: 852
+          offset: 59347
+          line: 860
           column: 1
         end:
-          offset: 54437
-          line: 852
+          offset: 59369
+          line: 860
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1518,5 +1550,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:816234c97bc578a9ae41ba75ed1a7cdc6bc2e57797c8faa2bbbc0ef31156a47f"
-  generated_content_sha256: "sha256:c078f28e099391dbd6b64888aa29adc62ce8d635d51a5f72a0bf563574841215"
+    sha256: "sha256:8a6b6e42510b5633e804901ac35fcafadf200c9cac37395b9e40b0f54ab65b77"
+  generated_content_sha256: "sha256:3edcaa7304a351d734820130d64c2b338f713456f3b265b01ad76b16114dcf53"

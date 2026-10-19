@@ -345,30 +345,6 @@ Denominator and scope requirements：per kg accepted live output
 
 ##### Elementary flows
 
-###### Direct site emission, if measured (`captive_emission`)
-
-Only record a named substance and receiving medium actually measured or source-modelled; no generic emission UUID.
-
-Denominator and scope requirements：per kg accepted live output
-
-- Selected flow: Named direct pollutant to specified environmental medium
-- Flow property / unit: Mass / kg
-- Amount rule: substance-specific measurement or documented calculation
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_emission`
-- Range: Provisional non-negative emission screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg/kg live output
-  - Basis: per kg accepted live output; substance-specific evidence required
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ### Process: Lawful live collection and short holding (`capture`)
 
 #### Inputs
@@ -639,6 +615,12 @@ Identify the actual input for this operation from supplier specifications, equip
 | `q_mass` | reference and loss | Calibrated live mass, count, size class and condition by gate; no cross-species average kg/head. | weighing and acceptance logs |
 | `q_period` | cohorts, campaigns, shared assets | Complete inputs, outputs, mortality and periods with documented attribution, opening and closing stock. | ledgers and reconciliation worksheet |
 | `q_flow` | UUID-backed exchanges | Confirm exact flow, property, unit group, type and gate before binding; unresolved IDs stay unbound. | platform detail/support-row evidence |
+
+### Substance-specific Release Requirement
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `captive_emission_specific_emission` | captive | For the actual captive activity, preserve the original cp_emission collection role and activity/state/period basis. substance-specific measurement or documented calculation. This is a mandatory identification and calculation requirement, not one aggregate elementary exchange. Enumerate each actual emitted substance and receiving compartment using a compatible measured/pathway method and activity-factor units, then create a separate concrete card or reuse the existing matching card once, with verified UUID or explicit unresolved identity. A generic pollutant/volatile/residue label, total mass loss or summed screening interval cannot establish a compound or individual-emission amount. Keep elemental versus molecular/reporting bases explicit, attribute the raw quantities and normalize once to accepted reference output. No supported release only with evidenced inapplicability; missing identity, method or activity blocks completeness. Exclude releases already covered by an inclusive service or upstream dataset. | cp_emission | separate supported substance/compartment exchanges |  |
 
 ## 9. Validation Rules
 

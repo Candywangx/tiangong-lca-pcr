@@ -19,7 +19,7 @@ system_boundary:
   rules:
     - rule_id: boundary_starting_condition
       applies_to: "crop-year foreground system"
-      rule: "Begin at the declared orchard production state and include proportional establishment or replanting only when the productive-life annualization basis is documented."
+      rule: "Include orchard care and direct crop emissions for the declared production year.  Include the attributable historical establishment, immature-phase and renewal contribution for the represented stand even when no new event occurs this year. The stated attribution records are required evidence, not a condition allowing omission: missing amounts, age/lifetime or output history remain an explicit completeness gap, never zero or an automatic exclusion. Retain the original events and apply the declared period/output method once; preserve any separately justified study exclusion."
       source_ids:
         - iso-14044-2006
         - mass-balance-identity
@@ -1112,6 +1112,16 @@ dataset_production:
       output: "reconciled output and loss totals"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_emission_and_loss_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: quality_identity
       applies_to: "reference flow and all semantic rows"
@@ -1155,7 +1165,7 @@ validation_rules:
       - mass-balance-identity
   - rule_id: validation_crop_year_completeness
     applies_to: "all required processes"
-    rule: "Verify that cultivation, harvest, and gate records cover the declared crop year and that conditional establishment is either documented or explicitly excluded."
+    rule: "Verify the actual annual/perennial starting state and all applicable establishment, nursery/juvenile, renewal/replacement and termination history attributable to the accepted output. No event in the current year or missing historical records does not exclude an attributable burden. Reconcile the declared productive-horizon/output attribution with the existing method, upstream coverage and crop-year operations once; missing applicable evidence blocks completeness, and supported inapplicability is recorded."
     source_ids:
       - fao-gap-framework-2003
   - rule_id: validation_boundary_and_state
@@ -1215,7 +1225,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:024f4caaa6c09ca509876a5cd08e2f3105e915e80993bff0139575e853e40aa7"
+  source_sha256: "sha256:4a3a95b074c4df2239cff5e4650f09116f05903ab030459c9ccc2c2e06d1ddfe"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5631"
@@ -1226,10 +1236,10 @@ normative_context:
           line: 62
           column: 1
         end:
-          offset: 8350
+          offset: 8764
           line: 85
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Land and orchard are in the declared production state at the start of the crop year; annual operations begin with cultivation records, with proportional establishment or replanting added only when documented. |\n| starting_condition_role | Foreground boundary anchor for a fresh fruit crop-year dataset |\n| product_classification_scope | CPC 3.0 `01316`, limited to fresh, whole mangoes, guavas, and mangosteens at farm gate |\n| recursive_input_rule | Same-category fruit is not recursively modelled as an input. Planting material is recorded only when it is an external purchased input or a disclosed establishment activity; fruit used within the farm system is covered by the declared starting condition. |\n| upstream_dataset_requirement | Link upstream datasets for purchased planting material, fertilizer or soil amendments, crop-protection products, water supply, electricity, fuels, and other purchased inputs when used. The foreground record must retain the quantity, basis, geography, and supplier or source evidence. |\n| disclosure | Declare the gate, field or orchard area, crop year, species and variety, orchard age, route, irrigation source, actual fertilizer or soil-amendment product and nutrient basis, crop protection, fuel and electricity, harvest yield, culls, residues, allocation, and direct-emission method. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_starting_condition` | crop-year foreground system | Begin at the declared orchard production state and include proportional establishment or replanting only when the productive-life annualization basis is documented. | `iso-14044-2006`; `mass-balance-identity` |\n| `boundary_farm_gate` | farm-gate product output | End at the first declared farm-gate hand-off after harvest and on-farm aggregation; exclude all activities after that point. | `iso-14044-2006`; `codex-fresh-tropical-fruit-standards` |\n| `boundary_fresh_unprocessed_state` | product category | Keep the product fresh, whole, and unprocessed. Washing, waxing, grading, cooling, packing, and processing are outside this PCR. | `codex-fresh-tropical-fruit-standards` |\n| `boundary_upstream_inputs` | purchased inputs | Represent purchased input supply as upstream links and collect only the foreground quantity, basis, and identity needed to connect them. | `iso-14044-2006` |\n| `boundary_recursive_input` | same-category internal inputs | Do not recursively trace same-category fruit as an input; disclose the starting condition and any external planting-material input instead. | `mass-balance-identity` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Land and orchard are in the declared production state at the start of the crop year; annual operations begin with cultivation records, with proportional establishment or replanting added only when documented. |\n| starting_condition_role | Foreground boundary anchor for a fresh fruit crop-year dataset |\n| product_classification_scope | CPC 3.0 `01316`, limited to fresh, whole mangoes, guavas, and mangosteens at farm gate |\n| recursive_input_rule | Same-category fruit is not recursively modelled as an input. Planting material is recorded only when it is an external purchased input or a disclosed establishment activity; fruit used within the farm system is covered by the declared starting condition. |\n| upstream_dataset_requirement | Link upstream datasets for purchased planting material, fertilizer or soil amendments, crop-protection products, water supply, electricity, fuels, and other purchased inputs when used. The foreground record must retain the quantity, basis, geography, and supplier or source evidence. |\n| disclosure | Declare the gate, field or orchard area, crop year, species and variety, orchard age, route, irrigation source, actual fertilizer or soil-amendment product and nutrient basis, crop protection, fuel and electricity, harvest yield, culls, residues, allocation, and direct-emission method. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_starting_condition` | crop-year foreground system |Include orchard care and direct crop emissions for the declared production year.  Include the attributable historical establishment, immature-phase and renewal contribution for the represented stand even when no new event occurs this year. The stated attribution records are required evidence, not a condition allowing omission: missing amounts, age/lifetime or output history remain an explicit completeness gap, never zero or an automatic exclusion. Retain the original events and apply the declared period/output method once; preserve any separately justified study exclusion. | `iso-14044-2006`; `mass-balance-identity` |\n| `boundary_farm_gate` | farm-gate product output | End at the first declared farm-gate hand-off after harvest and on-farm aggregation; exclude all activities after that point. | `iso-14044-2006`; `codex-fresh-tropical-fruit-standards` |\n| `boundary_fresh_unprocessed_state` | product category | Keep the product fresh, whole, and unprocessed. Washing, waxing, grading, cooling, packing, and processing are outside this PCR. | `codex-fresh-tropical-fruit-standards` |\n| `boundary_upstream_inputs` | purchased inputs | Represent purchased input supply as upstream links and collect only the foreground quantity, basis, and identity needed to connect them. | `iso-14044-2006` |\n| `boundary_recursive_input` | same-category internal inputs | Do not recursively trace same-category fruit as an input; disclose the starting condition and any external planting-material input instead. | `mass-balance-identity` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1266,15 +1276,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_51411"
+    - unit_id: "normative_51825"
       family: "allocation"
       span:
         start:
-          offset: 51411
+          offset: 51825
           line: 812
           column: 1
         end:
-          offset: 53382
+          offset: 53796
           line: 824
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_same_category_products` | mixed mango, guava, or mangosteen production and shared orchard operations | Allocate shared crop-year inputs and emissions among mangoes, guavas, and mangosteens by measured accepted fresh-fruit mass unless a documented physical relationship is more representative. Disclose the allocation denominator and each product quantity. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_shared_grade_outputs` | grades or destinations sharing the same harvest system | Keep all fresh fruit leaving the gate as separate declared grades or destinations when relevant. If a non-fresh product destination or another product category shares the system, allocate the shared foreground inventory by measured mass and disclose the destination split. | `iso-14044-2006` |\n| `allocation_residues_and_culls` | residues, culls, and rejects | Do not allocate burdens to residues or culls that remain in the field or are discarded within the declared system unless they leave as a separately valued co-product. If sold or transferred as a co-product, record the mass and destination and apply the declared allocation basis consistently. | `mass-balance-identity` |\n\nPrimary reporting uses mass allocation because the reference product is fresh fruit measured at the farm gate. Economic allocation may be used only as a documented sensitivity scenario; it must not replace the primary mass-allocation result without a reasoned justification.\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
@@ -1294,11 +1304,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 51411
+              offset: 51825
               line: 812
               column: 1
             end:
-              offset: 51451
+              offset: 51865
               line: 812
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1314,18 +1324,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_70978"
+    - unit_id: "normative_72829"
       family: "validation"
       span:
         start:
-          offset: 70978
-          line: 876
+          offset: 72829
+          line: 877
           column: 1
         end:
-          offset: 72396
-          line: 886
+          offset: 74598
+          line: 887
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_definition` | reference flow | Confirm the 1,000 kg functional unit, all required qualifiers, and the evidence gap reference product qualifiers before generating a foreground dataset. | `mass-balance-identity`; `codex-fresh-tropical-fruit-standards` |\n| `validation_flow_identity_binding` | parameterized product inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_mass_reconciliation` | harvest and farm-gate aggregation | Check accepted fruit, culls, rejects, residues, field losses, and handling losses against harvested mass, with grade, moisture, and destination treatment explicit. | `mass-balance-identity` |\n| `validation_crop_year_completeness` | all required processes | Verify that cultivation, harvest, and gate records cover the declared crop year and that conditional establishment is either documented or explicitly excluded. | `fao-gap-framework-2003` |\n| `validation_boundary_and_state` | dataset scope | Reject datasets that include post-gate washing, waxing, grading, cooling, packing, processing, retail, or post-gate transport, or that omit the declared farm-gate point. | `iso-14044-2006`; `codex-fresh-tropical-fruit-standards` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_definition` | reference flow | Confirm the 1,000 kg functional unit, all required qualifiers, and the evidence gap reference product qualifiers before generating a foreground dataset. | `mass-balance-identity`; `codex-fresh-tropical-fruit-standards` |\n| `validation_flow_identity_binding` | parameterized product inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_mass_reconciliation` | harvest and farm-gate aggregation | Check accepted fruit, culls, rejects, residues, field losses, and handling losses against harvested mass, with grade, moisture, and destination treatment explicit. | `mass-balance-identity` |\n| `validation_crop_year_completeness` | all required processes | Verify the actual annual/perennial starting state and all applicable establishment, nursery/juvenile, renewal/replacement and termination history attributable to the accepted output. No event in the current year or missing historical records does not exclude an attributable burden. Reconcile the declared productive-horizon/output attribution with the existing method, upstream coverage and crop-year operations once; missing applicable evidence blocks completeness, and supported inapplicability is recorded. | `fao-gap-framework-2003` |\n| `validation_boundary_and_state` | dataset scope | Reject datasets that include post-gate washing, waxing, grading, cooling, packing, processing, retail, or post-gate transport, or that omit the declared farm-gate point. | `iso-14044-2006`; `codex-fresh-tropical-fruit-standards` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1342,12 +1352,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 70978
-              line: 876
+              offset: 72829
+              line: 877
               column: 1
             end:
-              offset: 71000
-              line: 876
+              offset: 72851
+              line: 877
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1373,20 +1383,20 @@ normative_context:
           line: 79
           column: 1
         end:
-          offset: 7441
+          offset: 7855
           line: 79
-          column: 275
+          column: 689
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_farm_gate"
       identity_kind: "explicit"
       unit_id: "normative_5631"
       source_span:
         start:
-          offset: 7442
+          offset: 7856
           line: 80
           column: 1
         end:
-          offset: 7679
+          offset: 8093
           line: 80
           column: 238
     - pointer: "/system_boundary/rules/2"
@@ -1395,11 +1405,11 @@ normative_context:
       unit_id: "normative_5631"
       source_span:
         start:
-          offset: 7680
+          offset: 8094
           line: 81
           column: 1
         end:
-          offset: 7909
+          offset: 8323
           line: 81
           column: 230
     - pointer: "/system_boundary/rules/3"
@@ -1408,11 +1418,11 @@ normative_context:
       unit_id: "normative_5631"
       source_span:
         start:
-          offset: 7910
+          offset: 8324
           line: 82
           column: 1
         end:
-          offset: 8117
+          offset: 8531
           line: 82
           column: 208
     - pointer: "/system_boundary/rules/4"
@@ -1421,142 +1431,142 @@ normative_context:
       unit_id: "normative_5631"
       source_span:
         start:
-          offset: 8118
+          offset: 8532
           line: 83
           column: 1
         end:
-          offset: 8348
+          offset: 8762
           line: 83
           column: 231
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_same_category_products"
       identity_kind: "explicit"
-      unit_id: "normative_51411"
+      unit_id: "normative_51825"
       source_span:
         start:
-          offset: 51524
+          offset: 51938
           line: 816
           column: 1
         end:
-          offset: 51939
+          offset: 52353
           line: 816
           column: 416
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_shared_grade_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_51411"
+      unit_id: "normative_51825"
       source_span:
         start:
-          offset: 51940
+          offset: 52354
           line: 817
           column: 1
         end:
-          offset: 52328
+          offset: 52742
           line: 817
           column: 389
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residues_and_culls"
       identity_kind: "explicit"
-      unit_id: "normative_51411"
+      unit_id: "normative_51825"
       source_span:
         start:
-          offset: 52329
+          offset: 52743
           line: 818
           column: 1
         end:
-          offset: 52716
+          offset: 53130
           line: 818
           column: 388
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_51411"
+      unit_id: "normative_51825"
       source_span:
         start:
-          offset: 52718
+          offset: 53132
           line: 820
           column: 1
         end:
-          offset: 52992
+          offset: 53406
           line: 820
           column: 275
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_51411"
+      unit_id: "normative_51825"
       source_span:
         start:
-          offset: 52994
+          offset: 53408
           line: 822
           column: 1
         end:
-          offset: 53380
+          offset: 53794
           line: 822
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_definition"
       identity_kind: "explicit"
-      unit_id: "normative_70978"
+      unit_id: "normative_72829"
       source_span:
         start:
-          offset: 71073
-          line: 880
+          offset: 72924
+          line: 881
           column: 1
         end:
-          offset: 71348
-          line: 880
+          offset: 73199
+          line: 881
           column: 276
     - pointer: "/validation_rules/1"
       rule_id: "validation_flow_identity_binding"
       identity_kind: "explicit"
-      unit_id: "normative_70978"
+      unit_id: "normative_72829"
       source_span:
         start:
-          offset: 71349
-          line: 881
+          offset: 73200
+          line: 882
           column: 1
         end:
-          offset: 71592
-          line: 881
+          offset: 73443
+          line: 882
           column: 244
     - pointer: "/validation_rules/2"
       rule_id: "validation_mass_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_70978"
+      unit_id: "normative_72829"
       source_span:
         start:
-          offset: 71593
-          line: 882
+          offset: 73444
+          line: 883
           column: 1
         end:
-          offset: 71857
-          line: 882
+          offset: 73708
+          line: 883
           column: 265
     - pointer: "/validation_rules/3"
       rule_id: "validation_crop_year_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_70978"
+      unit_id: "normative_72829"
       source_span:
         start:
-          offset: 71858
-          line: 883
+          offset: 73709
+          line: 884
           column: 1
         end:
-          offset: 72111
-          line: 883
-          column: 254
+          offset: 74313
+          line: 884
+          column: 605
     - pointer: "/validation_rules/4"
       rule_id: "validation_boundary_and_state"
       identity_kind: "explicit"
-      unit_id: "normative_70978"
+      unit_id: "normative_72829"
       source_span:
         start:
-          offset: 72112
-          line: 884
+          offset: 74314
+          line: 885
           column: 1
         end:
-          offset: 72394
-          line: 884
+          offset: 74596
+          line: 885
           column: 283
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1585,27 +1595,27 @@ normative_context:
           column: 304
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_51411"
+      unit_id: "normative_51825"
       source_span:
         start:
-          offset: 51411
+          offset: 51825
           line: 812
           column: 1
         end:
-          offset: 51451
+          offset: 51865
           line: 812
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_70978"
+      unit_id: "normative_72829"
       source_span:
         start:
-          offset: 70978
-          line: 876
+          offset: 72829
+          line: 877
           column: 1
         end:
-          offset: 71000
-          line: 876
+          offset: 72851
+          line: 877
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1614,5 +1624,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:024f4caaa6c09ca509876a5cd08e2f3105e915e80993bff0139575e853e40aa7"
-  generated_content_sha256: "sha256:32537d112773751e49d3db527a26e96ce4d401064aae2b86c2cb8da1ae4d0a01"
+    sha256: "sha256:4a3a95b074c4df2239cff5e4650f09116f05903ab030459c9ccc2c2e06d1ddfe"
+  generated_content_sha256: "sha256:79d0daed6026aa596edf7381aceedc1dcb21a42ee7acf9ff586d8bc0abf3b812"

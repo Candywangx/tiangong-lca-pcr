@@ -586,32 +586,6 @@ Raw quantity and calculation requirements: Only treated lots enter; record mass 
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Actual raw preservative (`preserve_agent`)
-
-Measure salt or other agent actually consumed; never apply a universal recipe.
-
-Denominator and scope requirements：per kg Optional raw preservation output
-
-Raw quantity and calculation requirements: Measure salt or other agent actually consumed; never apply a universal recipe. Original collection denominator kind: process_output.
-
-- Selected flow: Species- and method-qualified preservative (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_preserve`
-- Range: Broad lot-completeness screen, not an empirical factor
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/kg
-  - Basis: per kg Optional raw preservation output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -647,32 +621,6 @@ Raw quantity and calculation requirements: Measure net mass after actual interve
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
-
-###### Preservation reject or spent material (`preserve_residue`)
-
-Record treatment destination; evaporation is not an invented Waste product.
-
-Denominator and scope requirements：per kg Optional raw preservation output
-
-Raw quantity and calculation requirements: Record treatment destination; evaporation is not an invented Waste product. Original collection denominator kind: process_output.
-
-- Selected flow: Actual spent agent or rejected skin for treatment (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_preserve`
-- Range: Broad lot-completeness screen, not an empirical factor
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/kg
-  - Basis: per kg Optional raw preservation output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Elementary flows
 
@@ -797,6 +745,8 @@ Separate purchased supply from on-site conversion. Link self-generated electrici
 | c_balance | each lot | Reconcile material output, residues and moisture/state differences with measured input; investigate gaps, not default yields. | input; output; state | kg ledger | fao-hides-skins |
 | c_shared | shared service | Assign metered use or documented service-hour/throughput share once for each actual consumer and period. | burden; use; period | allocated burden | fao-hides-skins |
 | `handover_reject_specific_exchanges` | `handover` | Enumerate rejected raw furskins and each actual packaging-waste material as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_handover` | Separate atomic exchanges; completeness required |  |
+| `preserve_residue_identity_and_fate` | `preserve` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_preserve` | Identity-specific exchanges and reconciled activity records |  |
+| `preserve_agent_identity_and_fate` | `preserve` | For the original preserve_agent collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_preserve` | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

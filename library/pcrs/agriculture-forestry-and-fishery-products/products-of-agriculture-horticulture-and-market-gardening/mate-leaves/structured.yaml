@@ -799,6 +799,11 @@ allocation_rules:
     rule: "Keep burdens with the producing lot until documented sale, recovery, treatment or disposal; rework cannot create a second accepted output or duplicate energy input."
     source_ids:
       - iso-14044-2006
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_mate_site_year
@@ -837,6 +842,18 @@ dataset_production:
       site_scope: "every included facility"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "scale and moisture calibration, fuel invoice, meter log and destination receipt"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "mate_stand_management"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calculation_01
       applies_to: "dry matter"
@@ -874,6 +891,14 @@ dataset_production:
       output: "attributable burden per lot"
       source_ids:
         - iso-14044-2006
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
   data_quality_requirements:
     - id: quality_01
       applies_to: "reference identity"
@@ -952,9 +977,17 @@ data_sources:
     type: "standard"
     reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines"
     used_for: "boundaries, subdivision, allocation and data quality"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:0a10a16472bf23e1749a33ee3d09e9706b7a0aa4f76d7cc0ba7c681188cc76b4"
+  source_sha256: "sha256:a865de25c9a85dd22b49cb93a428d039b65848b8f4befc3c59b20d32c17fbb3b"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5013"
@@ -1013,10 +1046,10 @@ normative_context:
           line: 723
           column: 1
         end:
-          offset: 40556
-          line: 733
+          offset: 42540
+          line: 737
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | intended outputs | Enumerate accepted dry leaves and every independently sold fine-twig or lower-grade output with a single hand-off; residues and rejects are not automatically co-products. | `chifarelli-2024-yerba-mate-lca` |\n| `allocation_02` | multiple intended products | Prefer measured subdivision; if a process is inseparable, declare a programme-specific physical or other allocation method and rationale rather than assuming a universal split. | `iso-14044-2006` |\n| `allocation_03` | perennial phases | Link establishment, immature, productive, replacement and termination events to represented years and their outputs; assign each event once with declared service years. | `iso-14044-2006` |\n| `allocation_04` | shared sites and assets | Attribute vehicles, sapeco heat system, dryers, grader and storage once to consuming nodes, lots, sites and periods using logged time, throughput or other evidenced physical driver. | `iso-14044-2006` |\n| `allocation_05` | rejects and rework | Keep burdens with the producing lot until documented sale, recovery, treatment or disposal; rework cannot create a second accepted output or duplicate energy input. | `iso-14044-2006` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | intended outputs | Enumerate accepted dry leaves and every independently sold fine-twig or lower-grade output with a single hand-off; residues and rejects are not automatically co-products. | `chifarelli-2024-yerba-mate-lca` |\n| `allocation_02` | multiple intended products | Prefer measured subdivision; if a process is inseparable, declare a programme-specific physical or other allocation method and rationale rather than assuming a universal split. | `iso-14044-2006` |\n| `allocation_03` | perennial phases | Link establishment, immature, productive, replacement and termination events to represented years and their outputs; assign each event once with declared service years. | `iso-14044-2006` |\n| `allocation_04` | shared sites and assets | Attribute vehicles, sapeco heat system, dryers, grader and storage once to consuming nodes, lots, sites and periods using logged time, throughput or other evidenced physical driver. | `iso-14044-2006` |\n| `allocation_05` | rejects and rework | Keep burdens with the producing lot until documented sale, recovery, treatment or disposal; rework cannot create a second accepted output or duplicate energy input. | `iso-14044-2006` |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1053,16 +1086,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46086"
+    - unit_id: "normative_51588"
       family: "validation"
       span:
         start:
-          offset: 46086
-          line: 766
+          offset: 51588
+          line: 777
           column: 1
         end:
-          offset: 47557
-          line: 777
+          offset: 53059
+          line: 788
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | identity and gate | Accepted reference is dry unblended *Ilex paraguariensis* leaf material, with moisture, leaf/twig fraction, treatment route and primary-processing gate declared; exact UUID is required for active use. | `fao-yerba-mate-forest-products`; `iarc-mate-processing` |\n| `validation_02` | phase and sites | Each site-year, planting or replacement event and processing site links to a represented phase, harvest lot and output period exactly once. | `iso-14044-2006` |\n| `validation_03` | material balance | Reconcile fresh, prepared, heat-treated, dried, accepted, downgraded, rejected and lost mass using measured moisture; investigate unexplained residuals. | `chifarelli-2024-yerba-mate-lca` |\n| `validation_04` | co-products and rework | A separately sold twig or lower grade needs mass, buyer and attribution decision; rejected material needs rework or exit and cannot count twice as accepted. | `iso-14044-2006` |\n| `validation_05` | shared services | Enumerate consumers and service periods for shared vehicles, heat system, dryer, grader and storage; assigned shares sum to one. | `iso-14044-2006` |\n| `validation_06` | boundary extension | Aging, fine milling, blending and retail packaging, if reported, have distinct output states and boundaries and do not reuse the primary-processing reference amount. | `iarc-mate-processing` |\n\n"
       headings:
@@ -1081,12 +1114,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46086
-              line: 766
+              offset: 51588
+              line: 777
               column: 1
             end:
-              offset: 46108
-              line: 766
+              offset: 51610
+              line: 777
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1245,83 +1278,96 @@ normative_context:
           offset: 40554
           line: 731
           column: 227
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_39243"
+      source_span:
+        start:
+          offset: 40627
+          line: 735
+          column: 1
+        end:
+          offset: 42538
+          line: 735
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_46086"
+      unit_id: "normative_51588"
       source_span:
         start:
-          offset: 46181
-          line: 770
+          offset: 51683
+          line: 781
           column: 1
         end:
-          offset: 46482
-          line: 770
+          offset: 51984
+          line: 781
           column: 302
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_46086"
+      unit_id: "normative_51588"
       source_span:
         start:
-          offset: 46483
-          line: 771
+          offset: 51985
+          line: 782
           column: 1
         end:
-          offset: 46681
-          line: 771
+          offset: 52183
+          line: 782
           column: 199
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_46086"
+      unit_id: "normative_51588"
       source_span:
         start:
-          offset: 46682
-          line: 772
+          offset: 52184
+          line: 783
           column: 1
         end:
-          offset: 46910
-          line: 772
+          offset: 52412
+          line: 783
           column: 229
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_46086"
+      unit_id: "normative_51588"
       source_span:
         start:
-          offset: 46911
-          line: 773
+          offset: 52413
+          line: 784
           column: 1
         end:
-          offset: 47133
-          line: 773
+          offset: 52635
+          line: 784
           column: 223
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_46086"
+      unit_id: "normative_51588"
       source_span:
         start:
-          offset: 47134
-          line: 774
+          offset: 52636
+          line: 785
           column: 1
         end:
-          offset: 47321
-          line: 774
+          offset: 52823
+          line: 785
           column: 188
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_46086"
+      unit_id: "normative_51588"
       source_span:
         start:
-          offset: 47322
-          line: 775
+          offset: 52824
+          line: 786
           column: 1
         end:
-          offset: 47555
-          line: 775
+          offset: 53057
+          line: 786
           column: 234
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1362,15 +1408,15 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46086"
+      unit_id: "normative_51588"
       source_span:
         start:
-          offset: 46086
-          line: 766
+          offset: 51588
+          line: 777
           column: 1
         end:
-          offset: 46108
-          line: 766
+          offset: 51610
+          line: 777
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1379,5 +1425,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:0a10a16472bf23e1749a33ee3d09e9706b7a0aa4f76d7cc0ba7c681188cc76b4"
-  generated_content_sha256: "sha256:a1eee560cb3237f3af78e0bbd113c447d62806c5524dd12086766db90726dea8"
+    sha256: "sha256:a865de25c9a85dd22b49cb93a428d039b65848b8f4befc3c59b20d32c17fbb3b"
+  generated_content_sha256: "sha256:421cbf0e670d83f8d1769de0b3659444a5fa34da4c935fa7311cd13ca24c1580"

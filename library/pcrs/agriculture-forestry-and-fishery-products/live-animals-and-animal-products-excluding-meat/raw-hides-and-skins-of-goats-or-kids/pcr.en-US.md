@@ -546,7 +546,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_preservation`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 ##### Waste flows
 
@@ -651,30 +651,6 @@ Denominator and scope requirements：per reference flow
 
 ##### Waste flows
 
-###### Rejected package and presentation residues (`packaging_reject`)
-
-Non-reused protective material and presentation rejects.
-
-Denominator and scope requirements：per actual recorded lot; final result normalized to 1 kg net as-sold raw skin
-
-- Selected flow: Non-reused protective material and presentation rejects (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Record actual disposal separately from the skin product.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_gate`
-- Range: Provisional completeness screen, not a default yield
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: kg per lot
-  - Basis: actual measured lot flow or service, initial screen only
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 
@@ -718,6 +694,7 @@ Identify the actual input for this operation from supplier specifications, equip
 | `net_reference` | handover | Net skin mass = gross weighed dispatch minus detachable package and free brine; divide attributable inventories by measured net kg. | gross, package tare, free brine, lot ID | inventory per 1 kg as-sold raw skin | `un-cpc-3` |
 | `state_balance` | each preparation node | Reconcile state-specific inlet mass plus actual added water/salt with outgoing skin, residues, drained liquor and measured moisture change; no universal conversion. | lot masses, moisture, salt, water, losses | documented state transition | `fao-small-ruminant` |
 | `attribution_check` | animal and shared assets | Sum attributable shares to one per real joint-output node and service period; never count same animal phase, room, meter or container twice. | product sales, physical drivers, periods, service records | attributable burden per final kg | `fao-hides` |
+| `packaging_reject_identity_and_fate` | `gate` | The packaging_reject collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred. | `cp_gate` | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

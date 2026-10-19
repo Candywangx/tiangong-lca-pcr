@@ -176,33 +176,6 @@ process_inventory:
     label: "Other-green-legume crop establishment"
     inputs:
       product:
-        - row_id: planting_material_input
-          role: "Seed or planting material"
-          name: "Seed, transplant, or other planting material for green leguminous vegetable production"
-          flow_type: "product"
-          property_unit: "Mass or viable count / kg, seed, plant, or declared count"
-          description: "Record seed, transplants, or other planting material entering each declared field bed or protected unit. Identify species or cultivar group, supplier lot, planting date, and planted area. Raw activity or stage basis: per 1,000 kg marketable fresh output."
-          amount:
-            expression: "Record supplier lot quantity and planted viable seed or planting-material quantity by field, bed, or protected unit."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_establishment_records
-              source_ids:
-                - fao-good-agricultural-practices
-            ranges:
-              - role: qa_guardrail
-                lower: "0.1"
-                upper: "25"
-                unit: "kg seed or declared planting material per 1,000 kg output"
-                basis: "declared planted area and crop-cycle output"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: establishment_irrigation_water
           role: "Establishment irrigation water"
           name: "Irrigation water supplied to the crop"
@@ -668,33 +641,7 @@ process_inventory:
       waste:
         []
       elementary:
-        - row_id: harvest_field_loss
-          role: "Harvested field loss"
-          name: "Harvested green-legume product lost in field or first handling"
-          flow_type: "elementary"
-          property_unit: "Mass / kg fresh product"
-          description: "Record edible product left unharvested or lost during picking and first handling when it is not included in downgraded product. State the method and fate. Raw activity or stage basis: per 1,000 kg marketable fresh output."
-          amount:
-            expression: "Estimate from field counts, sampling, or mass balance and keep it separate from marketable output and collected culls."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_harvest_grade_records
-              source_ids:
-                - iso-14044-2006
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1,500"
-                unit: "kg fresh product per 1,000 kg marketable output"
-                basis: "complete harvest campaign"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
     outputs:
       product:
         - row_id: marketable_product_output
@@ -725,34 +672,6 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       waste:
-        - row_id: downgraded_product_output
-          role: "Downgraded or rejected harvested product"
-          name: "Downgraded or rejected green leguminous vegetable product"
-          flow_type: "waste"
-          property_unit: "Mass / kg fresh product"
-          description: "Record harvested pods or green seeds that fail the declared marketable grade, including reason and fate. Do not silently include downgraded material in reference output. Raw activity or stage basis: per 1,000 kg marketable fresh output."
-          amount:
-            expression: "Weigh gross harvested, accepted, downgraded, and rejected product by picking round and document feed, compost, disposal, or other fate."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_harvest_grade_records
-              source_ids:
-                - codex-fresh-produce-hygiene
-                - iso-14044-2006
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "2,000"
-                unit: "kg downgraded product per 1,000 kg marketable output"
-                basis: "complete harvest campaign"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: crop_residue_output
           role: "Crop residues leaving field sorting"
           name: "Crop residue from harvest and field sorting"
@@ -963,62 +882,6 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
       waste:
-        - row_id: conditioning_reject_output
-          role: "Conditioned downgraded product"
-          name: "Downgraded or rejected fresh green leguminous vegetable product"
-          flow_type: "waste"
-          property_unit: "Mass / kg fresh product"
-          description: "Record product removed during washing, cooling, grading, or packing after field sorting, including its declared fate. Raw activity or stage basis: per 1,000 kg marketable fresh output."
-          amount:
-            expression: "Weigh or estimate conditioning rejects by batch and reconcile them with harvest-grade records and final marketable output."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_postharvest_grade_records
-              source_ids:
-                - codex-fresh-produce-hygiene
-                - iso-14044-2006
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1,000"
-                unit: "kg product per 1,000 kg marketable output"
-                basis: "declared washing, cooling, grading, and packing route"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: packaging_waste_output
-          role: "Packaging and handling waste"
-          name: "Packaging or handling waste"
-          flow_type: "waste"
-          property_unit: "Mass / kg waste"
-          description: "Record damaged, discarded, or unrecovered packaging and handling materials generated before the declared gate, separated by material and fate. Raw activity or stage basis: per 1,000 kg marketable fresh output."
-          amount:
-            expression: "Reconcile packaging issued, retained in product, returned for reuse, recycled, treated, and disposed quantities."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_packaging_records
-              source_ids:
-                - codex-fresh-produce-hygiene
-                - iso-14044-2006
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "15"
-                unit: "kg waste per 1,000 kg output"
-                basis: "pre-gate packaging operation"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: conditioning_wastewater_output
           role: "Wash water and conditioning wastewater"
           name: "Fresh-produce conditioning wastewater"
@@ -1404,6 +1267,59 @@ dataset_production:
       source_ids:
         - mass-balance-identity
         - iso-14044-2006
+    - id: harvest_field_loss_identity_and_fate
+      applies_to: "harvest_and_field_sorting"
+      rule: "Reconcile crop residue, harvest loss and biomass by measured wet/dry basis and actual fate. Retained or incorporated biomass is an internal residue ledger used to calculate supported decomposition and nutrient pathways, not a purchased resource or an invented elementary biomass exchange. Separately collected material requires its actual product/waste identity and destination; environmental releases require identified substances and receiving compartments. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_harvest_grade_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - iso-14044-2006
+    - id: packaging_waste_output_identity_and_fate
+      applies_to: "conditioning_and_dispatch"
+      rule: "Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_packaging_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - codex-fresh-produce-hygiene
+        - iso-14044-2006
+    - id: planting_material_input_identity_and_fate
+      applies_to: "crop_establishment"
+      rule: "For the original planting_material_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults."
+      inputs:
+        - cp_establishment_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - fao-good-agricultural-practices
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_nutrient_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: downgraded_product_output_identity_and_fate
+      applies_to: "harvest_and_field_sorting"
+      rule: "The downgraded_product_output collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred."
+      inputs:
+        - cp_harvest_grade_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - codex-fresh-produce-hygiene
+        - iso-14044-2006
+    - id: conditioning_reject_output_identity_and_fate
+      applies_to: "conditioning_and_dispatch"
+      rule: "The conditioning_reject_output collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred."
+      inputs:
+        - cp_postharvest_grade_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - codex-fresh-produce-hygiene
+        - iso-14044-2006
   data_quality_requirements:
     - id: quality_product_identity
       applies_to: "reference product and all product flows"
@@ -1538,7 +1454,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:0d47c0d7a1f3510dc5cb47c58b5a5075e6b6a7d8b44184d5c22337eab902f082"
+  source_sha256: "sha256:e637d2fa133c59f8c91f935856d3b41ed745c8ea7e76cef526f3624ebd0a239a"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7989"
@@ -1589,16 +1505,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_59358"
+    - unit_id: "normative_53112"
       family: "allocation"
       span:
         start:
-          offset: 59358
-          line: 984
+          offset: 53112
+          line: 856
           column: 1
         end:
-          offset: 60996
-          line: 994
+          offset: 54750
+          line: 866
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_shared_field_services` | shared field, irrigation, protected-unit, and packing services | Allocate shared services among product categories or crop cycles using area-time, operating time, water delivered, throughput, or another documented physical relationship. Use economic allocation only when a physical relationship cannot represent the shared service and disclose the price basis. | `iso-14044-2006` |\n| `allocation_marketable_and_off_grade` | marketable product, downgraded product, rejects, and residues | Treat marketable product as the reference output. Record downgraded product, culls, residues, and waste separately with actual fate. Do not credit feed, compost, recycling, or another use without a documented recipient, intended use, quality, and hand-off. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_reusable_containers` | reusable crates, bins, pallets, and liners | Allocate manufacture and replacement of reusable containers over documented turns or service mass, then assign cleaning, loss, and end-of-life records to the actual route. | `iso-14044-2006`; `codex-fresh-produce-hygiene` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1617,12 +1533,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 59358
-              line: 984
+              offset: 53112
+              line: 856
               column: 1
             end:
-              offset: 59398
-              line: 984
+              offset: 53152
+              line: 856
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1637,16 +1553,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_80850"
+    - unit_id: "normative_82876"
       family: "validation"
       span:
         start:
-          offset: 80850
-          line: 1054
+          offset: 82876
+          line: 932
           column: 1
         end:
-          offset: 83384
-          line: 1068
+          offset: 85410
+          line: 946
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_cpc_scope` | PCR identity and dataset metadata | Confirm the product is within CPC 01249 and is not green beans CPC 01241 or green peas CPC 01242; retain species or cultivar and product-state evidence. | `iso-14044-2006` |\n| `validate_reference_mass` | reference flow and output | Require 1,000 kg marketable output on the mass property and kg unit, with complete crop-cycle and gate declaration. | `mass-balance-identity` |\n| `validate_crop_cycle_completeness` | process map and inventory | Require establishment, management, and harvest processes for every represented crop cycle; require conditioning and dispatch when the declared gate includes those activities. | `fao-good-agricultural-practices`; `codex-fresh-produce-hygiene` |\n| `validate_nutrient_product_basis` | fertilizer and soil-amendment input | Require actual product identity, product mass, nutrient or amendment basis, application date, and no double counting of compound products. | `fao-good-agricultural-practices` |\n| `validate_water_and_energy_separation` | irrigation, withdrawal, washing, cooling, fuel, and electricity | Keep supplied water, natural-resource withdrawal, washing water, fuel, and electricity as separate rows with declared meters or calculation bases. | `fao-crop-evapotranspiration-56`; `fao-fresh-produce-handling` |\n| `validate_output_reconciliation` | marketable, downgraded, reject, residue, wastewater, and packaging rows | Reconcile picking rounds, field sorting, conditioning, and final gate output; investigate unexplained residuals and disclose all declared fates. | `mass-balance-identity`; `iso-14044-2006` |\n| `validate_emission_pathway` | direct and indirect emissions | Require receiving medium, calculation method, documented nutrient or residue inputs, and pathway evidence before treating an emission row as calculated. | `ipcc-2019-managed-soils-n2o` |\n| `validate_gate_and_transport` | conditioning and pre-gate transport | Confirm washing, cooling, packing, storage, and transport included in the dataset occur before the declared gate; exclude post-gate services. | `codex-fresh-produce-hygiene`; `fao-fresh-produce-handling` |\n| `validate_qualifiers` | reference flow and dataset metadata | Require all category qualifiers in the reference-flow table, including species or cultivar, maturity, grade, route, dates, water, nutrient, crop-protection, fate, and gate information. | `codex-fresh-produce-hygiene` |\n\n"
       headings:
@@ -1665,12 +1581,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 80850
-              line: 1054
+              offset: 82876
+              line: 932
               column: 1
             end:
-              offset: 80872
-              line: 1054
+              offset: 82898
+              line: 932
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1754,171 +1670,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_shared_field_services"
       identity_kind: "explicit"
-      unit_id: "normative_59358"
+      unit_id: "normative_53112"
       source_span:
         start:
-          offset: 59471
-          line: 988
+          offset: 53225
+          line: 860
           column: 1
         end:
-          offset: 59891
-          line: 988
+          offset: 53645
+          line: 860
           column: 421
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_marketable_and_off_grade"
       identity_kind: "explicit"
-      unit_id: "normative_59358"
+      unit_id: "normative_53112"
       source_span:
         start:
-          offset: 59892
-          line: 989
+          offset: 53646
+          line: 861
           column: 1
         end:
-          offset: 60300
-          line: 989
+          offset: 54054
+          line: 861
           column: 409
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_reusable_containers"
       identity_kind: "explicit"
-      unit_id: "normative_59358"
+      unit_id: "normative_53112"
       source_span:
         start:
-          offset: 60301
-          line: 990
+          offset: 54055
+          line: 862
           column: 1
         end:
-          offset: 60606
-          line: 990
+          offset: 54360
+          line: 862
           column: 306
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_59358"
+      unit_id: "normative_53112"
       source_span:
         start:
-          offset: 60608
-          line: 992
+          offset: 54362
+          line: 864
           column: 1
         end:
-          offset: 60994
-          line: 992
+          offset: 54748
+          line: 864
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validate_cpc_scope"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 80945
-          line: 1058
+          offset: 82971
+          line: 936
           column: 1
         end:
-          offset: 81179
-          line: 1058
+          offset: 83205
+          line: 936
           column: 235
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference_mass"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 81180
-          line: 1059
+          offset: 83206
+          line: 937
           column: 1
         end:
-          offset: 81381
-          line: 1059
+          offset: 83407
+          line: 937
           column: 202
     - pointer: "/validation_rules/2"
       rule_id: "validate_crop_cycle_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 81382
-          line: 1060
+          offset: 83408
+          line: 938
           column: 1
         end:
-          offset: 81692
-          line: 1060
+          offset: 83718
+          line: 938
           column: 311
     - pointer: "/validation_rules/3"
       rule_id: "validate_nutrient_product_basis"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 81693
-          line: 1061
+          offset: 83719
+          line: 939
           column: 1
         end:
-          offset: 81945
-          line: 1061
+          offset: 83971
+          line: 939
           column: 253
     - pointer: "/validation_rules/4"
       rule_id: "validate_water_and_energy_separation"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 81946
-          line: 1062
+          offset: 83972
+          line: 940
           column: 1
         end:
-          offset: 82268
-          line: 1062
+          offset: 84294
+          line: 940
           column: 323
     - pointer: "/validation_rules/5"
       rule_id: "validate_output_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 82269
-          line: 1063
+          offset: 84295
+          line: 941
           column: 1
         end:
-          offset: 82570
-          line: 1063
+          offset: 84596
+          line: 941
           column: 302
     - pointer: "/validation_rules/6"
       rule_id: "validate_emission_pathway"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 82571
-          line: 1064
+          offset: 84597
+          line: 942
           column: 1
         end:
-          offset: 82821
-          line: 1064
+          offset: 84847
+          line: 942
           column: 251
     - pointer: "/validation_rules/7"
       rule_id: "validate_gate_and_transport"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 82822
-          line: 1065
+          offset: 84848
+          line: 943
           column: 1
         end:
-          offset: 83099
-          line: 1065
+          offset: 85125
+          line: 943
           column: 278
     - pointer: "/validation_rules/8"
       rule_id: "validate_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 83100
-          line: 1066
+          offset: 85126
+          line: 944
           column: 1
         end:
-          offset: 83382
-          line: 1066
+          offset: 85408
+          line: 944
           column: 283
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1947,27 +1863,27 @@ normative_context:
           column: 363
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_59358"
+      unit_id: "normative_53112"
       source_span:
         start:
-          offset: 59358
-          line: 984
+          offset: 53112
+          line: 856
           column: 1
         end:
-          offset: 59398
-          line: 984
+          offset: 53152
+          line: 856
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_80850"
+      unit_id: "normative_82876"
       source_span:
         start:
-          offset: 80850
-          line: 1054
+          offset: 82876
+          line: 932
           column: 1
         end:
-          offset: 80872
-          line: 1054
+          offset: 82898
+          line: 932
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1976,5 +1892,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:0d47c0d7a1f3510dc5cb47c58b5a5075e6b6a7d8b44184d5c22337eab902f082"
-  generated_content_sha256: "sha256:1125e33a22b40d4e0b46754ebca162a57a5e4455cbd268b3205bea34e86864e7"
+    sha256: "sha256:e637d2fa133c59f8c91f935856d3b41ed745c8ea7e76cef526f3624ebd0a239a"
+  generated_content_sha256: "sha256:fce518d405f0670c7fc0413946df2cd6027c742709e7dba57df304b6366b87f9"

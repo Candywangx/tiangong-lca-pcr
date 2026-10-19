@@ -255,8 +255,8 @@ sync_with: pcr.en-US.md
 
 - 选定流: 待采收的油料作物，声明物种
 - 流属性 / 单位: 质量 / kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 数量规则：根据实测地块/作物记录计算交付收获的可采收作物质量。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: site_specific（`site_specific`）
 原始活动或阶段基准：harvestable mass at field maturity。
 
@@ -285,8 +285,8 @@ sync_with: pcr.en-US.md
 
 - 选定流: 按声明物种、状态、介质和去向选择具体流
 - 流属性 / 单位: kg N2O
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 数量规则：根据记录的实际氮输入，按声明的地区适用方法计算，不从筛选范围填入排放量。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: route_specific（`route_specific`）
 原始活动或阶段基准：per crop cycle, normalized by accepted oilseed output。
 
@@ -308,9 +308,9 @@ sync_with: pcr.en-US.md
 本卡记录该过程角色的真实物理流；仅在路线启用时按声明批次或作物周期建模。
 
 - 选定流: 按声明物种、状态、介质和去向选择具体流
-- 流属性 / 单位: kg nitrate-N
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 流属性/单位: Mass / kg NO3-
+- 数量规则：仅在声明适用方法、活动数据和实际接收水环境有据时计算硝酸盐排放。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: route_specific（`route_specific`）
 原始活动或阶段基准：per crop cycle, normalized by accepted oilseed output。
 
@@ -327,6 +327,8 @@ sync_with: pcr.en-US.md
   - 基准类型: `crop_cycle`
   - 证据类型: Reasoned estimate（`reasoned_estimate`）
 
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
+
 ### 过程：收获与籽粒脱出 (`harvest_and_extraction`)
 
 #### 输入
@@ -338,8 +340,8 @@ sync_with: pcr.en-US.md
 
 - 选定流: 待采收的油料作物，声明物种
 - 流属性 / 单位: 质量 / kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 数量规则：转移来自受管理生产的同批可采收作物实测/有据计算质量，与上游输出配对。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: site_specific（`site_specific`）
 原始活动或阶段基准：gross harvestable crop entering harvest。
 
@@ -405,7 +407,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：计量按实际物种提取后、整理前的原始籽粒质量。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：gross raw seed at measured moisture。
@@ -468,7 +470,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6`
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：按进入时水分状态转移实测原始种子质量。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：incoming conditioning lot。
@@ -551,7 +553,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：计量声明水分和纯度下的整理后种子质量。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：conditioned lot output。
@@ -605,8 +607,8 @@ sync_with: pcr.en-US.md
 
 - 选定流: 按声明物种、状态、介质和去向选择具体流
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 数量规则：计量或按有据方法计算捕集后的实际释放粉尘；不使用未核验的通用颗粒物UUID，不将捕集固体重复作空气排放。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: technology_specific（`technology_specific`）
 原始活动或阶段基准：per conditioned lot。
 
@@ -634,7 +636,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6`
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：将同批整理后种子的实测质量转移至分级、储存或装运。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：incoming finalization lot。
@@ -759,7 +761,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：较低等级确仍作为油料商品销售时，分开计量其实际质量和交付去向。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：per grading lot。
@@ -830,6 +832,7 @@ sync_with: pcr.en-US.md
 | cp_conditioning | drying_and_conditioning | moisture, product and rejects | batch record | incoming and outgoing mass, moisture, foreign matter, dust, water and route | scale, moisture test, meter and batch log；原始汇总与分配：dry-matter and wet-mass reconciliation by batch | kg; %; m3 | each batch | all conditioning batches | conditioning line and batch | 每声明的参考流 | scale and moisture calibration, batch sheet |
 | cp_packaging | grading_packaging_and_storage | packaging | material issue record | material type, mass, count, reuse and product lot | warehouse issue and packaging log；原始汇总与分配：sum virgin and reused materials separately | kg; item | each lot | all packed lots | packing line and lot | 每声明的参考流 | invoice, issue ticket, count check |
 | cp_final | grading_packaging_and_storage | grades and reference product | final lot record | species, use, moisture, grade, accepted, downgraded, rejected and stock change | calibrated scale, grade test and dispatch ticket；原始汇总与分配：reconcile incoming with grades, rejects and stock change | kg; % | each lot | all released lots | facility, store and lot | 每声明的参考流 | scale certificate, lab or grade report, dispatch ticket |
+| `cp_phase1_environment_coverage` | managed_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -839,10 +842,18 @@ sync_with: pcr.en-US.md
 | moisture_balance | 干燥 | 干物质守恒；以实测进出水分计算除水量并核对损失。 | 进出质量及水分 | 干物质差异 | mass-balance-identity |
 | lot_balance | 收获及整理 | 投入加库存减少等于所有产品、残余、废物、排放及库存增加。 | 全部实测批次流 | 质量差异 | mass-balance-identity |
 | nutrient_expand | 养分投入 | 每个物理产品只生成一次交换，并保留组成用于分析 N/P/K，禁止重复。 | 产品 ID、质量及组成 | 具体产品交换及养分台账 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_identity | 参考产品 | 物种、用途、水分、等级、路线及门点均非空。 | 批次和发运记录 |
 | dq_mass | 全过程 | 校准秤并核对田间、收获、整理和最终批次质量平衡。 | 校准证书与平衡表 |
@@ -878,3 +889,4 @@ sync_with: pcr.en-US.md
 | unsd-cpc-30 | official_guidance | United Nations Statistics Division, CPC Version 3.0, https://unstats.un.org/unsd/classifications/Econ/cpc | 类别边界及剩余类别判断 |
 | fao-grain-storage | official_guidance | FAO, Grain storage techniques, https://www.fao.org/4/s1250e/S1250E0u.htm | 干燥、清理、储存及水分记录路线 |
 | mass-balance-identity | method_factor | 质量投入与产出、损失及库存变化的守恒关系 | 批次及水分质量核对 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

@@ -592,32 +592,6 @@ Raw quantity and calculation requirements: Measure actual lot and reconcile node
 
 ##### Waste flows
 
-###### Spent curing media and rejected skin (`preserve_residue`)
-
-Distinguish waste from evaporated water and incorporated salt.
-
-Denominator and scope requirements：per kg node output
-
-Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output.
-
-- Selected flow: Spent salt/brine and rejected skin by destination (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_residues`
-- Range: Lot completeness screen, not a default factor
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg/kg
-  - Basis: per kg node output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 ### Process: Protective presentation and handover (`handover`)
@@ -735,6 +709,7 @@ Identify the actual input for this operation from supplier specifications, equip
 | c_period | animal and shared services | attribute each phase/service burden once across actual outputs and consuming nodes | cp_source;cp_utilities | burden/kg | fao-hides-skins |
 | c_norm | reference lot | attributable measured quantity divided by positive net skin at same state and gate | cp_handover;cp_source | quantity/kg |  |
 | `handover_reject_specific_output` | `handover` | At the actual sheep/lamb-skin handover, identify rejected raw skins separately from each discarded packaging material. Retain the actual fresh or preserved skin state, moisture/preservation basis, lot, rejection reason and disposal recipient. Reconcile node inputs, outputs and destinations, retaining the original per-kg-node-output collection basis. Apply inventory_reference_normalization and stage_throughput_linkage to matched records exactly once; the former aggregate completeness screen is not an individual-material default or limit. This is a mandatory collection and calculation requirement, not an inventory exchange. Before dataset completeness, create one physically specific card for each actual exported stream, including composition, state, native quantity/property, destination and evidenced product/waste role. Use only a compatible verified UUID, or explicitly register the concrete unresolved identity. Do not invent a packaging recipe, assume segregation, infer zero from missing evidence or omit a required stream. A real single mixed stream may remain one composition-defined identity only with collection/transfer evidence and compatible treatment; never duplicate it with its component exports. Keep separately handled liquid and solid streams distinct. Preserve original attribution, period, mass/water balances, reference denominator and treatment/service boundaries; link existing matching exchanges rather than count duplicates. Former aggregate ranges are not individual-stream defaults or limits. | `cp_residues` | actual stream-specific exchanges, destinations and nonduplicated mass balance |  |
+| `preserve_residue_identity_and_fate` | `preserve` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_residues` | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

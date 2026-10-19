@@ -544,6 +544,10 @@ sync_with: pcr.en-US.md
 | `allocate_shared` | 共享行程、基础设施及期间 | 记录所有使用者及真实服务期间；可归属共享服务优先用实测行程/时间、容器周转或冷藏占用容量时间等驱动量。将可归属失败行程负荷及期初/期末库存保留至正确采集季。所有份额仅一次与原始总体核对；无贡献证据不得等权场址平均。 |  |
 | `allocate_rejects` | 备制、暂存及交接 | 将每个损伤、泄漏、腐败或等级外状态关联至产生节点及实际退回、重新分级、有意其他等级销售或处置接收方。内部循环保留累计负荷及新增操作，不抵扣第二次输出。鲜态其他有意商品仅有一个最终交接；未解决拒收物不得进入验收参考净质量。 |  |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -573,14 +577,14 @@ sync_with: pcr.en-US.md
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `normalize_observed` | 所有清单行 | 将可归属实际交换的自身单位数量除以验收最终浆果净质量 kg；报告每 1 kg 参考流。最终参考输出为 1 kg；每个内部转移独立计量。 | cp_gather; cp_transfer; cp_condition; cp_hold; cp_handover | 参考归一化交换 |  |
 | `reconcile_node_mass` | 所有实际物料节点 | 用计量收到物和期初库存核对实际输出浆果、独立分类其他商品/拒收/液体/异物、已识别含水变化及期末库存。不得把残差强制为蒸发或排放。 | cp_gather; cp_transfer; cp_condition; cp_hold; cp_handover | 物理台账及明确未解决差值 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `quality_origin` | 所有浆果批次 | 独立于商业野生名称核实食用物种/用途及无管理来源；本范围拒绝受管理/栽培来源。 | 来源观察、管理历史及关联批次验收 |
 | `quality_completeness` | 节点、场址及期间 | 核算激活/绕过节点、购入料负荷、所有贡献者、失败行程、库存转换、其他商品、返工/拒收及服务覆盖；缺口明确保留，不是零。 | 完整关联协议及物理/财务服务核对 |
@@ -618,3 +622,4 @@ sync_with: pcr.en-US.md
 | `unsd-cpc3-wild-berries` | `official_guidance` | https://unstats.un.org/UNSDWebsite/statcom/session_56/documents/BG-3o-Explanatory_Notes_of_the_Central_Product_Classification_Version3-E.pdf | CPC 3.0 03234 解释：无管理采集、非有意作物管理；无数值默认项。 |
 | `umaine-managed-wild-blueberries` | `extension_guidance` | https://extension.umaine.edu/blueberries/about/ | 商业野生名称可指受管理修剪/作物周期；仅支持资格区分，不提供野生采集数量。 |
 | `fao-food-storage` | `official_guidance` | https://www.fao.org/4/W6864E/w6864e06.htm | 鲜态易腐及加工状态区别；实际暂存/处理协议由本记录声明，不转用来源示例保质期、损失或温度。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

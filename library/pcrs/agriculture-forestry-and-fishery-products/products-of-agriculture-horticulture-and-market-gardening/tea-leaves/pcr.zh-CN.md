@@ -48,7 +48,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Tea |
+| Reference product flow | 茶 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -92,10 +92,10 @@ sync_with: pcr.en-US.md
 | rule_id | applies_to | source_ids | rule |
 | --- | --- | --- | --- |
 | `boundary_01` | plantation_to_gate | `iso-20715-2023-tea-classification`; `iso-14044-2006` | 包括生产声明干茶参考流所需的茶园、采摘、所选初级加工路线、干燥、分级和门内储存。 |
-| `boundary_02` | route_selection | `iso-20715-2023-tea-classification`; `fao-tea-processing-manual` | 每批选择一个命名路线，只纳入实际发生的路线状态；未使用的萎凋、氧化、揉捻或闷黄不得计入。 |
+| `boundary_02` | route_selection | `iso-20715-2023-tea-classification`; `fao-jmpr-tea-processing-2016` | 每批选择一个命名路线，只纳入实际发生的路线状态；未使用的萎凋、氧化、揉捻或闷黄不得计入。 |
 | `boundary_03` | gate_definition | `iso-14044-2006` | 门点位于初级加工、干燥、分级和纳入的储存之后，包装展示、零售、下游配送、消费者冲泡和饮料制备之前。 |
 | `boundary_04` | recursive_same_category_input | `mass-balance-identity` | 同类别上游茶输入是声明数据集输入，不得在接收茶过程中递归展开。 |
-| `boundary_05` | direct_emissions_and_residues | `fao-tea-processing-manual`; `ipcc-2019-refinement-afolu` | 当田间或加工排放、废水、粉尘、残余、拒收物及其去向跨越前景边界或用于批次平衡时，必须记录。 |
+| `boundary_05` | direct_emissions_and_residues | `fao-jmpr-tea-processing-2016`; `ipcc-2019-refinement-afolu` | 当田间或加工排放、废水、粉尘、残余、拒收物及其去向跨越前景边界或用于批次平衡时，必须记录。 |
 
 ## 6. 过程清单结构
 
@@ -165,8 +165,10 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 原始活动或阶段基准：同一过程和报告期的定量参考.
 
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
+- 基准类型：`crop_cycle`
 - 证据类型：采集记录（`collected_record`）
+
+- 采集协议：`cp_field_activity_records`
 
 ###### 磷酸一铵肥料投入（`tea_plantation_management_agricultural_nutrient_inputs_monoammonium_phosphate`）
 
@@ -180,8 +182,10 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 原始活动或阶段基准：同一过程和报告期的定量参考.
 
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
+- 基准类型：`crop_cycle`
 - 证据类型：采集记录（`collected_record`）
+
+- 采集协议：`cp_field_activity_records`
 
 ###### 氯化钾肥料投入（`tea_plantation_management_agricultural_nutrient_inputs_potassium_chloride`）
 
@@ -195,8 +199,10 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 原始活动或阶段基准：同一过程和报告期的定量参考.
 
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
+- 基准类型：`crop_cycle`
 - 证据类型：采集记录（`collected_record`）
+
+- 采集协议：`cp_field_activity_records`
 
 ###### 施用的牛粪肥投入（`tea_plantation_management_agricultural_nutrient_inputs_cattle_manure`）
 
@@ -210,8 +216,10 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 原始活动或阶段基准：同一过程和报告期的定量参考.
 
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
+- 基准类型：`crop_cycle`
 - 证据类型：采集记录（`collected_record`）
+
+- 采集协议：`cp_field_activity_records`
 
 ###### 农业石灰石投入（`tea_plantation_management_agricultural_nutrient_inputs_agricultural_limestone`）
 
@@ -225,10 +233,12 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 原始活动或阶段基准：同一过程和报告期的定量参考.
 
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
+- 基准类型：`crop_cycle`
 - 证据类型：采集记录（`collected_record`）
 
 作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
+
+- 采集协议：`cp_field_activity_records`
 
 ###### 灌溉和田间用水（`tea_field_water_input`）
 
@@ -292,7 +302,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 记录土地面积、茶园阶段、报告期和产量，用于向参考流归属土地占用。
 
-- Selected flow: Agricultural land occupation
+- 选定流：农业土地占用
 - Flow property / unit: Area-time / m2·year
 - Amount rule: 管理面积乘报告期间并按声明茶产出归属
 - Value mode: Calculated value (`calculated_value`)
@@ -439,15 +449,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_output_records`
-- Range: 鲜叶到干茶投入筛选范围
-  - Range role: Typical range (`typical_range`)
-  - Lower: 3.0
-  - Upper: 8.0
-  - Unit: kg fresh leaf/kg dry tea
-  - Basis: 鲜叶水分和路线产率，需由批次质量平衡替代
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-tea-processing-manual`; `mass-balance-identity`
+
+引用指南不能为全部所覆盖路线确立该宽数值区间。采用匹配的批次实测及水分／损失平衡；有路线特定证据支持界限之前，报告数值筛查不可用。不得以删除的范围替代实测得率或损失。
 
 ##### Waste flows
 
@@ -701,7 +704,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 干燥产出是交给分级的稳定可用状态。固定平台 `Tea` 身份只应用于此干产品状态和后续门点产出。
 
-- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- 选定流：茶 `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
 - Flow property / unit: Mass / kg
 - Amount rule: 最终干燥后称量干制成品茶
 - Value mode: Foreground record (`foreground_record`)
@@ -713,15 +716,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_processing_batch_records`
 - Sources: `iso-20715-2023-tea-classification`
-- Range: 干制成品茶水分和产率控制范围
-  - Range role: Typical range (`typical_range`)
-  - Lower: 0.15
-  - Upper: 0.40
-  - Unit: kg dry made tea/kg fresh leaf
-  - Basis: 批次干产出，水分另行记录
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-tea-processing-manual`
+
+引用指南不能为全部所覆盖路线确立该宽数值区间。采用匹配的批次实测及水分／损失平衡；有路线特定证据支持界限之前，报告数值筛查不可用。不得以删除的范围替代实测得率或损失。
 
 ##### Waste flows
 
@@ -756,7 +752,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 - Selected flow: Tea processing and drying loss（路线特定 UUID 未解析）
 - Flow property / unit: Mass / kg
-- Amount rule: 扣除中间体、产品和残余后的质量平衡差额
+- 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Route-specific (`route_specific`)
 原始活动或阶段基准：每 1 kg 干茶.
@@ -857,7 +853,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 分级节点接收稳定干产品并分为声明等级或去向状态；它独立于初级加工，因为等级状态和交接点独立。
 
-- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- 选定流：茶 `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
 - Flow property / unit: Mass / kg
 - Amount rule: 按批次称量接收干茶
 - Value mode: Foreground record (`foreground_record`)
@@ -909,7 +905,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 这是预期产出状态；门点产出必须携带茶类、等级、水分、批次、路线和储存条件。
 
-- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- 选定流：茶 `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
 - Flow property / unit: Mass / kg
 原始产出计量与核对要求：称量合格主等级产出
 
@@ -936,7 +932,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 当作为茶销售或转移时，这是预期产出状态；应记录第二个茶等级或去向状态及其独立交接，不得静默作为废物。
 
-- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- 选定流：茶 `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
 - Flow property / unit: Mass / kg
 - Amount rule: 按等级称量次等级可销售茶
 - Value mode: Foreground record (`foreground_record`)
@@ -960,7 +956,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 只有在作为茶销售或转移时，这是预期产出状态；否则进入残余或拒收卡，并记录去向和负荷处理。
 
-- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- 选定流：茶 `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
 - Flow property / unit: Mass / kg
 - Amount rule: 按去向称量回收茶分量
 - Value mode: Foreground record (`foreground_record`)
@@ -984,7 +980,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 这是下游 LCA 建模使用的单一参考流交接，已扣除声明的次等级茶、回收茶产品、拒收物和储存损失，并归一到 1 kg。
 
-- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- 选定流：茶 `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
 - Flow property / unit: Mass / kg
 原始产出计量与核对要求：跨越声明门点的合格干茶，归一到 1 kg
 
@@ -1050,11 +1046,11 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Tea
+- 选定流：茶
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -1076,11 +1072,11 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Tea
+- 选定流：茶
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -1126,11 +1122,12 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_field_activity_records` | `tea_plantation_management`; `tea_plucking_collection`; `tea_green_leaf_handling`; `tea_grading_storage_gate` | 茶园面积和阶段；田间投入；用水；能源；土地占用 | 田间登记、发票、施用记录、计量表、GIS 和作业日志 | area; phase; cultivar; input_product; amount; nutrient_content; water; fuel; electricity; date; operation; reporting_period | 将实物投入和作业核对至每块地、活动和作物周期；原始汇总与分配：按实物身份、地块、活动和期间汇总；不合并产品地计算养分 | m2；m2·year；kg；L；MJ；kWh；日期 | 每个事件和年度报告期 | 建植、补植、生产作物周期、采摘批次和报告期 | 所有纳入茶园地块及其门前活动 | 每声明的参考流 | 发票；标签；校准计量表；田间日志；GIS 或地块登记 |
 | `cp_harvest_output_records` | `tea_plantation_management`; `tea_plucking_collection` | 嫩梢；鲜叶；采摘量；采摘损失；接收交接 | 称重单、采摘登记、产量记录和鲜叶接收日志 | block; cultivar; plucking_date; shoot_standard; fresh_mass; harvest_loss; receiving_time; lot_id | 将采摘量和接收量与采摘批次及干茶路线核对；原始汇总与分配：保持茶园到鲜叶的一对一关联并关闭采摘量 = 接收量 + 损失 | kg；日期时间；批次标识 | 每个采摘批次和交接 | 完整作物周期和采摘批次 | 进入所选路线的全部采摘批次 | 每声明的参考流 | 校准地磅；批次日志；接收记录；水分或质量记录 |
-| `cp_processing_batch_records` | `tea_green_leaf_handling`; `tea_route_processing` | 鲜叶；路线中间体；制成干茶；加工残余；公用工程投入 | 批次单、秤、水分检测、工艺日志、公用工程计量和燃料记录 | route; batch_id; input_state; intermediate_state; process_step; moisture; output; loss; fuel; electricity; water; operating_condition | 核对每个批次、路线状态、公用工程读数、水分结果和质量平衡；原始汇总与分配：只有路线、批次、公用工程和质量平衡完成后才汇总 | kg；%；h；°C；L；MJ；kWh | 每批或生产批 | 接收至所选初级加工路线和干燥 | 门内所有所选路线、批次和加工设施 | 每声明的参考流 | 校准秤和水分仪；批次单；计量核对；路线日志 |
+| `cp_processing_batch_records` | `tea_green_leaf_handling`; `tea_route_processing` | 鲜叶；路线中间体；制成干茶；加工残余；公用工程投入 | 批次单、秤、水分检测、工艺日志、公用工程计量和燃料记录 | route; batch_id; input_state; intermediate_state; process_step; moisture; output; loss; fuel; electricity; water; operating_condition ; 实际材料/状态/去向；代表性物流计量；其他全部组分/库存项；未解释差额及不确定性| 核对每个批次、路线状态、公用工程读数、水分结果和质量平衡；原始汇总与分配：只有路线、批次、公用工程和质量平衡完成后才汇总 | kg；%；h；°C；L；MJ；kWh | 每批或生产批 | 接收至所选初级加工路线和干燥 | 门内所有所选路线、批次和加工设施 | 每声明的参考流 | 校准秤和水分仪；批次单；计量核对；路线日志 |
 | `cp_quality_and_storage_records` | `tea_grading_storage_gate` | 合格等级；次等级；回收茶产品；拒收；储存；门点产出 | 分级日志、筛分记录、称重、仓储日志和质量记录 | grade; destination; accepted_mass; secondary_mass; recovered_mass; reject_mass; storage_start; storage_end; condition; loss; gate_date | 列出各等级和去向，再核对储存时长、损失和门点交接；原始汇总与分配：列出预期产出和拒收；按批次汇总时长和质量；排除下游物流 | kg；等级；日；温度；湿度；日期 | 每个分级或储存批次 | 干燥后分级至声明门点 | 门点前纳入的全部产出去向和储存 | 每声明的参考流 | 校准秤；筛分或分级记录；仓储日志；门点放行记录 |
 | `cp_residue_destination_records` | `tea_plantation_management`; `tea_plucking_collection`; `tea_green_leaf_handling`; `tea_route_processing`; `tea_grading_storage_gate` | 修剪残余；采摘损失；加工残余；拒收；返工；回收；处置 | 残余日志、废物转移记录、回收发票和返工日志 | residue_state; amount; destination; recovery; rework; compost; disposal; producing_process; lot_id | 将每项残余或拒收链接到产生过程和最终去向；原始汇总与分配：保留产生过程和最终处置；不重复计算返回或回收物 | kg；去向；批次标识 | 每批、作业或处置事件 | 作物周期、采摘批次、路线批次、分级和储存期间 | 门内所有残余、拒收、返工和回收分量去向 | 每声明的参考流 | 残余台账；转移单；回收发票；返工记录；去向证据 |
 | `cp_emission_records` | `tea_plantation_management`; `tea_green_leaf_handling`; `tea_route_processing`; `tea_grading_storage_gate` | 向空气、水或土壤的具体排放；储存粉尘；处理产物 | 测量记录、因子计算、处理日志和排放记录 | substance; medium; source; factor; measurement; treatment; reporting_period; lot_id | 报告带有具体物质、介质、来源和方法的实测或计算排放；原始汇总与分配：按物质、介质、来源、批次和期间汇总；不用宽泛未指定类别 | kg 物质 | 每个事件或报告期计算 | 田间作业、加工、干燥、分级和纳入的储存 | 声明边界内全部田间和加工排放源 | 每声明的参考流 | 测量记录；因子来源；处理日志；模型版本；质量审查 |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | tea_plantation_management | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### Calculation rules
 
@@ -1142,6 +1139,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 | `calc_04` | route-wide processes | 逐批按质量平衡核算；未解决差额是验证发现，不得静默分配给合格茶。 | 批次投入、中间体、产出、残余、损失 | 经核对的批次质量平衡及未解释差额 |  |
 | `calc_05` | tea_grading_storage_gate | 按声明交接将主等级、次等级、回收茶产品、残余、拒收、返工和处置分类。 | 等级产出和去向 | 按去向区分的预期产出、残余物、拒收物和返工分类 |  |
 | `calc_06` | route-wide shared operations | 按有文件的运行基准向路线和期间记录分配共享服务，防止共享负荷出现在多个产品系统中。 | 路线、批次、能源、换线、储存期 | 按路线、批次和期间归属一次的共享服务负荷 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emission_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### Data quality requirements
 
@@ -1153,6 +1151,12 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 | `quality_04` | 鲜叶、中间体、干茶、残余和拒收使用一致质量基准和单位换算；记录密度、热值或计量换算。 |
 | `quality_05` | 披露路线特定省略、零投入、未解析身份、上游数据集和门点排除项。 |
 | `quality_06` | 在最终 review 或发布数据集前，用场址记录或有来源证据替换临时推理范围。 |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
 
 ## 9. 验证规则
 
@@ -1188,7 +1192,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 | `iso-20715-2023-tea-classification` | ISO 20715:2023 Tea — Classification of tea types | `standard` | https://www.iso.org/standard/75419.html | 命名茶类、路线状态和产品身份 |
 | `iso-11287-2011-green-tea` | ISO 11287:2011 Green tea — Definition and basic requirements | `standard` | https://www.iso.org/standard/51540.html | 绿茶路线和进一步加工排除 |
 | `iso-3720-2011-black-tea` | ISO 3720:2011 Black tea — Definition and basic requirements | `standard` | https://www.iso.org/standard/51541.html | 红茶路线和产品身份 |
-| `fao-tea-processing-manual` | FAO Manual on the Submission and Evaluation of Pesticide Residues Data，茶加工章节 | `handbook` | https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/JMPR/Manual/FAO_manual_3rd_edition_Final.pdf | 鲜叶水分、干茶状态和加工序列 |
+| `fao-jmpr-tea-processing-2016` | FAO JMPR manual, Appendix X | official_guidance | FAO (2016), Submission and evaluation of pesticide residues data for the estimation of maximum residue levels in food and feed, 3rd edition, Appendix X, printed pp. 256–259; https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/JMPR/Manual/FAO_manual_3rd_edition_Final.pdf | 仅用于特定茶样加工路线和含水率背景；不支持通用商业制茶得率区间 |
 | `fao-tea-chain-processing` | Agroindustrial system model of the Argentine tea chain | `official_guidance` | https://www.fao.org/fileadmin/templates/est/meetings/IGGtea21/Presentation-MarketReportArgentina.pdf | 采摘、萎凋、揉捻、氧化、干燥、分级和包装分解 |
 | `agris-black-tea-processing-2017` | Effect of rolling methods and storage on volatile constituents of Turkish black tea | `literature` | https://doi.org/10.1002/ffj.3385 | 红茶加工序列和储存相关性 |
 | `ipcc-2019-refinement-afolu` | 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, AFOLU | `method_factor` | https://efdb.ipcc-nggip.iges.or.jp/public/2019rf/index.html | 多年生生产阶段、直接排放和归属背景 |
@@ -1198,3 +1202,4 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

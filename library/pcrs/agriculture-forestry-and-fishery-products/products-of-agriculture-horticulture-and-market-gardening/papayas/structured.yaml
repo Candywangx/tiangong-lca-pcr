@@ -400,25 +400,7 @@ process_inventory:
       waste:
         []
       elementary:
-        - row_id: papaya_field_residue
-          role: "Field residue"
-          name: "Papaya field residue"
-          flow_type: "elementary"
-          property_unit: "Mass / kg dry matter or wet biomass"
-          description: "Record non-marketable plant material and fruit residue remaining in or removed from the field, with destination and treatment disclosed. Raw activity or stage basis: per crop cycle and per 1,000 kg marketable output."
-          amount:
-            expression: "Weigh, estimate from documented biomass sampling, or calculate from harvested and marketable balances by field and cycle."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_papaya_harvest_records
-              source_ids:
-                - fao-gap-framework-2003
-            ranges: []
+        []
     outputs:
       product:
         - row_id: papaya_gross_harvest
@@ -532,25 +514,7 @@ process_inventory:
                 - codex-cxc-53-2003
             ranges: []
       waste:
-        - row_id: papaya_gate_wastewater
-          role: "Gate preparation wastewater or wash loss"
-          name: "Papaya gate-preparation wastewater or wash loss"
-          flow_type: "waste"
-          property_unit: "Mass or volume / kg or m3"
-          description: "Record wastewater or wash-related product loss generated before the declared gate and link it to the treatment or discharge route. Raw activity or stage basis: per 1,000 kg marketable output washed before the declared gate."
-          amount:
-            expression: "Measure or reconcile wastewater and wash loss from the gate-preparation batch balance."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_papaya_gate_records
-              source_ids:
-                - codex-cxc-53-2003
-            ranges: []
+        []
       elementary:
         []
 allocation_rules:
@@ -570,6 +534,11 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness."
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_papaya_establishment_records
@@ -680,6 +649,22 @@ dataset_production:
       output: "actual stream-specific exchanges, destinations and nonduplicated mass balance"
       source_ids:
         - codex-cxc-53-2003
+    - id: papaya_field_residue_identity_and_fate
+      applies_to: "papaya_harvest"
+      rule: "Reconcile crop residue, harvest loss and biomass by measured wet/dry basis and actual fate. Retained or incorporated biomass is an internal residue ledger used to calculate supported decomposition and nutrient pathways, not a purchased resource or an invented elementary biomass exchange. Separately collected material requires its actual product/waste identity and destination; environmental releases require identified substances and receiving compartments. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_papaya_harvest_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - fao-gap-framework-2003
+    - id: papaya_gate_wastewater_identity_and_fate
+      applies_to: "papaya_gate_preparation"
+      rule: "Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_papaya_gate_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - codex-cxc-53-2003
   data_quality_requirements:
     - id: quality_identity
       applies_to: "all product and input flows"
@@ -763,9 +748,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:81e329dc5bf4fc7ccea91eb3c789abd2da43b7cbad3f74bf411011ea7ea089e7"
+  source_sha256: "sha256:5e739262aa84a45e1624e6d620fa9cb0846c91b906a3b69adf053a8bcd27adc2"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5557"
@@ -816,18 +805,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_29343"
+    - unit_id: "normative_27616"
       family: "allocation"
       span:
         start:
-          offset: 29343
-          line: 481
+          offset: 27616
+          line: 446
           column: 1
         end:
-          offset: 30498
-          line: 489
+          offset: 30755
+          line: 458
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n- `allocation_marketable_output`: Allocate crop-cycle inputs and direct cultivation exchanges to marketable fresh papaya using marketable mass as the primary output basis. `source_ids`: `iso-14044-2006`.\n- `allocation_rejects`: Treat field and gate rejects as waste unless a documented receiving route creates a separately specified co-product. Do not assign avoided-product credit within this PCR. `source_ids`: `iso-14044-2006`, `fao-gap-framework-2003`.\n- `allocation_reusable_containers`: Model reusable harvest containers and crates by recorded service cycles; assign their production burden across documented uses and retain consumed packaging as a separate input. `source_ids`: `iso-14044-2006`, `codex-cxc-53-2003`.\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n- `allocation_marketable_output`: Allocate crop-cycle inputs and direct cultivation exchanges to marketable fresh papaya using marketable mass as the primary output basis. `source_ids`: `iso-14044-2006`.\n- `allocation_rejects`: Treat field and gate rejects as waste unless a documented receiving route creates a separately specified co-product. Do not assign avoided-product credit within this PCR. `source_ids`: `iso-14044-2006`, `fao-gap-framework-2003`.\n- `allocation_reusable_containers`: Model reusable harvest containers and crates by recorded service cycles; assign their production burden across documented uses and retain consumed packaging as a separate input. `source_ids`: `iso-14044-2006`, `codex-cxc-53-2003`.\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -844,12 +833,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 29343
-              line: 481
+              offset: 27616
+              line: 446
               column: 1
             end:
-              offset: 29383
-              line: 481
+              offset: 27656
+              line: 446
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -864,16 +853,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48545"
+    - unit_id: "normative_51254"
       family: "validation"
       span:
         start:
-          offset: 48545
-          line: 535
+          offset: 51254
+          line: 506
           column: 1
         end:
-          offset: 49677
-          line: 543
+          offset: 52386
+          line: 514
           column: 1
       markdown: "## 9. Validation Rules\n\n- `validation_identity`: The dataset must identify papaya cultivar or product category, field or protected unit, production route, cycle, declared gate, and all evidence gap input or output identities. `source_ids`: `fao-gap-framework-2003`.\n- `validation_mass_balance`: For every harvest and gate batch, gross harvested or received mass must reconcile to marketable output, rejects, residue, wastewater or wash loss, packaging loss, and any disclosed stock change. `source_ids`: `codex-cxc-53-2003`.\n- `validation_normalization`: Every normalized inventory value must use the same declared marketable gate mass and must not mix farm-gate and first-packing-site outputs. `source_ids`: `iso-14044-2006`.\n- `validation_nutrient_emissions`: Nutrient-equivalent inputs and managed-soil emissions must identify their basis and use one non-duplicative calculation method. `source_ids`: `ipcc-2019-managed-soils`.\n- `validation_temporal`: The dataset must cover the represented production cycle and harvest campaign or explicitly disclose missing records and substitutions. `source_ids`: `fao-gap-framework-2003`.\n\n"
       headings:
@@ -892,12 +881,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48545
-              line: 535
+              offset: 51254
+              line: 506
               column: 1
             end:
-              offset: 48567
-              line: 535
+              offset: 51276
+              line: 506
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -968,119 +957,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_29343"
+      unit_id: "normative_27616"
       source_span:
         start:
-          offset: 29385
-          line: 483
+          offset: 27658
+          line: 448
           column: 1
         end:
-          offset: 29588
-          line: 483
+          offset: 27861
+          line: 448
           column: 204
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_29343"
+      unit_id: "normative_27616"
       source_span:
         start:
-          offset: 29589
-          line: 484
+          offset: 27862
+          line: 449
           column: 1
         end:
-          offset: 29841
-          line: 484
+          offset: 28114
+          line: 449
           column: 253
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_29343"
+      unit_id: "normative_27616"
       source_span:
         start:
-          offset: 29842
-          line: 485
+          offset: 28115
+          line: 450
           column: 1
         end:
-          offset: 30108
-          line: 485
+          offset: 28381
+          line: 450
           column: 267
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_29343"
+      unit_id: "normative_27616"
       source_span:
         start:
-          offset: 30110
-          line: 487
+          offset: 28383
+          line: 452
           column: 1
         end:
-          offset: 30496
-          line: 487
+          offset: 28769
+          line: 452
           column: 387
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_27616"
+      source_span:
+        start:
+          offset: 28842
+          line: 456
+          column: 1
+        end:
+          offset: 30753
+          line: 456
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_48545"
+      unit_id: "normative_51254"
       source_span:
         start:
-          offset: 48569
-          line: 537
+          offset: 51278
+          line: 508
           column: 1
         end:
-          offset: 48810
-          line: 537
+          offset: 51519
+          line: 508
           column: 242
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_48545"
+      unit_id: "normative_51254"
       source_span:
         start:
-          offset: 48811
-          line: 538
+          offset: 51520
+          line: 509
           column: 1
         end:
-          offset: 49069
-          line: 538
+          offset: 51778
+          line: 509
           column: 259
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_48545"
+      unit_id: "normative_51254"
       source_span:
         start:
-          offset: 49070
-          line: 539
+          offset: 51779
+          line: 510
           column: 1
         end:
-          offset: 49271
-          line: 539
+          offset: 51980
+          line: 510
           column: 202
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_48545"
+      unit_id: "normative_51254"
       source_span:
         start:
-          offset: 49272
-          line: 540
+          offset: 51981
+          line: 511
           column: 1
         end:
-          offset: 49475
-          line: 540
+          offset: 52184
+          line: 511
           column: 204
     - pointer: "/validation_rules/4"
       rule_id: "validation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_48545"
+      unit_id: "normative_51254"
       source_span:
         start:
-          offset: 49476
-          line: 541
+          offset: 52185
+          line: 512
           column: 1
         end:
-          offset: 49675
-          line: 541
+          offset: 52384
+          line: 512
           column: 200
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1109,27 +1111,51 @@ normative_context:
           column: 294
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_29343"
+      unit_id: "normative_27616"
       source_span:
         start:
-          offset: 29343
-          line: 481
+          offset: 27616
+          line: 446
           column: 1
         end:
-          offset: 29383
-          line: 481
+          offset: 27656
+          line: 446
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48545"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_27616"
       source_span:
         start:
-          offset: 48545
-          line: 535
+          offset: 28383
+          line: 452
           column: 1
         end:
-          offset: 48567
-          line: 535
+          offset: 28769
+          line: 452
+          column: 387
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_27616"
+      source_span:
+        start:
+          offset: 28842
+          line: 456
+          column: 1
+        end:
+          offset: 30753
+          line: 456
+          column: 1912
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_51254"
+      source_span:
+        start:
+          offset: 51254
+          line: 506
+          column: 1
+        end:
+          offset: 51276
+          line: 506
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1138,5 +1164,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:81e329dc5bf4fc7ccea91eb3c789abd2da43b7cbad3f74bf411011ea7ea089e7"
-  generated_content_sha256: "sha256:ab334e35ecfc931c75874c5f9d4183425b2b2e9791ef4b93d5e9e096eb72769a"
+    sha256: "sha256:5e739262aa84a45e1624e6d620fa9cb0846c91b906a3b69adf053a8bcd27adc2"
+  generated_content_sha256: "sha256:c42d27d834d19335ce206aada4eb41f937ff5cf8411e7e31f99a409df45e0529"

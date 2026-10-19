@@ -343,7 +343,7 @@ process_inventory:
           name: "applicable land occupation elementary flow for the declared land-use class"
           flow_type: "elementary"
           property_unit: "Area-time / ha a"
-          description: "Land occupation represents productive orchard area over the declared occupation period. Raw activity or stage basis: per 1 kg reference product."
+          description: "Land occupation represents productive orchard area over the declared occupation period. Raw activity or stage basis: per 1 kg reference product. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "productive area times occupation duration divided by marketable output"
             value_mode: "calculated_value"
@@ -355,24 +355,13 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_land_and_output_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "ha a/kg reference product"
-                basis: "area-time divided by marketable yield"
-                basis_kind: "reference_flow"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
+            ranges: []
         - row_id: water_withdrawal
           role: "Water withdrawal"
-          name: "water"
+          name: "Source-specific natural water withdrawal, with water type and receiving resource compartment declared"
           flow_type: "elementary"
-          flow_ref:
-            uuid: "419682fe-60fb-4b43-be89-bf2824b51104"
-          property_unit: "Mass / kg"
-          description: "Water withdrawal represents source-specific water removed from the environment for orchard irrigation. Raw activity or stage basis: per 1 kg reference product. Range evidence need: collect delivered irrigation and source withdrawal separately. The cited total water-footprint observations (187–237 m3/t, including green/blue components) are contextual indicators and are not a range for either exchange."
+          property_unit: "Volume / m3"
+          description: "Water withdrawal represents source-specific water removed from the environment for orchard irrigation. Raw activity or stage basis: per 1 kg reference product. Range evidence need: collect delivered irrigation and source withdrawal separately. The cited total water-footprint observations (187–237 m3/t, including green/blue components) are contextual indicators and are not a range for either exchange. Measure withdrawal at the actual source boundary in m3, separately from supplied/delivered water. Record freshwater or seawater, surface water or groundwater, location, resource compartment, meter dates/readings and transfers; use closing minus opening cumulative readings with documented meter corrections. Sum source volumes for the matched period and normalize once to accepted reference output. Keep any mass observation separate and convert by V = m/rho only with a documented compatible water density and units; no implicit kg-to-m3 equality. A broad unspecified-water identity cannot substitute for the actual source. Missing source/type or conversion evidence is an explicit gap and blocks a fully identified or complete water inventory claim."
           amount:
             expression: "calculate from metered irrigation by source without double counting supplied water"
             value_mode: "calculated_value"
@@ -449,14 +438,14 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
       waste:
-        - row_id: culled_apples_and_orchard_biomass
-          role: "Culled apples and orchard biomass"
-          name: "site-specific biodegradable fruit or woody agricultural waste flow"
+        - row_id: discarded_apple_fruit
+          role: "Discarded apple fruit"
+          name: "Discarded apple fruit sent to treatment"
           flow_type: "waste"
-          property_unit: "Mass / kg, with dry-matter basis for woody biomass"
-          description: "Culled apples and orchard biomass record non-product fruit, prunings, and removal material by evidenced fate. Raw activity or stage basis: per 1 kg reference product."
+          property_unit: "Mass / kg"
+          description: "Use only for this separately identified material actually exported as waste to an evidenced treatment recipient. Measure net as-received mass and moisture for this stream and retain a separate dry-matter ledger where used. Do not include deliberately sold products, on-site retained biomass, or an unexplained balance loss. If the actual disposal stream is a physical mixture, document composition and its one actual treatment boundary in a separate mixture-specific card; do not invent segregation or also count component exports. Account for non-use with evidence; missing amount or fate blocks completeness. Normalize attributable actual mass once to matched accepted apple output; no universal cull/wood ratio is prescribed."
           amount:
-            expression: "measured culls, prunings, and removal biomass by fate"
+            expression: "measured net stream mass, actual moisture and destination; final-reference normalization once"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -467,16 +456,26 @@ process_inventory:
               collection_protocol_id: cp_land_and_output_records
               source_ids:
                 - ucdavis-orchard-lca-findings-2020
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10"
-                unit: "kg/kg reference product"
-                basis: "broad reconciliation interval; fate-specific records are required"
-                basis_kind: "reference_flow"
-                evidence_kind: "source_rule"
-                source_ids:
-                  - ucdavis-orchard-lca-findings-2020
+            ranges: []
+        - row_id: discarded_apple_wood
+          role: "Discarded apple-tree woody material"
+          name: "Discarded apple-tree woody material sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Use only for this separately identified material actually exported as waste to an evidenced treatment recipient. Measure net as-received mass and moisture for this stream and retain a separate dry-matter ledger where used. Do not include deliberately sold products, on-site retained biomass, or an unexplained balance loss. If the actual disposal stream is a physical mixture, document composition and its one actual treatment boundary in a separate mixture-specific card; do not invent segregation or also count component exports. Account for non-use with evidence; missing amount or fate blocks completeness. Normalize attributable actual mass once to matched accepted apple output; no universal cull/wood ratio is prescribed."
+          amount:
+            expression: "measured net stream mass, actual moisture and destination; final-reference normalization once"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_land_and_output_records
+              source_ids:
+                - ucdavis-orchard-lca-findings-2020
+            ranges: []
       elementary:
         - row_id: direct_soil_nitrous_oxide_emission
           role: "Managed-soil nitrous oxide to air"
@@ -546,7 +545,7 @@ process_inventory:
           flow_ref:
             uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Fossil carbon dioxide from fuel represents direct on-site combustion emissions calculated from recorded fuel use. Raw activity or stage basis: per 1 kg reference product."
+          description: "Fossil carbon dioxide from fuel represents direct on-site combustion emissions calculated from recorded fuel use. Raw activity or stage basis: per 1 kg reference product. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "recorded fuel multiplied by a declared combustion factor"
             value_mode: "calculated_value"
@@ -558,16 +557,7 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg CO2/kg reference product"
-                basis: "calculated from recorded fuel and factor"
-                basis_kind: "fuel_inventory"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
+            ranges: []
   - id: orchard_gate_handling
     label: "Orchard-gate Handling"
     inputs:
@@ -827,6 +817,16 @@ dataset_production:
       output: "mass balance and unexplained loss"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_orchard_input_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference product"
@@ -942,7 +942,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a2de7d9fbc0db0a6ae4a56e943fe53ed5ecc2f9087f73b580f9593887fa70b24"
+  source_sha256: "sha256:9a2538a0c309d1f7ca217c71f4afae21ac9a0c0145205d87c3e38c1cb3baf716"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4902"
@@ -993,16 +993,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35997"
+    - unit_id: "normative_38415"
       family: "allocation"
       span:
         start:
-          offset: 35997
-          line: 582
+          offset: 38415
+          line: 574
           column: 1
         end:
-          offset: 37548
-          line: 595
+          offset: 39966
+          line: 587
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoidance` | subprocesses and grades | First avoid allocation by subdividing establishment, management, harvest, handling, industrial fruit, and residue management where records permit. | `iso-14044-2006` |\n| `allocation_perennial_time` | establishment and removal | Annualize attributable burdens over declared productive life and lifetime marketable yield; disclose non-bearing years, replacements, and yield assumptions. | `goossens-apple-orchard-lca-2017`; `baima-apple-orchard-lca-2024` |\n| `allocation_multiple_apple_outputs` | accepted and industrial apples | Use mass allocation when subdivision is impossible; economic allocation requires representative prices and a mass-allocation sensitivity. | `iso-14044-2006` |\n| `allocation_residue_fate` | orchard biomass | Assign collection and on-site management to the orchard; use substitution only with an evidenced displaced product, route, and market. Explicitly model open burning when practiced. | `ucdavis-orchard-lca-findings-2020`; `iso-14044-2006` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1021,12 +1021,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35997
-              line: 582
+              offset: 38415
+              line: 574
               column: 1
             end:
-              offset: 36037
-              line: 582
+              offset: 38455
+              line: 574
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1041,16 +1041,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48160"
+    - unit_id: "normative_52011"
       family: "validation"
       span:
         start:
-          offset: 48160
-          line: 640
+          offset: 52011
+          line: 633
           column: 1
         end:
-          offset: 49781
-          line: 652
+          offset: 53632
+          line: 645
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_flow` | reference product | Confirm one 1 kg reference flow uses the verified Apple UUID and all required qualifiers. | `codex-cxs-299-2010` |\n| `validation_scope` | inventory | Confirm establishment, juvenile years, productive years, management, harvest, removal, and handling are included or justified. | `goossens-apple-orchard-lca-2017`; `baima-apple-orchard-lca-2024` |\n| `validation_mass_balance` | outputs | Confirm apple outputs reconcile to harvest within tolerance and every non-reference output has a fate. | `mass-balance-identity` |\n| `validation_nitrogen` | fertilizer and nitrogen emissions | Confirm product mass differs from kg N; verify separate N2O, NH3, and nitrate amounts, receiving media, method factors, and N-equivalent mass balance. Convert N2O-N by 44/28, NH3-N by 17/14, and nitrate-N by 62/14 when reporting substance mass. | `ipcc-2019-managed-soils-n2o`; `mass-balance-identity` |\n| `validation_water` | water flows | Confirm withdrawal, delivered irrigation, consumption, and footprint are not double counted or mislabeled. | `dzikiti-apple-water-footprint-2019` |\n| `validation_allocation` | shared burdens | Confirm orchard life, yield basis, annualization, allocation, residue fate, and sensitivities are disclosed. | `iso-14044-2006` |\n| `validation_completeness` | data package | Confirm each required category has a value, justified zero, or exclusion and out-of-range values are explained. | `ucdavis-orchard-lca-findings-2020`; `baima-apple-orchard-lca-2024` |\n\n"
       headings:
@@ -1069,12 +1069,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48160
-              line: 640
+              offset: 52011
+              line: 633
               column: 1
             end:
-              offset: 48182
-              line: 640
+              offset: 52033
+              line: 633
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1158,158 +1158,158 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoidance"
       identity_kind: "explicit"
-      unit_id: "normative_35997"
+      unit_id: "normative_38415"
       source_span:
         start:
-          offset: 36132
-          line: 588
+          offset: 38550
+          line: 580
           column: 1
         end:
-          offset: 36352
-          line: 588
+          offset: 38770
+          line: 580
           column: 221
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_perennial_time"
       identity_kind: "explicit"
-      unit_id: "normative_35997"
+      unit_id: "normative_38415"
       source_span:
         start:
-          offset: 36353
-          line: 589
+          offset: 38771
+          line: 581
           column: 1
         end:
-          offset: 36639
-          line: 589
+          offset: 39057
+          line: 581
           column: 287
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_multiple_apple_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_35997"
+      unit_id: "normative_38415"
       source_span:
         start:
-          offset: 36640
-          line: 590
+          offset: 39058
+          line: 582
           column: 1
         end:
-          offset: 36871
-          line: 590
+          offset: 39289
+          line: 582
           column: 232
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_residue_fate"
       identity_kind: "explicit"
-      unit_id: "normative_35997"
+      unit_id: "normative_38415"
       source_span:
         start:
-          offset: 36872
-          line: 591
+          offset: 39290
+          line: 583
           column: 1
         end:
-          offset: 37158
-          line: 591
+          offset: 39576
+          line: 583
           column: 287
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_35997"
+      unit_id: "normative_38415"
       source_span:
         start:
-          offset: 37160
-          line: 593
+          offset: 39578
+          line: 585
           column: 1
         end:
-          offset: 37546
-          line: 593
+          offset: 39964
+          line: 585
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_flow"
       identity_kind: "explicit"
-      unit_id: "normative_48160"
+      unit_id: "normative_52011"
       source_span:
         start:
-          offset: 48255
-          line: 644
+          offset: 52106
+          line: 637
           column: 1
         end:
-          offset: 48421
-          line: 644
+          offset: 52272
+          line: 637
           column: 167
     - pointer: "/validation_rules/1"
       rule_id: "validation_scope"
       identity_kind: "explicit"
-      unit_id: "normative_48160"
+      unit_id: "normative_52011"
       source_span:
         start:
-          offset: 48422
-          line: 645
+          offset: 52273
+          line: 638
           column: 1
         end:
-          offset: 48653
-          line: 645
+          offset: 52504
+          line: 638
           column: 232
     - pointer: "/validation_rules/2"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_48160"
+      unit_id: "normative_52011"
       source_span:
         start:
-          offset: 48654
-          line: 646
+          offset: 52505
+          line: 639
           column: 1
         end:
-          offset: 48824
-          line: 646
+          offset: 52675
+          line: 639
           column: 171
     - pointer: "/validation_rules/3"
       rule_id: "validation_nitrogen"
       identity_kind: "explicit"
-      unit_id: "normative_48160"
+      unit_id: "normative_52011"
       source_span:
         start:
-          offset: 48825
-          line: 647
+          offset: 52676
+          line: 640
           column: 1
         end:
-          offset: 49190
-          line: 647
+          offset: 53041
+          line: 640
           column: 366
     - pointer: "/validation_rules/4"
       rule_id: "validation_water"
       identity_kind: "explicit"
-      unit_id: "normative_48160"
+      unit_id: "normative_52011"
       source_span:
         start:
-          offset: 49191
-          line: 648
+          offset: 53042
+          line: 641
           column: 1
         end:
-          offset: 49375
-          line: 648
+          offset: 53226
+          line: 641
           column: 185
     - pointer: "/validation_rules/5"
       rule_id: "validation_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_48160"
+      unit_id: "normative_52011"
       source_span:
         start:
-          offset: 49376
-          line: 649
+          offset: 53227
+          line: 642
           column: 1
         end:
-          offset: 49550
-          line: 649
+          offset: 53401
+          line: 642
           column: 175
     - pointer: "/validation_rules/6"
       rule_id: "validation_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_48160"
+      unit_id: "normative_52011"
       source_span:
         start:
-          offset: 49551
-          line: 650
+          offset: 53402
+          line: 643
           column: 1
         end:
-          offset: 49779
-          line: 650
+          offset: 53630
+          line: 643
           column: 229
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1338,27 +1338,27 @@ normative_context:
           column: 192
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35997"
+      unit_id: "normative_38415"
       source_span:
         start:
-          offset: 35997
-          line: 582
+          offset: 38415
+          line: 574
           column: 1
         end:
-          offset: 36037
-          line: 582
+          offset: 38455
+          line: 574
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48160"
+      unit_id: "normative_52011"
       source_span:
         start:
-          offset: 48160
-          line: 640
+          offset: 52011
+          line: 633
           column: 1
         end:
-          offset: 48182
-          line: 640
+          offset: 52033
+          line: 633
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1367,5 +1367,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a2de7d9fbc0db0a6ae4a56e943fe53ed5ecc2f9087f73b580f9593887fa70b24"
-  generated_content_sha256: "sha256:1d59ad810706384fda1ac24b6ed513fe7aa2f55edd6e008048b90a93364bfb07"
+    sha256: "sha256:9a2538a0c309d1f7ca217c71f4afae21ac9a0c0145205d87c3e38c1cb3baf716"
+  generated_content_sha256: "sha256:d0ba99cc6cee357000fe2425ad9d6a862279b9729e00ac134529385ed23cbc84"

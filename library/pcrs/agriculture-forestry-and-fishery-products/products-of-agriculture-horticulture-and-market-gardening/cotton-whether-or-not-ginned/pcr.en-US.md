@@ -278,7 +278,7 @@ Raw activity or stage basis: per ha planted in one crop cycle.
 Record this flow with the stated material state, route and destination.
 
 - Selected flow: Nitrate to receiving water
-- Flow property / unit: Mass / kg nitrate or kg nitrate-N
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: measured or modelled by compartment and basis
 - Value mode: calculated_value (`calculated_value`)
 - Specificity: site_specific (`site_specific`)
@@ -297,6 +297,8 @@ Raw activity or stage basis: per ha planted in one crop cycle.
   - Basis: nitrate per hectare
   - Basis kind: crop_cycle (`crop_cycle`)
   - Evidence kind: reasoned_estimate (`reasoned_estimate`)
+
+Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ### Process: Harvest, grading and farm hand-off (`cotton_harvest`)
 
@@ -654,8 +656,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- |
 | `calc_moisture` | biomass | dry mass = wet mass × (1 − moisture fraction) | wet mass; moisture | dry mass | `mass-balance-identity` |
 | `calc_emissions` | soil | apply declared IPCC tier once to collected N activity | N activity; factors | direct emissions | `ipcc-2019-refinement` |
-| `calc_normalization` | nodes | normalize after route mass balance closes | totals; accepted output | per 1000 kg | `mass-balance-identity` |
+| `calc_normalization` | nodes | After the selected seed-cotton or lint route balance and co-product attribution, final exchange = attributable raw exchange total * 1,000 kg / matched accepted reference-state output mass in kg. For a local intensity q_i = Q/O_i, first recover its contribution Q = q_i*O_i using actual linked throughput; do not treat O_i as final output or divide a final-reference amount again. | totals; accepted output | per 1000 kg | `mass-balance-identity` |
 | `calc_gin_balance` | gin | intake = lint + seed + trash + moisture change + loss | batch masses | balance | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_emissions`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

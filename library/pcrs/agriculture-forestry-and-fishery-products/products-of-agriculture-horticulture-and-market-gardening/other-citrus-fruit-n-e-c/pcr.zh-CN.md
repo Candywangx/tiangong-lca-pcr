@@ -239,7 +239,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_orchard_management_records`采集`orchard_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -497,7 +497,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_marketable_and_rejects` | 果园和整理共享产出 | 对可比的可销售水果、次果、修整物和独立记录产出按实测质量分配共享投入；不可比物流单独披露。 | `iso-14044-2006`; `fao-postharvest-handling-ae075e` |
+| `allocation_marketable_and_rejects` | 果园和整理共享产出 | 先细分可直接计量的果园和处理作业。其余共享负荷仅在有意销售果实与独立有据共产品之间按有依据的物理关系分配。弃置残次果和修整物不取得共产品份额，其生产与处理负荷仍归属可销售产出。记录全部产出及合计为一的份额；仅在物理关系不可用时说明采用经济后备方法的理由。 | `iso-14044-2006`; `fao-postharvest-handling-ae075e` |
 | `allocation_perennial_stand` | 果园建植和更新 | 根据生产年限、树龄和更新事件年度化建植、更新和共享多年生资产。 | `fao-gap-framework-2003`; `iso-14067-2018` |
 | `allocation_reuse_packaging` | 可重复使用筐和托盘 | 按服务次数、损失率和所代表活动分配制造和清洗；一次性包装单独记录。 | `fao-postharvest-handling-ae075e` |
 
@@ -539,6 +539,7 @@ sync_with: pcr.en-US.md
 | `calc_soil_emissions` | soil nitrous oxide | 删除重复基准后，对适用养分和残余物氮应用声明因子或测量结果 | 养分和残余物氮；因子或结果 | 排放量 | `ipcc-2019-managed-soils` |
 | `calc_output_reconciliation` | harvest and conditioning | 采收总量 = 可销售量 + 次果 + 修整物 + 损失；调查未解释残差 | 批次称量和去向记录 | 核对后的产品和废物量 | `fao-postharvest-handling-ae075e` |
 | `conditioning_reject_output_specific_exchanges` | `primary_conditioning` | 将柑橘拒收果、修整残余物和清洗废水分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_primary_conditioning_records` | 逐项独立交换；完成前必须补齐 | `fao-postharvest-handling-ae075e` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_application_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

@@ -184,7 +184,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_host_management and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -825,32 +825,6 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: natural_volatile_emissions
-          role: "Measured natural volatile constituents to air"
-          name: "Measured natural volatile constituents to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "When volatile loss occurs, enumerate actual measured constituent identity and air compartment separately under this conditional role. A total mass loss or generic VOC label cannot supply one fixed compound UUID."
-          amount:
-            expression: "Attributed measured quantity from cp_primary_preparation; normalize once to matched accepted net dispatch mass"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_primary_preparation
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
   - id: producer_dispatch
     label: "Producer storage protection and dispatch"
     inputs:
@@ -1238,7 +1212,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:b6eed58e24993309ccf1c7a3455b5124b10e9b73c1334e30c6d476aa1915c1d2"
+  source_sha256: "sha256:963cc7825c7cd11b5feb4150bbda0626dfbeb0e5a7db13b2660dc8f8aea580d2"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7177"
@@ -1289,16 +1263,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_59619"
+    - unit_id: "normative_58177"
       family: "allocation"
       span:
         start:
-          offset: 59619
-          line: 894
+          offset: 58177
+          line: 870
           column: 1
         end:
-          offset: 62029
-          line: 906
+          offset: 60587
+          line: 882
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `subdivision_first` | all intended output grades and host coproducts | Prefer measured process/lot subdivision. Enumerate actual primary product grades, saleable host wood and retained/sold broodlac with quantity, quality, boundary and receiver. Grade outputs that leave independently are products; discarded material is waste, not an automatic coproduct credit. | |\n| `common_host_burdens` | shared host production and seasonal outputs | Attribute remaining common host/asset burdens using documented causal service, area-time or use records where defensible. If inseparable products lack a defensible physical relation, use contemporaneous site-gate economic shares with price/quantity evidence and sensitivity; never prescribe one mass split or price for all gums, resins and lac. | |\n| `period_attribution` | establishment; productive seasons; replacement and shared assets | Link establishment and maintenance to actual productive and nonproductive periods, host replacement and termination, and future output expectations with sensitivity. A harvest may not carry both its full establishment cost and a second annualized copy. No universal host lifetime, gum yield or lac cycle is prescribed. | |\n| `rework_retention` | primary_preparation; producer_dispatch | Keep internal rework/returns with their originating burdens and record repeated energy/material use; net final accepted output excludes rejects and stock retained for a later period. Record waste treatment responsibility explicitly; do not assume substitution credits. | |\n| `common_service_once` | shared roads pumps tools stores and changeovers | Register all consuming nodes and periods, meter/subdivide where possible and distribute the one common total using evidenced services. Attribute campaign cleaning and changeovers once to actual lots; compatible output totals reconcile to the denominator before reference normalization. | |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1317,12 +1291,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 59619
-              line: 894
+              offset: 58177
+              line: 870
               column: 1
             end:
-              offset: 59659
-              line: 894
+              offset: 58217
+              line: 870
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1337,16 +1311,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_86611"
+    - unit_id: "normative_86581"
       family: "validation"
       span:
         start:
-          offset: 86611
-          line: 953
+          offset: 86581
+          line: 935
           column: 1
         end:
-          offset: 89639
-          line: 966
+          offset: 89609
+          line: 948
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_final_reference` | primary_product_dispatch | Require one qualified final product output of 1 kg net as-received reference product excluding packaging; its name, link, mass property/unit and qualifiers align with section 3. Intermediate/raw receipts remain measured, not fixed. | |\n| `validate_source_route` | source and host nodes | Verify each lot's actual plant or lac source, management and inoculation activation plus primary-preparation bypass/operation records; do not apply all alternatives or unknown-state defaults. | fao-plant-exudate-production; fao-lac-primary-states |\n| `validate_balance` | all material handoffs | Reconcile wet/net/dry/component quantities, water, natural volatile loss, impurities, other grades, waste, retained brood/rework and stock; disclose residuals and measurement uncertainty. Never label all loss as water or waste as sold product. | |\n| `validate_attribution` | periods grades infrastructure and campaigns | Require complete intended output and service consumers plus period/phase boundaries, replacement/termination, causal subdivision or evidenced residual allocation, and no duplicate host, shared-asset, cleaning, stock or returned-material burdens. | |\n| `validate_normalization` | all amounts and collection protocols | Require a matched accepted dispatch denominator, documented raw bases and conversions, and exactly-once attribution/normalization. All amounts and protocol reporting use per 1 kg reference flow. Range screens are not default values or evidence that the mass balance is satisfied. | |\n| `validate_identity_emissions` | concrete exchanges and direct emissions | Verify actual fixed identities and support units before final dataset publication; expand variable roles into concrete materials/substances and destinations. Species-resolved air emissions and explicit fuel/service combustion scope prevent invented or duplicated exhaust. | |\n| `validate_scope_state` | reference product and downstream use | Reject interchange of primary gum/resin/lac with rubber, industrial rosin/turpentine, extracted shellac or finished formulation; primary-only methodology does not imply exact whole-leaf coverage. No automatic sequestration or storage credit. | unsd-cpc-natural-resins; fao-lac-primary-states |\n| `validate_biological_source_handoff` | `host_management`; `plant_collection`; `lac_collection`; `primary_preparation`; `producer_dispatch` | Each collected output lot requires an explicit source and matched downstream receipt; purchased lots must not be recounted as own-site collection. Reconcile raw collected quantities with physical handoffs, not all biological output against auxiliary inputs. Do not invent formation, resource flows or CO2 uptake from unexplained residuals. Unknown source or handoff blocks a complete data package; absent evidence for total formation or uncollected stock must not be represented as a closed source balance. |  |\n\n"
       headings:
@@ -1365,12 +1339,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 86611
-              line: 953
+              offset: 86581
+              line: 935
               column: 1
             end:
-              offset: 86633
-              line: 953
+              offset: 86603
+              line: 935
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1480,184 +1454,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "subdivision_first"
       identity_kind: "explicit"
-      unit_id: "normative_59619"
+      unit_id: "normative_58177"
       source_span:
         start:
-          offset: 59732
-          line: 898
+          offset: 58290
+          line: 874
           column: 1
         end:
-          offset: 60100
-          line: 898
+          offset: 58658
+          line: 874
           column: 369
     - pointer: "/allocation_rules/1"
       rule_id: "common_host_burdens"
       identity_kind: "explicit"
-      unit_id: "normative_59619"
+      unit_id: "normative_58177"
       source_span:
         start:
-          offset: 60101
-          line: 899
+          offset: 58659
+          line: 875
           column: 1
         end:
-          offset: 60521
-          line: 899
+          offset: 59079
+          line: 875
           column: 421
     - pointer: "/allocation_rules/2"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_59619"
+      unit_id: "normative_58177"
       source_span:
         start:
-          offset: 60522
-          line: 900
+          offset: 59080
+          line: 876
           column: 1
         end:
-          offset: 60936
-          line: 900
+          offset: 59494
+          line: 876
           column: 415
     - pointer: "/allocation_rules/3"
       rule_id: "rework_retention"
       identity_kind: "explicit"
-      unit_id: "normative_59619"
+      unit_id: "normative_58177"
       source_span:
         start:
-          offset: 60937
-          line: 901
+          offset: 59495
+          line: 877
           column: 1
         end:
-          offset: 61273
-          line: 901
+          offset: 59831
+          line: 877
           column: 337
     - pointer: "/allocation_rules/4"
       rule_id: "common_service_once"
       identity_kind: "explicit"
-      unit_id: "normative_59619"
+      unit_id: "normative_58177"
       source_span:
         start:
-          offset: 61274
-          line: 902
+          offset: 59832
+          line: 878
           column: 1
         end:
-          offset: 61639
-          line: 902
+          offset: 60197
+          line: 878
           column: 366
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_59619"
+      unit_id: "normative_58177"
       source_span:
         start:
-          offset: 61641
-          line: 904
+          offset: 60199
+          line: 880
           column: 1
         end:
-          offset: 62027
-          line: 904
+          offset: 60585
+          line: 880
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validate_final_reference"
       identity_kind: "explicit"
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 86706
-          line: 957
+          offset: 86676
+          line: 939
           column: 1
         end:
-          offset: 86999
-          line: 957
+          offset: 86969
+          line: 939
           column: 294
     - pointer: "/validation_rules/1"
       rule_id: "validate_source_route"
       identity_kind: "explicit"
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 87000
-          line: 958
+          offset: 86970
+          line: 940
           column: 1
         end:
-          offset: 87300
-          line: 958
+          offset: 87270
+          line: 940
           column: 301
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 87301
-          line: 959
+          offset: 87271
+          line: 941
           column: 1
         end:
-          offset: 87595
-          line: 959
+          offset: 87565
+          line: 941
           column: 295
     - pointer: "/validation_rules/3"
       rule_id: "validate_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 87596
-          line: 960
+          offset: 87566
+          line: 942
           column: 1
         end:
-          offset: 87918
-          line: 960
+          offset: 87888
+          line: 942
           column: 323
     - pointer: "/validation_rules/4"
       rule_id: "validate_normalization"
       identity_kind: "explicit"
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 87919
-          line: 961
+          offset: 87889
+          line: 943
           column: 1
         end:
-          offset: 88270
-          line: 961
+          offset: 88240
+          line: 943
           column: 352
     - pointer: "/validation_rules/5"
       rule_id: "validate_identity_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 88271
-          line: 962
+          offset: 88241
+          line: 944
           column: 1
         end:
-          offset: 88622
-          line: 962
+          offset: 88592
+          line: 944
           column: 352
     - pointer: "/validation_rules/6"
       rule_id: "validate_scope_state"
       identity_kind: "explicit"
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 88623
-          line: 963
+          offset: 88593
+          line: 945
           column: 1
         end:
-          offset: 88982
-          line: 963
+          offset: 88952
+          line: 945
           column: 360
     - pointer: "/validation_rules/7"
       rule_id: "validate_biological_source_handoff"
       identity_kind: "explicit"
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 88983
-          line: 964
+          offset: 88953
+          line: 946
           column: 1
         end:
-          offset: 89637
-          line: 964
+          offset: 89607
+          line: 946
           column: 655
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1686,27 +1660,27 @@ normative_context:
           column: 243
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_59619"
+      unit_id: "normative_58177"
       source_span:
         start:
-          offset: 59619
-          line: 894
+          offset: 58177
+          line: 870
           column: 1
         end:
-          offset: 59659
-          line: 894
+          offset: 58217
+          line: 870
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_86611"
+      unit_id: "normative_86581"
       source_span:
         start:
-          offset: 86611
-          line: 953
+          offset: 86581
+          line: 935
           column: 1
         end:
-          offset: 86633
-          line: 953
+          offset: 86603
+          line: 935
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1715,5 +1689,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:b6eed58e24993309ccf1c7a3455b5124b10e9b73c1334e30c6d476aa1915c1d2"
-  generated_content_sha256: "sha256:80cf2fd9fbd961cafc8675c55fca403dfa9c995330d0e433acf9a3362482a5e3"
+    sha256: "sha256:963cc7825c7cd11b5feb4150bbda0626dfbeb0e5a7db13b2660dc8f8aea580d2"
+  generated_content_sha256: "sha256:dc77a89dd376c56a8e966d37157ed05e8bf3c0bd3ed532ce35c2c43101d5920b"

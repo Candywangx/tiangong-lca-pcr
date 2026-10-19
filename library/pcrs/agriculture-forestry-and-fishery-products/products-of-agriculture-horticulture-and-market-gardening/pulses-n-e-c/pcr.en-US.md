@@ -311,6 +311,38 @@ Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared ha
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+#### Outputs
+
+##### Product flows
+###### Mature pulse crop available for harvest (`mature_field_crop`)
+
+This handoff links managed production to the separate harvest responsibility. Identify the mature crop state and collected/standing area, and distinguish pulse seed from stems, pods, or incidental biomass when the crop form requires it.
+
+- Selected flow: Mature pulse crop available for harvest, species and crop form declared
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured harvest-ready crop mass or a documented field-sampling estimate before collection
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared handoff.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest_balance`
+- Sources:
+- Range: Broad provisional interval; crop form, maturity moisture, and species vary, so replace with measured lot mass
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1.0
+  - Upper: 8.0
+  - Unit: kg mature field crop/kg reference product
+  - Basis: per kg dry cleaned pulse seed at the declared handoff
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+#### Outputs
+
+##### Elementary flows
+
 ###### Direct soil nitrous oxide to air (`field_n2o_to_air`)
 
 Report only when direct field N2O is quantified by the selected applicable crop or national inventory method. Preserve the method's required nitrogen inputs, residue terms, boundary, and reporting basis; do not substitute a generic pulse factor.
@@ -338,12 +370,16 @@ Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared ha
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+#### Outputs
+
+##### Elementary flows
+
 ###### Nitrate-nitrogen loss to water (`nitrate_n_to_water`)
 
 Report nitrate-N loss to the receiving water compartment only when supported by the declared field monitoring or nutrient-loss method. Keep nitrate mass and nitrate-nitrogen mass distinct and identify receiving medium, watershed, and calculation method.
 
-- Selected flow: Nitrate nitrogen from pulse cultivation to water
-- Flow property / unit: Mass / kg
+- Selected flow: Nitrate to water; kg molecular nitrate, identity/compartment unresolved
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: measured or calculated according to the named field nutrient-loss method; do not derive from fertilizer input alone
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -362,34 +398,6 @@ Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared ha
   - Upper: 0.05
   - Unit: kg N/kg reference product
   - Basis: per kg dry cleaned pulse seed; use only the declared applicable inventory method
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-#### Outputs
-
-##### Product flows
-###### Mature pulse crop available for harvest (`mature_field_crop`)
-
-This handoff links managed production to the separate harvest responsibility. Identify the mature crop state and collected/standing area, and distinguish pulse seed from stems, pods, or incidental biomass when the crop form requires it.
-
-- Selected flow: Mature pulse crop available for harvest, species and crop form declared
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured harvest-ready crop mass or a documented field-sampling estimate before collection
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared handoff.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_harvest_balance`
-- Sources:
-- Range: Broad provisional interval; crop form, maturity moisture, and species vary, so replace with measured lot mass
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1.0
-  - Upper: 8.0
-  - Unit: kg mature field crop/kg reference product
-  - Basis: per kg dry cleaned pulse seed at the declared handoff
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
@@ -628,33 +636,6 @@ Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared ha
   - Upper: 3.0
   - Unit: kg threshed pulse seed/kg reference product
   - Basis: per kg dry cleaned pulse seed at the declared handoff
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Other intended threshing outputs (`other_intended_threshing_products`)
-
-Record each separated product with an identified recipient or use, quality, amount, and handoff. Shells, pods, or other biomass count as intended products only when actually directed to a product use; otherwise classify them as residue or waste according to their recorded fate.
-
-- Selected flow: Additional intended product from pulse threshing or shelling; identify each actual product
-- Flow property / unit: Product-specific property and unit from each declared output identity
-- Amount rule: itemize each intended output and reconcile it with seed and residual output masses
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared handoff.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_threshing_conditioning`
-- Sources:
-
-
-- Range: Provisional broad QA screen; replace with crop-, site-, and route-specific records and do not treat as an allowed limit
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg reference product
-  - Basis: per kg reference-grade pulse seed; conditional on an actual marketable handoff
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
@@ -903,33 +884,6 @@ Raw activity or stage basis: exactly 1,000 kg dry cleaned pulse seed at the decl
 
   - Sources: `declared-handoff-measurement-definition`
 
-###### Other intended pulse grades or products (`other_intended_grade_outputs`)
-
-Enumerate every additional marketable grade or intentionally produced pulse-related product, with its quality, amount, recipient, destination, and separate handoff. Designate the reference grade and report all other intended products in the allocation decision; do not fold them into the reference flow.
-
-- Selected flow: Additional intended pulse output; identify each concrete grade or product separately
-- Flow property / unit: Product-specific property and unit from each declared output identity
-- Amount rule: measured mass by product and grade from the sorted batch; zero where no other intended product is produced
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg reference-grade pulse seed at the declared handoff.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_grading_balance`
-- Sources:
-
-
-- Range: Provisional broad QA screen; replace with crop-, site-, and route-specific records and do not treat as an allowed limit
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5
-  - Unit: kg/kg reference product
-  - Basis: per kg reference-grade pulse seed; conditional on actual other grades or products
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 ###### Grading rejects discarded from the batch (`grading_rejects`)
 
@@ -1153,7 +1107,7 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | --- | --- | --- | --- |
 | `allocation_separate_processes` | cultivation, harvest, threshing, conditioning, grading and storage | Subdivide independently measured processes and assign operation-specific inputs directly before allocating any remaining shared burden. |  |
 | `allocation_all_outputs` | each node with multiple intended outputs | Enumerate each intended product and its separate handoff, grade, condition, quantity, destination and use. Distinguish marketable products from residues, incidental material and waste. | `fao-pulse-postharvest-2020`; `fao-onfarm-grain-manual-2009` |
-| `allocation_method_choice` | shared burdens for intended co-products | When two or more intended products share a process burden that cannot be separated, declare and justify a PCR-compatible physical, economic, or other applicable allocation method using the selected standard or study method. Record the allocation factor, reference period, input measurements and source. This PCR does not impose a universal default factor. |  |
+| `allocation_method_choice` | shared burdens for intended co-products | For one conditioning/grading batch producing comparable pulse seed grades under the same processing demand, use measured dry-seed mass as the physical driver; record moisture for every grade and assign grade-specific treatment or packing directly. For cultivation jointly producing grain and intentionally removed straw/pods, a biomass split alone does not establish causality. After directly assigning separable activities, allocate only residual common burden B among the complete intended-product set. Use a physical driver only when records establish how it represents consumption of that shared operation; being weighable is insufficient. Share a_i=d_i/sum(d_j), B_i=B*a_i; record native units and reconcile sum(a_i)=1. If no applicable causal driver exists, use first-separation economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with representative same-period quantities, consistent currency, comparable gates and prices before output-specific downstream work. An unavailable price is not zero; unreliable or missing denominator data make allocation incomplete. Test the material alternative as sensitivity, not an interchangeable primary method. Waste and internal transfers are excluded from the product denominator; their attributable handling remains included. No substitution credit follows from this rule. | `ghg-protocol-product-standard-2011` |
 | `allocation_rejects` | rejects, downgraded material and residues | Exclude discarded waste from accepted product quantities. Reworked or recovered material follows its linked process route; downgraded or feed-directed material is an intended output only when the actual destination and handoff are recorded. | `fao-pulse-postharvest-2020` |
 | `allocation_shared_assets` | equipment or storage shared across fields, lots or periods | Identify the shared asset/service, all consuming nodes and periods, and the measured driver used to assign its energy and service burden. Count each shared carrier or service once across the reporting boundary. |  |
 
@@ -1177,6 +1131,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_grading_balance` | `pulse_grading` | grade input, reference grade, other intended grades and rejects | grade and sale/use records | incoming lot, declared grade standard/buyer criteria, output mass per grade, moisture, downgraded/rework/reject state, destination, recipient | weigh each grade fraction; sample and test each grade against its declared commercial criteria; link every output to a handoff; Raw aggregation and attribution: sum grade outputs and rejects against incoming conditioned mass; nominate exactly which grade is the reference product | kg, % moisture | each sorted batch and sale lot | complete represented crop-season, batch, or included storage period | one crop lot and sorting campaign | per declared reference flow | calibrated scale, grade test record, buyer specification, sales/transfer receipt, mass-balance sheet |
 | `cp_storage_balance` | `pulse_storage` | stored product, storage energy and protection products, losses and exit quality | storage entry/exit and facility records | lot id, storage facility/container, entry/exit date, mass, moisture and basis, temperature/humidity when available, treatments, carrier, shared facility users, downgraded/recovered/discarded amounts | weigh and sample at entry and exit; retain facility logs, treatment records, invoices, monitoring and loss disposition; Raw aggregation and attribution: compare entry/exit dry matter at consistent moisture basis; allocate shared facility energy/treatment once | kg, % moisture, days, carrier-specific unit | each included storage lot and monitoring interval | complete represented crop-season, batch, or included storage period | declared facility, container and storage period | per declared reference flow | calibrated scale and meter, moisture readings, treatment label/log, inspection record, disposal or recipient receipt |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | pulse_cultivation | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -1186,6 +1141,15 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `moisture_adjusted_mass_balance` | drying, grading and optional storage | For wet-basis moisture fraction `m`, calculate dry matter as `net mass × (1 − m)`. Compare entry and exit on a consistent dry-matter basis; convert to the declared gate moisture only with measured moisture and an explicit calculation. | net mass, measured moisture fraction, entry/exit point | dry-matter balance and mass at reference moisture state | `mass-balance-identity` |
 | `crop_emission_method` | direct and indirect field emissions | Apply the declared recognized crop/region emission method and version to the field-season inputs it requires. Report emitted substance and receiving compartment, calculation inputs, factors and uncertainty. Do not apply an unselected generic factor. | method-specific fertilizer, residue, water, climate, soil and management records | method-supported elementary flows |  |
 | `shared_asset_attribution` | machinery, pumps, dryers, graders or storage used by multiple fields/lots | Assign metered carrier or service amounts using the recorded operation time, throughput, or other declared physical driver; sum assigned amounts back to the shared meter total. | shared meter/service total; all consuming nodes; time or throughput records | single-counted process-specific amounts | `mass-balance-identity` |
+| `other_intended_threshing_products_identity_and_fate` | `pulse_threshing` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_threshing_conditioning` | Identity-specific exchanges and reconciled activity records |  |
+| `other_intended_grade_outputs_identity_and_fate` | `pulse_grading` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_grading_balance` | Identity-specific exchanges and reconciled activity records |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_soil_emissions`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 
@@ -1238,3 +1202,5 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `mass-balance-identity` | method_factor | Conservation of mass on matched material, moisture, stock and period boundaries; a mathematical identity, not an empirical yield interval | Lot and reference normalization, without universal empirical bounds |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD (2011), Product Life Cycle Accounting and Reporting Standard, Chapter 9, sections 9.3.3–9.3.4; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | Allocation hierarchy, causal relationships and economic shares at the common-process exit; PCR-specific drivers and restrictions are stated in section 7 |

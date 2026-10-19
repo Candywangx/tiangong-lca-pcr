@@ -141,33 +141,7 @@ process_inventory:
     label: "Melon field or protected-crop establishment"
     inputs:
       product:
-        - row_id: melon_planting_material_input
-          role: "Melon seed or transplants"
-          name: "Melon seed or transplants"
-          flow_type: "product"
-          property_unit: "Number of items or mass / seed units, plants, or kg"
-          description: "Melon seed or transplants enter the production unit as planting material for the declared annual crop cycle. Record purchased material once and keep it separate from the resulting fruit output. Raw activity or stage basis: per planted hectare and per 1,000 kg marketable farm-gate melon."
-          amount:
-            expression: "Record supplier quantity and planting-material type by production unit and crop cycle."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_melon_establishment_records
-              source_ids:
-                - fao-gap-framework-2003
-            ranges:
-              - role: qa_guardrail
-                lower: "0.05"
-                upper: "8"
-                unit: "kg seed or 1000 transplants/ha"
-                basis: "broad first-pass seeded or transplanted annual melon rate pending supplier and production records"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
       waste:
         []
       elementary:
@@ -918,7 +892,7 @@ dataset_production:
       flow_role: "soil and air or water emissions"
       record_type: "nutrient balance, soil record, weather, residue, emission model"
       raw_fields: "production_unit_id; N_inputs; organic_N; residue_N; soil; climate; drainage; factor_set; model_version"
-      collection_method: "calculate each emission using one declared geographically applicable method; Raw aggregation and attribution: calculate per unit, area-weight, then normalize by same-cycle marketable yield"
+      collection_method: "Within each compatible route/product/state, calculate attributable raw totals by field first. Aggregate final intensity = sum(attributable raw quantities) * declared reference quantity / sum(matched accepted final outputs). When source quantities are per-ha rates e_h and y_h, first recover raw totals as e_h*area and y_h*area; do not area-weight field totals again. A per-product intensity is weighted by its matched output, not area or an unweighted mean. Apply existing allocation once, preserve period/throughput and all source-unit conversions, and keep incompatible routes separate."
       unit: "kg N; kg emission; ha"
       frequency: "each event and crop-cycle calculation"
       temporal_coverage: "complete crop cycle"
@@ -1024,6 +998,24 @@ dataset_production:
       output: "reconciled conditioning outputs per accepted fruit"
       source_ids:
         - mass-balance-identity
+    - id: melon_planting_material_input_identity_and_fate
+      applies_to: "melon_field_establishment"
+      rule: "For the original melon_planting_material_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults."
+      inputs:
+        - cp_melon_establishment_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - fao-gap-framework-2003
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_melon_emission_activity
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_product_identity
       applies_to: "reference and marketable outputs"
@@ -1132,7 +1124,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:cfc36aaef464ca0ce15cb67fb079207126cef272e06ec0d4cf2a5c4f7b3346da"
+  source_sha256: "sha256:b9313c39fda0148682de953af52fa98d9487ecbedc3db492b31557f2f43d31c9"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5517"
@@ -1183,16 +1175,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44562"
+    - unit_id: "normative_43271"
       family: "allocation"
       span:
         start:
-          offset: 44562
-          line: 722
+          offset: 43271
+          line: 697
           column: 1
         end:
-          offset: 46240
-          line: 733
+          offset: 44949
+          line: 708
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_by_subdivision` | field management, harvest, and conditioning | Prefer separate records for production, harvest, conditioning, marketable fruit, residues, and waste before applying allocation. | `iso-14044-2006` |\n| `allocation_melon_grades` | multiple marketable melon grades | Treat declared grades as one reference-product category when they share the same intended use; report grade-specific quantities and use economic or mass allocation only when separate modelling is infeasible. | `iso-14044-2006` |\n| `allocation_residue_and_rejects` | residues, rejects, and useful secondary outputs | Treat material with a declared useful hand-off as a co-product only when the hand-off and destination are documented; otherwise record it as waste or residue with fate disclosed. | `fao-postharvest-handling-ae075e`; `iso-14044-2006` |\n| `allocation_shared_operations` | shared field, protected-crop, or conditioning operations | Allocate shared operations by measured area, time, mass, or another documented physical relationship; disclose the choice and test a value-based sensitivity when the physical relationship is not representative. | `iso-14044-2006` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1211,12 +1203,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44562
-              line: 722
+              offset: 43271
+              line: 697
               column: 1
             end:
-              offset: 44602
-              line: 722
+              offset: 43311
+              line: 697
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1231,16 +1223,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_62766"
+    - unit_id: "normative_64720"
       family: "validation"
       span:
         start:
-          offset: 62766
-          line: 783
+          offset: 64720
+          line: 760
           column: 1
         end:
-          offset: 64384
-          line: 795
+          offset: 66338
+          line: 772
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_output` | terminal output | Exactly one terminal marketable melon output equals 1,000 kg after scaling and declares melon type, cultivar, maturity, grade, and farm-gate qualifiers. |  |\n| `validation_process_route` | process map | Include establishment, crop management, and harvest once per crop cycle; include conditioning only when it occurs before hand-off and is not double counted. |  |\n| `validation_crop_cycle_reconciliation` | field inventory | Production-unit area, planting material, inputs, harvest outputs, residue fates, and emissions refer to the same crop cycle and production units. |  |\n| `validation_nitrogen_balance` | nutrient and emission inventory | Reconcile nutrient content, returned and removed residue nitrogen, and emission pathways with methods and factors disclosed. | `ipcc-2019-managed-soils` |\n| `validation_harvest_balance` | harvest and grading | Reconcile incoming fruit with marketable fruit, declared useful outputs, rejects, and measured losses within uncertainty. | `mass-balance-identity` |\n| `validation_conditioning_balance` | optional conditioning | Reconcile incoming batches with accepted fruit, rejects, packaging, water, and measured losses; exclude conditioning when its burdens are embedded upstream. | `mass-balance-identity` |\n| `validation_flow_identity` | every flow | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
       headings:
@@ -1259,12 +1251,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 62766
-              line: 783
+              offset: 64720
+              line: 760
               column: 1
             end:
-              offset: 62788
-              line: 783
+              offset: 64742
+              line: 760
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1335,158 +1327,158 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_by_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_44562"
+      unit_id: "normative_43271"
       source_span:
         start:
-          offset: 44675
-          line: 726
+          offset: 43384
+          line: 701
           column: 1
         end:
-          offset: 44908
-          line: 726
+          offset: 43617
+          line: 701
           column: 234
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_melon_grades"
       identity_kind: "explicit"
-      unit_id: "normative_44562"
+      unit_id: "normative_43271"
       source_span:
         start:
-          offset: 44909
-          line: 727
+          offset: 43618
+          line: 702
           column: 1
         end:
-          offset: 45202
-          line: 727
+          offset: 43911
+          line: 702
           column: 294
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_and_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_44562"
+      unit_id: "normative_43271"
       source_span:
         start:
-          offset: 45203
-          line: 728
+          offset: 43912
+          line: 703
           column: 1
         end:
-          offset: 45524
-          line: 728
+          offset: 44233
+          line: 703
           column: 322
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_shared_operations"
       identity_kind: "explicit"
-      unit_id: "normative_44562"
+      unit_id: "normative_43271"
       source_span:
         start:
-          offset: 45525
-          line: 729
+          offset: 44234
+          line: 704
           column: 1
         end:
-          offset: 45850
-          line: 729
+          offset: 44559
+          line: 704
           column: 326
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_44562"
+      unit_id: "normative_43271"
       source_span:
         start:
-          offset: 45852
-          line: 731
+          offset: 44561
+          line: 706
           column: 1
         end:
-          offset: 46238
-          line: 731
+          offset: 44947
+          line: 706
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_output"
       identity_kind: "explicit"
-      unit_id: "normative_62766"
+      unit_id: "normative_64720"
       source_span:
         start:
-          offset: 62861
-          line: 787
+          offset: 64815
+          line: 764
           column: 1
         end:
-          offset: 63070
-          line: 787
+          offset: 65024
+          line: 764
           column: 210
     - pointer: "/validation_rules/1"
       rule_id: "validation_process_route"
       identity_kind: "explicit"
-      unit_id: "normative_62766"
+      unit_id: "normative_64720"
       source_span:
         start:
-          offset: 63071
-          line: 788
+          offset: 65025
+          line: 765
           column: 1
         end:
-          offset: 63277
-          line: 788
+          offset: 65231
+          line: 765
           column: 207
     - pointer: "/validation_rules/2"
       rule_id: "validation_crop_cycle_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_62766"
+      unit_id: "normative_64720"
       source_span:
         start:
-          offset: 63278
-          line: 789
+          offset: 65232
+          line: 766
           column: 1
         end:
-          offset: 63489
-          line: 789
+          offset: 65443
+          line: 766
           column: 212
     - pointer: "/validation_rules/3"
       rule_id: "validation_nitrogen_balance"
       identity_kind: "explicit"
-      unit_id: "normative_62766"
+      unit_id: "normative_64720"
       source_span:
         start:
-          offset: 63490
-          line: 790
+          offset: 65444
+          line: 767
           column: 1
         end:
-          offset: 63712
-          line: 790
+          offset: 65666
+          line: 767
           column: 223
     - pointer: "/validation_rules/4"
       rule_id: "validation_harvest_balance"
       identity_kind: "explicit"
-      unit_id: "normative_62766"
+      unit_id: "normative_64720"
       source_span:
         start:
-          offset: 63713
-          line: 791
+          offset: 65667
+          line: 768
           column: 1
         end:
-          offset: 63917
-          line: 791
+          offset: 65871
+          line: 768
           column: 205
     - pointer: "/validation_rules/5"
       rule_id: "validation_conditioning_balance"
       identity_kind: "explicit"
-      unit_id: "normative_62766"
+      unit_id: "normative_64720"
       source_span:
         start:
-          offset: 63918
-          line: 792
+          offset: 65872
+          line: 769
           column: 1
         end:
-          offset: 64164
-          line: 792
+          offset: 66118
+          line: 769
           column: 247
     - pointer: "/validation_rules/6"
       rule_id: "validation_flow_identity"
       identity_kind: "explicit"
-      unit_id: "normative_62766"
+      unit_id: "normative_64720"
       source_span:
         start:
-          offset: 64165
-          line: 793
+          offset: 66119
+          line: 770
           column: 1
         end:
-          offset: 64382
-          line: 793
+          offset: 66336
+          line: 770
           column: 218
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1515,27 +1507,27 @@ normative_context:
           column: 257
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44562"
+      unit_id: "normative_43271"
       source_span:
         start:
-          offset: 44562
-          line: 722
+          offset: 43271
+          line: 697
           column: 1
         end:
-          offset: 44602
-          line: 722
+          offset: 43311
+          line: 697
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_62766"
+      unit_id: "normative_64720"
       source_span:
         start:
-          offset: 62766
-          line: 783
+          offset: 64720
+          line: 760
           column: 1
         end:
-          offset: 62788
-          line: 783
+          offset: 64742
+          line: 760
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1544,5 +1536,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:cfc36aaef464ca0ce15cb67fb079207126cef272e06ec0d4cf2a5c4f7b3346da"
-  generated_content_sha256: "sha256:c00e587a3219a0761179d79ee212a257a3f1748e2d2215bac1935c3ac88d54e8"
+    sha256: "sha256:b9313c39fda0148682de953af52fa98d9487ecbedc3db492b31557f2f43d31c9"
+  generated_content_sha256: "sha256:02f06663afa063438f6d4840e2cacf7bd8f9ab5218e70dfe169efa0f82ea931b"

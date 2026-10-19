@@ -209,15 +209,8 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_irrigation`
 - 来源: `fao-crop-water-needs`
-- 数量范围: 条件性灌溉供水筛查
-  - 范围角色: 典型范围 (`typical_range`)
-  - 下限: 0
-  - 上限: 8000
-  - 单位: m3/ha crop cycle
-  - 基准: zero for rainfed strata; upper screen corresponds to 800 mm seasonal maize crop-water need before local rainfall and efficiency adjustment
-  - 基准类型: 作物周期 (`crop_cycle`)
-  - 证据类型: 外部来源 (`external_source`)
-  - 来源: `fao-crop-water-needs`
+
+灌溉须区分作物蒸散需求、净灌溉量与总供水／取水量，核对有效降雨、土壤水库存变化、毛管补给、施用效率及实际供水边界，采用场址计量或有记录的水平衡。通用作物需水表不能确立通用灌溉上限。
 
 ###### 中压电力投入（`field_machinery_energy`）
 
@@ -393,7 +386,7 @@ sync_with: pcr.en-US.md
 按受纳水体分区记录或计算硝酸盐淋失或径流，并保留数量是硝酸盐还是硝酸盐氮。
 
 - 选定流: Nitrate to water
-- 流属性/单位: Mass / kg NO3 or kg NO3-N as reported
+- 流属性/单位: Mass / kg NO3-
 - 数量规则: 保留受纳分区和基准的场址模型或测量
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -413,6 +406,8 @@ sync_with: pcr.en-US.md
   - 基准类型: 作物周期 (`crop_cycle`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
   - 来源:
+
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ###### 向水体的磷排放 (`phosphorus_to_water`)
 
@@ -603,6 +598,10 @@ sync_with: pcr.en-US.md
 | `allocation_run_period` | 田块、运行和批次 | 采用单一期间的作物周期边界。将投入、产出、清洁和换线事件关联到田块季或收获批次；共享机械负荷按实测面积、运行时间或吞吐量分配一次，并防止跨分层重复计算。 | `mass-balance-identity` |
 | `allocation_rejects` | 不合格与拒收生物量 | 本新鲜农场门路线无边界内返工环。每项不合格质量须在有据复评后转为合格、降级替代用途、田间留存或处置；保留既有负荷，并仅在最终去向计量质量。 | `mass-balance-identity` |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
@@ -617,7 +616,7 @@ sync_with: pcr.en-US.md
 | `cp_field_inputs` | `field_production` | 种子、养分和作物保护投入 | 发票、田间日志和产品分析 | 田块；日期；产品；配方；数量；面积；养分或有效成分含量 | 按田块核对采购和施用记录；原始汇总与分配：每种实际产品仅汇总一次；保留组成 | kg; L; m3; ha | 每次施用 | 作物周期 | 每个田块 | 每声明的参考流 | 发票、标签、分析和签字日志 |
 | `cp_irrigation` | `field_production` | 输送灌溉水 | 水表或泵日志 | 田块；事件；体积；水源；运行时间；灌溉面积 | 优先水表；否则采用有据泵流量计算；原始汇总与分配：汇总输送体积；雨养分层为零 | m3; h; ha | 每次事件 | 作物周期 | 每个灌溉田块 | 每声明的参考流 | 水表校准或泵曲线 |
 | `cp_energy_operations` | all | 田间与收获能源 | 燃料票据、仪表和机械日志 | 过程；田块/批次；载体；数量；运行时间；面积或吞吐量 | 核对采购、仪表和运行时间；原始汇总与分配：按有据因子换算并仅分配一次 | L; kg; kWh; MJ; h | 每次作业 | 作物周期至交接 | 田块与收获批次 | 每声明的参考流 | 发票、仪表校准和机械日志 |
-| `cp_field_and_lot_trace` | all | 面积、路线和批次关联 | 田块GIS/记录和批次登记 | 田块；面积；日期；作物；路线；收获批次；去向 | 将每个收获批次追溯至田块季分层；原始汇总与分配：路线分层后方可按面积加权 | ha; date; id | 田块季与批次 | 作物周期至交接 | 全部代表田块 | 每声明的参考流 | 地图、田块登记和批次票据 |
+| `cp_field_and_lot_trace` | all | 面积、路线和批次关联 | 田块GIS/记录和批次登记 | 田块；面积；日期；作物；路线；收获批次；去向 | 在同一兼容路线/产品/状态内，先逐田块核算应归属原始总量。汇总最终强度=应归属原始数量之和×声明参考量/匹配最终合格产出之和。来源为每公顷率 e_h、y_h 时，先以 e_h×面积、y_h×面积还原原始总量，不能再对田块总量作面积加权。每产品强度按匹配产出加权，不能按面积或不加权平均。原分配仅执行一次，保留期间/吞吐和全部来源单位换算，不兼容路线分开。 | ha; date; id | 田块季与批次 | 作物周期至交接 | 全部代表田块 | 每声明的参考流 | 地图、田块登记和批次票据 |
 | `cp_field_emissions` | `field_production` | 管理土壤和施用物质排放 | 计算表、模型或测量 | 按来源的氮；残体氮；肥料形态；事件；天气；土壤；因子；有效物质；环境分区 | 采用披露的IPCC层级及有据场址模型或测量；原始汇总与分配：汇总前按田块和物质计算 | kg N; kg substance; ha | 每次事件及作物周期 | 作物周期 | 每个田块分层 | 每声明的参考流 | 因子版本、模型输入和计算审计 |
 | `cp_harvest_mass_balance` | `harvest_handoff` | 田间投入、合格、降级和损失产出 | 秤、产量监测器、水分样品和去向票据 | 田块；批次；技术；投入估计；合格质量；降级质量；损失样品；水分；去向 | 称量产出并对损失和全株水分进行代表性抽样；原始汇总与分配：水分对齐并核对互斥去向 | kg; %; ha | 每个田块和批次 | 收获至即时农场门交接 | 每个收获批次 | 每声明的参考流 | 秤校准、抽样计划和闭合工作表 |
 
@@ -629,10 +628,11 @@ sync_with: pcr.en-US.md
 | `calc_dry_matter` | 生物量比较 | dry matter = fresh mass × (1 − moisture fraction) | 鲜质量；湿基水分比例 | 干物质质量 | `mass-balance-identity` |
 | `calc_n2o` | 管理土壤 | 对采集的氮投入采用披露的IPCC层级，必要时按44/28将N2O-N换算为N2O。 | 氮活动数据；排放因子；间接损失参数 | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | `harvest_handoff` | 在同一水分基准和声明不确定度内，田间生物量=合格+降级+弃置/未收集+实测库存变化 | 关联质量、水分和去向 | 质量闭合 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用于 | 要求 | 证据 |
+| requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 参考产品 | 保留杂交种/品种、作物年份、收获阶段、全株水分或干物质、验收规格和新鲜未加工交付门。 | 田块登记、样品和批次票据 |
 | `dq_completeness` | 作物周期与收获 | 覆盖全部代表田间作业、施用、灌溉事件、收获作业及互斥生物量去向。 | 田块至批次追溯及完整性核对 |
@@ -650,7 +650,7 @@ sync_with: pcr.en-US.md
 | `validate_batch_period` | 田块、作业和收获批次 | 将投入、产出、清洁和换线关联至一个田块季或收获批次，并按实测面积、运行时间或吞吐量对共享负荷分配一次。 | `mass-balance-identity` |
 | `validate_reject_routing` | 不合格生物量 | 要求一个互斥的合格、降级、田间留存或弃置去向；不得将未解析拒收物计为合格产出，也不得创建未记录的返工环。 | `mass-balance-identity` |
 | `validate_mass_balance` | `harvest_handoff` | 在共同水分基准和声明不确定度内核对田间投入、合格产品、降级产品、废物/损失及库存变化。 | `mass-balance-identity` |
-| `validate_ranges` | 所有流卡 | 每张定量卡恰好要求一个完整数量范围，包含角色、上下限、单位、分母/基准、基准类型、证据类型和来源ID，并在英文、中文与结构化输出中对齐。 | `mass-balance-identity` |
+| `validate_ranges` | 所有流卡 | 逐条检查已提供范围的上下限、单位、基准、证据及双语一致性。任何强制界限均须有相容定量证据；无支持界限时保留实测数量并明确报告范围筛查不可用，不得编造范围或宣称该项检查完整。调查偏离，不以范围覆盖实测值。 | |
 
 ## 10. 发布数据集概况
 
@@ -672,3 +672,4 @@ sync_with: pcr.en-US.md
 | `fao-crop-water-needs` | official_guidance | FAO, Crop Water Needs, Chapter 3, https://www.fao.org/4/s2022e/s2022e07.htm | 玉米季节作物需水范围与当地作物系数语境 |
 | `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4 Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤氧化亚氮计算和氮活动数据 |
 | `mass-balance-identity` | method_factor | 质量守恒应用于水分对齐的田间生物量、合格产品、降级生物量、损失和库存变化 | 交接、质量闭合、去向互斥、分配和拒收路由 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

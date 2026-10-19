@@ -242,8 +242,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_stand_at_stand_management`
 - 来源：`fao-wood-harvesting`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 #### 输出
 
 ##### 产品流
@@ -337,8 +335,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fuel_at_felling_removal`
 - 来源：`fao-wood-harvesting`；`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 #### 输出
 
@@ -457,8 +453,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_fuel_at_forest_extraction`
 - 来源：`fao-wood-harvesting`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 #### 输出
 
 ##### 产品流
@@ -552,8 +546,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fuel_at_log_preparation`
 - 来源：`fao-wood-harvesting`；`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 进入初整的原树干（`raw_stems_input`）
 
@@ -696,8 +688,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fuel_at_grade_handover`
 - 来源：`fao-wood-harvesting`；`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 进入分等的已造材原木（`prepared_logs_input`）
 

@@ -395,7 +395,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 Record or calculate ammonia emissions associated with nutrient application and managed residues using the declared nitrogen-emission method.
 
 - Selected flow: Ammonia emitted to air
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg NH3
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -406,13 +406,15 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_emission_calculation`
 - Sources: `ipcc-2019-refinement-nitrogen`
+
+Final exchange mass is kg NH3; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 17/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ###### Nitrous oxide emission to air（`air_nitrous_oxide_emission`）
 
 Record or calculate direct and applicable indirect nitrous-oxide emissions from nitrogen inputs and residue pathways without double counting.
 
 - Selected flow: Nitrous oxide emitted to air
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg N2O
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -424,12 +426,14 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Collection protocol: `cp_emission_calculation`
 - Sources: `ipcc-2019-refinement-nitrogen`
 
+Final exchange mass is kg N2O; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 44/28 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
+
 ###### Nitrogen oxides from combustion（`air_nox_emission`）
 
 Record nitrogen-oxide emissions from declared combustion equipment when fuel use and an applicable emission-factor method are available.
 
 - Selected flow: Nitrogen oxides emitted to air
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg NOx on the documented method reporting basis
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -441,12 +445,14 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Collection protocol: `cp_emission_calculation`
 - Sources: `ipcc-2006-guidelines-energy`
 
+Retain the method reporting basis for NOx explicitly. A factor already expressed as NO2-equivalent mass remains on that basis and requires a compatible NOx identity; do not relabel it as measured pure NO or pure NO2. If actual NO and NO2 masses are reported separately, keep their identities or convert to NO2-equivalent only by the documented molar convention (NO mass × 46/30 plus NO2 mass), once. Do not add the aggregate and components. Gas-volume observations need identified substance concentration and matched temperature/pressure/wet-dry conventions before mass conversion; bulk exhaust volume is not pollutant mass. Missing reporting basis blocks the final exchange.
+
 ###### Nitrate emission to water（`water_nitrate_emission`）
 
 Record nitrate losses to receiving water only when supported by site monitoring or the declared nutrient-loss calculation method.
 
 - Selected flow: Nitrate emitted to water
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -457,13 +463,15 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_emission_calculation`
 - Sources: `ipcc-2019-refinement-nitrogen`
+
+Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ###### Phosphate emission to water（`water_phosphate_emission`）
 
 Record phosphate losses to receiving water only when supported by monitoring or an evidence-backed nutrient-loss method.
 
 - Selected flow: Phosphate emitted to water
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg PO4
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -474,13 +482,15 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_emission_calculation`
 - Sources: `ipcc-2019-refinement-nitrogen`
+
+Final exchange mass is kg PO4; retain P-based activity, factors and screens in a separate ledger. Convert only the mass of P attributed to this chemical species by 95/31 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ###### Nitrate emission to soil（`soil_nitrate_emission`）
 
 Record nitrate additions or losses to soil only where the chosen method defines them as elementary flows and the nitrogen balance supports the value.
 
 - Selected flow: Nitrate emitted to soil
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -491,13 +501,15 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_emission_calculation`
 - Sources: `ipcc-2019-refinement-nitrogen`
+
+Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ###### Phosphate emission to soil（`soil_phosphate_emission`）
 
 Record phosphate additions or losses to soil only where the selected method defines them as elementary flows and the phosphorus balance supports the value.
 
 - Selected flow: Phosphate emitted to soil
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg PO4
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -509,6 +521,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Collection protocol: `cp_emission_calculation`
 - Sources: `ipcc-2019-refinement-nitrogen`
 
+Final exchange mass is kg PO4; retain P-based activity, factors and screens in a separate ledger. Convert only the mass of P attributed to this chemical species by 95/31 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ### Process: Green-broad-bean harvest and gate preparation (`harvest_and_gate_preparation`)
 
@@ -521,7 +534,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 Record total edible-pod or immature-seed harvest entering the harvest and gate-preparation node before sorting, grading, washing, cooling, or packing.
 
 - Selected flow: Harvested green broad beans before grading
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -540,6 +553,8 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
   - Basis: complete picking campaign
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Final exchange quantity is the actual fresh material mass in kg. Retain any bin/bulk volume as a raw observation and convert only with representative lot-specific bulk-density evidence; do not treat m3 as kg or add both representations. Preserve the original lot, destination and final-reference normalization.
 
 ###### Post-harvest washing water（`postharvest_washing_water`）
 
@@ -635,7 +650,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 Record produce that fails the primary market grade but is transferred for a declared secondary use, sale, feed, processing, or other documented hand-off.
 
 - Selected flow: Downgraded green broad beans
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -646,6 +661,8 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_grade_records`
 - Sources: `unece-ffv-06-beans`
+
+Final exchange quantity is the actual fresh material mass in kg. Retain any bin/bulk volume as a raw observation and convert only with representative lot-specific bulk-density evidence; do not treat m3 as kg or add both representations. Preserve the original lot, destination and final-reference normalization.
 
 ##### Waste flows
 
@@ -654,7 +671,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 Record unmarketable produce and harvest losses separately from marketable and documented secondary outputs, then declare their fate.
 
 - Selected flow: Rejected or lost green broad beans
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -666,12 +683,14 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Collection protocol: `cp_harvest_grade_records`
 - Sources: `unece-ffv-06-beans`
 
+Final exchange quantity is the actual fresh material mass in kg. Retain any bin/bulk volume as a raw observation and convert only with representative lot-specific bulk-density evidence; do not treat m3 as kg or add both representations. Preserve the original lot, destination and final-reference normalization.
+
 ###### Trimmings and organic packing residue（`trim_and_residue_waste`）
 
 Record stems, pod fragments, soil, and other organic solids removed during grading or packing and declare reuse, composting, treatment, or disposal.
 
 - Selected flow: Organic processing residue from green broad beans
-- Flow property / unit: Mass or volume / kg or m3
+- Flow property / unit: Mass / kg
 - Amount rule: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -682,6 +701,8 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue_fate_records`
 - Sources: `codex-fresh-produce-hygiene`
+
+Final exchange quantity is the actual fresh material mass in kg. Retain any bin/bulk volume as a raw observation and convert only with representative lot-specific bulk-density evidence; do not treat m3 as kg or add both representations. Preserve the original lot, destination and final-reference normalization.
 
 ###### Post-harvest washing wastewater（`postharvest_wastewater`）
 
@@ -713,6 +734,10 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green broad-bean outp
 
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 ### Specific input identification before dataset completion
@@ -736,7 +761,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_establishment_records` | crop_establishment | planting_material_input | supplier and field records | lot; variety; seed mass or count; sowing date; field or unit | invoice and planting log reconciliation; Raw aggregation and attribution: sum by declared crop cycle | kg or seed | each planting event | full crop cycle | field, bed, or protected unit | per declared reference flow | lot record and planting-log completeness |
 | `cp_area_cycle_records` | crop_establishment | crop_land_occupation | field register | area; occupation dates; infrastructure flag | field or protected-unit register; Raw aggregation and attribution: area-time by cycle | ha and dates | each crop cycle | full crop cycle | field or unit | per declared reference flow | dated area record |
-| `cp_irrigation_records` | crop_establishment; crop_management | irrigation and withdrawal | meter or water balance | source; meter; delivery; withdrawal; method; reuse; discharge | meter reading or documented balance; Raw aggregation and attribution: sum by source and cycle | m3 | each irrigation event or monthly | full crop cycle | field or unit | per declared reference flow | meter calibration or balance check |
+| `cp_irrigation_records` | crop_establishment; crop_management | irrigation and withdrawal | meter or water balance | source; meter; delivery; withdrawal; method; reuse; discharge ; opening/closing cumulative readings, timestamps, meter location/unit/reset, external inflows/returns, supply losses, opening/closing water stock, field drainage separately | meter reading or documented balance; Raw aggregation and attribution: sum by source and cycle ; Keep the supply-network and field balances separate under the water calculation rule. | m3 | each irrigation event or monthly | full crop cycle | field or unit | per declared reference flow | meter calibration or balance check |
 | `cp_nutrient_records` | crop_management | nutrient inputs | invoice, label, plan, and application log | product; mass; nutrient concentration; date; field; method | supplier record and application-log reconciliation; Raw aggregation and attribution: sum by nutrient role and cycle | kg product and kg nutrient | each application | full crop cycle | field or unit | per declared reference flow | label, supplier specification, or laboratory result |
 | `cp_crop_protection_records` | crop_management | crop-protection product | application log | product; active substance; rate; target; date; area; method | application-log review; Raw aggregation and attribution: sum by product and crop cycle `crop_protection_product_specific_input`: Operation crop_management: Record each crop-protection product or active substance applied to the crop, including rate, timing, target, and application method; identity remains site-specific until verified. Original quantity method: Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg product or active substance | each application | full crop cycle | field or unit | per declared reference flow | product label and application record |
 | `cp_energy_records` | crop_establishment; crop_management; harvest_and_gate_preparation | fuel and electricity | meter, invoice, or equipment log | fuel or electricity; equipment; date; operation; quantity | meter or activity log; Raw aggregation and attribution: allocate to operation and output `establishment_machinery_fuel_specific_input`: Record fuel used by tractors or other mobile machinery for seedbed preparation and planting when it crosses the foreground boundary. Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records. This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. `fao-good-agricultural-practices` `harvest_machinery_fuel_specific_input`: Record fuel used for harvesting, field loading, and pre-gate handling equipment when it crosses the declared boundary. Record the amount crossing the process boundary from field, supplier, meter, or mass-balance records. This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. `fao-good-agricultural-practices` | L or kWh | each operation or monthly | full crop cycle | field or facility | per declared reference flow | invoice, meter, or equipment record |
@@ -754,11 +779,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_output_normalization` | all processes | Normalize each flow to 1,000 kg marketable output: recorded flow / marketable output * 1,000. | flow mass; marketable output | normalized flow | `mass-balance-identity` |
 | `calc_nutrient_equivalent` | nutrient inputs | Product mass * documented nutrient fraction; retain product and nutrient values as separate fields. | product mass; N, P2O5, K2O, or organic nutrient fraction | nutrient equivalent | `fao-fertilizer-code-conduct` |
 | `calc_area_time` | land occupation | Area * occupation duration; report protected structures separately when they are included. | area; dates | ha*a | `fao-good-agricultural-practices` |
-| `calc_irrigation_balance` | irrigation and withdrawal | Opening meter + withdrawals - closing meter - documented return or reuse = delivered water, with source and uncertainty disclosed. | meter readings; withdrawal; return; reuse | m3 delivered and m3 withdrawn | `fao-crop-evapotranspiration-56` |
+| `calc_irrigation_balance` | irrigation and withdrawal | For each identified cumulative meter, period volume = closing reading - opening reading, corrected only for documented rollover/reset and the meter unit; preserve both readings, timestamps and meter location. Keep gross source withdrawal W and delivery D at different meter locations separate. For the supply-network boundary reconcile W + other external inflows = D + external return/discharge + distribution loss + closing stored water - opening stored water. Internal recirculation cancels within that boundary and is not another withdrawal or a negative gross source volume. Field drainage belongs to the separate field water balance and must not be added again to water already measured as delivered. Retain measured values and investigate the residual; do not derive zero use from missing readings. | meter readings; withdrawal; return; reuse | m3 delivered and m3 withdrawn | `fao-crop-evapotranspiration-56` |
 | `calc_grade_balance` | harvest and gate preparation | Gross harvest = marketable + downgraded + rejected + residue + measured handling loss, after consistent moisture basis. | grade records; loss records | reconciled output set | `mass-balance-identity` |
 | `calc_reusable_packaging` | crates and pallets | Packaging mass / documented service cycles, with return loss allocated to the applicable shipments. | packaging mass; service cycles; loss | packaging per shipment | `iso-14044-2006` |
 | `calc_nitrogen_emissions` | soil and air emissions | Apply one declared IPCC-compatible nitrogen method to documented nutrient inputs and residue fate; retain factors and intermediate values. | nutrient input; residue fate; factors | N emission flows | `ipcc-2019-refinement-nitrogen` |
 | `calc_freight` | pre-gate transport | Shipment mass * route distance, with empty return and allocation treatment disclosed. | mass; distance; route | t*km | `codex-fresh-produce-hygiene` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_emission_calculation`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -813,3 +839,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `mass-balance-identity` | method_factor | PCR method rule: conservation and reconciliation of declared mass streams | normalization, output reconciliation, and loss checks |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

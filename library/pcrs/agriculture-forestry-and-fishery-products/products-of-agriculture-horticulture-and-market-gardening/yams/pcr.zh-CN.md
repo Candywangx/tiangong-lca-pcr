@@ -258,7 +258,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：Agricultural land occupation
 - 流属性/单位：Area-time / ha·crop_cycle
-- 数量规则：贡献面积除以待收块茎质量
+- 数量规则：原始占用量=实际管理面积乘有日期的应归属占用时长（年），按不重叠阶段及全部共同使用者归属一次。仅当所选面积时间身份要求 m2*year 时将 ha 乘10,000换为m2。面积直接除以产品质量不能得到面积时间。按原分配规则归属面积时间分子，再按匹配最终合格参考质量归一化一次；适用时保留实际湿干阶段吞吐关联，已为最终强度时不再除产出。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每 1,000 kg 待收山药块茎.
@@ -756,6 +756,10 @@ sync_with: pcr.en-US.md
 | `allocation_saleable_downgrade` | 作为预期产品销售的降级山药 | 声明全部预期产出；仅在无法细分时采用有依据的物理或经济分配，并报告基准和敏感性。 | `mass-balance-identity` |
 | `allocation_seed_retention` | 内部留用的种植材料 | 记录内部产品流转移和负荷决定；防止同一块茎质量及其负荷同时作为当前产出和下一周期免费投入。 |  |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
@@ -780,6 +784,7 @@ sync_with: pcr.en-US.md
 | `calc_land_intensity` | 田地面积 | 贡献面积 × 1,000 / 相同地块待收块茎质量 | ha；kg 块茎 | 每 1,000 kg 块茎的 ha·crop_cycle | `iita-yam-yield-2020` |
 | `calc_direct_n2o` | 土壤直接 N2O | 应用所选直接 N2O-N 因子，再乘以 44/28 | kg N input；因子 | kg N2O | `ipcc-2006-managed-soils-n2o` |
 | `calc_node_mass_balance` | 收获、整理、分级 | 山药投入质量 = 山药产品输出 + 山药废物输出 + 库存变化 + 已记录损失 | 转移、拒收和库存记录 | 残差及完整性标志 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_material_energy_inputs`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -823,3 +828,4 @@ sync_with: pcr.en-US.md
 | `iita-yam-yield-2020` | extension_guidance | IITA, *IITA BIP team achieves 23 tons per hectare yield for yam in Nigeria* (2020), https://iita.org/news-item/iita-bip-team-achieves-23-tons-per-hectare-yield-for-yam-in-nigeria/ | 尼日利亚区域产量示例、作物周期和种植操作 |
 | `ipcc-2006-managed-soils-n2o` | method_factor | IPCC, *2006 Guidelines for National Greenhouse Gas Inventories*, Volume 4, Chapter 11 | 受控土壤直接 N2O 方法与因子不确定性 |
 | `mass-balance-identity` | method_factor | 各声明过程节点采用的质量守恒恒等式 | 转移、参考流恒等式、节点核对 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

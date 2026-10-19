@@ -95,32 +95,6 @@ This reference UUID denotes the fresh, unprocessed farm-gate product. Verify act
 
 ##### Product flows
 
-###### Onion seed, sets or transplants entering the crop cycle (`planting_material`)
-
-Record the seed, set or transplant lot that enters the declared field or protected unit. Retain the material form, variety or cultivar, lot identity, viable quantity and whether it is purchased or retained.
-
-- Selected flow: Onion seed, set or transplant material
-- Flow property / unit: Mass or viable planting count / kg or plant count
-- Amount rule: Measured planting-material mass or viable count allocated to the current crop cycle
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_planting_material_records`
-- Sources:
-
-- Range: Provisional planting-material screening interval
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0.1
-  - Upper: 120
-  - Unit: kg planting material per 1,000 kg output
-  - Basis: per 1,000 kg marketable farm-gate onion bulbs
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Diesel fuel (`establishment_machinery_fuel_diesel`)
 
 Only for documented diesel-powered machinery within this operation. Retain fuel grade and formulation; convert recorded volume with measured or supplier-supported density. Other powertrains require their actual carrier, not a diesel equivalent. Apply `establishment_machinery_fuel_specific_input`; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable.
@@ -326,32 +300,6 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
 
 Range evidence need: no delivered-irrigation default is established. FAO 350–550 mm is crop water need (ETc), equivalent to 3500–5500 m3/ha of evapotranspiration, not metered irrigation. Derive net irrigation after effective rainfall, soil-water change and other supplies, then gross delivery from documented efficiency/losses; rain-fed delivery may be zero.
 
-###### Water withdrawn from the declared natural or municipal source (`water_resource_withdrawal`)
-
-Record source-specific water withdrawal separately from the delivered irrigation-water product input, including losses between withdrawal and field delivery when measured or calculated.
-
-- Selected flow: Water resource withdrawal
-- Flow property / unit: Volume / m3
-- Amount rule: Measured or calculated withdrawal from the declared source allocated to the onion crop cycle
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_irrigation_and_withdrawal_records`
-- Sources:
-
-- Range: Provisional source-withdrawal screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 6500
-  - Unit: m3/ha per onion crop cycle
-  - Basis: one hectare over an onion crop cycle
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Electricity supplied for pumping and field operations (`field_operation_electricity`)
 
 Record electricity crossing the boundary for irrigation pumping, protected-unit operation or other field equipment. Keep purchased electricity distinct from fuel.
@@ -395,6 +343,37 @@ Only for documented diesel-powered machinery within this operation. Retain fuel 
 
 ##### Waste flows
 
+##### Elementary flows
+
+###### Water withdrawn from the declared natural or municipal source (`water_resource_withdrawal`)
+
+Record source-specific water withdrawal separately from the delivered irrigation-water product input, including losses between withdrawal and field delivery when measured or calculated.
+
+- Selected flow: Water withdrawn directly from an identified natural source; exact compartment and UUID unresolved
+- Flow property / unit: Volume / m3
+- Amount rule: Measured or calculated withdrawal from the declared source allocated to the onion crop cycle
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_irrigation_and_withdrawal_records`
+- Sources:
+
+- Range: Provisional source-withdrawal screening interval
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 6500
+  - Unit: m3/ha per onion crop cycle
+  - Basis: one hectare over an onion crop cycle
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Only for direct natural-water abstraction owned by this foreground boundary. Select the actual source/compartment and compatible volume or mass identity. A municipal or other purchased water receipt is a product supply, with its provider withdrawal covered upstream once; it is not this elementary input. Keep the withdrawal-to-field supply ledger, pumping, distribution losses and internal delivered-water transfers explicit. Do not add the same supplier abstraction or internal delivery as another external resource use. Retain missing source identity or quantity as a completeness gap.
+
+
 #### Outputs
 
 ##### Product flows
@@ -408,7 +387,7 @@ Only for documented diesel-powered machinery within this operation. Retain fuel 
 Calculate direct soil N2O emissions from synthetic and organic nitrogen inputs and any applicable residue or soil-carbon pathways. Report the nitrogen basis and the N2O or N2O-N unit used.
 
 - Selected flow: Nitrous oxide to ambient air from managed onion soil
-- Flow property / unit: Mass / kg N2O-N or kg N2O
+- Flow property / unit: Mass / kg N2O
 - Amount rule: Apply the declared IPCC method to collected nitrogen inputs and applicable soil or climate conditions
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -430,12 +409,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
   - Evidence kind: External source (`external_source`)
   - Sources: `ipcc-2019-managed-soils-n2o`
 
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
+
 ###### Ammonia volatilization from nitrogen application (`ammonia_emission`)
 
 Record or calculate ammonia released to ambient air from the declared nitrogen sources using the selected method and site conditions. Do not use a generic ammonia row to conceal the fertilizer or manure basis.
 
 - Selected flow: Ammonia to ambient air from onion crop nitrogen inputs
-- Flow property / unit: Mass / kg NH3-N or kg NH3
+- Flow property / unit: Mass / kg NH3
 - Amount rule: Calculate from the nitrogen-input record and the documented volatilization factor or measured emission
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -456,12 +437,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
   - Basis kind: N input (`n_input`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+Final exchange mass is kg NH3; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 17/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
+
 ###### Nitrate leaching or runoff from managed soil (`nitrate_leaching`)
 
 Record nitrate-N or nitrate loss to water when leaching or runoff occurs and the pathway is in scope. Retain the nitrogen source, receiving medium and calculation basis.
 
 - Selected flow: Nitrate to water from onion crop soil
-- Flow property / unit: Mass / kg nitrate-N or kg nitrate
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: Calculate the site- and climate-relevant leaching or runoff amount from collected nitrogen inputs and documented partitioning factors
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -482,12 +465,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
   - Basis kind: N input (`n_input`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
+
 ###### Phosphate runoff from managed soil (`phosphate_runoff`)
 
 Record phosphate-P or phosphate loss to water when runoff or another receiving pathway occurs and the pathway is supported by site records or a documented method.
 
 - Selected flow: Phosphate to water from onion crop soil
-- Flow property / unit: Mass / kg phosphate-P or kg phosphate
+- Flow property / unit: Mass / kg PO4
 - Amount rule: Calculate site-specific phosphate loss from collected nutrient inputs, soil test information and documented runoff factors
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -507,6 +492,8 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
   - Basis: per kg applied P input where runoff occurs
   - Basis kind: N input (`n_input`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Final exchange mass is kg PO4; retain P-based activity, factors and screens in a separate ledger. Convert only the mass of P attributed to this chemical species by 95/31 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ###### Carbon dioxide from urea or lime application (`urea_lime_co2_emission`)
 
@@ -931,7 +918,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_planting_material_records` | `field_preparation_and_establishment` | planting material | supplier lot record and planting log | material form; cultivar; lot; purchased or retained; mass or viable count; planting date | reconcile supplier documents with field or protected-unit planting log; Raw aggregation and attribution: sum by crop cycle and convert to reference-flow basis | kg or count | each lot and planting event | complete crop cycle | each declared field or protected unit | per declared reference flow | lot document; planting log; count or mass check |
 | `cp_establishment_operation_records` | `field_preparation_and_establishment` | establishment fuel | fuel log, invoice, meter or contractor record | operation; equipment; fuel type; quantity; date; treated area | collect primary fuel record and allocate by operation; Raw aggregation and attribution: sum by operation and allocate to onion output `establishment_machinery_fuel_specific_input`: Operation field_preparation_and_establishment: Record fuel used for bed or seedbed preparation, planting and establishment operations when the fuel crosses the foreground boundary. Original quantity method: Measured fuel use by establishment operation, allocated to the onion crop cycle Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | L, kg or MJ | each operation or weekly | complete crop cycle | each declared field or protected unit | per declared reference flow | fuel invoice or meter; equipment record |
-| `cp_land_and_site_records` | `field_preparation_and_establishment` | land occupation and transformation | field register, GIS or land-use record | field id; area; land-use history; transformation date; crop-cycle dates | verify area against field register or geospatial record; Raw aggregation and attribution: calculate area-time and flag only current-period transformation | ha and crop-cycle dates | once per crop cycle and on land-use change | current crop cycle and disclosed prior history | each declared field or protected unit | per declared reference flow | field map; lease or land-use record; dated change evidence |
+| `cp_land_and_site_records` | `field_preparation_and_establishment` | land occupation and transformation | field register, GIS or land-use record | field id; area; land-use history; transformation date; crop-cycle dates | Verify actual area and dated occupation intervals, land classes and dated transformation history against mapped/site records. Quantify occupation in area-time and transformation as distinct area events; assess historical events under the selected declared land-use/carbon attribution method when relevant to this output, not only events occurring in the reporting year. Preserve prior/new land state, evidence, uncertainty and shared/period ownership; missing history is a gap, not assumed zero or assumed conversion. Normalize attributed quantities once through matched accepted output. | ha and crop-cycle dates | once per crop cycle and on land-use change | current crop cycle and disclosed prior history | each declared field or protected unit | per declared reference flow | field map; lease or land-use record; dated change evidence |
 | `cp_fertilizer_amendment_records` | `crop_management` | fertilizer and soil amendment | invoice, delivery ticket, label, nutrient plan and application log | product; formulation; mass; N/P/K content; application date; field; operator | reconcile purchase and application records with nutrient plan; Raw aggregation and attribution: sum product mass and nutrient roles without double counting compound products | kg product and kg nutrient | each delivery and application event | complete crop cycle | each declared field or protected unit | per declared reference flow | invoice; label or specification; application log |
 | `cp_irrigation_and_withdrawal_records` | `crop_management` | irrigation delivery and source withdrawal | meter, pump log, water balance and source record | source; meter start/end; delivered volume; pumping energy; rainfall; field; date | meter readings or documented ETc/water balance with source separation; Raw aggregation and attribution: sum delivery and withdrawal separately; reconcile losses | m3 | each event or weekly | complete crop cycle | each declared field and water source | per declared reference flow | meter calibration; pump log; water permit or source record |
 | `cp_crop_protection_records` | `crop_management` | crop-protection products | product label, invoice and application log | formulation; active substance; mass or volume; date; field; treated area | reconcile purchase and application records; Raw aggregation and attribution: sum by named product and application event `crop_protection_products_specific_input`: Operation crop_management: Record each herbicide, insecticide, fungicide or other crop-protection formulation that is applied to the onion crop cycle. Retain formulation, active substance, application date and treated area. Original quantity method: Sum measured formulation mass by product and application event Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg or L product | each application event | complete crop cycle | each declared field or protected unit | per declared reference flow | label; invoice; application log |
@@ -951,6 +938,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calculation_rule_4` | direct and indirect nitrogen emissions | Apply the selected IPCC managed-soils method to each documented nitrogen source and pathway. Report N2O-N first and convert to N2O with 44/28 only when the chosen reporting unit requires it. | synthetic and organic N; residue N; climate and soil conditions; volatilization and leaching activity | kg N2O-N, kg N2O, NH3-N and nitrate-N pathway amounts | `ipcc-2019-managed-soils-n2o` |
 | `calculation_rule_5` | harvested output and co-products | Reconcile harvested bulbs, marketable output, culls and residues by lot. Allocate shared burdens at the first measured point of separation and retain the destination of each nonmarketable stream. | lot masses; moisture; grade; destination | marketable output, cull and residue amounts | `iso-14044-2006-allocation` |
 | `calculation_rule_6` | optional conditioning and storage | For each included lot, final marketable output = conditioning input − rejects − storage losses, with water, packaging, energy and duration allocated to handled mass. | conditioning input; rejects; losses; handled mass; storage duration | final reference output and loss amounts |  |
+| `planting_material_identity_and_fate` | `field_preparation_and_establishment` | For the original planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_planting_material_records` | Identity-specific exchanges and reconciled activity records |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_crop_emission_activity_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

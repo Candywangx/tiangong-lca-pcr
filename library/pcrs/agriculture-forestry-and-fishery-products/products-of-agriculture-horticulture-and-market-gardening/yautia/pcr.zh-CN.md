@@ -41,7 +41,7 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | 参考数量 | 1000 |
 | 参考产品流 | Yautia `72013e1f-538d-4031-b97a-03bfaa42b37d` |
-| 参考流 property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
 | 必需限定信息 | *Xanthosoma* 物种/品种；地理范围；作物年度；生产系统；收获部位；等级；湿基；水洗/修整状态；门点；纳入的整理操作 |
@@ -762,6 +762,7 @@ sync_with: pcr.en-US.md
 | `cp_residue_destinations` | `field_cultivation` | residues and loss | sampling, load weights, destination logs | material; mass; moisture; fate; recipient | representative sampling or weighed loads；原始汇总与分配：sum by material and fate | kg fresh/dry mass | each event | complete cycle | each field | 每声明的参考流 | sample, scale and destination evidence |
 | `cp_conditioning_records` | `farm_gate_conditioning` | material, utilities and rejects | lot weights, meters, batch and discharge logs | raw mass; operation; water; electricity; prepared mass; rejects; wastewater | weigh before/after and meter utilities；原始汇总与分配：close mass and water balances | kg; m3; kWh | each lot | all conditioning | each conditioning line or station | 每声明的参考流 | calibrated scale/meter and destination log |
 | `cp_grade_destinations` | `farm_gate_grading` | all grade states | grade sheets, scale tickets, invoices | input; specification; output masses; count; use; price | weigh each state and link to same lot；原始汇总与分配：sum by state/destination | kg; item; currency/kg | each lot | all grading | each grading line or station | 每声明的参考流 | scale, grade and destination evidence |
+| `cp_phase1_environment_coverage` | field_cultivation | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -772,10 +773,17 @@ sync_with: pcr.en-US.md
 | `calc_direct_n2o` | soil N | selected factor × applicable N; multiply N2O-N by 44/28 to report N2O | kg N; factor | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_conditioning_balance` | conditioning | raw input = prepared output + removed soil/trimmings/rejects + unexplained difference | lot masses | closed balance | `mass-balance-identity` |
 | `calc_grade_balance` | grading | prepared input = accepted + downgraded + propagation material + rejects | state masses | closed output balance | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_inputs`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | reference product | Verify *Xanthosoma* identity and prohibit silent *Colocasia* substitution. | planting-material, crop inspection or agronomist record |
 | `dq_temporal` | foreground | Cover one complete cycle and all contributing lots. | dated field and lot records |
@@ -812,7 +820,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 引用 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `fao-qds-2010` | official_guidance | FAO, *Quality Declared Planting Material: Protocols and Standards for Vegetatively Propagated Crops*, 2010, https://www.fao.org/4/i1195e/i1195e00.pdf | *Xanthosoma* identity, synonyms and propagation material |
 | `sri-lanka-doa-kiri-ala` | extension_guidance | Sri Lanka Department of Agriculture, “Kiri Ala – Xanthosoma sagittifolium,” https://doa.gov.lk/hordi-crop-kiri-ala/ | route, planting density, fertilizer schedule, harvest and regional yield |

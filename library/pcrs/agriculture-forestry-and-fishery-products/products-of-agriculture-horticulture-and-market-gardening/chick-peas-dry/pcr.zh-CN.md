@@ -754,12 +754,14 @@ sync_with: pcr.en-US.md
 - 数量范围：水分修正入料筛查
   - 范围角色：`qa_guardrail`
   - 下限：1000
-  - 上限：1054
+  - 上限：1048.781
   - 单位：kg incoming grain/1,000 kg stabilized output
   - 基准：incoming grain at up to 18% moisture corrected to 14% moisture, before dry-matter rejects
   - 基准类型：`process_output`
   - 证据类型：`method_formula`
   - 来源：`saskatchewan-chickpea-harvest`; `mass-balance-identity`
+
+在声明的无干物质损失情形，进入质量 = 1000 × (1 − 0.14)/(1 − w_in)，w_in 为 0.14 至 0.18；去除水量 = 进入质量 − 1000。上限按 0.001 kg 向上取整。实际存在干物质拒收、加水或其他初始含水率时须重新进行批次平衡，不适用这些界限。
 
 ###### 中压电力投入（`drying_energy`）
 
@@ -859,7 +861,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：排向空气的水
 - 流属性/单位：Mass / kg
-- 数量规则：干物质核对后，以进料水质量减去出料水质量计算
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式：`calculated_value`
 - 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg stabilized dry chickpeas output.
@@ -872,14 +874,14 @@ sync_with: pcr.en-US.md
 - 数量范围：除水物理筛查
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：54
+  - 上限：48.781
   - 单位：kg water/1,000 kg stabilized output
   - 基准：water removed when grain enters at 14% to 18% moisture and leaves at 14% moisture, before dry-matter rejects
   - 基准类型：`process_output`
   - 证据类型：`method_formula`
   - 来源：`saskatchewan-chickpea-harvest`; `mass-balance-identity`
 
-
+在声明的无干物质损失情形，进入质量 = 1000 × (1 − 0.14)/(1 − w_in)，w_in 为 0.14 至 0.18；去除水量 = 进入质量 − 1000。上限按 0.001 kg 向上取整。实际存在干物质拒收、加水或其他初始含水率时须重新进行批次平衡，不适用这些界限。
 
 ### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
 该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
@@ -890,8 +892,8 @@ sync_with: pcr.en-US.md
 - 选定流：Chick peas, dry
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -916,8 +918,8 @@ sync_with: pcr.en-US.md
 - 选定流：Chick peas, dry
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -969,7 +971,7 @@ sync_with: pcr.en-US.md
 | `cp_conditioning_energy` | `cleaning_grading` | 清理与分级能源 | 仪表、运行时间与燃料记录 | 载体；仪表值；运行时间；批次；共享运行期 | 优先仪表；按有记录的驱动因素分配共享运行期；原始汇总与分配：在批次间仅分配一次共享能源 | 载体原始单位 | 每批次或运行期 | 调理期 | 每个纳入设施 | 每声明的参考流 | 仪表与分配记录 |
 | `cp_grade_mass_balance` | `cleaning_grading` | 入料、合格、降级、返工与废料 | 批次质量与代表性等级样品 | 批次；入料质量；水分；类别；损伤；青粒；杂质；粒径；各产出质量与去向 | 校准称量与代表性抽样；原始汇总与分配：入料等于合格、降级、废料与核对损失；每次返工仅计一次 | kg 与质量百分比 | 每批次与返工作业 | 调理期 | 每个纳入设施 | 每声明的参考流 | 秤校准、样品链与平衡闭合 |
 | `cp_drying_energy` | `drying_stabilization` | 通风与干燥能源 | 仪表、燃料与干燥机日志 | 载体；数量；进出料时间；温度；风量；批次 | 仪表或经核对的燃料交付量；原始汇总与分配：向批次或有记录共享运行期分配能源 | 载体原始单位 | 每批次或干燥期 | 稳定处理期 | 每个启用设施 | 每声明的参考流 | 仪表、燃料与干燥机日志 |
-| `cp_drying_mass_balance` | `drying_stabilization` | 湿入料、稳定产出、去除水分与降级品 | 批次质量与水分测试 | 进出料质量；进出料水分；温度；降级质量；去向 | 校准秤与代表性水分测试；原始汇总与分配：保持干物质守恒并计算去除水分 | kg 与湿基百分比 | 每批次 | 稳定处理期 | 每个启用设施 | 每声明的参考流 | 秤与水分仪校准及核对结果 |
+| `cp_drying_mass_balance` | `drying_stabilization` | 湿入料、稳定产出、去除水分与降级品 | 批次质量与水分测试 | 进出料质量；进出料水分；温度；降级质量；去向 ；含拒收物/残体的全部进出水；实际加水/降雨；单独液体转出；期初期末水库存；含水率及密度；有据蒸发| 校准秤与代表性水分测试；原始汇总与分配：保持干物质守恒并计算去除水分 | kg 与湿基百分比 | 每批次 | 稳定处理期 | 每个启用设施 | 每声明的参考流 | 秤与水分仪校准及核对结果 |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
 
 ### 计算规则
@@ -981,6 +983,7 @@ sync_with: pcr.en-US.md
 | `calc_grade_balance` | 调理节点 | 入料质量 = 合格 + 降级 + 不可回收废料 + 未解决测量差；返工为内部循环，不作为第二次最终产出相加 | 批次入料及全部产出状态质量 | 闭合批次平衡与无法解释差值 | `mass-balance-identity` |
 | `calc_managed_soil_emissions` | 田间排放 | 使用声明的 IPCC 层级或经论证区域方法，由采集的养分与残余物活动数据计算直接及相关间接管理土壤排放 | 施用 N；残余物 N；挥发或淋溶活动数据；因子 | 按物质划分的基本流排放 | `ipcc-2019-managed-soils` |
 | `calc_allocation` | 有意多产出节点 | 仅对细分后的剩余共享负荷采用声明方法和一个完整产出集合进行分配 | 产出数量；价格或物理驱动因素；共享负荷 | 按有意产出归属的负荷 | `iso-14044-allocation` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

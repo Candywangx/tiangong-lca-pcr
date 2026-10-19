@@ -96,31 +96,6 @@ The broad category is resolved by the product identity and edible organ, not by 
 
 ##### Product flows
 
-###### Crop-specific planting material (`planting_material`)
-
-Seed, sets, cuttings, crowns, or other planting material crosses the cultivation boundary at planting. Record the actual material identity and lot rather than assuming a universal seeding rate.
-
-- Selected flow: Crop-specific seed, sets, cuttings, or other planting material for the covered crop
-- Flow property / unit: Mass or count / kg or count (flow property; unit group)
-- Amount rule: measured lot quantity, with count-to-mass conversion only when documented
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg marketable fresh reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_planting_material_records`
-- Sources: `fao-ex-act-v9-2022`
-- Range: Provisional planting-material screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.08
-  - Unit: kg planting material/kg marketable product
-  - Basis: per 1 kg marketable fresh reference product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Urea fertilizer (`field_cultivation_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for field_cultivation_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -285,6 +260,38 @@ Raw activity or stage basis: per 1 kg marketable fresh reference product.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+##### Waste flows
+
+##### Elementary flows
+
+###### Source-water withdrawal for irrigation (`irrigation_withdrawal`)
+
+Source withdrawal is conditional and is reported only when the water resource abstraction is separately measured or modelled from delivered irrigation water. Do not count the same water volume twice.
+
+- Selected flow: Water withdrawn directly from an identified natural source; exact compartment and UUID unresolved
+- Flow property / unit: Volume / m3 (flow property; unit group)
+- Amount rule: directly metered natural-source abstraction owned by this foreground node, reconciled to the same-period supply ledger
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg marketable fresh reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_irrigation_water_records`
+- Sources: `fao-ex-act-v9-2022`
+- Range: Provisional withdrawal screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 4
+  - Unit: m3/kg marketable product
+  - Basis: per 1 kg marketable fresh reference product, only when withdrawal is separately reported
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Only for direct natural-water abstraction owned by this foreground boundary. Select the actual source/compartment and compatible volume or mass identity. A municipal or other purchased water receipt is a product supply, with its provider withdrawal covered upstream once; it is not this elementary input. Keep the withdrawal-to-field supply ledger, pumping, distribution losses and internal delivered-water transfers explicit. Do not add the same supplier abstraction or internal delivery as another external resource use. Retain missing source identity or quantity as a completeness gap.
+
+
 ###### Land occupation for the declared crop cycle (`land_occupation`)
 
 Land occupation represents the cultivated area and declared duration needed to produce the reference product. Land transformation remains a separate declared study choice.
@@ -310,32 +317,6 @@ Raw activity or stage basis: per 1 kg marketable fresh reference product.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Source-water withdrawal for irrigation (`irrigation_withdrawal`)
-
-Source withdrawal is conditional and is reported only when the water resource abstraction is separately measured or modelled from delivered irrigation water. Do not count the same water volume twice.
-
-- Selected flow: Water resource withdrawal for irrigation
-- Flow property / unit: Volume / m3 (flow property; unit group)
-- Amount rule: measured or supplier-reported source withdrawal, reconciled to delivered irrigation water
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg marketable fresh reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_irrigation_water_records`
-- Sources: `fao-ex-act-v9-2022`
-- Range: Provisional withdrawal screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 4
-  - Unit: m3/kg marketable product
-  - Basis: per 1 kg marketable fresh reference product, only when withdrawal is separately reported
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-##### Waste flows
 
 #### Outputs
 
@@ -1004,7 +985,7 @@ Road freight is conditional and is included only when transport to the declared 
 
 - Selected flow: Road freight transport service for product dispatch
 - Flow property / unit: Transport service / tonne-kilometre (flow property; unit group)
-- Amount rule: product mass multiplied by documented one-way distance and route load factor
+- Amount rule: actual transported mass in tonnes multiplied by loaded distance in km; use capacity × utilisation only to derive missing actual payload once, never multiply an already actual payload by utilisation again
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Route-specific (`route_specific`)
 Raw activity or stage basis: per 1 kg marketable fresh reference product at declared gate.
@@ -1223,8 +1204,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_energy_normalization` | fuel and electricity | Convert fuel only with a documented fuel identity and lower-heating-value factor; divide fuel or kWh by marketable output and allocate shared equipment by the collected use factor. | field, harvest, conditioning, and storage energy records | L, kg fuel, or kWh per kg reference product | `fao-ex-act-v9-2022` |
 | `calc_land_occupation` | land occupation | `area_time_per_kg = cultivated_area × crop_cycle_duration / marketable_output_kg`; disclose area units, cycle duration, and protected-cover occupancy. | `cp_land_and_cycle_records`; `cp_yield_and_quality_records` | m2*year per kg reference product | `fao-ex-act-v9-2022` |
 | `calc_mass_balance` | product, reject, residue, wastewater, and storage rows | Reconcile each operation as received mass or water plus additions equals product outputs, waste outputs, measured losses, and documented stock change within the declared tolerance. | batch, harvest, waste, water, and dispatch records | mass-balance check and normalized rows | `iso-14044-2006` |
-| `calc_transport_service` | included dispatch transport | `tonne_km = product_mass_t × one_way_distance_km × declared_load_factor`; include only the route to the declared gate and state any return-leg treatment. | `cp_dispatch_transport_records`; weigh and route records | tonne-km per kg gate product | `fao-ex-act-v9-2022` |
+| `calc_transport_service` | included dispatch transport | Transport work in tonne-kilometres = actual transported payload mass in tonnes * loaded route distance in kilometres. The actual payload already reflects loading; do not multiply it by a load factor again. If only rated capacity and utilisation are recorded, derive actual payload once as capacity * evidenced utilisation, then apply the distance. Apply documented empty-return and vehicle-utilisation assumptions in the transport-service dataset/factor boundary once; do not count the same fuel both as a service and a local operation. Retain shipment, route, mass, distance, source units and factor boundary. | `cp_dispatch_transport_records`; weigh and route records | tonne-km per kg gate product | `fao-ex-act-v9-2022` |
 | `calc_reusable_packaging` | packaging input and waste | Allocate reusable packaging burden by documented cycles and product mass served, and reconcile returned, lost, and discarded units. | `cp_packaging_records`; supplier and return records | kg packaging per kg product and packaging fate | `iso-14044-2006` |
+| `planting_material_identity_and_fate` | `field_cultivation` | For the original planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_planting_material_records` | Identity-specific exchanges and reconciled activity records | `fao-ex-act-v9-2022` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_input_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

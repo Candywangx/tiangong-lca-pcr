@@ -103,9 +103,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：建园年化及补植材料.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
 
 ###### 尿素肥料投入（`agricultural_nutrient_inputs`）
 
@@ -119,9 +119,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
 
 ###### 磷酸一铵肥料投入（`agricultural_nutrient_inputs_monoammonium_phosphate`）
 
@@ -135,9 +135,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
 
 ###### 氯化钾肥料投入（`agricultural_nutrient_inputs_potassium_chloride`）
 
@@ -151,9 +151,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
 
 ###### 施用的牛粪肥投入（`agricultural_nutrient_inputs_cattle_manure`）
 
@@ -167,9 +167,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
 
 ###### 农业石灰石投入（`agricultural_nutrient_inputs_agricultural_limestone`）
 
@@ -183,9 +183,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
 
 ###### 灌溉水 (`irrigation_water_input`)
 
@@ -199,17 +199,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：声明期间施用于生产面积的水.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 0
   - 上限: 20000
   - 单位: m3/ha·year
   - 基准: 声明期间施用于生产面积的水
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 ###### 中压电力投入（`field_energy_input`）
 
@@ -223,9 +223,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：生产和采收作业的实际能源投入.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
 
 ###### 柴油投入（`field_energy_input_diesel`）
 
@@ -239,9 +239,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：生产和采收作业的实际能源投入.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_production_inputs`
 
 ##### 废物流
 
@@ -264,17 +264,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：声明生产面积的合格鲜采收物.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_harvest_records`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_harvest_records`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 100
   - 上限: 50000
   - 单位: kg/ha·harvest period
   - 基准: 声明生产面积的合格鲜采收物
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 
 该行的实际中间状态或联产品等级须独立核实 UUID，不使用参考输出 UUID 代替。
@@ -293,45 +293,20 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：全部非产品生物质和剔除物，不包括合格果实.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_harvest_records`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_harvest_records`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 0
   - 上限: 5000
   - 单位: kg/1,000 kg accepted fruit
   - 基准: 全部非产品生物质和剔除物，不包括合格果实
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 
 ##### 基本流
-
-###### 管理土壤氮排放 (`soil_nitrogen_emissions`)
-
-记录该节点的管理土壤氮排放，保持物种、状态、批次和去向可追溯。
-
-- 选定流： 向声明空气或水体环境区室排放的具体含氮物种
-- 流属性 / 单位: 质量 / kg 物质
-- 数量规则: 使用声明方法基于同一养分和残余物记录分别计算各排放物种
-- 数值来源模式： 前景记录 (`foreground_record`)
-- 适用范围： 场地特定 (`site_specific`)
-原始活动或阶段基准：宽范围筛查；以实际方法和受纳环境区室为准.
-
-- 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_emission_calculation`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 500
-  - 单位: kg substance/ha·year
-  - 基准: 宽范围筛查；以实际方法和受纳环境区室为准
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
-
 
 ### 过程：分选与及时稳定处理 (`sorting_stabilization`)
 
@@ -350,17 +325,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：分选或稳定处理前的匹配批次.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_conditioning_batch`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_batch`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 1
   - 上限: 2
   - 单位: kg incoming/kg accepted output
   - 基准: 分选或稳定处理前的匹配批次
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 ###### 清洁与处理用水 (`conditioning_water_input`)
 
@@ -374,17 +349,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：不用水路线为零.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_conditioning_batch`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_batch`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 0
   - 上限: 10
   - 单位: m3/1,000 kg accepted output
   - 基准: 不用水路线为零
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 ###### 中压电力（`conditioning_energy_input`）
 
@@ -437,17 +412,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：分选与及时稳定处理后的匹配鲜品批次.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_conditioning_batch`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_batch`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 0.5
   - 上限: 1
   - 单位: kg accepted/kg incoming fresh fruit
   - 基准: 分选与及时稳定处理后的匹配鲜品批次
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 
 该行的实际中间状态或联产品等级须独立核实 UUID，不使用参考输出 UUID 代替。
@@ -466,17 +441,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：匹配分选质量平衡.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_conditioning_batch`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_batch`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 0
   - 上限: 500
   - 单位: kg/1,000 kg incoming fruit
   - 基准: 匹配分选质量平衡
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 ###### 处理废水 (`conditioning_wastewater_output`)
 
@@ -490,17 +465,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：干式路线为零.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_conditioning_batch`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_batch`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 0
   - 上限: 10
   - 单位: m3/1,000 kg accepted output
   - 基准: 干式路线为零
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 
 ##### 基本流
@@ -523,17 +498,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：仅允许有记录的包装损失.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_packing_lot`
-- 范围: 前景QA筛查范围
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_packing_lot`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 1
   - 上限: 1.1
   - 单位: kg/kg packed product
   - 基准: 仅允许有记录的包装损失
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 过程输出 (`process_output`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 ###### 瓦楞纸箱投入（`packaging_input`）
 
@@ -547,9 +522,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：全部一次性包装及归属的可复用包装损耗.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_packing_lot`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_packing_lot`
 
 ###### 聚乙烯包装薄膜投入（`packaging_input_plastic_film`）
 
@@ -563,9 +538,9 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：全部一次性包装及归属的可复用包装损耗.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_packing_lot`
+- 基准类型: 过程输出 (`process_output`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_packing_lot`
 
 ##### 废物流
 
@@ -590,17 +565,17 @@ sync_with: pcr.en-US.md
 原始活动或阶段基准：等级和状态验收后的精确参考量.
 
 - 归一化基准：每声明的参考流
-- 基准种类: 参考流 (`reference_flow`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_packing_lot`
-- 范围: 前景QA筛查范围
+- 基准类型: 参考流 (`reference_flow`)
+- 证据类型: 收集记录 (`collected_record`)
+- 采集协议: `cp_packing_lot`
+- 数量范围: 前景QA筛查范围
   - 范围角色: QA护栏 (`qa_guardrail`)
   - 下限: 1000
   - 上限: 1000
   - 单位: kg/reference flow
   - 基准: 等级和状态验收后的精确参考量
-  - 基准种类: 参考流 (`reference_flow`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+  - 基准类型: 参考流 (`reference_flow`)
+  - 证据类型: 推理估计 (`reasoned_estimate`)
 
 
 ##### 废物流
@@ -613,9 +588,13 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `allocation_period` | 多年生生产 | 将建园、未结果期和更替负荷按有证据的生产寿命归属到声明采收期；不得在年度记录中重复计算。 |  |
 | `allocation_grade` | 分选输出 | 只有合格的声明等级计入参考数量。实际销售且有独立预期用途的降级物料是单独的产品输出；保留其实测质量、去向，并在尽量细分过程后分配无法分开的上游负担。无产品功能的剔除物属于废物；保留其物理质量、去向和处置负担。 |  |
-| `allocation_residue` | 残余物与剔除物 | 废物不获得上游负荷；有收入或替代功能的输出须声明其产品身份、去向和分配选择。 |  |
+| `allocation_residue` | 残余物与剔除物 | 废物不获得联产品分配份额，但产生弃置材料的生产负担及应归属的收集和处理负担须保留在产出可售产品的路线中；缺少产品功能不能抹去这些负担。只有身份、接收方、功能、数量和交接均有据的独立预期产品才进入完整产品分配分母。收入或可能的替代用途本身不构成避免生产信用。 |  |
 | `allocation_shared_assets` | 共享设施 | 按记录的面积、机器小时、质量或其他因果驱动因素将灌溉、设备、冷库和包装设施归属一次。 |  |
 | `allocation_rework` | 返工和退回 | 将返工回路归于产生节点，返回物料不得作为新的进入量重复计数。 |  |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -633,6 +612,7 @@ sync_with: pcr.en-US.md
 | `cp_emission_calculation` | `managed_production_harvest` | 直接排放 | 计算记录 | 含氮投入；残余物；土壤与气候；排放因子；环境区室 | 对同一投入记录应用声明的方法版本；原始汇总与分配：按具体物种和受纳区室分别计算 | kg 物质 | 每采收期 | 与生产投入相同期 | 全部纳入生产面积 | 每声明的参考流 | 方法版本、输入追溯、因子来源和复算 |
 | `cp_conditioning_batch` | `sorting_stabilization` | 分选与稳定处理 | 匹配批次记录 | 进入和输出质量；等级；温度；水分；水；能源；剔除物；废水；时间 | 批次称重、计量和质量平衡；原始汇总与分配：匹配进出批次，干湿路线分开 | kg、m3、kWh、MJ | 每批次 | 全部纳入处理批次 | 声明农场或初级处理场地 | 每声明的参考流 | 秤和计量器校准、批次表、质量平衡签核 |
 | `cp_packing_lot` | `packing_handoff` | 包装和交付 | 包装批次及交付记录 | 果实质量；材料；附件；复用次数；废料；等级；交付点 | 将领料、称重和交付单按批次核对；原始汇总与分配：按材料与批次汇总，可复用包装按实际损耗归属 | kg 或件 | 每包装批次 | 全部纳入交付批次 | 全部纳入包装点 | 每声明的参考流 | 物料单、磅单、交付单和库存核对 |
+| `cp_phase1_environment_coverage` | managed_production_harvest | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -643,10 +623,17 @@ sync_with: pcr.en-US.md
 | `calc_batch_balance` | 分选和包装 | 进入质量 = 合格 + 降级 + 剔除 + 记录损失 | 匹配进出批次 | 平衡差和流量 |  |
 | `calc_soil_emissions` | 土壤排放 | 声明方法应用于按来源区分的养分和残余物投入 | 养分、残余物、因子、区室 | 各具体排放物种质量 | `ipcc-2019-managed-soils` |
 | `packing_waste_output_specific_exchanges` | `packing_handoff` | 将拒收果实及每种实际废包装材料分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_packing_lot` | 逐项独立交换；完成前必须补齐 |  |
+| `soil_nitrogen_emissions_identity_and_fate` | `managed_production_harvest` | 逐项识别每种实际排放物质及接收环境，以独立活动量、方法、化学物种口径和原生单位量化各有据路径，区分元素 N/P 台账和最终化合物。土壤养分留存或质量平衡残差不得自动当作排放。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_emission_calculation` | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 全部产品物流 | 物种、生产体系、鲜品状态、成熟度、水分、等级、批次和交付点完整且一致。 | 批次和交付记录 |
 | `dq_completeness` | 全部节点 | 质量、能源、水、养分、包装、剔除物和直接排放覆盖声明期间及全部纳入场地。 | 完整性核对与质量平衡 |
@@ -680,7 +667,8 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据来源
 
-| source_id | type | 引用 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `fao-postharvest-horticulture` | official_guidance | FAO, Prevention of post-harvest food losses: fruits, vegetables and root crops, https://www.fao.org/4/t0073e/t0073e00.htm | 鲜园艺品的采收后处理、分级、包装和损失控制原则 |
 | `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | 管理土壤氮排放方法 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

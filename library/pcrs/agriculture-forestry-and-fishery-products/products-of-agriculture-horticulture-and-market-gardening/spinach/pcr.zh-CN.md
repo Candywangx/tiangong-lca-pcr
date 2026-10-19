@@ -90,32 +90,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 流：菠菜种子或移栽材料（`seed_or_transplant_input`）
-
-记录进入每个声明苗床或设施单元的采购种植材料，并区分种子和移栽苗。
-
-- 选定流：菠菜种子或移栽材料
-- 流属性/单位：Number of viable units or mass / seed、plant 或 kg
-- 数量规则：按苗床记录采购批次数量和有活力的播种或移栽数量。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：同一作物周期每 1,000 kg 商品新鲜菠菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_establishment_records`
-- 来源：`govnl-spinach-production-guide-2025`
-- 数量范围：播种或移栽数量筛选范围
-  - 范围角色：典型范围（`typical_range`）
-  - 下限：10
-  - 上限：17
-  - 单位：kg seed/ha
-  - 基准：直播鲜食菠菜生产床
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`govnl-spinach-production-guide-2025`; `ufifas-leafy-vegetable-guide-2024`
-
 ###### 尿素肥料（`crop_establishment_agricultural_nutrient_inputs_urea`）
 
 **crop_establishment_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -249,7 +223,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_field_energy_records`采集`crop_establishment`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -431,7 +405,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_field_energy_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -441,31 +415,6 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ##### 基本流
-
-###### 流：还田的菠菜作物残体（`field_residue_output`）
-
-将未采收的菠菜生物量或切割残体与商品产品和场外拒收物分开记录。
-
-- 选定流：菠菜作物残余物
-- 流属性/单位：Mass / kg wet residue
-- 数量规则：依据田间记录核对采前生物量、采收量和残体量。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 商品新鲜菠菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_harvest_reconciliation`
-- 来源：`ucanr-spinach-production-2011`
-- 数量范围：田间残体筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：4000
-  - 单位：kg wet residue/ha
-  - 基准：作物周期中的未采收或还田菠菜生物量
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 #### 输出
 ##### 产品流
@@ -827,6 +776,9 @@ sync_with: pcr.en-US.md
 | `calc_area_time` | land occupation | production area × represented crop-cycle duration; disclose whether protected area is included | area register; crop dates | area-time quantity | `govnl-spinach-production-guide-2025` |
 | `calc_nitrogen_emission` | direct soil nitrous oxide | apply the selected IPCC-compatible factor to eligible nitrogen input and declared soil or climate method; document factors in the dataset | nutrient records; method choice; crop-cycle area | kg N2O emitted to air | `ipcc-2019-refinement-nitrogen` |
 | `calc_gate_mass_balance` | harvest and packing | received harvest = marketable output + rejects + residue or loss, with documented measurement uncertainty | harvest tickets; packing records; reject and residue records | reconciled mass balance | `usda-ams-bunched-spinach-standard` |
+| `field_residue_output_identity_and_fate` | `crop_management` | 按实测干湿基和实际去向核对作物残余物、收获损失和生物量。留田或还田生物量是支持分解与养分路径计算的内部残余物台账，不是外购资源或虚构的生物量基本交换。单独收集的材料须有实际产品／废物身份及去向；环境释放须识别物质与接收环境。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_harvest_reconciliation` | 按身份区分的交换和对账活动记录 | `ucanr-spinach-production-2011` |
+| `seed_or_transplant_input_identity_and_fate` | `crop_establishment` | 对于本作业原有 seed_or_transplant_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 保留的来源特定采集筛查：10–17 kg seed/ha；基准：direct-seeded fresh-market spinach bed。仅适用于相匹配的具体形态、路线与分子单位，不适用于全部备选形态或最终归一化交换。 | `cp_establishment_records` | 按身份区分的交换和对账活动记录 | `govnl-spinach-production-guide-2025` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

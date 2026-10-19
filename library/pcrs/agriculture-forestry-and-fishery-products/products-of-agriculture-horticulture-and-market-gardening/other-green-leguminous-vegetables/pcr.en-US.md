@@ -107,31 +107,6 @@ The sole reference output is `reference_product_at_declared_handoff`, receiving 
 
 ##### Product flows
 
-###### Seed or planting material (`planting_material_input`)
-
-Record seed, transplants, or other planting material entering each declared field bed or protected unit. Identify species or cultivar group, supplier lot, planting date, and planted area.
-
-- Selected flow: Seed, transplant, or other planting material for green leguminous vegetable production
-- Flow property / unit: Mass or viable count / kg, seed, plant, or declared count
-- Amount rule: Record supplier lot quantity and planted viable seed or planting-material quantity by field, bed, or protected unit.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_establishment_records`
-- Sources: `fao-good-agricultural-practices`
-- Range: Planting-material screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.1
-  - Upper: 25
-  - Unit: kg seed or declared planting material per 1,000 kg output
-  - Basis: declared planted area and crop-cycle output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Establishment irrigation water (`establishment_irrigation_water`)
 
 Record water applied for bed preparation, emergence, or transplant establishment by source and production unit, excluding rainfall unless a water-balance method explicitly includes it.
@@ -553,31 +528,6 @@ Only for documented diesel-powered machinery within this operation. Retain fuel 
 
 ##### Elementary flows
 
-###### Harvested field loss (`harvest_field_loss`)
-
-Record edible product left unharvested or lost during picking and first handling when it is not included in downgraded product. State the method and fate.
-
-- Selected flow: Harvested green-legume product lost in field or first handling
-- Flow property / unit: Mass / kg fresh product
-- Amount rule: Estimate from field counts, sampling, or mass balance and keep it separate from marketable output and collected culls.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_harvest_grade_records`
-- Sources: `iso-14044-2006`
-- Range: Field-loss screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1,500
-  - Unit: kg fresh product per 1,000 kg marketable output
-  - Basis: complete harvest campaign
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 #### Outputs
 
 ##### Product flows
@@ -613,32 +563,6 @@ Raw activity or stage basis: per 1,000 kg marketable fresh output.
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
-
-
-###### Downgraded or rejected harvested product (`downgraded_product_output`)
-
-Record harvested pods or green seeds that fail the declared marketable grade, including reason and fate. Do not silently include downgraded material in reference output.
-
-- Selected flow: Downgraded or rejected green leguminous vegetable product
-- Flow property / unit: Mass / kg fresh product
-- Amount rule: Weigh gross harvested, accepted, downgraded, and rejected product by picking round and document feed, compost, disposal, or other fate.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_harvest_grade_records`
-- Sources: `codex-fresh-produce-hygiene`; `iso-14044-2006`
-- Range: Downgraded-product screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2,000
-  - Unit: kg downgraded product per 1,000 kg marketable output
-  - Basis: complete harvest campaign
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 
 ###### Crop residues leaving field sorting (`crop_residue_output`)
@@ -843,58 +767,6 @@ Raw activity or stage basis: per 1,000 kg marketable fresh output.
 
 
 
-###### Conditioned downgraded product (`conditioning_reject_output`)
-
-Record product removed during washing, cooling, grading, or packing after field sorting, including its declared fate.
-
-- Selected flow: Downgraded or rejected fresh green leguminous vegetable product
-- Flow property / unit: Mass / kg fresh product
-- Amount rule: Weigh or estimate conditioning rejects by batch and reconcile them with harvest-grade records and final marketable output.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_postharvest_grade_records`
-- Sources: `codex-fresh-produce-hygiene`; `iso-14044-2006`
-- Range: Conditioning-reject screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1,000
-  - Unit: kg product per 1,000 kg marketable output
-  - Basis: declared washing, cooling, grading, and packing route
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-
-###### Packaging and handling waste (`packaging_waste_output`)
-
-Record damaged, discarded, or unrecovered packaging and handling materials generated before the declared gate, separated by material and fate.
-
-- Selected flow: Packaging or handling waste
-- Flow property / unit: Mass / kg waste
-- Amount rule: Reconcile packaging issued, retained in product, returned for reuse, recycled, treated, and disposed quantities.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_records`
-- Sources: `codex-fresh-produce-hygiene`; `iso-14044-2006`
-- Range: Packaging-waste screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 15
-  - Unit: kg waste per 1,000 kg output
-  - Basis: pre-gate packaging operation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-
 ###### Wash water and conditioning wastewater (`conditioning_wastewater_output`)
 
 Record wash water and conditioning wastewater leaving the pre-gate process, including treatment, discharge destination, and any recirculation loop.
@@ -1039,6 +911,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_transport_work` | pre-gate road freight | transport work tkm = payload tonnes * declared route km; allocate shared movements by documented mass basis | payload; distance; service record; allocation basis | tkm | `fao-fresh-produce-handling` |
 | `calc_reusable_container_service` | reusable harvest and packaging materials | allocate manufacture and replacement over documented turns or service mass, then add cleaning and loss records | container mass; turns; service mass; cleaning and loss | allocated packaging input and waste | `iso-14044-2006` |
 | `calc_mass_reconciliation` | harvest, conditioning, and gate outputs | gross harvest = marketable + downgraded + rejects + field loss + process loss + retained or removed residue within measurement uncertainty; investigate unexplained residuals | picking; grade; loss; residue records | reconciled crop-cycle mass balance | `mass-balance-identity`; `iso-14044-2006` |
+| `harvest_field_loss_identity_and_fate` | `harvest_and_field_sorting` | Reconcile crop residue, harvest loss and biomass by measured wet/dry basis and actual fate. Retained or incorporated biomass is an internal residue ledger used to calculate supported decomposition and nutrient pathways, not a purchased resource or an invented elementary biomass exchange. Separately collected material requires its actual product/waste identity and destination; environmental releases require identified substances and receiving compartments. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_harvest_grade_records` | Identity-specific exchanges and reconciled activity records | `iso-14044-2006` |
+| `packaging_waste_output_identity_and_fate` | `conditioning_and_dispatch` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_packaging_records` | Identity-specific exchanges and reconciled activity records | `codex-fresh-produce-hygiene`; `iso-14044-2006` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | For the original planting_material_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_establishment_records` | Identity-specific exchanges and reconciled activity records | `fao-good-agricultural-practices` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+| `downgraded_product_output_identity_and_fate` | `harvest_and_field_sorting` | The downgraded_product_output collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred. | `cp_harvest_grade_records` | Identity-specific exchanges and reconciled activity records | `codex-fresh-produce-hygiene`; `iso-14044-2006` |
+| `conditioning_reject_output_identity_and_fate` | `conditioning_and_dispatch` | The conditioning_reject_output collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred. | `cp_postharvest_grade_records` | Identity-specific exchanges and reconciled activity records | `codex-fresh-produce-hygiene`; `iso-14044-2006` |
 
 ### Data Quality Requirements
 

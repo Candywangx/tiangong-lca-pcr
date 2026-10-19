@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Cow peas, dry `c377d583-fcf6-47fe-ac52-95ec0a377058` |
+| Reference product flow | 豇豆（干） `c377d583-fcf6-47fe-ac52-95ec0a377058` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -961,7 +961,7 @@ sync_with: pcr.en-US.md
 
 按关联田块、采摘事件、批次或运行定量该角色，并保留其互斥交接。
 
-- 选定流: Cow peas, dry `c377d583-fcf6-47fe-ac52-95ec0a377058`
+- 选定流：豇豆（干） `c377d583-fcf6-47fe-ac52-95ec0a377058`
 - 流属性/单位: Mass / kg
 原始产出计量与核对要求：排除降级品、拒收物和未解决返工材料后设为参考数量
 
@@ -1074,10 +1074,11 @@ sync_with: pcr.en-US.md
 | `calc_moisture_balance` | 荚果与粮粒 | 干物质 = 湿质量 ×（1 − 湿基水分比例）；去除水等于考虑拒收物和库存变化后的进料水减出料水 | 进出料质量与水分；拒收物；库存变化 | 对齐的干物质与去除水量 | `mass-balance-identity`; `fao-grain-drying-storage` |
 | `calc_mass_closure` | 收获与收获后节点 | 水分对齐投入 = 互斥产出 + 实测损失或排放 + 库存变化，并处于披露的不确定度内 | 全部关联进料、出料、损失与库存记录 | 节点闭合与未解释差额 | `mass-balance-identity` |
 | `calc_soil_n2o` | 管理土壤 | 对实测合成肥、有机物、残体及其他氮活动采用披露的 IPCC 层级；按 44/28 将 N2O-N 转为 N2O | 氮活动与选定因子 | kg N2O | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 参考产品 | 保留物种、作物年份、类别或颜色、等级、水分、杂质、虫害、破碎或裂粒比例及路线。 | 农场门单据与实验室或校准田间检测 |
 | `dq_traceability` | 全部过程 | 用稳定标识关联每个田块、采摘、批次、运行、遍次、返回流与最终去向。 | 田块至批次追踪与运行历史 |
@@ -1097,7 +1098,7 @@ sync_with: pcr.en-US.md
 | `validate_rework` | 调理、干燥与分级 | 将每个不合格状态关联到额外遍次、降级、回收或处置；保留既有负荷，并防止其同时出现在合格产出中。 | `mass-balance-identity` |
 | `validate_batch_accounting` | 田块、采摘、批次与运行 | 要求投入、产出、清洁和切换事件带生产模式标识，并将每项共享负荷仅归属一次。 | `mass-balance-identity` |
 | `validate_drying` | 终干燥 | 使用本过程时，要求进出料湿基水分与质量、能源、遍次历史、拒收物、去除水分及质量闭合；省略时要求证明粮粒已满足交接条件。 | `fao-grain-drying-storage` |
-| `validate_ranges` | 全部流卡 | 每张定量流卡恰好要求一条完整数量范围，包括下限、上限、单位、基准、基准类型、证据类型与来源字段，且英文、中文和结构化输出中的数值与标记一致。 | `mass-balance-identity` |
+| `validate_ranges` | 全部流卡 | 逐条检查已提供范围的上下限、单位、基准、证据及双语一致性。任何强制界限均须有相容定量证据；无支持界限时保留实测数量并明确报告范围筛查不可用，不得编造范围或宣称该项检查完整。调查偏离，不以范围覆盖实测值。 | |
 
 ## 10. 发布数据集画像
 

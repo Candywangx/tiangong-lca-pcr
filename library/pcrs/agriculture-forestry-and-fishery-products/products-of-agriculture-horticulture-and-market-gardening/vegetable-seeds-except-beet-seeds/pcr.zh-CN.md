@@ -97,31 +97,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 播种种子或亲本材料（`planting_seed_input`）
-
-记录用于建立声明蔬菜种子作物的种子、亲本系或源库存。保留其物种、品种或杂交种、种子等级、世代和来源，不得将其当作通用谷物。
-
-- 选定流：蔬菜种子繁育用播种种子或亲本材料＼
-- 流属性/单位：Mass / kg
-- 数量规则：按批次实测种子质量，或用批次特定千粒重将粒数换算为质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每个作物周期并换算为每 1 kg 放行种子.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_seed_field_activity_records`
-- 来源：
-- 数量范围：暂定播种种子筛选估计
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.01
-  - 上限：150
-  - 单位：kg/ha
-  - 基准：覆盖小粒蔬菜、种子载体果实和亲本系繁育的宽泛首轮范围；以物种和建植证据替换
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 尿素肥料（`vegetable_seed_field_multiplication_agricultural_nutrient_inputs_urea`）
 
 **vegetable_seed_field_multiplication_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -254,7 +229,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_seed_field_activity_records`采集`vegetable_seed_field_multiplication`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -350,7 +325,7 @@ sync_with: pcr.en-US.md
 仅在使用声明的、适用于地理范围的方法，并拥有同一作物周期的养分、残余物、土壤、水分和气候记录时，记录直接和间接土壤氧化亚氮排放。
 
 - 选定流：管理土壤向空气排放的氧化亚氮＼
-- 流属性/单位：Mass / kg N2O or kg N2O-N
+- 流属性/单位: Mass / kg N2O
 - 数量规则：依据肥料和改良剂氮、残余物氮及适用的直接或间接路径计算，并报告因子集和基准
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -369,6 +344,8 @@ sync_with: pcr.en-US.md
   - 基准：一个作物周期和声明的氮投入；以选定区域方法替换
   - 基准类型：N input（`n_input`）
   - 证据类型：推理估算（`reasoned_estimate`）
+
+最终交换为 kg N2O。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 44/28，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
 
 ###### 种子作物养分管理产生的氨（`field_ammonia_emission`）
 
@@ -400,7 +377,7 @@ sync_with: pcr.en-US.md
 仅在有监测平衡、适用模型或经审查的清单方法支持时记录硝酸盐淋失或径流，并明确水路径和接收介质。
 
 - 选定流：种子作物田向水体排放的硝酸盐＼
-- 流属性/单位：Mass / kg nitrate or kg N as nitrate
+- 流属性/单位: Mass / kg NO3-
 - 数量规则：依据氮投入、土壤和水分条件、排水或径流及选定方法计算；不得仅从肥料质量推断损失
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -419,6 +396,8 @@ sync_with: pcr.en-US.md
   - 基准：一个作物周期；以场址水分平衡或区域淋失方法替换
   - 基准类型：N input（`n_input`）
   - 证据类型：推理估算（`reasoned_estimate`）
+
+最终交换为 kg NO3-。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 62/14，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
 
 ### 过程：蔬菜种子收获和种子提取（`vegetable_seed_harvest_and_extraction`）
 
@@ -472,31 +451,6 @@ sync_with: pcr.en-US.md
   - 上限：200
   - 单位：m3/1,000 kg incoming seed-bearing material
   - 基准：仅湿法路线；以物种和设备记录替换
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
-###### 提取助剂或清洗剂（`extraction_aid_input`）
-
-记录跨越前景边界的酸、盐、酶、消毒剂或其他提取助剂，并保留配方、有效成分及其留在种子上还是随废水排出的信息。
-
-- 选定流：蔬菜种子回收用提取助剂或清洗剂＼
-- 流属性/单位：配方质量 / kg
-- 数量规则：按提取批次和配方实测产品质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每个提取批次并换算为每 1 kg 放行种子.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_harvest_extraction_records`
-- 来源：
-- 数量范围：暂定提取助剂筛选估计
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/1,000 kg incoming seed-bearing material
-  - 基准：仅湿法提取路线；以配方和批次记录替换
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
@@ -874,31 +828,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 包衣、包膜或丸粒化材料（`seed_coating_pelleting_input`）
-
-在放行前加入时，记录包衣聚合物、矿物、生物材料、胶黏剂、填料或其他丸粒化材料，并说明其质量是否计入声明净产品质量。
-
-- 选定流：种子包衣、包膜或丸粒化材料＼
-- 流属性/单位：Mass / kg
-- 数量规则：按配方和处理或丸粒化批次实测材料质量，并区分种子质量和最终处理质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每个最终准备批次并换算为每 1 kg 放行种子.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_treatment_packaging_records`
-- 来源：`fao-seed-processing-manual`
-- 数量范围：暂定包衣和丸粒化筛选估计
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：500
-  - 单位：kg material/1,000 kg released seed
-  - 基准：仅包衣、包膜或丸粒化路线；以配方和批次记录替换
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 处理、包装和储存用电力（`final_preparation_electricity_input`）
 
 记录处理、包衣、丸粒化、称量、装袋、封口、贴标、仓库通风和范围内门前储存用电。
@@ -1012,6 +941,10 @@ sync_with: pcr.en-US.md
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -1053,10 +986,14 @@ sync_with: pcr.en-US.md
 | `calc_treatment_and_packaging_mass` | 处理、包衣、丸粒化和包装 | 将进入种子、加入的处理或包衣材料、最终净种子、包装和废物保持为不同数量，并报告添加物是否计入净产品质量 | 批次台账；配方剂量；包装台账；最终质量 | 处理或包装批次质量和材料清单 | `mass-balance-identity` |
 | `calc_reusable_packaging` | 重复使用托盘和周转箱 | 包装质量 / 有文件证明的服务次数，并将返还损失分配给适用批次 | 包装质量；服务次数；损失；批次质量 | 每单位放行种子的包装服务 | `iso-14044-2006` |
 | `calc_reference_scaling` | 终端放行种子 | 以 1 kg / 实测接收放行种子质量缩放全部前景数量，保留水分和质量限定信息 | 接收放行种子；全部归一化数量 | 1 kg 参考流清单 | `mass-balance-identity` |
+| `planting_seed_input_identity_and_fate` | `vegetable_seed_field_multiplication` | 对于本作业原有 planting_seed_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_seed_field_activity_records` | 按身份区分的交换和对账活动记录 |  |
+| `extraction_aid_input_identity_and_fate` | `vegetable_seed_harvest_and_extraction` | 对于本作业原有 extraction_aid_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_harvest_extraction_records` | 按身份区分的交换和对账活动记录 |  |
+| `seed_coating_pelleting_input_identity_and_fate` | `vegetable_seed_treatment_packaging_and_storage` | 对于本作业原有 seed_coating_pelleting_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_treatment_packaging_records` | 按身份区分的交换和对账活动记录 | `fao-seed-processing-manual` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_seed_field_emission_activity`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | Evidence |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_species_variety_identity` | 参考流、田间批次和所有种子输出 | 识别物种、品种或杂交种、亲本角色、种子等级、世代、播种用途和种子载体器官；不得用食用谷物、甜菜种子或其他蔬菜物种替代。 | 批次记录；品种或亲本记录；产品说明 |
 | `dq_lot_traceability` | 所有过程转移和放行批次 | 从田间建植至收获、提取、调制、处理、包装、检验、储存以及放行或转用途，保留可追溯批次标识。 | 田间到批次台账；批次票据；证书 |
@@ -1110,3 +1047,4 @@ sync_with: pcr.en-US.md
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

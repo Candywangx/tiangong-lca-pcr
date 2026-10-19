@@ -404,8 +404,8 @@ process_inventory:
           role: "Nitrate released to water"
           name: "Nitrate emission to water"
           flow_type: "elementary"
-          property_unit: "Mass / kg nitrate or declared nitrogen basis"
-          description: "Calculate nitrate loss only where the selected nutrient-loss method and site conditions support a water pathway; retain the receiving-water context. Raw activity or stage basis: per declared crop cycle and per 1,000 kg accepted potatoes."
+          property_unit: "Mass / kg NO3-"
+          description: "Calculate nitrate loss only where the selected nutrient-loss method and site conditions support a water pathway; retain the receiving-water context. Raw activity or stage basis: per declared crop cycle and per 1,000 kg accepted potatoes. Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass."
           amount:
             expression: "apply the selected nutrient-loss method to collected nitrogen activity and site conditions"
             value_mode: "calculated_value"
@@ -423,8 +423,8 @@ process_inventory:
           role: "Phosphate released to water"
           name: "Phosphate emission to water"
           flow_type: "elementary"
-          property_unit: "Mass / kg phosphate or declared phosphorus basis"
-          description: "Calculate phosphate loss only where erosion, runoff, drainage, or another selected method supports the pathway; retain phosphorus basis and receiving-water context. Raw activity or stage basis: per declared crop cycle and per 1,000 kg accepted potatoes."
+          property_unit: "Mass / kg PO4"
+          description: "Calculate phosphate loss only where erosion, runoff, drainage, or another selected method supports the pathway; retain phosphorus basis and receiving-water context. Raw activity or stage basis: per declared crop cycle and per 1,000 kg accepted potatoes. Final exchange mass is kg PO4; retain P-based activity, factors and screens in a separate ledger. Convert only the mass of P attributed to this chemical species by 95/31 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass."
           amount:
             expression: "apply a declared geographically applicable phosphorus-loss method to collected activity and site conditions"
             value_mode: "calculated_value"
@@ -503,7 +503,7 @@ dataset_production:
       flow_role: "managed-soil emissions"
       record_type: "nutrient, residue, soil, weather, irrigation, and model records"
       raw_fields: "fertilizer_N; organic_N; residue_N; urea; lime; soil; climate; drainage; factor_set; model_version"
-      collection_method: "calculate each pathway with one declared method from collected activity data; Raw aggregation and attribution: calculate per field, area-weight where justified, then normalize by same-cycle accepted yield"
+      collection_method: "Within each compatible route/product/state, calculate attributable raw totals by field first. Aggregate final intensity = sum(attributable raw quantities) * declared reference quantity / sum(matched accepted final outputs). When source quantities are per-ha rates e_h and y_h, first recover raw totals as e_h*area and y_h*area; do not area-weight field totals again. A per-product intensity is weighted by its matched output, not area or an unweighted mean. Apply existing allocation once, preserve period/throughput and all source-unit conversions, and keep incompatible routes separate."
       unit: "kg N; kg material; kg emission; ha"
       frequency: "each event and crop-cycle calculation"
       temporal_coverage: "complete crop cycle"
@@ -560,6 +560,16 @@ dataset_production:
       output: "reconciled output classes"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_soil_emission_activity
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_product_identity
       applies_to: "reference and secondary outputs"
@@ -648,7 +658,7 @@ data_sources:
     used_for: "harvest-output balance calculation and validation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:1930a3f038de35f19421aee974f2d822947891d99b90e4caba994d8c75bfed78"
+  source_sha256: "sha256:f7a170c6f9b77d46df828ba0c597795c6da4d060f417667e995555a0cbd95520"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4451"
@@ -699,16 +709,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_24472"
+    - unit_id: "normative_25466"
       family: "allocation"
       span:
         start:
-          offset: 24472
-          line: 398
+          offset: 25466
+          line: 402
           column: 1
         end:
-          offset: 25589
-          line: 407
+          offset: 26583
+          line: 411
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | field and farm-gate operations | Prefer subdivision and direct measurement of operations and outputs before applying allocation. | `iso-14044-2006`; `ilcd-handbook-2010` |\n| `allocation_reference_and_secondary` | accepted and secondary usable potatoes | If both outputs share inseparable burdens, apply economic allocation using contemporaneous farm-gate values; disclose grade, moisture basis, prices, and a mass-allocation sensitivity. | `iso-14044-2006` |\n| `allocation_residue_and_waste` | retained residues and waste outputs | Do not allocate burdens to material retained or incorporated in the field or sent as waste; include its management and applicable emissions in the foreground. | `ipcc-2019-managed-soils` |\n| `allocation_seed_feedback` | farm-retained planting tubers | Record the retained seed-grade tubers as an input to the next crop cycle and an output or internal transfer of the producing cycle; prevent double counting across cycles. | `ilcd-handbook-2010` |\n\n"
       headings:
@@ -727,12 +737,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 24472
-              line: 398
+              offset: 25466
+              line: 402
               column: 1
             end:
-              offset: 24512
-              line: 398
+              offset: 25506
+              line: 402
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -747,16 +757,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_33237"
+    - unit_id: "normative_36049"
       family: "validation"
       span:
         start:
-          offset: 33237
-          line: 443
+          offset: 36049
+          line: 448
           column: 1
         end:
-          offset: 34837
-          line: 455
+          offset: 37649
+          line: 460
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_output` | terminal product output | Exactly one terminal reference output equals 1,000 kg and uses UUID `65443696-51af-4ba8-8f73-06d434a36605` with the required qualifiers. |  |\n| `validation_crop_cycle` | all inventory rows | Field area, inputs, output, residues, and emissions must describe the same declared crop cycle and geography. |  |\n| `validation_mass_balance` | harvest and sorting | Reconcile gross harvested tuber mass with accepted potatoes, secondary usable potatoes, waste, and measured handling loss within declared uncertainty. | `mass-balance-identity` |\n| `validation_nutrient_identity` | soil nutrient inputs | Preserve each product identity and product mass; nutrient-basis calculations must not replace or merge the concrete product exchanges. |  |\n| `validation_flow_identity_expansion` | parameterized umbrella cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_soil_emissions` | managed-soil outputs | Reconcile nitrogen inputs and residue fate with direct and indirect N2O pathways and disclose the selected method and factors. | `ipcc-2019-managed-soils` |\n| `validation_no_double_count` | upstream and foreground inventory | Do not count irrigation withdrawal, fuel combustion, fertilizer production, or soil emissions both in upstream datasets and as duplicate foreground burdens. | `ilcd-handbook-2010` |\n\n"
       headings:
@@ -775,12 +785,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 33237
-              line: 443
+              offset: 36049
+              line: 448
               column: 1
             end:
-              offset: 33259
-              line: 443
+              offset: 36071
+              line: 448
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -864,145 +874,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid"
       identity_kind: "explicit"
-      unit_id: "normative_24472"
+      unit_id: "normative_25466"
       source_span:
         start:
-          offset: 24585
-          line: 402
+          offset: 25579
+          line: 406
           column: 1
         end:
-          offset: 24779
-          line: 402
+          offset: 25773
+          line: 406
           column: 195
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_reference_and_secondary"
       identity_kind: "explicit"
-      unit_id: "normative_24472"
+      unit_id: "normative_25466"
       source_span:
         start:
-          offset: 24780
-          line: 403
+          offset: 25774
+          line: 407
           column: 1
         end:
-          offset: 25066
-          line: 403
+          offset: 26060
+          line: 407
           column: 287
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_and_waste"
       identity_kind: "explicit"
-      unit_id: "normative_24472"
+      unit_id: "normative_25466"
       source_span:
         start:
-          offset: 25067
-          line: 404
+          offset: 26061
+          line: 408
           column: 1
         end:
-          offset: 25328
-          line: 404
+          offset: 26322
+          line: 408
           column: 262
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_seed_feedback"
       identity_kind: "explicit"
-      unit_id: "normative_24472"
+      unit_id: "normative_25466"
       source_span:
         start:
-          offset: 25329
-          line: 405
+          offset: 26323
+          line: 409
           column: 1
         end:
-          offset: 25587
-          line: 405
+          offset: 26581
+          line: 409
           column: 259
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_output"
       identity_kind: "explicit"
-      unit_id: "normative_33237"
+      unit_id: "normative_36049"
       source_span:
         start:
-          offset: 33332
-          line: 447
+          offset: 36144
+          line: 452
           column: 1
         end:
-          offset: 33533
-          line: 447
+          offset: 36345
+          line: 452
           column: 202
     - pointer: "/validation_rules/1"
       rule_id: "validation_crop_cycle"
       identity_kind: "explicit"
-      unit_id: "normative_33237"
+      unit_id: "normative_36049"
       source_span:
         start:
-          offset: 33534
-          line: 448
+          offset: 36346
+          line: 453
           column: 1
         end:
-          offset: 33697
-          line: 448
+          offset: 36509
+          line: 453
           column: 164
     - pointer: "/validation_rules/2"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_33237"
+      unit_id: "normative_36049"
       source_span:
         start:
-          offset: 33698
-          line: 449
+          offset: 36510
+          line: 454
           column: 1
         end:
-          offset: 33928
-          line: 449
+          offset: 36740
+          line: 454
           column: 231
     - pointer: "/validation_rules/3"
       rule_id: "validation_nutrient_identity"
       identity_kind: "explicit"
-      unit_id: "normative_33237"
+      unit_id: "normative_36049"
       source_span:
         start:
-          offset: 33929
-          line: 450
+          offset: 36741
+          line: 455
           column: 1
         end:
-          offset: 34126
-          line: 450
+          offset: 36938
+          line: 455
           column: 198
     - pointer: "/validation_rules/4"
       rule_id: "validation_flow_identity_expansion"
       identity_kind: "explicit"
-      unit_id: "normative_33237"
+      unit_id: "normative_36049"
       source_span:
         start:
-          offset: 34127
-          line: 451
+          offset: 36939
+          line: 456
           column: 1
         end:
-          offset: 34372
-          line: 451
+          offset: 37184
+          line: 456
           column: 246
     - pointer: "/validation_rules/5"
       rule_id: "validation_soil_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_33237"
+      unit_id: "normative_36049"
       source_span:
         start:
-          offset: 34373
-          line: 452
+          offset: 37185
+          line: 457
           column: 1
         end:
-          offset: 34584
-          line: 452
+          offset: 37396
+          line: 457
           column: 212
     - pointer: "/validation_rules/6"
       rule_id: "validation_no_double_count"
       identity_kind: "explicit"
-      unit_id: "normative_33237"
+      unit_id: "normative_36049"
       source_span:
         start:
-          offset: 34585
-          line: 453
+          offset: 37397
+          line: 458
           column: 1
         end:
-          offset: 34835
-          line: 453
+          offset: 37647
+          line: 458
           column: 251
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1031,27 +1041,27 @@ normative_context:
           column: 183
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_24472"
+      unit_id: "normative_25466"
       source_span:
         start:
-          offset: 24472
-          line: 398
+          offset: 25466
+          line: 402
           column: 1
         end:
-          offset: 24512
-          line: 398
+          offset: 25506
+          line: 402
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_33237"
+      unit_id: "normative_36049"
       source_span:
         start:
-          offset: 33237
-          line: 443
+          offset: 36049
+          line: 448
           column: 1
         end:
-          offset: 33259
-          line: 443
+          offset: 36071
+          line: 448
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1060,5 +1070,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:1930a3f038de35f19421aee974f2d822947891d99b90e4caba994d8c75bfed78"
-  generated_content_sha256: "sha256:4cde332d19bfbf25adf8225e1fa93bfec7be079fc03c1567eeb9747a3d3ab689"
+    sha256: "sha256:f7a170c6f9b77d46df828ba0c597795c6da4d060f417667e995555a0cbd95520"
+  generated_content_sha256: "sha256:d2651289b5c646aff32475c085d1dc63197ce8ce51aaff24a9bd77ac495f8903"

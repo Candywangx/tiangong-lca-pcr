@@ -608,33 +608,6 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 收获前焚烧排放 (`preharvest_burn_emissions`)
-
-按关联田块、作物期、收获事件或批次记录该流，并保留其状态与去向。
-
-- 选定流: 收获前焚烧向空气排放的已声明污染物种
-- 流属性/单位: Mass / kg
-- 数量规则: 绿色收获时为零；否则依据焚烧干物质量及声明方法逐物种计算
-- 数值来源模式: 计算值 (`calculated_value`)
-- 适用范围: 路线特定 (`route_specific`)
-原始活动或阶段基准：每 1 kg 农业田间交接的合格成熟甘蔗茎.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 参考流 (`reference_flow`)
-- 证据类型: 由采集记录计算 (`calculated_from_collection`)
-- 采集协议: `cp_residue_routes`
-- 来源: `ipcc-managed-soils-2019`; `fao-cane-environment-1997`
-- 数量范围: 完整定量 QA 范围
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 0.1
-  - 单位: kg
-  - 基准: 每 kg 合格甘蔗的全物种筛查量；每条交换仍须保持物种特定
-  - 基准类型: 参考流 (`reference_flow`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-  - 来源:
-
-
 ### 过程：田间初级处理与农业田间交接 (`field_conditioning`)
 
 #### 输入
@@ -877,15 +850,22 @@ sync_with: pcr.en-US.md
 | `calc_mass_closure` | 收获与调理 | 水分对齐投入 = 合格产出 + 预期产出 + 留存物料 + 损失 + 拒收物 + 其他离开量 ± 实测库存变化 | all inlet and outlet masses; moisture | mass-closure residual | `mass-balance-identity` |
 | `calc_residue_exclusivity` | 蔗梢、蔗叶与蔗蔸 | 抽样残体总量 = 留田 + 预期移除 + 焚烧 + 回收/处置 + 蔗蔸类别，各份额互斥 | residue dry matter; destinations; N content | residue mass and N by route | `ipcc-managed-soils-2019` |
 | `calc_soil_emissions` | 管理土壤排放 | 对采集的养分产品、作物残体路线、石灰、尿素和场地条件应用声明的现行 IPCC 或获接受区域层级；保留气体及环境区室身份 | field input and residue records; factors | species-specific emissions | `ipcc-managed-soils-2019` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | reference product | 保留平台 UUID、物种或杂交种、农业田间交接、成熟度、水分、预烧状态、收获方式及验收条件。 | flow record; lot acceptance |
 | `dq_periods` | crop series | 覆盖建植、每个纳入宿根期、最终终止及每次合格收获；识别缺失或不完整期间。 | field register; crop-series reconciliation |
 | `dq_routes` | harvest and residues | 要求互斥的绿色/预烧状态，以及具质量与干物质证据的残体互斥去向。 | harvest log; sampling; destination records |
 | `dq_completeness` | all processes | 报告初级数据覆盖、缺失数据、暂定估算、秤与仪表校准、质量闭合及 Range 例外。 | coverage table; calibration; QA report |
+
+### 物质特定释放要求
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `preharvest_burn_emissions_specific_emission` | harvest | 针对实际 harvest 活动，保留原 cp_residue_routes 采集职责和活动/状态/期间基准。按实际测量或兼容路径方法逐一核算该职责涉及的释放，保留活动与因子单位。这是强制身份识别及核算要求，不是一个集合基本交换。逐一列出实际排放物质及接收环境，分别建具体卡或复用现有匹配卡一次，采用已核实UUID或明确未决身份。泛称污染物/挥发物/残体、总质量损失或合计筛查区间不能证明化合物或单项排放量。保留元素、分子或报告口径，原始数量归属后按合格参考产出归一化一次。不适用须有据；身份、方法或活动缺失会阻止完整性。已含于完整服务或上游数据的同一释放不得重复。 绿色不焚烧收获仅在有据无燃烧时记该路径不适用；实际焚烧按实测燃烧干物质及各物质适用因子计算，不以总排放区间作为各物质因子。 | cp_residue_routes | 独立有据物质/接收环境交换 | `ipcc-managed-soils-2019`; `fao-cane-environment-1997` |
 
 ## 9. 校验规则
 

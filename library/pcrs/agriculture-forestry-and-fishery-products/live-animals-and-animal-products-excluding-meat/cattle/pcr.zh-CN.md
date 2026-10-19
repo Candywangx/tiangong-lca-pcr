@@ -167,7 +167,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_energy_and_infrastructure`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -186,7 +186,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_and_infrastructure`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -306,15 +306,8 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集计算（`calculated_from_collection`）
 - 采集协议：`cp_animal_events`
-- 数量范围：死亡质量平衡校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg 死亡质量/kg 起始与出生存活质量
-  - 基准：受牛群组活体质量平衡约束的死亡比例
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
 
 ###### 转入管理的粪污（`manure_to_management`）
 
@@ -388,7 +381,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_energy_and_infrastructure`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -704,7 +697,7 @@ sync_with: pcr.en-US.md
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `c_normalize_reference` | 全部清单行 | 归一化数量 = 已归属过程数量 / 声明称量基准上的合格农场门活牛质量。 | 已归属数量；合格活重 | 每 1 kg 参考产出的数量 | `reference-definition` |
 | `c_herd_balance` | 动物事件 | 期初动物 + 出生 + 购入 = 送往门口的牛 + 其他销售 + 死亡 + 淘汰 + 期末动物；按类别和时期分别核对，且不得混合头数与质量。 | 动物事件头数和质量 | 群组时期平衡及残差 | `mass-balance-identity` |
@@ -718,10 +711,11 @@ sync_with: pcr.en-US.md
 | `calc_manure_n2o_coverage` | `manure_nitrous_oxide_air` | 按真实粪污阶段，采用有记录的物种/系统活动量及因子基准，分别计算直接 N2O、挥发/沉降引致间接 N2O，以及适用的淋溶/径流引致间接 N2O。N2O-N 乘 44/28 恰换算一次为分子态 N2O；已为分子质量的不得再次换算。保留分项计算表。现有 N2O 卡同时覆盖直接与间接排放时，填报其不重叠总和；已有直接/间接独立卡时，每个分项只归入对应卡，不再另报总和。放牧沉积及田间施用采用管理土壤方法，不套用粪污贮存因子。明确前景与已链接处理/牧地数据的核算责任；粪污转出不消除此前排放，已覆盖的下游排放不得重复。氮级联核对库存、转移及此前氮损失；间接 N2O 是前体的下游转化，不再次视为源阶段氮损失。可归属分子质量对合格参考产出归一化一次。记录不适用依据；路径数据缺失不等于零。 | `cp_manure_n2o_coverage` | 按路径及现有归属卡分开的 kg 分子态 N2O | `ipcc-2019-livestock-manure`; `ipcc-managed-soils-2019` |
 | `manure_nitrogen_losses_specific_emission` | `manure_management` | 对每条实际牛粪污路径，分别识别报告的氨、氮氧化物、硝酸盐及其他有证据的氮物种和接收介质，保留原粪污路径与活牛产出的归属。以统一元素 N 台账核对：不重叠的损失总量不得超过扣除外运及留存氮后的可用粪污 N；原 0 至 1 比例是总氮平衡校验，不是化合物排放因子。相连路径不得重复扣计同一份氮。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_manure_and_emissions` | 逐物质和介质的排放交换及独立元素台账 | `fao-leap-nutrient-flows-2018`; `ipcc-2019-livestock-manure`; `mass-balance-identity` |
 | `c_gate_carcass_availability` | `gate_rejects_and_losses` 范围核对 | Q_carcass_gate 为本门口作业内新产生且逐项去重的实际尸体质量之和，排除前阶段尸体及重复移动或处理单据。Q_accepted 为同一批次及期间实测且严格大于零的合格活体产出质量。依既有非负负担归属及最终参考流归一化后，每 kg 合格产出的尸体交换量应介于 0 与 Q_carcass_gate / Q_accepted。范围仅核对有独立记录的实际数量，不得由上限或活重残差生成交换。尸体/产出记录缺失或范围不匹配时，该 QA 无法评价，不是零值或通过。零尸体量须有实际未发生的记录；合格产出为零的批次不能归一化为 1 kg 产品数据集。调查不一致及称重不确定性，不把记录截断到上限。 | `cp_gate_transfer`; 实际尸体事件/质量/去向及合格产出记录 | 场址特定 kg 尸体/kg 合格活体产出的 QA 上限 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_manure_and_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 参考和所有最终交换 | 数据集发布前确认具体流类型、方向、产品或物质身份、农场或过程节点、属性、单位及支撑引用。 | 平台详情读取和支撑引用审核 |
 | `dq_route` | 每条表示路线 | 声明受控父级活动及其在饲料、拓扑、粪污、基础设施、计算和验证方面的路线差异；不得合并不相容路线记录。 | 路线说明、舍饲/放牧记录、过程图 |

@@ -436,8 +436,8 @@ process_inventory:
           role: "Direct nitrous oxide to air"
           name: "nitrous oxide emission to air from managed orchard soil"
           flow_type: "elementary"
-          property_unit: "Mass / kg N2O or kg N2O-N"
-          description: "Direct managed-soil nitrous oxide is calculated when the declared method represents emissions from nitrogen inputs. Raw activity or stage basis: per 1 kg reference product."
+          property_unit: "Mass / kg N2O"
+          description: "Direct managed-soil nitrous oxide is calculated when the declared method represents emissions from nitrogen inputs. Raw activity or stage basis: per 1 kg reference product. The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero."
           amount:
             expression: "calculate from declared nitrogen inputs and selected emission method, retaining N2O-N and conversion basis"
             value_mode: "calculated_value"
@@ -456,30 +456,10 @@ process_inventory:
           role: "Ammonia to air"
           name: "ammonia emission to air from soil or applied nutrient products"
           flow_type: "elementary"
-          property_unit: "Mass / kg NH3-N or kg NH3"
-          description: "Ammonia volatilization is recorded when relevant nutrient inputs and the receiving medium are represented. Raw activity or stage basis: per 1 kg reference product."
+          property_unit: "Mass / kg NH3"
+          description: "Ammonia volatilization is recorded when relevant nutrient inputs and the receiving medium are represented. Raw activity or stage basis: per 1 kg reference product. Final exchange mass is kg NH3; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 17/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass."
           amount:
             expression: "calculate from nitrogen input and application method using the selected emission method"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "n_input"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_orchard_input_records
-              source_ids:
-                - ipcc-2019-soils-n2o
-                - source_foreground_records
-            ranges: []
-        - row_id: nutrient_losses_to_water_or_soil
-          role: "Nitrate and phosphate losses"
-          name: "one reported nitrate or phosphate species to one evidenced receiving medium; create separate foreground exchanges by substance and compartment"
-          flow_type: "elementary"
-          property_unit: "Mass / kg released substance; retain kg N or kg P as a separate calculation basis"
-          description: "Nitrate and phosphate losses are recorded as separate substances and receiving media when runoff, drainage, or leaching is included; a generic nutrient label cannot determine the medium. Raw activity or stage basis: per 1 kg reference product."
-          amount:
-            expression: "measured or calculated nutrient loss using the declared soil, drainage, runoff, and nutrient-management method"
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -1036,6 +1016,25 @@ dataset_production:
       output: "actual stream-specific exchanges, destinations and nonduplicated mass balance"
       source_ids:
         - source_foreground_records
+    - id: nutrient_losses_to_water_or_soil_identity_and_fate
+      applies_to: "orchard_cultivation_and_protection"
+      rule: "Identify every actual emitted substance and receiving compartment separately. Quantify each supported pathway with its own activity, method, chemical-species basis and native unit; distinguish elemental N/P ledgers from final compounds. Soil nutrient retention or a mass-balance residual is not automatically an emission. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_orchard_input_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - ipcc-2019-soils-n2o
+        - source_foreground_records
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_orchard_input_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity_and_qualifiers
       applies_to: "reference product and every grade output"
@@ -1138,7 +1137,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:618f08f5a0273d994e71ef9e06a5c9255da39d3a832d17ea340e3b9fb2fc4e24"
+  source_sha256: "sha256:c61ef21e9f6a8104014e1e11c862e9f5dfab360a7631b7cb26b178cec5c4ed36"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5897"
@@ -1189,16 +1188,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46368"
+    - unit_id: "normative_46269"
       family: "allocation"
       span:
         start:
-          offset: 46368
-          line: 724
+          offset: 46269
+          line: 711
           column: 1
         end:
-          offset: 47691
-          line: 734
+          offset: 47592
+          line: 721
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_accepted_output` | accepted fresh fruit | Use net accepted fresh fruit as the reference output; do not allocate it from gross harvested mass. | `unece-ffv-29-plums-2020`; `source_foreground_records` |\n| `allocation_grade_outputs` | accepted, downgraded, processing, and cull outputs | Measure and separate every intended grade or destination. If shared burdens cannot be split directly, use the declared physical mass basis; use another basis only with product-specific evidence and disclosure. | `source_foreground_records` |\n| `allocation_residues_losses` | culls, residues, and wastes | Do not allocate burdens to a residue or waste with no intended product function. Record recovered or sold co-products separately and apply the declared attribution method consistently. | `source_foreground_records` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1217,12 +1216,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46368
-              line: 724
+              offset: 46269
+              line: 711
               column: 1
             end:
-              offset: 46408
-              line: 724
+              offset: 46309
+              line: 711
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1237,16 +1236,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_71501"
+    - unit_id: "normative_73908"
       family: "validation"
       span:
         start:
-          offset: 71501
-          line: 785
+          offset: 73908
+          line: 774
           column: 1
         end:
-          offset: 73168
-          line: 796
+          offset: 75575
+          line: 785
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_flow` | reference product | Accept only a 1 kg net accepted fresh-fruit reference flow with required qualifiers; do not use gross harvest or a processing output as the reference flow. | `unece-ffv-29-plums-2020`; `source_foreground_records` |\n| `validation_process_completeness` | process map | Require cultivation, harvest, and every activated establishment or conditioning node to declare boundary, inputs, outputs, collection protocols, and hand-off. | `source_foreground_records` |\n| `validation_identity_coverage` | flow identities | Accept semantic identity evidence gaps only when flow type, direction, material or substance, receiving medium where applicable, and destination are declared; do not substitute a nearby product flow. | `source_foreground_records` |\n| `validation_mass_balance` | fruit outputs and losses | Fail when harvested fruit cannot be reconciled to accepted, downgraded, processing, cull, reject, and loss outputs or tare is included in net reference mass. | `source_foreground_records` |\n| `validation_emission_basis` | nutrient emissions | Check nitrogen inputs, receiving media, N2O-N or substance basis, and selected emission method before accepting calculated emissions. | `ipcc-2019-soils-n2o`; `source_foreground_records` |\n| `validation_boundary_disclosure` | dataset metadata | Fail when starting condition, orchard gate, productive-life treatment, included conditioning or packaging, downstream exclusions, or quality limitations are not disclosed. | `unece-ffv-29-plums-2020`; `source_foreground_records` |\n\n"
       headings:
@@ -1265,12 +1264,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 71501
-              line: 785
+              offset: 73908
+              line: 774
               column: 1
             end:
-              offset: 71523
-              line: 785
+              offset: 73930
+              line: 774
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1354,132 +1353,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_accepted_output"
       identity_kind: "explicit"
-      unit_id: "normative_46368"
+      unit_id: "normative_46269"
       source_span:
         start:
-          offset: 46481
-          line: 728
+          offset: 46382
+          line: 715
           column: 1
         end:
-          offset: 46695
-          line: 728
+          offset: 46596
+          line: 715
           column: 215
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_grade_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_46368"
+      unit_id: "normative_46269"
       source_span:
         start:
-          offset: 46696
-          line: 729
+          offset: 46597
+          line: 716
           column: 1
         end:
-          offset: 47021
-          line: 729
+          offset: 46922
+          line: 716
           column: 326
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residues_losses"
       identity_kind: "explicit"
-      unit_id: "normative_46368"
+      unit_id: "normative_46269"
       source_span:
         start:
-          offset: 47022
-          line: 730
+          offset: 46923
+          line: 717
           column: 1
         end:
-          offset: 47301
-          line: 730
+          offset: 47202
+          line: 717
           column: 280
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46368"
+      unit_id: "normative_46269"
       source_span:
         start:
-          offset: 47303
-          line: 732
+          offset: 47204
+          line: 719
           column: 1
         end:
-          offset: 47689
-          line: 732
+          offset: 47590
+          line: 719
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_flow"
       identity_kind: "explicit"
-      unit_id: "normative_71501"
+      unit_id: "normative_73908"
       source_span:
         start:
-          offset: 71596
-          line: 789
+          offset: 74003
+          line: 778
           column: 1
         end:
-          offset: 71862
-          line: 789
+          offset: 74269
+          line: 778
           column: 267
     - pointer: "/validation_rules/1"
       rule_id: "validation_process_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_71501"
+      unit_id: "normative_73908"
       source_span:
         start:
-          offset: 71863
-          line: 790
+          offset: 74270
+          line: 779
           column: 1
         end:
-          offset: 72105
-          line: 790
+          offset: 74512
+          line: 779
           column: 243
     - pointer: "/validation_rules/2"
       rule_id: "validation_identity_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_71501"
+      unit_id: "normative_73908"
       source_span:
         start:
-          offset: 72106
-          line: 791
+          offset: 74513
+          line: 780
           column: 1
         end:
-          offset: 72390
-          line: 791
+          offset: 74797
+          line: 780
           column: 285
     - pointer: "/validation_rules/3"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_71501"
+      unit_id: "normative_73908"
       source_span:
         start:
-          offset: 72391
-          line: 792
+          offset: 74798
+          line: 781
           column: 1
         end:
-          offset: 72637
-          line: 792
+          offset: 75044
+          line: 781
           column: 247
     - pointer: "/validation_rules/4"
       rule_id: "validation_emission_basis"
       identity_kind: "explicit"
-      unit_id: "normative_71501"
+      unit_id: "normative_73908"
       source_span:
         start:
-          offset: 72638
-          line: 793
+          offset: 75045
+          line: 782
           column: 1
         end:
-          offset: 72879
-          line: 793
+          offset: 75286
+          line: 782
           column: 242
     - pointer: "/validation_rules/5"
       rule_id: "validation_boundary_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_71501"
+      unit_id: "normative_73908"
       source_span:
         start:
-          offset: 72880
-          line: 794
+          offset: 75287
+          line: 783
           column: 1
         end:
-          offset: 73166
-          line: 794
+          offset: 75573
+          line: 783
           column: 287
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1508,27 +1507,27 @@ normative_context:
           column: 217
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46368"
+      unit_id: "normative_46269"
       source_span:
         start:
-          offset: 46368
-          line: 724
+          offset: 46269
+          line: 711
           column: 1
         end:
-          offset: 46408
-          line: 724
+          offset: 46309
+          line: 711
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_71501"
+      unit_id: "normative_73908"
       source_span:
         start:
-          offset: 71501
-          line: 785
+          offset: 73908
+          line: 774
           column: 1
         end:
-          offset: 71523
-          line: 785
+          offset: 73930
+          line: 774
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1537,5 +1536,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:618f08f5a0273d994e71ef9e06a5c9255da39d3a832d17ea340e3b9fb2fc4e24"
-  generated_content_sha256: "sha256:35e62826d2447786c82f104ff52dee0e60de4593f7d02e14f5428ef5f7870249"
+    sha256: "sha256:c61ef21e9f6a8104014e1e11c862e9f5dfab360a7631b7cb26b178cec5c4ed36"
+  generated_content_sha256: "sha256:2e8f8507ab71910bff5d8d089c81f26aec2dc4e1968f5d3231e07d7c295045e0"

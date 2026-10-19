@@ -156,32 +156,6 @@ process_inventory:
     label: "Managed silkworm rearing and spinning"
     inputs:
       product:
-        - row_id: seed_larvae
-          role: "Silkworm seed or larvae"
-          name: "Silkworm seed or larvae, stage-specific (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass or count / kg or item"
-          description: "Purchased eggs or larvae enter one identified cohort; opening stock is not a second purchased exchange. Denominator and scope requirements：per kg spun cocoons from identified cohort Raw quantity and calculation requirements: Record purchased count, stage, measured lot mass when available and stock changes. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_cohort_inputs
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "item/kg"
-                basis: "per kg spun cocoons; investigate outliers"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: rear_water
           role: "Rearing and cleaning water"
           name: "Supplied process water (UUID unresolved)"
@@ -236,7 +210,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_utilities and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -596,7 +570,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_utilities and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -1043,6 +1017,13 @@ dataset_production:
       output: "separate feed supply, intake and loss quantities, in matched as-fed/DM units"
       source_ids:
         - fao-feed-loss-accounting-2018
+    - id: seed_larvae_identity_and_fate
+      applies_to: "rear"
+      rule: "For the original seed_larvae collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults."
+      inputs:
+        - cp_cohort_inputs
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "each lot"
@@ -1127,7 +1108,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:25a6df1e4226835d3e3436288f09da47c9d05782922588ee2855059abc30a333"
+  source_sha256: "sha256:1412cf1996ab701c2c2fd2654ab47c31218a3a1db655f85f7169f79dc5c919de"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7670"
@@ -1178,16 +1159,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_51458"
+    - unit_id: "normative_49541"
       family: "allocation"
       span:
         start:
-          offset: 51458
-          line: 820
+          offset: 49541
+          line: 790
           column: 1
         end:
-          offset: 52961
-          line: 830
+          offset: 51044
+          line: 800
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_output | separately marketed outputs | First subdivide cohort, grade and conditioning records by physical lot. If reelable and separately marketed spinning-grade cocoons are joint outputs of an indivisible operation, document and justify physical causal allocation where supported; otherwise disclose economic allocation, price period and uncertainty. Unsold rejects and moisture loss are not co-products. | fao-cocoon-quality;fao-cocoon-drying |\n| a_period | cohorts and host-crop phases | Attribute leaf inputs, rearing operations and cocoon outputs to actual cohort and reporting period; carry opening/closing stock and unfinished cohorts across calendar cut-offs. | fao-cocoon-quality |\n| a_shared | shared infrastructure | Record host plots, rearing rooms, trays, mountages, graders and dryers with actual consuming nodes, cohorts and service periods; allocate manufacture, repair and utilities by observed use or justified disclosed proxy only once. | fao-cocoon-quality;fao-cocoon-drying |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1206,12 +1187,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 51458
-              line: 820
+              offset: 49541
+              line: 790
               column: 1
             end:
-              offset: 51498
-              line: 820
+              offset: 49581
+              line: 790
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1226,16 +1207,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_70765"
+    - unit_id: "normative_70163"
       family: "validation"
       span:
         start:
-          offset: 70765
-          line: 876
+          offset: 70163
+          line: 847
           column: 1
         end:
-          offset: 73044
-          line: 888
+          offset: 72442
+          line: 859
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_identity | reference and final outputs | Reject pierced/unreelable cocoons as reelable or a lot without grade/state/gate evidence; never bind fresh/unprocessed farm-gate UUID to dried, stifled or other-gate lot. | fao-cocoon-quality;fao-cocoon-drying |\n| v_mass | fresh and dried lots | Require measured net mass and moisture per state; reconcile collection, grading, drying and final handover with sample and water-loss terms, not assumed dry yield. | fao-cocoon-characteristics;fao-cocoon-drying |\n| v_routes | route deltas | Accept host, climate or mounting variant only with changed inventory, calculation, quality or validation evidence relative to managed parent; reject label-only route. | fao-cocoon-quality |\n| v_attribution | multi-output and multi-period | Verify separately marketed outputs, waste, unfinished cohorts, shared assets and service periods; one cocoon mass and shared burden may have only one attributed handover. | fao-cocoon-quality |\n| v_binding | flow cards | Resolve unresolved inputs to evidenced concrete UUIDs before TIDAS process exchange; leave other UUIDs unresolved until detail-confirmed. | |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `fao-feed-loss-accounting-2018` |\n\n"
       headings:
@@ -1254,12 +1235,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 70765
-              line: 876
+              offset: 70163
+              line: 847
               column: 1
             end:
-              offset: 70787
-              line: 876
+              offset: 70185
+              line: 847
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1343,145 +1324,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_output"
       identity_kind: "explicit"
-      unit_id: "normative_51458"
+      unit_id: "normative_49541"
       source_span:
         start:
-          offset: 51571
-          line: 824
+          offset: 49654
+          line: 794
           column: 1
         end:
-          offset: 52021
-          line: 824
+          offset: 50104
+          line: 794
           column: 451
     - pointer: "/allocation_rules/1"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_51458"
+      unit_id: "normative_49541"
       source_span:
         start:
-          offset: 52022
-          line: 825
+          offset: 50105
+          line: 795
           column: 1
         end:
-          offset: 52265
-          line: 825
+          offset: 50348
+          line: 795
           column: 244
     - pointer: "/allocation_rules/2"
       rule_id: "a_shared"
       identity_kind: "explicit"
-      unit_id: "normative_51458"
+      unit_id: "normative_49541"
       source_span:
         start:
-          offset: 52266
-          line: 826
+          offset: 50349
+          line: 796
           column: 1
         end:
-          offset: 52571
-          line: 826
+          offset: 50654
+          line: 796
           column: 306
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_51458"
+      unit_id: "normative_49541"
       source_span:
         start:
-          offset: 52573
-          line: 828
+          offset: 50656
+          line: 798
           column: 1
         end:
-          offset: 52959
-          line: 828
+          offset: 51042
+          line: 798
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_70765"
+      unit_id: "normative_70163"
       source_span:
         start:
-          offset: 70860
-          line: 880
+          offset: 70258
+          line: 851
           column: 1
         end:
-          offset: 71116
-          line: 880
+          offset: 70514
+          line: 851
           column: 257
     - pointer: "/validation_rules/1"
       rule_id: "v_mass"
       identity_kind: "explicit"
-      unit_id: "normative_70765"
+      unit_id: "normative_70163"
       source_span:
         start:
-          offset: 71117
-          line: 881
+          offset: 70515
+          line: 852
           column: 1
         end:
-          offset: 71363
-          line: 881
+          offset: 70761
+          line: 852
           column: 247
     - pointer: "/validation_rules/2"
       rule_id: "v_routes"
       identity_kind: "explicit"
-      unit_id: "normative_70765"
+      unit_id: "normative_70163"
       source_span:
         start:
-          offset: 71364
-          line: 882
+          offset: 70762
+          line: 853
           column: 1
         end:
-          offset: 71581
-          line: 882
+          offset: 70979
+          line: 853
           column: 218
     - pointer: "/validation_rules/3"
       rule_id: "v_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_70765"
+      unit_id: "normative_70163"
       source_span:
         start:
-          offset: 71582
-          line: 883
+          offset: 70980
+          line: 854
           column: 1
         end:
-          offset: 71825
-          line: 883
+          offset: 71223
+          line: 854
           column: 244
     - pointer: "/validation_rules/4"
       rule_id: "v_binding"
       identity_kind: "explicit"
-      unit_id: "normative_70765"
+      unit_id: "normative_70163"
       source_span:
         start:
-          offset: 71826
-          line: 884
+          offset: 71224
+          line: 855
           column: 1
         end:
-          offset: 71994
-          line: 884
+          offset: 71392
+          line: 855
           column: 169
     - pointer: "/validation_rules/5"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_70765"
+      unit_id: "normative_70163"
       source_span:
         start:
-          offset: 71995
-          line: 885
+          offset: 71393
+          line: 856
           column: 1
         end:
-          offset: 72595
-          line: 885
+          offset: 71993
+          line: 856
           column: 601
     - pointer: "/validation_rules/6"
       rule_id: "v_feed_supply_intake_separation"
       identity_kind: "explicit"
-      unit_id: "normative_70765"
+      unit_id: "normative_70163"
       source_span:
         start:
-          offset: 72596
-          line: 886
+          offset: 71994
+          line: 857
           column: 1
         end:
-          offset: 73042
-          line: 886
+          offset: 72440
+          line: 857
           column: 447
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1510,27 +1491,27 @@ normative_context:
           column: 157
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_51458"
+      unit_id: "normative_49541"
       source_span:
         start:
-          offset: 51458
-          line: 820
+          offset: 49541
+          line: 790
           column: 1
         end:
-          offset: 51498
-          line: 820
+          offset: 49581
+          line: 790
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_70765"
+      unit_id: "normative_70163"
       source_span:
         start:
-          offset: 70765
-          line: 876
+          offset: 70163
+          line: 847
           column: 1
         end:
-          offset: 70787
-          line: 876
+          offset: 70185
+          line: 847
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1539,5 +1520,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:25a6df1e4226835d3e3436288f09da47c9d05782922588ee2855059abc30a333"
-  generated_content_sha256: "sha256:969e95451eefc20d9e0bd51ae3f4ff0cdf6b45e5877f82fec352baacac598697"
+    sha256: "sha256:1412cf1996ab701c2c2fd2654ab47c31218a3a1db655f85f7169f79dc5c919de"
+  generated_content_sha256: "sha256:459d5e487a1c0e7aa6967d331be96ced036e8ab19a9fb7b1398b2a423b0a3bb0"

@@ -103,7 +103,7 @@ Record certified or otherwise documented alfalfa seed by pure-live-seed basis. K
 - Selected flow: Alfalfa seed for sowing
 - Flow property / unit: Mass / kg
 - Identity resolution: Unresolved after one initial and one refined search; returned candidates were forage alfalfa, processed alfalfa or another forage species rather than alfalfa seed for sowing.
-- Amount rule: measured purchased and used mass, corrected to pure live seed for the seeded area
+- Amount rule: Record actual physical seed-product mass used, net of documented unused returns, with its supplier/lot, treatment, purity and germination/viability attributes. Pure-live-seed equivalent = physical seed mass × purity fraction × viability fraction is a separate quality/rate attribute, never the purchased-product exchange mass or another purchase. If only pure-live-seed rate is known, recover physical quantity using evidenced nonzero lot fractions; otherwise leave physical seed use incomplete. Retain the original stock, period and reference-output attribution.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
@@ -481,15 +481,8 @@ Raw activity or stage basis: per productive hectare-year before yield normalizat
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_stand_year_records`
 - Sources: `umn-alfalfa-drought-2024`; `usda-ars-alfalfa-irrigation`
-- Range: Source-supported seasonal crop-water screen
-  - Range role: Typical range (`typical_range`)
-  - Lower: 4000
-  - Upper: 8000
-  - Unit: m3/ha*a
-  - Basis: seasonal precipitation plus irrigation-equivalent water use per productive hectare-year; report supplied irrigation separately
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `umn-alfalfa-drought-2024`; `usda-ars-alfalfa-irrigation`
+
+The cited crop-water requirement or precipitation-plus-irrigation context is not a supplied-irrigation amount or validity bound. Collect actual delivered irrigation at its stated meter/boundary, or derive it from a fully declared site water balance distinguishing effective rainfall, soil-water storage, conveyance/application efficiency and returns. No numeric delivery range is established here; rainfed zero requires evidence and a measured value outside a literature water-demand context must not be clipped.
 
 ###### Electricity, medium voltage input (`annual_field_energy`)
 
@@ -858,6 +851,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_energy` | energy cards | sum carrier quantity × declared net-energy conversion; retain carrier identity and do not add service and fuel representations of the same operation | carrier quantities, electricity, conversion factors, operation ids | MJ by process and period |  |
 | `calc_cut_mass_balance` | each cut | harvest-ready input = accepted fresh output + rejected/lost biomass + separately traced destinations, within stated measurement uncertainty | incoming biomass, accepted mass, rejected mass, other destinations | reconciled cut mass balance | `mass-balance-identity` |
 | `calc_managed_soil_emissions` | nitrogen and amendment emissions | apply the declared inventory-method equations and factors to actual relevant N, urea, lime, residue and renewal activity data; separate species and compartments | recorded activity data, method version and factors | species-specific elementary exchanges | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_stand_year_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

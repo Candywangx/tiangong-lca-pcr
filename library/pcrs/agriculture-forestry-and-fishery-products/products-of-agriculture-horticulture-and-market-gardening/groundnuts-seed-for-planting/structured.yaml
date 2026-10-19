@@ -387,7 +387,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_field_energy_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -546,41 +546,14 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       elementary:
-        - row_id: managed_soil_nitrogen_emissions_to_water
-          role: "Managed-soil nitrogen emissions to water"
-          name: "nitrogen species emitted to water from managed soil"
-          flow_type: "elementary"
-          property_unit: "Mass / kg species and kg N"
-          description: "Record nitrate or other nitrogen species reaching the declared water compartment when required by the selected method and scope. Raw activity or stage basis: per 1 kg accepted seed output."
-          amount:
-            expression: "calculated from nutrient inputs, site conditions, and the selected leaching method"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "n_input"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_nutrient_input_records
-              source_ids:
-                - ipcc-2019-managed-soils-n2o
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "declared flow unit"
-                basis: "declared process or reference-flow basis"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: fossil_carbon_dioxide_from_field_energy
           role: "Fossil carbon dioxide from field energy"
           name: "fossil carbon dioxide emitted to air from field energy"
           flow_type: "elementary"
           property_unit: "Mass / kg"
-          description: "Calculate fossil combustion emissions from recorded field energy and a declared factor. Raw activity or stage basis: per 1 kg accepted seed output."
+          description: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero. Raw activity or stage basis: per 1 kg accepted seed output."
           amount:
-            expression: "recorded fuel or energy quantity multiplied by the declared emission factor"
+            expression: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -591,6 +564,7 @@ process_inventory:
               collection_protocol_id: cp_field_energy_records
               source_ids:
                 - ipcc-2019-cropland
+                - ipcc-2006-energy-combustion-boundary
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -785,34 +759,7 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       waste:
-        - row_id: conditioning_rejects_and_screenings
-          role: "Conditioning rejects and screenings"
-          name: "rejected seed, screenings, dust, or off-grade material by declared fate"
-          flow_type: "waste"
-          property_unit: "Mass / kg"
-          description: "Record rejected seed, screenings, broken kernels, dust, and off-grade material by mass and fate. Raw activity or stage basis: per 1 kg accepted seed."
-          amount:
-            expression: "weighed or reconciled reject stream by batch and destination"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_reject_mass_records
-              source_ids:
-                - usda-seed-cleaning-handling
-                - mass-balance-identity
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "declared flow unit"
-                basis: "declared process or reference-flow basis"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
       elementary:
         []
   - id: seed_storage
@@ -1039,6 +986,11 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Every rejected or off-spec seed state is explicitly routed as reworked, downgraded, recovered, or discarded. A rework loop or boundary exit is linked to the producing conditioning node, and rejected material is excluded from accepted output until a new documented quality-release event occurs. Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness."
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_source_seed_lot_records
@@ -1081,8 +1033,8 @@ dataset_production:
       process_id: "field_groundnut_seed_multiplication"
       flow_role: "field fuel and electricity"
       record_type: "fuel or utility record"
-      raw_fields: "operation; carrier; quantity; machine or supplier; date; field"
-      collection_method: "fuel log, meter, invoice, contractor record; Raw aggregation and attribution: attribute energy without double counting"
+      raw_fields: "operation; carrier; quantity; machine or supplier; date; field ; actual locally burned fuel, fuel quantity/unit, density and net calorific value, fossil/biogenic fraction, combustion-only factor and unit, supplier/service boundary, existing combustion coverage"
+      collection_method: "fuel log, meter, invoice, contractor record; Raw aggregation and attribution: attribute energy without double counting ; Apply the combustion-only boundary in the energy-emission calculation rule; purchased power or inclusive services remain separate upstream burdens."
       unit: "L, kg, MJ, kWh"
       frequency: "operation or billing interval"
       temporal_coverage: "crop cycle"
@@ -1353,22 +1305,22 @@ dataset_production:
         - ipcc-2019-managed-soils-n2o
     - id: calculate_field_energy_emissions
       applies_to: "field energy"
-      rule: "multiply recorded fuel or energy by the declared factor and normalize to accepted seed"
+      rule: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
       inputs:
         - "field energy"
         - factor
       output: "field-energy emissions"
       source_ids:
-        - ipcc-2019-cropland
+        - ipcc-2006-energy-combustion-boundary
     - id: calculate_conditioning_energy_emissions
       applies_to: "conditioning energy"
-      rule: "multiply recorded conditioning fuel or energy by the declared factor and normalize"
+      rule: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
       inputs:
         - "conditioning energy"
         - factor
       output: "conditioning emissions"
       source_ids:
-        - fao-groundnut-drying-handling
+        - ipcc-2006-energy-combustion-boundary
     - id: reconcile_field_outputs
       applies_to: "field production"
       rule: "harvested seed crop plus residue, non-seed material, and documented loss reconcile to the harvest record within declared tolerance"
@@ -1407,6 +1359,15 @@ dataset_production:
       output: "separate substance/compartment emissions and elemental ledgers"
       source_ids:
         - ipcc-2019-managed-soils-n2o
+    - id: conditioning_rejects_and_screenings_identity_and_fate
+      applies_to: "seed_conditioning_treatment_and_packaging"
+      rule: "The conditioning_rejects_and_screenings collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred."
+      inputs:
+        - cp_reject_mass_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - usda-seed-cleaning-handling
+        - mass-balance-identity
   data_quality_requirements:
     - id: dq_seed_identity
       applies_to: "reference product and source lots"
@@ -1493,6 +1454,11 @@ validation_rules:
     rule: "Confirm any intentional co-product is separately identified, destination is evidenced, and allocation or substitution treatment is disclosed."
     source_ids:
       - iso-14044-2006
+  - rule_id: validation_local_combustion_boundary
+    applies_to: "energy and fossil CO2"
+    rule: "Verify every local CO2 amount against actual in-boundary fuel combustion and compatible combustion-only factors; reconcile upstream electricity, heat, fuel-supply and inclusive-service coverage so the same release is counted once."
+    source_ids:
+      - ipcc-2006-energy-combustion-boundary
 published_dataset_profile:
   dataset_role: "unit_process"
   downstream_use: "secondary_dataset; background_dataset"
@@ -1558,9 +1524,17 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ipcc-2006-energy-combustion-boundary"
+    type: "method_factor"
+    reference: "IPCC 2006 Guidelines, Volume 2 Energy, Chapters 2 and 3 (stationary and mobile combustion), https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html"
+    used_for: "Combustion activity, compatible fuel-specific factors and fossil/biogenic distinction; no universal site factor adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ff86f586ec6bebe57057e4cc20a047efc671a19714ac7dfd4b13ffc5463b5880"
+  source_sha256: "sha256:0e59c4a333242576db6d480abe004ac2d85f7162ac8c8f2cbe1b449cfc36f408"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6867"
@@ -1611,18 +1585,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_51937"
+    - unit_id: "normative_51143"
       family: "allocation"
       span:
         start:
-          offset: 51937
-          line: 761
+          offset: 51143
+          line: 716
           column: 1
         end:
-          offset: 54118
-          line: 773
+          offset: 55308
+          line: 732
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_subdivision` | field and conditioning processes | Avoid allocation by separately recording seed multiplication, conditioning, treatment, packaging, rejects, and fate-specific handling whenever the processes can be subdivided. | `iso-14044-2006` |\n| `allocation_intended_outputs` | intentional product outputs | If a residue or off-grade stream is intentionally sold or transferred as a product, identify its destination and apply a declared attribution method only after product status is evidenced. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_seed_quality` | accepted seed and downgraded lots | Do not allocate seed-quality burdens to commodity grain or a downgraded stream unless the alternate output is intentionally produced, separately identified, and included in the declared gate. | `iso-14044-2006` |\n| `allocation_fallback` | multiple intended outputs | If subdivision is not possible, use a declared mass, physical-property, economic, or other defensible method, disclose the rationale, and test a materially different method as sensitivity. | `iso-14044-2006` |\n| `allocation_reject_fate` | rejects and waste | Keep field residue, conditioning rejects, packaging waste, storage losses, treatment, recovery, and disposal distinct; do not credit a displaced product without destination and substitution evidence. | `mass-balance-identity` |\n\nEvery rejected or off-spec seed state is explicitly routed as reworked, downgraded, recovered, or discarded. A rework loop or boundary exit is linked to the producing conditioning node, and rejected material is excluded from accepted output until a new documented quality-release event occurs.\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_subdivision` | field and conditioning processes | Avoid allocation by separately recording seed multiplication, conditioning, treatment, packaging, rejects, and fate-specific handling whenever the processes can be subdivided. | `iso-14044-2006` |\n| `allocation_intended_outputs` | intentional product outputs | If a residue or off-grade stream is intentionally sold or transferred as a product, identify its destination and apply a declared attribution method only after product status is evidenced. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_seed_quality` | accepted seed and downgraded lots | Do not allocate seed-quality burdens to commodity grain or a downgraded stream unless the alternate output is intentionally produced, separately identified, and included in the declared gate. | `iso-14044-2006` |\n| `allocation_fallback` | multiple intended outputs | If subdivision is not possible, use a declared mass, physical-property, economic, or other defensible method, disclose the rationale, and test a materially different method as sensitivity. | `iso-14044-2006` |\n| `allocation_reject_fate` | rejects and waste | Keep field residue, conditioning rejects, packaging waste, storage losses, treatment, recovery, and disposal distinct; do not credit a displaced product without destination and substitution evidence. | `mass-balance-identity` |\n\nEvery rejected or off-spec seed state is explicitly routed as reworked, downgraded, recovered, or discarded. A rework loop or boundary exit is linked to the producing conditioning node, and rejected material is excluded from accepted output until a new documented quality-release event occurs.\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1639,12 +1613,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 51937
-              line: 761
+              offset: 51143
+              line: 716
               column: 1
             end:
-              offset: 51977
-              line: 761
+              offset: 51183
+              line: 716
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1659,18 +1633,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_80571"
+    - unit_id: "normative_86820"
       family: "validation"
       span:
         start:
-          offset: 80571
-          line: 848
+          offset: 86820
+          line: 814
           column: 1
         end:
-          offset: 83009
-          line: 861
+          offset: 89601
+          line: 830
           column: 1
-      markdown: "## 9. Validation Rules\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_flow` | reference product | Confirm the verified groundnut sowing-seed UUID, all qualifiers, and the declared gate; the final exchange must retain that UUID. | `mass-balance-identity` |\n| `validation_scope` | boundary | Confirm that the dataset is groundnut seed for sowing and does not silently include commodity grain, forage or silage groundnut, downstream cultivation, or downstream processing. | `fao-groundnut-seed-production` |\n| `validation_process_map` | process inventory | Confirm field seed production, conditioning, quality release, and included storage are separate, with explicit hand-offs. | `fao-groundnut-seed-production`; `usda-seed-cleaning-handling` |\n| `validation_flow_coordinates` | inventory rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `mass-balance-identity` |\n| `validation_nutrients_and_emissions` | nutrients and soil emissions | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `ipcc-2019-managed-soils-n2o` |\n| `validation_water_and_land` | irrigation, withdrawal, land | Keep delivered irrigation product input, natural water withdrawal, and land occupation distinct and prevent double counting. | `ipcc-2019-cropland` |\n| `validation_quality_release` | accepted seed | Confirm seed class, quality attributes, treatment status, lot release, packaging state, and gate for the reference output. | `fao-groundnut-seed-production` |\n| `validation_reject_fate` | rejects and waste | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `usda-seed-cleaning-handling`; `mass-balance-identity` |\n| `validation_mass_balance` | all outputs | Confirm field, conditioning, and storage balances reconcile within declared tolerance and accepted seed is not counted at two hand-offs. | `mass-balance-identity` |\n| `validation_allocation` | intentional co-products | Confirm any intentional co-product is separately identified, destination is evidenced, and allocation or substitution treatment is disclosed. | `iso-14044-2006` |\n"
+      markdown: "## 9. Validation Rules\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_flow` | reference product | Confirm the verified groundnut sowing-seed UUID, all qualifiers, and the declared gate; the final exchange must retain that UUID. | `mass-balance-identity` |\n| `validation_scope` | boundary | Confirm that the dataset is groundnut seed for sowing and does not silently include commodity grain, forage or silage groundnut, downstream cultivation, or downstream processing. | `fao-groundnut-seed-production` |\n| `validation_process_map` | process inventory | Confirm field seed production, conditioning, quality release, and included storage are separate, with explicit hand-offs. | `fao-groundnut-seed-production`; `usda-seed-cleaning-handling` |\n| `validation_flow_coordinates` | inventory rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `mass-balance-identity` |\n| `validation_nutrients_and_emissions` | nutrients and soil emissions | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `ipcc-2019-managed-soils-n2o` |\n| `validation_water_and_land` | irrigation, withdrawal, land | Keep delivered irrigation product input, natural water withdrawal, and land occupation distinct and prevent double counting. | `ipcc-2019-cropland` |\n| `validation_quality_release` | accepted seed | Confirm seed class, quality attributes, treatment status, lot release, packaging state, and gate for the reference output. | `fao-groundnut-seed-production` |\n| `validation_reject_fate` | rejects and waste | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `usda-seed-cleaning-handling`; `mass-balance-identity` |\n| `validation_mass_balance` | all outputs | Confirm field, conditioning, and storage balances reconcile within declared tolerance and accepted seed is not counted at two hand-offs. | `mass-balance-identity` |\n| `validation_allocation` | intentional co-products | Confirm any intentional co-product is separately identified, destination is evidenced, and allocation or substitution treatment is disclosed. | `iso-14044-2006` |\n| `validation_local_combustion_boundary` | energy and fossil CO2 | Verify every local CO2 amount against actual in-boundary fuel combustion and compatible combustion-only factors; reconcile upstream electricity, heat, fuel-supply and inclusive-service coverage so the same release is counted once. | `ipcc-2006-energy-combustion-boundary` |\n\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1687,12 +1661,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 80571
-              line: 848
+              offset: 86820
+              line: 814
               column: 1
             end:
-              offset: 80593
-              line: 848
+              offset: 86842
+              line: 814
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1776,211 +1750,237 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_51937"
+      unit_id: "normative_51143"
       source_span:
         start:
-          offset: 52049
-          line: 764
+          offset: 51255
+          line: 719
           column: 1
         end:
-          offset: 52315
-          line: 764
+          offset: 51521
+          line: 719
           column: 267
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_intended_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_51937"
+      unit_id: "normative_51143"
       source_span:
         start:
-          offset: 52316
-          line: 765
+          offset: 51522
+          line: 720
           column: 1
         end:
-          offset: 52614
-          line: 765
+          offset: 51820
+          line: 720
           column: 299
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_seed_quality"
       identity_kind: "explicit"
-      unit_id: "normative_51937"
+      unit_id: "normative_51143"
       source_span:
         start:
-          offset: 52615
-          line: 766
+          offset: 51821
+          line: 721
           column: 1
         end:
-          offset: 52893
-          line: 766
+          offset: 52099
+          line: 721
           column: 279
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_fallback"
       identity_kind: "explicit"
-      unit_id: "normative_51937"
+      unit_id: "normative_51143"
       source_span:
         start:
-          offset: 52894
-          line: 767
+          offset: 52100
+          line: 722
           column: 1
         end:
-          offset: 53157
-          line: 767
+          offset: 52363
+          line: 722
           column: 264
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_reject_fate"
       identity_kind: "explicit"
-      unit_id: "normative_51937"
+      unit_id: "normative_51143"
       source_span:
         start:
-          offset: 53158
-          line: 768
+          offset: 52364
+          line: 723
           column: 1
         end:
-          offset: 53434
-          line: 768
+          offset: 52640
+          line: 723
           column: 277
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_51937"
+      unit_id: "normative_51143"
       source_span:
         start:
-          offset: 53436
-          line: 770
+          offset: 52642
+          line: 725
           column: 1
         end:
-          offset: 54116
-          line: 771
+          offset: 53322
+          line: 726
           column: 387
+    - pointer: "/allocation_rules/6"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_51143"
+      source_span:
+        start:
+          offset: 53395
+          line: 730
+          column: 1
+        end:
+          offset: 55306
+          line: 730
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_flow"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 80665
-          line: 851
+          offset: 86914
+          line: 817
           column: 1
         end:
-          offset: 80874
-          line: 851
+          offset: 87123
+          line: 817
           column: 210
     - pointer: "/validation_rules/1"
       rule_id: "validation_scope"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 80875
-          line: 852
+          offset: 87124
+          line: 818
           column: 1
         end:
-          offset: 81123
-          line: 852
+          offset: 87372
+          line: 818
           column: 249
     - pointer: "/validation_rules/2"
       rule_id: "validation_process_map"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 81124
-          line: 853
+          offset: 87373
+          line: 819
           column: 1
         end:
-          offset: 81361
-          line: 853
+          offset: 87610
+          line: 819
           column: 238
     - pointer: "/validation_rules/3"
       rule_id: "validation_flow_coordinates"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 81362
-          line: 854
+          offset: 87611
+          line: 820
           column: 1
         end:
-          offset: 81609
-          line: 854
+          offset: 87858
+          line: 820
           column: 248
     - pointer: "/validation_rules/4"
       rule_id: "validation_nutrients_and_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 81610
-          line: 855
+          offset: 87859
+          line: 821
           column: 1
         end:
-          offset: 81884
-          line: 855
+          offset: 88133
+          line: 821
           column: 275
     - pointer: "/validation_rules/5"
       rule_id: "validation_water_and_land"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 81885
-          line: 856
+          offset: 88134
+          line: 822
           column: 1
         end:
-          offset: 82097
-          line: 856
+          offset: 88346
+          line: 822
           column: 213
     - pointer: "/validation_rules/6"
       rule_id: "validation_quality_release"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 82098
-          line: 857
+          offset: 88347
+          line: 823
           column: 1
         end:
-          offset: 82305
-          line: 857
+          offset: 88554
+          line: 823
           column: 208
     - pointer: "/validation_rules/7"
       rule_id: "validation_reject_fate"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 82306
-          line: 858
+          offset: 88555
+          line: 824
           column: 1
         end:
-          offset: 82582
-          line: 858
+          offset: 88831
+          line: 824
           column: 277
     - pointer: "/validation_rules/8"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 82583
-          line: 859
+          offset: 88832
+          line: 825
           column: 1
         end:
-          offset: 82791
-          line: 859
+          offset: 89040
+          line: 825
           column: 209
     - pointer: "/validation_rules/9"
       rule_id: "validation_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_80571"
+      unit_id: "normative_86820"
       source_span:
         start:
-          offset: 82792
-          line: 860
+          offset: 89041
+          line: 826
           column: 1
         end:
-          offset: 83008
-          line: 860
+          offset: 89257
+          line: 826
           column: 217
+    - pointer: "/validation_rules/10"
+      rule_id: "validation_local_combustion_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_86820"
+      source_span:
+        start:
+          offset: 89258
+          line: 827
+          column: 1
+        end:
+          offset: 89598
+          line: 827
+          column: 341
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -2008,27 +2008,51 @@ normative_context:
           column: 274
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_51937"
+      unit_id: "normative_51143"
       source_span:
         start:
-          offset: 51937
-          line: 761
+          offset: 51143
+          line: 716
           column: 1
         end:
-          offset: 51977
-          line: 761
+          offset: 51183
+          line: 716
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_80571"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_51143"
       source_span:
         start:
-          offset: 80571
-          line: 848
+          offset: 52642
+          line: 725
           column: 1
         end:
-          offset: 80593
-          line: 848
+          offset: 53322
+          line: 726
+          column: 387
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_51143"
+      source_span:
+        start:
+          offset: 53395
+          line: 730
+          column: 1
+        end:
+          offset: 55306
+          line: 730
+          column: 1912
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_86820"
+      source_span:
+        start:
+          offset: 86820
+          line: 814
+          column: 1
+        end:
+          offset: 86842
+          line: 814
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2037,5 +2061,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ff86f586ec6bebe57057e4cc20a047efc671a19714ac7dfd4b13ffc5463b5880"
-  generated_content_sha256: "sha256:3cc41acb45ba88d67a680f6307292d93dbc8796b2786a08b12486a9b5d049581"
+    sha256: "sha256:0e59c4a333242576db6d480abe004ac2d85f7162ac8c8f2cbe1b449cfc36f408"
+  generated_content_sha256: "sha256:34c723a3ab59cc6b9d7e631c9120aff846350c70a11b1d0c3d8dca444ea0d5b0"

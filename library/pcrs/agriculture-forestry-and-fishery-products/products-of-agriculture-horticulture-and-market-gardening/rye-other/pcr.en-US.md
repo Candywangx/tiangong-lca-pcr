@@ -240,8 +240,8 @@ Raw activity or stage basis: per crop cycle and per reference output.
 - Collection protocol: `cp_land_and_output_records`
 ###### Irrigation water withdrawal (`water_withdrawal`)
 Water withdrawal is recorded as an elementary flow only for the source-specific withdrawal that supports the delivered irrigation-water record.
-- Selected flow: water `419682fe-60fb-4b43-be89-bf2824b51104`
-- Flow property / unit: Mass / kg
+- Selected flow: Source-specific natural water withdrawal, with water type and receiving resource compartment declared
+- Flow property / unit: Volume / m3
 - Amount rule: calculated from source-specific metered withdrawal records
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -252,6 +252,9 @@ Raw activity or stage basis: per 1,000 kg harvested rye grain at the selected ga
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_irrigation_records`
 - Sources: `fao-crop-evapotranspiration-56`
+
+Measure withdrawal at the actual source boundary in m3, separately from supplied/delivered water. Record freshwater or seawater, surface water or groundwater, location, resource compartment, meter dates/readings and transfers; use closing minus opening cumulative readings with documented meter corrections. Sum source volumes for the matched period and normalize once to accepted reference output. Keep any mass observation separate and convert by V = m/rho only with a documented compatible water density and units; no implicit kg-to-m3 equality. A broad unspecified-water identity cannot substitute for the actual source. Missing source/type or conversion evidence is an explicit gap and blocks a fully identified or complete water inventory claim.
+
 #### Outputs
 ##### Product flows
 ###### Harvested non-seed rye grain (`harvested_rye_grain`)
@@ -394,12 +397,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_harvest_energy_records`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 ##### Waste flows
 Harvest losses are recorded only when they leave the harvest boundary and their fate is known.
 ##### Elementary flows
 Record dust or direct combustion emissions only when supported by the selected method and confirmed flow identity.
+
 #### Outputs
 ##### Product flows
 ###### Grain delivered to farm or primary-conditioning hand-off (`grain_at_handoff`)
@@ -475,23 +479,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ##### Waste flows
-###### Conditioning screenings and rejected grain (`conditioning_screenings_and_rejects`)**
-Screenings, foreign material, rejected grain, and off-grade material are recorded by stream and fate; do not count them as accepted reference product.
-- Selected flow: Rye grain waste from conditioning rejection
-- Flow property / unit: Mass / kg
-- Amount rule: measured batch mass and declared fate
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per kg grain entering primary conditioning.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_conditioning_reject_records`
-- Sources: `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
-
-This specific card represents rejected grain only. Identify physically separate foreign matter, chaff, packaging and other residues individually in the collection record and create their own exchanges before dataset completeness; do not omit them or add them to the grain quantity. Keep the waste UUID explicitly unresolved until composition, state and receiving route match a public identity.
-
 #### Outputs
 ##### Product flows
 ###### Conditioned non-seed rye grain (`conditioned_rye_grain`)
@@ -539,6 +526,27 @@ Raw activity or stage basis: per kg conditioned rye grain output.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_conditioning_reject_records`
 - Sources: `epa-fabric-filter-monitoring-2026`
+
+#### Outputs
+
+##### Waste flows
+
+###### Conditioning screenings and rejected grain (`conditioning_screenings_and_rejects`)**
+Screenings, foreign material, rejected grain, and off-grade material are recorded by stream and fate; do not count them as accepted reference product.
+- Selected flow: Rye grain waste from conditioning rejection
+- Flow property / unit: Mass / kg
+- Amount rule: measured batch mass and declared fate
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg grain entering primary conditioning.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_reject_records`
+- Sources: `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
+
+This specific card represents rejected grain only. Identify physically separate foreign matter, chaff, packaging and other residues individually in the collection record and create their own exchanges before dataset completeness; do not omit them or add them to the grain quantity. Keep the waste UUID explicitly unresolved until composition, state and receiving route match a public identity.
 
 ### Process: Storage and Declared Gate Handoff (`storage_and_declared_gate`)
 #### Inputs
@@ -629,22 +637,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Sources: `fao-package-identities`
 
 ##### Waste flows
-###### Storage loss or damaged grain (`storage_loss_or_damaged_grain`)
-Storage loss is recorded by lot, period, mass, damage category, and fate whenever storage is included.
-- Selected flow: Rye grain waste from storage rejection
-- Flow property / unit: Mass / kg
-- Amount rule: measured inventory reconciliation or disposal mass
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per kg grain entering storage.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Storage duration (`storage_duration`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_storage_and_handoff_records`
-
-This specific card represents rejected grain only. Identify physically separate foreign matter, chaff, packaging and other residues individually in the collection record and create their own exchanges before dataset completeness; do not omit them or add them to the grain quantity. Keep the waste UUID explicitly unresolved until composition, state and receiving route match a public identity.
-
 ##### Elementary flows
 No storage elementary flow is added without a confirmed identity and method.
 #### Outputs
@@ -668,6 +660,26 @@ Raw activity or stage basis: quantitative reference output.
 Any damaged or rejected material not already recorded in the storage-loss row is recorded with its own fate.
 ##### Elementary flows
 Energy-related emissions are calculated only from confirmed energy records and declared factors.
+
+#### Outputs
+
+##### Waste flows
+
+###### Storage loss or damaged grain (`storage_loss_or_damaged_grain`)
+Storage loss is recorded by lot, period, mass, damage category, and fate whenever storage is included.
+- Selected flow: Rye grain waste from storage rejection
+- Flow property / unit: Mass / kg
+- Amount rule: measured inventory reconciliation or disposal mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg grain entering storage.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Storage duration (`storage_duration`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_storage_and_handoff_records`
+
+This specific card represents rejected grain only. Identify physically separate foreign matter, chaff, packaging and other residues individually in the collection record and create their own exchanges before dataset completeness; do not omit them or add them to the grain quantity. Keep the waste UUID explicitly unresolved until composition, state and receiving route match a public identity.
 
 ### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
 This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
@@ -735,6 +747,10 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `allocation_substitution` | residue or by-product use | Use substitution only when the displaced product, route, market, and evidence are declared; do not infer a displacement credit from a product label or generic residue name. | `iso-14044-2006` |
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 ### Specific input identification before dataset completion
@@ -778,6 +794,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `reconcile_conditioning_outputs` | primary conditioning | conditioned accepted grain + screenings + rejects + dust or measured loss = conditioning input on a common moisture basis; explain residual | `cp_conditioning_reject_records`; `cp_conditioned_output_records` | conditioning yield and loss reconciliation | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |
 | `allocate_storage_energy` | storage | storage energy is allocated by recorded lot mass and declared storage duration; avoid allocation when a dedicated meter exists | `cp_storage_and_handoff_records` | storage energy per reference output | `iso-14044-2006` |
 | `conditioning_dust_release_accounting` | conditioning dust and captured solids | Airborne dust comprises outlet release and non-overlapping fugitive release. Calculate outlet mass from concentration and exhaust volume with matched gas state and period, or an explicitly applicable activity/emission-factor method. Account for captured solids separately by reuse or disposal; never substitute their mass for release or apply control efficiency twice. Preserve the same particle-size and moisture bases and original batch mass balance; normalize once to matched final reference output. | `cp_conditioning_reject_records` | separate actual release and captured-solid ledgers | `epa-fabric-filter-monitoring-2026` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_fertilizer_input_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 | requirement_id | Applies to | Requirement | Evidence |
@@ -832,3 +849,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `epa-fabric-filter-monitoring-2026` | official_guidance | US EPA, Monitoring by Control Technique - Fabric Filters, updated 2026-04-06. https://www.epa.gov/air-emissions-monitoring-knowledge-base/monitoring-control-technique-fabric-filters | Distinction between collected solids and outlet particulate release; monitoring basis only, no universal efficiency or emission factor adopted |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

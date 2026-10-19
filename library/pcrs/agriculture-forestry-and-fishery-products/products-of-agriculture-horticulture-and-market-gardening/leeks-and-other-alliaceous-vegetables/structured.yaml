@@ -127,32 +127,6 @@ process_inventory:
     label: "Field preparation and establishment"
     inputs:
       product:
-        - row_id: planting_material
-          role: "Planting material used for establishment"
-          name: "Allium planting material (seed, set, bulb, clove, or transplant; evidence gap)"
-          flow_type: "product"
-          property_unit: "Mass / kg as supplied"
-          description: "Seed, sets, bulbs, cloves, or transplants used to establish the allium crop are recorded as product inputs. The actual material type, species or cultivar, lot, treatment, and mass are required for later identity resolution. Raw activity or stage basis: per 1 kg fresh marketable allium product at the declared gate."
-          amount:
-            expression: "measured material issued to the crop cycle"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_planting_material_records
-              source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0.001"
-                upper: "0.25"
-                unit: "kg material/kg product"
-                basis: "planting material mass per reference product mass"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: establishment_fuel_diesel
           role: "Diesel fuel"
           name: "Diesel fuel"
@@ -1242,6 +1216,23 @@ dataset_production:
       output: "gate mass-balance check"
       source_ids:
         - mass-balance-identity
+    - id: planting_material_identity_and_fate
+      applies_to: "field_preparation_and_establishment"
+      rule: "For the original planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults."
+      inputs:
+        - cp_planting_material_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_nutrient_emission_calculations
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_product_identity
       applies_to: "reference flow and product outputs"
@@ -1348,7 +1339,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:8e6a5712008eba3daaf98110fe881841d1c7507ab1e0f681666049fc9ffc73a6"
+  source_sha256: "sha256:e3e613c87ef1ad13a1a51de418a677d4a963391ede37d26fdadb349ae84c04c1"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5103"
@@ -1399,16 +1390,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50457"
+    - unit_id: "normative_49196"
       family: "allocation"
       span:
         start:
-          offset: 50457
-          line: 861
+          offset: 49196
+          line: 836
           column: 1
         end:
-          offset: 51886
-          line: 871
+          offset: 50625
+          line: 846
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide_lots` | separate species, cultivars, or product routes | Subdivide field, harvest, conditioning, and delivery records by species, cultivar, product state, or destination whenever separate records are available before applying allocation. | `iso-14044-2006` |\n| `allocation_shared_operations` | shared operations for multiple allium products | If a field or conditioning operation serves multiple products and cannot be subdivided, allocate shared inputs by harvested or dispatched mass at the declared moisture basis and disclose the allocation key. | `iso-14044-2006` |\n| `allocation_residue_status` | rejects and residues | Treat nonmarketable rejects and removed residues as waste outputs unless a documented sale or useful co-product route exists. If a useful co-product is reported, disclose its identity, destination, quantity, and allocation method. | `iso-14044-2006`; `mass-balance-identity` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1427,12 +1418,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50457
-              line: 861
+              offset: 49196
+              line: 836
               column: 1
             end:
-              offset: 50497
-              line: 861
+              offset: 49236
+              line: 836
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1447,16 +1438,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_75661"
+    - unit_id: "normative_77212"
       family: "validation"
       span:
         start:
-          offset: 75661
-          line: 936
+          offset: 77212
+          line: 913
           column: 1
         end:
-          offset: 77034
-          line: 946
+          offset: 78585
+          line: 923
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_qualifiers` | reference flow | Reject a data package that omits species or cultivar, fresh market state, trim or grade, moisture basis, or declared gate. | `unece-ffv-21-leeks-2023` |\n| `validate_mass_balance` | process gates | Check that input, marketable output, rejects, removed residues, and documented losses reconcile after moisture conversion at each included gate. | `mass-balance-identity` |\n| `validate_nutrient_basis_and_pathways` | nutrient inputs and elementary outputs | Check that fertilizer or amendment product mass is separate from N/P/K or organic nutrient basis and that every calculated emission states its pathway, factor basis, receiving medium, and reported substance. | `ipcc-2019-refinement-vol4-ch11` |\n| `validate_conditional_processes` | post-harvest conditioning and delivery | Check that every conditional process is supported by a declared gate and operator responsibility and that omitted conditional processes are disclosed when they are known to occur outside scope. | `iso-14044-2006` |\n| `validate_allocation_disclosure` | shared operations and mixed allium lots | Check that separate records were subdivided where available, otherwise the mass-based allocation key and moisture basis are stated. | `iso-14044-2006` |\n\n"
       headings:
@@ -1475,12 +1466,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 75661
-              line: 936
+              offset: 77212
+              line: 913
               column: 1
             end:
-              offset: 75683
-              line: 936
+              offset: 77234
+              line: 913
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1551,119 +1542,119 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide_lots"
       identity_kind: "explicit"
-      unit_id: "normative_50457"
+      unit_id: "normative_49196"
       source_span:
         start:
-          offset: 50570
-          line: 865
+          offset: 49309
+          line: 840
           column: 1
         end:
-          offset: 50852
-          line: 865
+          offset: 49591
+          line: 840
           column: 283
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_shared_operations"
       identity_kind: "explicit"
-      unit_id: "normative_50457"
+      unit_id: "normative_49196"
       source_span:
         start:
-          offset: 50853
-          line: 866
+          offset: 49592
+          line: 841
           column: 1
         end:
-          offset: 51164
-          line: 866
+          offset: 49903
+          line: 841
           column: 312
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_status"
       identity_kind: "explicit"
-      unit_id: "normative_50457"
+      unit_id: "normative_49196"
       source_span:
         start:
-          offset: 51165
-          line: 867
+          offset: 49904
+          line: 842
           column: 1
         end:
-          offset: 51496
-          line: 867
+          offset: 50235
+          line: 842
           column: 332
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_50457"
+      unit_id: "normative_49196"
       source_span:
         start:
-          offset: 51498
-          line: 869
+          offset: 50237
+          line: 844
           column: 1
         end:
-          offset: 51884
-          line: 869
+          offset: 50623
+          line: 844
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_75661"
+      unit_id: "normative_77212"
       source_span:
         start:
-          offset: 75756
-          line: 940
+          offset: 77307
+          line: 917
           column: 1
         end:
-          offset: 75961
-          line: 940
+          offset: 77512
+          line: 917
           column: 206
     - pointer: "/validation_rules/1"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_75661"
+      unit_id: "normative_77212"
       source_span:
         start:
-          offset: 75962
-          line: 941
+          offset: 77513
+          line: 918
           column: 1
         end:
-          offset: 76178
-          line: 941
+          offset: 77729
+          line: 918
           column: 217
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_basis_and_pathways"
       identity_kind: "explicit"
-      unit_id: "normative_75661"
+      unit_id: "normative_77212"
       source_span:
         start:
-          offset: 76179
-          line: 942
+          offset: 77730
+          line: 919
           column: 1
         end:
-          offset: 76507
-          line: 942
+          offset: 78058
+          line: 919
           column: 329
     - pointer: "/validation_rules/3"
       rule_id: "validate_conditional_processes"
       identity_kind: "explicit"
-      unit_id: "normative_75661"
+      unit_id: "normative_77212"
       source_span:
         start:
-          offset: 76508
-          line: 943
+          offset: 78059
+          line: 920
           column: 1
         end:
-          offset: 76800
-          line: 943
+          offset: 78351
+          line: 920
           column: 293
     - pointer: "/validation_rules/4"
       rule_id: "validate_allocation_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_75661"
+      unit_id: "normative_77212"
       source_span:
         start:
-          offset: 76801
-          line: 944
+          offset: 78352
+          line: 921
           column: 1
         end:
-          offset: 77032
-          line: 944
+          offset: 78583
+          line: 921
           column: 232
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1692,27 +1683,27 @@ normative_context:
           column: 187
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50457"
+      unit_id: "normative_49196"
       source_span:
         start:
-          offset: 50457
-          line: 861
+          offset: 49196
+          line: 836
           column: 1
         end:
-          offset: 50497
-          line: 861
+          offset: 49236
+          line: 836
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_75661"
+      unit_id: "normative_77212"
       source_span:
         start:
-          offset: 75661
-          line: 936
+          offset: 77212
+          line: 913
           column: 1
         end:
-          offset: 75683
-          line: 936
+          offset: 77234
+          line: 913
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1721,5 +1712,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:8e6a5712008eba3daaf98110fe881841d1c7507ab1e0f681666049fc9ffc73a6"
-  generated_content_sha256: "sha256:33f4b09b5365ba130079098945afd851d92b58ed436e621cbc4b17ad90626c28"
+    sha256: "sha256:e3e613c87ef1ad13a1a51de418a677d4a963391ede37d26fdadb349ae84c04c1"
+  generated_content_sha256: "sha256:a10cb0721e8831e5a752d7a9e000c97f7e6e784b8b04fe66b07ce257f5126d0c"

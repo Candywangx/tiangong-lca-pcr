@@ -226,7 +226,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_records`分别记录各作业包括抽水的该载能体。共用量仅归属一次，归属原始量除以实测且匹配的最终合格水果产出kg，再乘1 kg参考数量；保留阶段与最终产出比例，不对已归一化数量重复归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -241,7 +241,7 @@ translation_status: aligned
 - 流属性 / 单位：能量 `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_energy_records`分别记录各作业包括抽水的该载能体。共用量仅归属一次，归属原始量除以实测且匹配的最终合格水果产出kg，再乘1 kg参考数量；保留阶段与最终产出比例，不对已归一化数量重复归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -269,22 +269,15 @@ translation_status: aligned
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：根据采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_land_and_output_records`
-- 数量范围：正产量校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1
-  - 单位：ha a/kg 参考产品
-  - 基准：面积-时间除以可销售产量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
 
 ###### 取水（`water_withdrawal`）
 
 取水表示为果园灌溉从环境中按水源取用的水量。
 
-- 选定流：水 `419682fe-60fb-4b43-be89-bf2824b51104`
-- 流属性/单位：Mass / kg
+- 选定流：声明水类型及自然资源区室的分源自然取水
+- 流属性/单位：Volume / m3
 - 数量规则：按水源由计量灌溉水计算，不与输送水重复
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -296,6 +289,8 @@ translation_status: aligned
 - 采集协议：`cp_irrigation_records`
 - 来源：`dzikiti-apple-water-footprint-2019`
 范围证据需求：分别采集实际灌溉供水和水源取用量。引用的总水足迹观测值（187–237 m3/t，包含绿水和蓝水成分）仅为背景指标，不是这两种交换的数量范围。
+
+在实际水源取水边界按m³计量，与购买或输送供水量分开。采集淡水或海水、地表水或地下水、地点、资源区室、表计日期和读数及调拨；累计表按期末减期初并保留有据的表计修正。按相同时段汇总分源取水体积，按合格参考产出仅归一化一次。质量观测单列，只有密度及单位有相容证据时才按V=m/rho换算，不得隐含kg与m³等同。未特指水源的泛水身份不能代替实际水源。缺少水源、类型或换算证据时明确记录缺口，不得宣称水清单身份齐全或完整。
 
 #### 输出
 ##### 产品流
@@ -356,31 +351,35 @@ translation_status: aligned
 
 ##### 废物流
 
-###### 次果和果园生物质（`culled_apples_and_orchard_biomass`）
+###### 弃置苹果果实 (`discarded_apple_fruit`)
 
-次果和果园生物质按有证据的去向记录非产品果实、修剪物和清园材料。
+仅在该材料身份分别明确且实际作为废物送往有据处理接收方时使用。计量本流实收净质量和含水率，使用干物质时另留台账。不包括有意销售产品、园内留存生物质或不明平衡损失。实际处置流为物理混合物时，应在独立的具体混合物卡中记录组成及唯一实际处理边界，不得编造分离或同时重复计入组分输出。不发生须有据；数量或去向缺失时完整性不成立。实际应归属质量按匹配的合格苹果产出归一化一次，不规定通用次果/木质比。
 
-- 选定流：场址特定的可生物降解果实或木质农业废物流
-- 流属性/单位：Mass / kg，木质生物质保留干物质基准
-- 数量规则：按去向实测次果、修剪物和清园生物质
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
+- 选定流： 送往处理的弃置苹果果实
+- 流属性/单位： Mass / kg
+- 数量规则： 实测本流净质量、实际含水率及去向；按最终参考量归一化一次
+- 数值来源模式： 前景记录（`foreground_record`）
+- 适用范围： 场址特定（`site_specific`）
+- 归一化基准： 每声明的参考流
+- 基准类型： 参考流（`reference_flow`）
+- 证据类型： 采集记录（`collected_record`）
+- 采集协议： `cp_land_and_output_records`
+- 来源： `ucdavis-orchard-lca-findings-2020`
 
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_land_and_output_records`
-- 来源：`ucdavis-orchard-lca-findings-2020`
-- 数量范围：产出核对校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：10
-  - 单位：kg/kg 参考产品
-  - 基准：宽泛核对区间；必须有按去向记录
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：来源规则（`source_rule`）
-  - 来源：`ucdavis-orchard-lca-findings-2020`
+###### 弃置苹果树木质材料 (`discarded_apple_wood`)
+
+仅在该材料身份分别明确且实际作为废物送往有据处理接收方时使用。计量本流实收净质量和含水率，使用干物质时另留台账。不包括有意销售产品、园内留存生物质或不明平衡损失。实际处置流为物理混合物时，应在独立的具体混合物卡中记录组成及唯一实际处理边界，不得编造分离或同时重复计入组分输出。不发生须有据；数量或去向缺失时完整性不成立。实际应归属质量按匹配的合格苹果产出归一化一次，不规定通用次果/木质比。
+
+- 选定流： 送往处理的弃置苹果树木质材料
+- 流属性/单位： Mass / kg
+- 数量规则： 实测本流净质量、实际含水率及去向；按最终参考量归一化一次
+- 数值来源模式： 前景记录（`foreground_record`）
+- 适用范围： 场址特定（`site_specific`）
+- 归一化基准： 每声明的参考流
+- 基准类型： 参考流（`reference_flow`）
+- 证据类型： 采集记录（`collected_record`）
+- 采集协议： `cp_land_and_output_records`
+- 来源： `ucdavis-orchard-lca-findings-2020`
 
 ##### 基本流
 
@@ -452,15 +451,8 @@ translation_status: aligned
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：根据采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_energy_records`
-- 数量范围：燃料碳计算校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg CO2/kg 参考产品
-  - 基准：由燃料记录和因子计算
-  - 基准类型：燃料清单（`fuel_inventory`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
 
 ### 过程：果园门处理（`orchard_gate_handling`）
 
@@ -527,7 +519,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -553,7 +545,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -621,10 +613,11 @@ translation_status: aligned
 | `calculate_water_withdrawal` | 灌溉 | 按水源计量取水 / 验收质量；消耗或水足迹单独报告 | cp_irrigation_records; cp_land_and_output_records | m3 水/kg 参考产品 | `dzikiti-apple-water-footprint-2019` |
 | `calculate_direct_soil_n2o` | 肥料氮 | 应用所选 IPCC 层级并以 44/28 将 N2O-N 换算为 N2O | cp_orchard_input_records; 声明因子 | kg N2O/kg 参考产品 | `ipcc-2019-managed-soils-n2o` |
 | `reconcile_apple_outputs` | 采收果实 | 验收 + 工业级 + 次果 + 实测损失 = 声明容差内总采收量 | cp_land_and_output_records | 质量平衡和未解释损失 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_orchard_input_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 参考产品 | 声明品种、地块、路线、灌溉、地理、期间、等级、门点和包装状态。 | 元数据、果园及发运记录 |
 | `dq_temporal_representativeness` | 多年生生产 | 覆盖完整采收年并披露年龄和产量变异；代表性数据使用最近至少三年或说明单年合理性。 | 带日期采收和投入记录 |

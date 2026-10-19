@@ -58,7 +58,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
 | crop_product_mass | Reference product, intermediate crop batches, saleable grades and crop residues | Mass; use the verified property exposed by the selected flow | kg | Record net mass and the material state at each handoff. Do not convert fresh to dry mass without measured moisture and a stated calculation. Keep grade-specific and species-specific amounts separate. |
-| irrigation_volume | Irrigation water | Volume or mass compatible with the verified water flow | m3 preferred; kg permitted with documented conversion | Use metered or supplier-recorded withdrawal and identify source. If converting volume to mass, state the measured or adopted density and reference condition. Report rainfall separately as site context, not as a purchased water exchange. |
+| irrigation_volume | Irrigation water | Volume or mass compatible with the verified water flow | m3 preferred; kg permitted with documented conversion | 采用跨声明产品供水边界的计量或供应记录交付量，保留来源及测点。水源取水记录须先经供水损失、回水和存水核对，才能推得交付量。前景直接取水属于分水源基本流输入，内部交付不是另一笔外购。体积换质量须有据密度和条件；降雨仍为场址背景。 |
 | product_moisture | Fresh or dried reference and intermediate crop products | Mass fraction of water or water activity, as appropriate | % wet basis and/or dimensionless aw | Record the measurement method, sample basis, date and lot. For a dried-state claim, report the applicable buyer or product specification; do not apply one moisture threshold across all species and organs. |
 | land_occupation | Crop production | Area-time | ha·year | Measure occupied crop area and time for each declared production period. Distinguish annual crop occupation from establishment and productive years of perennial stands. |
 | transport_service | Field-to-conditioner transfer | Mass-distance | t·km | Calculate from net transported crop mass and the loaded distance for the declared route. Report vehicle, load, route, and treatment of empty return separately; do not double-count own-account fuel as a purchased transport service. |
@@ -611,32 +611,6 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 还田作物残余物 (`crop_residue_to_soil`)
-
-记录属于选定田间清单、留在田间或还田的非目标生物量。注明物种或植物部分及实测干物质基础；同一生物量不得同时计为废弃物或可销售共产品。
-
-- 选定流: Crop-specific plant residue returned to agricultural soil (UUID unresolved)
-- 流属性/单位: Mass / kg dry matter
-- 数量规则: Measured residue mass or a documented field measurement method by crop period
-- 数值来源模式: Foreground record (`foreground_record`)
-- 适用范围: Product-specific (`product_specific`)
-原始活动或阶段基准：Per 1 kg of product at the selected gate.
-
-- 归一化基准：每声明的参考流
-- 基准类型: Reference flow (`reference_flow`)
-- 证据类型: Collected record (`collected_record`)
-- 采集协议: `cp_field_residues`
-- 来源: `codex-spice-mycotoxin-practice-2017`
-
-- 数量范围: Provisional broad route screening estimate; replace with crop-, site-, technology- and gate-specific records before reviewed or active use
-  - 范围角色: Default estimate (`default_estimate`)
-  - 下限: 0
-  - 上限: 1
-  - 单位: kg residue returned to soil/kg harvested crop
-  - 基准: Broad reasoned estimate for the declared route and selected product gate; it is a screening interval, not a universal permitted value
-  - 基准类型: Reference flow (`reference_flow`)
-  - 证据类型: Reasoned estimate (`reasoned_estimate`)
-  - 来源: `mass-balance-identity`
 ### 过程：首次初级调理与稳定化 (`primary_conditioning`)
 
 只有当选定交接点前发生初级调理时才纳入本过程。过程从原始收获批次开始，以申报的分选、清理、清洗、干燥或其他稳定化作物产品结束。描述处理前状态、干预、处理后状态和交接。清洗是可选项，不必要时省略；合格、降级、拒收、回收和废弃状态分别记录，批次记录不得混合不同香料或收获日。
@@ -930,8 +904,8 @@ sync_with: pcr.en-US.md
 - 选定流：Crop-specific spice or aromatic product at declared gate (UUID unresolved)
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -956,8 +930,8 @@ sync_with: pcr.en-US.md
 - 选定流：Crop-specific spice or aromatic product at declared gate (UUID unresolved)
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -988,6 +962,10 @@ sync_with: pcr.en-US.md
 | allocation_shared_assets | Irrigation, harvest and conditioning infrastructure | Attribute shared machinery, pumps, dryers, storage surfaces and utilities first by metered use or operating time. If unavailable, use a documented physical driver such as throughput or capacity use; use another basis only with justification. Record all consuming processes and periods and prevent duplicate attribution. | iso-14044-lca-allocation |
 | allocation_reject_rework | Rework, downgrade, recovery and discard routes | Trace each rejected lot to rework, recovery, downgrade or discard. Include incremental rework inputs once, count accepted product only at its final handoff, and report saleable downgraded material as a distinct intended output. Do not assign a waste treatment credit without an evidenced treatment or substitution route. | iso-14044-lca-allocation; codex-spice-mycotoxin-practice-2017 |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
@@ -1000,9 +978,9 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_propagation_material | managed_crop_production | propagation_material | supplier, seed, nursery or transfer record | species, plant part, propagation form, variety, quantity, source, date, field, crop period | Reconcile invoices, nursery tickets or internal transfer records to planted area；原始汇总与分配：Sum by species, propagation form, field and period; normalize to selected gate output | kg or declared count | Each planting or replanting event | Establishment and replanting events in scope | Declared field and crop | 每声明的参考流 | Source documentation, unit check and lot traceability |
-| cp_nutrient_application | managed_crop_production | fertilizer_nutrient_inputs; soil_nitrous_oxide | field application log, invoice, soil test | actual product, mass, nutrient grade, N form, organic/mineral status, application date, field, crop period, soil and climate fields used by selected method | Reconcile product purchase/application records and soil or method data；原始汇总与分配：Keep product exchanges individually recoverable under one PCR card; calculate N inputs from documented composition | kg product and kg nutrient | Every application; summarize by crop period | All included establishment and productive periods | Declared crop fields and shared application equipment | 每声明的参考流 | Invoices, application logs, calibration and source method record |
+| cp_nutrient_application | managed_crop_production | fertilizer_nutrient_inputs; soil_nitrous_oxide | field application log, invoice, soil test | actual product, mass, nutrient grade, N form, organic/mineral status, application date, field, crop period, soil and climate fields used by selected method | 每项实际产品/配方分开采集，保留其原子输入卡、实物产品质量、组成、供应方、施用事件和原始单位。核对库存和实际施用，分析计算养分而不重复产品交换，每个有据数量通过匹配最终合格产出归属并归一化一次。 | kg product and kg nutrient | Every application; summarize by crop period | All included establishment and productive periods | Declared crop fields and shared application equipment | 每声明的参考流 | Invoices, application logs, calibration and source method record |
 | cp_crop_protection | managed_crop_production | crop_protection_products | application log and supplier product record | product, active ingredient, amount, treated area, application date, target, crop stage, field, pre-harvest interval where applicable | Reconcile application records and purchased quantities; note unused stock；原始汇总与分配：Allocate actual applied amount to treated area and crop period; do not allocate unused stock as applied | kg product and active ingredient | Every application | All included crop periods | Declared crop fields and crop lot | 每声明的参考流 | Product label, application log, invoice and operator record |
-| cp_irrigation | managed_crop_production | irrigation_water | meter or water-supplier record | water source, meter start/end, volume or mass, date, field, crop, irrigated area, pumping event | Read calibrated meter or reconcile supplier records; record conversions；原始汇总与分配：Sum withdrawals by field and crop year; normalize to actual output of that period and selected gate | m3 preferred; verified native unit permitted | Each irrigation event or billing period | Each crop year and productive period | Declared crop field and water source | 每声明的参考流 | Meter calibration, invoice, water-source record and period reconciliation |
+| cp_irrigation | managed_crop_production | irrigation_water | meter or water-supplier record | water source, meter start/end, volume or mass, date, field, crop, irrigated area, pumping event | 在所定义接收边界计量实际外部交付灌溉产品，保留来源、责任方、计量位置、期间和损失。不将取水源表直接等同交付量，也不从已测外部交付量再扣内部循环/回用。水源供水网损失、回流和库存单独核对。实际自有直接取水采用单独相容基本资源流，声明边界内输水为内部转移；外购供水的上游取水只覆盖一次。有据原始数量按匹配合格产出归属并归一化一次。 | m3 preferred; verified native unit permitted | Each irrigation event or billing period | Each crop year and productive period | Declared crop field and water source | 每声明的参考流 | Meter calibration, invoice, water-source record and period reconciliation |
 | cp_crop_energy | managed_crop_production | crop_production_energy | meter, fuel receipt and equipment log | carrier, amount, unit, equipment, operation, field, date, shared use, fuel quality or calorific value when converted | Reconcile fuel/electricity records and allocate shared use by measured operation；原始汇总与分配：Aggregate by actual process and carrier; normalize using crop-period output | Carrier-native unit; kWh-equivalent only with documented conversion | Each operation or billing period | Each crop year and productive period | Declared crop site and equipment | 每声明的参考流 | Meter or invoice, equipment log and conversion evidence |
 | cp_area_and_land_history | managed_crop_production | crop_land_occupation; crop_land_transformation | field register, map, lease, land history or geospatial record | field boundary, crop area, land-cover class, occupation dates, conversion date and prior/final cover | Reconcile current field map with dated land-history evidence；原始汇总与分配：Calculate area-time by period; report transformation separately from occupation | ha, ha·year, date | Each crop period and each land change | Full declared crop period and any conversion in scope | Declared crop field | 每声明的参考流 | Geospatial or land register, dated records and area reconciliation |
 | cp_harvest_batch | managed_crop_production; harvest_capture | harvest_ready_crop_material; harvest_ready_batch_input; harvested_target_product | crop lot, harvest ticket and scale record | species, plant organ, field, crop period, harvest date, gross/net/tare mass, moisture, quality state, transfer destination | Weigh or sample each lot using identified calibrated equipment; match inter-process lot id；原始汇总与分配：Reconcile production output, harvest input and harvested output without duplicate final output | kg and moisture basis | Each harvest lot | Each harvest date and crop period | Declared field and receiving process | 每声明的参考流 | Calibrated scale, lot identity, moisture measurement and signed handoff |
@@ -1024,6 +1002,8 @@ sync_with: pcr.en-US.md
 | nitrogen_soil_n2o | Direct managed-soil N2O | Apply the selected IPCC managed-soils equation and factor to documented N additions and other required activity data. Convert N2O-N to N2O with the method's molecular-mass ratio. Record factor, tier, climate/soil conditions and excluded indirect pathways; do not silently treat an emission factor as a measured flow. | Nutrient composition and application, relevant soil/crop activity data, selected factor | Direct N2O to air per 1 kg selected reference product | ipcc-2019-managed-soils |
 | harvested_lot_balance | Harvest and crop conditioning | Reconcile incoming crop mass to accepted products, lower grades, co-products, waste/rejects, retained or removed residues, removed water and measured unexplained loss on a consistent moisture basis. Investigate any apparent output greater than incoming material; disclose any water or other mass added. | Gross and net batch weights, moisture, grades, residue and destination records | Reconciled product and residue exchanges by lot | mass-balance-identity |
 | road_transport_work | Field-to-conditioner freight | Transport work equals net transported mass in tonnes multiplied by the loaded route distance in kilometres. Apply empty return treatment only as an explicit, evidenced allocation; do not combine a service exchange with the same vehicle's direct fuel record. | Net crop mass, loaded route distance, vehicle and empty-return records | t·km by raw crop lot | iso-14044-lca-allocation |
+| `crop_residue_to_soil_identity_and_fate` | `harvest_capture` | 按实测干湿基和实际去向核对作物残余物、收获损失和生物量。留田或还田生物量是支持分解与养分路径计算的内部残余物台账，不是外购资源或虚构的生物量基本交换。单独收集的材料须有实际产品／废物身份及去向；环境释放须识别物质与接收环境。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_field_residues` | 按身份区分的交换和对账活动记录 | `codex-spice-mycotoxin-practice-2017` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_application`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -1031,7 +1011,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | crop_identity_and_gate | Reference product and all process handoffs | Identify one species, plant part, state, grade, site, period and exclusive harvest or first-conditioning gate. Record product UUID only after exact identity and support rows are verified. | Crop/site records, lot identifier, product description and reviewed identity evidence |
 | crop_period_completeness | Annual and perennial production periods | Include establishment, non-bearing and productive periods where relevant; disclose the exact time window, productive-life evidence and any allocation used. | Planting and harvest dates, yield history, field register and calculation record |
-| crop_input_completeness | Production and conditioning inputs | Reconcile planting material, all fertilizer/nutrient products, crop-protection inputs, irrigation, energy, conditioning water and purchased service inputs against supplier and operation records. One PCR fertilizer card covers all nutrient product exchanges for the process. | Invoices, application logs, meters, batch records and 具体流身份核验|
+| crop_input_completeness | Production and conditioning inputs | 将种植材料、每种实际肥料/改良剂配方、植保产品、水、能源、产出、降级/拒收、残余和排放驱动与原始记录核对。每种实际肥料/改良剂采用单独原子产品输入卡，保留产品质量、组成和施用记录；养分当量为属性/计算输入，不是重复产品数量。UUID缺失保留明确待核验状态。 | Invoices, application logs, meters, batch records and 具体流身份核验|
 | harvest_and_grade_reconciliation | Harvest and conditioning outputs | Account for each declared intended output and handoff. Distinguish accepted output, lower grade, other co-products, rework, retained field residues, waste and unexplained loss; do not count one mass in two destinations. | Lot balance, grade sheets, scale calibration, disposition and sales/treatment records |
 | dried_product_state | Dried reference product | Record product moisture and measurement basis at the selected gate; document the relevant stability/product specification and the sampling method. Do not use drying ranges as mandatory product limits. | Moisture meter/oven results, calibration and the applicable buyer or official specification |
 | shared_asset_and_period_attribution | Shared equipment, fields, dryers and utilities | Identify each consuming process and crop period. Use measured operation or physical use for shared burdens where possible and record the chosen allocation and evidence. | Asset log, meter, operating time, capacity/use record and allocation worksheet |
@@ -1080,3 +1060,4 @@ sync_with: pcr.en-US.md
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

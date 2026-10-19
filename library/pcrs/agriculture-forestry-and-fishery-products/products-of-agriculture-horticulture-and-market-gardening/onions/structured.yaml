@@ -135,32 +135,6 @@ process_inventory:
     label: "Field preparation and establishment"
     inputs:
       product:
-        - row_id: planting_material
-          role: "Onion seed, sets or transplants entering the crop cycle"
-          name: "Onion seed, set or transplant material"
-          flow_type: "product"
-          property_unit: "Mass or viable planting count / kg or plant count"
-          description: "Record the seed, set or transplant lot that enters the declared field or protected unit. Retain the material form, variety or cultivar, lot identity, viable quantity and whether it is purchased or retained. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs."
-          amount:
-            expression: "Measured planting-material mass or viable count allocated to the current crop cycle"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_planting_material_records
-              source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0.1"
-                upper: "120"
-                unit: "kg planting material per 1,000 kg output"
-                basis: "per 1,000 kg marketable farm-gate onion bulbs"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: establishment_machinery_fuel_diesel
           role: "Diesel fuel"
           name: "Diesel fuel"
@@ -386,32 +360,6 @@ process_inventory:
                 - fao-crop-water-needs-onion
                 - fao-56-crop-evapotranspiration
             ranges: []
-        - row_id: water_resource_withdrawal
-          role: "Water withdrawn from the declared natural or municipal source"
-          name: "Water resource withdrawal"
-          flow_type: "product"
-          property_unit: "Volume / m3"
-          description: "Record source-specific water withdrawal separately from the delivered irrigation-water product input, including losses between withdrawal and field delivery when measured or calculated. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs."
-          amount:
-            expression: "Measured or calculated withdrawal from the declared source allocated to the onion crop cycle"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_irrigation_and_withdrawal_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "6500"
-                unit: "m3/ha per onion crop cycle"
-                basis: "one hectare over an onion crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: field_operation_electricity
           role: "Electricity supplied for pumping and field operations"
           name: "Electricity supply for onion production"
@@ -462,7 +410,32 @@ process_inventory:
       waste:
         []
       elementary:
-        []
+        - row_id: water_resource_withdrawal
+          role: "Water withdrawn from the declared natural or municipal source"
+          name: "Water withdrawn directly from an identified natural source; exact compartment and UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Record source-specific water withdrawal separately from the delivered irrigation-water product input, including losses between withdrawal and field delivery when measured or calculated. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs. Only for direct natural-water abstraction owned by this foreground boundary. Select the actual source/compartment and compatible volume or mass identity. A municipal or other purchased water receipt is a product supply, with its provider withdrawal covered upstream once; it is not this elementary input. Keep the withdrawal-to-field supply ledger, pumping, distribution losses and internal delivered-water transfers explicit. Do not add the same supplier abstraction or internal delivery as another external resource use. Retain missing source identity or quantity as a completeness gap."
+          amount:
+            expression: "Measured or calculated withdrawal from the declared source allocated to the onion crop cycle"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_irrigation_and_withdrawal_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "6500"
+                unit: "m3/ha per onion crop cycle"
+                basis: "one hectare over an onion crop cycle"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
     outputs:
       product:
         []
@@ -473,8 +446,8 @@ process_inventory:
           role: "Direct nitrous oxide emissions from managed onion soil"
           name: "Nitrous oxide to ambient air from managed onion soil"
           flow_type: "elementary"
-          property_unit: "Mass / kg N2O-N or kg N2O"
-          description: "Calculate direct soil N2O emissions from synthetic and organic nitrogen inputs and any applicable residue or soil-carbon pathways. Report the nitrogen basis and the N2O or N2O-N unit used. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs."
+          property_unit: "Mass / kg N2O"
+          description: "Calculate direct soil N2O emissions from synthetic and organic nitrogen inputs and any applicable residue or soil-carbon pathways. Report the nitrogen basis and the N2O or N2O-N unit used. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs. The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero."
           amount:
             expression: "Apply the declared IPCC method to collected nitrogen inputs and applicable soil or climate conditions"
             value_mode: "calculated_value"
@@ -501,8 +474,8 @@ process_inventory:
           role: "Ammonia volatilization from nitrogen application"
           name: "Ammonia to ambient air from onion crop nitrogen inputs"
           flow_type: "elementary"
-          property_unit: "Mass / kg NH3-N or kg NH3"
-          description: "Record or calculate ammonia released to ambient air from the declared nitrogen sources using the selected method and site conditions. Do not use a generic ammonia row to conceal the fertilizer or manure basis. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs."
+          property_unit: "Mass / kg NH3"
+          description: "Record or calculate ammonia released to ambient air from the declared nitrogen sources using the selected method and site conditions. Do not use a generic ammonia row to conceal the fertilizer or manure basis. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs. Final exchange mass is kg NH3; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 17/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass."
           amount:
             expression: "Calculate from the nitrogen-input record and the documented volatilization factor or measured emission"
             value_mode: "calculated_value"
@@ -528,8 +501,8 @@ process_inventory:
           role: "Nitrate leaching or runoff from managed soil"
           name: "Nitrate to water from onion crop soil"
           flow_type: "elementary"
-          property_unit: "Mass / kg nitrate-N or kg nitrate"
-          description: "Record nitrate-N or nitrate loss to water when leaching or runoff occurs and the pathway is in scope. Retain the nitrogen source, receiving medium and calculation basis. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs."
+          property_unit: "Mass / kg NO3-"
+          description: "Record nitrate-N or nitrate loss to water when leaching or runoff occurs and the pathway is in scope. Retain the nitrogen source, receiving medium and calculation basis. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs. Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass."
           amount:
             expression: "Calculate the site- and climate-relevant leaching or runoff amount from collected nitrogen inputs and documented partitioning factors"
             value_mode: "calculated_value"
@@ -555,8 +528,8 @@ process_inventory:
           role: "Phosphate runoff from managed soil"
           name: "Phosphate to water from onion crop soil"
           flow_type: "elementary"
-          property_unit: "Mass / kg phosphate-P or kg phosphate"
-          description: "Record phosphate-P or phosphate loss to water when runoff or another receiving pathway occurs and the pathway is supported by site records or a documented method. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs."
+          property_unit: "Mass / kg PO4"
+          description: "Record phosphate-P or phosphate loss to water when runoff or another receiving pathway occurs and the pathway is supported by site records or a documented method. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs. Final exchange mass is kg PO4; retain P-based activity, factors and screens in a separate ledger. Convert only the mass of P attributed to this chemical species by 95/31 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass."
           amount:
             expression: "Calculate site-specific phosphate loss from collected nutrient inputs, soil test information and documented runoff factors"
             value_mode: "calculated_value"
@@ -1030,7 +1003,7 @@ dataset_production:
       flow_role: "land occupation and transformation"
       record_type: "field register, GIS or land-use record"
       raw_fields: "field id; area; land-use history; transformation date; crop-cycle dates"
-      collection_method: "verify area against field register or geospatial record; Raw aggregation and attribution: calculate area-time and flag only current-period transformation"
+      collection_method: "Verify actual area and dated occupation intervals, land classes and dated transformation history against mapped/site records. Quantify occupation in area-time and transformation as distinct area events; assess historical events under the selected declared land-use/carbon attribution method when relevant to this output, not only events occurring in the reporting year. Preserve prior/new land state, evidence, uncertainty and shared/period ownership; missing history is a gap, not assumed zero or assumed conversion. Normalize attributed quantities once through matched accepted output."
       unit: "ha and crop-cycle dates"
       frequency: "once per crop cycle and on land-use change"
       temporal_coverage: "current crop cycle and disclosed prior history"
@@ -1197,6 +1170,23 @@ dataset_production:
         - "storage duration"
       output: "final reference output and loss amounts"
       source_ids: []
+    - id: planting_material_identity_and_fate
+      applies_to: "field_preparation_and_establishment"
+      rule: "For the original planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults."
+      inputs:
+        - cp_planting_material_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_crop_emission_activity_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: quality_requirement_1
       applies_to: "identity and product state"
@@ -1305,7 +1295,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:7af6081cf401a34702f73a0adacbfd86d763616963526c94d68b5b76a11244cc"
+  source_sha256: "sha256:2f62588ef9dabe176c36fe40b47ab693692e0ab88b0a51aea838d7565ca85d11"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5526"
@@ -1356,16 +1346,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54130"
+    - unit_id: "normative_55537"
       family: "allocation"
       span:
         start:
-          offset: 54130
-          line: 899
+          offset: 55537
+          line: 886
           column: 1
         end:
-          offset: 55527
-          line: 911
+          offset: 56934
+          line: 898
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_rule_1` | shared field and harvest operations | Subdivide operations when separate records exist for onion cultivars, products or destinations. When subdivision is not possible, allocate shared burdens by measured mass of marketable bulbs and co-products at the point of separation. | `iso-14044-2006-allocation` |\n| `allocation_rule_2` | culls and crop residues | Treat culls and residues as co-products or wastes according to their documented destination. Do not apply a credit or substitution claim unless the receiving product, displaced function and evidence are explicitly documented. | `iso-14044-2006-allocation` |\n| `allocation_rule_3` | conditioning, packing and storage | Allocate shared conditioning, packing and storage inputs by mass of handled output, with storage duration retained when energy depends on time. | `iso-14044-2006-allocation` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1384,12 +1374,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54130
-              line: 899
+              offset: 55537
+              line: 886
               column: 1
             end:
-              offset: 54170
-              line: 899
+              offset: 55577
+              line: 886
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1404,16 +1394,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_74401"
+    - unit_id: "normative_79054"
       family: "validation"
       span:
         start:
-          offset: 74401
-          line: 966
+          offset: 79054
+          line: 955
           column: 1
         end:
-          offset: 76251
-          line: 977
+          offset: 80904
+          line: 966
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_rule_1` | reference flow | Confirm that the reference amount is 1,000 kg and that product identity, maturity, moisture, grade, size, geography, crop cycle and included conditioning qualifiers are present. | `codex-cxs-348-onions-2022` |\n| `validation_rule_2` | process map and inventory | Confirm that every required process has an inventory section and that each flow card has a direction, flow type, amount rule, value mode, specificity, basis kind, evidence kind and collection protocol when required. |  |\n| `validation_rule_3` | nutrient and emission completeness | For every applied nutrient product, confirm documented nutrient content and a non-duplicated calculation of direct N2O, volatilization and leaching/runoff pathways when those pathways occur. | `ipcc-2019-managed-soils-n2o` |\n| `validation_rule_4` | irrigation and water withdrawal | Confirm that delivered irrigation and source withdrawal are separate, source and field are identified, and any ETc or water-balance estimate retains its assumptions and units. | `fao-56-crop-evapotranspiration`, `fao-crop-water-needs-onion` |\n| `validation_rule_5` | output mass balance | Confirm lot-level reconciliation of harvested bulbs, marketable output, culls, residues, conditioning rejects, storage losses and declared destinations. Investigate unexplained negative or excess balances. | `iso-14044-2006-allocation` |\n| `validation_rule_6` | quality and hygiene disclosure | Where the farm-gate state is described as fresh market produce, check the declared whole, firm, sound, clean, mature and sufficiently dry state and any applicable hygiene, pesticide-residue and contaminant disclosure. | `codex-cxs-348-onions-2022`, `codex-cxc-53-hygiene-fresh-fruit-vegetables-2003` |\n\n"
       headings:
@@ -1432,12 +1422,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 74401
-              line: 966
+              offset: 79054
+              line: 955
               column: 1
             end:
-              offset: 74423
-              line: 966
+              offset: 79076
+              line: 955
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1508,132 +1498,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "explicit"
-      unit_id: "normative_54130"
+      unit_id: "normative_55537"
       source_span:
         start:
-          offset: 54265
-          line: 905
+          offset: 55672
+          line: 892
           column: 1
         end:
-          offset: 54593
-          line: 905
+          offset: 56000
+          line: 892
           column: 329
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_rule_2"
       identity_kind: "explicit"
-      unit_id: "normative_54130"
+      unit_id: "normative_55537"
       source_span:
         start:
-          offset: 54594
-          line: 906
+          offset: 56001
+          line: 893
           column: 1
         end:
-          offset: 54901
-          line: 906
+          offset: 56308
+          line: 893
           column: 308
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rule_3"
       identity_kind: "explicit"
-      unit_id: "normative_54130"
+      unit_id: "normative_55537"
       source_span:
         start:
-          offset: 54902
-          line: 907
+          offset: 56309
+          line: 894
           column: 1
         end:
-          offset: 55137
-          line: 907
+          offset: 56544
+          line: 894
           column: 236
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_54130"
+      unit_id: "normative_55537"
       source_span:
         start:
-          offset: 55139
-          line: 909
+          offset: 56546
+          line: 896
           column: 1
         end:
-          offset: 55525
-          line: 909
+          offset: 56932
+          line: 896
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "explicit"
-      unit_id: "normative_74401"
+      unit_id: "normative_79054"
       source_span:
         start:
-          offset: 74496
-          line: 970
+          offset: 79149
+          line: 959
           column: 1
         end:
-          offset: 74746
-          line: 970
+          offset: 79399
+          line: 959
           column: 251
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "explicit"
-      unit_id: "normative_74401"
+      unit_id: "normative_79054"
       source_span:
         start:
-          offset: 74747
-          line: 971
+          offset: 79400
+          line: 960
           column: 1
         end:
-          offset: 75019
-          line: 971
+          offset: 79672
+          line: 960
           column: 273
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "explicit"
-      unit_id: "normative_74401"
+      unit_id: "normative_79054"
       source_span:
         start:
-          offset: 75020
-          line: 972
+          offset: 79673
+          line: 961
           column: 1
         end:
-          offset: 75305
-          line: 972
+          offset: 79958
+          line: 961
           column: 286
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "explicit"
-      unit_id: "normative_74401"
+      unit_id: "normative_79054"
       source_span:
         start:
-          offset: 75306
-          line: 973
+          offset: 79959
+          line: 962
           column: 1
         end:
-          offset: 75606
-          line: 973
+          offset: 80259
+          line: 962
           column: 301
     - pointer: "/validation_rules/4"
       rule_id: "validation_rule_5"
       identity_kind: "explicit"
-      unit_id: "normative_74401"
+      unit_id: "normative_79054"
       source_span:
         start:
-          offset: 75607
-          line: 974
+          offset: 80260
+          line: 963
           column: 1
         end:
-          offset: 75890
-          line: 974
+          offset: 80543
+          line: 963
           column: 284
     - pointer: "/validation_rules/5"
       rule_id: "validation_rule_6"
       identity_kind: "explicit"
-      unit_id: "normative_74401"
+      unit_id: "normative_79054"
       source_span:
         start:
-          offset: 75891
-          line: 975
+          offset: 80544
+          line: 964
           column: 1
         end:
-          offset: 76249
-          line: 975
+          offset: 80902
+          line: 964
           column: 359
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1662,27 +1652,27 @@ normative_context:
           column: 362
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54130"
+      unit_id: "normative_55537"
       source_span:
         start:
-          offset: 54130
-          line: 899
+          offset: 55537
+          line: 886
           column: 1
         end:
-          offset: 54170
-          line: 899
+          offset: 55577
+          line: 886
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_74401"
+      unit_id: "normative_79054"
       source_span:
         start:
-          offset: 74401
-          line: 966
+          offset: 79054
+          line: 955
           column: 1
         end:
-          offset: 74423
-          line: 966
+          offset: 79076
+          line: 955
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1691,5 +1681,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:7af6081cf401a34702f73a0adacbfd86d763616963526c94d68b5b76a11244cc"
-  generated_content_sha256: "sha256:fd2be9b080659e04c888abff2688f5285536acb63c58493771efd25e85adf921"
+    sha256: "sha256:2f62588ef9dabe176c36fe40b47ab693692e0ab88b0a51aea838d7565ca85d11"
+  generated_content_sha256: "sha256:93ae858ff518872b0507f1c063f390aa594f60fc56b3a00698acd64cd6800d4e"

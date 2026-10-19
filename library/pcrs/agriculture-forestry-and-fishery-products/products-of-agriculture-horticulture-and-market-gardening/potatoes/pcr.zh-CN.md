@@ -364,7 +364,7 @@ sync_with: pcr.en-US.md
 只有所选养分损失方法和场址条件支持水体路径时才计算硝酸盐损失，并保留受纳水体语境。
 
 - 选定流：排放到水体的硝酸盐
-- 流属性/单位：质量 / kg 硝酸盐或声明氮基准
+- 流属性/单位: Mass / kg NO3-
 - 数量规则：将所选养分损失方法应用于采集的氮活动数据和场址条件
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -376,12 +376,14 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_soil_emission_activity`
 - 来源：`ipcc-2019-managed-soils`
 
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
+
 ###### 释放到水体的磷酸盐（`phosphate_to_water_output`）
 
 只有侵蚀、径流、排水或其他所选方法支持该路径时才计算磷酸盐损失，并保留磷基准和受纳水体语境。
 
 - 选定流：排放到水体的磷酸盐
-- 流属性/单位：质量 / kg 磷酸盐或声明磷基准
+- 流属性/单位: Mass / kg PO4
 - 数量规则：将一种声明且地理适用的磷损失方法应用于采集的活动数据和场址条件
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -392,6 +394,8 @@ sync_with: pcr.en-US.md
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_soil_emission_activity`
 - 来源：`fao-save-and-grow-2011`
+
+最终交换质量为 kg PO4；按 P 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 P 质量乘 95/31，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ## 7. 分配与共产品处理
 
@@ -416,7 +420,7 @@ sync_with: pcr.en-US.md
 | `cp_field_activity_records` | `potato_cultivation_and_farm_gate_preparation` | planting material, nutrient products, crop protection | 田间日志、发票、施用记录、产品标签 | field_id; crop_cycle; product_identity; amount; unit; nutrient_or_active_content; date; application_method | 将产品和施用事件核算到所表示田块；原始汇总与分配：保留产品身份，汇总匹配事件，以同周期合格产量归一化 | kg; L; kg nutrient | 每次接收和施用 | 完整作物周期 | 全部所表示田块 | 每声明的参考流 | 发票；标签；校准设备；田间日志 |
 | `cp_water_and_energy_records` | `potato_cultivation_and_farm_gate_preparation` | irrigation water and energy carriers | 仪表、交付、发票、油罐、机械或承包商记录 | field_id; meter_or_equipment_id; carrier; amount; unit; date; operation; shared_use_basis | 将直接和承包使用量核算到田块和作物周期；原始汇总与分配：分别保留载能体；按记录的运行时间、面积或实测服务量分配共用记录 | m3; kWh; L; kg; MJ | 每次事件或仪表周期 | 完整作物周期 | 全部纳入设备和田块 | 每声明的参考流 | 仪表校准；发票；油罐核算；承包商说明 |
 | `cp_field_and_harvest_records` | `potato_cultivation_and_farm_gate_preparation` | area, accepted potatoes, secondary output, waste, residue fate | 田块登记、称重票、产量监测、等级和去向记录 | field_id; planted_area; harvested_area; harvest_date; gross_tuber_mass; accepted_mass; secondary_mass; waste_mass; residue_fate; destination; moisture_basis | 将收获面积和全部计量产出核算到同一作物周期；原始汇总与分配：按产出类别和去向汇总；归一化到 1,000 kg 合格马铃薯 | ha; kg; percent | 每个田块和收获批次 | 完整作物周期至农场门装载 | 全部所表示田块和批次 | 每声明的参考流 | 校准秤；面积记录；等级规格；转移或废物凭证 |
-| `cp_soil_emission_activity` | `potato_cultivation_and_farm_gate_preparation` | managed-soil emissions | 养分、残余物、土壤、天气、灌溉和模型记录 | fertilizer_N; organic_N; residue_N; urea; lime; soil; climate; drainage; factor_set; model_version | 采用一种声明方法，根据采集活动数据计算每条路径；原始汇总与分配：按田块计算，有依据时按面积加权，再按同周期合格产量归一化 | kg N; kg material; kg emission; ha | 每次事件和作物周期计算 | 完整作物周期 | 全部所表示田块 | 每声明的参考流 | 来源记录；因子出处；模型文件；独立单位检查 |
+| `cp_soil_emission_activity` | `potato_cultivation_and_farm_gate_preparation` | managed-soil emissions | 养分、残余物、土壤、天气、灌溉和模型记录 | fertilizer_N; organic_N; residue_N; urea; lime; soil; climate; drainage; factor_set; model_version | 在同一兼容路线/产品/状态内，先逐田块核算应归属原始总量。汇总最终强度=应归属原始数量之和×声明参考量/匹配最终合格产出之和。来源为每公顷率 e_h、y_h 时，先以 e_h×面积、y_h×面积还原原始总量，不能再对田块总量作面积加权。每产品强度按匹配产出加权，不能按面积或不加权平均。原分配仅执行一次，保留期间/吞吐和全部来源单位换算，不兼容路线分开。 | kg N; kg material; kg emission; ha | 每次事件和作物周期计算 | 完整作物周期 | 全部所表示田块 | 每声明的参考流 | 来源记录；因子出处；模型文件；独立单位检查 |
 
 ### 计算规则
 
@@ -427,6 +431,7 @@ sync_with: pcr.en-US.md
 | `calc_energy_carriers` | 作业能源 | 保留实际载能体数量；仅在需要时采用有记录的密度或热值换算 | 载能体身份；数量；单位；换算因子 | 按身份列示的载能体数量和能量 |  |
 | `calc_managed_soil_n2o` | 土壤一氧化二氮 | 将所选 IPCC 层级或地理适用方法应用于肥料氮、有机氮、还田残余物氮、挥发和淋溶路径 | 氮活动；残余物去向；土壤和气候；所选因子 | 按路径列示的 kg N2O | `ipcc-2019-managed-soils` |
 | `calc_output_balance` | 收获产出 | 收获块茎总质量在声明不确定度内等于合格马铃薯、次级马铃薯、废物和实测处理损失之和 | 匹配的称重和等级记录 | 核算后的产出类别 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_soil_emission_activity`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

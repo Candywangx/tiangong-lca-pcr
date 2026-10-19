@@ -179,7 +179,7 @@ OSU PNW684 说明这是多年人工培育作物，树种、来源与买方等级
 - 采集协议：`cp_grow`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -332,8 +332,6 @@ OSU PNW684 说明这是多年人工培育作物，树种、来源与买方等级
 - 采集协议：`cp_harvest`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 设备供电点的电力（`condition_energy_electricity`）
 
 **condition_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -371,8 +369,6 @@ OSU PNW684 说明这是多年人工培育作物，树种、来源与买方等级
 - 采集协议：`cp_condition`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 设备供电点的电力（`hold_energy_electricity`）
 
 **hold_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -409,8 +405,6 @@ OSU PNW684 说明这是多年人工培育作物，树种、来源与买方等级
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_hold`
 - 来源：`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 木制板条箱（`dispatch_packaging_wood_crate`）
 
@@ -597,7 +591,7 @@ OSU PNW684 说明这是多年人工培育作物，树种、来源与买方等级
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | normalize_lot_mass | 实物台账与环境负荷分别归一化 | R 为同一边界、批次和期间的正值最终验收参考质量 kg，排除共产品、内部移交及未验收库存。原始物料、共产品及移交总量 Q 按 q_phys = Q/R 报告，不能乘负荷分配份额。环境负荷 B 仅完成一次有据直接、产出、期间及资产归属后，按 b_ref = B_attributed/R 报告。已按最终参考量报告的数值不再相除；配对内部移交仅在整包汇总抵消，不增加最终输出。 | 未分配实物量 Q；环境负荷 B 及归属记录；匹配正值参考质量 R | 每 1 kg 参考流的交换数量 | |
 | derive_count_records | 以棵数为基准的源记录 | 采集同一树种/高度等级批的实际棵数与验收鲜树净质量配对数据；由源记录重建实际活动总量，再使用 normalize_lot_mass。只有棵数的发票是不完整记录，而非可假定千克换算。 | 配对实际棵数/质量；批/树种/高度等级；原活动记录 | 可追溯批活动总量及计数-质量关系 | |
@@ -610,7 +604,7 @@ OSU PNW684 说明这是多年人工培育作物，树种、来源与买方等级
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_identity | 参考及全部实际交换 | 证明人工培育来源及实际鲜态树种/高度等级；数据集使用前核实各最终具体 UUID 及支持身份。集合采集要求不是已核实交换。 | 来源/队列记录；物理描述；确认依据 |
 | dq_cohort | 生产历史 | 覆盖实际全部培育年度、失败/补植库存及延期采收；估算记录须具名方法与不确定性，不虚构标准寿命。 | 队列/年度/库存台账及覆盖缺口 |
@@ -652,7 +646,7 @@ OSU PNW684 说明这是多年人工培育作物，树种、来源与买方等级
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 参考 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | unsd-cpc3-christmas | official_guidance | https://unstats.un.org/UNSDWebsite/statcom/session_56/documents/BG-3o-Explanatory_Notes_of_the_Central_Product_Classification_Version3-E.pdf ; 03241 | 分类范围及再植树排除，不提供清单默认值 |
 | osu-christmas-culture | extension_guidance | https://extension.oregonstate.edu/catalog/pnw-684-developing-quality-christmas-trees-pacific-northwest ; PNW684 | 人工多年培育背景、树种/高度等级区别、可能枝条产品与失败树；不移植数值因子 |

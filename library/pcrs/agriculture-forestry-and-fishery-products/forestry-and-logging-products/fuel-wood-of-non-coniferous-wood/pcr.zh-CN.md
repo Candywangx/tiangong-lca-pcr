@@ -166,8 +166,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_management`
 - 来源：`fao-woodfuel-planting`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 供应管理林分的灌溉水 (`irrigation_water`)
 
 仅纳入作为实际供应产品跨越边界的水，注明供应方及供给点。从自然直接取水属于 direct_water_abstraction，不属于该产品卡；降雨排除。
@@ -341,7 +339,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_harvest`
 - 来源：`fao-fuelwood-harvesting`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 

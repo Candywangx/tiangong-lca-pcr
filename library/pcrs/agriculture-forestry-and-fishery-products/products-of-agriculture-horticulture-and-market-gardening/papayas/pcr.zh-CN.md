@@ -278,7 +278,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_papaya_input_records`采集`papaya_crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -321,23 +321,6 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ##### 基本流
-
-###### 田间残余物（`papaya_field_residue`）
-
-记录留在田间或从田间移出的不可销售植株材料和果实残余物，并披露其去向和处理。
-
-- 选定流：木瓜田间残余物
-- 流属性/单位：Mass / kg dry matter or wet biomass
-- 数量规则：按称量、文件化生物量采样估计，或根据田块和周期的采收及可销售质量平衡计算。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每个作物周期，再按每 1,000 kg 可销售产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集计算（`calculated_from_collection`）
-- 采集协议：`cp_papaya_harvest_records`
-- 来源：`fao-gap-framework-2003`
 
 #### 输出
 ##### 产品流
@@ -450,24 +433,6 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 
-###### 交接点准备废水或清洗损失（`papaya_gate_wastewater`）
-
-记录声明交接点前产生的废水或清洗相关产品损失，并关联处理或排放路线。
-
-- 选定流：木瓜交接点准备废水或清洗损失
-- 流属性/单位：Mass or volume / kg or m3
-- 数量规则：从交接点准备批次平衡中计量或核算废水和清洗损失。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 在声明交接点前清洗的可销售产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集计算（`calculated_from_collection`）
-- 采集协议：`cp_papaya_gate_records`
-- 来源：`codex-cxc-53-2003`
-
-
 ##### 基本流
 
 ## 7. 分配与共产品处理
@@ -477,6 +442,10 @@ sync_with: pcr.en-US.md
 - `allocation_reusable_containers`：按记录的服务周期对可重复使用采收容器和周转箱建模，将其生产负荷分摊到记录的使用次数，并将消耗性包装作为独立投入保留。`source_ids`：`iso-14044-2006`、`codex-cxc-53-2003`。
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -513,6 +482,8 @@ sync_with: pcr.en-US.md
 | `calc_mass_balance` | harvest and gate preparation | `gross harvested mass = marketable output + rejects + residue or process loss`，文件化库存变化另行显示。 | harvest lots, gate batches, reject and residue records | reconciled mass-balance check | `codex-cxc-53-2003` |
 | `calc_reusable_container_burden` | harvest containers and crates | 用容器生产负荷除以文件化服务周期，并将本次使用份额分配到所代表的木瓜产出。 | container mass, material, expected or observed service cycles | container burden per declared output | `iso-14044-2006` |
 | `papaya_gate_rejects_specific_output` | `papaya_gate_preparation` | 对每个木瓜门前准备批次，分别核对接收果实、合格果实、降级果实、修整物、受损果实和处理损失，并与废弃包装分开。果实流按实际物理状态和去向识别，包装按每种实际材料识别。仍可销售的降级果实不自动成为废物，应保留有依据的产品或废物角色。保留原每 1,000 kg 可销售产出的活动口径及阶段到最终产出的归属，避免重复归一化。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | `cp_papaya_gate_records` | 逐实际物流的交换、去向及无重复质量平衡 | `codex-cxc-53-2003` |
+| `papaya_field_residue_identity_and_fate` | `papaya_harvest` | 按实测干湿基和实际去向核对作物残余物、收获损失和生物量。留田或还田生物量是支持分解与养分路径计算的内部残余物台账，不是外购资源或虚构的生物量基本交换。单独收集的材料须有实际产品／废物身份及去向；环境释放须识别物质与接收环境。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_papaya_harvest_records` | 按身份区分的交换和对账活动记录 | `fao-gap-framework-2003` |
+| `papaya_gate_wastewater_identity_and_fate` | `papaya_gate_preparation` | 识别每项实际独立材料物流、组成、状态和接收者。废保藏剂、盐水、动植物材料、包装、排液和有意共产品在独立处理时分别记录，仅建立本作业有证据的物流。物理混合物流只有在组成和相容处理有据时才可采用一个身份，不得再把组分作为额外输出重复计量。区分销售产出、内部返工、废物转移、外购处理和基本排放，不重复处理负荷。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_papaya_gate_records` | 按身份区分的交换和对账活动记录 | `codex-cxc-53-2003` |
 
 ### 数据质量要求
 
@@ -558,3 +529,4 @@ sync_with: pcr.en-US.md
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

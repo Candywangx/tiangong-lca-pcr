@@ -606,22 +606,6 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 
 ##### Elementary flows
 
-###### Soil or water pathway from residues (`residue_pathway_emission`)
-Documented soil or water releases from residue handling are recorded only when the destination and method are known.
-
-- Selected flow: Residue-related soil or water release
-- Flow property / unit: Mass / kg substance
-- Amount rule: Use the declared residue pathway and selected emission method; otherwise retain as an coverage finding item.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable gate output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Method formula (`method_formula`)
-- Collection protocol: `cp_residue_and_reject_records`
-- Sources: `ipcc-2019-refinement-afolu`
-
 ## 7. Allocation and Co-product Handling
 
 | rule_id | Applies to | Rule | source_ids |
@@ -631,6 +615,11 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 | `allocation_recovered_residue_claim` | recovered residues | Do not claim avoided production unless destination, function, quantity and receiving-system evidence are documented. | `fao-gap-framework-2003` |
 
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -669,6 +658,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_nutrient_basis` | fertilizer and amendment rows | Keep product mass and N, P2O5 and K2O mass separate; calculate only from declared evidence. | product mass; nutrient fractions or result | product and nutrient amount | `globalgap-ifa-fruit-vegetables-v6` |
 | `calc_soil_emissions` | soil emission rows | Apply one selected IPCC-compatible nitrogen method to documented inputs and disclose factors and conversions. | N input; factors; qualifiers | elementary-flow amount | `ipcc-2019-refinement-afolu` |
 | `calc_mass_reconciliation` | harvest, gate and residue rows | Reconcile harvest, marketable output, rejects, residues, recovered material and documented loss. | lot records; scale; destination records | mass balance | `fao-postharvest-handling-ae075e` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_and_amendment_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -679,6 +669,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `quality_temporal_completeness` | full cycle | Cover all harvests and applications and identify missing months, blocks or lots. | cycle completeness checklist |
 | `quality_mass_balance` | harvest and handling | Reconcile harvested, marketable, rejected, trimmed, recovered, residual and documented loss quantities. | lot mass balance |
 | `quality_factor_disclosure` | calculated soil and residue pathways | Disclose the selected factor method, nutrient basis, conversion and any excluded pathway. | calculation worksheet and source reference |
+
+### Substance-specific Release Requirement
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `residue_pathway_emission_specific_emission` | cherry_residue_and_reject_routing | For the actual cherry_residue_and_reject_routing activity, preserve the original cp_residue_and_reject_records collection role and activity/state/period basis. Use the declared residue pathway and selected emission method; otherwise retain as an coverage finding item.. This is a mandatory identification and calculation requirement, not one aggregate elementary exchange. Enumerate each actual emitted substance and receiving compartment using a compatible measured/pathway method and activity-factor units, then create a separate concrete card or reuse the existing matching card once, with verified UUID or explicit unresolved identity. A generic pollutant/volatile/residue label, total mass loss or summed screening interval cannot establish a compound or individual-emission amount. Keep elemental versus molecular/reporting bases explicit, attribute the raw quantities and normalize once to accepted reference output. No supported release only with evidenced inapplicability; missing identity, method or activity blocks completeness. Exclude releases already covered by an inclusive service or upstream dataset. | cp_residue_and_reject_records | separate supported substance/compartment exchanges | `ipcc-2019-refinement-afolu` |
 
 ## 9. Validation Rules
 
@@ -715,3 +711,4 @@ Evidence applicability: cited general farm-record and postharvest frameworks do 
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

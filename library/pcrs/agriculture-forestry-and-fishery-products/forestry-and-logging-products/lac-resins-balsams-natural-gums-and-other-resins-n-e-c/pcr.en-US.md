@@ -142,8 +142,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_host_management`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Purchased heat at the process inlet (`host_energy_heat`)
 
 Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
@@ -733,28 +731,6 @@ Obtain water loss from matched water-specific measurements or closure with uncer
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Measured natural volatile constituents to air (`natural_volatile_emissions`)
-
-When volatile loss occurs, enumerate actual measured constituent identity and air compartment separately under this conditional role. A total mass loss or generic VOC label cannot supply one fixed compound UUID.
-
-- Selected flow: Measured natural volatile constituents to air
-- Flow property / unit: Mass / kg
-- Amount rule: Attributed measured quantity from cp_primary_preparation; normalize once to matched accepted net dispatch mass
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_primary_preparation`
-- Range: Replaceable provisional broad QA screen; not a default or mandatory limit
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ### Process: Producer storage protection and dispatch (`producer_dispatch`)
 
 #### Inputs
@@ -949,6 +925,12 @@ Provisional numeric QA screens on nonreference cards are subjective order-of-mag
 | `coverage_quality` | all nodes | Record zero/not-applicable with actual evidence; unknown quantities or routes remain gaps, not zeros. Provisional ranges below are replaceable QA screens, never observed values or mandatory limits. | reconciliation; completeness ledger; actual process activation |
 | `period_asset_quality` | hosts and shared services | Cover relevant host phases, cycles, stock changes, asset consumers and replacement/termination assumptions with sensitivity. | period/asset attribution and independent totals |
 | `scope_quality` | downstream consumers | Disclose primary-only partial classification coverage, actual gate/form/grade and upstream exclusions; not valid for refined shellac or chemical proxy datasets. | scope and gate metadata |
+
+### Substance-specific Release Requirement
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `natural_volatile_emissions_specific_emission` | primary_preparation | For the actual primary_preparation activity, preserve the original cp_primary_preparation collection role and activity/state/period basis. Attributed measured quantity from cp_primary_preparation; normalize once to matched accepted net dispatch mass. This is a mandatory identification and calculation requirement, not one aggregate elementary exchange. Enumerate each actual emitted substance and receiving compartment using a compatible measured/pathway method and activity-factor units, then create a separate concrete card or reuse the existing matching card once, with verified UUID or explicit unresolved identity. A generic pollutant/volatile/residue label, total mass loss or summed screening interval cannot establish a compound or individual-emission amount. Keep elemental versus molecular/reporting bases explicit, attribute the raw quantities and normalize once to accepted reference output. No supported release only with evidenced inapplicability; missing identity, method or activity blocks completeness. Exclude releases already covered by an inclusive service or upstream dataset. | cp_primary_preparation | separate supported substance/compartment exchanges |  |
 
 ## 9. Validation Rules
 

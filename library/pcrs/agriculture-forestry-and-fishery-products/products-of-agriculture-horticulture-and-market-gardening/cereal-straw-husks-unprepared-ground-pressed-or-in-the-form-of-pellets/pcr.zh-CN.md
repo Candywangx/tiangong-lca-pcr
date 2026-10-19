@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Straw `b1dd1313-1bc0-4baf-8cfb-50e8ea2a307c` |
+| 参考产品流 | 声明工厂门的饲料级谷物秸秆或谷壳 |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -98,7 +98,7 @@ sync_with: pcr.en-US.md
 
 记录谷物分离后的特定谷物副产品；它不是已确认的工厂门参考流。
 
-- 选定流: Cereal straw or husk at grain-separation hand-off
+- 选定流：谷物分离交接点的谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Measured as-received source mass by cereal and lot
 - 数值来源模式: `foreground_record`
@@ -152,7 +152,7 @@ sync_with: pcr.en-US.md
 
 记录装载质量及来源地至工厂的实际距离。
 
-- 选定流: Road freight transport service
+- 选定流：道路货运服务
 - 流属性/单位: Mass*distance / t*km
 - 数量规则: Loaded tonnes multiplied by actual loaded-route kilometres
 - 数值来源模式: `calculated_value`
@@ -186,7 +186,7 @@ sync_with: pcr.en-US.md
 
 在接收时保留谷物种类、秸秆/谷壳及含水率身份。
 
-- 选定流: Collected raw cereal straw or husk
+- 选定流：收集的原始谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Plant receipt net of vehicle tare
 - 数值来源模式: `foreground_record`
@@ -213,7 +213,7 @@ sync_with: pcr.en-US.md
 
 仅计入声明来源交接之后的损失。
 
-- 选定流: Cereal-residue collection loss
+- 选定流：谷物残余收集损失
 - 流属性/单位: Mass / kg
 - 数量规则: Source mass minus received mass on a common dry-matter basis
 - 数值来源模式: `calculated_value`
@@ -245,7 +245,7 @@ sync_with: pcr.en-US.md
 
 不增加上游负担的内部转移。
 
-- 选定流: Collected raw cereal straw or husk
+- 选定流：收集的原始谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Equal to linked collected output entering this lot
 - 数值来源模式: `calculated_value`
@@ -294,7 +294,7 @@ sync_with: pcr.en-US.md
 
 将供应水与入料水分分开。
 
-- 选定流: Process water
+- 选定流：过程用水
 - 流属性/单位: Volume / m3
 - 数量规则: Metered supplied water; zero when inactive
 - 数值来源模式: `foreground_record`
@@ -328,7 +328,7 @@ sync_with: pcr.en-US.md
 
 该预期产品产出是未加工路线的产出或后续加工的进料。
 
-- 选定流: Accepted cereal straw or husk
+- 选定流：合格谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed accepted output after grading
 - 数值来源模式: `foreground_record`
@@ -352,7 +352,7 @@ sync_with: pcr.en-US.md
 
 将该预期共产品产出与合格饲料级物料分开。
 
-- 选定流: Downgraded cereal straw or husk
+- 选定流：降级谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed quantity routed to a lower grade or alternate use
 - 数值来源模式: `foreground_record`
@@ -379,7 +379,7 @@ sync_with: pcr.en-US.md
 
 声明处理或处置去向。
 
-- 选定流: Rejected cereal residue
+- 选定流：拒收谷物残余
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed unusable material leaving receiving
 - 数值来源模式: `foreground_record`
@@ -406,9 +406,9 @@ sync_with: pcr.en-US.md
 
 使用已核实的未指定空气区室水蒸气基本流；不得将干物质损失报告为水。
 
-- 选定流: water vapour `fe0acd60-3ddc-11dd-ac04-0050c2490048`
+- 选定流：水蒸气 `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - 流属性/单位: Mass / kg
-- 数量规则: Inlet moisture minus outlet moisture, net of supplied water and discharge
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式: `calculated_value`
 - 适用范围: `site_specific`
 原始活动或阶段基准：per kg accepted output.
@@ -435,7 +435,7 @@ sync_with: pcr.en-US.md
 
 按相同水分基准进行内部转移。
 
-- 选定流: Accepted cereal straw or husk
+- 选定流：合格谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Linked accepted output entering the run
 - 数值来源模式: `calculated_value`
@@ -493,7 +493,7 @@ sync_with: pcr.en-US.md
 
 记录粒度方法及处理后状态。
 
-- 选定流: Chopped or ground cereal straw or husk
+- 选定流：切碎或粉碎谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed conforming output
 - 数值来源模式: `foreground_record`
@@ -517,7 +517,7 @@ sync_with: pcr.en-US.md
 
 将返回细料排除在可售产出之外。
 
-- 选定流: Captured cereal-residue fines for rework
+- 选定流：捕集后返回返工的谷物残余细料
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed fines returned once to an identified run
 - 数值来源模式: `foreground_record`
@@ -547,7 +547,7 @@ sync_with: pcr.en-US.md
 
 使用已核实的未指定空气区室、未指定粒径颗粒物基本流。
 
-- 选定流: Particulate matter, particle size unspecified `0ce3dedb-caca-407b-a856-a90470eb8ec0`
+- 选定流：颗粒物，粒径未特指 `0ce3dedb-caca-407b-a856-a90470eb8ec0`
 - 流属性/单位: Mass / kg
 - 数量规则: Measured uncaptured particulate; disclose any measured size fraction as supporting detail
 - 数值来源模式: `foreground_record`
@@ -576,7 +576,7 @@ sync_with: pcr.en-US.md
 
 声明成形前状态与含水率。
 
-- 选定流: Prepared cereal straw or husk for forming
+- 选定流：用于成型的已制备谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Linked size-reduced output entering the forming run
 - 数值来源模式: `calculated_value`
@@ -640,7 +640,7 @@ sync_with: pcr.en-US.md
 
 区分添加水和进料自身水分。
 
-- 选定流: Process water
+- 选定流：过程用水
 - 流属性/单位: Volume / m3
 - 数量规则: Metered water added for moisture conditioning
 - 数值来源模式: `foreground_record`
@@ -674,7 +674,7 @@ sync_with: pcr.en-US.md
 
 记录形状、尺寸、冷却状态及含水率。
 
-- 选定流: Pressed, wafered or pelletized cereal straw or husk
+- 选定流：压制、薄块化或颗粒化谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed conforming output after cooling and screening
 - 数值来源模式: `foreground_record`
@@ -698,7 +698,7 @@ sync_with: pcr.en-US.md
 
 每个返回回路仅计一次。
 
-- 选定流: Cereal-residue forming fines for rework
+- 选定流：返回返工的谷物残余成型细料
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed fines returned to one named run
 - 数值来源模式: `foreground_record`
@@ -725,7 +725,7 @@ sync_with: pcr.en-US.md
 
 声明降级、回收或处置去向。
 
-- 选定流: Rejected formed cereal residue
+- 选定流：拒收成型谷物残余
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed off-spec material leaving the rework loop
 - 数值来源模式: `foreground_record`
@@ -757,7 +757,7 @@ sync_with: pcr.en-US.md
 
 不重叠地选择合格未加工、粒度减小或成形物料。
 
-- 选定流: Route-selected cereal straw or husk
+- 选定流：按实际路线选定的谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Linked output of exactly one selected upstream route
 - 数值来源模式: `calculated_value`
@@ -806,7 +806,7 @@ sync_with: pcr.en-US.md
 
 仅在实际使用时计入袋、衬里或薄膜。
 
-- 选定流: Flexible packaging
+- 选定流：柔性包装
 - 流属性/单位: Mass / kg
 - 数量规则: Net packaging mass issued; zero for bulk or unpackaged bales
 - 数值来源模式: `foreground_record`
@@ -840,7 +840,7 @@ sync_with: pcr.en-US.md
 
 仅交付符合声明谷物种类、物料状态、含水率和饲料级路线的产品。
 
-- 选定流: Straw `b1dd1313-1bc0-4baf-8cfb-50e8ea2a307c`
+- 选定流：声明工厂门的饲料级谷物秸秆或谷壳
 - 流属性/单位: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：Fixed reference amount of accepted product
 
@@ -863,11 +863,13 @@ sync_with: pcr.en-US.md
   - 证据类型: `method_formula`
   - 来源: `mass-balance-identity`
 
+参考流与产品卡均保留1000千克合格产出、实际谷物种类、秸秆或谷壳、制备形态、含水率基准及工厂门饲料等级。核实相容证据后才绑定实际物料身份，不得将秸秆UUID继承给谷壳。
+
 ###### 储存降级物料（`storage_downgrade`）
 
 将其去向与参考产出分开。
 
-- 选定流: Downgraded stored cereal straw or husk
+- 选定流：降级储存谷物秸秆或谷壳
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed quantity routed out of reference-grade stock
 - 数值来源模式: `foreground_record`
@@ -894,7 +896,7 @@ sync_with: pcr.en-US.md
 
 声明处理去向。
 
-- 选定流: Cereal-residue storage waste
+- 选定流：谷物残余储存废物
 - 流属性/单位: Mass / kg
 - 数量规则: Weighed spoiled material and sweepings leaving storage
 - 数值来源模式: `foreground_record`
@@ -921,7 +923,7 @@ sync_with: pcr.en-US.md
 
 使用已核实的未指定空气区室、未指定粒径颗粒物基本流。
 
-- 选定流: Particulate matter, particle size unspecified `0ce3dedb-caca-407b-a856-a90470eb8ec0`
+- 选定流：颗粒物，粒径未特指 `0ce3dedb-caca-407b-a856-a90470eb8ec0`
 - 流属性/单位: Mass / kg
 - 数量规则: Measured uncaptured particulate; disclose any measured size fraction as supporting detail
 - 数值来源模式: `foreground_record`
@@ -946,6 +948,10 @@ sync_with: pcr.en-US.md
 
 在上游分离点列举谷粒、秸秆、谷壳及全部预期产品。优先采用上游谷物 PCR 或供应商分配；否则先检验细分，若仍有共同种植负担，则依 ISO 14044 一致采用并披露物理或经济分配。仅当适用研究规则明确要求时才允许零负担截断。前景路线按实测批次平衡处理合格、降级和废物状态。返工保留在产生节点内，每项拒收量只能有一个返工、降级、回收或处置路径。按共同干物质基准核对来源、内部转移和最终交接，避免双计。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
@@ -960,7 +966,7 @@ sync_with: pcr.en-US.md
 | `cp_source_lot` | `source_collection` | 来源与接收质量 | 地磅与来源记录 | 谷物；秸秆/谷壳；质量；水分；日期 | 校准称量与配对取样；原始汇总与分配：水分核对后求和 | kg；分数 | 每车 | 完整期间 | 全部来源 | 每声明的参考流 | 校准与样品链 |
 | `cp_transport` | `source_collection` | 进厂运输 | 发运记录 | 质量；起点；终点；距离；车辆 | 发票与路线日志；原始汇总与分配：求和装载 t*km | t；km；t*km | 每车 | 完整期间 | 全部路线 | 每声明的参考流 | 发运记录 |
 | `cp_energy` | 所有适用节点 | 能源投入 | 仪表、发票及设备日志 | 载体；数量；节点；批次；分配键 | 优先直接计量；原始汇总与分配：换算并一次分配 | 载体单位；MJ | 每批或每月 | 代表年份 | 全部节点 | 每声明的参考流 | 仪表或发票 |
-| `cp_water_moisture` | 分级与成形 | 水和水分 | 仪表与实验记录 | 供水；进出质量；水分方法；时间 | 仪表与配对样品；原始汇总与分配：分开核算加水与去水 | m3；kg；分数 | 每批 | 完整期间 | 适用节点 | 每声明的参考流 | 仪表与测试记录 |
+| `cp_water_moisture` | 分级与成形 | 水和水分 | 仪表与实验记录 | 供水；进出质量；水分方法；时间 ；含拒收物和残体的全部进出材料带水；实际加水/降雨；单独液体转出；期初期末水库存；湿基含水率/密度；有据蒸发及不确定性| 仪表与配对样品；原始汇总与分配：分开核算加水与去水 | m3；kg；分数 | 每批 | 完整期间 | 适用节点 | 每声明的参考流 | 仪表与测试记录 |
 | `cp_grading` | `grading_stabilization` | 等级去向 | 分级与发运记录 | 标准；质量；等级；去向；水分 | 批次分级与称量；原始汇总与分配：求和互斥状态 | kg | 每批 | 完整期间 | 接收场址 | 每声明的参考流 | 签字分级记录 |
 | `cp_run_balance` | 粒度减小与成形 | 运行平衡 | 生产日志 | 批次；进料；产出；细料；拒收；粉尘；水分 | 关联运行核对；原始汇总与分配：内部返工仅抵消一次 | kg | 每批/期间 | 完整期间 | 各生产线 | 每声明的参考流 | 生产日志 |
 | `cp_rework` | 粒度减小与成形 | 返工与拒收 | 转移票据 | 产生批次；接收批次；质量；状态；路线 | 标记转移记录；原始汇总与分配：返回与出界各计一次 | kg | 每次移动 | 完整期间 | 各生产线 | 每声明的参考流 | 转移票据 |
@@ -988,7 +994,7 @@ sync_with: pcr.en-US.md
 ## 9. 校验规则
 
 1. 必须声明谷物、秸秆/谷壳、形态、含水率及基准、等级、路线和工厂门。
-2. 固定饲料级 Straw 流仅用于声明的工厂门产品，不得用于化学处理、完整饲料或燃料专用干物质。
+2. UUID绑定前，按实际谷物、秸秆或谷壳、制备状态、饲料等级及工厂门交接核实具体产品身份。已缓存的Straw定义为除去籽粒和颖壳后的谷物干茎秆，不能证明谷壳身份，不能作为本PCR的通用绑定。证据不足时保持身份未解析。排除化学处理、完整饲料及燃料专用产品。
 3. 未加工路线跳过粒度减小和成形；磨碎路线采用粒度减小；压制或颗粒路线采用成形；未活动节点数量为零。
 4. 各节点声明前后状态、服务角色、损失、拒收与交接；每项预期产出只有一个去向。
 5. 次生来源需要证据和明确的继承、分配或截断决定，且不得重复负担。
@@ -997,7 +1003,7 @@ sync_with: pcr.en-US.md
 8. 湿质量与干物质平衡将水分变化与干物质损失分开。
 9. 参数化产品投入在前景生成时解析为已核实 UUID。
 10. recovered-material set 不适用，因为当前分组覆盖再生金属与纸纤维而非谷物残余物。养分、施工和废物处理 set 对该物理路线同样不适用。
-11. 每张定量卡恰有一个 Range，且 EN、ZH、structured 字段一致。
+11. 对每个已提供的数量筛查核对具体交换、上下界、相容单位和分母、基准、适用性、证据类型及外部来源，中英文和投影保持等义。临时推理范围仅为非强制复核提示，不是默认数量、允许损失或完整性证据。没有相容数量界限依据时明确报告无法进行范围筛查，复核计量、匹配组分平衡和不确定性；不得为满足检查虚构范围。最终参照归一化保持精确，并非实证产率。实际交换数量、采集协议及相容单位/换算证据独立于范围要求。
 
 ## 10. 发布数据集画像
 
@@ -1020,3 +1026,4 @@ sync_with: pcr.en-US.md
 | `fao-feed-good-practices-2010` | official_guidance | FAO 与 IFIF，《饲料工业良好实践手册》，2010，https://www.fao.org/4/i1379e/i1379e04.pdf | 水分、搬运及储存控制 |
 | `iso-14044-2006` | standard | ISO 14044:2006，环境管理—生命周期评价—要求与指南 | 共产品归属与披露 |
 | `mass-balance-identity` | method_factor | 对配对质量与水分记录应用质量守恒 | 换算与平衡计算 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

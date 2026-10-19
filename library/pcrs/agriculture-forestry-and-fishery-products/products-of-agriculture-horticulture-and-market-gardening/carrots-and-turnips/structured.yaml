@@ -475,12 +475,15 @@ process_inventory:
                 - fao-gap-framework-2003
                 - fao-organic-nutrients
             ranges: []
+      waste:
+        []
+      elementary:
         - row_id: management_water_withdrawal
           role: "Water resource withdrawal for crop management"
-          name: "Water resource withdrawal for crop management"
-          flow_type: "product"
+          name: "Water withdrawn directly from an identified natural source; exact compartment and UUID unresolved"
+          flow_type: "elementary"
           property_unit: "Volume / m3"
-          description: "Record source withdrawal separately from water delivered to the crop and identify conveyance, reuse, and return flows. Raw activity or stage basis: per 1,000 kg marketable fresh root output."
+          description: "Record source withdrawal separately from water delivered to the crop and identify conveyance, reuse, and return flows. Raw activity or stage basis: per 1,000 kg marketable fresh root output. Only for direct natural-water abstraction owned by this foreground boundary. Select the actual source/compartment and compatible volume or mass identity. A municipal or other purchased water receipt is a product supply, with its provider withdrawal covered upstream once; it is not this elementary input. Keep the withdrawal-to-field supply ledger, pumping, distribution losses and internal delivered-water transfers explicit. Do not add the same supplier abstraction or internal delivery as another external resource use. Retain missing source identity or quantity as a completeness gap."
           amount:
             expression: "Use source meter readings or a declared water-balance calculation for the management period."
             value_mode: "foreground_record"
@@ -502,10 +505,6 @@ process_inventory:
                 basis_kind: "crop_cycle"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-      waste:
-        []
-      elementary:
-        []
     outputs:
       product:
         []
@@ -1111,7 +1110,7 @@ dataset_production:
       process_id: "harvest_and_gate_preparation"
       flow_role: "washing_water; soil_and_trim_solids"
       record_type: "batch conditioning record"
-      raw_fields: "batch mass; water; reuse; discharge; solids; equipment; duration"
+      raw_fields: "batch mass; water; reuse; discharge; solids; equipment; duration ; process-water control volume, external supply/returns, internal recirculation separately, opening/closing water stocks, product/residue water, measured discharge, evaporation evidence and residual uncertainty"
       collection_method: "meter, batch log, and water balance; Raw aggregation and attribution: allocate utilities by batch mass or time; keep solids separate"
       unit: "m3, kg, and date"
       frequency: "each batch"
@@ -1243,7 +1242,7 @@ dataset_production:
         - mass-balance-identity
     - id: calc_conditioning_water_balance
       applies_to: "washing water and wastewater"
-      rule: "wastewater = water input + retained or released product water - reuse - evaporation - measured retained water, using measured values where available."
+      rule: "Use one defined process control volume and matched period in water-mass units. Discharged water = external supplied water + water in incoming product/material + other actual external water inflows + opening water stock - water in all outgoing products/residues - actual evaporation - water in separately exported streams - closing water stock. Convert measured volumes only with a compatible documented density. Internal recirculation remains within that boundary and cancels; do not subtract it again from fresh-water inflow. A genuinely external reclaimed-water receipt is an external inflow. Retain liquid discharge separately from its dry solids/pollutant masses. Prefer measured discharge and use the balance as reconciliation; missing components or unexplained residuals are gaps, not automatic wastewater, evaporation or zero."
       inputs:
         - "water input"
         - reuse
@@ -1285,6 +1284,16 @@ dataset_production:
       output: "reconciled crop-cycle mass balance"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_managed_soil_emission_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: quality_product_identity
       applies_to: "reference product and outputs"
@@ -1423,7 +1432,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:0dbf5e7e28ca91e1b58f9c3550686069957176adb806206ec8c6702e79f3d91a"
+  source_sha256: "sha256:89bd16f2e38da012e6d5a8614b0db7c10df46229a3b2cbbbbfd3a14390a9293c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6643"
@@ -1474,16 +1483,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46592"
+    - unit_id: "normative_47259"
       family: "allocation"
       span:
         start:
-          offset: 46592
-          line: 804
+          offset: 47259
+          line: 809
           column: 1
         end:
-          offset: 48587
-          line: 816
+          offset: 49254
+          line: 821
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_same_crop_and_route` | multiple fields, cultivars, sites, or routes | Keep records separate through normalization. If aggregation is necessary, allocate shared inputs by documented area-time, operating time, water delivered, throughput, or mass. | `iso-14044-2006` |\n| `allocation_marketable_and_off_grade` | marketable roots and declared secondary streams | Use mass allocation when culls or downgraded roots have a documented product recipient and function. If discarded, returned, or treated, model the destination instead of assigning a co-product credit. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_shared_water_and_energy` | shared irrigation, washing, cooling, or equipment records | Allocate shared utilities by measured water, product mass, batch time, or operating time and state the selected basis. | `fao-crop-evapotranspiration-56`; `fao-postharvest-handling-vegetables` |\n| `allocation_reusable_packaging` | reusable crates, bins, and pallets | Allocate packaging production and replacement over verified service cycles and assign losses to the route where they occur. Do not spread a single-use item over undocumented cycles. | `fao-postharvest-handling-vegetables` |\n| `allocation_residue_destination` | residues and rejects with different fates | Preserve destination-specific rows. Field return, compost, feed, treatment, and disposal are separate pathways and are not interchangeable co-products. | `fao-gap-framework-2003`; `iso-14044-2006` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1502,12 +1511,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46592
-              line: 804
+              offset: 47259
+              line: 809
               column: 1
             end:
-              offset: 46632
-              line: 804
+              offset: 47299
+              line: 809
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1522,16 +1531,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_74807"
+    - unit_id: "normative_77808"
       family: "validation"
       span:
         start:
-          offset: 74807
-          line: 883
+          offset: 77808
+          line: 889
           column: 1
         end:
-          offset: 77602
-          line: 898
+          offset: 80603
+          line: 904
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_identity` | reference flow | The dataset must identify one fresh, whole, unprocessed carrot or turnip product at the declared gate. An identity evidence gap remains a coverage issue and cannot be silently replaced by another root vegetable. | `mass-balance-identity` |\n| `validation_required_processes` | process map and inventory | All three required processes must be present, and every detailed process section must match a process-map id. | `fao-gap-framework-2003` |\n| `validation_crop_scope` | product category identity | Carrots and turnips must remain within CPC 01251; seed production, processed products, and other root crops require separate treatment or mapping. | `fao-gap-framework-2003` |\n| `validation_nutrient_non_double_counting` | nutrient inputs | One compound product is recorded once on the product basis and, when required, converted to documented nutrient equivalents without summing it as separate N, P, and K products. | `fao-gap-framework-2003` |\n| `validation_water_balance` | irrigation, withdrawal, washing, and wastewater | Check source withdrawal, delivered water, reuse, evaporation, and discharge for the declared route. Do not use rainfall to close a metered irrigation row. | `fao-crop-evapotranspiration-56`; `mass-balance-identity` |\n| `validation_mass_balance` | root product, culls, residues, solids, and waste | Harvested roots, marketable output, culls, residues, removed solids, wastewater, and packaging waste must reconcile within the declared tolerance. | `mass-balance-identity` |\n| `validation_boundary_hand_off` | conditioning and transport | Washing, grading, cooling, packaging, treatment, and transport are included only when they occur before the declared gate; post-gate distribution is excluded. | `fao-postharvest-handling-vegetables`; `codex-cxc-53-2003-fresh-produce` |\n| `validation_emission_method` | elementary emissions | Each emission row must state substance, compartment, method, factor basis, and whether an upstream dataset already contains the burden. | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |\n| `validation_parameterized_identity_resolution` | parameterized rows and reference flow | During foreground dataset construction, resolve each parameterized row to a compatible UUID and retain property, unit, geography, and intended-use checks. Uncovered rows remain unmapped until evidence supports a fixed identity. | `mass-balance-identity` |\n| `validation_quality_disclosure` | published dataset profile | Report temporal, geographic, route, measurement, estimate, allocation, residue-fate, and evidence gap-identity limitations before downstream use. | `iso-14044-2006` |\n\n"
       headings:
@@ -1550,12 +1559,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 74807
-              line: 883
+              offset: 77808
+              line: 889
               column: 1
             end:
-              offset: 74829
-              line: 883
+              offset: 77830
+              line: 889
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1639,210 +1648,210 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_same_crop_and_route"
       identity_kind: "explicit"
-      unit_id: "normative_46592"
+      unit_id: "normative_47259"
       source_span:
         start:
-          offset: 46705
-          line: 808
+          offset: 47372
+          line: 813
           column: 1
         end:
-          offset: 46985
-          line: 808
+          offset: 47652
+          line: 813
           column: 281
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_marketable_and_off_grade"
       identity_kind: "explicit"
-      unit_id: "normative_46592"
+      unit_id: "normative_47259"
       source_span:
         start:
-          offset: 46986
-          line: 809
+          offset: 47653
+          line: 814
           column: 1
         end:
-          offset: 47324
-          line: 809
+          offset: 47991
+          line: 814
           column: 339
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_shared_water_and_energy"
       identity_kind: "explicit"
-      unit_id: "normative_46592"
+      unit_id: "normative_47259"
       source_span:
         start:
-          offset: 47325
-          line: 810
+          offset: 47992
+          line: 815
           column: 1
         end:
-          offset: 47620
-          line: 810
+          offset: 48287
+          line: 815
           column: 296
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_reusable_packaging"
       identity_kind: "explicit"
-      unit_id: "normative_46592"
+      unit_id: "normative_47259"
       source_span:
         start:
-          offset: 47621
-          line: 811
+          offset: 48288
+          line: 816
           column: 1
         end:
-          offset: 47917
-          line: 811
+          offset: 48584
+          line: 816
           column: 297
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_residue_destination"
       identity_kind: "explicit"
-      unit_id: "normative_46592"
+      unit_id: "normative_47259"
       source_span:
         start:
-          offset: 47918
-          line: 812
+          offset: 48585
+          line: 817
           column: 1
         end:
-          offset: 48197
-          line: 812
+          offset: 48864
+          line: 817
           column: 280
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46592"
+      unit_id: "normative_47259"
       source_span:
         start:
-          offset: 48199
-          line: 814
+          offset: 48866
+          line: 819
           column: 1
         end:
-          offset: 48585
-          line: 814
+          offset: 49252
+          line: 819
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 74902
-          line: 887
+          offset: 77903
+          line: 893
           column: 1
         end:
-          offset: 75194
-          line: 887
+          offset: 78195
+          line: 893
           column: 293
     - pointer: "/validation_rules/1"
       rule_id: "validation_required_processes"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 75195
-          line: 888
+          offset: 78196
+          line: 894
           column: 1
         end:
-          offset: 75397
-          line: 888
+          offset: 78398
+          line: 894
           column: 203
     - pointer: "/validation_rules/2"
       rule_id: "validation_crop_scope"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 75398
-          line: 889
+          offset: 78399
+          line: 895
           column: 1
         end:
-          offset: 75629
-          line: 889
+          offset: 78630
+          line: 895
           column: 232
     - pointer: "/validation_rules/3"
       rule_id: "validation_nutrient_non_double_counting"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 75630
-          line: 890
+          offset: 78631
+          line: 896
           column: 1
         end:
-          offset: 75899
-          line: 890
+          offset: 78900
+          line: 896
           column: 270
     - pointer: "/validation_rules/4"
       rule_id: "validation_water_balance"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 75900
-          line: 891
+          offset: 78901
+          line: 897
           column: 1
         end:
-          offset: 76197
-          line: 891
+          offset: 79198
+          line: 897
           column: 298
     - pointer: "/validation_rules/5"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 76198
-          line: 892
+          offset: 79199
+          line: 898
           column: 1
         end:
-          offset: 76453
-          line: 892
+          offset: 79454
+          line: 898
           column: 256
     - pointer: "/validation_rules/6"
       rule_id: "validation_boundary_hand_off"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 76454
-          line: 893
+          offset: 79455
+          line: 899
           column: 1
         end:
-          offset: 76753
-          line: 893
+          offset: 79754
+          line: 899
           column: 300
     - pointer: "/validation_rules/7"
       rule_id: "validation_emission_method"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 76754
-          line: 894
+          offset: 79755
+          line: 900
           column: 1
         end:
-          offset: 77022
-          line: 894
+          offset: 80023
+          line: 900
           column: 269
     - pointer: "/validation_rules/8"
       rule_id: "validation_parameterized_identity_resolution"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 77023
-          line: 895
+          offset: 80024
+          line: 901
           column: 1
         end:
-          offset: 77369
-          line: 895
+          offset: 80370
+          line: 901
           column: 347
     - pointer: "/validation_rules/9"
       rule_id: "validation_quality_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 77370
-          line: 896
+          offset: 80371
+          line: 902
           column: 1
         end:
-          offset: 77600
-          line: 896
+          offset: 80601
+          line: 902
           column: 231
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1871,27 +1880,27 @@ normative_context:
           column: 321
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46592"
+      unit_id: "normative_47259"
       source_span:
         start:
-          offset: 46592
-          line: 804
+          offset: 47259
+          line: 809
           column: 1
         end:
-          offset: 46632
-          line: 804
+          offset: 47299
+          line: 809
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_74807"
+      unit_id: "normative_77808"
       source_span:
         start:
-          offset: 74807
-          line: 883
+          offset: 77808
+          line: 889
           column: 1
         end:
-          offset: 74829
-          line: 883
+          offset: 77830
+          line: 889
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1900,5 +1909,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:0dbf5e7e28ca91e1b58f9c3550686069957176adb806206ec8c6702e79f3d91a"
-  generated_content_sha256: "sha256:29f87089cbfa7873a7e42b180aae8f0c12ba0a2f0476806fbff7f0d7f3f35ec4"
+    sha256: "sha256:89bd16f2e38da012e6d5a8614b0db7c10df46229a3b2cbbbbfd3a14390a9293c"
+  generated_content_sha256: "sha256:5765006a8972440bf9fec464aff0575364610e6460a3fe066bf902a33e37915a"

@@ -564,7 +564,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_milking_services and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -789,7 +789,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_chilling_lot and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -1313,6 +1313,16 @@ dataset_production:
       source_ids:
         - ipcc-livestock-2019
         - ipcc-managed-soils-2019
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_manure_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "Final milk"
@@ -1428,7 +1438,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e8561af105d33af80d38a47bced14ba2a9c400c0dfa00bcce5b0990ce8732306"
+  source_sha256: "sha256:e4739d838a0f09ee850b0dee4194486fd279982d10dd4b4d1cc7be6e9c6603cf"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8288"
@@ -1479,15 +1489,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_59565"
+    - unit_id: "normative_58987"
       family: "allocation"
       span:
         start:
-          offset: 59565
+          offset: 58987
           line: 1014
           column: 1
         end:
-          offset: 61138
+          offset: 60560
           line: 1025
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `output_census` | Ewe herd | Enumerate raw milk, independently sold lambs/culls, wool if shorn and sold, and exported manure at actual handovers. Mortality and unsold manure remain waste/residue. A sold-wool exchange must be added from actual records. | `fao-small-ruminant-dairy` |\n| `allocation_precedence` | Joint herd outputs | Subdivide measured activity where possible; otherwise use documented physical causality where defensible, then contemporaneous economic value with period and sensitivity. No default substitution credit. | `fao-leap-small-ruminants-2016` |\n| `period_attribution` | Breeding/lactation/replacement | Attribute feed, service, milk, lambs, culls and events to observed periods; carry cross-period burden once and disclose lamb milk retention. | `fao-leap-small-ruminants-2016` |\n| `shared_attribution` | Parlour, tank, pump, meter | List every herd/milking/conditioning/chilling consumer and service period; allocate by metered use or documented time/throughput and reconcile to total without duplication. | `fao-leap-small-ruminants-2016` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
@@ -1507,11 +1517,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 59565
+              offset: 58987
               line: 1014
               column: 1
             end:
-              offset: 59605
+              offset: 59027
               line: 1014
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1527,16 +1537,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_81188"
+    - unit_id: "normative_82036"
       family: "validation"
       span:
         start:
-          offset: 81188
-          line: 1075
+          offset: 82036
+          line: 1076
           column: 1
         end:
-          offset: 84367
-          line: 1090
+          offset: 85215
+          line: 1091
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_cpc_milk_scope` | final reference product and classification | Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition. | `un-cpc-3-02291` |\n| `validate_raw_state` | Final reference | Verify unheated, unseparated ovine raw milk and exactly one warm/chilled farm-gate product; chilled UUID cannot fill broad reference or warm output. | `un-cpc-3-2025` |\n| `validate_balance` | Milk nodes | Reconcile collected, filtered, chilled and accepted lots with rejects; no intermediate milk sold-final twice. | `mass-balance-identity` |\n| `validate_outputs` | Herd allocation | Check milk, sold lambs/culls, actual wool/manure transfer, mortality and unsold manure status/gates before allocation. | `fao-small-ruminant-dairy` |\n| `validate_periods` | Herd/milking | Link breeding, lactation, dry and replacement periods/events to benefiting milk and animals once. | `fao-leap-small-ruminants-2016` |\n| `validate_shared` | Shared assets | Identify all parlour, tank, pump, chiller and meter consumers/periods; reconcile allocated shares to totals. | `fao-leap-small-ruminants-2016` |\n| `validate_route` | Pasture/housed | Require actual feed, water and manure evidence; never stack incompatible route assumptions. | `fao-small-ruminant-dairy` |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `fao-feed-loss-accounting-2018` |\n| `v_manure_n2o_coverage` | Applicable manure and managed-soil N pathways | Require explicit direct and indirect pathway coverage, stage N balances and molecular-mass conversion. Map each component to an existing N2O card or an explicitly covering linked process once under calc_manure_n2o_coverage. Missing indirect-pathway evidence prevents a completeness claim; no default zero or duplicate aggregate-plus-components. | `ipcc-livestock-2019`; `ipcc-managed-soils-2019` |\n\n"
       headings:
@@ -1555,12 +1565,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 81188
-              line: 1075
+              offset: 82036
+              line: 1076
               column: 1
             end:
-              offset: 81210
-              line: 1075
+              offset: 82058
+              line: 1076
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1670,197 +1680,197 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "output_census"
       identity_kind: "explicit"
-      unit_id: "normative_59565"
+      unit_id: "normative_58987"
       source_span:
         start:
-          offset: 59678
+          offset: 59100
           line: 1018
           column: 1
         end:
-          offset: 59962
+          offset: 59384
           line: 1018
           column: 285
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_59565"
+      unit_id: "normative_58987"
       source_span:
         start:
-          offset: 59963
+          offset: 59385
           line: 1019
           column: 1
         end:
-          offset: 60250
+          offset: 59672
           line: 1019
           column: 288
     - pointer: "/allocation_rules/2"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_59565"
+      unit_id: "normative_58987"
       source_span:
         start:
-          offset: 60251
+          offset: 59673
           line: 1020
           column: 1
         end:
-          offset: 60485
+          offset: 59907
           line: 1020
           column: 235
     - pointer: "/allocation_rules/3"
       rule_id: "shared_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_59565"
+      unit_id: "normative_58987"
       source_span:
         start:
-          offset: 60486
+          offset: 59908
           line: 1021
           column: 1
         end:
-          offset: 60748
+          offset: 60170
           line: 1021
           column: 263
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_59565"
+      unit_id: "normative_58987"
       source_span:
         start:
-          offset: 60750
+          offset: 60172
           line: 1023
           column: 1
         end:
-          offset: 61136
+          offset: 60558
           line: 1023
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "v_cpc_milk_scope"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 81283
-          line: 1079
+          offset: 82131
+          line: 1080
           column: 1
         end:
-          offset: 81750
-          line: 1079
+          offset: 82598
+          line: 1080
           column: 468
     - pointer: "/validation_rules/1"
       rule_id: "validate_raw_state"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 81751
-          line: 1080
+          offset: 82599
+          line: 1081
           column: 1
         end:
-          offset: 81962
-          line: 1080
+          offset: 82810
+          line: 1081
           column: 212
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 81963
-          line: 1081
+          offset: 82811
+          line: 1082
           column: 1
         end:
-          offset: 82136
-          line: 1081
+          offset: 82984
+          line: 1082
           column: 174
     - pointer: "/validation_rules/3"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 82137
-          line: 1082
+          offset: 82985
+          line: 1083
           column: 1
         end:
-          offset: 82327
-          line: 1082
+          offset: 83175
+          line: 1083
           column: 191
     - pointer: "/validation_rules/4"
       rule_id: "validate_periods"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 82328
-          line: 1083
+          offset: 83176
+          line: 1084
           column: 1
         end:
-          offset: 82499
-          line: 1083
+          offset: 83347
+          line: 1084
           column: 172
     - pointer: "/validation_rules/5"
       rule_id: "validate_shared"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 82500
-          line: 1084
+          offset: 83348
+          line: 1085
           column: 1
         end:
-          offset: 82682
-          line: 1084
+          offset: 83530
+          line: 1085
           column: 183
     - pointer: "/validation_rules/6"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 82683
-          line: 1085
+          offset: 83531
+          line: 1086
           column: 1
         end:
-          offset: 82843
-          line: 1085
+          offset: 83691
+          line: 1086
           column: 161
     - pointer: "/validation_rules/7"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 82844
-          line: 1086
+          offset: 83692
+          line: 1087
           column: 1
         end:
-          offset: 83444
-          line: 1086
+          offset: 84292
+          line: 1087
           column: 601
     - pointer: "/validation_rules/8"
       rule_id: "v_feed_supply_intake_separation"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 83445
-          line: 1087
+          offset: 84293
+          line: 1088
           column: 1
         end:
-          offset: 83891
-          line: 1087
+          offset: 84739
+          line: 1088
           column: 447
     - pointer: "/validation_rules/9"
       rule_id: "v_manure_n2o_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 83892
-          line: 1088
+          offset: 84740
+          line: 1089
           column: 1
         end:
-          offset: 84365
-          line: 1088
+          offset: 85213
+          line: 1089
           column: 474
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1889,27 +1899,27 @@ normative_context:
           column: 220
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_59565"
+      unit_id: "normative_58987"
       source_span:
         start:
-          offset: 59565
+          offset: 58987
           line: 1014
           column: 1
         end:
-          offset: 59605
+          offset: 59027
           line: 1014
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_81188"
+      unit_id: "normative_82036"
       source_span:
         start:
-          offset: 81188
-          line: 1075
+          offset: 82036
+          line: 1076
           column: 1
         end:
-          offset: 81210
-          line: 1075
+          offset: 82058
+          line: 1076
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1918,5 +1928,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e8561af105d33af80d38a47bced14ba2a9c400c0dfa00bcce5b0990ce8732306"
-  generated_content_sha256: "sha256:af7a0fb01383b1ad95f18c497d61d2b32ef45d1034767117ad46571b3ea9167f"
+    sha256: "sha256:e4739d838a0f09ee850b0dee4194486fd279982d10dd4b4d1cc7be6e9c6603cf"
+  generated_content_sha256: "sha256:540665ef383f3c5c1f412c0667853f691a54d49fa99645d0b1278ab9a40ceb94"

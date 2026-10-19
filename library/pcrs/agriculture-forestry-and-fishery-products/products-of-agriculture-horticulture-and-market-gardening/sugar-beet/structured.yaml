@@ -259,7 +259,7 @@ process_inventory:
           name: "Irrigation water delivered to field"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This flow is quantified at the declared process boundary and reconciled with adjacent states. Raw activity or stage basis: per hectare in crop cycle. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero. Retain metered m3 and water density; convert to kg once under cr_02 before final normalization."
+          description: "This flow is quantified at the declared process boundary and reconciled with adjacent states. Raw activity or stage basis: per hectare in crop cycle. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero. Retain metered m3 and water density; convert to kg once under cr_02 before final normalization. For irrigation, distinguish crop evapotranspiration from net irrigation and gross delivered/withdrawn water. Reconcile effective rainfall, soil-water stock change, capillary supply, application efficiency and the actual delivery boundary; use metered site records or a documented water balance. A general crop-water-demand table does not establish a universal irrigation upper bound."
           amount:
             expression: "Metered volume or verified pump flow × duration; rainfall excluded"
             value_mode: "calculated_value"
@@ -272,16 +272,7 @@ process_inventory:
               collection_protocol_id: cp_irrigation
               source_ids:
                 - fao-crop-yield-water-2012
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "8000000"
-                unit: "kg/ha"
-                basis: "per hectare in crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "external_source"
-                source_ids:
-                  - fao-crop-yield-water-2012
+            ranges: []
         - row_id: field_energy
           role: "Electricity, medium voltage input"
           name: "Electricity, medium voltage"
@@ -640,7 +631,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "This independent product is an intended output quantified at the declared process boundary, has an explicit hand-off, and is reconciled with adjacent states. Raw activity or stage basis: per 1000 kg lifted roots."
           amount:
-            expression: "Input minus separated tops/trash, rejected roots and measured loss"
+            expression: "Measure the accepted conditioned root component on the same net-root basis as lifted_raw_roots. Reconcile incoming root component + opening root stock + evidenced root-water uptake = accepted conditioned roots + rejected root component + independently evidenced root loss + root-water removal + closing root stock. Do not subtract soil, tops or foreign matter again if already excluded from the incoming root quantity. Track actual carried soil/tops/foreign components separately from gross load receipt to their own removals; they are not root yield loss. Pair retained/rework transfers and investigate unexplained residuals rather than treating them as waste. Normalize matched totals once to final accepted roots."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -907,7 +898,7 @@ dataset_production:
       process_id: "harvest_lifting"
       flow_role: "lifted roots"
       record_type: "load tickets"
-      raw_fields: "gross; tare; field; date; soil correction"
+      raw_fields: "gross; tare; field; date; soil correction ; gross load and tare; incoming net root component; separate carried soil/top/foreign components; each root and non-root removal; water/moisture; opening/closing stocks; paired rework; accepted final root quantity; residual uncertainty"
       collection_method: "calibrated weighing; Raw aggregation and attribution: corrected sum"
       unit: "kg"
       frequency: "load"
@@ -931,7 +922,7 @@ dataset_production:
       process_id: "farm_conditioning"
       flow_role: "roots/rejects"
       record_type: "batch record"
-      raw_fields: "input; output; rejects; destination"
+      raw_fields: "input; output; rejects; destination ; gross load and tare; incoming net root component; separate carried soil/top/foreign components; each root and non-root removal; water/moisture; opening/closing stocks; paired rework; accepted final root quantity; residual uncertainty"
       collection_method: "calibrated mass balance; Raw aggregation and attribution: reconcile states"
       unit: "kg"
       frequency: "batch"
@@ -951,6 +942,18 @@ dataset_production:
       site_scope: "batch"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "scale, lab, receiver"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "field_production"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: cr_01
       applies_to: "normalization"
@@ -972,7 +975,7 @@ dataset_production:
         - fao-crop-yield-water-2012
     - id: cr_03
       applies_to: "root balance"
-      rule: "standing = lifted + field loss; input = accepted + downgraded + rejected + measured loss"
+      rule: "Standing net root component = lifted net root component + independently evidenced field root loss; reconcile each later node on that same root-component basis, with opening/closing stocks, actual root-water change and mutually exclusive root destinations. Separately balance gross-load soil, tops and foreign components and never deduct them again from net root mass. Investigate residuals; apply matched final normalization once."
       inputs:
         - "linked mass records"
       output: "reconciled states"
@@ -995,6 +998,23 @@ dataset_production:
       output: "production mix"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_field_inputs
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
   data_quality_requirements:
     - id: dq_01
       applies_to: "traceability"
@@ -1106,7 +1126,7 @@ data_sources:
     used_for: "Allocation hierarchy and gate-matched market value; no site allocation fractions"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:aaf71fa009f9ed4865fd5853d2594a551a537073eacd84028f8fb747c2dfffd1"
+  source_sha256: "sha256:c5fa294303153515d121335279d4a303a19e7c4e88eba9ecb6f19f6914d8b989"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3556"
@@ -1157,16 +1177,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35820"
+    - unit_id: "normative_36546"
       family: "allocation"
       span:
         start:
-          offset: 35820
-          line: 763
+          offset: 36546
+          line: 756
           column: 1
         end:
-          offset: 36940
-          line: 772
+          offset: 37666
+          line: 765
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| AL-01 | all nodes | Prefer subdivision and direct attribution of field, machine-period and batch records before allocating shared burdens. | `ghg-protocol-product-standard-2011` |\n| AL-02 | roots and tops | Field-retained tops are not a sold co-product. For intentionally marketed tops, first use subdivision or a justified physical relationship. Economic allocation is a fallback when that relationship is unavailable; document why. | `ghg-protocol-product-standard-2011` |\n| AL-03 | grade states | Separate directly measured grade-specific operations. Allocate remaining shared burdens using a defensible physical relationship, or documented gate-matched market values if unavailable. Retain prices, period, all co-products and sensitivity; assigned shares sum to one. Waste handling remains included without product allocation. | `ghg-protocol-product-standard-2011` |\n| AL-04 | rejects | Reworked material retains accumulated burden and is counted only at final hand-off. | `mass-balance-identity` |\n\n"
       headings:
@@ -1185,12 +1205,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35820
-              line: 763
+              offset: 36546
+              line: 756
               column: 1
             end:
-              offset: 35860
-              line: 763
+              offset: 36586
+              line: 756
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1205,16 +1225,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_42802"
+    - unit_id: "normative_48538"
       family: "validation"
       span:
         start:
-          offset: 42802
-          line: 813
+          offset: 48538
+          line: 814
           column: 1
         end:
-          offset: 43888
-          line: 826
+          offset: 49624
+          line: 827
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| VR-01 | reference | Verify UUIDs, 1000 kg accepted roots, qualifiers and exclusions. | `mass-balance-identity` |\n| VR-02 | boundary | Reject factory slicing, diffusion, sugar, pulp or molasses within the farm system. | `us-epa-sugarbeet-processing-ap42` |\n| VR-03 | nutrients | Record each actual nutrient product once with its composition and nutrient basis; do not misclassify non-fertilizer inputs as agricultural fertilizer. |  |\n| VR-04 | routes | Verify parent, evidenced deltas, strata and weighting. | `fao-crop-yield-water-2012` |\n| VR-05 | periods | Resolve each record to one field/period/load/batch and count once. | `mass-balance-identity` |\n| VR-06 | outputs | Verify every hand-off, residue/waste route and allocation decision. | `mass-balance-identity` |\n| VR-07 | rejects | Rejected mass has a destination and never appears in accepted output. | `mass-balance-identity` |\n| VR-08 | ranges | Investigate out-of-range values; ranges do not replace foreground records. |  |\n\n"
       headings:
@@ -1233,12 +1253,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 42802
-              line: 813
+              offset: 48538
+              line: 814
               column: 1
             end:
-              offset: 42824
-              line: 813
+              offset: 48560
+              line: 814
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1322,158 +1342,158 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "al_01"
       identity_kind: "explicit"
-      unit_id: "normative_35820"
+      unit_id: "normative_36546"
       source_span:
         start:
-          offset: 35933
-          line: 767
+          offset: 36659
+          line: 760
           column: 1
         end:
-          offset: 36114
-          line: 767
+          offset: 36840
+          line: 760
           column: 182
     - pointer: "/allocation_rules/1"
       rule_id: "al_02"
       identity_kind: "explicit"
-      unit_id: "normative_35820"
+      unit_id: "normative_36546"
       source_span:
         start:
-          offset: 36115
-          line: 768
+          offset: 36841
+          line: 761
           column: 1
         end:
-          offset: 36409
-          line: 768
+          offset: 37135
+          line: 761
           column: 295
     - pointer: "/allocation_rules/2"
       rule_id: "al_03"
       identity_kind: "explicit"
-      unit_id: "normative_35820"
+      unit_id: "normative_36546"
       source_span:
         start:
-          offset: 36410
-          line: 769
+          offset: 37136
+          line: 762
           column: 1
         end:
-          offset: 36806
-          line: 769
+          offset: 37532
+          line: 762
           column: 397
     - pointer: "/allocation_rules/3"
       rule_id: "al_04"
       identity_kind: "explicit"
-      unit_id: "normative_35820"
+      unit_id: "normative_36546"
       source_span:
         start:
-          offset: 36807
-          line: 770
+          offset: 37533
+          line: 763
           column: 1
         end:
-          offset: 36938
-          line: 770
+          offset: 37664
+          line: 763
           column: 132
     - pointer: "/validation_rules/0"
       rule_id: "vr_01"
       identity_kind: "explicit"
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 42897
-          line: 817
+          offset: 48633
+          line: 818
           column: 1
         end:
-          offset: 43011
-          line: 817
+          offset: 48747
+          line: 818
           column: 115
     - pointer: "/validation_rules/1"
       rule_id: "vr_02"
       identity_kind: "explicit"
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 43012
-          line: 818
+          offset: 48748
+          line: 819
           column: 1
         end:
-          offset: 43154
-          line: 818
+          offset: 48890
+          line: 819
           column: 143
     - pointer: "/validation_rules/2"
       rule_id: "vr_03"
       identity_kind: "explicit"
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 43155
-          line: 819
+          offset: 48891
+          line: 820
           column: 1
         end:
-          offset: 43332
-          line: 819
+          offset: 49068
+          line: 820
           column: 178
     - pointer: "/validation_rules/3"
       rule_id: "vr_04"
       identity_kind: "explicit"
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 43333
-          line: 820
+          offset: 49069
+          line: 821
           column: 1
         end:
-          offset: 43438
-          line: 820
+          offset: 49174
+          line: 821
           column: 106
     - pointer: "/validation_rules/4"
       rule_id: "vr_05"
       identity_kind: "explicit"
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 43439
-          line: 821
+          offset: 49175
+          line: 822
           column: 1
         end:
-          offset: 43553
-          line: 821
+          offset: 49289
+          line: 822
           column: 115
     - pointer: "/validation_rules/5"
       rule_id: "vr_06"
       identity_kind: "explicit"
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 43554
-          line: 822
+          offset: 49290
+          line: 823
           column: 1
         end:
-          offset: 43669
-          line: 822
+          offset: 49405
+          line: 823
           column: 116
     - pointer: "/validation_rules/6"
       rule_id: "vr_07"
       identity_kind: "explicit"
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 43670
-          line: 823
+          offset: 49406
+          line: 824
           column: 1
         end:
-          offset: 43787
-          line: 823
+          offset: 49523
+          line: 824
           column: 118
     - pointer: "/validation_rules/7"
       rule_id: "vr_08"
       identity_kind: "explicit"
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 43788
-          line: 824
+          offset: 49524
+          line: 825
           column: 1
         end:
-          offset: 43886
-          line: 824
+          offset: 49622
+          line: 825
           column: 99
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1502,27 +1522,27 @@ normative_context:
           column: 124
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35820"
+      unit_id: "normative_36546"
       source_span:
         start:
-          offset: 35820
-          line: 763
+          offset: 36546
+          line: 756
           column: 1
         end:
-          offset: 35860
-          line: 763
+          offset: 36586
+          line: 756
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_42802"
+      unit_id: "normative_48538"
       source_span:
         start:
-          offset: 42802
-          line: 813
+          offset: 48538
+          line: 814
           column: 1
         end:
-          offset: 42824
-          line: 813
+          offset: 48560
+          line: 814
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1531,5 +1551,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:aaf71fa009f9ed4865fd5853d2594a551a537073eacd84028f8fb747c2dfffd1"
-  generated_content_sha256: "sha256:24b0d0b1c4e8e5d0442811822bf57769cc2a2ec510dc6cffec227d52e538c97c"
+    sha256: "sha256:c5fa294303153515d121335279d4a303a19e7c4e88eba9ecb6f19f6914d8b989"
+  generated_content_sha256: "sha256:2aa67d98c17f255c509678364d11ed45c4c0e198166338ef47bfd7a376b4a5ff"

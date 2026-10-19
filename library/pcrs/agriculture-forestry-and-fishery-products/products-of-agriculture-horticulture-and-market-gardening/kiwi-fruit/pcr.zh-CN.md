@@ -60,8 +60,7 @@ sync_with: pcr.en-US.md
 
 ## 5. 系统边界
 
-前景边界从声明的果园生产投入开始，到市场等级整果从包装场发运结束。果园建设和耐久基础设施只有在数据提供者
-报告其分配期间和基准时纳入。零售配送和消费者催熟不纳入。
+前景边界从声明的果园生产投入开始，到市场等级整果从包装场发运结束。纳入所代表果园应归属的建园、未结果期、补植和终止贡献，以及应归属的耐久基础设施服务。按 calc_kiwi_lifecycle 保留期间、受益对象和证据。缺少分配记录属于完整性缺口，不能据此省略这些负担；另有研究排除时须单独论证并披露。零售配送和消费者催熟不纳入。
 
 ### Boundary Abstraction
 
@@ -247,7 +246,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_orchard_input_records`采集`orchard_production`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -521,7 +520,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -547,7 +546,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -570,10 +569,10 @@ sync_with: pcr.en-US.md
 
 ## 7. 分配和联产品处理
 
-### 规范分配规则（`output_set_and_allocation`）
-
-PCR 必须列出市场等级水果、次品、降级水果、残余物和废弃物。当前产品研究必须为联产品选择并说明一种分配或处理方法；
-任何输出不得在多个交接点重复计算。
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `output_set_and_allocation` | 全部预期产出 | 列出合格鲜果等级及独立预期的降级或其他产品，保留实测数量、状态、交接点和接收方。弃置次果、田间残余和内部转移不获得联产品份额，其生产与处理负担保留在产出可售产品的路线中。同一实际质量只能有一个最终去向。 | `ghg-protocol-product-standard-2011` |
+| `kiwi_allocation_precedence` | 共享果园和包装场负担 | 先直接归属可分开的品种、等级、运行、包装和冷却专属作业。同等共同搬运服务的可比鲜猕猴桃等级，按实测果实净质量分配剩余共同负担。存在其他真实联产品时，仅在有据证明与该作业因果相关时采用实测物理驱动；否则按同期间首次分离点经济份额 a_i=(q_i*p_i)/sum(q_j*p_j) 分配，纳入完整产出集合、可比交接点及币种和代表性价格。未知价格不能记零。披露合计为一的份额及重要替代方法敏感性，不自动给予替代信用。 | `ghg-protocol-product-standard-2011` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
@@ -610,6 +609,22 @@ PCR 必须列出市场等级水果、次品、降级水果、残余物和废弃�
 | cp_conditioning_records | primary_conditioning | 处理、分级、次品和废弃果 | 包装场入场及分级记录 | 入场量、等级、次品、废弃物、水、能源、包装、日期、批次 | 包装场系统、秤、计量表、包装领用记录；原始汇总与分配：核对入场量、等级、次品和废弃物 `flexible_packaging_input_specific_input`: 作业 primary_conditioning：依据供应商规格及实际领用量记录发运批次的软包装用量。 原数量方法：依据供应商规格及实际领用量记录发运批次的软包装用量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `carton_box_packaging_input_specific_input`: 作业 primary_conditioning：依据供应商规格及实际领用量记录发运批次的箱体包装用量。 原数量方法：依据供应商规格及实际领用量记录发运批次的箱体包装用量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `pallet_crate_packaging_input_specific_input`: 作业 primary_conditioning：依据供应商或资产记录分配该批次的托盘或周转箱使用量。 原数量方法：依据供应商或资产记录分配该批次的托盘或周转箱使用量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、m3、kWh、件 | 每批次或班次 | 处理期间 | 包装场生产线 | 每声明的参考流 | 批次记录、秤和计量检查 |
 | cp_storage_records | cold_storage | 入库、发运和储存损失 | 冷库及发运记录 | 批次、起止时间、模式、温度、入库、发运、失重、拒收 | 冷库日志、库存系统、发运票据；原始汇总与分配：核对入库量、发运量和损失 | kg、days、kWh | 每批次及每日 | 声明的储存期间 | 冷库及发运交接点 | 每声明的参考流 | 温度记录、库存记录、发运票据 |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_kiwi_lifecycle` | orchard_production | 果园和资产生命周期归属 | 队列及服务台账 | 园区/队列；事件身份及原生单位；建园/未结果期/补植/终止日期和数量；含零产年在内的年度实际产出；有据剩余产出轨迹；资产消费者及服务量；上游覆盖；不确定性 | 将原始事件记录关联到受益队列。完整生命周期采用实际产出，未结束时采用有不确定性的场址预测；不编造寿命、不漏失败建园、不重复上游已覆盖事件。共享服务采用计量或有据因果使用记录。 | 原生活动单位；kg 果实；服务单位 | 每次事件及年度核对 | 完整受益队列/服务期间 | 所代表果园及全部资产消费者 | 先执行 calc_kiwi_lifecycle，再执行 calc_kiwi_normalize 一次 | 事件记录、产出称量、预测依据及服务台账 |
+| `cp_phase1_environment_coverage` | orchard_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_kiwi_lifecycle` | all applicable inventory rows | 逐园区/队列、逐活动身份及原生单位分别汇总建园、未结果期、补植、终止及零产年作业数量为 E，不含已按年采集的正产年作业。Q_y 为同队列/年度、匹配交接点全部合格鲜果等级质量；Q_L=sum(Q_y) 为已结束生命周期实际总产出，或未结束队列有据的既往加未来产出轨迹。按 E_y=E*Q_y/Q_L 归属，再加正产年直接作业数量，执行 kiwi_allocation_precedence 后按 calc_kiwi_normalize 归一化。失败建园归入实际受益队列。Q_L 未知或非正使生命周期强度不完整，不能填零。共同基础设施服务先按独立计量使用量或有据容量占用时间，在全部消费者/服务期间归属一次，再作产品分配；不规定通用资产寿命。 | cp_kiwi_lifecycle; cp_orchard_output_records | cohort/year attributed native quantities | `ghg-protocol-product-standard-2011` |
+| `calc_kiwi_normalize` | all applicable inventory rows | R 为所选等级/状态/交接点、匹配批次/期间最终合格发运质量 kg，且须为正。物理数量保留未分配批次平衡；最终应归属清单贡献 = 应归属原始数量/R * 1 kg。先汇总应归属原始数量再归一化；阶段强度 q_i=Q/O_i 的贡献为 q_i*O_i/R，不能用 q_i/R。储存/冷却仅归实际受服务批次，内部转移抵销一次，不是额外最终产出。 | all applicable collection protocols; cp_declared_reference_handoff | inventory per 1 kg accepted final product | `declared-handoff-measurement-definition` |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ## 9. 验证规则
 
@@ -644,3 +659,5 @@ PCR 必须列出市场等级水果、次品、降级水果、残余物和废弃�
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 分配优先顺序；队列 E/Q 为本 PCR 明示的时间归属约定，不是标准规定寿命或产品实测事实。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

@@ -246,15 +246,8 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 - 证据类型： 采集记录 (`collected_record`)
 - 采集协议： `cp_field_water`
 - 来源： `fao-crop-water-needs`
-- 数量范围： 季节用水上限筛选
-  - 范围角色： QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 5000
-  - 单位： m3 irrigation water/ha
-  - 基准： Gross irrigation 每公顷; upper bound corresponds to 500 mm seasonal pea crop-water need and is not a default
-  - 基准类型： 作物周期 (`crop_cycle`)
-  - 证据类型： 外部来源 (`external_source`)
-  - 来源： `fao-crop-water-needs`
+
+灌溉须区分作物蒸散需求、净灌溉量与总供水／取水量，核对有效降雨、土壤水库存变化、毛管补给、施用效率及实际供水边界，采用场址计量或有记录的水平衡。通用作物需水表不能确立通用灌溉上限。
 
 ###### 中压电力投入（`field_energy`）
 
@@ -837,7 +830,7 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 
 - 选定流： 排放至空气的水蒸气
 - 流属性/单位： 质量 / kg water
-- 数量规则： Input water mass minus output water mass from wet-basis moisture balance
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
 - 适用范围： 场址特定 (`site_specific`)
 原始活动或阶段基准：每 kg 稳定化籽粒.
@@ -859,8 +852,8 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 - 选定流：干豌豆
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -885,8 +878,8 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 - 选定流：干豌豆
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -916,6 +909,10 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 | `allocation_batches` | All batches | Attribute inputs, outputs, clean-out, carryover and changeover to the causing batch. Use processed-mass allocation for shared burdens only when direct metering is absent and never allocate one shared burden twice. | `mass-balance-identity` |
 | `allocation_no_default_substitution` | Co-products | Do not apply avoided-burden credit by default; any downstream substitution reports the unallocated inventory, substituted product, ratio and evidence. | `mass-balance-identity` |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
@@ -932,8 +929,9 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 | `cp_field_emissions` | `field_production` | Direct N2O | calculation record | N pools; climate; EF1; residue N | IPCC calculation from collected N；原始汇总与分配：Calculate by pool, sum once | kg N; kg N2O | 作物周期 | 作物周期 | Field | 每声明的参考流 | Input ledger and factor version |
 | `cp_harvest_batch` | `harvest_threshing` | Route, energy, outputs and losses | batch log | batch; field; route; area; fuel; masses; moisture; destinations | Weigh outputs; meter/calculate energy; loss check；原始汇总与分配：Reconcile all outputs and loss | kg; L; kWh; ha; % | Batch | Harvest window | Field/route | 每声明的参考流 | Scale, moisture, route log |
 | `cp_cleaning_lot` | `grading_cleaning` | Inputs, grades, rejects, rework, energy | lot/campaign log | lot; campaign; masses; moisture; energy; grade; pass; destination | Weigh all hand-offs and meter/calculate energy；原始汇总与分配：Count final destination once | kg; %; kWh | Lot/pass | Campaign | Lot | 每声明的参考流 | Scale, grade test, energy record |
-| `cp_drying_batch` | `drying_aeration` | Stabilization | bin/dryer log | batch; route; input/output mass, moisture and temperature; energy; duration; rejects | Weigh/test input/output; meter energy；原始汇总与分配：Dry-matter balance and water removal | kg; %; °C; kWh; MJ; h | Batch | Full intervention | Bin/batch | 每声明的参考流 | Calibrated scale, meters, logs |
+| `cp_drying_batch` | `drying_aeration` | Stabilization | bin/dryer log | batch; route; input/output mass, moisture and temperature; energy; duration; rejects ；含拒收物和残体的全部进出材料带水；实际加水/降雨；单独液体转出；期初期末水库存；湿基含水率/密度；有据蒸发及不确定性| Weigh/test input/output; meter energy；原始汇总与分配：Dry-matter balance and water removal | kg; %; °C; kWh; MJ; h | Batch | Full intervention | Bin/batch | 每声明的参考流 | Calibrated scale, meters, logs |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | field_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -944,10 +942,17 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 | `calc_direct_n2o` | Soil N2O | N2O-N = Σ(N pool × EF1); N2O = N2O-N × 44/28 | N pools; EF1 | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_batch_balance` | Harvest/cleaning/drying | input = accepted + co-products/downgrades + rejects + losses + moisture change | all hand-off masses and moisture | closure and residual | `mass-balance-identity` |
 | `calc_drying_water` | Stabilization | input wet mass × input moisture − output wet mass × output moisture | wet masses; moisture | kg water removed | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | Reference lot | Species, class, state, 作物年度, 地理, moisture, 等级/去向 and routes are present. | Lot and grade records |
 | `dq_completeness` | All processes | Every card has a value; zero use requires explicit evidence. | Process checklist and ledgers |
@@ -966,7 +971,7 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 | `validate_output_destinations` | Outputs | Require one explicit hand-off for grain, residues, damage/downgrade, rework, foreign matter, rejects and loss; reject double counting. | `mass-balance-identity` |
 | `validate_rework` | Cleaning/stabilization | Link each rework return to source lot, destination and pass; accepted output excludes unresolved reject/rework mass. | `mass-balance-identity` |
 | `validate_batch_mode` | Harvest/cleaning/stabilization | Require batch/campaign boundaries and assign clean-out, carryover and shared energy once. | `mass-balance-identity` |
-| `validate_ranges` | Inventory | Require exactly one complete Range per quantitative card with bounds, unit, denominator/basis, basis kind, evidence and required source ids. | `mass-balance-identity` |
+| `validate_ranges` | Inventory | 逐条检查已提供范围的上下限、单位、基准、证据及双语一致性。任何强制界限均须有相容定量证据；无支持界限时保留实测数量并明确报告范围筛查不可用，不得编造范围或宣称该项检查完整。调查偏离，不以范围覆盖实测值。 | |
 | `validate_mass_balance` | Harvest/cleaning/drying | Require moisture-corrected reconciliation and review residual above 5%. | `mass-balance-identity` |
 | `validate_drying_condition` | `drying_aeration` | Require input/output moisture and temperature, route, duration and energy; destination limits override the general storage screen. | `saskatchewan-dry-pea-guide` |
 
@@ -984,7 +989,7 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 引用 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `ndsu-field-pea-production-2021` | extension_guidance | NDSU Extension, Field Pea Production (A1166), https://www.ndsu.edu/agriculture/sites/default/files/2021-12/a1166.pdf | Identity, production, harvest, damage, cleaning and storage |
 | `ndsu-field-pea-fertility-2023` | extension_guidance | NDSU Extension, Soil Fertility Recommendations for Field Pea, Lentil and Chickpea (SF725), https://www.ndsu.edu/fileadmin/snrs/Files/sf725.pdf | Soil-test-driven nutrient records |
@@ -998,3 +1003,4 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

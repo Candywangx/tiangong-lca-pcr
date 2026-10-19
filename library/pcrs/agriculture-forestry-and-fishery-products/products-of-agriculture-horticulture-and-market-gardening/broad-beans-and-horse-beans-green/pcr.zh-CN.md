@@ -390,7 +390,7 @@ translation_status: aligned
 使用申报的氮排放方法记录或计算与养分施用和管理残体有关的氨排放。
 
 - 选定流: 排入空气的氨
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位: Mass / kg NH3
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -401,13 +401,15 @@ translation_status: aligned
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_emission_calculation`
 - 来源: `ipcc-2019-refinement-nitrogen`
+
+最终交换质量为 kg NH3；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 17/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ###### 排入空气的一氧化二氮（`air_nitrous_oxide_emission`）
 
 记录或计算氮投入和残体路径产生的直接及适用间接一氧化二氮排放，避免重复计量。
 
 - 选定流: 排入空气的一氧化二氮
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位: Mass / kg N2O
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -419,12 +421,14 @@ translation_status: aligned
 - 采集协议: `cp_emission_calculation`
 - 来源: `ipcc-2019-refinement-nitrogen`
 
+最终交换质量为 kg N2O；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 44/28，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
+
 ###### 燃烧产生的氮氧化物（`air_nox_emission`）
 
 当有燃料使用记录和适用排放因子方法时，记录申报燃烧设备产生的氮氧化物。
 
 - 选定流: 排入空气的氮氧化物
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位：Mass / kg NOx on the documented method reporting basis
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -436,12 +440,14 @@ translation_status: aligned
 - 采集协议: `cp_emission_calculation`
 - 来源: `ipcc-2006-guidelines-energy`
 
+明确保留NOx的方法报告口径。已按NO2当量质量给出的因子保持该口径并匹配兼容NOx身份，不改称实测纯NO或纯NO2。实际分别报告NO、NO2质量时，分别保留身份，或仅按明示摩尔口径换为NO2当量（NO质量×46/30加NO2质量）一次；合计与组成不得重复相加。气体体积观测须有物质浓度及匹配温压、湿干口径后才可换算质量，整股尾气体积不是污染物质量。缺少报告口径会阻止最终交换。
+
 ###### 排入水体的硝酸盐（`water_nitrate_emission`）
 
 只有在有场址监测或申报养分损失计算方法支持时，才记录进入受纳水体的硝酸盐损失。
 
 - 选定流: 排入水体的硝酸盐
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位: Mass / kg NO3-
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -452,13 +458,15 @@ translation_status: aligned
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_emission_calculation`
 - 来源: `ipcc-2019-refinement-nitrogen`
+
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ###### 排入水体的磷酸盐（`water_phosphate_emission`）
 
 只有在有监测或有证据支持的养分损失方法时，才记录进入受纳水体的磷酸盐损失。
 
 - 选定流: 排入水体的磷酸盐
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位: Mass / kg PO4
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -469,13 +477,15 @@ translation_status: aligned
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_emission_calculation`
 - 来源: `ipcc-2019-refinement-nitrogen`
+
+最终交换质量为 kg PO4；按 P 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 P 质量乘 95/31，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ###### 排入土壤的硝酸盐（`soil_nitrate_emission`）
 
 只有所选方法将其定义为基本流且氮平衡支持该数值时，才记录进入或损失于土壤的硝酸盐。
 
 - 选定流: 排入土壤的硝酸盐
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位: Mass / kg NO3-
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -486,13 +496,15 @@ translation_status: aligned
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_emission_calculation`
 - 来源: `ipcc-2019-refinement-nitrogen`
+
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ###### 排入土壤的磷酸盐（`soil_phosphate_emission`）
 
 只有所选方法将其定义为基本流且磷平衡支持该数值时，才记录进入或损失于土壤的磷酸盐。
 
 - 选定流: 排入土壤的磷酸盐
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位: Mass / kg PO4
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -504,6 +516,7 @@ translation_status: aligned
 - 采集协议: `cp_emission_calculation`
 - 来源: `ipcc-2019-refinement-nitrogen`
 
+最终交换质量为 kg PO4；按 P 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 P 质量乘 95/31，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ### 过程：青蚕豆和青马蚕豆收获与出场准备（`harvest_and_gate_preparation`）
 
@@ -515,7 +528,7 @@ translation_status: aligned
 记录进入收获和出场准备节点、尚未分选、分级、清洗、冷却或包装的全部可食荚果或未成熟种子收获量。
 
 - 选定流: 分级前收获的青蚕豆和青马蚕豆
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位：Mass / kg
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -534,6 +547,8 @@ translation_status: aligned
   - 基准: 完整收获批次
   - 基准类型: 过程输出 (`process_output`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
+
+最终交换量为实际鲜材料质量kg。料箱/散装体积仅保留为原始观测，须有代表性批次堆积密度证据才可换算，不能把m3当kg或将两种表示重复相加。保留原批次、去向和最终参考量归一化。
 
 ###### 收获后清洗水（`postharvest_washing_water`）
 
@@ -628,7 +643,7 @@ translation_status: aligned
 记录不符合主要市场等级、但转用于申报的次级用途、销售、饲料、加工或其他有文件依据交接的产品。
 
 - 选定流: 降级青蚕豆和青马蚕豆
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位：Mass / kg
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -639,6 +654,8 @@ translation_status: aligned
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_harvest_grade_records`
 - 来源: `unece-ffv-06-beans`
+
+最终交换量为实际鲜材料质量kg。料箱/散装体积仅保留为原始观测，须有代表性批次堆积密度证据才可换算，不能把m3当kg或将两种表示重复相加。保留原批次、去向和最终参考量归一化。
 
 ##### 废物流
 
@@ -647,7 +664,7 @@ translation_status: aligned
 将不可销售产品和收获损失与可销售产品及有文件依据的次级输出分开记录，并申报其去向。
 
 - 选定流: 拒收或损失的青蚕豆和青马蚕豆
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位：Mass / kg
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -659,12 +676,14 @@ translation_status: aligned
 - 采集协议: `cp_harvest_grade_records`
 - 来源: `unece-ffv-06-beans`
 
+最终交换量为实际鲜材料质量kg。料箱/散装体积仅保留为原始观测，须有代表性批次堆积密度证据才可换算，不能把m3当kg或将两种表示重复相加。保留原批次、去向和最终参考量归一化。
+
 ###### 修整物和有机包装残体（`trim_and_residue_waste`）
 
 记录分级或包装过程中去除的茎、荚片、土壤和其他有机固体，并申报其再利用、堆肥、处理或处置。
 
 - 选定流: 青蚕豆和青马蚕豆有机处理残体
-- 流属性/单位: Mass or volume / kg or m3
+- 流属性/单位：Mass / kg
 - 数量规则: 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -675,6 +694,8 @@ translation_status: aligned
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_residue_fate_records`
 - 来源: `codex-fresh-produce-hygiene`
+
+最终交换量为实际鲜材料质量kg。料箱/散装体积仅保留为原始观测，须有代表性批次堆积密度证据才可换算，不能把m3当kg或将两种表示重复相加。保留原批次、去向和最终参考量归一化。
 
 ###### 收获后清洗废水（`postharvest_wastewater`）
 
@@ -706,6 +727,10 @@ translation_status: aligned
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -729,7 +754,7 @@ translation_status: aligned
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_establishment_records` | crop_establishment | planting_material_input | 供应商和田间记录 | 批次；品种；种子质量或数量；播种日期；田块或单元 | 对账单和种植日志核对；原始汇总与分配：按申报作物周期求和 | kg 或 seed | 每次种植事件 | 完整作物周期 | 田块、畦或保护地单元 | 每声明的参考流 | 批次记录和种植日志完整性 |
 | `cp_area_cycle_records` | crop_establishment | crop_land_occupation | 田间登记 | 面积；占用日期；基础设施标识 | 田块或保护地单元登记；原始汇总与分配：按周期计算面积时间 | ha 和日期 | 每个作物周期 | 完整作物周期 | 田块或单元 | 每声明的参考流 | 有日期的面积记录 |
-| `cp_irrigation_records` | crop_establishment; crop_management | irrigation and withdrawal | 计量或水量平衡 | 水源；计量；供水；取水；方式；回用；排放 | 计量读数或有文件依据的平衡；原始汇总与分配：按水源和周期求和 | m3 | 每次灌溉或每月 | 完整作物周期 | 田块或单元 | 每声明的参考流 | 计量校准或平衡检查 |
+| `cp_irrigation_records` | crop_establishment; crop_management | irrigation and withdrawal | 计量或水量平衡 | 水源；计量；供水；取水；方式；回用；排放 ；期初/期末累计读数、时间、水表位置/单位/回零、外部流入和回水、输配损失、期初/期末蓄水，田间排水单列 | 计量读数或有文件依据的平衡；原始汇总与分配：按水源和周期求和 ；按水量计算规则分别核对供水管网与田间边界。 | m3 | 每次灌溉或每月 | 完整作物周期 | 田块或单元 | 每声明的参考流 | 计量校准或平衡检查 |
 | `cp_nutrient_records` | crop_management | nutrient inputs | 发票、标签、计划和施用日志 | 产品；质量；养分浓度；日期；田块；方式 | 供应商记录与施用日志核对；原始汇总与分配：按养分角色和周期求和 | kg product 和 kg nutrient | 每次施用 | 完整作物周期 | 田块或单元 | 每声明的参考流 | 标签、供应商规格或实验室结果 |
 | `cp_crop_protection_records` | crop_management | crop-protection product | 施用日志 | 产品；有效成分；用量；靶标；日期；面积；方式 | 审查施用日志；原始汇总与分配：按产品和周期求和 `crop_protection_product_specific_input`: 作业 crop_management：记录施用于作物的每种作物保护产品或有效成分，包括用量、时间、靶标和施用方式；在核实前其身份保持场址特定。 原数量方法：根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg product 或 active substance | 每次施用 | 完整作物周期 | 田块或单元 | 每声明的参考流 | 产品标签和施用记录 |
 | `cp_energy_records` | crop_establishment; crop_management; harvest_and_gate_preparation | fuel and electricity | 计量、发票或设备日志 | 燃料或电力；设备；日期；作业；数量 | 计量或活动日志；原始汇总与分配：分配至作业和输出 `establishment_machinery_fuel_specific_input`: 当拖拉机或其他移动机械燃料跨越前景边界时，记录整地和播种所用燃料。 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-good-agricultural-practices` `harvest_machinery_fuel_specific_input`: 当收获、田间装载和出场前处理设备燃料跨越申报边界时记录。 根据田间、供应商、计量或质量平衡记录，记录跨越过程边界的数量。 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-good-agricultural-practices` | L 或 kWh | 每次作业或每月 | 完整作物周期 | 田块或设施 | 每声明的参考流 | 发票、计量或设备记录 |
@@ -747,11 +772,12 @@ translation_status: aligned
 | `calc_output_normalization` | 所有过程 | 按 1,000 kg 可销售输出归一化：记录流量 / 可销售输出 × 1,000。 | 流质量；可销售输出 | 归一化流量 | `mass-balance-identity` |
 | `calc_nutrient_equivalent` | 养分投入 | 产品质量 × 有文件依据的养分比例；将产品值和养分值作为分开字段保留。 | 产品质量；N、P2O5、K2O 或有机养分比例 | 养分当量 | `fao-fertilizer-code-conduct` |
 | `calc_area_time` | 土地占用 | 面积 × 占用时长；纳入保护地结构时单独报告。 | 面积；日期 | ha*a | `fao-good-agricultural-practices` |
-| `calc_irrigation_balance` | 灌溉和取水 | 期初计量 + 取水 - 期末计量 - 有文件依据的回流或回用 = 供水量，并披露水源和不确定性。 | 计量读数；取水；回流；回用 | m3 供水量和 m3 取水量 | `fao-crop-evapotranspiration-56` |
+| `calc_irrigation_balance` | 灌溉和取水 | 逐个识别累计水表，期间水量 = 期末读数 - 期初读数，仅按有文件的回零、溢出及水表单位修正；保留两端读数、时间和水表位置。不同测点的源头总取水 W 与供水 D 分开保留。供水管网边界满足 W + 其他外部流入 = D + 向边界外的回水或排放 + 输配损失 + 期末蓄水 - 期初蓄水。边界内循环水相互抵销，不是新增取水，也不直接从总取水扣减。田间排水另属田间水量平衡，不得再次加到已经计量的供水量上。保留实测值并调查差额；缺读数不能推断零用水。 | 计量读数；取水；回流；回用 | m3 供水量和 m3 取水量 | `fao-crop-evapotranspiration-56` |
 | `calc_grade_balance` | 收获和出场准备 | 在一致水分基准下，总收获量 = 可销售 + 降级 + 拒收 + 残体 + 测得的处理损失。 | 等级记录；损失记录 | 平衡后的输出集合 | `mass-balance-identity` |
 | `calc_reusable_packaging` | 周转箱和托盘 | 包装质量 / 有文件依据的使用周期，并将回收损失分配至适用运输批次。 | 包装质量；使用周期；损失 | 每批包装量 | `iso-14044-2006` |
 | `calc_nitrogen_emissions` | 土壤和空气排放 | 对有文件依据的养分投入和残体去向采用一种申报的、兼容 IPCC 的氮方法，并保留因子和中间值。 | 养分投入；残体去向；因子 | 氮排放流 | `ipcc-2019-refinement-nitrogen` |
 | `calc_freight` | 出场前运输 | 货运质量 × 路线距离，并披露空返和分配处理。 | 质量；距离；路线 | t*km | `codex-fresh-produce-hygiene` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emission_calculation`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -806,3 +832,4 @@ translation_status: aligned
 | `mass-balance-identity` | method_factor | PCR 方法规则：申报质量流的守恒与平衡 | 归一化、输出核对和损失检查 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

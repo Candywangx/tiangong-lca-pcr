@@ -11,7 +11,7 @@ sync_with: pcr.en-US.md
 
 ## 1. 范围与适用性
 
-本 PCR 用于构建栽培可可豆的前景数据包，范围从受管理可可树生产、可可荚采收，到在明确声明时的开荚、湿豆提取、发酵、干燥、清洁、分级和储存。必须区分果肉中的湿可可豆、发酵湿豆以及发酵后的干燥分级豆，不能将这些状态合并。
+本 PCR 用于构建栽培可可豆的前景数据包，从受管理可可生产，经果荚采收、开荚和湿豆提取，到新鲜湿豆农场门交接。获得该参考结果必须纳入开荚和湿豆提取，即使由承包商完成。postharvest_extension 为 true 时，扩展路线从湿豆交接之后开始，仅增加明确纳入的发酵、干燥、清洁、分级和储存作业。果肉湿豆、发酵湿豆及干燥分级豆保持独立状态。
 
 平台的精确参考身份是 `Cocoa beans`，其元数据为 `Production mix, at farm gate` 和 `Fresh, unprocessed produce`。因此本候选 PCR 将农场门的新鲜、未加工果肉湿豆作为参考状态。发酵豆、干燥豆或分级豆是路线特定的下游状态，不得像边界元数据相同一样复用参考 UUID。若报告扩展的采后结果，必须声明门点，并保留从农场门参考状态到该状态的批次质量和含水率换算。
 
@@ -46,7 +46,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Cocoa beans `3c54da37-f1ab-4b4c-8363-5c32b638005c` |
+| Reference product flow | 带果浆湿可可豆（身份未决） `3c54da37-f1ab-4b4c-8363-5c32b638005c` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -54,7 +54,7 @@ sync_with: pcr.en-US.md
 
 平台元数据是 `Production mix, at farm gate` 和 `Fresh, unprocessed produce`，所以参考量不是一公斤发酵干可可豆。采后结果可以通过实测荚到湿豆、湿豆到干豆的质量平衡归一化到一公斤湿参考流，但其输出 card 仍是独立的发酵/干燥状态。皮重、包装、异物、荚壳、果肉、发酵液、豆壳、粉尘、拒收物和干燥失水均单独记录。
 
-| 属性 | 候选筛选参考 | 证据 |
+| 属性 | 候选筛选参考 | Evidence |
 | --- | --- | --- |
 | 湿豆含水率 | 发酵前约 55–60% 湿基；应由批次测量替代 | `icco-cocoa-harvesting-post-harvest`; `icco-cocoa-processing` |
 | 发酵时长 | 声明批次约 4–7 天；方法和品种会改变时长 | `fao-cocoa-ota-code`; `icco-cocoa-harvesting-post-harvest` |
@@ -75,7 +75,7 @@ sync_with: pcr.en-US.md
 
 ## 5. 系统边界
 
-默认前景边界从受管理可可树及声明的作物年度或多年生阶段开始，纳入可归属的建植和替换、土壤和养分管理、作物保护、灌溉、田间能源和直接排放、成熟荚采收以及新鲜荚或湿豆交接。`postharvest_extension` 为 true 时，继续纳入开荚、湿豆提取、发酵、干燥、清洁、分级、储存和声明的采后门点。跨越前景边界的种植材料、肥料、作物保护、能源、供水、处理服务和包装使用兼容的上游数据集。
+默认前景边界从受管理可可树园及声明作物年度或多年生阶段开始，止于农场门的新鲜果肉湿豆。纳入可归属的建植与替换、田间管理、直接排放、成熟荚采收、开荚、荚壳／胎座分离和湿豆提取。鲜果荚销售或交接仅是中间边界，不能报告为湿豆参考结果。场外或委托取豆仍须连接其投入产出质量、服务负荷与残余物，并计量一次。postharvest_extension 标记只控制发酵及更后作业；关闭标记不允许删除取豆过程。外购投入按实际接收状态使用相容上游数据集，不重复计入其中已包含的作业。
 
 参考门是平台的新鲜、未加工农场门状态。发酵、干燥和分级豆是扩展过程图中的下游路线状态，不是同一参考 UUID 的替代含义。数据包必须说明农场门参考是否在湿豆交接处结束，或是否报告采后扩展。烘焙、研磨、碱化、压榨、可可液块、可可脂、可可粉、巧克力、食品、零售和消费使用均为下游并排除。
 
@@ -94,9 +94,9 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_01` | 受管理生产 | 纳入受管理可可树园、年度管理、实际投入、田间排放、采收和生产到采收的交接；只有在可归属所代表年度时纳入建植、替换和终止。 | `fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`; `iso-14044-2006` |
+| `boundary_01` | 受管理生产 | 纳入栽培、采收、开荚及湿豆提取，直至新鲜湿豆农场门交接。建植、替换及终止归属于所代表生产；仅有果荚交接不能满足本参考边界。 | `fao-cocoa-production-guide`; `icco-cocoa-harvesting-post-harvest`; `iso-14044-2006` |
 | `boundary_02` | 参考门 | 将 `Cocoa beans` 的 `Production mix, at farm gate` 和 `Fresh, unprocessed produce` 作为声明参考身份；未经独立身份审查，不得用该 UUID 表示发酵、干燥或分级豆。 | `iso-14044-2006`; `mass-balance-identity` |
-| `boundary_03` | 开荚和发酵 | 纳入扩展路线时识别采收荚、果肉湿豆、荚壳、果肉/发酵液、批次、副产品、未反应或腐败物及至干燥的交接。 | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
+| `boundary_03` | 开荚和发酵 | 参考交接之前必须开荚并提取湿豆：将采收荚质量连接到果肉湿豆、荚壳／胎座、拒收物和损失。发酵是扩展路线的条件作业，其排液、拒收及输出另行连接。 | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
 | `boundary_04` | 干燥、分级和储存 | 仅在跨越声明扩展边界时纳入干燥稳定化、清洁、等级分离和门前储存，并记录能源、含水率、储存时长、污染控制和损失。 | `icco-cocoa-processing`; `icco-cocoa-quality-requirements` |
 | `boundary_05` | 上游投入 | 将外购投入、公用事业、包装、处理和运输服务作为独立上游投入；不得递归到另一个可可 PCR，也不得把可可废物或可可浆静默作为可可豆投入。 | `iso-14044-2006` |
 | `boundary_06` | 损失和拒收 | 在有记录的回收、共产品、处理或处置交接前，将田间损失、损伤荚、未提取豆、腐败或未发酵豆、干燥损失、霉豆、粉尘、豆壳、储存损失和拒收批次保留在前景中。 | `fao-cocoa-ota-code`; `icco-cocoa-quality-requirements`; `mass-balance-identity` |
@@ -109,7 +109,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `cocoa_managed_production` | 受管理可可生产 | required | 栽培可可路线 | 受管理生物生产 | per 1 kg wet cocoa beans at farm-gate reference |
 | `cocoa_pod_harvest` | 成熟可可荚采收和收集 | required | 荚被移除并转入开荚 | 采收和收集输出交接 | per harvested pod lot and wet reference |
-| `cocoa_pod_breaking_extraction` | 开荚和湿豆提取 | conditional | 开荚和分离在声明路线内 | 初级调理 | per pod lot and wet reference |
+| `cocoa_pod_breaking_extraction` | 开荚和湿豆提取 | required | 获得湿豆参考产品必需，含委托取豆 | 初级调理 | per pod lot and wet reference |
 | `cocoa_fermentation` | 可可豆发酵 | conditional | 发酵先于干燥或干豆门点 | 生化反应和处理 | per fermentation batch |
 | `cocoa_drying_stabilization` | 发酵豆干燥和稳定化 | conditional | 干燥先于采后门点 | 保藏和稳定化 | per drying batch |
 | `cocoa_cleaning_grading` | 清洁、分级和拒收路由 | conditional | 清洁或分级先于采后门点 | 分级、分选和调理 | per grading lot |
@@ -126,7 +126,7 @@ sync_with: pcr.en-US.md
 
 按区块和阶段记录苗木、嫁接苗、插条和替换植株，仅年度化可归属部分。
 
-- 选定流：Cocoa planting material [unmapped]
+- 选定流：可可种植材料（身份未决）
 - 流属性/单位：数量或质量 / plant、item 或 kg
 - 数量规则：按区块和阶段记录采购、种植、替换和存活数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -138,7 +138,14 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_cocoa_perennial_phase_records`
 - 来源：`fao-cocoa-production-guide`; `iso-14044-2006`
-- 数量范围：暂定种植材料筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：0.05；单位：kg planting material/kg wet reference；基准：年度化建植和替换，应以区块记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：暂定种植材料筛选估计
+  - 范围角色：默认估计（`default_estimate`）
+  - 下限：0
+  - 上限：0.05
+  - 单位：kg planting material/kg wet reference
+  - 基准：年度化建植和替换，应以区块记录替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ###### 尿素肥料投入（`cocoa_managed_production_agricultural_nutrient_inputs`）
 
@@ -226,7 +233,7 @@ sync_with: pcr.en-US.md
 
 将供水与降雨和源头取水分开记录；雨养路线用区块证据支持零值。
 
-- 选定流：Irrigation water supply [parameterized]
+- 选定流：灌溉供水（具体供应身份待核验）
 - 流属性/单位：体积 / m3
 - 数量规则：按水源、区块和作物年度记录计量或有证据的体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -238,7 +245,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_water_records`
 - 来源：`fao-cocoa-production-guide`
-- 数量范围：暂定灌溉筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：5；单位：m3/t wet reference；基准：供水宽范围，应以水表和水量平衡替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：暂定灌溉筛选估计
+  - 范围角色：默认估计（`default_estimate`）
+  - 下限：0
+  - 上限：5
+  - 单位：m3/t wet reference
+  - 基准：供水宽范围，应以水表和水量平衡替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ###### 中压电力（`cocoa_field_energy`）
 
@@ -277,9 +291,9 @@ sync_with: pcr.en-US.md
 
 记录区块面积、生产阶段、遮荫或间作条件和作物年度；土地转化另行记录。
 
-- 选定流：Agricultural land occupation for cacao [unmapped]
+- 选定流：可可种植农业土地占用（身份未决）
 - 流属性/单位：面积时间 / ha·year
-- 数量规则：区块面积和年度化阶段除以湿参考输出
+- 数量规则：原始占用量=实际管理面积乘有日期的应归属占用时长（年），按不重叠阶段及全部共同使用者归属一次。仅当所选面积时间身份要求 m2*year 时将 ha 乘10,000换为m2。面积直接除以产品质量不能得到面积时间。按原分配规则归属面积时间分子，再按匹配最终合格参考质量归一化一次；适用时保留实际湿干阶段吞吐关联，已为最终强度时不再除产出。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
@@ -289,28 +303,17 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_cocoa_perennial_phase_records`
 - 来源：`fao-cocoa-production-guide`; `iso-14044-2006`
-- 数量范围：暂定土地占用筛选估计；范围角色：QA 校验（`qa_guardrail`）；下限：0.00005；上限：0.01；单位：ha·year/kg wet reference；基准：多年生作物宽范围，应以区块面积和产量替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：暂定土地占用筛选估计
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.00005
+  - 上限：0.01
+  - 单位：ha·year/kg wet reference
+  - 基准：多年生作物宽范围，应以区块面积和产量替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 #### 输出
 ##### 基本流
-
-###### 受管理土壤和作物残余排放（`cocoa_field_emissions`）
-
-按物质、介质、养分/残余来源和年度记录计算或测量排放，每条途径只选一个方法。
-
-- 选定流：Managed-soil and crop-residue elementary flows [unmapped]
-- 流属性/单位：质量 / kg substance
-- 数量规则：将选定方法应用于养分、残余、土壤和气候记录
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_cocoa_emission_records`
-- 来源：`ipcc-2019-refinement-afolu`
-- 数量范围：暂定受管理排放筛选估计；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：1；单位：kg substance/kg wet reference；基准：排放总量宽范围，应以具体物质计算替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
 
 ### 过程：成熟可可荚采收和收集（`cocoa_pod_harvest`）
 
@@ -326,7 +329,7 @@ sync_with: pcr.en-US.md
 
 记录成熟荚及至开荚工序的交接；荚不是湿豆参考流。
 
-- 选定流：Fresh cocoa pods [unmapped]
+- 选定流：新鲜可可荚（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按批次和含水率基准称量或有文件记录的采收荚质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -338,7 +341,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_harvest_lot_records`
 - 来源：`fao-cocoa-production-guide`; `icco-cocoa-harvesting-post-harvest`
-- 数量范围：采收荚产量筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.5；上限：4；单位：kg fresh pods/kg wet reference；基准：荚到湿豆宽范围，应以批次平衡替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：采收荚产量筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.5
+  - 上限：4
+  - 单位：kg fresh pods/kg wet reference
+  - 基准：荚到湿豆宽范围，应以批次平衡替代
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ##### 废物流
 
@@ -346,7 +356,7 @@ sync_with: pcr.en-US.md
 
 记录留在田间、采收前损坏或采收边界丢弃的荚，并声明土壤归还、腐解、回收、处理或废弃去向。
 
-- 选定流：Cocoa pod harvest loss [unmapped]
+- 选定流：可可荚收获损失（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按地块计数或质量估算，并与成熟荚观察记录平衡
 - 数值来源模式：计算值（`calculated_value`）
@@ -358,7 +368,14 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_cocoa_harvest_lot_records`
 - 来源：`fao-cocoa-production-guide`; `mass-balance-identity`
-- 数量范围：田间损失筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：1；单位：kg fresh pod loss/kg wet reference；基准：宽范围，应以观察记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：田间损失筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg fresh pod loss/kg wet reference
+  - 基准：宽范围，应以观察记录替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ### 过程：开荚和湿豆提取（`cocoa_pod_breaking_extraction`）
 
@@ -369,7 +386,7 @@ sync_with: pcr.en-US.md
 
 使用采收节点的同一荚批次，不得用湿豆、干豆或可可废物替代。
 
-- 选定流：Fresh cocoa pods [unmapped]
+- 选定流：新鲜可可荚（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按批次接收荚质量，并记录测量或文件化的含水率
 - 数值来源模式：前景记录（`foreground_record`）
@@ -381,7 +398,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_pod_extraction_records`
 - 来源：`icco-cocoa-harvesting-post-harvest`; `fao-cocoa-production-guide`
-- 数量范围：荚投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.5；上限：4；单位：kg pods/kg wet reference；基准：同批次荚到湿豆平衡；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：荚投入筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.5
+  - 上限：4
+  - 单位：kg pods/kg wet reference
+  - 基准：同批次荚到湿豆平衡
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ###### 中压电力（`cocoa_pod_opening_energy`）
 
@@ -422,7 +446,7 @@ sync_with: pcr.en-US.md
 
 该状态交接至发酵或直接干燥；除非明确声明为平台的新鲜农场门状态，否则不是参考 UUID。
 
-- 选定流：Wet cocoa beans in pulp [unmapped]
+- 选定流：带果浆湿可可豆（身份未决）
 - 流属性/单位：质量 / kg
 原始产出计量与核对要求：按提取批次称量湿豆和果肉质量，并记录含水率及果肉是否包含
 
@@ -436,7 +460,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_pod_extraction_records`
 - 来源：`icco-cocoa-harvesting-post-harvest`; `mass-balance-identity`
-- 数量范围：湿豆提取产率；范围角色：QA 校验（`qa_guardrail`）；下限：0.1；上限：0.4；单位：kg wet beans in pulp/kg fresh pods；基准：开荚产率宽范围，应以荚批次平衡替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：湿豆提取产率
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.1
+  - 上限：0.4
+  - 单位：kg wet beans in pulp/kg fresh pods
+  - 基准：开荚产率宽范围，应以荚批次平衡替代
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ##### 废物流
 
@@ -444,7 +475,7 @@ sync_with: pcr.en-US.md
 
 记录荚壳、胎座和非豆附着物；只有具名去向、质量、规格和交接时才作为预期共产品。
 
-- 选定流：Cocoa pod husk and placenta residue [unmapped]
+- 选定流：可可荚壳与胎座残余（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：称量残余质量，或由荚投入和湿豆输出平衡得到
 - 数值来源模式：计算值（`calculated_value`）
@@ -456,13 +487,20 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_cocoa_residue_destination_records`
 - 来源：`fao-cocoa-production-guide`; `mass-balance-identity`
-- 数量范围：荚残余筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.6；上限：0.95；单位：kg residue/kg fresh pods；基准：残余物宽范围，应以开荚记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：荚残余筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.6
+  - 上限：0.95
+  - 单位：kg residue/kg fresh pods
+  - 基准：残余物宽范围，应以开荚记录替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ###### 未提取或损坏的湿豆拒收物（`cocoa_extraction_rejects`）
 
 识别破碎、霉变、发芽、污染或其他排除的豆，并声明回收、降级、返工、处置或土壤归还路径。
 
-- 选定流：Wet-bean extraction reject [unmapped]
+- 选定流：湿豆提取拒收物（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按批次和缺陷原因称量或估算拒收质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -474,7 +512,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_residue_destination_records`
 - 来源：`icco-cocoa-quality-requirements`; `fao-cocoa-ota-code`
-- 数量范围：提取拒收筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.15；单位：kg reject/kg wet-bean input；基准：首轮拒收宽范围，应以检查记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：提取拒收筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.15
+  - 单位：kg reject/kg wet-bean input
+  - 基准：首轮拒收宽范围，应以检查记录替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ### 过程：可可豆发酵（`cocoa_fermentation`）
 
@@ -485,7 +530,7 @@ sync_with: pcr.en-US.md
 
 记录进入堆、箱、篮或等效发酵系统的批次。每批必须有起始状态、翻动事件和下游交接。
 
-- 选定流：Wet cocoa beans in pulp [unmapped]
+- 选定流：带果浆湿可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按批次称量并记录含水率、果肉包含情况和批次身份
 - 数值来源模式：前景记录（`foreground_record`）
@@ -497,7 +542,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_fermentation_batch_records`
 - 来源：`icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code`
-- 数量范围：发酵投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.1；上限：1.1；单位：kg wet beans/kg wet reference；基准：批次归一化投入，应以批次记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：发酵投入筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.1
+  - 上限：1.1
+  - 单位：kg wet beans/kg wet reference
+  - 基准：批次归一化投入，应以批次记录替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 发酵清单必需记录：分别记录所选边界内实际使用的每项发酵容器材料、内衬、安装及采购作业服务，保留组成、服务寿命、重复使用及供应商范围；不得假定使用某一种材料。
 
@@ -524,7 +576,7 @@ sync_with: pcr.en-US.md
 
 记录发酵边界后的组成状态及至干燥的交接，不自行创造反应路径或产率。
 
-- 选定流：Fermented wet cocoa beans [unmapped]
+- 选定流：发酵湿可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：记录发酵和排液后的批次质量、终点含水率和质量观察
 - 数值来源模式：前景记录（`foreground_record`）
@@ -536,33 +588,22 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_fermentation_batch_records`
 - 来源：`fao-cocoa-ota-code`; `icco-cocoa-harvesting-post-harvest`
-- 数量范围：发酵湿豆输出筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.7；上限：1；单位：kg fermented wet beans/kg wet input；基准：干燥前质量保留宽范围，应以批次平衡替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：发酵湿豆输出筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.7
+  - 上限：1
+  - 单位：kg fermented wet beans/kg wet input
+  - 基准：干燥前质量保留宽范围，应以批次平衡替代
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ##### 废物流
-
-###### 发酵果肉、发酵液和排液（`cocoa_fermentation_sweatings`）
-
-有测量时分开记录排出的果肉和液体；有意回收时记录产品交接，否则进入处理、堆肥、土壤归还或处置。
-
-- 选定流：Cocoa pulp, sweatings or fermentation drainage [unmapped]
-- 流属性/单位：质量或体积 / kg 或 m3
-- 数量规则：按批次和去向测量排液或由质量平衡估算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_cocoa_residue_destination_records`
-- 来源：`icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code`
-- 数量范围：果肉和发酵液筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.05；上限：0.6；单位：kg drainage/kg wet-bean input；基准：排液宽范围，应以批次和去向记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
 
 ###### 腐败、未发酵或不合格发酵拒收物（`cocoa_fermentation_rejects`）
 
 识别霉变、发芽、黑豆、污染、不充分发酵或其他不合格物料，并声明回收、降级、返工、处置或土壤归还路径。
 
-- 选定流：Fermentation reject or off-spec bean material [unmapped]
+- 选定流：发酵拒收或不合格豆料（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按原因和去向记录批次检查和拒收质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -574,7 +615,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_quality_records`
 - 来源：`icco-cocoa-quality-requirements`; `fao-cocoa-ota-code`
-- 数量范围：发酵拒收筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.2；单位：kg reject/kg wet-bean input；基准：不合格宽范围，应以检查记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：发酵拒收筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.2
+  - 单位：kg reject/kg wet-bean input
+  - 基准：不合格宽范围，应以检查记录替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ##### 基本流
 ###### 生物源二氧化碳，排放至空气（`cocoa_fermentation_emissions`）
@@ -618,7 +666,7 @@ sync_with: pcr.en-US.md
 
 使用发酵批次交接，不使用新鲜参考身份；记录起始含水率和晒干、人工干燥或组合路线。
 
-- 选定流：Fermented wet cocoa beans [unmapped]
+- 选定流：发酵湿可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按干燥批次称量投入并关联发酵批次
 - 数值来源模式：前景记录（`foreground_record`）
@@ -630,7 +678,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_drying_batch_records`
 - 来源：`icco-cocoa-processing`; `fao-cocoa-ota-code`
-- 数量范围：干燥投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.7；上限：1；单位：kg fermented wet beans/kg wet reference；基准：同批次发酵到干燥交接，应以批次数据替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：干燥投入筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.7
+  - 上限：1
+  - 单位：kg fermented wet beans/kg wet reference
+  - 基准：同批次发酵到干燥交接，应以批次数据替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ###### 中压电力（`cocoa_drying_energy`）
 
@@ -687,7 +742,7 @@ sync_with: pcr.en-US.md
 
 这是独立路线输出，不是平台参考流；记录最终含水率、干燥技术、温度或天气和质量状态。
 
-- 选定流：Fermented, dried cocoa beans [unmapped]
+- 选定流：发酵干燥可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按批次称量干燥输出并测量含水率
 - 数值来源模式：前景记录（`foreground_record`）
@@ -699,34 +754,25 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_drying_batch_records`
 - 来源：`icco-cocoa-processing`; `icco-cocoa-quality-requirements`
-- 数量范围：干燥产率筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.35；上限：0.55；单位：kg dried beans/kg fermented wet beans；基准：干物质和含水率换算，应以批次平衡替代；基准类型：过程输出（`process_output`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`; `icco-cocoa-processing`
-- 数量范围：最终含水率筛选；范围角色：典型范围（`typical_range`）；下限：6；上限：8；单位：percent wet basis；基准：储存筛选区间，应以批次测量替代；基准类型：过程输出（`process_output`）；证据类型：外部来源（`external_source`）；来源：`icco-cocoa-processing`; `icco-cocoa-quality-requirements`
+- 数量范围：最终含水率筛选
+  - 范围角色：典型范围（`typical_range`）
+  - 下限：6
+  - 上限：8
+  - 单位：percent wet basis
+  - 基准：储存筛选区间，应以批次测量替代
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：外部来源（`external_source`）
+  - 来源：`icco-cocoa-processing`; `icco-cocoa-quality-requirements`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
 
 ##### 废物流
-
-###### 干燥失水（`cocoa_drying_water_loss`）
-
-由湿豆投入和干物质平衡计算去除的水，不计入干豆产品。
-
-- 选定流：Water loss to air or drying loss [unmapped]
-- 流属性/单位：质量 / kg water
-- 数量规则：使用投入和输出含水率做湿基/干物质平衡
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_cocoa_drying_batch_records`
-- 来源：`mass-balance-identity`; `icco-cocoa-processing`
-- 数量范围：干燥失水筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.35；上限：0.65；单位：kg water/kg fermented wet beans；基准：约 55–60% 到 6–8% 含水率的宽换算，应以批次平衡替代；基准类型：过程输出（`process_output`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`; `icco-cocoa-processing`
 
 ###### 霉变、污染或过度干燥拒收物（`cocoa_drying_rejects`）
 
 记录拒收质量和回收、降级、处理、销毁或土壤归还去向，不计入合格干豆。
 
-- 选定流：Drying reject or contaminated bean material [unmapped]
+- 选定流：干燥拒收或污染豆料（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按批次、缺陷和去向称量拒收质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -738,7 +784,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_quality_records`
 - 来源：`fao-cocoa-ota-code`; `icco-cocoa-quality-requirements`
-- 数量范围：干燥拒收筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.1；单位：kg reject/kg dried output；基准：质量损失宽范围，应以检查记录替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：干燥拒收筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.1
+  - 单位：kg reject/kg dried output
+  - 基准：质量损失宽范围，应以检查记录替代
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ##### 基本流
 ###### 化石二氧化碳，排放至空气（`cocoa_drying_emissions`）
@@ -821,6 +874,31 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_cocoa_emission_records`
 - 来源：`icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
 
+#### 输出
+
+##### 基本流
+
+###### 干燥失水（`cocoa_drying_water_loss`）
+
+由湿豆投入和干物质平衡计算去除的水，不计入干豆产品。
+
+- 选定流：可可干燥排向空气的水蒸气（UUID 未解析）
+- 流属性/单位：质量 / kg water
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：基于采集计算（`calculated_from_collection`）
+- 采集协议：`cp_cocoa_drying_batch_records`
+- 来源：`mass-balance-identity`; `icco-cocoa-processing`
+
+这是排向空气的基本输出，不是送往处理的废物。豆体固体拒收物另行核算；不得将固体或排液计入蒸发水质量。
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
 ### 过程：清洁、分级和拒收路由（`cocoa_cleaning_grading`）
 
 #### 输入
@@ -830,7 +908,7 @@ sync_with: pcr.en-US.md
 
 记录进入清洁和分级的干豆批次；其身份仍不同于新鲜农场门参考流。
 
-- 选定流：Fermented, dried cocoa beans [unmapped]
+- 选定流：发酵干燥可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按接收批次称量并记录含水率和质量观察
 - 数值来源模式：前景记录（`foreground_record`）
@@ -884,7 +962,7 @@ sync_with: pcr.en-US.md
 
 按等级和交接记录合格输出；只有声明等级和去向时才作为预期输出。
 
-- 选定流：Accepted graded fermented cocoa beans [unmapped]
+- 选定流：分级合格发酵可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按等级、含水率、缺陷基准和批次称量合格预期输出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -896,13 +974,20 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_grade_lot_records`
 - 来源：`fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
-- 数量范围：合格等级回收筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.8；上限：1；单位：kg accepted output/kg dried input；基准：清洁和分级回收宽范围，应以批次平衡替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：合格等级回收筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0.8
+  - 上限：1
+  - 单位：kg accepted output/kg dried input
+  - 基准：清洁和分级回收宽范围，应以批次平衡替代
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ###### 预期降级可可豆产品（`cocoa_downgraded_intended_output`）
 
 只有具备独立预期产品状态和交接的可销售降级豆使用此行，否则使用拒收行。
 
-- 选定流：Downgraded but saleable cocoa beans [unmapped]
+- 选定流：降级但可销售的可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按等级和去向称量预期输出的降级产品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -914,7 +999,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_grade_lot_records`
 - 来源：`icco-cocoa-quality-requirements`
-- 数量范围：降级输出筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.2；单位：kg downgraded product/kg dried input；基准：可销售降级比例宽范围，应以批次记录替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：降级输出筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.2
+  - 单位：kg downgraded product/kg dried input
+  - 基准：可销售降级比例宽范围，应以批次记录替代
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ##### 废物流
 
@@ -922,7 +1014,7 @@ sync_with: pcr.en-US.md
 
 分开记录豆壳、粉尘、石块、金属、植物物质及其他去除物；豆壳只有具名去向和交接时才是预期共产品。
 
-- 选定流：Cocoa shell, dust and foreign-material residue [unmapped]
+- 选定流：可可壳、粉尘及异物残余（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按分级批次和去向称量分离残余
 - 数值来源模式：前景记录（`foreground_record`）
@@ -934,13 +1026,20 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_residue_destination_records`
 - 来源：`fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
-- 数量范围：豆壳和清洁残余筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.2；单位：kg residue/kg dried input；基准：清洁和豆壳宽范围，应以批次平衡替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：豆壳和清洁残余筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.2
+  - 单位：kg residue/kg dried input
+  - 基准：清洁和豆壳宽范围，应以批次平衡替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ###### 拒收可可豆批次（`cocoa_grading_rejects`）
 
 识别霉变、虫害、破碎、发芽、黑豆、污染或其他拒收物；没有独立降级或回收交接时不得计入合格豆。
 
-- 选定流：Rejected cocoa beans [unmapped]
+- 选定流：拒收可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按缺陷、质量决定和去向称量拒收质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -952,14 +1051,21 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_quality_records`
 - 来源：`fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`; `fao-cocoa-ota-code`
-- 数量范围：分级拒收筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.2；单位：kg reject/kg dried input；基准：首轮拒收宽范围，应以分级检查替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：分级拒收筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.2
+  - 单位：kg reject/kg dried input
+  - 基准：首轮拒收宽范围，应以分级检查替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ##### 基本流
 ###### 清洁粉尘排放（`cocoa_cleaning_dust`）
 
 只有设备或方法证据支持时记录粉尘释放或捕集损失；豆壳或粉尘残余不自动等同于空气排放。
 
-- 选定流：Cocoa cleaning dust elementary flow [unmapped]
+- 选定流：可可清理粉尘基本流（身份未决）
 - 流属性/单位：质量 / kg substance
 - 数量规则：在扣除捕集残余后测量或计算释放量
 - 数值来源模式：计算值（`calculated_value`）
@@ -971,7 +1077,14 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_cocoa_emission_records`
 - 来源：`mass-balance-identity`; `icco-cocoa-quality-requirements`
-- 数量范围：清洁粉尘筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.02；单位：kg substance/kg dried input；基准：粉尘释放宽范围，应以捕集记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：清洁粉尘筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.02
+  - 单位：kg substance/kg dried input
+  - 基准：粉尘释放宽范围，应以捕集记录替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ### 过程：储存和声明门交接（`cocoa_storage_gate`）
 
@@ -982,7 +1095,7 @@ sync_with: pcr.en-US.md
 
 记录储存批次、含水率、等级、包装和开始日期；这不是第二次使用湿农场门参考流。
 
-- 选定流：Accepted graded fermented cocoa beans [unmapped]
+- 选定流：分级合格发酵可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：按批次和等级称量储存投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1052,7 +1165,7 @@ sync_with: pcr.en-US.md
 
 仅在数据包声明采后扩展门时使用；它是独立路线输出，不能标为平台的新鲜农场门状态。
 
-- 选定流：Fermented, dried and graded cocoa beans at declared post-harvest gate [unmapped]
+- 选定流：声明采后交接点的发酵干燥分级可可豆（身份未决）
 - 流属性/单位：质量 / kg
 - 数量规则：储存后按批次称量最终质量并记录含水率、等级和损失
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1064,7 +1177,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_storage_records`
 - 来源：`icco-cocoa-processing`; `icco-cocoa-quality-requirements`
-- 数量范围：采后门输出筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.3；上限：0.55；单位：kg dried gate output/kg wet reference；基准：实测湿干平衡，应以批次记录替代；基准类型：参考流（`reference_flow`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`; `icco-cocoa-processing`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
 
 ##### 废物流
 
@@ -1072,9 +1186,9 @@ sync_with: pcr.en-US.md
 
 记录霉变、虫害、含水率变化、异物去除和其他储存事件；可销售降级批次使用预期输出行而非废物行。
 
-- 选定流：Cocoa storage loss or rejected storage material [unmapped]
+- 选定流：可可储存损失或储存拒收物（身份未决）
 - 流属性/单位：质量 / kg
-- 数量规则：期初质量加接收和移出量减期末质量，并与检查和去向记录平衡
+- 数量规则：按批次和去向计量实际受损、拒收或损失物流，各材料数量互斥。按匹配水分/组分基准核对：期初库存+接收=合格发运+其他外部转出+拒收移出+独立有据物理损失+期末库存。跨本节点返回的返工量只作为一对转移，仍留存时纳入期末库存，不是额外最终产出。未解释平衡差属于调查项，不能自动作为实体废物或排放。不将移出批次加到接收、不漏期末库存，也不重复扣除已属于本报告物流的损失。每一有据转出量归属后按合格最终产出归一化一次。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：per 1 kg dried cocoa bean storage input.
@@ -1084,7 +1198,14 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_cocoa_storage_records`
 - 来源：`icco-cocoa-quality-requirements`; `mass-balance-identity`
-- 数量范围：储存损失筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.1；单位：kg loss/kg dried storage input；基准：门前储存损失宽范围，应以仓库记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+- 数量范围：储存损失筛选
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.1
+  - 单位：kg loss/kg dried storage input
+  - 基准：门前储存损失宽范围，应以仓库记录替代
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ## 7. 分配和共产品处理
 
@@ -1118,10 +1239,10 @@ sync_with: pcr.en-US.md
 | `cp_cocoa_harvest_lot_records` | `cocoa_pod_harvest` | 成熟荚采收、田间损失和交接 | 采收批次票据和田间记录 | block_id；crop_year；maturity；pod_mass；harvest_date；field_loss；receiver；lot_id | 对每个批次平衡采收荚、田间损失和接收方交接；原始汇总与分配：按区块、年度和批次汇总采收荚、田间损失和交接 | kg pods；kg loss；date；lot | 每个采收批次 | 完整采收季 | 所有纳入的可可区块和接收方 | 每声明的参考流 | 批次票据；田间日志；秤记录；接收方证据 |
 | `cp_cocoa_pod_extraction_records` | `cocoa_pod_breaking_extraction` | 荚投入、湿豆、荚壳、胎座和拒收物 | 开荚运行单和秤记录 | run_id；pod_input；wet_bean_output；husk；placenta；reject_mass；equipment；operator；date | 关闭每次开荚运行的荚投入质量平衡并记录所有去向；原始汇总与分配：将荚投入与湿豆、荚壳、胎座、拒收物和无法解释的差额核对 | kg as received；kg wet beans；date；run | 每次开荚运行 | 所有纳入的开荚作业 | 纳入的农场或采后设施 | 每声明的参考流 | 校准秤；运行单；去向票据；质量平衡审查 |
 | `cp_cocoa_fermentation_batch_records` | `cocoa_fermentation` | 湿豆投入、发酵作业、排液和发酵输出 | 发酵批次日志 | batch_id；input_mass；method；container；start_date；end_date；turns；temperature；drainage；output_mass；reject_mass | 连接湿豆投入、批次条件、排液、发酵输出和拒收物；原始汇总与分配：按批次汇总并将每个输出连接到投入批次，避免重复计算 | kg wet beans；kg drainage；°C；days；date | 每个发酵批次和翻动 | 完整的纳入发酵路线 | 所有纳入的发酵容器 | 每声明的参考流 | 批次日志；温度记录；翻动记录；排液票；质量检查 |
-| `cp_cocoa_drying_batch_records` | `cocoa_drying_stabilization` | 发酵湿豆投入、干燥能源、干豆输出和失水 | 干燥日志和含水率样品记录 | batch_id；wet_input；method；platform_or_dryer；weather_or_fuel；start_time；end_time；temperature；moisture；output_mass；reject_mass | 使用文件化的含水率样品平衡湿投入、干输出和损失；原始汇总与分配：按批次计算湿干平衡并保留实测含水率基准 | kg wet input；kg dry beans；percent moisture；°C；days；MJ | 每个干燥批次和含水率样品 | 完整的纳入干燥路线 | 所有纳入的干燥平台和干燥器 | 每声明的参考流 | 干燥日志；水分检测；燃料或天气记录；烟气控制记录 |
+| `cp_cocoa_drying_batch_records` | `cocoa_drying_stabilization` | 发酵湿豆投入、干燥能源、干豆输出和失水 | 干燥日志和含水率样品记录 | batch_id；wet_input；method；platform_or_dryer；weather_or_fuel；start_time；end_time；temperature；moisture；output_mass；reject_mass ；含拒收物和残体的全部进出材料带水；实际加水/降雨；单独液体转出；期初期末水库存；湿基含水率/密度；有据蒸发及不确定性| 使用文件化的含水率样品平衡湿投入、干输出和损失；原始汇总与分配：按批次计算湿干平衡并保留实测含水率基准 | kg wet input；kg dry beans；percent moisture；°C；days；MJ | 每个干燥批次和含水率样品 | 完整的纳入干燥路线 | 所有纳入的干燥平台和干燥器 | 每声明的参考流 | 干燥日志；水分检测；燃料或天气记录；烟气控制记录 |
 | `cp_cocoa_grade_lot_records` | `cocoa_cleaning_grading` | 干豆投入、合格等级、降级产品、豆壳、粉尘和拒收物 | 检验、分级和秤记录 | lot_id；input_mass；grade；moisture；defects；accepted_mass；downgrade_mass；shell_mass；dust_mass；reject_mass；destination | 列出每个等级和物料去向，并核对批次质量平衡；原始汇总与分配：按批次分别汇总合格等级、预期降级产品、残余物和拒收物 | kg；percent moisture；grade code；date | 每个分级批次 | 完整的纳入清洁和分级路线 | 所有纳入的分级设备和批次 | 每声明的参考流 | 检验表；校准秤；水分及缺陷记录；去向证据 |
 | `cp_cocoa_quality_records` | `cocoa_fermentation` and `cocoa_cleaning_grading` | 含水率、发酵、霉变、虫害、异物和等级决定 | 实验室或批次检验记录 | sample_id；lot_id；moisture；fermentation_index；mould；insects；foreign_matter；defect_class；grade_decision；method；coverage | 为每批次保留采样方案、分析方法、结果和决定；原始汇总与分配：将质量决定连接到批次和路线状态；不得将拒收物转为合格输出 | percent；score；kg sample；date | 每个批次和质量决定 | 完整的纳入发酵、干燥和分级路线 | 用于声明输出的所有批次 | 每声明的参考流 | 实验室报告；采样方案；方法版本；检验员签字 |
-| `cp_cocoa_storage_records` | `cocoa_storage_gate` | 合格干豆、包装、储存服务、输出和损失 | 仓库记录和储存期平衡 | lot_id；opening_mass；packaging；warehouse；start_date；end_date；conditions；receipts；outputs；losses；closing_mass | 对每个储存期核对期初库存、接收量、声明输出和损失；原始汇总与分配：关闭储存平衡，并依据文件化批次驱动因子将共用处理一次性归属 | kg dried beans；kg loss；storage days；packaging unit | 每个储存期和批次 | 完整的门前储存期 | 所有纳入的仓库和批次 | 每声明的参考流 | 仓库日志；秤记录；条件记录；包装记录 |
+| `cp_cocoa_storage_records` | `cocoa_storage_gate` | 合格干豆、包装、储存服务、输出和损失 | 仓库记录和储存期平衡 | lot_id；opening_mass；packaging；warehouse；start_date；end_date；conditions；receipts；outputs；losses；closing_mass ；期初期末库存；接收；发运；其他外部转出；实测拒收；独立有据损失；配对返工；水分/组分基准；未解释平衡差| 计量各实际物流并按匹配水分/组分基准核对：期初库存+接收=合格发运+其他外部转出+拒收移出+独立有据物理损失+期末库存。返工/返回配对，留存材料纳入库存。未解释差额为证据缺口，不能自动成为废物或排放。保留归属并按匹配最终合格产出归一化一次。 | kg dried beans；kg loss；storage days；packaging unit | 每个储存期和批次 | 完整的门前储存期 | 所有纳入的仓库和批次 | 每声明的参考流 | 仓库日志；秤记录；条件记录；包装记录 |
 | `cp_cocoa_residue_destination_records` | route-wide cocoa processes | 荚壳、果肉、发酵液、粉尘、拒收物和其他残余物 | 去向票、回收记录或处理/处置记录 | residue_type；quantity；destination；receiver；intended_function；treatment；disposal；date；lot_id | 记录每种物料是具名共产品、回收物、保留残余还是废物，并记录交接；原始汇总与分配：分开分类和汇总每个去向；未记录去向保留为未解决项 | kg material；destination code；date | 每个残余事件 | 完整纳入路线和储存期 | 所有纳入的田间、加工和储存地点 | 每声明的参考流 | 去向票；接收方证据；处理记录；废物联单 |
 
 ### 计算规则
@@ -1130,10 +1251,13 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `calc_01` | cocoa_stand_management | 仅在所代表年度内年度化建植、替换和终止，并分配到同一区块湿参考输出。 | 多年生阶段、面积、年度和参考输出 | 与同地块湿豆产出关联的年度化阶段负荷 |  |
 | `calc_02` | route-wide processes | 各节点单独平衡，所有换算保留含水率基准；有批次数据时不得使用通用可可产率。 | 荚、湿豆、发酵、干燥和分级质量 | 保留含水率基准的经核对节点质量平衡 |  |
-| `calc_03` | route-wide processes | 归一化至 1 kg 湿农场门参考；扩展路线另报每 1 kg 干输出，并保留换算分母。 | 过程总量和参考输出 | 每 1 kg 湿参考产品的清单及独立的扩展路线干产品结果 |  |
+| `calc_03` | route-wide processes | 基础结果：仅汇总至湿豆交接的负荷，除以净合格湿豆质量。扩展结果：增加已连接下游负荷，将合计可归属总量除以匹配的最终扩展状态产出。保留两个分母及实测批次换算；按每 kg 湿投入表示的扩展清单仅标为扩展强度，不能标为基础农场门清单。 | 过程总量和参考输出 | 每 1 kg 湿参考产品的清单及独立的扩展路线干产品结果 |  |
 | `calc_04` | cocoa_stand_management and included processing | 每条途径使用一个适用方法，保留因子、单位、活动基准和不确定性。 | 养分、残余、燃料和水记录 | 保留因子及不确定性的分路径方法计算结果 |  |
 | `calc_05` | route-wide intended outputs | 先细分，再按声明质量或经济方法一次性分配共享负荷；没有产品交接的残余和废物处理保持独立。 | 预期输出和分配分母 | 按声明分配分母归属一次的共享负荷 |  |
-| `calc_06` | cocoa_storage_gate | 用平衡差计算储存损失，调查负数或无法解释的差额。 | 储存期初、接收、输出和期末 | 经核对的储存损失及未解释平衡差额 |  |
+| `calc_06` | cocoa_storage_gate | 按批次和去向计量实际受损、拒收或损失物流，各材料数量互斥。按匹配水分/组分基准核对：期初库存+接收=合格发运+其他外部转出+拒收移出+独立有据物理损失+期末库存。跨本节点返回的返工量只作为一对转移，仍留存时纳入期末库存，不是额外最终产出。未解释平衡差属于调查项，不能自动作为实体废物或排放。不将移出批次加到接收、不漏期末库存，也不重复扣除已属于本报告物流的损失。每一有据转出量归属后按合格最终产出归一化一次。 | 储存期初、接收、输出和期末 | 经核对的储存损失及未解释平衡差额 |  |
+| `cocoa_field_emissions_identity_and_fate` | `cocoa_managed_production` | 逐项识别每种实际排放物质及接收环境，以独立活动量、方法、化学物种口径和原生单位量化各有据路径，区分元素 N/P 台账和最终化合物。土壤养分留存或质量平衡残差不得自动当作排放。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_cocoa_emission_records` | 按身份区分的交换和对账活动记录 | `ipcc-2019-refinement-afolu` |
+| `cocoa_fermentation_sweatings_identity_and_fate` | `cocoa_fermentation` | 识别每项实际独立材料物流、组成、状态和接收者。废保藏剂、盐水、动植物材料、包装、排液和有意共产品在独立处理时分别记录，仅建立本作业有证据的物流。物理混合物流只有在组成和相容处理有据时才可采用一个身份，不得再把组分作为额外输出重复计量。区分销售产出、内部返工、废物转移、外购处理和基本排放，不重复处理负荷。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_cocoa_residue_destination_records` | 按身份区分的交换和对账活动记录 | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_cocoa_emission_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量规则
 
@@ -1153,14 +1277,14 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `validation_01` | 参考流 | 确认 UUID `3c54da37-f1ab-4b4c-8363-5c32b638005c`、Mass 属性 `93a60a56-a3c8-11da-a746-0800200b9a66` 和 Units of mass 组 `93a60a57-a4c8-11da-a746-0800200c9a66`，并保留农场门新鲜/未加工元数据。 | `mass-balance-identity` |
 | `validation_02` | 状态身份 | 未经审查，不得使用参考 UUID 表示发酵、干燥、分级、可可废物或可可浆。 | `mass-balance-identity`; `iso-14044-2006` |
-| `validation_03` | 过程图 | 纳入的路线必须具备生产到采收、荚到湿豆、湿豆到发酵、发酵到干燥、干燥到分级和分级到声明门的交接。 | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
+| `validation_03` | 过程图 | 每个湿豆参考结果均须连接生产、采收、开荚及湿豆交接，即使 postharvest_extension=false 也不例外。核对果荚、湿豆、荚壳／胎座、损失及委托服务范围。拒绝将仅有果荚交接的结果标作湿豆；扩展路线另核对纳入的发酵、干燥、分级和储存交接。 | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
 | `validation_04` | 质量平衡 | 每个批次在测量不确定性内平衡投入、合格输出、预期共产品、残余、拒收、储存损失和失水。 | `mass-balance-identity` |
 | `validation_05` | 发酵质量 | 要求批次、日期、方法、排液、输出交接和检查证据；扩展路线存在未解决的不合格路径时阻塞。 | `fao-cocoa-ota-code`; `icco-cocoa-harvesting-post-harvest` |
 | `validation_06` | 干燥质量 | 要求方法、投入/输出、最终含水率和烟气或污染控制；6–8% 只能作为筛选，实测含水率优先。 | `icco-cocoa-processing`; `icco-cocoa-quality-requirements` |
 | `validation_07` | 等级和拒收 | 每个合格等级和预期降级输出都有交接；霉变、破碎、污染或不合格物不得计入合格豆。 | `fao-cocoa-production-guide`; `icco-cocoa-quality-requirements` |
 | `validation_08` | 分配 | 每个预期输出、残余去向和分配分母明确；连续状态之间不分配，共享负荷不重复计入。 | `iso-14044-2006`; `mass-balance-identity` |
 | `validation_09` | 数据质量 | 检查年度覆盖、批次完整性、含水率基准、采集协议、来源、方法版本和重要定量流单位。 | `iso-14044-2006`; `ipcc-2019-refinement-afolu` |
-| `validation_10` | 边界披露 | 确认披露平台农场门参考、采后扩展标记、最终门点、储存时长和排除的下游可可产品。 | `iso-14044-2006` |
+| `validation_10` | 边界披露 | 要求包含取豆过程的新鲜湿豆基础结果。任何下游扩展须按独立边界／结果报告状态、门点和实测换算，不能将扩展作业混入基础湿豆农场门清单；披露储存与下游排除范围。 | `iso-14044-2006` |
 
 ## 10. 发布数据集画像
 
@@ -1176,7 +1300,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据来源
 
-| source_id | type | Source | Use in this PCR |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `icco-cocoa-harvesting-post-harvest` | official_guidance | ICCO, Harvesting & Post-harvest, https://www.icco.org/harvesting-post-harvest-new/ | 开荚、湿豆提取、发酵、干燥和含水率 |
 | `icco-cocoa-processing` | official_guidance | ICCO, Processing Cocoa, https://www.icco.org/processing-cocoa/ | 发酵后干燥和储存含水率 |

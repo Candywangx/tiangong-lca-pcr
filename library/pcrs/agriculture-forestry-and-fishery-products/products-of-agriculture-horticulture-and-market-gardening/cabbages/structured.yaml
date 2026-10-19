@@ -101,8 +101,8 @@ measurement_rules:
     required_property_ref:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
-    required_unit: "kg N2O-N"
-    rule: "Calculate and report N2O on an N-mass basis; provide a transparent conversion when a downstream dataset requires kg N2O."
+    required_unit: "kg N2O"
+    rule: "Final elementary exchange is kg molecular N2O. Retain any model result in kg N2O-N as a separate intermediate and multiply by 44/28 exactly once before final normalization; already molecular mass is not reconverted. Use the same direct/indirect pathway ledger as cp_soil_emissions; downstream preference cannot change the substance basis of this card."
 process_map:
   - id: field_cultivation
     name: "Managed cabbage field cultivation"
@@ -121,32 +121,6 @@ process_inventory:
     label: "Managed cabbage field cultivation"
     inputs:
       product:
-        - row_id: cabbage_planting_material
-          role: "Cabbage planting material"
-          name: "Cabbage seed or transplant planting material"
-          flow_type: "product"
-          property_unit: "Number of items / item, or Mass / kg when seed is recorded by mass"
-          description: "Cabbage seed or transplant material crosses the cultivation boundary when the crop is established. The foreground record must identify the actual physical planting product rather than treating all seed and transplants as interchangeable. Raw activity or stage basis: per ha planted cabbage crop per crop cycle."
-          amount:
-            expression: "Record purchased and internally supplied planting material by type and convert to established plants or seed mass without combining unlike units."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_cultivation_inputs
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "10000"
-                upper: "120000"
-                unit: "established plants/ha"
-                basis: "broad screening interval per planted hectare; replace with variety- and system-specific foreground evidence"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: field_cultivation_agricultural_nutrient_inputs_urea
           role: "Urea fertilizer"
           name: "Urea"
@@ -370,8 +344,8 @@ process_inventory:
           role: "Nitrous oxide from managed soil"
           name: "Nitrous oxide emission to ambient air"
           flow_type: "elementary"
-          property_unit: "Mass / kg N2O-N"
-          description: "Direct and applicable indirect managed-soil nitrous oxide is calculated from collected nitrogen inputs, crop-residue nitrogen, and the selected IPCC or justified higher-tier method. Raw activity or stage basis: per ha planted cabbage crop per crop cycle."
+          property_unit: "Mass / kg N2O"
+          description: "Direct and applicable indirect managed-soil nitrous oxide is calculated from collected nitrogen inputs, crop-residue nitrogen, and the selected IPCC or justified higher-tier method. Raw activity or stage basis: per ha planted cabbage crop per crop cycle. The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero."
           amount:
             expression: "Calculate direct and applicable indirect N2O-N from collected nitrogen pathways without double counting residue nitrogen."
             value_mode: "calculated_value"
@@ -592,7 +566,7 @@ dataset_production:
       record_type: "nutrient, residue, soil-amendment, volatilization, leaching, and field-management records"
       raw_fields: "N inputs by pathway; residue dry matter and N content; removal fraction; emission factors; conversion basis"
       collection_method: "Apply the declared IPCC tier or justified higher-tier model to collected field records; Raw aggregation and attribution: Calculate pathway emissions separately, sum without double counting, and normalize to crop output"
-      unit: "kg N; kg dry matter; fraction; kg N2O-N"
+      unit: "kg N; kg dry matter; fraction; kg N2O-N ; kg molecular N2O after one conversion"
       frequency: "Each application and annual or crop-cycle calculation"
       temporal_coverage: "Complete crop cycle with declared annualization"
       site_scope: "Each field and emission stratum"
@@ -665,6 +639,23 @@ dataset_production:
       output: "kg N2O-N per crop cycle"
       source_ids:
         - ipcc-2019-managed-soils
+    - id: cabbage_planting_material_identity_and_fate
+      applies_to: "field_cultivation"
+      rule: "For the original cabbage_planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults."
+      inputs:
+        - cp_cultivation_inputs
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_soil_emissions
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "All inputs and outputs"
@@ -757,18 +748,18 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:6d3dcbf599a095caf042273251794ef5465a82080600e923676403a8b8e06d70"
+  source_sha256: "sha256:ee6e5454715d14e570e8ac583b73096b4d8784508267ce2b72a62a2500d9541d"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4570"
+    - unit_id: "normative_4799"
       family: "system_boundary"
       span:
         start:
-          offset: 4570
+          offset: 4799
           line: 59
           column: 1
         end:
-          offset: 6972
+          offset: 7201
           line: 81
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased or internally supplied cabbage seed or transplant ready for establishment in the declared field |\n| starting_condition_role | Biological planting input entering managed cultivation |\n| product_classification_scope | Fresh headed cabbage products classified under CPC 3.0 01212 |\n| recursive_input_rule | Any cabbage product re-entering the system as planting or market input is recorded at its actual hand-off state and linked to a separate upstream dataset rather than recursively reproducing this PCR boundary. |\n| upstream_dataset_requirement | Use upstream datasets for planting material, nutrient products, crop-protection products, supplied water, energy carriers, packaging, and any contracted service crossing the boundary. |\n| disclosure | Declare geography, season, field area, crop duration, cabbage type or variety, planting route, irrigation regime, nutrient regime, harvest maturity, trimming and sorting practice, residue destinations, and farm-gate hand-off. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_farm_gate` | Default cabbage product system | Include establishment, field management, irrigation, nutrient and crop-protection application, direct managed-soil emissions, harvest, trimming, field sorting, and internal movement up to the declared farm-gate hand-off. | `fao-postharvest-loss-manual`; `ipcc-2019-managed-soils` |\n| `boundary_upstream_inputs` | Purchased inputs and utilities | Represent production of purchased planting material, fertilizers, crop-protection products, energy, and supplied water through linked upstream datasets; do not duplicate their production inside cultivation. | `codex-fresh-produce-hygiene` |\n| `boundary_post_farm_gate` | Cooling, packing, storage, and distribution after farm-gate hand-off | Exclude by default and add as explicit downstream processes when the declared product hand-off includes them. | `fao-horticultural-marketing` |\n| `boundary_residue_fate` | Outer leaves, rejected heads, and other crop residues | Record each physically distinct residue and its destination; include field-return effects in cultivation and link off-site treatment or use to a separate downstream dataset. | `ipcc-2019-managed-soils`; `fao-postharvest-loss-manual` |\n\n"
@@ -788,11 +779,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4570
+              offset: 4799
               line: 59
               column: 1
             end:
-              offset: 4591
+              offset: 4820
               line: 59
               column: 22
           text: "## 5. System Boundary"
@@ -808,16 +799,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_28926"
+    - unit_id: "normative_28240"
       family: "allocation"
       span:
         start:
-          offset: 28926
-          line: 463
+          offset: 28240
+          line: 440
           column: 1
         end:
-          offset: 30337
-          line: 473
+          offset: 29651
+          line: 450
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide_first` | Cultivation and harvest processes | Use process subdivision and mass reconciliation before allocation; do not allocate between an internal standing-crop hand-off and the same crop after harvest. | `fao-horticultural-marketing` |\n| `allocation_residue_classification` | Outer leaves and rejected heads | Classify field-returned leaves as residues and off-site rejected heads by actual destination; do not treat either as an intended co-product unless evidence shows a deliberate product function and market hand-off. | `ipcc-2019-managed-soils`; `fao-postharvest-loss-manual` |\n| `allocation_intended_coproduct` | Any additional revenue-bearing intended output | If subdivision cannot isolate an additional intended output, apply economic allocation using documented farm-gate revenues for the same reporting period and disclose prices, currency, period, and sensitivity. |  |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -836,12 +827,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 28926
-              line: 463
+              offset: 28240
+              line: 440
               column: 1
             end:
-              offset: 28966
-              line: 463
+              offset: 28280
+              line: 440
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -856,16 +847,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_42964"
+    - unit_id: "normative_45104"
       family: "validation"
       span:
         start:
-          offset: 42964
-          line: 521
+          offset: 45104
+          line: 500
           column: 1
         end:
-          offset: 44387
-          line: 532
+          offset: 46527
+          line: 511
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_identity` | Reference flow | Require the fixed cabbage UUID, mass property, mass unit group, kg reference unit, and all required foreground qualifiers. |  |\n| `validation_process_completeness` | Process map and inventory | Require both declared processes and require every collected or calculated flow row to reference an existing collection protocol. |  |\n| `validation_binding_specificity` | All flow bindings | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_mass_balance` | Harvest, trimming, and sorting | Require reconciliation of incoming mature crop with saleable cabbage, outer leaves, rejected heads, and documented uncollected loss within a declared tolerance. | `fao-postharvest-loss-manual` |\n| `validation_residue_destination` | Crop residues | Require separate identities and destinations for field-returned outer leaves and off-site rejected heads and prevent double counting in residue-N calculations. | `ipcc-2019-managed-soils` |\n| `validation_n2o_reproducibility` | Managed-soil N2O | Require declared method tier, factor source and version, all nitrogen pathways, conversion basis, and reproducible calculation. | `ipcc-2019-managed-soils` |\n\n"
       headings:
@@ -884,12 +875,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 42964
-              line: 521
+              offset: 45104
+              line: 500
               column: 1
             end:
-              offset: 42986
-              line: 521
+              offset: 45126
+              line: 500
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -908,233 +899,233 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_farm_gate"
       identity_kind: "explicit"
-      unit_id: "normative_4570"
+      unit_id: "normative_4799"
       source_span:
         start:
-          offset: 5762
+          offset: 5991
           line: 76
           column: 1
         end:
-          offset: 6101
+          offset: 6330
           line: 76
           column: 340
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_upstream_inputs"
       identity_kind: "explicit"
-      unit_id: "normative_4570"
+      unit_id: "normative_4799"
       source_span:
         start:
-          offset: 6102
+          offset: 6331
           line: 77
           column: 1
         end:
-          offset: 6406
+          offset: 6635
           line: 77
           column: 305
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_post_farm_gate"
       identity_kind: "explicit"
-      unit_id: "normative_4570"
+      unit_id: "normative_4799"
       source_span:
         start:
-          offset: 6407
+          offset: 6636
           line: 78
           column: 1
         end:
-          offset: 6651
+          offset: 6880
           line: 78
           column: 245
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_residue_fate"
       identity_kind: "explicit"
-      unit_id: "normative_4570"
+      unit_id: "normative_4799"
       source_span:
         start:
-          offset: 6652
+          offset: 6881
           line: 79
           column: 1
         end:
-          offset: 6970
+          offset: 7199
           line: 79
           column: 319
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide_first"
       identity_kind: "explicit"
-      unit_id: "normative_28926"
+      unit_id: "normative_28240"
       source_span:
         start:
-          offset: 29039
-          line: 467
+          offset: 28353
+          line: 444
           column: 1
         end:
-          offset: 29300
-          line: 467
+          offset: 28614
+          line: 444
           column: 262
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_residue_classification"
       identity_kind: "explicit"
-      unit_id: "normative_28926"
+      unit_id: "normative_28240"
       source_span:
         start:
-          offset: 29301
-          line: 468
+          offset: 28615
+          line: 445
           column: 1
         end:
-          offset: 29648
-          line: 468
+          offset: 28962
+          line: 445
           column: 348
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_intended_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_28926"
+      unit_id: "normative_28240"
       source_span:
         start:
-          offset: 29649
-          line: 469
+          offset: 28963
+          line: 446
           column: 1
         end:
-          offset: 29947
-          line: 469
+          offset: 29261
+          line: 446
           column: 299
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_28926"
+      unit_id: "normative_28240"
       source_span:
         start:
-          offset: 29949
-          line: 471
+          offset: 29263
+          line: 448
           column: 1
         end:
-          offset: 30335
-          line: 471
+          offset: 29649
+          line: 448
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_42964"
+      unit_id: "normative_45104"
       source_span:
         start:
-          offset: 43059
-          line: 525
+          offset: 45199
+          line: 504
           column: 1
         end:
-          offset: 43239
-          line: 525
+          offset: 45379
+          line: 504
           column: 181
     - pointer: "/validation_rules/1"
       rule_id: "validation_process_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_42964"
+      unit_id: "normative_45104"
       source_span:
         start:
-          offset: 43240
-          line: 526
+          offset: 45380
+          line: 505
           column: 1
         end:
-          offset: 43439
-          line: 526
+          offset: 45579
+          line: 505
           column: 200
     - pointer: "/validation_rules/2"
       rule_id: "validation_binding_specificity"
       identity_kind: "explicit"
-      unit_id: "normative_42964"
+      unit_id: "normative_45104"
       source_span:
         start:
-          offset: 43440
-          line: 527
+          offset: 45580
+          line: 506
           column: 1
         end:
-          offset: 43670
-          line: 527
+          offset: 45810
+          line: 506
           column: 231
     - pointer: "/validation_rules/3"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_42964"
+      unit_id: "normative_45104"
       source_span:
         start:
-          offset: 43671
-          line: 528
+          offset: 45811
+          line: 507
           column: 1
         end:
-          offset: 43928
-          line: 528
+          offset: 46068
+          line: 507
           column: 258
     - pointer: "/validation_rules/4"
       rule_id: "validation_residue_destination"
       identity_kind: "explicit"
-      unit_id: "normative_42964"
+      unit_id: "normative_45104"
       source_span:
         start:
-          offset: 43929
-          line: 529
+          offset: 46069
+          line: 508
           column: 1
         end:
-          offset: 44171
-          line: 529
+          offset: 46311
+          line: 508
           column: 243
     - pointer: "/validation_rules/5"
       rule_id: "validation_n2o_reproducibility"
       identity_kind: "explicit"
-      unit_id: "normative_42964"
+      unit_id: "normative_45104"
       source_span:
         start:
-          offset: 44172
-          line: 530
+          offset: 46312
+          line: 509
           column: 1
         end:
-          offset: 44385
-          line: 530
+          offset: 46525
+          line: 509
           column: 214
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4570"
+      unit_id: "normative_4799"
       source_span:
         start:
-          offset: 4570
+          offset: 4799
           line: 59
           column: 1
         end:
-          offset: 4591
+          offset: 4820
           line: 59
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4570"
+      unit_id: "normative_4799"
       source_span:
         start:
-          offset: 4619
+          offset: 4848
           line: 63
           column: 1
         end:
-          offset: 5669
+          offset: 5898
           line: 70
           column: 243
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_28926"
+      unit_id: "normative_28240"
       source_span:
         start:
-          offset: 28926
-          line: 463
+          offset: 28240
+          line: 440
           column: 1
         end:
-          offset: 28966
-          line: 463
+          offset: 28280
+          line: 440
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_42964"
+      unit_id: "normative_45104"
       source_span:
         start:
-          offset: 42964
-          line: 521
+          offset: 45104
+          line: 500
           column: 1
         end:
-          offset: 42986
-          line: 521
+          offset: 45126
+          line: 500
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1143,5 +1134,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:6d3dcbf599a095caf042273251794ef5465a82080600e923676403a8b8e06d70"
-  generated_content_sha256: "sha256:7e5ad2b6341dfaa19e0772c9e1f951fa08dbfa4b9eda6229abc47d75f196e1d5"
+    sha256: "sha256:ee6e5454715d14e570e8ac583b73096b4d8784508267ce2b72a62a2500d9541d"
+  generated_content_sha256: "sha256:b100786e62861c1f72909a601436a47363b9a6539efab5bf8b962459880c45d9"

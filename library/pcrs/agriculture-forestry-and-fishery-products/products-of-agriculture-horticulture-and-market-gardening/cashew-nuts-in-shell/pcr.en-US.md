@@ -626,32 +626,6 @@ Raw activity or stage basis: per 1,000 kg fresh farm-gate reference product.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-##### Elementary flows
-
-###### Drying water loss (`cashew_drying_water_loss`)
-
-Calculate water removed from the cashew lot from measured as-received and conditioned moisture. Do not use an unmeasured generic drying loss when moisture data are available.
-
-- Selected flow: water released to air during cashew drying
-- Flow property / unit: Mass / kg water
-- Amount rule: incoming water plus water additions minus water retained in all accepted, downgraded, rejected and residue outputs, other water exits and water stock increase; use each stream wet mass multiplied by its measured water fraction
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per 1,000 kg fresh farm-gate reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_cashew_drying_conditioning_records`
-- Range: Drying-water-loss screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 300
-  - Unit: kg water per 1,000 kg fresh reference product
-  - Basis: mass and moisture difference between received and conditioned lot
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `fao-cashew-minor-oil-crops`
 
 ###### Optional conditioning wastewater (`cashew_conditioning_wastewater`)
 
@@ -676,6 +650,28 @@ Raw activity or stage basis: per 1,000 kg reference product.
   - Basis: dry route to optional wet-cleaning wastewater interval
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+This card is only the wastewater transfer to an actual treatment/sewer recipient. Record route and volume/mass with the matching water balance; it is not an elementary pollutant. For actual in-boundary treatment or direct environmental discharge, separately require each supported substance and receiving compartment plus any method-supported water return, measured or calculated from applicable effluent data. Use a compatible verified UUID or explicit unresolved identity; wastewater volume is not pollutant mass and missing effluent composition is a completeness gap. Link inclusive treatment services once, with no duplicate outgoing transfer and same downstream treatment burden.
+
+##### Elementary flows
+
+###### Drying water loss (`cashew_drying_water_loss`)
+
+Calculate water removed from the cashew lot from measured as-received and conditioned moisture. Do not use an unmeasured generic drying loss when moisture data are available.
+
+- Selected flow: water released to air during cashew drying
+- Flow property / unit: Mass / kg water
+- Amount rule: incoming water plus water additions minus water retained in all accepted, downgraded, rejected and residue outputs, other water exits and water stock increase; use each stream wet mass multiplied by its measured water fraction
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg fresh farm-gate reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_cashew_drying_conditioning_records`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ### Process: Cashew Storage and Gate Hand-off (`cashew_storage_and_gate_handoff`)
 
@@ -891,6 +887,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_cashew_grade_and_reject_records` | `cashew_primary_drying_cleaning_and_grading` | grade, downgrade, reject, foreign material | inspection and grade record | lot; grade; shell condition; kernel defect; blank; mold; insects; foreign material; accepted mass; rework; fate | inspection, sampling, and scale record; Raw aggregation and attribution: mutually exclusive grade and reject states | kg, %, grade code | every lot | declared post-harvest period | each grading point | per declared reference flow | inspection sheet, sample plan, scale calibration |
 | `cp_cashew_storage_records` | `cashew_storage_and_gate_handoff` | storage input, loss, packaging, gate output | stock and dispatch ledger | opening stock; receipts; lot; moisture; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate | stock ledger, dispatch ticket, and storage log; Raw aggregation and attribution: opening + receipts = dispatch + closing + loss Route-specific requirements: `cashew_storage_energy_identification`: Actual electric storage ventilation or handling during the recorded lot duration. Unpowered storage has no assumed electricity; pest-control substances and services remain separate. Raw activity or stage basis: per 1,000 kg declared storage-gate product. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `cashew_storage_packaging_specific_input`: Operation cashew_storage_and_gate_handoff: Record bags, pallets, bins, liners, and handling energy only when they are inside the declared storage boundary. Reusable assets are assigned over documented uses or service life. Original quantity method: measured packaging mass or handling energy by lot, with reuse and service-life treatment Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, %, days, kWh, item | receipt, inspection, and dispatch | declared storage period | each storage facility | per declared reference flow | stock reconciliation, dispatch ticket, moisture and pest record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | cashew_orchard_establishment_and_management | managed environmental coverage by actual node | site/activity/method ledger | actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -902,6 +899,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_04` | cashew apple co-product | If the apple is intended and transferred, apply measured dry-matter mass allocation to shared orchard and harvest burdens; if not intended, model residue fate without co-product credit. | nut mass; apple mass; moisture or dry matter; declared destination | allocated burdens and co-product share | `iso-14044-2006` |
 | `calc_05` | graded lots | Accepted output equals the sum of mutually exclusive accepted grades only. Reconcile incoming batch mass plus additions and opening stock with accepted and separately sold downgraded outputs, rejects, residues, measured water/non-water losses and closing stock. Internal rework is a transfer, not another sale; investigate unexplained residual. | batch input; additions; stocks; grade and reject records | accepted output and complete batch balance | `mass-balance-identity` |
 | `calc_06` | storage | `opening stock + receipts − dispatches − closing stock = measured storage loss`; storage loss is not accepted gate output. | stock ledger; dispatches; closing stock; loss records | storage loss per storage duration | `mass-balance-identity` |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
 
 ### Data Quality Requirements
 
@@ -961,3 +964,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `cashew-drying-route` | official_guidance | FAO, Minor oil crops: Cashew nut, Harvesting and Post harvest treatment. https://www.fao.org/4/x5043e/x5043e06.htm | Supports a manual/sun-drying route without presumed powered heat; no moisture target or drying duration is adopted. |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |

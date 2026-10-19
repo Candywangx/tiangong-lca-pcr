@@ -202,7 +202,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 实际供应的灌溉水
 - 流属性/单位: Volume / m3
-- 数量规则: 按田块和期间计量或有凭据的取水量
+- 数量规则：按事件/用途和匹配期间，计量实际跨此产品供水边界的供水量并保留声明原生单位。水源取水表不能自动当交付产品量，须核对两测点间输配损失、外部回水和存水变化。前景负责直接天然取水时，另设分水源基本流输入及本地供水作业，内部交付在聚合边界抵销，不能另加一笔外购水。外购水承接兼容供应商取水及供水负担一次。雨养/无供水须有据，缺少交付量或责任证据属于不完整而非零；归属后按合格最终产出归一化一次。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
 原始活动或阶段基准：每公顷作物周期，随后归一化至参考产品.
@@ -767,6 +767,10 @@ sync_with: pcr.en-US.md
 | `multi_period_attribution` | perennial establishment and shared assets | 以有证据的生产年、服务量或寿命产出归属，记录更换与终止；同一负担不得在多个期间重复 |  |
 | `shared_asset_attribution` | assets serving multiple nodes | 列出所有消费节点和期间，按记录的机器小时、质量处理量或其他因果服务量归属一次 |  |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
@@ -781,7 +785,7 @@ sync_with: pcr.en-US.md
 | `cp_propagation` | `crop_production` | propagation material | records | supplier invoices; lot and planting logs | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg or count | each planting event | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_nutrients` | `crop_production` | fertilizer and nutrients | records | product invoices; nutrient analysis; field application log | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg product and kg nutrient | each application | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_crop_protection` | `crop_production` | crop protection | records | application log; formulation and active ingredient | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg or L | each application | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
-| `cp_irrigation` | `crop_production` | irrigation water | records | meter reading or documented withdrawal | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | m3 | each irrigation period | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
+| `cp_irrigation` | `crop_production` | irrigation water | records | meter reading or documented withdrawal ；实际供水边界及测点；产品交付量；直接取水责任方；水源至交付的损失回水及存水；供应商覆盖| direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | m3 | each irrigation period | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_energy` | `all processes` | energy carriers | records | meters; invoices; equipment and fuel logs | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | native carrier unit | monthly and by operation | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_area_period` | `crop_production` | area and period | records | georeferenced field register; establishment and productive dates | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | ha and days | each crop period | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_harvest_mass` | `harvest_extraction` | harvest mass | records | calibrated scale; lot moisture sample | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg and % wet basis | each harvest lot | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
@@ -801,6 +805,7 @@ sync_with: pcr.en-US.md
 | `transport_work` | freight | t·km = 净装载吨数 × 载货路线公里数 | dispatch mass; route distance | transport service |  |
 | `soil_n2o` | managed soil | 采用声明 IPCC 层级由氮投入计算 N2O-N，并按 44/28 转为 N2O | N inputs; emission factors | kg N2O | `ipcc-2019-refinement-v4-ch11` |
 | `lot_mass_balance` | harvest and preparation | 输入 = 合格产品 + 共产品 + 残余/废物 + 库存变化 + 经测量含水变化 | lot masses; moisture; stock | reconciliation result |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrients`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -844,3 +849,4 @@ sync_with: pcr.en-US.md
 | `fao-natural-fibres-2009` | official_guidance | FAO and Common Fund for Commodities, Proceedings of the Symposium on Natural Fibres, 2009 | natural-fibre crop routes, primary preparation and market states |
 | `ipcc-2019-refinement-v4-ch11` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils | managed-soil N2O calculation |
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines | allocation hierarchy and transparency |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

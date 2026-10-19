@@ -53,8 +53,8 @@ boundary_abstraction:
 reference_flow_definition:
   reference_amount: "1000"
   product_flow_ref:
-    name: "Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw"
-    uuid: "bd08a9d0-d397-4471-8b53-5071717b049d"
+    name: "Declared actual whole spice seed, fruit or berry/cone in its measured state"
+    uuid: ""
   flow_property_ref:
     uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
   unit_group_ref:
@@ -337,25 +337,6 @@ process_inventory:
               source_ids:
                 - ipcc-2019-managed-soils
             ranges: []
-        - row_id: land_soil_emissions_n2o
-          role: "Dinitrogen monoxide, to air"
-          name: "Dinitrogen monoxide, to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg N2O"
-          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg harvest-ready organ."
-          amount:
-            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_production
-              source_ids:
-                - ipcc-2019-managed-soils
-            ranges: []
     outputs:
       product:
         - row_id: production_outputs
@@ -413,7 +394,25 @@ process_inventory:
       waste:
         []
       elementary:
-        []
+        - row_id: land_soil_emissions_n2o
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N2O"
+          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg harvest-ready organ."
+          amount:
+            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_production
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
   - id: harvest_capture
     label: "Harvest, collection, and threshing/separation"
     inputs:
@@ -820,7 +819,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "This row represents moisture removed from the product and released to air during drying. Raw activity or stage basis: per 1,000 kg dried output. Calculation method corresponds to Section 8 rules: calc_drying_water."
           amount:
-            expression: "wet input × input moisture − dried output × output moisture; investigate negative results"
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -913,12 +912,10 @@ process_inventory:
       product:
         - row_id: accepted_reference_product
           role: "Accepted raw spice at farm gate"
-          name: "Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw"
+          name: "Declared actual whole spice seed, fruit or berry/cone in its measured state"
           flow_type: "product"
-          flow_ref:
-            uuid: "bd08a9d0-d397-4471-8b53-5071717b049d"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "This is the sole accepted reference-product hand-off at the declared farm gate. Raw output measurement and reconciliation: Net accepted mass at declared moisture, excluding downgraded and rejected material Raw activity or stage basis: per reference flow."
+          description: "This is the sole accepted reference-product hand-off at the declared farm gate. Raw output measurement and reconciliation: Net accepted mass at declared moisture, excluding downgraded and rejected material Raw activity or stage basis: per reference flow. Identity applicability: Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match."
           amount:
             expression: "1000 kg"
             value_mode: "fixed_value"
@@ -1050,7 +1047,7 @@ dataset_production:
       process_id: "stabilization_drying"
       flow_role: "Input/output, energy, time, rejects, water loss"
       record_type: "Drying batch log"
-      raw_fields: "batch; method; masses; moisture/basis; dates; energy; rejects"
+      raw_fields: "batch; method; masses; moisture/basis; dates; energy; rejects ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation"
       collection_method: "Weigh/test before and after; meter energy; Raw aggregation and attribution: Dry-matter balance and batch attribution"
       unit: "kg, %, h, MJ"
       frequency: "Each batch"
@@ -1122,6 +1119,16 @@ dataset_production:
         - "shared burden"
       output: "Burden by output"
       source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_production
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "Product states"
@@ -1165,7 +1172,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_ranges
     applies_to: "Inventory"
-    rule: "Every quantitative card has role, bounds, unit, denominator, basis kind, evidence kind, and sources when external. Outliers require explanation; reasoned ranges are screens, not limits."
+    rule: "For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening."
     source_ids: []
   - rule_id: validate_nutrients
     applies_to: "Production"
@@ -1186,7 +1193,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_star_anise
     applies_to: "Star anise claiming cited specification"
-    rule: "Verify moisture ≤10% dry basis, extraneous matter ≤1%, stalks ≤3%, broken/abnormal fruit ≤25%; do not apply to other species."
+    rule: "For Illicium verum lots explicitly claiming the cited Indian star-anise specification, verify its stated dry-basis tests and limits: moisture 10%, extraneous matter 1%, stalks 3%, and broken/abnormal fruits 25%. Record the applicable market/specification/version and matched sampling/test basis. These regional specification values do not define every star-anise grade or another species; other legitimate lots retain their actual declared specification, quality and measured mass, without automatic rejection or normalization changes."
     source_ids:
       - fssai-star-anise-2023
 published_dataset_profile:
@@ -1224,18 +1231,18 @@ data_sources:
     used_for: "Managed-soil N2O method"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:c2d2c28e6dcf5f8da6d62755d1f61b9f1b3f98929898827980583e3ebe132866"
+  source_sha256: "sha256:f4b25466de5962f47c7159aa851e741b0ab53572c3a5c0b6fbdb64a3079ecfd3"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4540"
+    - unit_id: "normative_4503"
       family: "system_boundary"
       span:
         start:
-          offset: 4540
+          offset: 4503
           line: 56
           column: 1
         end:
-          offset: 7138
+          offset: 7101
           line: 80
           column: 1
       markdown: "## 5. System Boundary\n\nThe foreground begins with seed/planting stock and prepared land, a cultivated perennial stand, or a documented managed juniper collection area. Managed production ends at the harvest-ready organ. Harvest is separate because removal and field losses have their own records. Primary conditioning converts collected material to a cleaned lot; stabilization converts a moisture-unstable usable lot to a stable state; grading creates accepted, downgraded, and rejected destinations.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Seed/planting material and prepared field; established/new perennial stand; or managed collection area with origin and management declared |\n| starting_condition_role | Foreground production start; operator-established perennial burdens are annualized, while burdens for naturally established stands are not invented |\n| product_classification_scope | One declared species, crop, and harvested organ within the category |\n| recursive_input_rule | Purchased raw spice of this category entering conditioning requires a separate upstream dataset and input row; it is not folded into the foreground harvest. |\n| upstream_dataset_requirement | Supplier or representative datasets for planting stock, every actual nutrient product, water, crop protection, energy, machinery, and purchased raw spice |\n| disclosure | Species, organ, route, stand origin/age where relevant, period, area, yield, harvest method, conditioning/drying sequence, moisture, grades, rejects, residues, and output destinations |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route_choice` | All lots | Select exactly one production delta for each lot and collect its route-specific inputs and periods. Do not substitute annual and perennial inventories. | `icar-rabi-coriander-2021`; `ncsu-common-juniper` |\n| `boundary_postharvest` | Farm-gate route | Include harvest/collection, threshing/separation, cleaning, grading, and any drying before the gate. Distinguish accepted, downgraded, rejected, and lost material. | `codex-spice-hygiene`; `fssai-star-anise-2023` |\n| `boundary_exclusions` | Downstream manufacture | Exclude grinding, blending, extraction, sterilization, and retail packing; meter on-site excluded operations in a separate dataset. | `codex-spice-hygiene` |\n| `boundary_periods` | Perennial route | Distinguish establishment, immature, productive maintenance, harvest year/cohort, replacement, and termination; link each burden once. | `ncsu-common-juniper` |\n\n"
@@ -1255,11 +1262,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4540
+              offset: 4503
               line: 56
               column: 1
             end:
-              offset: 4561
+              offset: 4524
               line: 56
               column: 22
           text: "## 5. System Boundary"
@@ -1275,16 +1282,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44606"
+    - unit_id: "normative_46073"
       family: "allocation"
       span:
         start:
-          offset: 44606
-          line: 901
+          offset: 46073
+          line: 907
           column: 1
         end:
-          offset: 45997
-          line: 911
+          offset: 47464
+          line: 917
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_first` | All multi-output nodes | Subdivide by species lot, field/stand, crop cycle or harvest year, operation, and batch; directly assign causal burdens. |  |\n| `allocation_co_outputs` | Marketed leaves, stems, straw, planting seed, wood, or downgraded spice | After subdivision, use physical dry mass when outputs have comparable biological function; otherwise use documented economic allocation with contemporaneous prices and a physical-mass sensitivity. Residues without economic function receive no upstream burden, but handling remains included. |  |\n| `allocation_periods` | Perennial stands | Annualize operator-incurred establishment/termination over recorded productive life. Assign annual maintenance and harvest burdens to their year/cohort. Do not invent establishment for naturally established collection stands. | `ncsu-common-juniper` |\n| `allocation_batches` | Conditioning, drying, grading | Assign metered batch burdens directly; allocate shared cleaning/changeover once by processed mass or run time. Rework retains previous and incremental burdens. |  |\n| `allocation_rejects` | Rework and rejects | Link each rejected state to exactly one rework, downgrade, recovery, return, or disposal path; never count it as accepted output. |  |\n\n"
       headings:
@@ -1303,12 +1310,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44606
-              line: 901
+              offset: 46073
+              line: 907
               column: 1
             end:
-              offset: 44646
-              line: 901
+              offset: 46113
+              line: 907
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1323,18 +1330,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52727"
+    - unit_id: "normative_55791"
       family: "validation"
       span:
         start:
-          offset: 52727
-          line: 949
+          offset: 55791
+          line: 956
           column: 1
         end:
-          offset: 54840
-          line: 964
+          offset: 58862
+          line: 971
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | Reference flow | Fail if species, crop, organ, route, geography, harvest year, grade, moisture/basis, or drying status is missing, or unrelated species are averaged without separate datasets and mass shares. |  |\n| `validate_route` | Graph | Require one production delta per lot and matching period/input records; annual and perennial routes coexist only as traceable lots. | `icar-rabi-coriander-2021`; `ncsu-common-juniper` |\n| `validate_nodes` | Graph | Require production, harvest, conditioning, and grading; require drying when moisture reduction occurs. Every node declares states and hand-offs. | `codex-spice-hygiene` |\n| `validate_mass` | Harvest through grading | Batch input equals accepted + downgraded + rejects + measured moisture loss ± inventory change within 5%; otherwise investigate/disclose. |  |\n| `validate_ranges` | Inventory | Every quantitative card has role, bounds, unit, denominator, basis kind, evidence kind, and sources when external. Outliers require explanation; reasoned ranges are screens, not limits. |  |\n| `validate_nutrients` | Production | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_outputs` | Multi-output nodes | Enumerate intended outputs/hand-offs, residue/waste, allocation precedence, and shares summing to 1; prevent duplicate hand-offs. |  |\n| `validate_periods` | Perennial route | Require period and replacement/termination decisions and reject duplicated establishment or maintenance burdens. | `ncsu-common-juniper` |\n| `validate_rework` | Post-harvest | Route every off-spec state exactly once; accepted output excludes unresolved rejects; rework retains prior burdens. |  |\n| `validate_star_anise` | Star anise claiming cited specification | Verify moisture ≤10% dry basis, extraneous matter ≤1%, stalks ≤3%, broken/abnormal fruit ≤25%; do not apply to other species. | `fssai-star-anise-2023` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | Reference flow | Fail if species, crop, organ, route, geography, harvest year, grade, moisture/basis, or drying status is missing, or unrelated species are averaged without separate datasets and mass shares. |  |\n| `validate_route` | Graph | Require one production delta per lot and matching period/input records; annual and perennial routes coexist only as traceable lots. | `icar-rabi-coriander-2021`; `ncsu-common-juniper` |\n| `validate_nodes` | Graph | Require production, harvest, conditioning, and grading; require drying when moisture reduction occurs. Every node declares states and hand-offs. | `codex-spice-hygiene` |\n| `validate_mass` | Harvest through grading | Batch input equals accepted + downgraded + rejects + measured moisture loss ± inventory change within 5%; otherwise investigate/disclose. |  |\n| `validate_ranges` | Inventory | For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening. |  |\n| `validate_nutrients` | Production | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_outputs` | Multi-output nodes | Enumerate intended outputs/hand-offs, residue/waste, allocation precedence, and shares summing to 1; prevent duplicate hand-offs. |  |\n| `validate_periods` | Perennial route | Require period and replacement/termination decisions and reject duplicated establishment or maintenance burdens. | `ncsu-common-juniper` |\n| `validate_rework` | Post-harvest | Route every off-spec state exactly once; accepted output excludes unresolved rejects; rework retains prior burdens. |  |\n| `validate_star_anise` | Star anise claiming cited specification | For Illicium verum lots explicitly claiming the cited Indian star-anise specification, verify its stated dry-basis tests and limits: moisture 10%, extraneous matter 1%, stalks 3%, and broken/abnormal fruits 25%. Record the applicable market/specification/version and matched sampling/test basis. These regional specification values do not define every star-anise grade or another species; other legitimate lots retain their actual declared specification, quality and measured mass, without automatic rejection or normalization changes. | `fssai-star-anise-2023` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1351,12 +1358,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52727
-              line: 949
+              offset: 55791
+              line: 956
               column: 1
             end:
-              offset: 52749
-              line: 949
+              offset: 55813
+              line: 956
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1375,311 +1382,311 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_4540"
+      unit_id: "normative_4503"
       source_span:
         start:
-          offset: 4563
+          offset: 4526
           line: 58
           column: 1
         end:
-          offset: 5041
+          offset: 5004
           line: 58
           column: 479
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_route_choice"
       identity_kind: "explicit"
-      unit_id: "normative_4540"
+      unit_id: "normative_4503"
       source_span:
         start:
-          offset: 6221
+          offset: 6184
           line: 75
           column: 1
         end:
-          offset: 6465
+          offset: 6428
           line: 75
           column: 245
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_postharvest"
       identity_kind: "explicit"
-      unit_id: "normative_4540"
+      unit_id: "normative_4503"
       source_span:
         start:
-          offset: 6466
+          offset: 6429
           line: 76
           column: 1
         end:
-          offset: 6725
+          offset: 6688
           line: 76
           column: 260
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_4540"
+      unit_id: "normative_4503"
       source_span:
         start:
-          offset: 6726
+          offset: 6689
           line: 77
           column: 1
         end:
-          offset: 6934
+          offset: 6897
           line: 77
           column: 209
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_periods"
       identity_kind: "explicit"
-      unit_id: "normative_4540"
+      unit_id: "normative_4503"
       source_span:
         start:
-          offset: 6935
+          offset: 6898
           line: 78
           column: 1
         end:
-          offset: 7136
+          offset: 7099
           line: 78
           column: 202
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_first"
       identity_kind: "explicit"
-      unit_id: "normative_44606"
+      unit_id: "normative_46073"
       source_span:
         start:
-          offset: 44719
-          line: 905
+          offset: 46186
+          line: 911
           column: 1
         end:
-          offset: 44898
-          line: 905
+          offset: 46365
+          line: 911
           column: 180
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_co_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_44606"
+      unit_id: "normative_46073"
       source_span:
         start:
-          offset: 44899
-          line: 906
+          offset: 46366
+          line: 912
           column: 1
         end:
-          offset: 45296
-          line: 906
+          offset: 46763
+          line: 912
           column: 398
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_periods"
       identity_kind: "explicit"
-      unit_id: "normative_44606"
+      unit_id: "normative_46073"
       source_span:
         start:
-          offset: 45297
-          line: 907
+          offset: 46764
+          line: 913
           column: 1
         end:
-          offset: 45592
-          line: 907
+          offset: 47059
+          line: 913
           column: 296
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_batches"
       identity_kind: "explicit"
-      unit_id: "normative_44606"
+      unit_id: "normative_46073"
       source_span:
         start:
-          offset: 45593
-          line: 908
+          offset: 47060
+          line: 914
           column: 1
         end:
-          offset: 45814
-          line: 908
+          offset: 47281
+          line: 914
           column: 222
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_44606"
+      unit_id: "normative_46073"
       source_span:
         start:
-          offset: 45815
-          line: 909
+          offset: 47282
+          line: 915
           column: 1
         end:
-          offset: 45995
-          line: 909
+          offset: 47462
+          line: 915
           column: 181
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 52822
-          line: 953
+          offset: 55886
+          line: 960
           column: 1
         end:
-          offset: 53058
-          line: 953
+          offset: 56122
+          line: 960
           column: 237
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 53059
-          line: 954
+          offset: 56123
+          line: 961
           column: 1
         end:
-          offset: 53273
-          line: 954
+          offset: 56337
+          line: 961
           column: 215
     - pointer: "/validation_rules/2"
       rule_id: "validate_nodes"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 53274
-          line: 955
+          offset: 56338
+          line: 962
           column: 1
         end:
-          offset: 53473
-          line: 955
+          offset: 56537
+          line: 962
           column: 200
     - pointer: "/validation_rules/3"
       rule_id: "validate_mass"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 53474
-          line: 956
+          offset: 56538
+          line: 963
           column: 1
         end:
-          offset: 53662
-          line: 956
+          offset: 56726
+          line: 963
           column: 189
     - pointer: "/validation_rules/4"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 53663
-          line: 957
+          offset: 56727
+          line: 964
           column: 1
         end:
-          offset: 53887
-          line: 957
-          column: 225
+          offset: 57499
+          line: 964
+          column: 773
     - pointer: "/validation_rules/5"
       rule_id: "validate_nutrients"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 53888
-          line: 958
+          offset: 57500
+          line: 965
           column: 1
         end:
-          offset: 54099
-          line: 958
+          offset: 57711
+          line: 965
           column: 212
     - pointer: "/validation_rules/6"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 54100
-          line: 959
+          offset: 57712
+          line: 966
           column: 1
         end:
-          offset: 54278
-          line: 959
+          offset: 57890
+          line: 966
           column: 179
     - pointer: "/validation_rules/7"
       rule_id: "validate_periods"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 54279
-          line: 960
+          offset: 57891
+          line: 967
           column: 1
         end:
-          offset: 54458
-          line: 960
+          offset: 58070
+          line: 967
           column: 180
     - pointer: "/validation_rules/8"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 54459
-          line: 961
+          offset: 58071
+          line: 968
           column: 1
         end:
-          offset: 54616
-          line: 961
+          offset: 58228
+          line: 968
           column: 158
     - pointer: "/validation_rules/9"
       rule_id: "validate_star_anise"
       identity_kind: "explicit"
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 54617
-          line: 962
+          offset: 58229
+          line: 969
           column: 1
         end:
-          offset: 54838
-          line: 962
-          column: 222
+          offset: 58860
+          line: 969
+          column: 632
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4540"
+      unit_id: "normative_4503"
       source_span:
         start:
-          offset: 4540
+          offset: 4503
           line: 56
           column: 1
         end:
-          offset: 4561
+          offset: 4524
           line: 56
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4540"
+      unit_id: "normative_4503"
       source_span:
         start:
-          offset: 5069
+          offset: 5032
           line: 62
           column: 1
         end:
-          offset: 6128
+          offset: 6091
           line: 69
           column: 201
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44606"
+      unit_id: "normative_46073"
       source_span:
         start:
-          offset: 44606
-          line: 901
+          offset: 46073
+          line: 907
           column: 1
         end:
-          offset: 44646
-          line: 901
+          offset: 46113
+          line: 907
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52727"
+      unit_id: "normative_55791"
       source_span:
         start:
-          offset: 52727
-          line: 949
+          offset: 55791
+          line: 956
           column: 1
         end:
-          offset: 52749
-          line: 949
+          offset: 55813
+          line: 956
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1688,5 +1695,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:c2d2c28e6dcf5f8da6d62755d1f61b9f1b3f98929898827980583e3ebe132866"
-  generated_content_sha256: "sha256:f178d02913d0676fc4545299942a905de34f5aacc7bc44d0fe324809fbce68e3"
+    sha256: "sha256:f4b25466de5962f47c7159aa851e741b0ab53572c3a5c0b6fbdb64a3079ecfd3"
+  generated_content_sha256: "sha256:a3f30f97bb345552c6e474a3107217e4ef7999ebb19da6423eb5ed83b604bee8"

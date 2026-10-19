@@ -257,7 +257,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_field_energy_records`采集`other_cereal_crop_production`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -344,7 +344,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_harvest_energy_records`采集`other_cereal_harvest_delivery`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -508,30 +508,6 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 筛下物、粉尘和调制拒收物（`conditioning_rejects`）
-
-记录每个移出流及去向；除非有明确返工决定，否则不得将拒收物分配给合格籽粒。
-
-- 选定流：谷物筛下物、粉尘或拒收籽粒
-- 流属性/单位：Mass / kg
-- 数量规则：在共同水分基准上称量流质量或计算质量差额
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 调制后合格籽粒.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_conditioning_reject_records`
-- 数量范围：暂定调制拒收筛选估计
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.20
-  - 单位：kg 拒收物 / kg 调制投入
-  - 基准：等待批次记录前的宽泛筛下物和拒收比例
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 基本流
 
 干燥、粉尘和燃烧排放报告至前景过程数据集所选接收环境介质。
@@ -634,7 +610,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：储存损失或腐败的谷物籽粒
 - 流属性/单位：Mass / kg
-- 数量规则：在共同水分基准上用期初质量 + 投入 - 合格产出 - 有记录转移量计算
+- 数量规则：按批次和去向计量实际受损、拒收或损失物流，各材料数量互斥。按匹配水分/组分基准核对：期初库存+接收=合格发运+其他外部转出+拒收移出+独立有据物理损失+期末库存。跨本节点返回的返工量只作为一对转移，仍留存时纳入期末库存，不是额外最终产出。未解释平衡差属于调查项，不能自动作为实体废物或排放。不将移出批次加到接收、不漏期末库存，也不重复扣除已属于本报告物流的损失。每一有据转出量归属后按合格最终产出归一化一次。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每 1,000 kg 声明交付门的合格籽粒.
@@ -667,7 +643,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -693,7 +669,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -724,6 +700,10 @@ sync_with: pcr.en-US.md
 | `allocation_substitution` | 残余物或副产品利用 | 只有在声明被替代产品、市场、路线和证据时才应用替代法；不得从通用残余物名称推断替代信用。 | `iso-14044-2006` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -758,10 +738,11 @@ sync_with: pcr.en-US.md
 | `cp_conditioning_energy_records` | `other_cereal_primary_conditioning` | electricity and heat | facility energy record | line; carrier; quantity; batch; period; input/output mass | meter, bill, equipment log, or fuel record；原始汇总与分配：allocate to batch and normalize to accepted output `conditioning_heat_input_specific_input`: 当选择干燥时记录干燥机热载体和数量；在前景记录中区分燃料和供应热量。 计量热量或燃料，并换算为供应工艺热 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。  | kWh, MJ, L, or kg | batch or campaign | conditioning campaign | facility and line | 每声明的参考流 | meter, bill, equipment log |
 | `cp_conditioning_reject_records` | `other_cereal_primary_conditioning` | screenings, dust, and rejects | reject/fate record | batch; stream; mass; moisture; quality; fate | calibrated scale, reject log, dust record, or transfer record；原始汇总与分配：reconcile input, accepted output, rejects, dust, and loss | kg and percent | batch or campaign | conditioning campaign | facility and line | 每声明的参考流 | scale, reject log, fate record |
 | `cp_conditioned_output_records` | `other_cereal_primary_conditioning` | accepted conditioned grain | output and quality record | batch; mass; moisture; grade; cleaning status; gate | calibrated scale and quality test；原始汇总与分配：sum accepted batches at declared basis | kg and percent | per batch | conditioning campaign | facility and gate | 每声明的参考流 | scale, quality test, dispatch record |
-| `cp_storage_inventory_records` | `other_cereal_storage_gate` | storage input and loss | inventory reconciliation | lot; opening; closing; moisture; duration; losses; transfers; fate | inventory record, scale, storage log, or dispatch record；原始汇总与分配：reconcile each lot on a common moisture basis | kg, percent, days | lot or period | declared storage duration | storage site | 每声明的参考流 | inventory record, scale, log |
+| `cp_storage_inventory_records` | `other_cereal_storage_gate` | storage input and loss | inventory reconciliation | lot; opening; closing; moisture; duration; losses; transfers; fate ；期初期末库存；接收；发运；其他外部转出；实测拒收；独立有据损失；配对返工；水分/组分基准；未解释平衡差| 计量各实际物流并按匹配水分/组分基准核对：期初库存+接收=合格发运+其他外部转出+拒收移出+独立有据物理损失+期末库存。返工/返回配对，留存材料纳入库存。未解释差额为证据缺口，不能自动成为废物或排放。保留归属并按匹配最终合格产出归一化一次。 | kg, percent, days | lot or period | declared storage duration | storage site | 每声明的参考流 | inventory record, scale, log |
 | `cp_storage_energy_records` | `other_cereal_storage_gate` | storage electricity | meter or utility record | lot; carrier; quantity; date; duration; allocation basis | meter, bill, or equipment log；原始汇总与分配：allocate by lot mass and duration unless dedicated meter exists | kWh or MJ | lot or period | storage duration | storage site | 每声明的参考流 | meter, bill, log |
 | `cp_declared_gate_output_records` | `other_cereal_storage_gate` | final accepted grain | gate or dispatch record | lot; gate; date; mass; moisture; grade; packaging state | scale, weighbridge, quality record, and dispatch ticket；原始汇总与分配：sum accepted lots and preserve gate identity | kg and percent | shipment or gate event | declared gate period | declared gate | 每声明的参考流 | scale, quality, dispatch record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | other_cereal_crop_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -775,6 +756,13 @@ sync_with: pcr.en-US.md
 | `reconcile_harvest_outputs` | 田间和收获 | 在共同水分基准上，合格籽粒 + 移出残余物 + 返田残余物 + 实测损失 = 收获产出；解释差额 | `cp_harvest_output_records`; `cp_residue_and_loss_records` | 收获质量平衡 | `mass-balance-identity` |
 | `reconcile_conditioning_outputs` | 初级调制 | 在共同水分基准上，合格籽粒 + 筛下物 + 粉尘 + 拒收物 + 实测损失 = 调制投入；解释差额 | `cp_conditioning_input_records`; `cp_conditioning_reject_records`; `cp_conditioned_output_records` | 调制产出率和损失 | `mass-balance-identity` |
 | `allocate_storage_energy` | 储存 | 除非专用计量支持直接分配，否则根据批次质量和声明时长分配储存能源 | `cp_storage_energy_records`; `cp_storage_inventory_records` | 每参考产出的储存能源 | `iso-14044-2006` |
+| `conditioning_rejects_identity_and_fate` | `other_cereal_primary_conditioning` | 原作业产生相关物料时，conditioning_rejects 的采集职责必须履行。每种物理上独立的物流须分别记录实际材料、组成、状态、实测质量与去向。粉尘、糠壳、籽粒、包装及产品拒收物不能仅因在同一作业产生而共用交换；真实混合物流仅在组成和处理边界有据时可单列一张卡。降级农产品须区分具有接收者和用途证据的预期可销售联产品与实际送处理的废物；等级较低本身不决定废物属性或分配。场内返工／回用和留田生物量保留在对账的内部台账，不作为外运废物。完整性通过前须按实际属性建立具体产品或废物卡，使用相容的已核验 UUID 或明确未解析身份；保留可归属负荷，不作无据替代抵扣，各物流不得双计。实测量仅按原有合格参考产出归一化一次。身份、数量或去向缺失时不得宣称完整，不推定聚合默认量或数值界限。 | `cp_conditioning_reject_records` | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
 
 ### 数据质量要求
 
@@ -829,3 +817,5 @@ sync_with: pcr.en-US.md
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

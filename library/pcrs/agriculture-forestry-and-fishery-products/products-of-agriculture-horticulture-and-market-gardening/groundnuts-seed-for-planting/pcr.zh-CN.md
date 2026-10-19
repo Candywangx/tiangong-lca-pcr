@@ -267,8 +267,6 @@ translation_status: aligned
 - 采集协议：`cp_field_energy_records`
 - 来源：`ipcc-2019-cropland`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 灌溉抽水电力（`irrigation_pumping_electricity`）
 记录在田间边界使用的购入电力，包括灌溉抽水和电驱动田间设备。
 - 选定流：灌溉抽水购入电力
@@ -391,34 +389,12 @@ translation_status: aligned
   - 证据类型：推理估计（`reasoned_estimate`）
 
 ##### 基本流
-###### 田间管理土壤氮排放至水体（`managed_soil_nitrogen_emissions_to_water`）
-当所选方法和数据范围要求时，记录进入声明水体环境的硝酸盐或其他氮物种。
-- 选定流：管理土壤排放至水体的氮物种
-- 流属性/单位：Mass / kg species and kg N
-- 数量规则：根据养分投入、场址条件和选定淋失方法计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 合格种子输出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：N 投入（`n_input`）
-- 证据类型：基于采集记录计算（`calculated_from_collection`）
-- 采集协议：`cp_nutrient_input_records`
-- 来源：`ipcc-2019-managed-soils-n2o`
-- 数量范围：QA 校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：声明的流单位
-  - 基准：声明的过程或参考流基准
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
 ###### 田间能源产生的化石二氧化碳（`fossil_carbon_dioxide_from_field_energy`）
-根据记录的田间能源载体和声明因子计算化石燃烧排放。
+仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。
+
 - 选定流：田间能源排放至空气的化石二氧化碳
 - 流属性/单位：Mass / kg
-- 数量规则：燃料或能源数量乘以声明的排放因子
+- 数量规则： 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每 1 kg 合格种子输出.
@@ -427,7 +403,7 @@ translation_status: aligned
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_field_energy_records`
-- 来源：`ipcc-2019-cropland`
+- 来源：`ipcc-2019-cropland`; `ipcc-2006-energy-combustion-boundary`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -589,29 +565,6 @@ translation_status: aligned
   - 证据类型：推理估计（`reasoned_estimate`）
 
 ##### 废物流
-###### 调理不合格物和筛下物（`conditioning_rejects_and_screenings`）
-按质量和去向记录不合格种子、筛下物、破碎籽粒、粉尘和等外物。
-- 选定流：按声明去向记录不合格种子、筛下物、粉尘或等外物
-- 流属性/单位：Mass / kg
-- 数量规则：按批次和去向称重或通过批次质量平衡得到
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 合格种子.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_reject_mass_records`
-- 来源：`usda-seed-cleaning-handling`; `mass-balance-identity`
-- 数量范围：QA 校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：声明的流单位
-  - 基准：声明的过程或参考流基准
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
 ##### 基本流
 ### 过程：种子储存（`seed_storage`）
 #### 输入
@@ -728,7 +681,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -754,7 +707,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -787,6 +740,10 @@ translation_status: aligned
 每个拒收或等外种子状态都必须明确路由为返工、降级、回收或丢弃。返工环路或边界退出要连接到产生该状态的调理过程；在新的有文件质量放行事件前，拒收物不得计入合格输出。
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -817,7 +774,7 @@ translation_status: aligned
 | `cp_source_seed_lot_records` | `field_groundnut_seed_multiplication` | 来源种子或亲本系种批 | 种批记录 | 种批；等级；品种或来源种批角色；处理；质量；含水率；供应方或来源田块 | 种批证书、接收记录和校准秤；原始汇总与分配：按田块或亲本系单元汇总并按收获种子作物归一化 | kg 和声明属性 | 每批 | 作物周期 | 田块或生产单元 | 每声明的参考流 | 种批证书、接收记录、称重记录 |
 | `cp_nutrient_input_records` | `field_groundnut_seed_multiplication` | 养分和改良剂投入; 必须完成的具体排放识别与计算 | 施用记录 | 产品；配方；养分含量；质量；日期；田块；方法; 物质名称；接收环境；报告单位及元素或化合物基准；方法和因子来源；实际活动量；期间；数量不确定性；相关既有交换 | 发票、标签、施用记录或服务记录；原始汇总与分配：按田块汇总产品和养分质量; managed_soil_nitrogen_emissions_to_air_specific_emission: 识别实际花生种子田管理土壤向空气排放的每个适用气态氮物种，保留养分投入记录、方法层级、直接或间接路径及土壤和气候适用性。保留原合格种子分母与氮投入计算基准。原来以未指定流单位表示的 0 至 1000 筛选值不构成有效物种数量或默认量。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | kg 产品和 kg 养分; kg 具体物质与 kg N 分开记录 | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 发票、标签、施用记录 |
 | `cp_irrigation_records` | `field_groundnut_seed_multiplication` | 灌溉和取水 | 水表或水源记录 | 水源；水表；读数；体积；日期；田块；抽水能源 | 校准水表、抽水记录或水记录；原始汇总与分配：按水源汇总并区分供应水和取水 | m3、kg 和 kWh | 事件或月份 | 作物周期 | 田块和水源 | 每声明的参考流 | 水表校准、读数、水源记录 |
-| `cp_field_energy_records` | `field_groundnut_seed_multiplication` | 田间燃料和电力 | 燃料或电力记录 | 作业；载体；数量；机械或供应方；日期；田块 | 燃料台账、电表、发票或承包商记录；原始汇总与分配：分配到作业且不重复计算 | L、kg、MJ 或 kWh | 作业或账期 | 作物周期 | 田块或生产单元 | 每声明的参考流 | 电表、发票、台账 |
+| `cp_field_energy_records` | `field_groundnut_seed_multiplication` | 田间燃料和电力 | 燃料或电力记录 | 作业；载体；数量；机械或供应方；日期；田块 ；实际本地燃烧燃料、数量和单位、密度和低位热值、化石/生物源比例、仅燃烧因子及单位、供应或服务边界、已有燃烧覆盖 | 燃料台账、电表、发票或承包商记录；原始汇总与分配：分配到作业且不重复计算 ；执行能源排放计算规则的仅燃烧边界；外购电和含排放服务保留为独立上游负担。 | L、kg、MJ 或 kWh | 作业或账期 | 作物周期 | 田块或生产单元 | 每声明的参考流 | 电表、发票、台账 |
 | `cp_crop_protection_records` | `field_groundnut_seed_multiplication` | 植保产品 | 施用记录 | 产品；有效成分；剂量；面积；日期；田块；对象 | 标签和施用记录；原始汇总与分配：按产品和有效成分汇总 `crop_protection_products_specific_input`: 作业 field_groundnut_seed_multiplication：记录用于杂草、虫害或病害的具体制剂产品和有效成分。产品身份和有效成分含量分开。 - 选定流：具体植保产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录实际施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-seed-production` - 数量范围：QA 校验 - 范围角色：QA 校验（`qa_guardrail`） - 下限：0 - 上限：1000 - 单位：声明的流单位 - 基准：声明的过程或参考流基准 - 基准类型：过程输出（`process_output`） - 证据类型：推理估计（`reasoned_estimate`） 原数量方法：按产品和有效成分记录实际施用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg 产品、kg 有效成分和 ha | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 标签、施用记录 |
 | `cp_land_use_records` | `field_groundnut_seed_multiplication` | 土地占用 | 田块面积记录 | 田块；种植面积；日期；作物周期 | 田块记录、GIS 或农场登记；原始汇总与分配：计算面积—时间并按合格输出归一化 | ha 和作物周期 | 每个周期 | 作物周期 | 田块 | 每声明的参考流 | 田块图、GIS、农场记录 |
 | `cp_harvested_seed_mass` | `field_groundnut_seed_multiplication` | 收获种子作物 | 收获记录 | 田块；日期；质量；含水率；种子路线；不合格物 | 校准秤和收获记录；原始汇总与分配：在调理前平衡收获质量 | kg 和含水率分数 | 每次收获 | 作物周期 | 田块和接收点 | 每声明的参考流 | 秤校准、收获记录 |
@@ -844,12 +801,13 @@ translation_status: aligned
 | `calculate_land_occupation` | 土地占用 | 种植面积乘以声明作物周期占用，并按合格种子归一化 | 土地记录；合格种子质量 | 每参考流的面积—时间 | `ipcc-2019-cropland` |
 | `calculate_water_withdrawal` | 取水 | 必要时将计量体积换算为质量，并保持水源取水与供应灌溉水分开 | 灌溉记录 | 每参考流的资源取水 | `ipcc-2019-cropland` |
 | `calculate_managed_soil_emissions` | 田间氮排放 | 对养分投入和声明土壤、气候及管理条件应用选定 IPCC 方法层级，并披露物种换算 | 养分记录；方法因子 | 物种特定排放 | `ipcc-2019-managed-soils-n2o` |
-| `calculate_field_energy_emissions` | 田间能源 | 记录燃料或能源乘以声明因子，并按合格种子归一化 | 田间能源；因子 | 田间能源排放 | `ipcc-2019-cropland` |
-| `calculate_conditioning_energy_emissions` | 调理能源 | 记录调理燃料或能源乘以声明因子，并按合格种子归一化 | 调理能源；因子 | 调理排放 | `fao-seed-conditioning` |
+| `calculate_field_energy_emissions` | 田间能源 | 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。 | 田间能源；因子 | 田间能源排放 | `ipcc-2006-energy-combustion-boundary` |
+| `calculate_conditioning_energy_emissions` | 调理能源 | 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。 | 调理能源；因子 | 调理排放 | `ipcc-2006-energy-combustion-boundary` |
 | `reconcile_field_outputs` | 田间生产 | 收获种子作物、田间残余物、非种子材料和有文件的损失在声明容差内与收获记录平衡 | 收获；残余物记录 | 田间输出平衡 | `mass-balance-identity` |
 | `reconcile_conditioning_outputs` | 调理 | 接收质量和含水率与合格种子、不合格物、包装废物、排放和有文件的损失平衡 | 调理接收；合格种子；不合格物 | 调理平衡 | `mass-balance-identity`; `fao-seed-conditioning` |
 | `reconcile_storage_outputs` | 储存 | 储存质量与交付合格种子、储存损失和声明期末库存平衡 | 储存；交付；损失记录 | 储存平衡 | `mass-balance-identity` |
 | `managed_soil_nitrogen_emissions_to_air_specific_emission` | `field_groundnut_seed_multiplication` | 识别实际花生种子田管理土壤向空气排放的每个适用气态氮物种，保留养分投入记录、方法层级、直接或间接路径及土壤和气候适用性。保留原合格种子分母与氮投入计算基准。原来以未指定流单位表示的 0 至 1000 筛选值不构成有效物种数量或默认量。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_nutrient_input_records` | 逐物质和介质的排放交换及独立元素台账 | `ipcc-2019-managed-soils-n2o` |
+| `conditioning_rejects_and_screenings_identity_and_fate` | `seed_conditioning_treatment_and_packaging` | 原作业产生相关物料时，conditioning_rejects_and_screenings 的采集职责必须履行。每种物理上独立的物流须分别记录实际材料、组成、状态、实测质量与去向。粉尘、糠壳、籽粒、包装及产品拒收物不能仅因在同一作业产生而共用交换；真实混合物流仅在组成和处理边界有据时可单列一张卡。降级农产品须区分具有接收者和用途证据的预期可销售联产品与实际送处理的废物；等级较低本身不决定废物属性或分配。场内返工／回用和留田生物量保留在对账的内部台账，不作为外运废物。完整性通过前须按实际属性建立具体产品或废物卡，使用相容的已核验 UUID 或明确未解析身份；保留可归属负荷，不作无据替代抵扣，各物流不得双计。实测量仅按原有合格参考产出归一化一次。身份、数量或去向缺失时不得宣称完整，不推定聚合默认量或数值界限。 | `cp_reject_mass_records` | 按身份区分的交换和对账活动记录 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
 
 ### 数据质量要求
 | requirement_id | Applies to | Requirement | Evidence |
@@ -862,6 +820,12 @@ translation_status: aligned
 | `dq_reject_and_fate` | 不合格物、残余物和废物 | 每条非参考物流都有实测或平衡质量和声明去向；不得仅依据名称推断产品状态。 | 不合格物日志、残余物记录、发运或处理记录 |
 | `dq_mass_balance` | 所有过程 | 在声明容差内平衡田间、调理和储存输出，并披露未解释比例。 | 称重记录、批次单、库存平衡 |
 | `dq_binding_coordinate` | 每个清单交换 | 核对实际物质或产品身份、状态、方向、流类型、属性、单位和适用边界；仅保留已核实匹配的 UUID，其余身份明确留空并逐行登记。 | 身份核验记录 |
+### 物质特定释放要求
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `managed_soil_nitrogen_emissions_to_water_specific_emission` | field_groundnut_seed_multiplication | 针对实际 field_groundnut_seed_multiplication 活动，保留原 cp_nutrient_input_records 采集职责和活动/状态/期间基准。按实际测量或兼容路径方法逐一核算该职责涉及的释放，保留活动与因子单位。这是强制身份识别及核算要求，不是一个集合基本交换。逐一列出实际排放物质及接收环境，分别建具体卡或复用现有匹配卡一次，采用已核实UUID或明确未决身份。泛称污染物/挥发物/残体、总质量损失或合计筛查区间不能证明化合物或单项排放量。保留元素、分子或报告口径，原始数量归属后按合格参考产出归一化一次。不适用须有据；身份、方法或活动缺失会阻止完整性。已含于完整服务或上游数据的同一释放不得重复。 | cp_nutrient_input_records | 独立有据物质/接收环境交换 | `ipcc-2019-managed-soils-n2o` |
+
 ## 9. 校验规则
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
@@ -875,6 +839,9 @@ translation_status: aligned
 | `validation_reject_fate` | 不合格物和废物 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
 | `validation_mass_balance` | 所有输出 | 确认田间、调理和储存平衡在声明容差内成立，并且合格种子没有在两个交接点重复计数。 | `mass-balance-identity` |
 | `validation_allocation` | 有意形成的共产品 | 确认任何有意共产品均单独识别、去向有证据、分配或替代处理已披露。 | `iso-14044-2006` |
+| `validation_local_combustion_boundary` | 能源和化石 CO2 | 核对每项本地 CO2 与边界内实际燃料燃烧及兼容的仅燃烧因子一致；核对上游电、热、燃料供应及含排放服务覆盖，同一释放仅计一次。 | `ipcc-2006-energy-combustion-boundary` |
+
+
 ## 10. 发布数据集画像
 | Field | Value |
 | --- | --- |
@@ -905,3 +872,5 @@ translation_status: aligned
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ipcc-2006-energy-combustion-boundary` | method_factor | IPCC 2006 Guidelines, Volume 2 Energy, Chapters 2 and 3 (stationary and mobile combustion), https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html | 燃烧活动量、兼容的逐燃料因子及化石/生物源区分；不采用通用场址因子。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

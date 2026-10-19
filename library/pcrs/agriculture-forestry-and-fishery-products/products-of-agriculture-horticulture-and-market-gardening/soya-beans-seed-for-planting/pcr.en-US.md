@@ -265,8 +265,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_field_energy_records`
 - Sources: `ipcc-2019-cropland`; `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Irrigation pumping electricity (`irrigation_pumping_electricity`)
 Record purchased electricity used for irrigation pumping or electrically driven field equipment at the field boundary.
 - Selected flow: purchased electricity for irrigation pumping
@@ -384,33 +382,12 @@ Raw activity or stage basis: per 1,000 kg harvested seed crop.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 ##### Elementary flows
-###### Managed-soil nitrogen emissions to water (`managed_soil_nitrogen_emissions_to_water`)
-Record nitrate or other nitrogen species reaching the declared water compartment when required by the selected method and scope.
-- Selected flow: nitrogen species emitted to water from managed soil
-- Flow property / unit: Mass / kg species and kg N
-- Amount rule: calculated from nutrient inputs, site conditions, and the selected leaching method
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted seed output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: N input (`n_input`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_nutrient_input_records`
-- Sources: `ipcc-2019-managed-soils-n2o`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 ###### Fossil carbon dioxide from field energy (`fossil_carbon_dioxide_from_field_energy`)
-Calculate fossil combustion emissions from recorded field energy and a declared factor.
+Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero.
+
 - Selected flow: fossil carbon dioxide emitted to air from field energy
 - Flow property / unit: Mass / kg
-- Amount rule: recorded fuel or energy quantity multiplied by the declared emission factor
+- Amount rule: Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per 1 kg accepted seed output.
@@ -419,7 +396,7 @@ Raw activity or stage basis: per 1 kg accepted seed output.
 - Basis kind: Fuel inventory (`fuel_inventory`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_field_energy_records`
-- Sources: `ipcc-2019-cropland`
+- Sources: `ipcc-2019-cropland`; `ipcc-2006-energy-combustion-boundary`
 - Range: Candidate QA guardrail
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -576,28 +553,6 @@ Raw activity or stage basis: per 1 kg accepted seed.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 ##### Waste flows
-###### Conditioning rejects and screenings (`conditioning_rejects_and_screenings`)
-Record rejected seed, screenings, broken kernels, dust, and off-grade material by mass and fate.
-- Selected flow: rejected seed, screenings, dust, or off-grade material by declared fate
-- Flow property / unit: Mass / kg
-- Amount rule: weighed or reconciled reject stream by batch and destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_reject_mass_records`
-- Sources: `usda-seed-cleaning-handling`; `mass-balance-identity`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 ##### Elementary flows
 ### Process: Seed Storage (`seed_storage`)
 #### Inputs
@@ -770,6 +725,10 @@ Record actual emissions at the operation where they occur; do not duplicate them
 Every rejected or off-spec seed state is explicitly routed as reworked, downgraded, recovered, or discarded. A rework loop or boundary exit is linked to the producing conditioning node, and rejected material is excluded from accepted output until a new documented quality-release event occurs.
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 ### Specific input identification before dataset completion
@@ -800,7 +759,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_source_seed_lot_records` | `field_soya_bean_seed_multiplication` | source seed or source seed lot | seed lot record | lot; class; cultivar or source-lot role; treatment; mass; moisture; supplier or source field | lot certificate, receiving record, calibrated scale; Raw aggregation and attribution: sum by field or source-lot unit and normalize to harvested seed crop | kg and declared attributes | per lot | crop cycle | field or production unit | per declared reference flow | certificate, receiving record, scale |
 | `cp_nutrient_input_records` | `field_soya_bean_seed_multiplication` | nutrient and amendment inputs; required specific-emission identification and calculation | application record | product; formulation; nutrient content; mass; date; field; method; substance name; receiving compartment; reported unit and elemental/compound basis; method and factor source; actual activity; period; quantity uncertainty; related existing exchanges | invoice, label, application log, service record; Raw aggregation and attribution: sum product and nutrient mass by field; managed_soil_nitrogen_emissions_to_air_specific_emission: Identify each applicable gaseous nitrogen species emitted from managed soil in the actual soya-bean seed field. Preserve nutrient-input records, method tier, direct/indirect pathways and soil/climate applicability. Retain the original accepted-seed denominator and nitrogen-input calculation basis. The former 0 to 1000 screen in an unspecified flow unit does not define a valid species amount or default. This is a mandatory identification and calculation requirement, not an exchange. Before dataset completeness, instantiate one concrete elementary card per actual substance and receiving compartment. Retain kg substance separately from kg elemental N; convert only from the method-reported basis using the documented composition or stoichiometric fraction of the identified species. Never equate all nitrogen with a chosen compound or add elemental-N and compound masses as separate releases. Preserve source activity, factor units, period, uncertainty, boundary and original normalization; link to an existing matching card instead of counting a duplicate. Verify a compatible UUID or explicitly register the concrete unresolved identity. Missing identity, method or activity evidence does not establish zero or justify omission. | kg product and kg nutrient; kg of each identified substance and kg N recorded separately | per application | crop cycle | field | per declared reference flow | invoice, label, application record |
 | `cp_irrigation_records` | `field_soya_bean_seed_multiplication` | irrigation and withdrawal | meter or source record | source; meter; reading; volume; date; field; pumping energy | calibrated meter, pump log, water record; Raw aggregation and attribution: sum by source and distinguish delivered water from withdrawal | m3, kg, kWh | event or month | crop cycle | field and source | per declared reference flow | calibration, readings, source record |
-| `cp_field_energy_records` | `field_soya_bean_seed_multiplication` | field fuel and electricity | fuel or utility record | operation; carrier; quantity; machine or supplier; date; field | fuel log, meter, invoice, contractor record; Raw aggregation and attribution: attribute energy without double counting | L, kg, MJ, kWh | operation or billing interval | crop cycle | field or unit | per declared reference flow | meter, invoice, log |
+| `cp_field_energy_records` | `field_soya_bean_seed_multiplication` | field fuel and electricity | fuel or utility record | operation; carrier; quantity; machine or supplier; date; field ; actual locally burned fuel, fuel quantity/unit, density and net calorific value, fossil/biogenic fraction, combustion-only factor and unit, supplier/service boundary, existing combustion coverage | fuel log, meter, invoice, contractor record; Raw aggregation and attribution: attribute energy without double counting ; Apply the combustion-only boundary in the energy-emission calculation rule; purchased power or inclusive services remain separate upstream burdens. | L, kg, MJ, kWh | operation or billing interval | crop cycle | field or unit | per declared reference flow | meter, invoice, log |
 | `cp_crop_protection_records` | `field_soya_bean_seed_multiplication` | crop protection | application record | product; active substance; dose; area; date; field; target | label and application log; Raw aggregation and attribution: sum by product and active substance `crop_protection_products_specific_input`: Operation field_soya_bean_seed_multiplication: Record named formulated products and active substances used for weeds, pests, or diseases. Product identity and active-substance content remain distinct. Original quantity method: measured application by product and active substance Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg product, kg active substance, ha | per application | crop cycle | field | per declared reference flow | label, applicator record |
 | `cp_land_use_records` | `field_soya_bean_seed_multiplication` | land occupation | field area record | field; planted area; dates; crop duration | field record, GIS, farm register; Raw aggregation and attribution: calculate area-time and normalize | ha and crop cycle | per cycle | crop cycle | field | per declared reference flow | field map, GIS, farm record |
 | `cp_harvested_seed_mass` | `field_soya_bean_seed_multiplication` | harvested seed crop | harvest record | field; date; mass; moisture; seed route; rejects | calibrated scale and harvest record; Raw aggregation and attribution: reconcile before conditioning | kg and moisture fraction | per harvest | crop cycle | field and receiving point | per declared reference flow | scale, harvest record |
@@ -827,12 +786,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calculate_land_occupation` | land occupation | planted area multiplied by declared crop-cycle occupation and normalized to accepted seed | land records; accepted seed mass | area-time per reference flow | `ipcc-2019-cropland` |
 | `calculate_water_withdrawal` | water withdrawal | convert metered volume where needed and keep source withdrawal separate from delivered irrigation | irrigation records | resource withdrawal per reference flow | `ipcc-2019-cropland` |
 | `calculate_managed_soil_emissions` | nitrogen emissions | apply the selected method tier to nutrient inputs and declared soil, climate, and management context; disclose species conversion | nutrient records; method factors | species-specific emissions | `ipcc-2019-managed-soils-n2o` |
-| `calculate_field_energy_emissions` | field energy | multiply recorded fuel or energy by the declared factor and normalize to accepted seed | field energy; factor | field-energy emissions | `ipcc-2019-cropland` |
-| `calculate_conditioning_energy_emissions` | conditioning energy | multiply recorded conditioning fuel or energy by the declared factor and normalize | conditioning energy; factor | conditioning emissions | `fao-soya-drying-handling` |
+| `calculate_field_energy_emissions` | field energy | Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero. | field energy; factor | field-energy emissions | `ipcc-2006-energy-combustion-boundary` |
+| `calculate_conditioning_energy_emissions` | conditioning energy | Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero. | conditioning energy; factor | conditioning emissions | `ipcc-2006-energy-combustion-boundary` |
 | `reconcile_field_outputs` | field production | harvested seed crop plus residue, non-seed material, and documented loss reconcile to the harvest record within declared tolerance | harvest; residue records | field output balance | `mass-balance-identity` |
 | `reconcile_conditioning_outputs` | conditioning | received mass and moisture reconcile to accepted seed, rejects, packaging waste, emissions, and documented loss | conditioning input; accepted seed; rejects | conditioning balance | `mass-balance-identity`; `fao-soya-drying-handling` |
 | `reconcile_storage_outputs` | storage | stored mass reconciles to delivered seed, storage loss, and closing inventory for the declared period | storage; delivery; loss records | storage balance | `mass-balance-identity` |
 | `managed_soil_nitrogen_emissions_to_air_specific_emission` | `field_soya_bean_seed_multiplication` | Identify each applicable gaseous nitrogen species emitted from managed soil in the actual soya-bean seed field. Preserve nutrient-input records, method tier, direct/indirect pathways and soil/climate applicability. Retain the original accepted-seed denominator and nitrogen-input calculation basis. The former 0 to 1000 screen in an unspecified flow unit does not define a valid species amount or default. This is a mandatory identification and calculation requirement, not an exchange. Before dataset completeness, instantiate one concrete elementary card per actual substance and receiving compartment. Retain kg substance separately from kg elemental N; convert only from the method-reported basis using the documented composition or stoichiometric fraction of the identified species. Never equate all nitrogen with a chosen compound or add elemental-N and compound masses as separate releases. Preserve source activity, factor units, period, uncertainty, boundary and original normalization; link to an existing matching card instead of counting a duplicate. Verify a compatible UUID or explicitly register the concrete unresolved identity. Missing identity, method or activity evidence does not establish zero or justify omission. | `cp_nutrient_input_records` | separate substance/compartment emissions and elemental ledgers | `ipcc-2019-managed-soils-n2o` |
+| `conditioning_rejects_and_screenings_identity_and_fate` | `seed_conditioning_treatment_and_packaging` | The conditioning_rejects_and_screenings collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred. | `cp_reject_mass_records` | Identity-specific exchanges and reconciled activity records | `usda-seed-cleaning-handling`; `mass-balance-identity` |
 
 ### Data Quality Requirements
 | requirement_id | Applies to | Requirement | Evidence |
@@ -845,6 +805,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `dq_reject_and_fate` | rejects, residues, waste | Every non-reference stream has measured or reconciled mass and declared destination; product status is not inferred from a name. | reject log, residue, dispatch or treatment record |
 | `dq_mass_balance` | all processes | Reconcile field, conditioning, and storage outputs within declared tolerance and disclose unexplained fractions. | scale records, batch sheets, inventory reconciliation |
 | `dq_binding_coordinate` | each inventory exchange | Check actual substance or product identity, state, direction, flow type, property, unit and applicable boundary; retain only a verified matching UUID, otherwise leave it absent and register the row. | identity verification records |
+### Substance-specific Release Requirement
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `managed_soil_nitrogen_emissions_to_water_specific_emission` | field_soya_bean_seed_multiplication | For the actual field_soya_bean_seed_multiplication activity, preserve the original cp_nutrient_input_records collection role and activity/state/period basis. calculated from nutrient inputs, site conditions, and the selected leaching method. This is a mandatory identification and calculation requirement, not one aggregate elementary exchange. Enumerate each actual emitted substance and receiving compartment using a compatible measured/pathway method and activity-factor units, then create a separate concrete card or reuse the existing matching card once, with verified UUID or explicit unresolved identity. A generic pollutant/volatile/residue label, total mass loss or summed screening interval cannot establish a compound or individual-emission amount. Keep elemental versus molecular/reporting bases explicit, attribute the raw quantities and normalize once to accepted reference output. No supported release only with evidenced inapplicability; missing identity, method or activity blocks completeness. Exclude releases already covered by an inclusive service or upstream dataset. | cp_nutrient_input_records | separate supported substance/compartment exchanges | `ipcc-2019-managed-soils-n2o` |
+
 ## 9. Validation Rules
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
@@ -858,6 +824,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `validation_reject_fate` | rejects and waste | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `usda-seed-cleaning-handling`; `mass-balance-identity` |
 | `validation_mass_balance` | all outputs | Confirm field, conditioning, and storage balances reconcile within declared tolerance and accepted seed is not counted at two hand-offs. | `mass-balance-identity` |
 | `validation_allocation` | intentional co-products | Confirm any intentional co-product is separately identified, destination is evidenced, and allocation or substitution treatment is disclosed. | `iso-14044-2006` |
+| `validation_local_combustion_boundary` | energy and fossil CO2 | Verify every local CO2 amount against actual in-boundary fuel combustion and compatible combustion-only factors; reconcile upstream electricity, heat, fuel-supply and inclusive-service coverage so the same release is counted once. | `ipcc-2006-energy-combustion-boundary` |
+
+
 ## 10. Published Dataset Profile
 | Field | Value |
 | --- | --- |
@@ -888,3 +857,5 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
+| `ipcc-2006-energy-combustion-boundary` | method_factor | IPCC 2006 Guidelines, Volume 2 Energy, Chapters 2 and 3 (stationary and mobile combustion), https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html | Combustion activity, compatible fuel-specific factors and fossil/biogenic distinction; no universal site factor adopted. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

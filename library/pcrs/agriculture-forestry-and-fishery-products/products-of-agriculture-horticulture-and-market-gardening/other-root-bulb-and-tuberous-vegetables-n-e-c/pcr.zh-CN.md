@@ -94,31 +94,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 作物专用种苗（`planting_material`）
-
-种子、种球、插穗、冠芽或其他种苗在播种时跨越种植边界。记录实际材料身份和批次，不假定统一播种率。
-
-- 选定流：Covered crop 的作物专用种子、种球、插穗或其他种苗＼
-- 流属性/单位：Mass or count / kg or count（flow property; unit group）
-- 数量规则：实测批次数量；只有有记录时才将数量转换为质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1 kg 鲜商品参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_planting_material_records`
-- 来源：`fao-ex-act-v9-2022`
-- 数量范围：暂定种苗筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：0.08
-  - 单位：kg planting material/kg marketable product
-  - 基准：每 1 kg 鲜商品参考产品
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 尿素肥料（`field_cultivation_agricultural_nutrient_inputs_urea`）
 
 **field_cultivation_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -251,7 +226,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_field_energy_records`采集`field_cultivation`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -283,6 +258,38 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
+##### 废物流
+
+##### 基本流
+
+###### 灌溉来源取水（`irrigation_withdrawal`）
+
+只有在来源取水相对于输送灌溉水被单独计量或建模时才记录该条件性流。同一水量不得重复计算。
+
+- 选定流：从明确天然水源直接取用的水；具体来源环境和UUID未决
+- 流属性/单位：Volume / m3（flow property; unit group）
+- 数量规则：本前景节点负责的天然水源直接取水实测量，与同期间供水台账核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 鲜商品参考产品.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_irrigation_water_records`
+- 来源：`fao-ex-act-v9-2022`
+- 数量范围：暂定取水筛选估算
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：4
+  - 单位：m3/kg marketable product
+  - 基准：每 1 kg 鲜商品参考产品，仅在单独报告取水时使用
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+仅用于本前景边界负责的直接天然水源取水。选择实际水源/环境及兼容体积或质量身份。市政或其他外购供水属于产品投入，供应商取水由上游覆盖一次，不能作为此基本流输入。保留水源至田间供应台账、泵能耗、输配损失及内部供水转移；不将同一供应商取水或内部交付再计为外部资源取用。缺少水源身份或数量属于完整性缺口。
+
+
 ###### 声明作物周期的土地占用（`land_occupation`）
 
 土地占用表示获得参考产品所需的种植面积和声明持续时间。土地转化是另行声明的研究选择。
@@ -308,32 +315,6 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 灌溉来源取水（`irrigation_withdrawal`）
-
-只有在来源取水相对于输送灌溉水被单独计量或建模时才记录该条件性流。同一水量不得重复计算。
-
-- 选定流：灌溉来源资源取水＼
-- 流属性/单位：Volume / m3（flow property; unit group）
-- 数量规则：实测或供应商报告的来源取水量，并与输送灌溉水核对
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 鲜商品参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_irrigation_water_records`
-- 来源：`fao-ex-act-v9-2022`
-- 数量范围：暂定取水筛选估算
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：4
-  - 单位：m3/kg marketable product
-  - 基准：每 1 kg 鲜商品参考产品，仅在单独报告取水时使用
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
-##### 废物流
 
 #### 输出
 ##### 产品流
@@ -580,7 +561,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_harvest_operation_records`采集`harvest_and_primary_sorting`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -996,7 +977,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：产品发运公路货运服务＼
 - 流属性/单位：Transport service / tonne-kilometre（flow property; unit group）
-- 数量规则：产品质量乘记录的单程距离和路线装载因子
+- 数量规则：实际运输质量吨数乘载货距离km；仅在无实际载荷时用容量乘利用率推得载荷一次，不能再将实测载荷乘利用率
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：路线特定（`route_specific`）
 原始活动或阶段基准：每 1 kg 声明门的鲜商品参考产品.
@@ -1214,8 +1195,10 @@ sync_with: pcr.en-US.md
 | `calc_energy_normalization` | fuel and electricity | 只有有燃料身份和低位热值因子时才转换燃料；用商品量归一化燃料或 kWh，并按采集的使用因子分配共享设备。 | field, harvest, conditioning, and storage energy records | L, kg fuel, or kWh per kg reference product | `fao-ex-act-v9-2022` |
 | `calc_land_occupation` | land occupation | `area_time_per_kg = cultivated_area × crop_cycle_duration / marketable_output_kg`；披露面积单位、周期和保护地占用。 | `cp_land_and_cycle_records`; `cp_yield_and_quality_records` | m2*year per kg reference product | `fao-ex-act-v9-2022` |
 | `calc_mass_balance` | product, reject, residue, wastewater, and storage rows | 每个操作核对：接收质量或水量加投入等于产品输出、废物输出、实测损失和有记录库存变化，且在声明容差内。 | batch, harvest, waste, water, and dispatch records | mass-balance check and normalized rows | `iso-14044-2006` |
-| `calc_transport_service` | included dispatch transport | `tonne_km = product_mass_t × one_way_distance_km × declared_load_factor`；只纳入到声明门的路线，并说明返程处理。 | `cp_dispatch_transport_records`; weigh and route records | tonne-km per kg gate product | `fao-ex-act-v9-2022` |
+| `calc_transport_service` | included dispatch transport | 运输工作量（吨公里）= 实际运输载荷吨数 * 载货路线公里数。实际载荷已反映装载情况，不得再乘装载率。只有额定容量和利用率记录时，先按容量 * 有据利用率推导实际载荷一次，再乘距离。空返与车辆利用率假设在运输服务数据集或因子边界中处理一次，同一燃料不得既计服务又计本地作业。保留货运批次、路线、质量、距离、原始单位和因子边界。 | `cp_dispatch_transport_records`; weigh and route records | tonne-km per kg gate product | `fao-ex-act-v9-2022` |
 | `calc_reusable_packaging` | packaging input and waste | 按记录的使用次数和产品质量分配可重复包装负荷，并核对返还、丢失和废弃单元。 | `cp_packaging_records`; supplier and return records | kg packaging per kg product and packaging fate | `iso-14044-2006` |
+| `planting_material_identity_and_fate` | `field_cultivation` | 对于本作业原有 planting_material 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_planting_material_records` | 按身份区分的交换和对账活动记录 | `fao-ex-act-v9-2022` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_input_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

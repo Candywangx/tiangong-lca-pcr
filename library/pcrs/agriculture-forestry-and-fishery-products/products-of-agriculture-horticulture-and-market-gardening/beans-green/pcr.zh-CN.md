@@ -96,7 +96,7 @@ Record green-bean seed or other planting material entering each declared field b
 - Flow property / unit: Mass or viable count / kg, seed, or plant
 - 数量规则： Record supplier lot quantity and planted viable seed or planting-material quantity by field, bed, or protected unit.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -122,7 +122,7 @@ Record water applied for bed preparation, seed emergence, or establishment by so
 - 流集分组： `irrigation-water`
 - 数量规则： Sum metered or documented water-balance deliveries during establishment and retain the source and application method.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -151,7 +151,7 @@ Record the production area and time occupied by the field bed or 设施栽培 un
 - Flow property / unit: Area-time / ha*a
 - 数量规则： Multiply declared production area by crop occupation time and state whether protected structures are excluded or separately attributed.
 - 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -189,7 +189,7 @@ Record irrigation and fertigation water delivered to the green-bean crop after e
 - 流集分组： `irrigation-water`
 - 数量规则： Sum field, bed, or protected-unit meter readings and documented water-balance estimates from establishment through final picking.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -313,7 +313,7 @@ Record irrigation and fertigation water delivered to the green-bean crop after e
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -329,7 +329,7 @@ Record electricity used for pumping, fertigation, protected-unit operation, ligh
 - 流集分组： `electricity-supply`
 - 数量规则： Sum equipment meter or invoice records and allocate shared services by area-time, operating time, water delivered, or another declared physical basis.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Technology-specific (`technology_specific`)
+- 适用范围：`technology_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -358,7 +358,7 @@ Record natural-resource water withdrawn for irrigation or fertigation separately
 - Flow property / unit: Volume / m3
 - 数量规则： Reconcile source-meter or permit records to water delivered to the crop and disclose any return flow or consumption calculation.
 - 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -389,7 +389,7 @@ Record leaves, stems, roots, pods left after final picking, and other crop resid
 - Flow property / unit: Mass / kg wet residue
 - 数量规则： Weigh or calculate residues by field or protected unit and document the receiving fate; retain uncollected field residue as a declared residue or loss stream.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -417,7 +417,7 @@ Record or calculate direct and indirect nitrous oxide emissions attributable to 
 - Flow property / unit: Mass / kg N2O
 - 数量规则： Apply one declared emissions method to documented nitrogen input, residue fate, and relevant environmental factors without double counting.
 - 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -442,7 +442,7 @@ Record or calculate ammonia emissions from nitrogen applications when the declar
 - Flow property / unit: Mass / kg NH3
 - 数量规则： Apply the declared nitrogen-emission method to documented nitrogen forms, application timing, and environmental conditions.
 - 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -467,7 +467,7 @@ Record or calculate nitrate loss to water when nutrient, soil, drainage, and rec
 - Flow property / unit: Mass / kg nitrate
 - 数量规则： Apply the declared nitrogen-loss method to recorded nutrient input, drainage or leaching evidence, and the receiving medium.
 - 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -492,7 +492,7 @@ Record or calculate phosphate loss to water when nutrient application, runoff or
 - Flow property / unit: Mass / kg phosphate
 - 数量规则： Apply the declared phosphorus-loss method to recorded nutrient input and documented runoff, drainage, or erosion pathway without assigning an unsupported default emission.
 - 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -523,7 +523,7 @@ Record water used to remove soil and foreign material when washing occurs before
 - 流集分组： `process-water`
 - 数量规则： Sum wash-water meter or batch records and disclose recirculation, treatment, and discharge handling.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Site-specific (`site_specific`)
+- 适用范围：`site_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -549,7 +549,7 @@ Record electricity for forced-air cooling, cold rooms, sorting lines, lighting, 
 - 流集分组： `electricity-supply`
 - 数量规则： Sum equipment meter or invoice records and allocate shared services by mass, operating time, or another declared basis.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Technology-specific (`technology_specific`)
+- 适用范围：`technology_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -575,7 +575,7 @@ Record purchased transport from field to pack-house or another declared pre-gate
 - 流集分组： `road-freight-transport`
 - 数量规则： Calculate transported mass times documented distance and state whether return or empty-leg burden is included.
 - 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Route-specific (`route_specific`)
+- 适用范围：`route_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -609,7 +609,7 @@ Record the accepted 新鲜整果 green-bean pods delivered at the declared 农�
 
 - 数量规则：1000 千克
 - 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Product-specific (`product_specific`)
+- 适用范围：`product_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -634,7 +634,7 @@ Record edible or potentially usable pods that fail the declared primary grade bu
 - Flow property / unit: Mass / kg
 - 数量规则： Weigh downgraded pods by picking or grading batch and record the recipient and intended use before assigning any co-product treatment.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Product-specific (`product_specific`)
+- 适用范围：`product_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -661,7 +661,7 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
 - Flow property / unit: Mass / kg wet waste
 - 数量规则： Weigh or calculate rejects by batch and retain the treatment or recipient record.
 - 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Product-specific (`product_specific`)
+- 适用范围：`product_specific`
 原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
 
 - 归一化基准：每声明的参考流
@@ -686,7 +686,7 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
 - 流属性 / 单位：体积 / m3
 - 数量规则：按`cp_postharvest_records`计量此独立物流。协调供水、循环水、蒸发、产品和移出固体保留水及实际排放，质量与体积平衡须分别保持量纲一致；仅凭本物流有依据的密度进行体积质量换算。归属物流量除以匹配的最终合格产出量，再乘相同产品单位下的声明参考数量，保留实测阶段与最终产出的比例，不重复归一化，不编造固体分流比例。单独保留处理责任且避免重复计入。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -701,7 +701,7 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
 - 流属性 / 单位：质量 / kg
 - 数量规则：按`cp_postharvest_records`计量此独立物流。协调供水、循环水、蒸发、产品和移出固体保留水及实际排放，质量与体积平衡须分别保持量纲一致；仅凭本物流有依据的密度进行体积质量换算。归属物流量除以匹配的最终合格产出量，再乘相同产品单位下的声明参考数量，保留实测阶段与最终产出的比例，不重复归一化，不编造固体分流比例。单独保留处理责任且避免重复计入。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -718,6 +718,10 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
 | `allocation_downgraded_pods` | downgraded pods and other secondary outputs | Treat downgraded pods as waste or residue unless a recipient, intended use, quality, and hand-off are documented. Apply co-product allocation only when the secondary output has a defined function and the allocation basis is stated. | `iso-14044-2006`; `mass-balance-identity` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算和质量规则
 
@@ -763,6 +767,7 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
 | `calc_transport_service` | pre-gate road freight | transport service = transported mass (t) × documented distance (km); state whether return or empty-leg burden is included | mass, distance, load, and route record | t*km | `fao-good-agricultural-practices` |
 | `calc_reference_normalization` | all inventory rows | normalized value = crop-cycle quantity × 1,000 kg / accepted 商品 output at the declared gate | crop-cycle quantity and accepted output mass | quantity per 1,000 kg reference flow | `mass-balance-identity` |
 | `calc_mass_reconciliation` | harvest, downgraded pods, rejects, residues, losses, and packaging | gross harvested mass = accepted output + downgraded pods + rejects + field or handling losses + declared residue streams, with measured moisture and tare treatment disclosed | picking, grade, residue, packaging, and loss records | reconciled crop-cycle mass balance | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -813,3 +818,4 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
