@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-particle-boards-of-wood-e-g-waferboard"
-  classification_refs: "CPC 3.0 31439; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  classification_refs: "CPC 3.0 31439; narrower; classification context only"
   covered_products: "Random broad-thin wood waferboard, powdered PF route and the declared indirect steam/dry-control pilot"
   excluded_products: "Fine-particle UF board; deliberately oriented OSB/waferboard; fibreboard; veneer panels; nonwood panels; coated/overlaid/treated panels; other binder and heat/control routes"
   representative_product: "Net accepted finished random wide-wafer PF panel at factory gate; historical Figure 2/W-series anchors are not supplier inventory data"
@@ -790,9 +790,9 @@ process_inventory:
           flow_ref:
             uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Evaporated wood moisture and any steam vent reaching outdoor air; use measured water balance, excluding returned condensate and background steam-generation water. This is a conditional species/phase screening card, not presumed presence or a default emission. Prove absence or measure actual release; unknown measurement is not zero. OSB direct-fired dryer tables only supply candidate species/CAS labels and do not supply indirect-waferboard quantities."
+          description: "Water vapour reaching outdoor air from evaporation, actual steam vents and actual reaction-formed water; reconcile using the reaction-aware cp_water balance. Reaction water may remain in board/residues or wastewater and is not automatically an air release. Exclude returned condensate and background steam-generation water. This is a conditional species/phase screening card, not presumed presence or a default emission. Prove absence or measure actual release; unknown measurement is not zero. OSB direct-fired dryer tables only supply candidate species/CAS labels and do not supply indirect-waferboard quantities."
           amount:
-            expression: "Measured evaporation and actual vent-water mass / Q; cp_water reconciles all incoming, retained, discharged and returned water."
+            expression: "Measured actual emitted water mass / Q; cp_water reconciles incoming, retained, discharged and returned water with evidenced reaction formation and consumption; unresolved reaction terms cannot be replaced by an evaporation residual."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -838,8 +838,8 @@ dataset_production:
       process_id: "p_wafer"
       flow_role: "each input material and packaging"
       record_type: "stock_batch"
-      raw_fields: "row_id; lot; stage; supplier; composition and measured biogenic/fossil carbon fractions; uncured/cured state; wet/dry mass; moisture; opening/purchases/closing stock; returns"
-      collection_method: "Calibrated separate weighing, stock reconciliation, supplier certificates, untreated-wood oven-dry sampling and laboratory/supplier component carbon records; verify PF solids/cure suitability and petroleum wax grade; Aggregation calculation: Separate physical attributable totals / Q; per 1 kg reference flow"
+      raw_fields: "row_id; lot; stage; supplier; composition and measured elemental fractions including C/H/O and biogenic/fossil carbon origins; supplied PF moisture/solids; uncured/cured state and actual cure extent; wet/dry mass; moisture; opening/purchases/closing stock; returns"
+      collection_method: "Calibrated separate weighing, stock reconciliation, supplier certificates, untreated-wood oven-dry sampling and laboratory/supplier elemental-composition and carbon-origin records; verify PF solids/cure suitability and petroleum wax grade; retain supplier formulation, press time/temperature and representative before/after composition or validated reaction-extent measurements, separating physical volatile losses from reaction products; no assumed full cure; Aggregation calculation: Separate physical attributable totals / Q; per 1 kg reference flow"
       unit: "kg"
       frequency: "each batch and stock close"
       temporal_coverage: "complete declared period"
@@ -898,14 +898,14 @@ dataset_production:
       process_id: "p_wafer"
       flow_role: "evaporation and water closure"
       record_type: "water_balance"
-      raw_fields: "wood/carrier water; steam; tap water; board/residue water; wastewater; condensate; vents; opening/closing water stock"
-      collection_method: "Traceable moisture and flow measurements; reconcile all water paths with cp_material, cp_reference, cp_steam and cp_residue; Aggregation calculation: Actual emitted water mass / Q; per 1 kg reference flow; retain closure error and uncertainty"
+      raw_fields: "wood/carrier water; steam; tap water; board/residue water; wastewater; condensate; vents; opening/closing water stock; stage-specific H2O formation/consumption; actual composition/cure extent and reaction evidence; gas inlet/outlet moisture and composition where applicable"
+      collection_method: "Traceable moisture and flow measurements; reconcile all water paths and independently evidenced reaction terms with cp_material, cp_reference, cp_steam, cp_residue and cp_emission. Distinguish press condensation water from supplied moisture and utility steam/return. A separately reviewed biological-control expansion requires inlet/outlet gas, oxygen demand, media/biomass, liquid and stock records and actual degradation extent; it is not admitted by this protocol. Aggregation calculation: Actual emitted water mass / Q; per 1 kg reference flow; retain reaction-term uncertainty and unexplained residual; missing reaction evidence is not zero"
       unit: "kg"
       frequency: "each campaign and period close"
       temporal_coverage: "complete declared period"
       site_scope: "same integrated site boundary"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "paired water paths; moisture method; closure"
+      quality_evidence: "paired water paths; moisture method; formulation/cure or admitted biological-reaction evidence; component/element reconciliation; uncertainty"
     - protocol_id: cp_allocation
       process_id: "p_wafer"
       flow_role: "burden attribution separately from physical inventory"
@@ -961,18 +961,21 @@ dataset_production:
         - epa-waferboard-2002
     - id: physical_closure
       applies_to: "p_wafer"
-      rule: "Reconcile opening stock + external inputs with finished board + actual coproducts + waste + elemental releases + closing stock in separate dry-matter, water and biogenic/fossil carbon accounts. Include binder/wax solids and volatile losses. Internal transfer ends agree in quantity/state and cancel at plant level. Report residual errors with measured uncertainty."
+      rule: "For the same period and boundary, whole-stream mass obeys opening stock + external inputs = finished board + actual coproducts + waste + elementary releases + closing stock; include relevant gas-side mass exchanges where present. Elemental accounts obey the same equation for each relevant element, including C/H/O, with biogenic/fossil carbon origins separate; reactions do not generate mass or elements. Molecular H2O and each defined reactive species/material class j instead obey opening_j + inputs_j + formation_j = outputs_j + closing_j + consumption_j, using consistent component definitions, units and scope. Determine formation/consumption from actual formulation, composition and measured or independently validated reaction extent: PF press condensation changes resin solids and forms water; a separately reviewed biological-control expansion transforms organics into water, CO2, biomass and other actual products with oxygen uptake. Do not impose external-only dry-matter/H2O closure, full cure, complete degradation or universal yields. Keep supplied/carrier water, reaction water, evaporation and the utility steam/return circuit distinct; phase transfers do not create H2O. Internal transfer endpoints agree and cancel at plant level. Report unexplained residuals and propagated uncertainty without treating residuals as reaction evidence."
       inputs:
         - "all stream totals"
         - stock
-        - "material carbon composition"
+        - "elemental/component composition"
+        - "actual reaction extent"
         - cp_material
         - cp_water
         - cp_residue
         - cp_emission
-      output: "unallocated balance accounts"
+        - cp_steam
+      output: "unallocated whole-mass/element and reaction-aware component accounts"
       source_ids:
         - epa-waferboard-2002
+        - conner-wood-adhesives-2001
     - id: burden_attribution
       applies_to: "p_wafer"
       rule: "Attribute direct burdens first. Apply justified allocation shares only to remaining common environmental burdens, with shares summing to one for the same scope. Preserve all physical product quantities; product-attributed burden divided by Q forms the downstream dataset."
@@ -991,8 +994,8 @@ dataset_production:
       evidence: "forming logs; geometry photos/tests; supplier certificates"
     - id: dq_coverage
       applies_to: "all inventory rows"
-      requirement: "Cover a complete representative operating period and all measured regimes; distinguish measured zero, below detection, absence and missing measurement. Missing UUID or supplier quantity/background compatibility remains explicit; complete datasets cannot silently substitute."
-      evidence: "row coverage; calibration; uncertainty; supplier definitions"
+      requirement: "Cover a complete representative operating period and all measured regimes; distinguish measured zero, below detection, absence and missing measurement. Missing UUID or supplier quantity/background compatibility remains explicit; complete datasets cannot silently substitute. Define water, dry solids and reactive components consistently; support reaction terms with actual composition/extent evidence and reconcile to whole mass/elements. Oven loss, stock corrections and unexplained residuals do not prove reaction water; unresolved terms prevent a complete component-balance claim."
+      evidence: "row coverage; calibration; uncertainty; supplier definitions; formulation/cure records; component and elemental accounts"
     - id: dq_limits
       applies_to: "p_wafer"
       requirement: "Historical EPA/FPL sources supply method context only. Do not transfer softwood-sawmill CORRIM quantities, sawmill dust factors or boiler factors to waferboard indirect drying/pressing. Add individual rows for additional actual exchanges and retain phase-specific emissions."
@@ -1010,9 +1013,11 @@ validation_rules:
       - usda-waferboard-types-1986
   - rule_id: v_balance
     applies_to: "p_wafer"
-    rule: "Audit dry matter/water/energy and origin-separated carbon closure before burden allocation; transfer pairs agree. Supplier steam conventions, voltage, PF/wax state and missing identities must be resolved before a complete linked dataset is claimed."
+    rule: "Before burden allocation audit whole-stream mass, relevant elements including C/H/O with origin-separated carbon, reaction-aware H2O/reactive-component accounts and the separate energy account; transfer pairs agree. Require actual composition/cure extent and justified formation/consumption terms, not external-only dry-matter/water closure or a residual-based cure yield. Do not presume full cure or zero reaction water; unresolved terms require review and prevent a complete balance claim. Any biological-control expansion requires separate applicability review and actual gas/liquid/media/biomass and degradation evidence. Supplier steam conventions, voltage, PF/wax state and missing identities must be resolved before a complete linked dataset is claimed."
     source_ids:
       - usda-wood-moisture-2021
+      - epa-waferboard-2002
+      - conner-wood-adhesives-2001
   - rule_id: v_emission
     applies_to: "p_wafer"
     rule: "Use controlled-outlet species/phase quantities once, with nonoverlapping PM bins. Retain actual biogenic and fossil CO2 in upstream LCI and any separately reviewed onsite-combustion expansion; a GHG reporting convention cannot remove biogenic CO2 from the physical inventory. Disclose unmeasured species and do not claim complete coverage."
@@ -1030,7 +1035,7 @@ data_sources:
   - id: "epa-waferboard-2002"
     type: "official_guidance"
     reference: "US EPA. AP-42 §10.6.1 Waferboard/Oriented Strandboard Manufacturing, March 2002. https://www.epa.gov/sites/default/files/2020-10/documents/c10s06-1.pdf"
-    used_for: "§10.6.1.1–.3, printed pp.10.6.1-1–4 and Figure 10.6.1-1: historical route/random layup/pressing/finish. Table 10.6.1-3 p.12 describes direct wood-fired softwood OSB drying; only candidate species/CAS labels used for site screening, no transfer of presence, rates or control performance to this indirect route."
+    used_for: "§10.6.1.1–.3, printed pp.10.6.1-1–4 and Figure 10.6.1-1: historical route/random layup/pressing/finish. Table 10.6.1-3 p.12 describes direct wood-fired softwood OSB drying; only candidate species/CAS labels used for site screening, no transfer of presence, rates or control performance to this indirect route. Printed p.10.6.1-5 describes biological formation of water/CO2/salts only for a separately reviewed control expansion; no degradation yield is adopted."
   - id: "usda-waferboard-types-1986"
     type: "handbook"
     reference: "Carll, C.G. Wood particleboard and flakeboard: types, grades, and uses. FPL-GTR-53, November 1986. https://research.fs.usda.gov/download/treesearch/5677.pdf"
@@ -1047,20 +1052,24 @@ data_sources:
     type: "standard"
     reference: "WRI/WBCSD. Product Life Cycle Accounting and Reporting Standard, 2011, Chapter 9 p.63 Tables 9.1–9.2. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
     used_for: "Allocation avoidance and documented physical/economic relationships only. No GHG-only exclusion of physical LCI emissions or predefined residue prices/shares."
+  - id: "conner-wood-adhesives-2001"
+    type: "literature"
+    reference: "Conner, A.H. Wood: Adhesives. Encyclopedia of Materials: Science and Technology, 2001, pp.9583–9599. https://research.fs.usda.gov/download/treesearch/9099.pdf"
+    used_for: "§2.1(a), PDF pp.2–3 and Figure 2: PF resole condensation water, further heat curing and powdered resole use in waferboard. Mechanism only; no example formulation, solids content, cure completion or reaction yield adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:67ec935dcc95d3022285f0e9270dfc5e7bd63073d9452801b0f64cbf49b21e8e"
+  source_sha256: "sha256:c07187e3e0f825171c1865c2a190194a526e2f1814e397b0d3b97a8e650833be"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6535"
+    - unit_id: "normative_6462"
       family: "system_boundary"
       span:
         start:
-          offset: 6535
+          offset: 6462
           line: 62
           column: 1
         end:
-          offset: 9063
+          offset: 8990
           line: 83
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receiving gate for untreated coniferous/non-coniferous panel logs with recorded bark and moisture; electric in-yard handling |\n| starting_condition_role | foreground_entry |\n| product_classification_scope | Physical random-wafer PF pilot subset of CPC 3.0 31439 |\n| recursive_input_rule | Purchased finished waferboard is not raw log furnish. Internal wafers, mats, rework and dust returns stay in stage transfer/stock records; one final finished reference output only. |\n| upstream_dataset_requirement | Matching log forestry/preparation and receiving freight; powdered PF/wax, electricity at stated voltage, delivered steam with agreed return convention, water and packaging supply; each external waste treatment. All upstream combustion emissions remain in linked inventories. |\n| disclosure | Gate-to-gate foreground plus explicit upstream links for cradle-to-gate use. Installation, use and end of life are separately modelled. Disclose capital equipment/cut-offs and any missing supply activity. |\n\nUse one integrated foreground unit p_wafer through packing. Preserve independent stage records s_receive (yard/thaw/debark/crosscut), s_wafer (waferizing), s_dry (indirect drying and screening), s_blend (powder PF/neat wax), s_form (gravity random forming), s_press, s_finish (cooling/trim), s_pack and s_control (dry collection/cleaning). Internal transfer pairs must agree in actual quantity and state; no intermediate board shares the final reference UUID. [epa-waferboard-2002]\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | p_wafer | Verify the full declared route. Direct-fired dryers, onsite fuel-burning boilers/RTOs, wet controls, sanding and surface treatments are outside this pilot and cannot disappear behind purchased-heat wording; review and add their exact inventories before applying an expanded method. | epa-waferboard-2002 |\n| b_stack | p_wafer | Record outlet emissions after actual dry controls once per stack/source. Capture is a solid residue, not an atmospheric release. Dryer, press/cooling and trim sources remain separately traceable. | epa-waferboard-2002 |\n| b_heat | steam, condensate | External steam generation is upstream. Include physical incoming steam, returned condensate, actual losses and net enthalpy reconciliation; do not additionally book provider fuel as onsite fuel or create an unmetered heat export. | epa-waferboard-2002 |\n\n"
@@ -1080,11 +1089,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6535
+              offset: 6462
               line: 62
               column: 1
             end:
-              offset: 6556
+              offset: 6483
               line: 62
               column: 22
           text: "## 5. System Boundary"
@@ -1100,15 +1109,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41371"
+    - unit_id: "normative_41565"
       family: "allocation"
       span:
         start:
-          offset: 41371
+          offset: 41565
           line: 615
           column: 1
         end:
-          offset: 42429
+          offset: 42623
           line: 623
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_separate | p_wafer | Keep the unallocated physical mass/water/carbon/energy account and internal transfers separately from the product-attributed environmental-burden account. Coproduct physical mass remains actual mass. | ghg-allocation-2011 |\n| a_hierarchy | p_wafer | Use stage/source metering to avoid allocation. For remaining common burdens demonstrate a causal physical relationship; dry mass is admissible only when justified. Otherwise document consistent period-specific economic relationships and sensitivity; disclose prices and markets, with no automatic zero value or avoided-fuel credit. | ghg-allocation-2011 |\n| a_residue | bark, fines, bark_waste, fines_waste | Classify each actual residue lot as sold coproduct, internal return or waste using destination evidence. These quantities are exclusive. Resin-bound residues stay distinct from unresinated wood and require their own treatment datasets. | epa-waferboard-2002 |\n\n"
@@ -1128,11 +1137,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41371
+              offset: 41565
               line: 615
               column: 1
             end:
-              offset: 41411
+              offset: 41605
               line: 615
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1148,18 +1157,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52205"
+    - unit_id: "normative_54854"
       family: "validation"
       span:
         start:
-          offset: 52205
+          offset: 54854
           line: 657
           column: 1
         end:
-          offset: 53558
+          offset: 56768
           line: 666
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | finished_waferboard | Exactly one finished reference output has 1 kg net accepted board; Q is positive and every row/protocol uses the same denominator. Reject duplicate reference intermediates, packaged-mass denominators and mismatched EN/ZH definitions. | epa-waferboard-2002 |\n| v_architecture | p_wafer | Require broad-thin wafer geometry and nondeliberate random forming proof, actual PF chemistry/grade and declared heat/control route. Reject long-strand oriented OSB, fine UF particleboard and excluded variants. | usda-waferboard-types-1986 |\n| v_balance | p_wafer | Audit dry matter/water/energy and origin-separated carbon closure before burden allocation; transfer pairs agree. Supplier steam conventions, voltage, PF/wax state and missing identities must be resolved before a complete linked dataset is claimed. | usda-wood-moisture-2021 |\n| v_emission | p_wafer | Use controlled-outlet species/phase quantities once, with nonoverlapping PM bins. Retain actual biogenic and fossil CO2 in upstream LCI and any separately reviewed onsite-combustion expansion; a GHG reporting convention cannot remove biogenic CO2 from the physical inventory. Disclose unmeasured species and do not claim complete coverage. | epa-waferboard-2002 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | finished_waferboard | Exactly one finished reference output has 1 kg net accepted board; Q is positive and every row/protocol uses the same denominator. Reject duplicate reference intermediates, packaged-mass denominators and mismatched EN/ZH definitions. | epa-waferboard-2002 |\n| v_architecture | p_wafer | Require broad-thin wafer geometry and nondeliberate random forming proof, actual PF chemistry/grade and declared heat/control route. Reject long-strand oriented OSB, fine UF particleboard and excluded variants. | usda-waferboard-types-1986 |\n| v_balance | p_wafer | Before burden allocation audit whole-stream mass, relevant elements including C/H/O with origin-separated carbon, reaction-aware H2O/reactive-component accounts and the separate energy account; transfer pairs agree. Require actual composition/cure extent and justified formation/consumption terms, not external-only dry-matter/water closure or a residual-based cure yield. Do not presume full cure or zero reaction water; unresolved terms require review and prevent a complete balance claim. Any biological-control expansion requires separate applicability review and actual gas/liquid/media/biomass and degradation evidence. Supplier steam conventions, voltage, PF/wax state and missing identities must be resolved before a complete linked dataset is claimed. | usda-wood-moisture-2021; epa-waferboard-2002; conner-wood-adhesives-2001 |\n| v_emission | p_wafer | Use controlled-outlet species/phase quantities once, with nonoverlapping PM bins. Retain actual biogenic and fossil CO2 in upstream LCI and any separately reviewed onsite-combustion expansion; a GHG reporting convention cannot remove biogenic CO2 from the physical inventory. Disclose unmeasured species and do not claim complete coverage. | epa-waferboard-2002 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1176,11 +1185,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52205
+              offset: 54854
               line: 657
               column: 1
             end:
-              offset: 52227
+              offset: 54876
               line: 657
               column: 23
           text: "## 9. Validation Rules"
@@ -1200,241 +1209,241 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 7653
+          offset: 7580
           line: 75
           column: 1
         end:
-          offset: 8134
+          offset: 8061
           line: 75
           column: 482
     - pointer: "/system_boundary/rules/1"
       rule_id: "b_route"
       identity_kind: "explicit"
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 8207
+          offset: 8134
           line: 79
           column: 1
         end:
-          offset: 8534
+          offset: 8461
           line: 79
           column: 328
     - pointer: "/system_boundary/rules/2"
       rule_id: "b_stack"
       identity_kind: "explicit"
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 8535
+          offset: 8462
           line: 80
           column: 1
         end:
-          offset: 8776
+          offset: 8703
           line: 80
           column: 242
     - pointer: "/system_boundary/rules/3"
       rule_id: "b_heat"
       identity_kind: "explicit"
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 8777
+          offset: 8704
           line: 81
           column: 1
         end:
-          offset: 9061
+          offset: 8988
           line: 81
           column: 285
     - pointer: "/allocation_rules/0"
       rule_id: "a_separate"
       identity_kind: "explicit"
-      unit_id: "normative_41371"
+      unit_id: "normative_41565"
       source_span:
         start:
-          offset: 41484
+          offset: 41678
           line: 619
           column: 1
         end:
-          offset: 41732
+          offset: 41926
           line: 619
           column: 249
     - pointer: "/allocation_rules/1"
       rule_id: "a_hierarchy"
       identity_kind: "explicit"
-      unit_id: "normative_41371"
+      unit_id: "normative_41565"
       source_span:
         start:
-          offset: 41733
+          offset: 41927
           line: 620
           column: 1
         end:
-          offset: 42114
+          offset: 42308
           line: 620
           column: 382
     - pointer: "/allocation_rules/2"
       rule_id: "a_residue"
       identity_kind: "explicit"
-      unit_id: "normative_41371"
+      unit_id: "normative_41565"
       source_span:
         start:
-          offset: 42115
+          offset: 42309
           line: 621
           column: 1
         end:
-          offset: 42427
+          offset: 42621
           line: 621
           column: 313
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_52205"
+      unit_id: "normative_54854"
       source_span:
         start:
-          offset: 52300
+          offset: 54949
           line: 661
           column: 1
         end:
-          offset: 52595
+          offset: 55244
           line: 661
           column: 296
     - pointer: "/validation_rules/1"
       rule_id: "v_architecture"
       identity_kind: "explicit"
-      unit_id: "normative_52205"
+      unit_id: "normative_54854"
       source_span:
         start:
-          offset: 52596
+          offset: 55245
           line: 662
           column: 1
         end:
-          offset: 52866
+          offset: 55515
           line: 662
           column: 271
     - pointer: "/validation_rules/2"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_52205"
+      unit_id: "normative_54854"
       source_span:
         start:
-          offset: 52867
+          offset: 55516
           line: 663
           column: 1
         end:
-          offset: 53167
+          offset: 56377
           line: 663
-          column: 301
+          column: 862
     - pointer: "/validation_rules/3"
       rule_id: "v_emission"
       identity_kind: "explicit"
-      unit_id: "normative_52205"
+      unit_id: "normative_54854"
       source_span:
         start:
-          offset: 53168
+          offset: 56378
           line: 664
           column: 1
         end:
-          offset: 53556
+          offset: 56766
           line: 664
           column: 389
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 6535
+          offset: 6462
           line: 62
           column: 1
         end:
-          offset: 6556
+          offset: 6483
           line: 62
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 6584
+          offset: 6511
           line: 66
           column: 1
         end:
-          offset: 7651
+          offset: 7578
           line: 73
           column: 222
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 7653
+          offset: 7580
           line: 75
           column: 1
         end:
-          offset: 8134
+          offset: 8061
           line: 75
           column: 482
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 8207
+          offset: 8134
           line: 79
           column: 1
         end:
-          offset: 8534
+          offset: 8461
           line: 79
           column: 328
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 8535
+          offset: 8462
           line: 80
           column: 1
         end:
-          offset: 8776
+          offset: 8703
           line: 80
           column: 242
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_6535"
+      unit_id: "normative_6462"
       source_span:
         start:
-          offset: 8777
+          offset: 8704
           line: 81
           column: 1
         end:
-          offset: 9061
+          offset: 8988
           line: 81
           column: 285
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41371"
+      unit_id: "normative_41565"
       source_span:
         start:
-          offset: 41371
+          offset: 41565
           line: 615
           column: 1
         end:
-          offset: 41411
+          offset: 41605
           line: 615
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52205"
+      unit_id: "normative_54854"
       source_span:
         start:
-          offset: 52205
+          offset: 54854
           line: 657
           column: 1
         end:
-          offset: 52227
+          offset: 54876
           line: 657
           column: 23
 projection_metadata:
@@ -1444,5 +1453,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:67ec935dcc95d3022285f0e9270dfc5e7bd63073d9452801b0f64cbf49b21e8e"
-  generated_content_sha256: "sha256:7e33679db0172201f6ca02bb6fb8e10427f8f73beb583d2606a6c9e39177c2d7"
+    sha256: "sha256:c07187e3e0f825171c1865c2a190194a526e2f1814e397b0d3b97a8e650833be"
+  generated_content_sha256: "sha256:89433d46ecdd252ba6c29b595b1c2e23a19a3ef8d048d560e0db05a2bf1571c1"

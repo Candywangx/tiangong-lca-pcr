@@ -9,6 +9,8 @@ import {createRequire} from 'node:module';
 import {chromium, firefox, webkit} from 'playwright';
 import type {Page, Browser, BrowserType, Request, Response} from 'playwright';
 import { gettingStartedGuide } from '../../packages/pcr-docs/lib/getting-started.ts';
+import { decodeRecordData } from '../../packages/pcr-docs/lib/record-data.ts';
+import { INLINE_DOWNLOAD_NAMES, INLINE_MANIFEST_LIMIT, decodeInlineDownloadUrl } from '../../packages/pcr-docs/scripts/raw-download.ts';
 import { LANGUAGE_PREFERENCE_KEY, preferredRoute } from '../../packages/pcr-docs/lib/language-preference.ts';
 
 export class SiteBrowserError extends Error {
@@ -78,6 +80,41 @@ export async function withSiteExportServer<T>(root:string,callback:(origin:strin
  try {const address=server.address();assert.ok(address&&typeof address==='object');return await callback(`http://127.0.0.1:${address.port}`);}finally{await closeServer(server);}
 }
 async function closeServer(server:Server){server.closeAllConnections();await new Promise<void>((resolve,reject)=>server.close(error=>error?reject(error):resolve()));}
+export interface InlineDownload {route:string;url:string;name:string;bytes:number;sha256:string}
+/** Sample the largest emitted native download for each filename in one bounded scan. */
+export function findInlineDownloads(exported:SiteExport):InlineDownload[] {
+ const selected=new Map<string,InlineDownload>();
+ for(const file of exported.files.filter(item=>item.path.startsWith('en/docs/pcr/')&&item.path.endsWith('/index.html'))){
+  const html=readRegular(exported.root,file.path).toString('utf8');
+  for(const [tag] of html.matchAll(/<a\b[^>]*>/gu)){
+   const attributes=Object.fromEntries(Array.from(tag.matchAll(/\b(href|class|download)=(["'])(.*?)\2/gu),match=>[match[1],match[3]]));
+   if(!attributes.class?.split(/\s+/u).includes('pcr-download-name')||!attributes.href?.startsWith('data:'))continue;
+   assert.ok(INLINE_DOWNLOAD_NAMES.some(value=>value===attributes.download),'Inline download requires manifest.yaml or a required-language filename');
+   const name=attributes.download!;
+   const bytes=decodeInlineDownloadUrl(attributes.href);assert.ok(bytes);
+   if(name==='manifest.yaml')assert.ok(bytes.length<=INLINE_MANIFEST_LIMIT,'Inline manifest exceeds its bound');
+   if(bytes.length>(selected.get(name)?.bytes??-1))selected.set(name,{route:'/'+file.path.slice(0,-'index.html'.length),url:attributes.href,name,bytes:bytes.length,sha256:hash(bytes)});
+  }
+ }
+ return INLINE_DOWNLOAD_NAMES.flatMap(name=>{const item=selected.get(name);return item?[item]:[];});
+}
+export function findInlineDownload(exported:SiteExport,name = 'manifest.yaml'):InlineDownload|undefined {
+ return findInlineDownloads(exported).find(item=>item.name===name);
+}
+async function checkInlineDownload(browser:Browser,origin:string,selected:InlineDownload) {
+ const context=await browser.newContext({javaScriptEnabled:false,acceptDownloads:true});
+ try {
+  const page=await context.newPage();assert.equal((await page.goto(origin+selected.route))?.status(),200);
+  const link=page.locator('a.pcr-download-name').filter({hasText:selected.name});
+  const anchor=link.first();
+  assert.equal(await anchor.getAttribute('href'),selected.url);assert.equal(await anchor.getAttribute('download'),selected.name);
+  const pending=page.waitForEvent('download');await anchor.click();const download=await pending;
+  assert.equal(download.suggestedFilename(),selected.name);assert.equal(await download.failure(),null);
+  const downloaded=await download.path();assert.ok(downloaded);const bytes=readFileSync(downloaded);
+  assert.equal(bytes.length,selected.bytes);assert.equal(hash(bytes),selected.sha256);
+  return {route:selected.route,javaScriptEnabled:false,filename:download.suggestedFilename(),bytes:bytes.length,sha256:hash(bytes)};
+ }finally{await context.close();}
+}
 export type SiteBrowserEngine = 'chromium'|'firefox'|'webkit';
 export interface CancelledRequest {
  engine:SiteBrowserEngine;url:string;reason:string;method:string;headers:Record<string,string>;
@@ -134,6 +171,17 @@ async function checkPage(page:Page,origin:string,route:SiteRoute,viewport:string
   await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw new Error('Clipboard denied');}}}));
   await page.getByRole('button',{name:button,exact:true}).click();await page.getByRole('status').filter({hasText:chinese?'无法自动复制':'Copy was unavailable.'}).waitFor();evidence.assertions.push('clipboard denial shows manual-copy fallback');
   assert.equal(await page.getByRole('link',{name:chinese?'阅读 Markdown':'Read Markdown',exact:true}).getAttribute('href'),guide.rawUrl);
+ }
+ if(route.kind==='pcr'||route.kind==='history'){
+  const inspector=page.locator('.pcr-inspector'),key=await inspector.getAttribute('data-record-key');
+  const received=page.waitForResponse(response=>new URL(response.url()).pathname.startsWith('/generated/data/')&&response.request().method()==='GET');
+  await inspector.getByRole('button',{name:expectedLocale==='zh'?'加载完整字段':'Load complete fields',exact:true}).click();
+  const response=await received;assert.equal(response.status(),200);
+  const data=decodeRecordData(await response.json(),key??undefined);
+  for(const section of ['manifest','structured'])await inspector.locator('[data-field-section="'+section+'"]').waitFor();
+  assert.equal(await inspector.locator('[data-field-path="manifest.id"] .pcr-field-value').textContent(),String(data.manifest.id));
+  if (Object.hasOwn(data.manifest, "version")) assert.equal(await inspector.locator('[data-field-path="manifest.version"] .pcr-field-value').textContent(),String(data.manifest.version));
+  evidence.assertions.push('on-demand field inspector restores its exact current or historical record from shipped data');
  }
  if(route.kind!=='home'){
   const toc=await page.evaluate(()=>Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')).filter(a=>a.getAttribute('href')!=='#').map(a=>({href:a.getAttribute('href')!,found:!!document.getElementById(decodeURIComponent(a.hash.slice(1)))})));
@@ -288,13 +336,15 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
  }finally{await blocked.close();}
 }
 export async function qualifySiteBrowser(options:SiteBrowserOptions){
- const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.63.0')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.63.0.');
+ const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.64.1')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.64.1.');
  const exported=inspectSiteExport(options.root),languageCodes=emittedLanguageCodes(exported),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
- const languagePreferences:LanguagePreferenceEvidence[]=[];
- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.63.0',results,languagePreferences,status:'running',completedAt:'',failure:''};
+ const languagePreferences:LanguagePreferenceEvidence[]=[],inlineSamples=findInlineDownloads(exported);
+ const inlineDownloads:({engine:string}&Awaited<ReturnType<typeof checkInlineDownload>>)[]=[],inlineManifestDownloads:typeof inlineDownloads=[];
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',results,languagePreferences,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
  try {await withSiteExportServer(exported.root,async origin=>{
   for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
-   try {for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size,locale:'zh-CN'});
+   try {for(const selected of inlineSamples){const evidence={engine:name,...await checkInlineDownload(browser,origin,selected)};inlineDownloads.push(evidence);if(selected.name==='manifest.yaml')inlineManifestDownloads.push(evidence);}
+    for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size,locale:'zh-CN'});
     try {for(const route of exported.routes){const page=await context.newPage();const evidence:BrowserEvidence={engine:name,engineVersion:browser.version(),viewport,route,assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${name}-${viewport}-${route.locale}-${route.kind}.png`};results.push(evidence);
      const consoleErrors:{text:string;url:string}[]=[],{requestFailures:failedRequests,prefetchUrls}=evidence;
      const trace=observeSiteRequests(page,{engine:name,viewport},failedRequests,prefetchUrls);

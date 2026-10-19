@@ -35,18 +35,20 @@ sync_with: pcr.en-US.md
 | How much | 1 kg 净短绒质量 |
 | How well | 符合声明的切割类型、等级、水分基准、杂质规格、打包或散装状态和买方规格 |
 | How long or cycle | 一个生产批次、脱绒生产期或代表性年度生产期，并归一化到参考量 |
-| reference_flow_link | 短绒打包或发运过程的参考产品输出 |
+| reference_flow_link | `cotton_linters_at_producer_gate` |
 
 | Field | Value |
 | --- | --- |
-| Reference amount | 1 kg |
-| Reference product flow | Cotton linters `6587eccc-106f-4941-be4a-afdbe46df8b5` |
+| 参考数量 | 1 |
+| Reference product flow | 棉短绒 `6587eccc-106f-4941-be4a-afdbe46df8b5` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass unit group 93a60a57-a4c8-11da-a746-0800200c9a66 |
 | Reference unit | kg |
 | Required qualifiers | 切割类型；等级或质量类别；水分基准；杂质或含杂基准；已知时的棉籽来源和棉种；脱绒路线；生产地区；批次或生产期；打包或散装状态；脱绒棉籽及其他副产品的分配方法 |
 
 构建前景数据包时，`Required qualifiers` 中的项目必须在数据集元数据、过程说明、参考流注释、产品描述或等效字段中声明。缺少必需限定信息会导致该数据包的参考流定义不完整。
+
+原始批次、群体、过程转移和联产品数量按原采集口径完整保留。对每个交换，先完成实际路线、期间及联产品归属，再以归属原始量 × 1 kg / 同边界同期最终合格产品质量换算为声明参考流。必须记录真实阶段产出、损失、收率和分配，不得把中间转移量固定为最终 1 kg，也不得以缺失数据假定无损失。
 
 ## 4. 计量与单位规则
 
@@ -98,12 +100,14 @@ sync_with: pcr.en-US.md
 
 接收用于短绒去除的轧花后带短绒棉籽。
 
-- Selected flow: Cottonseed, other `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- 选定流：其他棉籽 `5ec72013-512e-4bb6-a5e6-648551f35d9d`
 - Flow property / unit: Mass / kg
 - Amount rule: measured incoming cottonseed mass with moisture and lot identity, allocated to saleable linters and co-products
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cottonseed_receipt_records`
@@ -122,12 +126,14 @@ sync_with: pcr.en-US.md
 
 输送机、棉籽清理机、风机、磁选、计量设备和储存转运使用的电力。
 
-- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - Flow property / unit: Energy / kWh or MJ
 - Amount rule: measured electricity or motor-hour calculation for receipt, storage movement, and pre-cleaning
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_records`
@@ -149,12 +155,14 @@ sync_with: pcr.en-US.md
 
 经接收、储存转运和预清理后转入机械脱绒的棉籽。
 
-- Selected flow: Cleaned cottonseed for delinting
+- 选定流：脱绒用已清理棉籽
 - Flow property / unit: Mass / kg
 - Amount rule: calculated from incoming cottonseed minus measured receiving rejects, adjusted for moisture where applicable
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_cottonseed_receipt_records`
@@ -174,12 +182,14 @@ sync_with: pcr.en-US.md
 
 脱绒前去除的杂质、石块、粉尘、壳片和非棉籽物料。
 
-- Selected flow: Cottonseed cleaning residue
+- 选定流：棉籽清理残余物
 - Flow property / unit: Mass / kg
 - Amount rule: measured reject mass or calculated from seed receiving mass balance
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue_records`
@@ -205,12 +215,14 @@ sync_with: pcr.en-US.md
 
 送入头道、二道、三道或一次混合脱绒设备的清洁棉籽。
 
-- Selected flow: Cleaned cottonseed for delinting
+- 选定流：脱绒用已清理棉籽
 - Flow property / unit: Mass / kg
 - Amount rule: measured seed mass charged by pass, cut type, and batch
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_delinting_pass_records`
@@ -224,51 +236,60 @@ sync_with: pcr.en-US.md
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Delinting electricity and mechanical service (`delinting_energy`)
+###### 脱绒用电 (`delinting_energy`)
 
-短绒锯、磨擦式脱绒机、输送机、风机和除尘设备使用的电力、压缩空气或机械服务能量。
+仅记录本阶段设备实际使用、与所选身份兼容的低压交流电（低于 1 kV）。保留供电电压、供方、地区和交付边界；其他电压或直流电需另选身份。本卡不代表燃料、压缩空气或机械服务。只有本阶段实际使用时启用；缺失记录不等于未使用。
 
-- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - Flow property / unit: Energy / kWh or MJ
-- Amount rule: measured equipment electricity or calculated motor-hour energy for each delinting pass
-- Value mode: Foreground record (`foreground_record`)
+- 数量规则：使用分表记录，或以有证据的电气输入功率、运行时长和负荷计算实际用电；按原阶段归属及匹配合格短绒产出归一化一次。保留 kWh，连接 MJ 参考量时按 1 kWh = 3.6 MJ 换算一次。不得将燃料热值或压缩空气、机械服务的活动量计为用电。
+- 数值来源模式：计算值（`calculated_value`）
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
 - Collection protocol: `cp_energy_records`
 - Sources:
-- Range: Initial delinting energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 3
-  - Unit: kWh
-  - Basis: per 1 kg saleable cotton linters
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Delinter maintenance materials (`delinter_maintenance_materials`)
+###### 矿物润滑油 (`delinter_maintenance_materials_lubricant`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 用于去除短绒的锯片、刷子、筛网、润滑剂和其他消耗性维护材料。
 
-- Selected flow: Delinter maintenance materials
-- Flow property / unit: Mass / kg
-- Amount rule: measured replacement material, lubricant, or maintenance consumable issue records allocated to linter production
+- 选定流：矿物润滑油
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_maintenance_material_records`
 - Sources:
-- Range: Initial maintenance material screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg
-  - Basis: per 1 kg saleable cotton linters
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### 钢制剥绒机锯片 (`delinter_maintenance_materials_blade`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+用于去除短绒的锯片、刷子、筛网、润滑剂和其他消耗性维护材料。
+
+- 选定流：钢制剥绒机锯片
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maintenance_material_records`
+- Sources:
 
 #### Outputs
 
@@ -278,12 +299,14 @@ sync_with: pcr.en-US.md
 
 最终清洁、调湿和打包前从棉籽上去除的短绒纤维。
 
-- Selected flow: Cotton linters `6587eccc-106f-4941-be4a-afdbe46df8b5`
+- 选定流：棉短绒 `6587eccc-106f-4941-be4a-afdbe46df8b5`
 - Flow property / unit: Mass / kg
 - Amount rule: measured raw linter mass by cut type and delinting pass
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
-- Normalization basis: per mechanical delinting process output
+原始采集或过程口径：per mechanical delinting process output
+
+- 归一化基准：每声明的参考流
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_delinting_pass_records`
@@ -301,12 +324,14 @@ sync_with: pcr.en-US.md
 
 去除短绒后转入榨油、饲料、种用或其他下游处理的棉籽。
 
-- Selected flow: Cottonseed, other `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- 选定流：其他棉籽 `5ec72013-512e-4bb6-a5e6-648551f35d9d`
 - Flow property / unit: Mass / kg
 - Amount rule: measured delinted seed mass after each pass or calculated by mass balance
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_coproduct_records`
@@ -326,12 +351,14 @@ sync_with: pcr.en-US.md
 
 脱绒期间由吸风或地面清扫收集的粉尘、细屑、短绒碎片和种皮碎片。
 
-- Selected flow: Cotton linter dust and fines
+- 选定流：棉短绒粉尘及细料
 - Flow property / unit: Mass / kg
 - Amount rule: measured collected dust and fines, or calculated from dust collector and mass balance records
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue_records`
@@ -351,12 +378,14 @@ sync_with: pcr.en-US.md
 
 控制后排放到工作场所或环境空气的纤维颗粒物。
 
-- Selected flow: Particulates, cotton fibre dust
+- 选定流：颗粒物，棉纤维粉尘
 - Flow property / unit: Mass / kg
 - Amount rule: measured emissions, filter balance, permit estimate, or calculated uncontrolled dust minus captured dust
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_air_emission_records`
@@ -380,12 +409,14 @@ sync_with: pcr.en-US.md
 
 来自一次或多次脱绒过程、用于最终清洁和销售准备的原短绒纤维。
 
-- Selected flow: Cotton linters `6587eccc-106f-4941-be4a-afdbe46df8b5`
+- 选定流：棉短绒 `6587eccc-106f-4941-be4a-afdbe46df8b5`
 - Flow property / unit: Mass / kg
 - Amount rule: measured raw linter mass by cut type, lot, and moisture basis
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_linter_quality_and_baling_records`
@@ -399,51 +430,60 @@ sync_with: pcr.en-US.md
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Cleaning and baling energy (`cleaning_baling_energy`)
+###### 清洁与打包用电 (`cleaning_baling_energy`)
 
-短绒清洁、吸风、调湿、打包、袋装和内部转运使用的电力或燃料。
+仅记录本阶段设备实际使用、与所选身份兼容的低压交流电（低于 1 kV）。保留供电电压、供方、地区和交付边界；其他电压或直流电需另选身份。本卡不代表燃料、压缩空气或机械服务。只有本阶段实际使用时启用；缺失记录不等于未使用。
 
-- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - Flow property / unit: Energy / kWh or MJ
-- Amount rule: measured energy or calculated equipment-hour energy for linter finishing and baling
-- Value mode: Foreground record (`foreground_record`)
+- 数量规则：使用分表记录，或以有证据的电气输入功率、运行时长和负荷计算实际用电；按原阶段归属及匹配合格短绒产出归一化一次。保留 kWh，连接 MJ 参考量时按 1 kWh = 3.6 MJ 换算一次。不得将燃料热值或压缩空气、机械服务的活动量计为用电。
+- 数值来源模式：计算值（`calculated_value`）
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
 - Collection protocol: `cp_energy_records`
 - Sources:
-- Range: Initial cleaning and baling energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2
-  - Unit: kWh
-  - Basis: per 1 kg saleable cotton linters
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Bale ties and non-returnable packaging (`bale_ties_and_packaging`)
+###### 钢丝 (`bale_ties_and_packaging_steel`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 用于可销售短绒的打包铁丝、捆带、袋、缠绕材料、标签和其他非周转包装。
 
-- Selected flow: Bale ties and linter packaging
-- Flow property / unit: Mass / kg
-- Amount rule: measured packaging issue records or standard bill of materials per linter bale or bag
+- 选定流：钢丝
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_packaging_records`
-- Sources:
-- Range: Initial packaging material screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg
-  - Basis: per 1 kg saleable cotton linters
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources:；`cotton-bale-materials`
+
+###### 聚乙烯薄膜 (`bale_ties_and_packaging_pe`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+用于可销售短绒的打包铁丝、捆带、袋、缠绕材料、标签和其他非周转包装。
+
+- 选定流：聚乙烯薄膜
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_records`
+- Sources:；`cotton-bale-materials`
 
 #### Outputs
 
@@ -453,12 +493,14 @@ sync_with: pcr.en-US.md
 
 已清洁、调湿并打包或包装，准备储存或发运的可销售棉短绒。
 
-- Selected flow: Cotton linters `6587eccc-106f-4941-be4a-afdbe46df8b5`
+- 选定流：棉短绒 `6587eccc-106f-4941-be4a-afdbe46df8b5`
 - Flow property / unit: Mass / kg
 - Amount rule: fixed reference output after cleaning and baling
 - Value mode: Fixed value (`fixed_value`)
 - Specificity: Product-specific (`product_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Identity reference (`identity_reference`)
 - Collection protocol: `cp_linter_quality_and_baling_records`
@@ -479,12 +521,14 @@ sync_with: pcr.en-US.md
 
 整理过程中去除的杂质、壳片、粉尘、不合格纤维和被拒收的短绒部分。
 
-- Selected flow: Cotton linter cleaning residue
+- 选定流：棉短绒清理残余物
 - Flow property / unit: Mass / kg
 - Amount rule: measured reject mass by cleaning stage, lot, and disposition
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue_records`
@@ -510,12 +554,14 @@ sync_with: pcr.en-US.md
 
 转入发运储存和装车的可销售短绒包、袋或散装批次。
 
-- Selected flow: Cotton linters `6587eccc-106f-4941-be4a-afdbe46df8b5`
+- 选定流：棉短绒 `6587eccc-106f-4941-be4a-afdbe46df8b5`
 - Flow property / unit: Mass / kg
 - Amount rule: measured saleable linter mass entering dispatch storage
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_dispatch_records`
@@ -529,28 +575,47 @@ sync_with: pcr.en-US.md
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Dispatch and loading energy (`dispatch_loading_energy`)
+###### 设备供电点的电力 (`dispatch_loading_energy_electricity`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 储存、装车和生产者门发运处理使用的叉车、输送、压缩空气、电力或燃料。
 
-- Selected flow: Dispatch and loading energy
-- Flow property / unit: Energy / kWh or MJ
-- Amount rule: measured fuel, electricity, equipment-hour, or contractor records for dispatch handling
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能源 / kWh
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_records`
 - Sources:
-- Range: Initial dispatch energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.5
-  - Unit: kWh
-  - Basis: per 1 kg saleable cotton linters
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
+###### 柴油 (`dispatch_loading_energy_diesel`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+储存、装车和生产者门发运处理使用的叉车、输送、压缩空气、电力或燃料。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_energy_records`
+- Sources:
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 #### Outputs
 
@@ -560,12 +625,14 @@ sync_with: pcr.en-US.md
 
 在生产者门或发运点离开前景系统的参考产品。
 
-- Selected flow: Cotton linters `6587eccc-106f-4941-be4a-afdbe46df8b5`
+- 选定流：棉短绒 `6587eccc-106f-4941-be4a-afdbe46df8b5`
 - Flow property / unit: Mass / kg
-- Amount rule: fixed reference output at the declared producer-gate or dispatch point
+- 数量规则：1 千克
 - Value mode: Fixed value (`fixed_value`)
 - Specificity: Product-specific (`product_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Identity reference (`identity_reference`)
 - Collection protocol: `cp_dispatch_records`
@@ -584,12 +651,14 @@ sync_with: pcr.en-US.md
 
 去除短绒后的副产品棉籽，转入油籽压榨、饲料、种用或其他下游用途。
 
-- Selected flow: Cottonseed, other `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- 选定流：其他棉籽 `5ec72013-512e-4bb6-a5e6-648551f35d9d`
 - Flow property / unit: Mass / kg
 - Amount rule: measured delinted seed mass leaving the foreground boundary or internal transfer point
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_coproduct_records`
@@ -605,28 +674,62 @@ sync_with: pcr.en-US.md
 
 ##### Waste flows
 
-###### Dispatch losses and waste packaging (`dispatch_losses_and_waste_packaging`)
+###### 损失的棉短绒 (`dispatch_losses_and_waste_packaging_linters_waste`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 产品发运前产生的短绒损失、损坏包装、清扫物和非产品废物。
 
-- Selected flow: Dispatch losses and waste packaging
-- Flow property / unit: Mass / kg
-- Amount rule: measured waste, inventory loss, or disposal record before product leaves the facility
+- 选定流：损失的棉短绒
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg saleable cotton linters
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue_records`
 - Sources:
-- Range: Initial dispatch loss screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.05
-  - Unit: kg
-  - Basis: per 1 kg saleable cotton linters
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### 废聚乙烯薄膜 (`dispatch_losses_and_waste_packaging_pe_waste`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+产品发运前产生的短绒损失、损坏包装、清扫物和非产品废物。
+
+- 选定流：废聚乙烯薄膜
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_residue_records`
+- Sources:
+
+###### 废钢丝捆扎线 (`dispatch_losses_and_waste_packaging_steel_waste`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+产品发运前产生的短绒损失、损坏包装、清扫物和非产品废物。
+
+- 选定流：废钢丝捆扎线
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+原始采集或过程口径：per 1 kg saleable cotton linters
+
+- 归一化基准：每声明的参考流
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_residue_records`
+- Sources:
 
 ##### Elementary flows
 
@@ -645,16 +748,16 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_cottonseed_receipt_records` | `cottonseed_receipt_and_precleaning` | 进厂棉籽和清洁棉籽转移 | receiving, scale, storage, and pre-cleaning record | supplier; lot_id; cotton_species_or_variety; seed_mass; moisture; trash; storage_bin; receipt_date; cleaned_seed_mass | weighbridge, scale ticket, receiving note, storage ledger, or seed cleaner log | kg seed, percent moisture, percent trash | 每批或每生产期 | 代表性生产年或声明生产期 | 接收场地、储仓或棉籽批次 | 汇总进厂批次，并在扣除拒收物和水分调整后计算清洁棉籽转移量 | 地磅校准、接收单、储存台账和水分测试 |
-| `cp_delinting_pass_records` | `mechanical_delinting` | 投入棉籽、脱绒次数、原短绒输出和通过率 | delinter run sheet, production log, or control-system record | pass_number; cut_type; seed_mass_charged; raw_linter_mass; delinted_seed_mass; runtime; equipment_id; moisture | batch sheet, linter run sheet, plant historian, or operator log | kg, hour, percent moisture | 每次通过或每批 | 声明生产期或生产年 | 脱绒线、通过次数和棉籽批次 | 核对投入棉籽与原短绒、脱绒棉籽、粉尘和水分变化 | 生产日志、称量记录、水分测试和质量平衡表 |
-| `cp_linter_quality_and_baling_records` | `linter_cleaning_conditioning_and_baling` | 原短绒、清洁短绒、等级、打包和包装 | quality, cleaning, conditioning, bale press, or finished-goods record | cut_type; grade; raw_linter_mass; cleaned_linter_mass; moisture; impurity; bale_id; bale_mass; packaging_mass | bale scale, lab test, visual grading record, product specification, or finished-goods ledger | kg, percent moisture, percent impurity | 每包、每批或每生产期 | 声明生产期或生产年 | 整理线、打包机或仓库 | 汇总合格包净质量，并将所有前景行归一化到净可销售短绒 | 打包单、实验室记录、分级记录、成品台账和可用时的分析证书 |
-| `cp_energy_records` | all processes | 电力、燃料、压缩空气和机械服务 | meter, invoice, fuel issue, compressed-air allocation, or equipment-hour record | carrier; quantity; unit; equipment_id; process_id; runtime; date; allocation_basis | meter reading, invoice reconciliation, equipment-hour calculation, or submeter | kWh, MJ, L fuel, kg fuel, equipment-hour | 月度、每批或每生产期 | 代表性生产年或生产期 | 生产线、设备、设施或过程区域 | 优先分配直接计量能源，其次按运行时间、吞吐量或可销售短绒质量分配 | 仪表校准、发票、燃料日志和分配表 |
-| `cp_maintenance_material_records` | `mechanical_delinting` | 锯片、刷子、筛网、润滑剂和维护消耗品 | inventory issue, maintenance work order, or equipment log | material_type; quantity; unit; equipment_id; replacement_date; process_id; allocation_basis | work order, stock issue, maintenance record, or supplier note | kg, item count, L lubricant | 每次更换或月度 | 代表性生产年或生产期 | 脱绒线或设备 | 按脱绒机运行时间、棉籽吞吐量或短绒质量分配消耗品 | 维护日志、库存出库记录和供应商规格 |
-| `cp_packaging_records` | `linter_cleaning_conditioning_and_baling` | 打包铁丝、捆带、缠绕材料、袋、标签和非周转包装 | bill of materials, purchase, warehouse issue, or bale record | material_type; unit_mass; units_used; bales_covered; reusable_flag; supplier; waste_amount | BOM, packaging issue, bale press record, or supplier specification | kg material, item count | 每批或月度 | 生产年或生产期 | 打包机、仓库或发运区 | 非周转包装按净可销售短绒质量汇总 | 采购记录、BOM、供应商规格和出库记录 |
-| `cp_coproduct_records` | `mechanical_delinting`; `co_product_residue_and_dispatch` | 脱绒棉籽和可销售不合格短绒副产品 | co-product transfer, sales, or internal use record | co_product_type; mass; moisture; destination; sale_price_if_used; internal_transfer; date | scale ticket, transfer note, sales invoice, internal transfer ledger, or downstream production record | kg, percent moisture, currency per kg where used | 每批或月度 | 生产年或生产期 | 棉籽转移点、仓库或客户批次 | 汇总副产品数量，并在需要时计算分配系数 | 称量记录、发票、转移单和分配表 |
-| `cp_residue_records` | all processes | 棉籽清理拒收物、粉尘、细屑、不合格废物和废包装 | waste, residue, disposal, composting, fuel-use, or rework record | residue_type; quantity; moisture; fate; disposal_route; internal_reuse_flag; date; process_id | waste ticket, dust collector log, residue measurement, disposal manifest, or rework ledger | kg, percent moisture | 每批、月度或生产期 | 生产年或生产期 | 接收、脱绒、整理、仓库或废物处理区域 | 按去向汇总残余物，并将可销售残余物关联到副产品规则 | 处置单、废物联单、除尘器日志和返工记录 |
-| `cp_air_emission_records` | `mechanical_delinting`; `linter_cleaning_conditioning_and_baling` | 无组织和受控纤维粉尘排放 | filter balance, permit estimate, stack test, or dust collector record | captured_dust_mass; filter_efficiency; emission_factor_if_used; airflow; operating_hours; control_device | stack test, filter weighing, permit calculation, or dust collector log | kg particulate, m3 air, hour | 测试事件、月度或生产期 | 代表性生产年或许可期 | 除尘器、脱绒线、整理线或设施 | 以未控制或产生粉尘减去捕集粉尘和保留残余物计算排放粉尘 | 烟囱测试、滤材日志、许可文件和计算表 |
-| `cp_dispatch_records` | `co_product_residue_and_dispatch` | 最终短绒发运和装车 | dispatch ticket, inventory release, loading record, or bill of lading | lot_id; bale_id; net_mass; packaging_state; dispatch_date; customer_or_destination; loading_energy_link | finished-goods ledger, bill of lading, loading ticket, or dispatch record | kg, bale count | 每个发运批次 | 生产年或生产期 | 仓库、装车口或生产者门 | 核对成品、发运可销售短绒质量和发运损失 | 提单、成品台账、装车单和库存核对 |
+| `cp_cottonseed_receipt_records` | `cottonseed_receipt_and_precleaning` | 进厂棉籽和清洁棉籽转移 | receiving, scale, storage, and pre-cleaning record | supplier; lot_id; cotton_species_or_variety; seed_mass; moisture; trash; storage_bin; receipt_date; cleaned_seed_mass | weighbridge, scale ticket, receiving note, storage ledger, or seed cleaner log；原活动量汇总：汇总进厂批次，并在扣除拒收物和水分调整后计算清洁棉籽转移量 | kg seed, percent moisture, percent trash | 每批或每生产期 | 代表性生产年或声明生产期 | 接收场地、储仓或棉籽批次 | 每声明的参考流 | 地磅校准、接收单、储存台账和水分测试 |
+| `cp_delinting_pass_records` | `mechanical_delinting` | 投入棉籽、脱绒次数、原短绒输出和通过率 | delinter run sheet, production log, or control-system record | pass_number; cut_type; seed_mass_charged; raw_linter_mass; delinted_seed_mass; runtime; equipment_id; moisture | batch sheet, linter run sheet, plant historian, or operator log；原活动量汇总：核对投入棉籽与原短绒、脱绒棉籽、粉尘和水分变化 | kg, hour, percent moisture | 每次通过或每批 | 声明生产期或生产年 | 脱绒线、通过次数和棉籽批次 | 每声明的参考流 | 生产日志、称量记录、水分测试和质量平衡表 |
+| `cp_linter_quality_and_baling_records` | `linter_cleaning_conditioning_and_baling` | 原短绒、清洁短绒、等级、打包和包装 | quality, cleaning, conditioning, bale press, or finished-goods record | cut_type; grade; raw_linter_mass; cleaned_linter_mass; moisture; impurity; bale_id; bale_mass; packaging_mass | bale scale, lab test, visual grading record, product specification, or finished-goods ledger；原活动量汇总：汇总合格包净质量，并将所有前景行归一化到净可销售短绒 | kg, percent moisture, percent impurity | 每包、每批或每生产期 | 声明生产期或生产年 | 整理线、打包机或仓库 | 每声明的参考流 | 打包单、实验室记录、分级记录、成品台账和可用时的分析证书 |
+| `cp_energy_records` | all processes | 电力、燃料、压缩空气和机械服务 | meter, invoice, fuel issue, compressed-air allocation, or equipment-hour record | carrier; quantity; unit; equipment_id; process_id; runtime; date; allocation_basis; 实际载能体或独立服务身份；电压及供方；合同包含范围；自制或外购；电气输入功率和负荷依据 | meter reading, invoice reconciliation, equipment-hour calculation, or submeter；原活动量汇总：优先分配直接计量能源，其次按运行时间、吞吐量或可销售短绒质量分配; cotton_linter_energy_identity: 脱绒和清洁打包两张电力卡只核算交流电。按实际设备及采购记录分别识别实际使用的燃料、外购压缩空气或独立机械服务，完成数据集前落实为具体交换；无兼容 UUID 时明确待确认，不预设必须使用。自制压缩空气链接内部压缩机，将用电归属一次；外购压缩空气或含能源的服务不得再把供方已包含的用电、燃料计为本场址额外采购。原混合能源筛选范围不再作为电力或其他单项载能体的默认量或限制 | kWh, MJ, L fuel, kg fuel, equipment-hour | 月度、每批或每生产期 | 代表性生产年或生产期 | 生产线、设备、设施或过程区域 | 每声明的参考流 | 仪表校准、发票、燃料日志和分配表 |
+| `cp_maintenance_material_records` | `mechanical_delinting` | 锯片、刷子、筛网、润滑剂和维护消耗品 | inventory issue, maintenance work order, or equipment log | material_type; quantity; unit; equipment_id; replacement_date; process_id; allocation_basis | work order, stock issue, maintenance record, or supplier note；原活动量汇总：按脱绒机运行时间、棉籽吞吐量或短绒质量分配消耗品 | kg, item count, L lubricant | 每次更换或月度 | 代表性生产年或生产期 | 脱绒线或设备 | 每声明的参考流 | 维护日志、库存出库记录和供应商规格 |
+| `cp_packaging_records` | `linter_cleaning_conditioning_and_baling` | 打包铁丝、捆带、缠绕材料、袋、标签和非周转包装 | bill of materials, purchase, warehouse issue, or bale record | material_type; unit_mass; units_used; bales_covered; reusable_flag; supplier; waste_amount | BOM, packaging issue, bale press record, or supplier specification；原活动量汇总：非周转包装按净可销售短绒质量汇总 | kg material, item count | 每批或月度 | 生产年或生产期 | 打包机、仓库或发运区 | 每声明的参考流 | 采购记录、BOM、供应商规格和出库记录 |
+| `cp_coproduct_records` | `mechanical_delinting`; `co_product_residue_and_dispatch` | 脱绒棉籽和可销售不合格短绒副产品 | co-product transfer, sales, or internal use record | co_product_type; mass; moisture; destination; sale_price_if_used; internal_transfer; date | scale ticket, transfer note, sales invoice, internal transfer ledger, or downstream production record；原活动量汇总：汇总副产品数量，并在需要时计算分配系数 | kg, percent moisture, currency per kg where used | 每批或月度 | 生产年或生产期 | 棉籽转移点、仓库或客户批次 | 每声明的参考流 | 称量记录、发票、转移单和分配表 |
+| `cp_residue_records` | all processes | 棉籽清理拒收物、粉尘、细屑、不合格废物和废包装 | waste, residue, disposal, composting, fuel-use, or rework record | residue_type; quantity; moisture; fate; disposal_route; internal_reuse_flag; date; process_id | waste ticket, dust collector log, residue measurement, disposal manifest, or rework ledger；原活动量汇总：按去向汇总残余物，并将可销售残余物关联到副产品规则 | kg, percent moisture | 每批、月度或生产期 | 生产年或生产期 | 接收、脱绒、整理、仓库或废物处理区域 | 每声明的参考流 | 处置单、废物联单、除尘器日志和返工记录 |
+| `cp_air_emission_records` | `mechanical_delinting`; `linter_cleaning_conditioning_and_baling` | 无组织和受控纤维粉尘排放 | filter balance, permit estimate, stack test, or dust collector record | captured_dust_mass; filter_efficiency; emission_factor_if_used; airflow; operating_hours; control_device | stack test, filter weighing, permit calculation, or dust collector log；原活动量汇总：以未控制或产生粉尘减去捕集粉尘和保留残余物计算排放粉尘 | kg particulate, m3 air, hour | 测试事件、月度或生产期 | 代表性生产年或许可期 | 除尘器、脱绒线、整理线或设施 | 每声明的参考流 | 烟囱测试、滤材日志、许可文件和计算表 |
+| `cp_dispatch_records` | `co_product_residue_and_dispatch` | 最终短绒发运和装车 | dispatch ticket, inventory release, loading record, or bill of lading | lot_id; bale_id; net_mass; packaging_state; dispatch_date; customer_or_destination; loading_energy_link | finished-goods ledger, bill of lading, loading ticket, or dispatch record；原活动量汇总：核对成品、发运可销售短绒质量和发运损失 | kg, bale count | 每个发运批次 | 生产年或生产期 | 仓库、装车口或生产者门 | 每声明的参考流 | 提单、成品台账、装车单和库存核对 |
 
 ### Calculation Rules
 
@@ -711,3 +814,4 @@ sync_with: pcr.en-US.md
 | `ncpa-trading-rules-2013` | standard | National Cottonseed Products Association, Trading Rules 2013-14, https://www.cottonseed.com/wp-content/uploads/2016/04/2013-14-Trading-Rules-edited-for-web-site.pdf | 一次混合绒、头道绒、二道绒和化学短绒的市场定义。 |
 | `usda-ars-mechanical-delinter-2016` | literature | Journal of Cotton Science, Development and Evaluation of a Novel Bench-Top Mechanical Cotton Seed Delinter, https://journal.cotton.org/wp-content/uploads/2025/11/JCS21-018.pdf | 机械脱绒技术背景和酸脱绒排除说明。 |
 | `iso-14044-2006` | standard | ISO 14044:2006 Environmental management - Life cycle assessment - Requirements and guidelines. | 功能单位、分配、数据质量和校验框架。 |
+| `cotton-bale-materials` | standard | National Cotton Council bale packaging material identities; actual linter specifications and quantities require site records, https://www.cotton.org/tech/bale/specs/bagging.cfm | 条件性身份依据；实际场址用量和适用性须单独核实 |

@@ -1,0 +1,1268 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.imaged-developed-positive-thermal-aluminium-offset-plates"
+  classification_refs: "CPC 3.0 32800; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  covered_products: "Imaged, developed, gummed, unbaked positive thermal aluminium offset plates"
+  excluded_products: "Process-free/negative/waterless/non-aluminium plates; gravure cylinders; stones; type; printed goods; regeneration services"
+  representative_product: "Accepted purchased precoated positive thermal aluminium plate after CTP imaging and aqueous processing"
+  production_route: "Receipt → imaging → aqueous development/rinse → gum/electric drying → acceptance/packing"
+  market_state: "Unused, imaged/developed, unbaked, complete plate at plant gate"
+functional_unit:
+  what: "Provision of an image carrier compatible with a declared wet-offset job"
+  how_much: "1 kg accepted complete net plate mass"
+  how_well: "Declared grade, gauge, image/defect acceptance, gum and drying state; printing service is separately qualified"
+  how_long_or_cycle: "One manufacture-to-gate cycle; actual later service is a separate account, with no assumed universal print-run life"
+  reference_flow_link: "reference_plate"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "plate_making"
+      rule: "Collect only the declared positive thermal aqueous-developed plate-shop route. Retain measured imaging/development/rinse/gum/drying stages and all actual auxiliaries. Upstream alloy/surface/coating manufacture is not silently omitted or repeated in the shop."
+      source_ids:
+        - eu-sts-image-carrier-2007
+        - fuji-lh-ple-2019
+    - rule_id: boundary_liquid_fate
+      applies_to: "wastewater; elementary releases"
+      rule: "Declare actual off-site treatment versus site treatment/direct outfall. A liquid transferred to a treatment receiver is a waste exchange, not a site elementary emission. A site release reports carrier water and species at the same real outfall after treatment where present; do not duplicate the discharged liquid as an off-site waste."
+      source_ids:
+        - epa-metals-2007-1994
+    - rule_id: boundary_recursion
+      applies_to: "reference_plate; plate_blank"
+      rule: "Record a purchased coated blank at its actual unexposed state, with upstream coverage. A reused finished plate belongs to a regeneration/service boundary rather than recursively passing through this manufacture as new material. Stop unsupported upstream links and disclose the missing provider coverage."
+      source_ids:
+        - eu-sts-image-carrier-2007
+    - rule_id: boundary_completeness
+      applies_to: "all inventory rows"
+      rule: "No default cutoff may hide coating chemicals, small-mass toxic species or solvents. Include actual inbound transport through verified supplier/transport coverage and document cutoffs and infrastructure treatment. Keep upstream printing-paper manufacture and downstream printing/service use distinct from platemaking."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased unexposed, surface-prepared/coated positive thermal aluminium blanks"
+  starting_condition_role: "Upstream delivered condition; not virgin aluminium or regenerated-plate service"
+  product_classification_scope: "One physical offset-plate subset of CPC 32800"
+  recursive_input_rule: "Do not reuse finished-reference UUID as an unexposed precursor; reused plates require separate regeneration boundary"
+  upstream_dataset_requirement: "Supplier coverage of alloy, surface preparation, coating composition/solvents/drying and delivery; compatible actual material basis"
+  disclosure: "Declare provider/grade, missing upstream coverage, process location, electricity basis, effluent fate and receivers; supplier manufacture is not an on-site operation"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Composed type, prepared printing plates or cylinders, impressed lithographic stones or other impressed media for use in printing"
+    uuid: "7294740f-d360-49af-ba60-a832f331757d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "aluminium alloy and whole-plate gauge"
+    - "positive thermal coating grade and supplier"
+    - "imaging system and acceptance"
+    - "actual developer/replenisher concentration"
+    - "rinse and gum/drying state"
+    - "unbaked and unused state"
+    - "complete net mass"
+    - "retained moisture and plate area"
+    - "declared press/run compatibility without assumed life"
+    - "electricity delivery voltage/property basis"
+    - "effluent route and waste receivers"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference is 1 kg accepted complete net plate mass; calibrated cp_mass weighing excludes packaging/clamps/free water and includes substrate plus retained coating/protective layer and its residual water at the declared delivery condition. Preserve dry solids and residual-water subaccounts; do not convert the whole output to dry aluminium."
+  - id: campaign_basis
+    applies_to: "common accepted-reference denominator only"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Per 1 kg reference flow; divide attributable campaign exchanges by the same-grade accepted complete net plate kg. Item count, image count and plate area are not kg; measured same-grade count/area/mass conversions are traceable diagnostics. Preserve each raw numerator native property/unit: electricity MJ and freshwater-carrier m3 are not Mass/kg quantities."
+  - id: solution_basis
+    applies_to: "developer; replenisher; gum; water; wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve complete wet solution mass and temperature/density/composition; separate as-supplied replenisher, dilution water and recirculation without assumed concentration/density."
+  - id: species_basis
+    applies_to: "elementary outputs"
+    required_property_ref:
+      name: "Mass; Volume"
+      uuid: ""
+    required_unit: "kg; m3"
+    rule: "Elemental analysis uses mass as element; COD uses oxygen-demand mass; liquid discharge uses m3; vapour uses kg to air. Media and species/constituent masses are not interchangeable."
+process_map:
+  - id: plate_making
+    name: "Positive thermal aluminium plate imaging and aqueous processing (aggregate)"
+    inclusion: "required"
+    inclusion_condition: "Declared purchased-coated-blank route"
+    role: "Foreground manufacture"
+    quantitative_reference: "1 kg reference_plate"
+process_inventory:
+  - id: plate_making
+    label: "Positive thermal aluminium plate imaging and aqueous processing (aggregate)"
+    inputs:
+      product:
+        - row_id: plate_blank
+          role: "Unexposed coated positive thermal aluminium CTP plate"
+          name: "Unexposed coated positive thermal aluminium CTP plate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One purchased coated blank, including alloy substrate, prepared/anodised surface and dry imaging coating. Record supplier, positive thermal grade and whole-plate net mass; an uncoated substrate cannot substitute. Supplier upstream evidence must cover substrate production, surface treatment, coating chemicals, coating solvent recovery and drying."
+          amount:
+            expression: "Measured attributable campaign amount under cp_material divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - eu-sts-image-carrier-2007
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: developer
+          role: "Developer, for offset printing plate, at plant"
+          name: "Developer, for offset printing plate, at plant"
+          flow_type: "product"
+          flow_ref:
+            uuid: "26694f8a-891f-4ee5-b583-55b689acbb09"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One as-supplied formulated developer, for example the manufacturer-listed grade DT-2WE, charged at its documented working strength. The brochure names the grade but establishes neither supplied nor working concentration. Count complete solution mass, not pure alkali mass. The generic identity does not establish formulation, density or supplier background equivalence. Capture current SDS and supplier concentration; do not import photographic-film developer chemistry."
+          amount:
+            expression: "Measured attributable campaign amount under cp_material divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: replenisher
+          role: "Positive thermal offset plate developer replenisher solution"
+          name: "Positive thermal offset plate developer replenisher solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One separately purchased formulated replenisher, for example the manufacturer-listed DT-2RE. Record its as-supplied concentration, actual dilution and working bath conditions; the grade name does not prove it is a concentrate. Keep complete replenisher mass and any separately added water distinct; do not count processor recirculation as new input. Record actual automatic dosing and stock changes."
+          amount:
+            expression: "Measured attributable campaign amount under cp_material divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: gum
+          role: "Aqueous offset plate protective gum finishing solution"
+          name: "Aqueous offset plate protective gum finishing solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One actual formulated finishing solution, for example FG-8CWE. Gum arabic, starch or an adhesive identity does not represent the complete proprietary mixture. Record wet solution mass, solids, water and any solvent separately in the composition ledger."
+          amount:
+            expression: "Measured attributable campaign amount under cp_material divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Purchased treated process water for dilution, rinsing and processor cleaning. Collect each stage meter, supplier quality and density for volume-to-mass conversion; water already in purchased solutions is composition, not a second purchased exchange. No on-site abstraction is assumed."
+          amount:
+            expression: "Measured attributable campaign amount under cp_water divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Measure platesetter, processor, rinse pumps, electric drying and auxiliaries, retaining stage readings inside this aggregated unit. The selected identity is China consumer-side grid-average supply at 1–35 kV with Net calorific value reference property. It is usable only for that actual supply region, metering boundary and supplier basis; other voltage/service conditions require a separately verified identity. A plate exposure specification is not whole-equipment electricity."
+          amount:
+            expression: "Measured attributable campaign amount under cp_energy divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: box
+          role: "Corrugated paperboard plate shipping box"
+          name: "Corrugated paperboard plate shipping box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One corrugated box where actually supplied with accepted plates; collect net box mass and supplier construction/fibre composition. A specific fixed-fibre-recipe database box is not a generic substitute. Packaging mass is excluded from the reference plate mass."
+          amount:
+            expression: "Measured attributable campaign amount under cp_material divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: interleaf
+          role: "Separator paper"
+          name: "Separator paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "68a4c082-ae92-4672-b9ce-c328fc41a225"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One paper interleaf barrier between plates. Confirm actual paper grade and any treatment; a broad barrier-paper identity is physically compatible but does not supply a background recipe. Distinguish interleaf delivered with product from removed incoming interleaf waste and avoid charging a supplier-included component twice."
+          amount:
+            expression: "Measured attributable campaign amount under cp_material divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ipa
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional: one separately supplied isopropanol component used in actual platesetter/processor maintenance. Record CAS 67-63-0, purity, fossil/biogenic origin and supplier grade from current SDS; the selected native record names IPA but supplies no CAS field, so that field is not database-verified. Confirm CAS and composition against the supplier before linking; the generic China-production identity is conditional on those conditions. It is not an entire solvent cleaner or a default cleaning practice."
+          amount:
+            expression: "Measured attributable campaign amount under cp_material divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_plate
+          role: "Composed type, prepared printing plates or cylinders, impressed lithographic stones or other impressed media for use in printing"
+          name: "Composed type, prepared printing plates or cylinders, impressed lithographic stones or other impressed media for use in printing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7294740f-d360-49af-ba60-a832f331757d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Accepted imaged, developed, rinsed, gummed, electrically dried, unbaked positive thermal aluminium offset plate, unused and ready for conventional wet offset. Count complete substrate plus retained coating, protective layer and residual water at the declared delivery condition, excluding packaging, free rinse water and clamps. Retained moisture remains in the complete mass and in a separate water subaccount. The broad reference identity must carry these physical qualifiers; it does not make cylinders, type or stones method-equivalent."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - eu-sts-image-carrier-2007
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: delivery_box
+          role: "Corrugated paperboard plate shipping box"
+          name: "Corrugated paperboard plate shipping box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional: the same corrugated box physically leaving with the accepted plates, not a second box purchase or an independently allocated co-product. Record complete delivered box mass, including any actual moisture, excluding plate kg. Reconcile incoming/new boxes, stocks, reuse, return and waste in the packaging ledger; constituent identities and background remain subject to supplier verification."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: delivery_interleaf
+          role: "Separator paper"
+          name: "Separator paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "68a4c082-ae92-4672-b9ce-c328fc41a225"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional: paper interleaf physically delivered between accepted plates at its actual grade/treatment/moisture state; track its full mass outside plate net kg. This output carries packaging, not another purchase, printing service or saleable paper co-product. Reconcile supplied interleaf, stock, reuse, removed paper waste and delivered interleaf without counting both supplier-included and separately bought material."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: reject_plate
+          role: "Aluminium Scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One segregated manufacturing reject or punching scrap aluminium-plate stream sent to a documented recycler. Retain coating/gum contamination, aluminium content, wet/dry state and receiver acceptance. Whole scrap mass is not recovered-metal yield; this generic scrap identity does not imply remelting inside the plate shop."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-sts-image-carrier-2007
+            ranges: []
+        - row_id: spent_developer
+          role: "Spent positive thermal aluminium offset plate aqueous developer"
+          name: "Spent positive thermal aluminium offset plate aqueous developer"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One spent developer bath purge crossing to off-site treatment, including dissolved coating and measured metals. Wet bath mass, solids and composition are collected; keep separate sludge, rinses and stock. A generic photographic or paint waste is not a replacement."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: wastewater
+          role: "Aluminium offset platemaking rinse wastewater to off-site treatment"
+          name: "Aluminium offset platemaking rinse wastewater to off-site treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional off-site route: one rinse/cleaning wastewater stream to a named treatment receiver. Record stream composition, flow and mass; a database record explicitly to water cannot represent transfer to treatment. Its subsequent releases belong to the receiver dataset, not this foreground outfall."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: sludge
+          role: "Wet aluminium offset plate developer filtration sludge"
+          name: "Wet aluminium offset plate developer filtration sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional: one separately removed developer-filter sludge stream. Record water content, coating polymers, aluminium and receiver conditions. It is neither papermaking sludge nor municipal biological sludge. Exclude material already in a weighed spent bath. Filter or screen media and captured solids are separately weighed; add each actual replacement medium and its contaminated waste as its own exchange rather than hiding the support material in sludge."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: paper_waste
+          role: "waste paper (unspecified)"
+          name: "waste paper (unspecified)"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f140a5a2-5318-4d06-956f-a87b9c6fda25"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One removed paper interleaf stream segregated for a named receiver. Declare any coating/chemical contamination, moisture and recycling eligibility; contaminated and clean grades must be separate exchanges when different receivers or identities apply. Generic waste-paper identity establishes no recycling credit."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_ipa
+          role: "Spent isopropanol maintenance cleaning solution"
+          name: "Spent isopropanol maintenance cleaning solution"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional: one separately captured spent IPA cleaning solution to treatment or recovery; record solvent mass fraction, net solution mass, contaminants and destination. Count recovered material as physical output before any allocation and distinguish recovered solvent from its recovery service burden."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: spent_gum
+          role: "Spent aqueous aluminium offset plate gum solution"
+          name: "Spent aqueous aluminium offset plate gum solution"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional: one separately collected gum-bath purge, excluding material combined and already weighed in rinse wastewater. Keep product-retained gum and spent solution distinct; measure dissolved/solid fraction and treatment destination."
+          amount:
+            expression: "Measured attributable campaign amount under cp_waste divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+      elementary:
+        - row_id: aluminium_water
+          role: "aluminium"
+          name: "aluminium"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a732-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional only at a real site outfall to fresh water: aluminium, CAS 7429-90-5, kg as Al. Use flow-weighted total-recoverable analysis with appropriate digestion and retain dissolved/particulate fractions; do not sum dissolved and inclusive total. ICP-AES is not oxidation-state speciation. Do not apply this exchange to wastewater sent off site."
+          amount:
+            expression: "Measured attributable campaign amount under cp_effluent divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - epa-metals-2007-1994
+            ranges: []
+        - row_id: cod_water
+          role: "chemical oxygen demand"
+          name: "chemical oxygen demand"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-97ed-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional fresh-water outfall COD load in kg oxygen demand with stated test method and matrix QA. COD is a sum indicator with no substance CAS; retain named organics separately and disclose potential LCIA overlap instead of treating COD as a chemical or total organic carbon."
+          amount:
+            expression: "Measured attributable campaign amount under cp_effluent divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: water_discharge
+          role: "Water"
+          name: "Water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Conditional: liquid water, CAS 7732-18-5, discharged at a real fresh-water outfall; record m3 liquid water on the selected reference Volume basis. This is an emission, not freshwater withdrawal or wastewater-treatment service. Reconcile carrier water with wastewater wet mass and composition, without making the whole wastewater chemically pure water."
+          amount:
+            expression: "Measured attributable campaign amount under cp_effluent divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: ipa_air
+          role: "isopropanol"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional: actual unrecovered IPA release to outdoor air, unspecified subcompartment, CAS 67-63-0. Prefer chemical-specific monitoring or a closed species balance. Record capture, recovered solvent, waste retention and stock changes; do not emit a second aggregate VOC mass for the same substance. Workplace exposure is not the outdoor release."
+          amount:
+            expression: "Measured attributable campaign amount under cp_air divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: ipa_water
+          role: "isopropanol"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a847-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional fresh-water outfall release of IPA, CAS 67-63-0, chemical kg from speciated analysis. Actual solvent use and measured release are separate facts; no positive release or destruction fraction follows from finding a flow identity. Exclude solvent still contained in off-site wastewater."
+          amount:
+            expression: "Measured attributable campaign amount under cp_effluent divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: water_vapor
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional: evaporated water from real electric drying or open baths to outdoor air, unspecified subcompartment, CAS 7732-18-5, kg vapour. Determine moisture and stocks rather than converting all water intake to vapour. Subtract inlet-air humidity from outlet-air water on a consistent dry-air basis and reconcile condensation/capture and stocks. Gross exhaust humidity is not all process-generated water. Water-vapour records classified to fresh water are not used for air evaporation."
+          amount:
+            expression: "Measured attributable campaign amount under cp_water divided by accepted campaign net plate kg; conditional absence requires actual absence evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - fuji-lh-ple-2019
+            ranges: []
+        - row_id: alkali_na_air
+          role: "sodium hydroxide"
+          name: "sodium hydroxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "72848d23-c462-4f5b-ae59-34e6fa16103e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual sodium hydroxide mist escaping to outdoor air, unspecified subcompartment, CAS 1310-73-2, kg as NaOH. Confirm that the actual supplied bath contains this substance and that monitored aerosol identifies it after any control. Neither alkaline pH nor total sodium establishes NaOH. Aerosol water is separate from chemical mass; reconcile any overlapping PM result and LCIA treatment. No default emission or default NaOH recipe follows from the manufacturer example."
+          amount:
+            expression: "Measured attributable campaign chemical mass under cp_air divided by accepted campaign net plate kg; conditional absence requires actual bath/SDS and release-path evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+        - row_id: alkali_k_air
+          role: "Potassium hydroxide"
+          name: "Potassium hydroxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "d95b00da-1a10-4a79-89ca-aa4ecef24067"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual potassium hydroxide mist escaping to outdoor air, unspecified subcompartment, CAS 1310-58-3, kg as KOH. Confirm actual bath composition and outdoor aerosol speciation after any control; total potassium and alkaline pH are not KOH mass. Keep aerosol carrier water, recovered material and overlapping PM distinct. Do not assume the bath contains both hydroxides; supplier grade and monitoring decide each row independently."
+          amount:
+            expression: "Measured attributable campaign chemical mass under cp_air divided by accepted campaign net plate kg; conditional absence requires actual bath/SDS and release-path evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared operations"
+    rule: "First use stage meters, bath throughput and job records to separate attributable burdens. For inseparable baths/shared electricity, collect causally relevant processed area, operating/idle time and grade; document the chosen driver and shares. Do not impose a universal mass or price allocation factor."
+    source_ids: []
+  - rule_id: allocation_physical_ledger
+    applies_to: "reference_plate; reject_plate; recovered material"
+    rule: "Allocate environmental burdens only after preserving the complete physical ledger. Keep accepted/reject/recovered-stream masses intact; never multiply a co-product physical output by its burden share. Document whether scrap is waste or an actual saleable co-product, receiver route and chosen recycling convention. No automatic avoided-virgin-aluminium credit or 100% recovery yield."
+    source_ids: []
+  - rule_id: allocation_service_life
+    applies_to: "reference_plate; downstream print job"
+    rule: "Manufacturing output remains complete plate kg. A downstream print job may distribute the linked manufacture burden using documented compatible service, actual accepted impressions or qualified area and plate replacements. Keep whole-plate physical mass, recovered-carrier mass, regeneration mass loss and service allocation in separate accounts. Never reduce physical kg by impression count or count recycled aluminium as the same reused imaged plate. Manufacturer maximum run claims do not establish actual life."
+    source_ids:
+      - fuji-lh-ple-2019
+      - eu-sts-image-carrier-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "plate_making"
+      flow_role: "linked atomic exchanges"
+      record_type: "acceptance/weighing"
+      raw_fields: "campaign; grade; alloy; coating; gauge; plate count; area; complete net kg; retained coating/gum solids and water; drying/conditioning time, temperature and humidity; rejected kg"
+      collection_method: "Calibrated net weighing of complete accepted plates after declared drying, with same-grade acceptance records; exclude packaging/free water/clamps. Aggregation: accepted net plate mass; all records normalized per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "representative campaign including startup, idle and rejects"
+      site_scope: "declared plate shop/grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; grade traceability; area/count cross-check"
+    - protocol_id: cp_material
+      process_id: "plate_making"
+      flow_role: "linked atomic exchanges"
+      record_type: "stock/receipt/dosing"
+      raw_fields: "material grade; provider; current SDS; wet kg; density; solids; all constituent/CAS and solvent/water fractions; packaging inclusion/tare; opening/closing stocks; returns; maintenance consumables; stage"
+      collection_method: "Reconcile receipts, calibrated dosing/weights, formulation basis and stocks; record supplier upstream manufacture and delivered reference quantity. Aggregation: retain raw attributable campaign totals in each exchange native unit; normalize_campaign performs the sole output-mass division."
+      unit: "kg"
+      frequency: "lot and campaign"
+      temporal_coverage: "same campaign as cp_mass"
+      site_scope: "declared shop and supplier"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "receipts; meter calibration; current composition and provider chain"
+    - protocol_id: cp_energy
+      process_id: "plate_making"
+      flow_role: "linked atomic exchanges"
+      record_type: "meter"
+      raw_fields: "stage kWh; startup/idle; supplier; voltage and supply region; property/unit basis; transformer loss; ventilation/cooling/maintenance; drying heat and condensate; shared-operation driver"
+      collection_method: "Read calibrated supply/stage meters; keep supply voltage and boundaries compatible with the background link. Preserve electrical energy despite database NCV label. Aggregation: retain raw attributable campaign totals in each exchange native unit; normalize_campaign performs the sole output-mass division."
+      unit: "kWh; MJ"
+      frequency: "stage and campaign"
+      temporal_coverage: "same campaign as cp_mass"
+      site_scope: "actual supply intake and shop stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; supply contract; driver and loss reconciliation"
+    - protocol_id: cp_water
+      process_id: "plate_making"
+      flow_role: "linked atomic exchanges"
+      record_type: "water/moisture balance"
+      raw_fields: "stage fresh water; density; bath stocks; solution water; plate moisture; wet wastes; inlet/outlet air humidity and dry-air flow; condensate; evaporated water; recirculation"
+      collection_method: "Meter new supply and reconcile solution/stock/moisture/destination records; internal recirculation is not fresh input. Evaporation needs measured or independently supported water balance. Aggregation: retain raw attributable campaign totals in each exchange native unit; normalize_campaign performs the sole output-mass division."
+      unit: "kg; m3"
+      frequency: "stage and campaign"
+      temporal_coverage: "same campaign as cp_mass"
+      site_scope: "actual shop liquid system"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meters; density/temperature; moisture and closure uncertainty"
+    - protocol_id: cp_waste
+      process_id: "plate_making"
+      flow_role: "linked atomic exchanges"
+      record_type: "weighing/transfer"
+      raw_fields: "stream ID; shipment packaging/returns; wet kg; moisture/solids; coating; metal/solvent content; waste/co-product decision; receiver; recovery yield"
+      collection_method: "Weigh segregated streams and reconcile transfer records, contamination and receiver acceptance; record physical output before burden allocation. Aggregation: retain raw attributable campaign totals in each exchange native unit; normalize_campaign performs the sole output-mass division."
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "same campaign as cp_mass"
+      site_scope: "shop gate and verified receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh tickets; composition; receiver/treatment evidence"
+    - protocol_id: cp_effluent
+      process_id: "plate_making"
+      flow_role: "linked atomic exchanges"
+      record_type: "flow-weighted laboratory monitoring"
+      raw_fields: "outfall; freshwater receiving body; bulk solution m3; carrier-water fraction and m3; wastewater wet kg; analyte/CAS; concentration; dissolved/total; COD method; detection limits; QA"
+      collection_method: "Sample actual discharge with representative flow-weighted concentrations; for Al use validated matrix-appropriate total-recoverable/dissolved method such as EPA 200.7 with digestion/filtration recorded. Identify other species separately. Aggregation: retain raw attributable campaign totals in each exchange native unit; normalize_campaign performs the sole output-mass division."
+      unit: "m3; mg/L; kg"
+      frequency: "representative discharge events and campaign"
+      temporal_coverage: "same campaign as cp_mass"
+      site_scope: "site freshwater outfall; not off-site treatment transfer"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "chain of custody; blanks; recovery; matrix/interference; flow calibration"
+    - protocol_id: cp_air
+      process_id: "plate_making"
+      flow_role: "linked atomic exchanges"
+      record_type: "species monitoring/balance"
+      raw_fields: "chemical CAS; solution composition/purity/origin; input; retained/recovered/waste kg; water and other medium releases; disjoint stocks; vent flow; species and aerosol/PM relationship; capture/control evidence"
+      collection_method: "Measure outdoor release or use an independently supported closed species balance with capture, recovery, waste and stocks; VOC-as-carbon totals require documented speciation and conversion. Aggregation: retain raw attributable campaign totals in each exchange native unit; normalize_campaign performs the sole output-mass division."
+      unit: "kg"
+      frequency: "maintenance/bath handling event and campaign"
+      temporal_coverage: "same campaign as cp_mass"
+      site_scope: "actual outdoor shop release"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "SDS; monitoring calibration; independent balance terms and uncertainty"
+    - protocol_id: cp_service
+      process_id: "plate_making"
+      flow_role: "linked atomic exchanges"
+      record_type: "allocation/service account"
+      raw_fields: "stage driver; burden shares; print job; compatible plate ID; actual accepted impressions; area; replacement; recovered-carrier kg"
+      collection_method: "Keep manufacturing physical ledger immutable; use job/receiver records for separately declared burden allocation and downstream service only. Do not assume brochure run life. Aggregation: manufacturing inventory remains per 1 kg reference flow; downstream service burden is a separate account"
+      unit: "kg; m2; impressions"
+      frequency: "campaign and declared downstream jobs"
+      temporal_coverage: "declared matching period"
+      site_scope: "shop plus explicitly linked downstream job"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "driver causality; compatible job records; recovery receipts"
+  calculation_rules:
+    - id: normalize_campaign
+      applies_to: "all inventory rows"
+      rule: "inventory_amount = attributable campaign exchange / accepted campaign net plate kg. Retain numerator unit and divide all grade-matched records by the same positive denominator. Use one complete matched reporting-period pool for the same product, grade, route, site and reference state, including all attributable startup/shutdown, wholly failed or zero-output batches, rejects, work in progress and rework. Sum raw numerator totals before dividing once by the strictly positive accepted net output; count reworked product once only at final acceptance. Never average batch ratios or omit failed activity. A pool with no accepted output retains its absolute unnormalized inventory and requires review."
+      inputs:
+        - cp_mass
+        - cp_material
+        - cp_energy
+        - cp_water
+        - cp_waste
+        - cp_effluent
+        - cp_air
+      output: "exchange per 1 kg reference flow"
+      source_ids: []
+    - id: electricity_units
+      applies_to: "electricity"
+      rule: "electricity_MJ = measured_kWh * 3.6; preserve supply voltage and meter boundary. This unit conversion does not establish supplier technology or a steam enthalpy basis."
+      inputs:
+        - cp_energy
+      output: "MJ electricity"
+      source_ids: []
+    - id: liquid_mass
+      applies_to: "water; developer; replenisher; gum; wastewater"
+      rule: "solution_kg = measured_solution_L * measured_density_kg_per_L at recorded temperature/grade. Apply composition fractions only in the species ledger; retain complete product/waste solution exchanges."
+      inputs:
+        - cp_material
+        - cp_water
+        - cp_waste
+      output: "wet solution kg and separate constituent kg"
+      source_ids: []
+    - id: outfall_load
+      applies_to: "aluminium_water; cod_water; ipa_water"
+      rule: "load_kg = sum(concentration_mg_per_L * discharged_bulk_solution_m3) / 1000 over matched samples. Concentration and volume must describe the same whole liquid, not carrier-water volume. Preserve analyte definition and representative flow weighting; nondetect handling and uncertainty are explicit."
+      inputs:
+        - cp_effluent
+      output: "actual chemical kg or COD oxygen-demand kg"
+      source_ids:
+        - epa-metals-2007-1994
+    - id: species_balance
+      applies_to: "ipa_air"
+      rule: "air_release_kg = chemical_input_kg + opening_stock_kg - closing_stock_kg - product_retained_kg - exported_waste_constituent_kg - recovered_export_kg - actual_water_release_kg - other_evidenced_release_kg - evidenced_destroyed_kg. Every term is IPA constituent mass over the same perimeter; stock, retained, waste, recovery and medium terms are mutually exclusive. Internal reuse cancels; unexplained residual is not an assumed release."
+      inputs:
+        - cp_air
+        - cp_material
+        - cp_waste
+      output: "IPA chemical kg to actual outdoor air"
+      source_ids:
+        - epa-printing-eiip-2002
+    - id: plate_area_mass
+      applies_to: "reference_plate; plate_blank"
+      rule: "complete_plate_kg = measured_same_grade_area_m2 * measured_complete_kg_per_m2 at the same coating/gum/moisture state; or measured count * measured same-grade complete kg per plate. Derive factors from traceable weighed samples and area/count, with sampling uncertainty. Gauge times nominal metal density excludes coating/protective layers/water and is not a whole-plate conversion."
+      inputs:
+        - cp_mass
+        - cp_material
+      output: "complete plate kg, with dry-solids/water subaccounts"
+      source_ids: []
+    - id: carrier_water
+      applies_to: "water_discharge"
+      rule: "carrier_water_m3 = measured_bulk_solution_kg * measured_water_mass_fraction / water_density_kg_per_m3 at documented temperature. Use a supported water density and compatible composition method; bulk solution density is not automatically carrier-water density. Reconcile with separately inventoried constituents; whole solution volume remains the basis for concentration-derived analyte loads."
+      inputs:
+        - cp_water
+        - cp_effluent
+      output: "actual carrier water m3"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_scope
+      applies_to: "all inventory rows"
+      requirement: "Match route, plate grade, campaign and acceptance state; no recipe, yield, area-to-mass or run-life default."
+      evidence: "cp_mass; cp_material"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "A broad identity is conditional on physical inclusion and compatible provider/reference quantity. Blank UUIDs and source metadata conflicts remain disclosed and block unsupported linking."
+      evidence: "current SDS; provider specification; direct identity/reference evidence"
+    - id: quality_monitoring
+      applies_to: "elementary outputs"
+      requirement: "Record actual receiving compartment, flow-weighted measurements, species basis, blanks/recovery, detection limits, matrix interference and uncertainty. A sum indicator does not hide a toxic species."
+      evidence: "cp_effluent; cp_air; epa-metals-2007-1994"
+    - id: quality_balances
+      applies_to: "all inventory rows"
+      requirement: "Retain physical and allocated-burden accounts separately, justify residuals and conditional absence, and document temporal/site/technology representativeness and data gaps."
+      evidence: "cp_water; cp_waste; cp_service"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_plate"
+    rule: "Require the exact physical qualifiers, one accepted complete plate output, a compatible product identity and Mass/kg reference. Broad classification language does not establish an average mixed-media recipe or scientific approval."
+    source_ids: []
+  - rule_id: validate_denominator
+    applies_to: "all inventory rows"
+    rule: "All rows and stage aggregates use per 1 kg reference flow, divided by the same accepted complete net plate kg for the matching grade/campaign. Item count and surface area are diagnostic fields; neither substitutes for whole-product kg without measured same-grade conversion."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "all inventory rows"
+    rule: "Reconcile physical aluminium, water including retained moisture and inlet/outlet humidity, coating/solvent carbon, packaging/returns, maintenance consumables, energy and stocks before any burden allocation. Unknown composition, missing flow identity, provider basis or unexplained material residual remains an explicit data-package gap; a successful UUID read alone cannot complete the dataset."
+    source_ids: []
+  - rule_id: validate_species
+    applies_to: "elementary outputs"
+    rule: "Check actual release point, CAS, medium and quantity basis. Aluminium is kg as Al, COD is kg oxygen demand, water discharge is liquid m3 and water vapour is kg to air. Keep individual solvent/species inventories and report COD/LCIA overlap; no VOC/PM/metal double count, wastewater-as-pure-water substitution or correction-flow identity."
+    source_ids:
+      - epa-metals-2007-1994
+      - epa-printing-eiip-2002
+  - rule_id: validate_applicability
+    applies_to: "conditional rows"
+    rule: "Require recorded absence or actual records for each conditional stream. Current supplier/SDS and stage records determine additional atomic exchanges. Historic plant factors, brochure bath capacities, exposure dose and press-run maxima are not universal foreground quantities."
+    source_ids:
+      - fuji-lh-ple-2019
+published_dataset_profile:
+  dataset_role: "Foreground platemaking dataset; explicit gate/physical boundary metadata"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Background for matching positive thermal aqueous-developed aluminium plate printing models after upstream verification"
+  excluded_use: "Cylinder/stone/type/process-free/printed-goods methodology; unverified regeneration or mixed-media averages; default per-impression burdens"
+  required_metadata: "aluminium alloy and whole-plate gauge; positive thermal coating grade and supplier; imaging system and acceptance; actual developer/replenisher concentration; rinse and gum/drying state; unbaked and unused state; complete net mass, retained moisture and plate area; declared press/run compatibility without assumed life; electricity delivery voltage/property basis; effluent route and waste receivers"
+  required_quality_disclosure: "Campaign/site representativeness, UUID/provider-basis gaps, composition/species gaps, balance residuals, conditional-absence evidence, allocation/recycling convention and actual service account"
+  update_trigger: "Changed plate/coating/development route, provider basis, outfall, receiver or energy-delivery conditions, or new reliable evidence"
+data_sources:
+  - id: "eu-sts-image-carrier-2007"
+    type: "official_guidance"
+    reference: "European Commission, Surface Treatment using Organic Solvents BREF, August 2007, §2.2.2, printed pp15–16 / PDF pp59–60. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-04/STS_Adopted082007.pdf"
+    used_for: "Historical route distinction: aluminium offset/CTP versus gravure plating; no historic recipe, emission or quantity defaults."
+  - id: "fuji-lh-ple-2019"
+    type: "handbook"
+    reference: "FUJIFILM, Superia LH-PLE Overview, EU3877 V01 11 19, PDF pp1–2. https://asset.fujifilm.com/www/be/files/2020-11/f0d8ad4d63b41189ffbfb788aee18814/EU3877_Superia_LH-PLE_Overview_V1_web.pdf"
+    used_for: "Product-specific positive thermal developer/replenisher/gum and unbaked/baked distinction; brochure run, exposure and consumption values are not generic quantities."
+  - id: "epa-printing-eiip-2002"
+    type: "official_guidance"
+    reference: "US EPA, EIIP Volume II Chapter 15, Printing, Packaging and Graphic Arts, May 2002, §4.1.1, printed 15.4-1–2 / PDF pp31–32. https://www.epa.gov/sites/default/files/2015-08/documents/ii15_may2002.pdf"
+    used_for: "Material-balance measurement and capture/reuse distinction for imaging/prepress cleaning; collect site waste/stock/species terms without retained/control default factors."
+  - id: "epa-metals-2007-1994"
+    type: "official_guidance"
+    reference: "US EPA, Method 200.7 Revision 4.4, 1994, §1.1, §1.3–1.5, printed 200.7-2–3 / PDF pp3–4. https://www.epa.gov/sites/default/files/2015-08/documents/method_200-7_rev_4-4_1994.pdf"
+    used_for: "Aluminium CAS 7429-90-5 and dissolved/total-recoverable sampling/digestion conditions; no oxidation-state identity or emission quantity."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1e9b3750d7807e9de18d3b90b2fbbf8fbb3017b40ed2fee6a6e3445385efed76"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5713"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5713
+          line: 60
+          column: 1
+        end:
+          offset: 8182
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased unexposed, surface-prepared/coated positive thermal aluminium blanks |\n| starting_condition_role | Upstream delivered condition; not virgin aluminium or regenerated-plate service |\n| product_classification_scope | One physical offset-plate subset of CPC 32800 |\n| recursive_input_rule | Do not reuse finished-reference UUID as an unexposed precursor; reused plates require separate regeneration boundary |\n| upstream_dataset_requirement | Supplier coverage of alloy, surface preparation, coating composition/solvents/drying and delivery; compatible actual material basis |\n| disclosure | Declare provider/grade, missing upstream coverage, process location, electricity basis, effluent fate and receivers; supplier manufacture is not an on-site operation |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | plate_making | Collect only the declared positive thermal aqueous-developed plate-shop route. Retain measured imaging/development/rinse/gum/drying stages and all actual auxiliaries. Upstream alloy/surface/coating manufacture is not silently omitted or repeated in the shop. | eu-sts-image-carrier-2007;fuji-lh-ple-2019 |\n| boundary_liquid_fate | wastewater; elementary releases | Declare actual off-site treatment versus site treatment/direct outfall. A liquid transferred to a treatment receiver is a waste exchange, not a site elementary emission. A site release reports carrier water and species at the same real outfall after treatment where present; do not duplicate the discharged liquid as an off-site waste. | epa-metals-2007-1994 |\n| boundary_recursion | reference_plate; plate_blank | Record a purchased coated blank at its actual unexposed state, with upstream coverage. A reused finished plate belongs to a regeneration/service boundary rather than recursively passing through this manufacture as new material. Stop unsupported upstream links and disclose the missing provider coverage. | eu-sts-image-carrier-2007 |\n| boundary_completeness | all inventory rows | No default cutoff may hide coating chemicals, small-mass toxic species or solvents. Include actual inbound transport through verified supplier/transport coverage and document cutoffs and infrastructure treatment. Keep upstream printing-paper manufacture and downstream printing/service use distinct from platemaking. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 344
+              line: 10
+              column: 1
+            end:
+              offset: 407
+              line: 10
+              column: 64
+          text: "# Imaged and developed positive thermal aluminium offset plates"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5713
+              line: 60
+              column: 1
+            end:
+              offset: 5734
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37484"
+      family: "allocation"
+      span:
+        start:
+          offset: 37484
+          line: 509
+          column: 1
+        end:
+          offset: 39055
+          line: 517
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivision | shared operations | First use stage meters, bath throughput and job records to separate attributable burdens. For inseparable baths/shared electricity, collect causally relevant processed area, operating/idle time and grade; document the chosen driver and shares. Do not impose a universal mass or price allocation factor. |  |\n| allocation_physical_ledger | reference_plate; reject_plate; recovered material | Allocate environmental burdens only after preserving the complete physical ledger. Keep accepted/reject/recovered-stream masses intact; never multiply a co-product physical output by its burden share. Document whether scrap is waste or an actual saleable co-product, receiver route and chosen recycling convention. No automatic avoided-virgin-aluminium credit or 100% recovery yield. |  |\n| allocation_service_life | reference_plate; downstream print job | Manufacturing output remains complete plate kg. A downstream print job may distribute the linked manufacture burden using documented compatible service, actual accepted impressions or qualified area and plate replacements. Keep whole-plate physical mass, recovered-carrier mass, regeneration mass loss and service allocation in separate accounts. Never reduce physical kg by impression count or count recycled aluminium as the same reused imaged plate. Manufacturer maximum run claims do not establish actual life. | fuji-lh-ple-2019;eu-sts-image-carrier-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 344
+              line: 10
+              column: 1
+            end:
+              offset: 407
+              line: 10
+              column: 64
+          text: "# Imaged and developed positive thermal aluminium offset plates"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37484
+              line: 509
+              column: 1
+            end:
+              offset: 37524
+              line: 509
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_54893"
+      family: "validation"
+      span:
+        start:
+          offset: 54893
+          line: 564
+          column: 1
+        end:
+          offset: 56804
+          line: 574
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference_plate | Require the exact physical qualifiers, one accepted complete plate output, a compatible product identity and Mass/kg reference. Broad classification language does not establish an average mixed-media recipe or scientific approval. |  |\n| validate_denominator | all inventory rows | All rows and stage aggregates use per 1 kg reference flow, divided by the same accepted complete net plate kg for the matching grade/campaign. Item count and surface area are diagnostic fields; neither substitutes for whole-product kg without measured same-grade conversion. |  |\n| validate_balance | all inventory rows | Reconcile physical aluminium, water including retained moisture and inlet/outlet humidity, coating/solvent carbon, packaging/returns, maintenance consumables, energy and stocks before any burden allocation. Unknown composition, missing flow identity, provider basis or unexplained material residual remains an explicit data-package gap; a successful UUID read alone cannot complete the dataset. |  |\n| validate_species | elementary outputs | Check actual release point, CAS, medium and quantity basis. Aluminium is kg as Al, COD is kg oxygen demand, water discharge is liquid m3 and water vapour is kg to air. Keep individual solvent/species inventories and report COD/LCIA overlap; no VOC/PM/metal double count, wastewater-as-pure-water substitution or correction-flow identity. | epa-metals-2007-1994;epa-printing-eiip-2002 |\n| validate_applicability | conditional rows | Require recorded absence or actual records for each conditional stream. Current supplier/SDS and stage records determine additional atomic exchanges. Historic plant factors, brochure bath capacities, exposure dose and press-run maxima are not universal foreground quantities. | fuji-lh-ple-2019 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 344
+              line: 10
+              column: 1
+            end:
+              offset: 407
+              line: 10
+              column: 64
+          text: "# Imaged and developed positive thermal aluminium offset plates"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 54893
+              line: 564
+              column: 1
+            end:
+              offset: 54915
+              line: 564
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5713"
+      source_span:
+        start:
+          offset: 6664
+          line: 75
+          column: 1
+        end:
+          offset: 7003
+          line: 75
+          column: 340
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_liquid_fate"
+      identity_kind: "explicit"
+      unit_id: "normative_5713"
+      source_span:
+        start:
+          offset: 7004
+          line: 76
+          column: 1
+        end:
+          offset: 7423
+          line: 76
+          column: 420
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_recursion"
+      identity_kind: "explicit"
+      unit_id: "normative_5713"
+      source_span:
+        start:
+          offset: 7424
+          line: 77
+          column: 1
+        end:
+          offset: 7811
+          line: 77
+          column: 388
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_5713"
+      source_span:
+        start:
+          offset: 7812
+          line: 78
+          column: 1
+        end:
+          offset: 8180
+          line: 78
+          column: 369
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_37484"
+      source_span:
+        start:
+          offset: 37597
+          line: 513
+          column: 1
+        end:
+          offset: 37951
+          line: 513
+          column: 355
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_37484"
+      source_span:
+        start:
+          offset: 37952
+          line: 514
+          column: 1
+        end:
+          offset: 38423
+          line: 514
+          column: 472
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_service_life"
+      identity_kind: "explicit"
+      unit_id: "normative_37484"
+      source_span:
+        start:
+          offset: 38424
+          line: 515
+          column: 1
+        end:
+          offset: 39053
+          line: 515
+          column: 630
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_54893"
+      source_span:
+        start:
+          offset: 54988
+          line: 568
+          column: 1
+        end:
+          offset: 55263
+          line: 568
+          column: 276
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_54893"
+      source_span:
+        start:
+          offset: 55264
+          line: 569
+          column: 1
+        end:
+          offset: 55589
+          line: 569
+          column: 326
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_54893"
+      source_span:
+        start:
+          offset: 55590
+          line: 570
+          column: 1
+        end:
+          offset: 56031
+          line: 570
+          column: 442
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_54893"
+      source_span:
+        start:
+          offset: 56032
+          line: 571
+          column: 1
+        end:
+          offset: 56459
+          line: 571
+          column: 428
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_54893"
+      source_span:
+        start:
+          offset: 56460
+          line: 572
+          column: 1
+        end:
+          offset: 56802
+          line: 572
+          column: 343
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5713"
+      source_span:
+        start:
+          offset: 5713
+          line: 60
+          column: 1
+        end:
+          offset: 5734
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5713"
+      source_span:
+        start:
+          offset: 5762
+          line: 64
+          column: 1
+        end:
+          offset: 6591
+          line: 71
+          column: 183
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37484"
+      source_span:
+        start:
+          offset: 37484
+          line: 509
+          column: 1
+        end:
+          offset: 37524
+          line: 509
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_54893"
+      source_span:
+        start:
+          offset: 54893
+          line: 564
+          column: 1
+        end:
+          offset: 54915
+          line: 564
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1e9b3750d7807e9de18d3b90b2fbbf8fbb3017b40ed2fee6a6e3445385efed76"
+  generated_content_sha256: "sha256:96867e208af4f1ae39edf078a83f848a823ab8254815e6e7c8c6f7ac0312b72b"

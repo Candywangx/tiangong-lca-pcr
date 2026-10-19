@@ -33,18 +33,20 @@ sync_with: pcr.en-US.md
 | How much | 1 kg 净产品质量 |
 | How well | 产品满足声明的商业等级、产品形态、水分或干物质基准和杂质规格 |
 | How long or cycle | 一个前景生产批次、割胶作业、萃取作业或折算到参考量的年度化作业 |
-| reference_flow_link | 最终初级树胶生产过程的参考产品输出 |
+| reference_flow_link | `packaged_product_at_gate` |
 
 | 字段 | 值 |
 | --- | --- |
-| 参考数量 | 1 kg |
-| 参考产品流 | Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b` |
+| 参考数量 | 1 |
+| 参考产品流 | 巴拉塔树胶、杜仲胶、银菊胶、糖胶树胶和类似天然树胶，初级形式或板状、片状或条状 `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Mass unit group 93a60a57-a4c8-11da-a746-0800200c9a66 |
 | 参考单位 | kg |
 | 必需限定信息 | gum type; botanical or supplier source category; source system; product form; moisture or dry matter basis; resin separation or purification state; production route; geographic origin; allocation method for co-products |
 
 构建前景数据包时，`必需限定信息` 中列出的信息应在数据集元数据、过程说明、参考流备注、产品说明或等效数据包字段中明确声明。缺失必需限定信息的数据包视为参考流定义不完整。
+
+原始批次、群体、过程转移和联产品数量按原采集口径完整保留。对每个交换，先完成实际路线、期间及联产品归属，再以归属原始量 × 1 kg / 同边界同期最终合格产品质量换算为声明参考流。必须记录真实阶段产出、损失、收率和分配，不得把中间转移量固定为最终 1 kg，也不得以缺失数据假定无损失。
 
 ## 4. 计量与单位规则
 
@@ -96,31 +98,70 @@ sync_with: pcr.en-US.md
 
 按声明路线记录来料。来料可以是割取乳胶、粗胶、采收叶片、银菊灌木生物质或外购粗胶批次。
 
-- 选定流：Natural gum source material
+- 选定流：天然树胶来源材料
 - 流属性/单位：Mass / kg
 - 数量规则：实测来料质量及干物质或总固形物含量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_source_material_records`
 - 来源：`fao-nwfp-6-chicle`; `fao-nwfp-6-balata`; `fao-nwfp-6-gutta-percha`; `dehghanizadeh-2021-guayule-resin`
 
-###### 田间燃料与采集能源（`field_collection_energy`）
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1.0
+  - 上限：100
+  - 单位：kg 干物质
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+###### 设备供电点的电力 (`field_collection_energy_electricity`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 当燃料、电力或畜力/机械采集服务直接用于割胶、灌木采收、叶片收集、田间切碎或原料接收时纳入。
 
-- 选定流：Field collection energy
-- 流属性/单位：Energy / MJ or kWh
-- 数量规则：来自仪表、发票、日志或设备小时计算的实测燃料或电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能源 / kWh
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
 - 来源：
+
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
+###### 柴油 (`field_collection_energy_diesel`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+当燃料、电力或畜力/机械采集服务直接用于割胶、灌木采收、叶片收集、田间切碎或原料接收时纳入。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_energy_records`
+- 来源：
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ##### 废物流
 
@@ -128,16 +169,28 @@ sync_with: pcr.en-US.md
 
 当被拒收的树皮、叶片、枝条、灌木材料或受污染粗胶作为废物离开前景系统，或返回来源区域时记录。
 
-- 选定流：Biogenic plant residue
+- 选定流：生物源植物残余物
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：来源采集后的实测或计算拒收生物质
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_residue_records`
 - 来源：
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：50
+  - 单位：kg 干物质
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 基本流
 
@@ -145,16 +198,28 @@ sync_with: pcr.en-US.md
 
 当前景数据集代表种植地或受管理来源区域运营，而不仅是外购原料批次接收时，报告土地占用。
 
-- 选定流：Land occupation, forestry or perennial shrub production
+- 选定流：林业或多年生灌木生产用地占用
 - 流属性/单位：Area-time / m2a
 - 数量规则：按采收来源材料分摊的年度化生产性来源面积
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_source_area_records`
 - 来源：
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：1000
+  - 单位：m2a
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 #### 输出
 
@@ -164,16 +229,28 @@ sync_with: pcr.en-US.md
 
 实测采集或接收材料转入初级浓缩或萃取过程。
 
-- 选定流：Raw natural gum material
+- 选定流：初级天然树胶材料
 - 流属性/单位：Mass / kg as received and kg dry matter
 - 数量规则：来源采集或接收后的实测转移质量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每来源采集或接收过程输出
+原始采集或过程口径：每来源采集或接收过程输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_source_material_records`
 - 来源：
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1.0
+  - 上限：100
+  - 单位：kg 干物质
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 废物流
 
@@ -189,61 +266,120 @@ sync_with: pcr.en-US.md
 
 将原乳胶、粗胶、叶片、灌木生物质或外购粗胶投入回收路线。
 
-- 选定流：Raw natural gum material
+- 选定流：初级天然树胶材料
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：投入浓缩、煮制、凝固或萃取设备的实测原料量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_source_material_records`
 - 来源：
 
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1.0
+  - 上限：100
+  - 单位：kg 干物质
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
 ###### 工艺用水（`process_water_input`）
 
 当工艺用水用于煮制、热水软化、洗涤、水相萃取、浆料输送或冷却并跨越前景边界时纳入。
 
-- 选定流：Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
+- 选定流：工艺用水 `ec205030-248c-496f-9cf2-06d9d26dc6ff`
 - 流属性/单位：Mass / kg
 - 数量规则：扣除内部循环后的实测补充水消耗
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_water_records`
 - 来源：
 
-###### 溶剂、凝固剂或分离助剂（`separation_aid_input`）
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：100
+  - 单位：kg
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+###### 丙酮溶剂 (`separation_aid_input_acetone`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。这些溶剂卡仅适用于记录证明存在的银胶菊溶剂萃取，不得应用于其他树胶、单纯水提或煮制路线。
 
 仅当声明路线使用溶剂、酸、盐、碱、助滤剂或其他分离助剂时纳入。
 
-- 选定流：Solvent, coagulant, or process aid
-- 流属性/单位：Mass / kg
-- 数量规则：按材料名称和浓度实测采购量或消耗量
+- 选定流：丙酮溶剂
+- 流属性 / 单位：质量 / kg
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_auxiliary_material_records`
-- 来源：`dehghanizadeh-2021-guayule-resin`
+- 来源：`dehghanizadeh-2021-guayule-resin`；`usda-guayule-extraction-2019`
+
+###### 环己烷溶剂 (`separation_aid_input_cyclohexane`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。这些溶剂卡仅适用于记录证明存在的银胶菊溶剂萃取，不得应用于其他树胶、单纯水提或煮制路线。
+
+仅当声明路线使用溶剂、酸、盐、碱、助滤剂或其他分离助剂时纳入。
+
+- 选定流：环己烷溶剂
+- 流属性 / 单位：质量 / kg
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_auxiliary_material_records`
+- 来源：`dehghanizadeh-2021-guayule-resin`；`usda-guayule-extraction-2019`
 
 ###### 工艺热和电力（`recovery_energy_input`）
 
 纳入煮制、萃取、搅拌、离心、蒸发、溶剂回收和泵送的能源。
 
-- 选定流：Electricity, medium voltage `2eb3b2fd-6511-4a22-9018-768024a5b5a6`
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh or MJ
 - 数量规则：实测能源使用，或分摊到回收作业的设备能源
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
 - 来源：`dehghanizadeh-2021-guayule-resin`
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0.1
+  - 上限：100
+  - 单位：MJ
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 废物流
 
@@ -257,16 +393,28 @@ sync_with: pcr.en-US.md
 
 在最终干燥和成形前记录中间树胶、凝胶物、橡胶馏分、树脂馏分或粗古塔馏分。
 
-- 选定流：Natural gum intermediate
+- 选定流：天然树胶中间品
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：实测中间产物输出，包括水分或固形物基准
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每回收过程输出
+原始采集或过程口径：每回收过程输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_records`
 - 来源：
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1.0
+  - 上限：10
+  - 单位：kg 干物质
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 废物流
 
@@ -274,31 +422,55 @@ sync_with: pcr.en-US.md
 
 当水离开回收过程进入处理、排放或外部处置时记录废水。
 
-- 选定流：Process wastewater
+- 选定流：生产废水
 - 流属性/单位：Volume / m3 or Mass / kg
 - 数量规则：实测排放量，或循环后水量平衡残差
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_water_records`
 - 来源：
 
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：100
+  - 单位：kg
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
 ###### 渣料、废叶、树脂性残渣或萃取固体（`recovery_solid_residue`）
 
 叶片萃取、灌木萃取、过滤或粗胶清洁产生的固体残渣按干物质和处置或利用路线记录。
 
-- 选定流：Biogenic extraction residue
+- 选定流：生物源提取残余物
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：实测残渣产生量和去向
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_residue_records`
 - 来源：`dehghanizadeh-2021-guayule-resin`
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：100
+  - 单位：kg 干物质
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 基本流
 
@@ -306,16 +478,28 @@ sync_with: pcr.en-US.md
 
 当煮制、浓缩或干燥过程中的水分蒸发具有重要性时，作为水量平衡输出报告。
 
-- 选定流：Water vapour to air
+- 选定流：水蒸气向空气排放
 - 流属性/单位：Mass / kg
 - 数量规则：由水量平衡和水分测定计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_product_quality_records`
 - 来源：
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：100
+  - 单位：kg
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ### 过程：纯化、干燥、压制和成形（`purification_forming_and_drying`）
 
@@ -327,31 +511,55 @@ sync_with: pcr.en-US.md
 
 将树胶中间材料投入最终干燥、纯化、压制、块状成形、片状成形或切带。
 
-- 选定流：Natural gum intermediate
+- 选定流：天然树胶中间品
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：最终整理过程的实测中间体输入
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_records`
 - 来源：
 
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1.0
+  - 上限：10
+  - 单位：kg 干物质
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
 ###### 整理能源（`finishing_energy_input`）
 
 纳入干燥、压制、滚压、切割、冷却和通风能源。
 
-- 选定流：Electricity, medium voltage `2eb3b2fd-6511-4a22-9018-768024a5b5a6`
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh or MJ
 - 数量规则：最终整理实测能源使用或分摊设备能源
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
 - 来源：
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0.1
+  - 上限：50
+  - 单位：MJ
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 废物流
 
@@ -363,16 +571,18 @@ sync_with: pcr.en-US.md
 
 ###### 可销售初级天然树胶产品（`saleable_primary_gum_product`）
 
-参考产品为声明形态和质量状态的可销售初级天然树胶。
+这是进入包装和仓储前的合格净胶中间转移，保留同批次实际质量、质量状态和后续损失。最终参考输出仍为生产者门交付产品。
 
-- 选定流：Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b`
+- 选定流：巴拉塔树胶、杜仲胶、银菊胶、糖胶树胶和类似天然树胶，初级形式或板状、片状或条状 `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b`
 - 流属性/单位：Mass / kg
-- 数量规则：按声明水分或干物质基准计 1 kg 参考产品
-- 数值来源模式：固定值（`fixed_value`）
-- 适用范围：产品特定（`product_specific`）
-- 归一化基准：reference flow
+- 数量规则：采集本阶段实测合格净质量，按同批次最终合格交付质量及原归属规则计算每声明参考流的中间转移量；保留状态、含水率和后续损失，不将中间转移强制设为 1 kg。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：reference flow
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：身份引用（`identity_reference`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_product_quality_records`
 - 来源：
 
@@ -382,16 +592,28 @@ sync_with: pcr.en-US.md
 
 按去向记录等外树胶、修边料、细粉、受污染树胶或拒收片材。
 
-- 选定流：Off-grade natural gum waste
+- 选定流：不合格天然树胶废物
 - 流属性/单位：Mass / kg
 - 数量规则：实测拒收产品及声明的回用、返工、能量回收或处置路线
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_residue_records`
 - 来源：
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：1
+  - 单位：kg
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 基本流
 
@@ -401,35 +623,87 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 一次包装材料（`primary_packaging_input`）
+###### 木制板条箱（`primary_packaging_input_wood_crate`）
+
+**primary_packaging_input 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 当袋、内衬、纸箱、桶、打包带、标签或非周转托盘随可销售产品供应时纳入包装。
 
-- 选定流：Packaging material
-- 流属性/单位：Mass / kg
-- 数量规则：发放到产品批次的实测包装量，不包括可单独追踪的重复使用包装
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：木制板条箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每声明的参考流
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_packaging_records`
-- 来源：
+- 来源：`fao-package-identities`
+
+###### 瓦楞纸板箱（`primary_packaging_input_corrugated_box`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：瓦楞纸板箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每声明的参考流
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_packaging_records`
+- 来源：`fao-package-identities`
+
+###### 聚乙烯包装薄膜（`primary_packaging_input_pe_film`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：聚乙烯包装薄膜
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每声明的参考流
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_packaging_records`
+- 来源：`fao-package-identities`
 
 ###### 储存和搬运能源（`storage_handling_energy`）
 
 当仓库、干燥室、通风、叉车、输送机和搬运设备在生产者门口发运前使用时，纳入其能源。
 
-- 选定流：Electricity, medium voltage `2eb3b2fd-6511-4a22-9018-768024a5b5a6`
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh or MJ
 - 数量规则：实测或分摊的储存和搬运能源
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 可销售参考产品
+原始采集或过程口径：每 1 kg 可销售参考产品
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
 - 来源：
+
+
+- 数量范围：暂定筛查范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：10
+  - 单位：MJ
+  - 基准：每 1 kg 可销售参考产品
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 废物流
 
@@ -443,16 +717,29 @@ sync_with: pcr.en-US.md
 
 包装后的可销售初级树胶产品已准备在生产者门口发运。
 
-- 选定流：Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b`
+- 选定流：巴拉塔树胶、杜仲胶、银菊胶、糖胶树胶和类似天然树胶，初级形式或板状、片状或条状 `907d7b5c-ed6f-43a2-82f8-e1f91e30a37b`
 - 流属性/单位：Mass / kg
-- 数量规则：净产品质量等于参考产品；包装质量不计入参考量
+- 数量规则：1 千克
 - 数值来源模式：固定值（`fixed_value`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：reference flow
+原始采集或过程口径：reference flow
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：身份引用（`identity_reference`）
 - 采集协议：`cp_product_quality_records`
 - 来源：
+
+
+- 数量范围：参考数量恒等关系
+  - 范围角色：`allowed_range`
+  - 下限：1
+  - 上限：1
+  - 单位：kg
+  - 基准：参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`method_formula`
+  - 来源：`iso-14044-2006`
 
 ##### 废物流
 
@@ -462,20 +749,22 @@ sync_with: pcr.en-US.md
 
 如果前景过程仅生产声明的初级树胶产品且内部残渣被废弃，则不需要分配。如果银菊橡胶、银菊树脂、渣料、纯化古塔馏分、树脂性馏分、燃料残渣或其他共产品以具有经济价值的形式离开系统，默认按干物质质量对共同采集、萃取和整理负荷进行物理分配。只有当共产品功能显著不同且同一作业期价格有记录时，才使用经济分配。内部返工不是共产品；应记录为循环或产率损失。内部用于过程供热的残渣只有在计量并披露时才能替代外购能源。
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 数据采集协议
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_source_material_records` | `source_harvest_or_raw_lot_receipt` | source material input and raw material transfer | harvest, tapping, receiving, or purchase record | species_or_source_category; source_system; lot_id; as_received_mass; moisture_or_solids; source_location; harvest_or_receipt_date | weighbridge, batch sheet, receiving note, tapping log, or harvest record | kg and percent moisture or solids | each lot or campaign | representative production year or declared campaign | source area, supplier lot, or receiving site | sum lots and convert to dry matter where required | calibrated scale records, supplier certificates, moisture tests, and lot traceability |
-| `cp_source_area_records` | `source_harvest_or_raw_lot_receipt` | source area occupation | land management or source-area record | productive_area; source_system; harvestable_area_share; campaign_duration; yield_to_processing | land register, plantation block record, concession record, or supplier declaration | ha, m2a, kg dry matter | annual or campaign | representative production year | source stand, plantation block, or declared supplier source | allocate source area to harvested dry matter or purchased raw lot | source map, land record, management plan, or supplier statement |
-| `cp_energy_records` | all processes | fuel, electricity, steam, and process heat | meter, invoice, boiler log, fuel issue, or equipment-hour record | energy_carrier; quantity; unit; meter_scope; allocation_basis; process_id; date | meter reading, invoice reconciliation, or equipment-hour calculation | kWh, MJ, kg fuel, L fuel | monthly or campaign | representative production year or campaign | plant, field crew, extraction line, finishing line, or storage area | allocate shared energy by metered sub-process first, then runtime, mass throughput, or dry product output | meter calibration, invoice, fuel log, and allocation worksheet |
-| `cp_water_records` | `primary_concentration_or_extraction` | process water and wastewater | water meter, batch water sheet, or wastewater record | make_up_water; recycled_water; discharge_volume; treatment_route; process_id; date | meter reading or water balance | kg or m3 | batch, monthly, or campaign | representative production year or campaign | extraction, boiling, washing, cooling, and effluent treatment systems | net make-up water plus discharge water balance per reference product | meter records, wastewater manifest, treatment logs, and water-balance reconciliation |
-| `cp_auxiliary_material_records` | `primary_concentration_or_extraction` | solvent, coagulant, and process aid | purchase, issue, or batch recipe record | material_name; concentration_or_grade; quantity_issued; recovered_quantity; loss_quantity; supplier; process_id | inventory issue, recipe sheet, or solvent recovery log | kg | each batch or campaign | representative production year or campaign | extraction or purification line | net consumed material equals issued minus recovered/reused stock | purchase record, SDS, batch sheet, and recovery log |
-| `cp_product_quality_records` | `primary_concentration_or_extraction`; `purification_forming_and_drying`; `packaging_storage_and_dispatch` | intermediate and final product quality | production, laboratory, and finished-goods record | product_form; gum_type; moisture_or_solids; impurity_content; net_product_mass; off_grade_mass; lot_id | batch sheet, lab test, finished-goods record | kg, percent moisture or solids | each lot | representative production year or campaign | production line and finished-goods warehouse | sum conforming net product and normalize all flows to 1 kg reference product | lab report, certificate of analysis, scale record, and finished-goods ledger |
-| `cp_residue_records` | all processes | rejected biomass, bagasse, spent leaves, wastewater sludge, off-grade gum, and packaging waste | waste, residue, or by-product record | residue_type; quantity; moisture_or_solids; fate; sale_or_disposal_route; internal_reuse_flag | waste manifest, residue collection record, by-product sales note, or internal reuse log | kg and percent moisture or solids | batch, monthly, or campaign | representative production year or campaign | field, extraction, finishing, storage, and waste handling areas | sum by fate; convert to dry matter where relevant; link valuable co-products to allocation rule | waste manifest, by-product invoice, disposal ticket, and internal reuse record |
-| `cp_packaging_records` | `packaging_storage_and_dispatch` | primary packaging input | packaging issue or bill of materials record | packaging_material; unit_mass; units_used; reusable_flag; supplier; product_lot | packaging BOM, warehouse issue, or supplier record | kg | lot or monthly | representative production year or campaign | packaging area and finished-goods warehouse | sum non-returnable packaging per net product mass | packaging BOM, supplier specification, and stock issue record |
+| `cp_source_material_records` | `source_harvest_or_raw_lot_receipt` | source material input and raw material transfer | harvest, tapping, receiving, or purchase record | species_or_source_category; source_system; lot_id; as_received_mass; moisture_or_solids; source_location; harvest_or_receipt_date | weighbridge, batch sheet, receiving note, tapping log, or harvest record；原活动量汇总：sum lots and convert to dry matter where required | kg and percent moisture or solids | each lot or campaign | representative production year or declared campaign | source area, supplier lot, or receiving site | 每声明的参考流 | calibrated scale records, supplier certificates, moisture tests, and lot traceability |
+| `cp_source_area_records` | `source_harvest_or_raw_lot_receipt` | source area occupation | land management or source-area record | productive_area; source_system; harvestable_area_share; campaign_duration; yield_to_processing | land register, plantation block record, concession record, or supplier declaration；原活动量汇总：allocate source area to harvested dry matter or purchased raw lot | ha, m2a, kg dry matter | annual or campaign | representative production year | source stand, plantation block, or declared supplier source | 每声明的参考流 | source map, land record, management plan, or supplier statement |
+| `cp_energy_records` | all processes | fuel, electricity, steam, and process heat | meter, invoice, boiler log, fuel issue, or equipment-hour record | energy_carrier; quantity; unit; meter_scope; allocation_basis; process_id; date | meter reading, invoice reconciliation, or equipment-hour calculation；原活动量汇总：allocate shared energy by metered sub-process first, then runtime, mass throughput, or dry product output | kWh, MJ, kg fuel, L fuel | monthly or campaign | representative production year or campaign | plant, field crew, extraction line, finishing line, or storage area | 每声明的参考流 | meter calibration, invoice, fuel log, and allocation worksheet |
+| `cp_water_records` | `primary_concentration_or_extraction` | process water and wastewater | water meter, batch water sheet, or wastewater record | make_up_water; recycled_water; discharge_volume; treatment_route; process_id; date | meter reading or water balance；原活动量汇总：net make-up water plus discharge water balance per reference product | kg or m3 | batch, monthly, or campaign | representative production year or campaign | extraction, boiling, washing, cooling, and effluent treatment systems | 每声明的参考流 | meter records, wastewater manifest, treatment logs, and water-balance reconciliation |
+| `cp_auxiliary_material_records` | `primary_concentration_or_extraction` | solvent, coagulant, and process aid | purchase, issue, or batch recipe record | material_name; concentration_or_grade; quantity_issued; recovered_quantity; loss_quantity; supplier; process_id | inventory issue, recipe sheet, or solvent recovery log；原活动量汇总：net consumed material equals issued minus recovered/reused stock | kg | each batch or campaign | representative production year or campaign | extraction or purification line | 每声明的参考流 | purchase record, SDS, batch sheet, and recovery log |
+| `cp_product_quality_records` | `primary_concentration_or_extraction`; `purification_forming_and_drying`; `packaging_storage_and_dispatch` | intermediate and final product quality | production, laboratory, and finished-goods record | product_form; gum_type; moisture_or_solids; impurity_content; net_product_mass; off_grade_mass; lot_id | batch sheet, lab test, finished-goods record；原活动量汇总：sum conforming net product and normalize all flows to 1 kg reference product | kg, percent moisture or solids | each lot | representative production year or campaign | production line and finished-goods warehouse | 每声明的参考流 | lab report, certificate of analysis, scale record, and finished-goods ledger |
+| `cp_residue_records` | all processes | rejected biomass, bagasse, spent leaves, wastewater sludge, off-grade gum, and packaging waste | waste, residue, or by-product record | residue_type; quantity; moisture_or_solids; fate; sale_or_disposal_route; internal_reuse_flag | waste manifest, residue collection record, by-product sales note, or internal reuse log；原活动量汇总：sum by fate; convert to dry matter where relevant; link valuable co-products to allocation rule | kg and percent moisture or solids | batch, monthly, or campaign | representative production year or campaign | field, extraction, finishing, storage, and waste handling areas | 每声明的参考流 | waste manifest, by-product invoice, disposal ticket, and internal reuse record |
+| `cp_packaging_records` | `packaging_storage_and_dispatch` | primary packaging input | packaging issue or bill of materials record | packaging_material; unit_mass; units_used; reusable_flag; supplier; product_lot | packaging BOM, warehouse issue, or supplier record；原活动量汇总：sum non-returnable packaging per net product mass | kg | lot or monthly | representative production year or campaign | packaging area and finished-goods warehouse | 每声明的参考流 | packaging BOM, supplier specification, and stock issue record |
 
 ### 计算规则
 
@@ -532,3 +821,5 @@ sync_with: pcr.en-US.md
 | `dehghanizadeh-2021-guayule-resin` | literature | Dehghanizadeh et al. 2021, "Guayule (Parthenium argentatum) resin: A review of chemistry, extraction techniques, and applications", Industrial Crops and Products 165, 113410, https://doi.org/10.1016/j.indcrop.2021.113410 | 银菊萃取路线、橡胶/树脂/渣料共产品和路线特定产率 QA |
 | `szczepanowska-akhmedov-2023-polyisoprenes` | literature | Szczepanowska and Akhmedov 2023, "Gutta percha, natural rubber and balata-chemical characterization of polyisoprenes in the context of cultural heritage", Heritage Science 11, 125, https://doi.org/10.1186/s40494-023-00954-z | 古塔波胶、巴拉塔胶和天然橡胶聚异戊二烯材料身份区分 |
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management - Life cycle assessment - Requirements and guidelines | 分配层级、数据质量和 LCA 报告基准 |
+| `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `usda-guayule-extraction-2019` | literature | USDA guayule study, extraction methods; solvent-route identity example only, not a commercial consumption factor, https://www.ars.usda.gov/ARSUserFiles/20200500/Pubs%202020/LuoAbdel%20ICP2019.pdf | 条件性身份依据；实际场址用量和适用性须单独核实 |

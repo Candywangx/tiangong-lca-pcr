@@ -1,10 +1,1158 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33210"
-  title: "Tar distilled from coal, from lignite, and other mineral tars"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.tar-distilled-from-coal-from-lignite-and-other-mineral-tars"
+  classification_refs: "CPC 3.0 33210; narrower"
+  covered_products: "Crude coal tar separated from by-product coal coke-oven condensate, with collected residual-water qualifiers; actual dewatering permitted, fractionation excluded"
+  excluded_products: "Peat tar; unassessed lignite/other mineral tar; reconstituted tar; wood tar; distillation oils; pitch; pitch coke; petroleum coking gas oil"
+  representative_product: "Accepted bulk crude coal tar at the recovery gate"
+  production_route: "Tar-water condensate separation; actual dewatering; storage, sampling and delivery"
+  market_state: "Bulk crude tar without a separate free aqueous phase; residual water, solids and acceptance limits declared from actual records"
+functional_unit:
+  what: "Supply crude coal tar as downstream feedstock or declared fuel feedstock"
+  how_much: "1 kg accepted crude coal tar in the delivery state"
+  how_well: "Coal-carbonisation origin; no separate free aqueous phase; measured water, solids, elemental C/H/O/N/S, acceptance specification and receiver"
+  how_long_or_cycle: "One delivery within the declared complete reporting period; no service-life claim"
+  reference_flow_link: "reference_tar"
+system_boundary:
+  rules:
+    - rule_id: boundary_recovery
+      applies_to: "tar-recovery-delivery"
+      rule: "Include separation, actual dewatering/residue removal, tar tanks, sampling/loading and operated controls; meter actual cleaning, warming and utilities separately. Link condensate generation, coal coking and main gas processing upstream rather than duplicating their inventories."
+      source_ids:
+        - jrc-iron-steel-bref-2013
+    - rule_id: boundary_outputs
+      applies_to: "all inventory rows"
+      rule: "Retain water, thick tar, sludge, gas losses and all actual physical coproducts for every destination; internal reuse is not an environmental release. Add an audited atomic row for each additional emitted species rather than dropping it or replacing species by total VOC/PAH."
+      source_ids:
+        - jrc-iron-steel-bref-2013
+    - rule_id: boundary_distillation
+      applies_to: "reference_tar"
+      rule: "Actual independent distillate oils or distillation pitch/pitch coke require an applicable fractionation method retaining all fractions and residues; this PCR cannot represent that delivery scope. Removal of free water/sediment without fraction grading is supported with measured delivery-state disclosure."
+      source_ids:
+        - wco-hs-2022-ch27
+        - un-cpc-3-2025
+    - rule_id: boundary_interfaces
+      applies_to: "condensate; coal_water_recycle; tar_sediment_recycle"
+      rule: "Retain the upstream physical network for coal, coke, gas, tar, benzol recovery, sulfur/ammonia products and all actual gas/liquid/solid streams. Inventory only this foreground exchanges without pretending upstream coproducts leave this unit. Match quantity/state at both interface ends and provide physical and environmental-burden ledgers separately."
+      source_ids:
+        - jrc-iron-steel-bref-2013
+        - eu-environmental-footprint-2021
+boundary_abstraction:
+  declared_starting_condition: "Receipt of actual combined tar-water condensate; preserve source branches, water/tar/solids/gas composition, mass, temperature and upstream inventory"
+  starting_condition_role: "Real burden-bearing mixed intermediate, not a burden-free waste or invented purchase of already separated crude tar"
+  product_classification_scope: "Coal-carbonisation crude-tar subset of CPC 33210; excludes independent distillation products under 34540"
+  recursive_input_rule: "Preserve internal tar circulation in the physical diagram and stocks without inventing purchased tar remanufacture. Match mass, composition and allocation stage at both ends of condensate/residue interfaces; close returns to coking without recursively repeating upstream burdens."
+  upstream_dataset_requirement: "Obtain an unallocated joint coking/gas-cooling inventory with complete physical coproducts for attribution once under this method, or a condensate supply with complete, explicit stage allocation; retain coal, coke, gas, tar, water and all other actual products and wastes"
+  disclosure: "Start/end, meters, unit overlaps, actual dewatering/warming, all recycle/purge/residue destinations, C/H/O/N/S/water balances, fractionation exclusion and data gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Coal tar"
+    uuid: "7b09995f-2ee9-4584-b244-c2d84ea75585"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - site
+    - period
+    - "coal and coke-oven route"
+    - "condensate interface"
+    - "delivery moisture and sampling method"
+    - "free-water and solids determination"
+    - "measured C/H/O/N/S and organic sulfur"
+    - "delivery temperature"
+    - "acceptance specification"
+    - "tank and stocks"
+    - "all physical coproduct destinations"
+    - "upstream inventory and allocation stage"
+    - "energy supplier basis"
+    - "water/residue receivers"
+    - "emission coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference_tar"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure accepted net delivery mass with cp_tar, excluding packaging and a separate free aqueous phase; residual dispersed water remains part of the delivery mass and moisture is supplementary. Normalize every inventory to 1 kg of the same-state reference flow."
+  - id: moisture_basis
+    applies_to: "condensate; reference_tar"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain measured water, tar and solids masses of condensate and accepted product. Any supplementary dry-tar result uses measured moisture and the defined solids convention while preserving the delivery-state denominator; it must not silently become a 1 kg dry-tar denominator."
+  - id: power_basis
+    applies_to: "electricity_low; electricity_medium; electricity_high"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Use each native CN grid-average consumption-mix electricity interface reference property Net calorific value and MJ; convert measured electricity with 1 kWh = 3.6 MJ. Match supplier geography, year and losses boundary; do not add internal submeter quantities again to gate delivery."
+  - id: heat_basis
+    applies_to: "steam; recovered_heat; condensate_return"
+    required_property_ref:
+      name: "Mass; Energy"
+      uuid: ""
+    required_unit: "kg; MJ"
+    rule: "Record actual delivered steam mass and a separate condensate return. Supplementary useful heat is reconciled from measured supply/return enthalpies, recovery and losses for the same period against the background reference basis; an MJ steam property alone does not establish net delivered heat. A separate heat service uses supplier-compatible useful delivered MJ and is not also counted as carrier steam."
+  - id: species_basis
+    applies_to: "condensate; reference_tar; coal_water_recycle; coal_water_purge; tar_sediment_recycle; tar_sludge_waste; methane_air; co2_air; benzene_air; naphthalene_air; phenol_air; bap_air; ammonia_air; h2s_air; water_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain species, water and elemental C/H/O/N/S conventions separately and convert only from measured composition; COD is not carbon mass and ammonia-N is not NH3 mass. Air identities represent outdoor environmental air with an unspecified subcompartment; use a compatible precise compartment when known without duplicating the emission."
+process_map:
+  - id: tar_recovery_delivery
+    name: "Tar separation, applicable dewatering and delivery"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: tar_recovery_delivery
+    label: "Tar separation, applicable dewatering and delivery"
+    inputs:
+      product:
+        - row_id: condensate
+          role: "Coke-oven tar-water condensate"
+          name: "Coke-oven tar-water condensate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Receive the actual mixed condensate collected from the collecting main, primary cooling and electrostatic tar precipitation. Measure the header total and composition; do not substitute already separated coal tar or sum the header and its branch meters."
+          amount:
+            expression: "Collect using cp_condensate; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_condensate
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: electricity_low
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use only for externally delivered China (CN) grid-average consumption-mix electricity below 1 kV. Count a delivery once; an internal transformer does not create another purchased supply. For a different supply country or route, select and verify a compatible flow; this CN identity cannot be generalized by changing a provider label."
+          amount:
+            expression: "Collect using cp_electricity; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: electricity_medium
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use only for externally delivered China (CN) grid-average consumption-mix electricity at 1–35 kV; preserve the supplier location, year, voltage and losses boundary. A different supply country or route requires a separately verified compatible flow."
+          amount:
+            expression: "Collect using cp_electricity; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: electricity_high
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use only for externally delivered China (CN) grid-average consumption-mix electricity at 35–330 kV. Resolve any boundary voltage overlap from the actual supplier definition; never duplicate one metered delivery. A different supply country or route requires a separately verified compatible flow."
+          amount:
+            expression: "Collect using cp_electricity; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: steam
+          role: "Steam delivered to coal-tar recovery"
+          name: "Steam delivered to coal-tar recovery"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Include only installed steam use for conditioning, warming or cleaning. Record mass, absolute pressure, temperature, dryness and supplier reference basis; any record fixed to a pressure grade requires that grade to match measured supply. Gauge pressure requires the corresponding measured atmospheric pressure for conversion to absolute pressure."
+          amount:
+            expression: "Collect using cp_steam; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: recovered_heat
+          role: "Recovered process heat delivered to coal-tar recovery"
+          name: "Recovered process heat delivered to coal-tar recovery"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include a separately delivered heat service only when operated and not already represented by the steam row. Meter useful delivered heat against its actual carrier, return state and supplier definition; no burden-free heat assumption."
+          amount:
+            expression: "Collect using cp_heat; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: wash_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record treated industrial water for actual separator, tank or loading-line cleaning; declare water quality and supplier. Primary gas-cooler water outside this foreground is accounted upstream."
+          amount:
+            expression: "Collect using cp_water; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_tar
+          role: "Coal tar"
+          name: "Coal tar"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7b09995f-2ee9-4584-b244-c2d84ea75585"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One accepted crude coal-tar delivery after separation, any actual dewatering and gate sampling. Exclude a separate free aqueous phase and transport packaging; residual dispersed water is measured and declared."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tar
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: coal_water_recycle
+          role: "Ammoniacal coal water returned to the coke-oven liquor circuit"
+          name: "Ammoniacal coal water returned to the coke-oven liquor circuit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure the separated aqueous liquor returned for process reuse. It is not reagent-grade ammonia solution and is not automatically a marketable coproduct; record dissolved tar, ammonia, phenols and sulfur species."
+          amount:
+            expression: "Collect using cp_water; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: condensate_return
+          role: "Steam condensate returned from the coal-tar heater"
+          name: "Steam condensate returned from the coal-tar heater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record the actual utility return separately from coal water; measure mass, temperature, pressure and contamination. If discharged instead, record its actual waste route without also counting a supplier return."
+          amount:
+            expression: "Collect using cp_steam; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: tar_sediment_recycle
+          role: "Thick coal-tar sediment returned to coal charging"
+          name: "Thick coal-tar sediment returned to coal charging"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure the actual PAH-bearing thick tar and entrained coal solids returned to coal charging. Preserve the receiver and composition; this is not distilled pitch and the same residue must not also enter the disposal row."
+          amount:
+            expression: "Collect using cp_residue; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        - row_id: coal_water_purge
+          role: "Ammoniacal coal-tar-recovery wastewater"
+          name: "Ammoniacal coal-tar-recovery wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure only the actual purge sent to ammonia stripping or wastewater treatment, including cleaning water only if it enters that same measured header. Retain contaminants and treatment links; it is not an elementary freshwater discharge."
+          amount:
+            expression: "Collect using cp_water; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: tar_sludge_waste
+          role: "Coal-tar recovery sludge sent to external treatment"
+          name: "Coal-tar recovery sludge sent to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record coal-tar recovery sludge removed for external treatment rather than coal-feed return; declare water, coal fines, tar, PAH and elemental composition and verify the receiver. A calorific-grade-specific residue flow requires independently demonstrated grade compatibility; no heating value is assumed."
+          amount:
+            expression: "Collect using cp_residue; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      elementary:
+        - row_id: methane_air
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Include only measured or substantiated fossil methane escaping the declared separator, tank or loading boundary after controls; upstream coke-oven leakage is not repeated."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: co2_air
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Include fossil carbon dioxide only if actual condensate degassing or a declared vent measurement identifies it and establishes fossil origin. Measure incoming carrier-air background separately; a database carbon coefficient, the presence of fossil tar or a carbon-balance residual does not demonstrate a CO2 release. No combustion occurs in this defined foreground; utility-generation emissions belong to supply datasets."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: benzene_air
+          role: "benzene"
+          name: "benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9202-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Screen and quantify actual benzene losses from separated liquor, tar storage and loading. Distinguish gaseous and captured liquid quantities; no historical VOC factor is a default."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: naphthalene_air
+          role: "naphthalene"
+          name: "naphthalene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a682-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Include actual naphthalene emitted beyond the boundary after recovery or controls, with sampling phase and release location declared."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: phenol_air
+          role: "phenol"
+          name: "phenol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aa41-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Include actual phenol air losses separately from phenol dissolved in wastewater or retained in tar; preserve species-specific analytical evidence."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: bap_air
+          role: "benzo[a]pyrene"
+          name: "benzo[a]pyrene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9221-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Screen benzo[a]pyrene specifically when tar aerosol or PAH-bearing releases occur. This row is not total PAH or total particulate mass; retain phase and chemical assay and avoid duplicating aggregate and constituent totals."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: ammonia_air
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Quantify actual ammonia losses from coal water or condensate handling; use NH3 mass, not an ammonia-nitrogen indicator without an explicit conversion."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: h2s_air
+          role: "hydrogen sulfide"
+          name: "hydrogen sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Quantify actual hydrogen sulfide released after controls. Keep organic sulfur in liquid/solid assays and add each additional emitted sulfur species individually when detected; do not replace H2S by sulfur or SO2."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: water_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record actual evaporation and vented water from this foreground only. Measure inlet carrier-air humidity and outlet water on consistent gas-flow, temperature, pressure and wet/dry bases; retain gross inlet/outlet water in the physical ledger and attribute only net process-added water to evaporation. Keep any condensation or humid air input at its real destination, with no fabricated zero or forced positive evaporation. Water contained in delivered tar, recycled liquor, wastewater or returned utility condensate is not also evaporation."
+          amount:
+            expression: "Collect using cp_air; report the physical exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "shared upstream and foreground burdens"
+    rule: "First subdivide directly attributable measured units; use system expansion only with explicit study purpose and verified additional functions. If allocation cannot be avoided, justify a relevant physical causal relationship, otherwise justify economic allocation from measured same-stage quantities and contemporaneous prices, retaining reasons and sensitivity. Tar is not burden-free because it is a coproduct and fuel-energy allocation is not automatic."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: allocation_stages
+    applies_to: "condensate"
+    rule: "The unallocated joint-inventory route requires the complete staged coking, gas-cooling and recovery attribution tree and all physical outputs, proving that shared burdens are assigned once and fractions sum to one at each stage. The already allocated condensate route retains exact boundary, method, fractions and included units; do not allocate its upstream burdens again and remove overlapping units."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: allocation_physical
+    applies_to: "all inventory rows"
+    rule: "Preserve unallocated physical quantities for mass/water/C/H/O/N/S balances and internal interfaces. Physical outputs per kg tar are divided only by accepted tar output, never mechanically multiplied by the tar burden fraction. Attribute relevant inputs/emissions in a separate environmental-burden ledger and label its nature. Real coal-water/sediment returns are not substitution credits and do not automatically enter the economic coproduct set."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: allocation_waste
+    applies_to: "coal_water_purge; tar_sludge_waste"
+    rule: "Retain waste composition, quantities, receiver and treatment burdens; only substantiated actual marketable coproducts enter the applicable allocation set. Close internal returns without recording the same material as both disposed and reused, and never hide physical products through environmental allocation."
+    source_ids:
+      - jrc-iron-steel-bref-2013
+      - eu-environmental-footprint-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_condensate
+      process_id: "tar_recovery_delivery"
+      flow_role: "condensate"
+      record_type: "measurement and traceable primary records"
+      raw_fields: "condensate header/branch readings and composition; water, tar, solids, gas, C/H/O/N/S; temperature; stock; upstream physical network and attribution tree"
+      collection_method: "Weigh or use calibrated flow meters with measured same-temperature density; representative assays for water, tar, solids and C/H/O/N/S; reconcile source branches and obtain the complete upstream inventory or documented allocated supply"
+      unit: "kg"
+      frequency: "each transfer/acceptance; continuous meters; representative operating samples; period stock reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared tar recovery/storage/delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, representativeness, originals, supplier/receiver evidence, stocks and measurement uncertainty"
+    - protocol_id: cp_tar
+      process_id: "tar_recovery_delivery"
+      flow_role: "reference_tar"
+      record_type: "measurement and traceable primary records"
+      raw_fields: "net mass of each accepted delivery; moisture; free water; coal fines/solids; C/H/O/N/S; temperature; sample representativeness; acceptance rule; tank opening/closing stocks"
+      collection_method: "Measure net accepted deliveries with calibrated weighbridge or mass flowmeter, excluding containers/packaging and separate water phase; keep independent separator/tank/loading records; verify delivery state by declared representative sampling and validated analytical methods without assuming a universal moisture specification"
+      unit: "kg"
+      frequency: "each transfer/acceptance; continuous meters; representative operating samples; period stock reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared tar recovery/storage/delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, representativeness, originals, supplier/receiver evidence, stocks and measurement uncertainty"
+    - protocol_id: cp_electricity
+      process_id: "tar_recovery_delivery"
+      flow_role: "electricity_low; electricity_medium; electricity_high"
+      record_type: "measurement and traceable primary records"
+      raw_fields: "gate and submeter electricity; voltage; supplier; location/year; losses boundary; kWh or MJ; equipment runtime"
+      collection_method: "Submeter pumps, actual dewatering, storage and loading or substantiate attribution; convert against the voltage-compatible supplier basis without adding whole-plant and included submeter totals"
+      unit: "MJ"
+      frequency: "each transfer/acceptance; continuous meters; representative operating samples; period stock reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared tar recovery/storage/delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, representativeness, originals, supplier/receiver evidence, stocks and measurement uncertainty"
+    - protocol_id: cp_steam
+      process_id: "tar_recovery_delivery"
+      flow_role: "steam; condensate_return"
+      record_type: "measurement and traceable primary records"
+      raw_fields: "steam and returned condensate mass; pressure/temperature/dryness; enthalpy method; supplier reference quantity; return destination; purge/direct injection; losses"
+      collection_method: "Meter supply and return with calibrated instruments, collect their states over the same period and reconcile supplier mass/heat bases; direct injection enters the process water balance while indirect heating/return forms a separate utility circuit"
+      unit: "kg"
+      frequency: "each transfer/acceptance; continuous meters; representative operating samples; period stock reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared tar recovery/storage/delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, representativeness, originals, supplier/receiver evidence, stocks and measurement uncertainty"
+    - protocol_id: cp_heat
+      process_id: "tar_recovery_delivery"
+      flow_role: "recovered_heat"
+      record_type: "measurement and traceable primary records"
+      raw_fields: "actual heat service/carrier; supply/return temperature, pressure, flow; useful delivered enthalpy; supplier reference basis; upstream heat attribution"
+      collection_method: "Meter useful delivered heat or derive it from traceable carrier flow/enthalpy differences, matching the supplier definition and excluding heat already counted with steam"
+      unit: "MJ"
+      frequency: "each transfer/acceptance; continuous meters; representative operating samples; period stock reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared tar recovery/storage/delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, representativeness, originals, supplier/receiver evidence, stocks and measurement uncertainty"
+    - protocol_id: cp_water
+      process_id: "tar_recovery_delivery"
+      flow_role: "wash_water; coal_water_recycle; coal_water_purge"
+      record_type: "measurement and traceable primary records"
+      raw_fields: "each water/recycle/purge meter; aqueous mass/composition; NH3, phenols, tar, elemental C/H/O/N/S and individual sulfur species; source; receiver; merging points"
+      collection_method: "Meter each source/destination separately and convert liquid volume using measured same-temperature density; assay water, dissolved and suspended constituents; count separated water once at its actual destination. Add a separate atomic cleaning-wastewater row when not merged"
+      unit: "kg"
+      frequency: "each transfer/acceptance; continuous meters; representative operating samples; period stock reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared tar recovery/storage/delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, representativeness, originals, supplier/receiver evidence, stocks and measurement uncertainty"
+    - protocol_id: cp_residue
+      process_id: "tar_recovery_delivery"
+      flow_role: "tar_sediment_recycle; tar_sludge_waste"
+      record_type: "measurement and traceable primary records"
+      raw_fields: "sediment/thick-tar weights; wet/dry basis; coal-fines/tar/water composition; C/H/O/N/S/PAH; stock; coal-charge return/export receiver receipts"
+      collection_method: "Weigh and sample representatively; separate return, disposal and temporary stocks; match receiver composition/quantity; do not substitute distilled-pitch identity for thick tar"
+      unit: "kg"
+      frequency: "each transfer/acceptance; continuous meters; representative operating samples; period stock reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared tar recovery/storage/delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, representativeness, originals, supplier/receiver evidence, stocks and measurement uncertainty"
+    - protocol_id: cp_air
+      process_id: "tar_recovery_delivery"
+      flow_role: "methane_air; co2_air; benzene_air; naphthalene_air; phenol_air; bap_air; ammonia_air; h2s_air; water_air"
+      record_type: "measurement and traceable primary records"
+      raw_fields: "vents/fugitive sources; release environment; operating state; controls; actual gas flow; species concentration; T/P and wet/dry basis; sampling phase; detection limits/calibration; complete coverage"
+      collection_method: "Inventory separator/tank/loading release points; quantify species by validated applicable sampling/analysis, gas flow and operating intervals or disclose an auditable estimate, retaining gas/aerosol phases. Measure inlet ambient humidity and CO2 background and outlet concentrations with corresponding gas flows; derive net process-added water vapour after retaining inlet/outlet totals; a detection limit is not zero. Missing quantities or species prevent a complete-data claim"
+      unit: "kg"
+      frequency: "each transfer/acceptance; continuous meters; representative operating samples; period stock reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared tar recovery/storage/delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, representativeness, originals, supplier/receiver evidence, stocks and measurement uncertainty"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Divide each same-period physical exchange by same-period accepted delivered tar net mass; reference_tar is fixed at 1 kg. Retain stock changes as physical-network reconciliation entries rather than another delivery; environmental attribution is applied in a separate ledger."
+      inputs:
+        - cp_tar
+        - "relevant collection protocol"
+      output: "physical exchange per 1 kg reference flow"
+      source_ids:
+        - eu-environmental-footprint-2021
+  data_quality_requirements:
+    - id: quality_physical_balance
+      applies_to: "all inventory rows"
+      requirement: "Reconcile before allocation over the whole period: inputs plus opening stocks equal all gas/liquid/solid outputs plus closing stocks and substantiated losses. Close water and each elemental C/H/O/N/S balance separately on consistent measured composition/stock bases; COD is not C and total S is not an emitted species. Investigate differences against declared measurement uncertainty without inventing a balance tolerance. Keep indirect steam/return in a separate utility circuit and include direct injection in process water."
+      evidence: "physical network, assays, stocks and matching interface originals"
+    - id: quality_energy
+      applies_to: "all inventory rows"
+      requirement: "Reconcile supplied electricity and useful heat, carrier enthalpy in/out, material sensible/latent enthalpy, stock energy changes and evidenced losses for the same complete boundary and period. Declare reference states and measured properties; measured supply/return differences and actual moisture removal support the dewatering balance. Include chemical energy only on separately justified measured composition/calorific bases, never a generic tar or sludge coefficient. Do not hide heat by counting both a carrier and its heat service or balancing unexplained losses with invented quantities."
+      evidence: "stage meters, enthalpy methods, stocks and energy ledger"
+    - id: quality_upstream
+      applies_to: "condensate"
+      requirement: "Obtain complete coking/gas-cooling physical and burden ledgers for coke, gas, tar, actual benzol/ammonia/sulfur products, all water/solid waste and energy. Verify whether a prior package already contains this separator/delivery unit; removing overlaps needs original evidence rather than assumptions from a supplier name."
+      evidence: "upstream inventories, attribution tree and operating network"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Resolve blank UUIDs and exact supply/treatment links in the data package while preserving concrete physical identity; infrastructure failure is not no-match. Verified identity still requires separate checks of actual mass/composition, pressure, voltage, compartment and provider reference quantity; database secondary coefficients do not replace site data."
+      evidence: "native identities, provider/receiver records and actual collection"
+    - id: quality_coverage
+      applies_to: "all inventory rows"
+      requirement: "Distinguish applicability, demonstrated absence, unquantified amount and unresolved identity; do not fill zeros without evidence. Extend the atomic inventory for each actual chemical, direct fuel, package or control consumable when present, with verified sources. An actual boiler requires a separately evidenced heat-supply unit rather than hidden combustion with only a steam entry."
+      evidence: "complete meter coverage, methods and gap disclosure"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference_tar"
+    rule: "Require exactly one foreground finished-tar output at 1 kg delivery state, consistent with the reference link, bilingual denominator and protocols; reject independent distillate or pitch applicability."
+    source_ids:
+      - wco-hs-2022-ch27
+      - un-cpc-3-2025
+  - rule_id: validate_material
+    applies_to: "all inventory rows"
+    rule: "Verify unallocated mass/water/C/H/O/N/S networks, stocks, every real upstream coproduct and equal-quantity interfaces. Allocation-scaled recycle, condensate, water or sediment cannot serve as physical balances; retain discrepancies, unknown components and missing measurements as unresolved."
+    source_ids:
+      - jrc-iron-steel-bref-2013
+  - rule_id: validate_allocation
+    applies_to: "condensate; shared burdens"
+    rule: "Verify the unallocated/already allocated upstream route, stages, fraction sums and direct-attribution evidence, avoiding duplicate allocation; absence of allocation evidence prevents a complete tar-supply burden claim."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: validate_species
+    applies_to: "all inventory rows"
+    rule: "Verify atomicity, UUID, native Chinese name, flow type, reference property/unit and air compartment per row; cover emitted species, coal-water contaminants and upstream gas/liquid/solid boundaries. A passing static methodology check does not resolve missing measurements, identities or provider conditions."
+    source_ids:
+      - jrc-iron-steel-bref-2013
+  - rule_id: validate_heat
+    applies_to: "steam; recovered_heat; condensate_return; electricity_low; electricity_medium; electricity_high"
+    rule: "Verify actual steam pressure/enthalpy basis, condensate routing, useful delivered heat and voltage/provider scope; prevent duplicate heat-carrier/service and voltage-level/internal-meter counting. Unknown quantity or background bases make the package links incomplete."
+    source_ids:
+      - jrc-iron-steel-bref-2013
+published_dataset_profile:
+  dataset_role: "primary foreground tar-supply process with separate physical and attributed-burden ledgers"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply recovered coal-carbonisation crude tar only with compatible measured delivery state, upstream allocation and provider bases"
+  excluded_use: "independent distillation products; unassessed mineral/peat/wood tar; burden-free coproduct; gas reference substituted for tar; full PEF conformity claim"
+  required_metadata: "all reference qualifiers; actual boundary/technology; physical balances and attribution tree; originals and interfaces"
+  required_quality_disclosure: "pending identities/provider bases; unquantified releases; sampling coverage/uncertainty; measured versus estimated values and all gaps"
+  update_trigger: "material change in coal/coke-oven route, condensate source, separation/dewatering/delivery technology, product state, upstream attribution or supplier/receiver"
+data_sources:
+  - id: "jrc-iron-steel-bref-2013"
+    type: "official_guidance"
+    reference: "https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/IS_Adopted_03_2012.pdf"
+    used_for: "2013; EUR 25521 EN; DOI 10.2791/97469; sections 5.1.4.3–5.1.5, PDF247–249/printed219–221; 5.2.2.3, PDF261/printed233. Qualitative separation, coal-water and thick-tar/residue boundaries; European technical evidence, no historical yield, emission or residue factors adopted."
+  - id: "eu-environmental-footprint-2021"
+    type: "official_guidance"
+    reference: "https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "2021; Annex I 4.5, PDF/printed63–64; generic multifunctionality hierarchy adopted as a method choice, excluding animal-husbandry 4.5.1 or paper-specific rules; no full PEF conformity claim."
+  - id: "wco-hs-2022-ch27"
+    type: "official_guidance"
+    reference: "https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0527_2022e.pdf?la=en"
+    used_for: "2022; Chapter27 PDF2, headings2706/2707/2708; category distinction between dehydrated/partially distilled tar and independent distillation/pitch products; classification context only, no process amount or formal CPC-HS correspondence established."
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "2025-06-30; original CSV LF lines1351,1353,1458, codes33210/33220/34540; category identity only, not manufacturing evidence or mapping acceptance."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:0c6b17db5bf13e41963283da3a0c61f582c3af0ceb8bc4c12f3f05e82b16e937"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7416"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7416
+          line: 62
+          column: 1
+        end:
+          offset: 10425
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt of actual combined tar-water condensate; preserve source branches, water/tar/solids/gas composition, mass, temperature and upstream inventory |\n| starting_condition_role | Real burden-bearing mixed intermediate, not a burden-free waste or invented purchase of already separated crude tar |\n| product_classification_scope | Coal-carbonisation crude-tar subset of CPC 33210; excludes independent distillation products under 34540 |\n| recursive_input_rule | Preserve internal tar circulation in the physical diagram and stocks without inventing purchased tar remanufacture. Match mass, composition and allocation stage at both ends of condensate/residue interfaces; close returns to coking without recursively repeating upstream burdens. |\n| upstream_dataset_requirement | Obtain an unallocated joint coking/gas-cooling inventory with complete physical coproducts for attribution once under this method, or a condensate supply with complete, explicit stage allocation; retain coal, coke, gas, tar, water and all other actual products and wastes |\n| disclosure | Start/end, meters, unit overlaps, actual dewatering/warming, all recycle/purge/residue destinations, C/H/O/N/S/water balances, fractionation exclusion and data gaps |\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_recovery | tar-recovery-delivery | Include separation, actual dewatering/residue removal, tar tanks, sampling/loading and operated controls; meter actual cleaning, warming and utilities separately. Link condensate generation, coal coking and main gas processing upstream rather than duplicating their inventories. | `jrc-iron-steel-bref-2013` |\n| boundary_outputs | all inventory rows | Retain water, thick tar, sludge, gas losses and all actual physical coproducts for every destination; internal reuse is not an environmental release. Add an audited atomic row for each additional emitted species rather than dropping it or replacing species by total VOC/PAH. | `jrc-iron-steel-bref-2013` |\n| boundary_distillation | reference_tar | Actual independent distillate oils or distillation pitch/pitch coke require an applicable fractionation method retaining all fractions and residues; this PCR cannot represent that delivery scope. Removal of free water/sediment without fraction grading is supported with measured delivery-state disclosure. | `wco-hs-2022-ch27`; `un-cpc-3-2025` |\n| boundary_interfaces | condensate; coal_water_recycle; tar_sediment_recycle | Retain the upstream physical network for coal, coke, gas, tar, benzol recovery, sulfur/ammonia products and all actual gas/liquid/solid streams. Inventory only this foreground exchanges without pretending upstream coproducts leave this unit. Match quantity/state at both interface ends and provide physical and environmental-burden ledgers separately. | `jrc-iron-steel-bref-2013`; `eu-environmental-footprint-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 309
+              line: 9
+              column: 1
+            end:
+              offset: 335
+              line: 9
+              column: 27
+          text: "# Recovered crude coal tar"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7416
+              line: 62
+              column: 1
+            end:
+              offset: 7437
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_30467"
+      family: "allocation"
+      span:
+        start:
+          offset: 30467
+          line: 436
+          column: 1
+        end:
+          offset: 32582
+          line: 445
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_hierarchy | shared upstream and foreground burdens | First subdivide directly attributable measured units; use system expansion only with explicit study purpose and verified additional functions. If allocation cannot be avoided, justify a relevant physical causal relationship, otherwise justify economic allocation from measured same-stage quantities and contemporaneous prices, retaining reasons and sensitivity. Tar is not burden-free because it is a coproduct and fuel-energy allocation is not automatic. | `eu-environmental-footprint-2021` |\n| allocation_stages | condensate | The unallocated joint-inventory route requires the complete staged coking, gas-cooling and recovery attribution tree and all physical outputs, proving that shared burdens are assigned once and fractions sum to one at each stage. The already allocated condensate route retains exact boundary, method, fractions and included units; do not allocate its upstream burdens again and remove overlapping units. | `eu-environmental-footprint-2021` |\n| allocation_physical | all inventory rows | Preserve unallocated physical quantities for mass/water/C/H/O/N/S balances and internal interfaces. Physical outputs per kg tar are divided only by accepted tar output, never mechanically multiplied by the tar burden fraction. Attribute relevant inputs/emissions in a separate environmental-burden ledger and label its nature. Real coal-water/sediment returns are not substitution credits and do not automatically enter the economic coproduct set. | `eu-environmental-footprint-2021` |\n| allocation_waste | coal_water_purge; tar_sludge_waste | Retain waste composition, quantities, receiver and treatment burdens; only substantiated actual marketable coproducts enter the applicable allocation set. Close internal returns without recording the same material as both disposed and reused, and never hide physical products through environmental allocation. | `jrc-iron-steel-bref-2013`; `eu-environmental-footprint-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 309
+              line: 9
+              column: 1
+            end:
+              offset: 335
+              line: 9
+              column: 27
+          text: "# Recovered crude coal tar"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 30467
+              line: 436
+              column: 1
+            end:
+              offset: 30507
+              line: 436
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_44785"
+      family: "validation"
+      span:
+        start:
+          offset: 44785
+          line: 480
+          column: 1
+        end:
+          offset: 46634
+          line: 490
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | reference_tar | Require exactly one foreground finished-tar output at 1 kg delivery state, consistent with the reference link, bilingual denominator and protocols; reject independent distillate or pitch applicability. | `wco-hs-2022-ch27`; `un-cpc-3-2025` |\n| validate_material | all inventory rows | Verify unallocated mass/water/C/H/O/N/S networks, stocks, every real upstream coproduct and equal-quantity interfaces. Allocation-scaled recycle, condensate, water or sediment cannot serve as physical balances; retain discrepancies, unknown components and missing measurements as unresolved. | `jrc-iron-steel-bref-2013` |\n| validate_allocation | condensate; shared burdens | Verify the unallocated/already allocated upstream route, stages, fraction sums and direct-attribution evidence, avoiding duplicate allocation; absence of allocation evidence prevents a complete tar-supply burden claim. | `eu-environmental-footprint-2021` |\n| validate_species | all inventory rows | Verify atomicity, UUID, native Chinese name, flow type, reference property/unit and air compartment per row; cover emitted species, coal-water contaminants and upstream gas/liquid/solid boundaries. A passing static methodology check does not resolve missing measurements, identities or provider conditions. | `jrc-iron-steel-bref-2013` |\n| validate_heat | steam; recovered_heat; condensate_return; electricity_low; electricity_medium; electricity_high | Verify actual steam pressure/enthalpy basis, condensate routing, useful delivered heat and voltage/provider scope; prevent duplicate heat-carrier/service and voltage-level/internal-meter counting. Unknown quantity or background bases make the package links incomplete. | `jrc-iron-steel-bref-2013` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 309
+              line: 9
+              column: 1
+            end:
+              offset: 335
+              line: 9
+              column: 27
+          text: "# Recovered crude coal tar"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 44785
+              line: 480
+              column: 1
+            end:
+              offset: 44807
+              line: 480
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_7416"
+      source_span:
+        start:
+          offset: 8835
+          line: 77
+          column: 1
+        end:
+          offset: 9190
+          line: 77
+          column: 356
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_outputs"
+      identity_kind: "explicit"
+      unit_id: "normative_7416"
+      source_span:
+        start:
+          offset: 9191
+          line: 78
+          column: 1
+        end:
+          offset: 9538
+          line: 78
+          column: 348
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_distillation"
+      identity_kind: "explicit"
+      unit_id: "normative_7416"
+      source_span:
+        start:
+          offset: 9539
+          line: 79
+          column: 1
+        end:
+          offset: 9926
+          line: 79
+          column: 388
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_7416"
+      source_span:
+        start:
+          offset: 9927
+          line: 80
+          column: 1
+        end:
+          offset: 10423
+          line: 80
+          column: 497
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_30467"
+      source_span:
+        start:
+          offset: 30580
+          line: 440
+          column: 1
+        end:
+          offset: 31139
+          line: 440
+          column: 560
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_30467"
+      source_span:
+        start:
+          offset: 31140
+          line: 441
+          column: 1
+        end:
+          offset: 31615
+          line: 441
+          column: 476
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_30467"
+      source_span:
+        start:
+          offset: 31616
+          line: 442
+          column: 1
+        end:
+          offset: 32146
+          line: 442
+          column: 531
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_30467"
+      source_span:
+        start:
+          offset: 32147
+          line: 443
+          column: 1
+        end:
+          offset: 32580
+          line: 443
+          column: 434
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_44785"
+      source_span:
+        start:
+          offset: 44880
+          line: 484
+          column: 1
+        end:
+          offset: 45160
+          line: 484
+          column: 281
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_material"
+      identity_kind: "explicit"
+      unit_id: "normative_44785"
+      source_span:
+        start:
+          offset: 45161
+          line: 485
+          column: 1
+        end:
+          offset: 45526
+          line: 485
+          column: 366
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_44785"
+      source_span:
+        start:
+          offset: 45527
+          line: 486
+          column: 1
+        end:
+          offset: 45836
+          line: 486
+          column: 310
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_44785"
+      source_span:
+        start:
+          offset: 45837
+          line: 487
+          column: 1
+        end:
+          offset: 46216
+          line: 487
+          column: 380
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_heat"
+      identity_kind: "explicit"
+      unit_id: "normative_44785"
+      source_span:
+        start:
+          offset: 46217
+          line: 488
+          column: 1
+        end:
+          offset: 46632
+          line: 488
+          column: 416
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7416"
+      source_span:
+        start:
+          offset: 7416
+          line: 62
+          column: 1
+        end:
+          offset: 7437
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7416"
+      source_span:
+        start:
+          offset: 7465
+          line: 66
+          column: 1
+        end:
+          offset: 8762
+          line: 73
+          column: 182
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_30467"
+      source_span:
+        start:
+          offset: 30467
+          line: 436
+          column: 1
+        end:
+          offset: 30507
+          line: 436
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_44785"
+      source_span:
+        start:
+          offset: 44785
+          line: 480
+          column: 1
+        end:
+          offset: 44807
+          line: 480
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0c6b17db5bf13e41963283da3a0c61f582c3af0ceb8bc4c12f3f05e82b16e937"
+  generated_content_sha256: "sha256:488560fc541dbc7b9d88f0545bb6cf77cb70665ed39339fed69ce124c5f1ba22"

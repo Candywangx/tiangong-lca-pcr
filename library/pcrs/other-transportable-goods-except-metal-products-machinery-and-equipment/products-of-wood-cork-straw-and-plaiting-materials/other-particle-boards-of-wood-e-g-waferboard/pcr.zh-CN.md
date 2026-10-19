@@ -22,7 +22,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-particle-boards-of-wood-e-g-waferboard |
-| classification_refs | CPC 3.0 31439; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0 31439；narrower；仅为分类背景 |
 | covered_products | 随机宽薄木质刨片waferboard；粉状PF及声明的间接蒸汽/干式控制试点路线 |
 | excluded_products | 细粒UF板；主动定向OSB/waferboard；纤维板；单板胶合板；非木质板；涂层/覆面/处理板；其他胶种和供热/控制路线 |
 | representative_product | 厂门验收随机宽刨片PF板材净成品；历史图2/W系列锚点不是供方清单数据 |
@@ -599,11 +599,11 @@ translation_status: aligned
 
 ###### 水蒸气（`water_vapour`）
 
-进入室外空气的木材蒸发水分及实际蒸汽放空；采用实测水平衡，不包含返还凝结水及背景蒸汽生产用水。 本行为条件性物种/相态筛查卡，不预设发生或默认排放；须证明未发生或实测排放，未知测量不等于零。OSB直燃干燥表仅提供候选物种/CAS名称，不提供间接waferboard数量。
+蒸发、实际蒸汽放空及实际反应生成水中进入室外空气的水蒸气；采用cp_water反应感知水平衡核对。反应水也可能保留在板材/残余物或废水中，不自动等于大气排放。不包含返还凝结水及背景蒸汽生产用水。 本行为条件性物种/相态筛查卡，不预设发生或默认排放；须证明未发生或实测排放，未知测量不等于零。OSB直燃干燥表仅提供候选物种/CAS名称，不提供间接waferboard数量。
 
 - 选定流：水蒸气 `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：实测蒸发及实际放空水质量 / Q；cp_water核对全部进入、保留、排放及返还水。
+- 数量规则：实测实际排放水质量 / Q；cp_water结合有证据的反应生成与消耗核对进入、保留、排放及返还水；未解决的反应项不得用蒸发余差替代。
 - 数值来源模式：`calculated_value`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -627,12 +627,12 @@ translation_status: aligned
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_reference | p_wafer | 成品板材与分母 | weighing_acceptance | 场址；核算期；批次；验收净质量Q；含水率；等级/试验；实际尺寸/密度；刨片几何/取向；PF配方 | 校准称重且排除包装/废品；可追溯验收与经验证的板材含水率试验；结合铺装设备记录抽样刨片形状/方向；汇总计算：汇总验收板材净质量Q；板材输出按每1 kg参考流计 | kg | 每发运批次 | 完整声明核算期 | 同一场址及路线 | 每 1 kg 参考流 | 秤校准；票据；配方；照片；试验 |
-| cp_material | p_wafer | 每项投入材料与包装 | stock_batch | row_id；批次；阶段；供方；组成及实测生物/化石碳质量分数；固化状态；湿/干质量；含水率；期初/采购/期末库存；退料 | 分别校准称重、库存核对、供方证书、未处理木材绝干抽样及实验室/供方组分碳记录；核实PF固形物/固化适用性及石油蜡牌号；汇总计算：分别将实物归属总量 / Q；每1 kg参考流 | kg | 每批及库存结算 | 完整声明核算期 | 同一场址及路线 | 每 1 kg 参考流 | 称重/校准；库存闭合；配方 |
+| cp_material | p_wafer | 每项投入材料与包装 | stock_batch | row_id；批次；阶段；供方；组成及实测元素质量分数（包括C/H/O）和生物/化石碳来源；供入PF含水率/固形物；固化状态及实际固化程度；湿/干质量；含水率；期初/采购/期末库存；退料 | 分别校准称重、库存核对、供方证书、未处理木材绝干抽样及实验室/供方元素组成及碳来源记录；核实PF固形物/固化适用性及石油蜡牌号；保留供方配方、热压时间/温度及代表性反应前后组成或经验证的反应程度测量，区分物理挥发损失与反应产物；不假定完全固化；汇总计算：分别将实物归属总量 / Q；每1 kg参考流 | kg | 每批及库存结算 | 完整声明核算期 | 同一场址及路线 | 每 1 kg 参考流 | 称重/校准；库存闭合；配方 |
 | cp_utility | p_wafer | 电力与自来水分别计量 | submeter | row_id；阶段；仪表；电压；千瓦时；自来水千克；测体积时的密度；库存/损耗；共用驱动因素 | 校准阶段计量与供方账单核对；核实电力变压/损耗边界及供水身份；汇总计算：各归属总量 / Q；电量转MJ；每1 kg参考流 | kWh; kg | 连续计量与每月核对 | 完整声明核算期 | 同一场址/电压/来源 | 每 1 kg 参考流 | 仪表校准；账单；损耗核对 |
 | cp_steam | p_wafer | 蒸汽进入与凝结水返还分别计量 | enthalpy_balance | 阶段；进入/返还质量；压力；温度；蒸汽品质；放空/泄漏质量；库存；供方焓口径及返还抵扣 | 校准质量仪表与状态传感器；经验证的蒸汽物性方法；供热/背景定义凭证；逐阶段及整个交付系统核对；汇总计算：进入蒸汽kg / Q与返还凝结水kg / Q分别计；净焓另行核对；每1 kg参考流 | kg; MJ | 连续记录及每次供热状态变化 | 完整声明核算期 | 同一供方及场址交付/返还边界 | 每 1 kg 参考流 | 校准；状态；供方边界；不确定性 |
 | cp_residue | p_wafer | 每项共产品与废物 | weighing_destination | row_id；阶段；批次；湿/干质量；树脂污染；售价；去向；废物状态；库存；内部返回id | 分别校准称重与去向票据；抽样组成/含水率；审核售出/废物/内部批次互斥；汇总计算：各实际外部物流总量 / Q；实物输出不乘分配权重；每1 kg参考流 | kg | 每残余批次 | 完整声明核算期 | 同一场址及明确去向 | 每 1 kg 参考流 | 票据；状态分类；库存/交接闭合 |
 | cp_emission | p_wafer | 每种物种及颗粒物分段 | outlet_sampling | row_id；源/阶段；控制；物种/CAS；相态；出口气量；浓度；湿/干/标态条件；时间；检出限；可过滤/可凝结口径 | 代表性控制后出口测试结合运行时间/气量记录；逸散估计单独证明；核实三个不重叠可过滤PM段及VOC/可凝结物重叠；汇总计算：各物种/分段积分实物质量 / Q；每1 kg参考流；共用排气筒不重复计 | kg | 代表性测量期及每次配方/控制变化 | 全部声明运行工况及季节性 | 同一场址及控制后出口 | 每 1 kg 参考流 | 测试方法；检出/不确定性；控制/运行记录 |
-| cp_water | p_wafer | 蒸发与水平衡闭合 | water_balance | 木材/载体水；蒸汽；自来水；板材/残余含水；废水；凝结水；放空；期初/期末水库存 | 可追溯含水率与流量测量；结合cp_material、cp_reference、cp_steam及cp_residue核对全部水路径；汇总计算：实际排放水质量 / Q；每1 kg参考流；保留闭合差及不确定性 | kg | 每测量期及核算期结算 | 完整声明核算期 | 同一综合场址边界 | 每 1 kg 参考流 | 成对水路径；含水率方法；闭合 |
+| cp_water | p_wafer | 蒸发与水平衡闭合 | water_balance | 木材/载体水；蒸汽；自来水；板材/残余含水；废水；凝结水；放空；期初/期末水库存；分阶段H2O生成/消耗；实际组成/固化程度及反应证据；适用时的气体进出口湿度及组成 | 采用可追溯含水率与流量测量，结合cp_material、cp_reference、cp_steam、cp_residue及cp_emission核对全部水路径和独立证实的反应项。区分热压缩合水、供入水分与公用蒸汽/返还。另行审查的生物控制扩展须采集气体进出口、耗氧、介质/生物量、液体和库存记录及实际降解程度；本协议不构成该路线的准入。汇总计算：实际排放水质量 / Q；每1 kg参考流；保留反应项不确定性及未解释余差；缺失反应证据不等于零 | kg | 每测量期及核算期结算 | 完整声明核算期 | 同一综合场址边界 | 每 1 kg 参考流 | 成对水路径；含水率方法；配方/固化或获准生物反应证据；组分/元素核对；不确定性 |
 | cp_allocation | p_wafer | 环境负荷归属与实物清单分开 | attribution_account | 阶段直接负荷；共用负荷；因果驱动量；产品实测干质量；销售/价格；边界；敏感性 | 先审核计量细分，再审核记录的物理/经济关系；保留独立分配矩阵及原始实物流账；汇总计算：归属环境负荷 / Q；实物物流总量保持不变；每1 kg参考流 | kg; MJ; currency | 每声明核算期及分配变化 | 与清单同一核算期 | 同一场址与共用过程 | 每 1 kg 参考流 | 驱动量理由；价格；核对；敏感性 |
 
 ### 计算规则
@@ -643,7 +643,7 @@ translation_status: aligned
 | dry_wood_account | conifer_logs, hardwood_logs | 每批未处理木材：干木材=湿木材/(1+u)；水=湿木材-干木材。板材和废物内分别保留胶/蜡固形物及碳来源；绝干板材不等于干木材。 | wet mass; dry-basis u; cp_material | 实物干物质与水账 | usda-wood-moisture-2021 |
 | steam_enthalpy | steam, condensate | 净交付焓=进入质量×进入比焓-返还质量×返还比焓-其他输出物流焓-储能增加量，采用明确共同基准。热损、放空与阶段有用热分别核对。供方返还抵扣须遵循其背景口径；进入蒸汽质量或数据库能量单位均不能单独等于净有用热。 | inlet/return/outgoing states; mass; stock; cp_steam | 核对能量账及兼容蒸汽链接 | epa-waferboard-2002 |
 | pm_partition | pm25, pmcoarse, pmover10, condensable_pm | 对于成对兼容的可过滤测量：细段=PM2.5；中段=PM10-PM2.5；粗段=可过滤PM总量-PM10。各段非负；必须保留不确定性及一致采样条件，不再加累计PM10/总PM。可凝结测量及分子VOC质量按相态保留且不重复。 | paired outlet tests; cp_emission | 互斥实物颗粒及分子物种清单 | epa-waferboard-2002 |
-| physical_closure | p_wafer | 将期初库存+外部输入，与成品+实际共产品+废物+基本排放+期末库存在干物质、水及生物/化石碳账中分别核对。包括胶/蜡固形物与挥发损失。内部交接两端数量/状态一致且在厂级抵消；报告余差及实测不确定性。 | all stream totals; stock; material carbon composition; cp_material; cp_water; cp_residue; cp_emission | 未分配平衡账 | epa-waferboard-2002 |
+| physical_closure | p_wafer | 同一核算期及边界的整体物流质量满足：期初库存+外部输入=成品+实际共产品+废物+基本排放+期末库存；存在时纳入相关气相质量交换。各相关元素（包括C/H/O）遵循同一方程，生物/化石碳来源分开；反应不生成质量或元素。分子H2O及各明确定义的反应物种/材料类别j则满足：opening_j + inputs_j + formation_j = outputs_j + closing_j + consumption_j，采用一致的组分定义、单位及范围。生成/消耗须依据实际配方、组成和实测或独立验证的反应程度：PF热压缩合改变树脂固形物并生成水；另行审查的生物控制扩展在摄取氧的同时将有机物转化为水、CO2、生物量及其他实际产物。不要求仅外部进出的干物质/H2O闭合，不设完全固化、完全降解或通用产率。供入/载体水、反应水、蒸发及公用蒸汽/返还回路分开；相间转移不生成H2O。内部交接两端一致并在厂级抵消。报告未解释余差及传播不确定性，不将余差当作反应证据。 | all stream totals; stock; elemental/component composition; actual reaction extent; cp_material; cp_water; cp_residue; cp_emission; cp_steam | 未分配整体质量/元素及反应感知组分账 | epa-waferboard-2002; conner-wood-adhesives-2001 |
 | burden_attribution | p_wafer | 先归属直接负荷。仅将有理由的分配份额作用于其余共用环境负荷，同一范围份额之和为一。全部产品实物数量保持不变；产品归属负荷除以Q形成下游数据集。 | direct/common burdens; allocation drivers; cp_allocation; Q | 独立产品归属负荷账 | ghg-allocation-2011 |
 
 ### 数据质量要求
@@ -651,7 +651,7 @@ translation_status: aligned
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_identity | p_wafer | 核实实际木刨片几何/随机结构、未固化PF配方、产品验收及排除项；商品名或分类标签不足以证明。 | 铺装日志；几何照片/试验；供方证书 |
-| dq_coverage | 所有清单行 | 覆盖完整代表性运行核算期及全部测量工况；区分实测零、低于检出、未发生及缺测。缺失UUID或供方数量/背景兼容性须明确；完整数据集不得静默替代。 | 逐行覆盖；校准；不确定性；供方定义 |
+| dq_coverage | 所有清单行 | 覆盖完整代表性运行核算期及全部测量工况；区分实测零、低于检出、未发生及缺测。缺失UUID或供方数量/背景兼容性须明确；完整数据集不得静默替代。一致定义水、干固形物及反应组分，以实际组成/程度证据支持反应项并与整体质量/元素核对。烘干损失、库存修正及未解释余差不能证明反应水；反应项未解决时不得声称组分平衡完整。 | 逐行覆盖；校准；不确定性；供方定义；配方/固化记录；组分与元素账 |
 | dq_limits | p_wafer | 历史EPA/FPL来源仅提供方法背景。不得将针叶锯木厂CORRIM数量、锯木粉尘或锅炉因子移用于waferboard间接干燥/热压。为额外实际交换增设独立行并保留相态特定排放。 | 范围/路线对照；现场筛查；原始方法 |
 
 ## 9. 校验规则
@@ -660,7 +660,7 @@ translation_status: aligned
 | --- | --- | --- | --- |
 | v_reference | finished_waferboard | 恰有一个1千克验收板材净成品参考输出；Q为正且各行/协议采用同一分母。拒绝重复参考中间物、含包装质量分母及中英文定义差异。 | epa-waferboard-2002 |
 | v_architecture | p_wafer | 要求宽薄刨片形态及非主动定向随机铺装证据、实际PF化学/牌号和声明供热/控制路线。拒绝长刨片定向OSB、细粒UF particleboard及排除变体。 | usda-waferboard-types-1986 |
-| v_balance | p_wafer | 在负荷分配前审核干物质/水/能量及按来源分开的碳闭合，交接成对一致。声明完整链接数据集前须解决供方蒸汽口径、电压、PF/蜡状态及缺失身份。 | usda-wood-moisture-2021 |
+| v_balance | p_wafer | 负荷分配前审核整体物流质量、相关元素（包括C/H/O且碳按来源分开）、反应感知H2O/反应组分账及独立能量账；交接成对一致。要求实际组成/固化程度及有依据的生成/消耗项，不采用仅外部进出的干物质/水闭合或余差推算固化产率。不预设完全固化或零反应水；未解决项须审查且不得声称平衡完整。任何生物控制扩展须另行审查适用性并具备实际气体/液体/介质/生物量及降解证据。声明完整链接数据集前须解决供方蒸汽口径、电压、PF/蜡状态及缺失身份。 | usda-wood-moisture-2021; epa-waferboard-2002; conner-wood-adhesives-2001 |
 | v_emission | p_wafer | 控制后出口物种/相态数量仅计一次，PM分段不重叠。上游LCI及另行审查的厂内燃烧扩展均保留实际生物/化石CO2；温室气体报告口径不得从实物清单删去生物CO2。披露未测物种，不声称完整覆盖。 | epa-waferboard-2002 |
 
 ## 10. 发布数据集画像
@@ -679,9 +679,9 @@ translation_status: aligned
 
 | 来源id | 类型 | 参考资料 | 用途 |
 | --- | --- | --- | --- |
-| epa-waferboard-2002 | official_guidance | US EPA. AP-42 §10.6.1 Waferboard/Oriented Strandboard Manufacturing, March 2002. https://www.epa.gov/sites/default/files/2020-10/documents/c10s06-1.pdf | 第10.6.1.1–.3节，印刷10.6.1-1–4页及图10.6.1-1：历史路线/随机铺装/热压/成品。第12页表10.6.1-3描述木料直燃针叶OSB干燥；仅用候选物种/CAS名称作现场筛查，不将发生情况、排放率或控制性能移用于本间接路线。 |
+| epa-waferboard-2002 | official_guidance | US EPA. AP-42 §10.6.1 Waferboard/Oriented Strandboard Manufacturing, March 2002. https://www.epa.gov/sites/default/files/2020-10/documents/c10s06-1.pdf | 第10.6.1.1–.3节，印刷10.6.1-1–4页及图10.6.1-1：历史路线/随机铺装/热压/成品。第12页表10.6.1-3描述木料直燃针叶OSB干燥；仅用候选物种/CAS名称作现场筛查，不将发生情况、排放率或控制性能移用于本间接路线。印刷10.6.1-5页仅用于另行审查的控制扩展中生物生成水/CO2/盐的机理，不采用降解产率。 |
 | usda-waferboard-types-1986 | handbook | Carll, C.G. Wood particleboard and flakeboard: types, grades, and uses. FPL-GTR-53, November 1986. https://research.fs.usda.gov/download/treesearch/5677.pdf | 印刷第1、5页及图2：广义术语、典型PF二类板背景、真实宽刨片样品及更窄的定向OSB；不设现代等级/强度默认值。 |
 | usda-commercial-panels-1999 | literature | Laufenberg, T.L.; Palka, L.C.; McNatt, J.D. Creep and creep-rupture behavior of wood-based structural panels. FPL-RP-574, June 1999. https://research.fs.usda.gov/download/treesearch/5817.pdf | 摘要、印刷第1–2页及表1：真实1985年轻微取向商业waferboard W1–W7及抽样限定。不证明W4树种、PF化学、供热路线、现代配方、寿命或排放。 |
 | usda-wood-moisture-2021 | handbook | USDA Forest Products Laboratory. Wood handbook—wood as an engineering material. FPL-GTR-282, 2021. https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf | 第4章印刷4-1页、式4-1/4-2：木材干基含水率定义；不假定树种含水率/密度，也不充当含树脂板材烘干损失规则。 |
 | ghg-allocation-2011 | standard | WRI/WBCSD. Product Life Cycle Accounting and Reporting Standard, 2011, Chapter 9 p.63 Tables 9.1–9.2. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 仅用于避免分配及有记录的物理/经济关系。不采用仅温室气体报告的实物LCI排放删减，也不预设残余物价格/份额。 |
-
+| conner-wood-adhesives-2001 | literature | Conner, A.H. Wood: Adhesives. Encyclopedia of Materials: Science and Technology, 2001, pp.9583–9599. https://research.fs.usda.gov/download/treesearch/9099.pdf | §2.1(a)、PDF第2–3页及图2：PF甲阶树脂缩合水、进一步热固化及粉状甲阶树脂用于waferboard。仅用于机理；不采用示例配方、固形物含量、完全固化或反应产率。 |

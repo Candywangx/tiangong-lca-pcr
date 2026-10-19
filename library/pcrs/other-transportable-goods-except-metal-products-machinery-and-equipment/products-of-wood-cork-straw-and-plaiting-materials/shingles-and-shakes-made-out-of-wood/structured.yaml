@@ -1,10 +1,1212 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "31624"
-  title: "Shingles and shakes made out of wood"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.shingles-and-shakes-made-out-of-wood"
+  classification_refs: "CPC 3.0 31624; narrower"
+  covered_products: "Untreated Thuja plicata sawn shingles of a declared grade, as-sawn mill-gate state"
+  excluded_products: "Split/resawn/tapersawn shakes; other species; intentionally dried, impregnated, fire-retardant, coated, glued or composite products; lumber; installed roof or wall"
+  representative_product: "A measured lot of sawn western redcedar shingles; grade and tapered dimensions declared"
+  production_route: "Receive roundwood or prepared bolts; conditional buck/debark; sawing/tapering/edging; grade; incidental holding; package; segregate residues"
+  market_state: "Untreated finished shingles at mill gate, not installed; packaging separately accounted"
+functional_unit:
+  what: "Supply manufactured shingles for subsequent roof/wall cladding selection"
+  how_much: "1 kg accepted net finished shingles at measured dispatch moisture"
+  how_well: "Declared species, grade, grain/heartwood class, tapered dimensions and untreated state; no universal code suitability"
+  how_long_or_cycle: "One manufacturing delivery; service life requires a separate installation, exposure and maintenance scenario"
+  reference_flow_link: "shingle_out"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "One aggregated mill process covers preparation, sawing, grading, handling and packaging. Keep separate stage meters and physical transfer records: each internal link has identical quantity and state at both ends, and cancels from the external inventory. No second finished-shingle output is created for a packaging handoff. Include residue chipping when actually performed, auxiliary electricity, maintenance consumables, packaging losses and actual releases. Missing applicable chemical/waste/emission species require another atomic card and compatible identity before dataset completion."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Untreated western redcedar roundwood at mill receipt, or prepared debarked bolts replacing it"
+  starting_condition_role: "Purchased precursor; not a finished-shingle recursive input"
+  product_classification_scope: "CPC 3.0 31624; narrower"
+  recursive_input_rule: "In-house returned shingles/rework circulate inside mill; count net external exchanges once. Purchased finished shingles are excluded from this manufacturing route"
+  upstream_dataset_requirement: "Compatible wood procurement/forestry, any bolt preparation, transport and electricity/material datasets required; disclose species, geography, moisture and allocation. UUID is not dataset evidence"
+  disclosure: "Foreground gate-to-gate; upstream links expand to cradle-to-gate. External treatment tracked without importing combustion into foreground. Installation, use, maintenance and end-of-life excluded"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Shingles and shakes made out of wood"
+    uuid: "10eb6989-64ab-406a-9ce6-8d9e97da896e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Thuja plicata"
+    - "sawn-shingle route"
+    - "dimensions/taper"
+    - "grade and grain/heartwood"
+    - "untreated/no intentional drying"
+    - "dispatch moisture dry basis"
+    - "net mass excludes packaging"
+    - "source location/year"
+    - "roundwood versus purchased-bolt start"
+    - "gross piece area versus declared coverage/overlap layout"
+    - "kg/m2 measured conversion"
+    - "residue outlets"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_basis
+    applies_to: "shingle_out"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh net accepted wood at dispatch with cp_output; keep dry-basis moisture, gross shipment and packaging mass distinct. Every inventory row is per 1 kg reference flow."
+  - id: moisture_basis
+    applies_to: "roundwood_in; bolt_in; shingle_out; chip_out; sawdust_out; bark_out"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use cp_wood and cp_output matched samples; dry-basis u = water mass / oven-dry wood mass. Do not use a wet-basis percentage in the same equation. Source: usda-wood-handbook-2021."
+  - id: area_basis
+    applies_to: "shingle_out"
+    required_property_ref:
+      name: "Mass and area"
+      uuid: ""
+    required_unit: "kg; m2"
+    rule: "Measure kg/m2 for the same grade, moisture and layout using cp_area. Separate summed full piece-face area, overlapped material area and unique installed coverage. Manufacturing mass is not an installed-service functional unit."
+  - id: chip_volume
+    applies_to: "chip_out"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use cp_residue; explicitly match measured solid or bulk volume, moisture, packing and receiving dataset reference; unknown convention blocks linkage."
+  - id: pm_bins
+    applies_to: "pm_fine; pm_middle; pm_coarse"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "One method/time/control boundary; disjoint bins only. Total PM and PM10 are verification totals, not extra additive rows. Source: epa-sawmill-pte-2014."
+process_map:
+  - id: mill
+    name: "Sawn shingle mill"
+    inclusion: "required"
+    inclusion_condition: "Declared untreated electric dry mechanical route"
+    role: "Aggregated foreground process; stages remain separately measured"
+    quantitative_reference: "shingle_out: 1 kg"
+process_inventory:
+  - id: mill
+    label: "Sawn shingle mill"
+    inputs:
+      product:
+        - row_id: roundwood_in
+          role: "Roundwood of coniferous wood, other"
+          name: "Roundwood of coniferous wood, other"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3dbbedd2-fb9d-478e-a4b4-4a76a4d97804"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Untreated Thuja plicata roundwood intended for shingles, received with bark. Include roadside-to-mill transport in its upstream link; do not substitute ordinary sawlogs excluded by this flow definition. Purchased bolts replace the relevant incoming wood; never count the same wood twice."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: bolt_in
+          role: "Shingle bolts"
+          name: "Shingle bolts"
+          flow_type: "product"
+          flow_ref:
+            uuid: "35615328-322c-4a39-98c9-254d980275ef"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional purchased debarked and cut shingle bolts. Use the verified prepared-bolt state, with upstream preparation and delivery included. In-house bolts are internal stage transfers within this aggregated mill process, not a second external input."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood
+              source_ids:
+                - usda-wood-handbook-2021
+                - usda-shingle-roofs-2011
+            ranges: []
+        - row_id: electricity_in
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter grid-average low-voltage AC below 1 kV, including bucking, sawing, extraction fans, electric handling and packaging. Match supply voltage, region, year and losses. Preserve the reference Net calorific value property in MJ; measured kWh converts by 3.6, not by combustion efficiency."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: oil_in
+          role: "Lubricating oil"
+          name: "Lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional petroleum-fraction machinery lubricant matching the selected record, including its 40.5 MJ/kg calorific qualifier. Supplier compatibility remains a dataset prerequisite; that metadata is not a PCR amount or conversion default. Synthetic oils require a separate compatible identity."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: film_in
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional polyethylene wrapping film; measure net consumption by inventory reconciliation and identify grade. Exclude PET and other polymers."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: paper_in
+          role: "Kraft wrapping paper"
+          name: "Kraft wrapping paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional kraft wrapping paper or paper label stock; record coating and adhesive separately if present. Finished paper bags are not this paper-stock input."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: strap_in
+          role: "Polypropylene packaging strap"
+          name: "Polypropylene packaging strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional finished polypropylene packaging strap, with measured composition and mass. Polymer resin, textile twine and steel band are not substitutes."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: shingle_out
+          role: "Shingles and shakes made out of wood"
+          name: "Shingles and shakes made out of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10eb6989-64ab-406a-9ce6-8d9e97da896e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted sawn western redcedar shingles leaving the mill, untreated and without intentional drying; net wood mass includes the measured dispatch moisture but excludes packaging. This is the only quantitative reference output."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - usda-shingle-roofs-2011
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: chip_out
+          role: "Wood Chip"
+          name: "Wood Chip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3fa2a6a7-224c-4d99-bd55-a214f0a83161"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional separately chipped untreated western redcedar offcuts sold as a coproduct. Keep actual chip mass and moisture for balances. The flow reference is Volume/m3: measure volume state, packing and density against the receiving background reference; unspecified solid/bulk convention makes the link pending. Do not convert using species-table density."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - usda-wood-handbook-2021
+                - corrim-northern-lumber-2025
+                - cssb-cedar-lca-2007
+            ranges: []
+        - row_id: sawdust_out
+          role: "Untreated western redcedar sawdust, coproduct"
+          name: "Untreated western redcedar sawdust, coproduct"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional segregated untreated western redcedar sawdust sold as a coproduct, including recovered saw dust. Exclude chips, planer shavings, mixed hog fuel and discarded sawdust."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - corrim-northern-lumber-2025
+                - cssb-cedar-lca-2007
+            ranges: []
+        - row_id: bark_out
+          role: "Western redcedar bark, coproduct"
+          name: "Western redcedar bark, coproduct"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional segregated western redcedar bark sold as a coproduct; do not identify it by a waste-only bark flow."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+      waste:
+        - row_id: offcut_waste
+          role: "Offcut"
+          name: "Offcut"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "acc22294-8e77-4784-988f-2499be3c60eb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Untreated western redcedar solid trim and rejected shingles discarded off site; excludes separately inventoried bark, sawdust and saleable chips. Link actual waste treatment, and disclose contamination. Only actual non-agglomerated, untreated and unglued coarse wood offcuts belong to this row; keep moisture and recipient records, and verify their physical state and receiver/provider compatibility before treatment linkage. Do not substitute agglomerated fuel or captured powder."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: bark_waste
+          role: "Bark"
+          name: "Bark"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a2536c07-fbe1-4a12-90fb-21bd2e99b74e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Debarking residue disposed of as waste rather than sold. This is mutually exclusive with bark_out for the same physical mass; purchased debarked bolts do not generate fictitious in-house bark."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: sawdust_waste
+          role: "sawdust waste"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Discarded untreated sawdust sent to the combustion/recovery route specified by this waste identity; confirm actual receiver. Landfill or incompatible treatments require a different exact identity. The same mass cannot also be sawdust_out or emitted particulate."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - corrim-northern-lumber-2025
+                - epa-sawmill-pte-2014
+            ranges: []
+        - row_id: oil_waste
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Used lubricant leaving the mill. Reconcile addition, retained machinery stock, recovered oil and documented loss; specify actual downstream treatment without assuming regeneration."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: film_waste
+          role: "Unwashed waste polyethylene wrapping film"
+          name: "Unwashed waste polyethylene wrapping film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Polyethylene wrapping-film scraps generated at the mill, if present. This is unwashed waste at generation, not cleaned recycling-plant material; downstream packaging waste after sale is outside this gate."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: paper_waste
+          role: "waste paper (unspecified)"
+          name: "waste paper (unspecified)"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f140a5a2-5318-4d06-956f-a87b9c6fda25"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional kraft-paper packaging scraps. The broad waste-paper identity contains this subset only when free of incompatible coatings and contamination; require receiver-specific treatment."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: strap_waste
+          role: "Polypropylene packaging strap cuttings"
+          name: "Polypropylene packaging strap cuttings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional polypropylene strap cuttings at generation; do not use a mechanical-recycling-route identity before proving that route."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+      elementary:
+        - row_id: pm_fine
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual particles at or below PM2.5 emitted to outdoor air, unspecified subcompartment, from mechanical operations and residue handling. Measure after controls, include fugitives, and use mutually exclusive size bins; recovered dust is a residue, not an emission."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-sawmill-pte-2014
+            ranges: []
+        - row_id: pm_middle
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual particles above PM2.5 and at or below PM10 emitted to outdoor air, unspecified subcompartment, from mechanical operations and residue handling. Measure after controls, include fugitives, and use mutually exclusive size bins; recovered dust is a residue, not an emission."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-sawmill-pte-2014
+            ranges: []
+        - row_id: pm_coarse
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual particles above PM10 emitted to outdoor air, unspecified subcompartment, from mechanical operations and residue handling. Measure after controls, include fugitives, and use mutually exclusive size bins; recovered dust is a residue, not an emission."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-sawmill-pte-2014
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual moisture evaporated during incidental mill residence, emitted to outdoor air, unspecified. Reconcile wood-water stock; no intentional drying energy or universal moisture target is assumed."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_balance
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: biogenic_co2
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional biogenic carbon dioxide emitted to outdoor air, unspecified, if measured biological storage losses occur. No onsite combustion is in scope. Retain actual LCI biogenic emissions regardless of a GWP convention; no carbon storage credit or automatic positive amount."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: biogenic_ch4
+          role: "methane (biogenic)"
+          name: "methane (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a8e8-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional biogenic methane from demonstrated anaerobic storage degradation, emitted to outdoor air, unspecified. Document absence or quantify it; do not infer methane from normal green wood or transfer a combustion factor."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: methanol_air
+          role: "methanol"
+          name: "methanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional methanol specifically identified by sampling/speciation in mechanical processing or incidental storage, emitted to outdoor air, unspecified. Screening is required; the lumber survey supplies no cedar default. Unmeasured is unknown, not zero; add each additional identified chemical as a separate exact row."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: formaldehyde_air
+          role: "formaldehyde"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional formaldehyde specifically identified by sampling/speciation in mechanical processing or incidental storage, emitted to outdoor air, unspecified. Screening is required; the lumber survey supplies no cedar default. Unmeasured is unknown, not zero; add each additional identified chemical as a separate exact row."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: pinene_air
+          role: "pin-2(3)-ene"
+          name: "pin-2(3)-ene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0a701083-c7e6-43d1-8ae5-e62050edc5dc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional pin-2(3)-ene (alpha-pinene) specifically identified by sampling/speciation in mechanical processing or incidental storage, emitted to outdoor air, unspecified. Screening is required; the lumber survey supplies no cedar default. Unmeasured is unknown, not zero; add each additional identified chemical as a separate exact row."
+          amount:
+            expression: "Measure this external exchange for the matched lot; divide its recorded total by P, the accepted net dispatched shingle mass in kg. Apply the allocation rule only to the environmental burden ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "The CSSB preliminary summary reports cedar wood-chip and sawdust coproduct outlets, alongside mixed hog fuel, for its named shake/shingle products. This supports looking for separate saleable residues, not a universal waste percentage or interchangeable shake/shingle yield. Keep any actual mixed hog fuel separate from the pure bark/chip/sawdust rows. Source: cssb-cedar-lca-2007."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "First assign separable operations directly: dedicated packaging belongs to shingles; dedicated chip processing belongs to chips. Partition genuinely shared burdens by measured oven-dry mass of saleable outputs at that stage; disclose the decision and test economic allocation sensitivity if prices or function indicate a materially different result. This adapts a documented lumber-study mass-allocation method, not its surveyed shares. Waste is not made a coproduct merely to reduce shingle burdens. Source: corrim-northern-lumber-2025."
+    source_ids: []
+  - rule_id: allocation_rule_3
+    applies_to: "foreground_burden_allocation"
+    rule: "Keep two ledgers. The physical process graph and mass/water/carbon balance retain full actual inputs, products, coproducts, wastes and releases. The allocated environmental burden ledger partitions eligible shared upstream burdens, energy and emissions. Do not multiply coproduct physical outputs or internal transfers by an allocation fraction. An allocated single-product dataset must bind the unallocated balance and its partition reconciliation; inventory cards describe the unallocated exchanges before that projection. No avoided-burden credit is automatic."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "mill"
+      flow_role: "shingle_out"
+      record_type: "Matched records and measurements"
+      raw_fields: "lot; species; grade; grain; lengths; widths; taper; rejected mass; net accepted mass P; dispatch moisture; packaging tare"
+      collection_method: "Calibrated scale with tare; immediate representative wood sampling for oven-dry mass stability, preserving volatile-extractive bias and species-calibrated meter limits."
+      unit: "kg"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_wood
+      process_id: "mill"
+      flow_role: "roundwood_in; bolt_in"
+      record_type: "Matched records and measurements"
+      raw_fields: "wood origin; species; starting state; delivery mass; bark; moisture samples; stock changes; transport; bolt preparation"
+      collection_method: "Weigh receipts and reconcile opening/closing stock to the same accepted lot; do not double count internally prepared bolts. Sample wood and bark separately."
+      unit: "kg"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_energy
+      process_id: "mill"
+      flow_role: "electricity_in"
+      record_type: "Matched records and measurements"
+      raw_fields: "meter readings; stage hours; voltage; region/year; extraction and handling; supply reference"
+      collection_method: "Submeter stages; reconcile main meter and shared service attribution. Convert metered kWh to MJ; retain meter and supplier definitions."
+      unit: "kWh; MJ"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_material
+      process_id: "mill"
+      flow_role: "oil_in; oil_waste"
+      record_type: "Matched records and measurements"
+      raw_fields: "product certificate; petroleum route; calorific qualifier; receipts; machinery stock; used-oil waste; loss; receiver"
+      collection_method: "Reconcile weighed material additions and stock; weigh each waste separately; verify supplier/background compatibility without adopting calorific metadata as a default."
+      unit: "kg"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_pack
+      process_id: "mill"
+      flow_role: "film_in; paper_in; strap_in; film_waste; paper_waste; strap_waste"
+      record_type: "Matched records and measurements"
+      raw_fields: "component polymer/paper grade; coating/adhesive; receipts; stocks; shipped packaging; each scrap mass"
+      collection_method: "Weigh each component and each scrap separately; reconcile consumed material = shipped packaging + on-site scraps + stock correction."
+      unit: "kg"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_residue
+      process_id: "mill"
+      flow_role: "chip_out; sawdust_out; bark_out; offcut_waste; bark_waste; sawdust_waste"
+      record_type: "Matched records and measurements"
+      raw_fields: "stream; source stage; sale/waste destination; wet and dry mass; moisture; chip volume; packing; measured density; receiver reference"
+      collection_method: "Separate and weigh each outlet; track collected dust once. Measure chip volume and mass in the same state, document solid/bulk convention with supplier, and weigh dry samples for allocation."
+      unit: "kg; m3"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_air
+      process_id: "mill"
+      flow_role: "pm_fine; pm_middle; pm_coarse; methanol_air; formaldehyde_air; pinene_air"
+      record_type: "Matched records and measurements"
+      raw_fields: "species/CAS; outlet and fugitives; control state; test method; size cut; air flow; concentration; operating hours; detection limit; uncertainty"
+      collection_method: "Use matched outlet sampling and validated fugitive estimates for actual operations; speciate VOCs. Integrate each species separately. Absent or below-detection results retain method and limit; unmeasured is unknown."
+      unit: "kg"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_balance
+      process_id: "mill"
+      flow_role: "water_vapour"
+      record_type: "Matched records and measurements"
+      raw_fields: "incoming/outgoing wood and bark water; residues; moisture; inventory; residence; volatile losses"
+      collection_method: "Reconcile measured moisture and stocks over the matched lot; investigate closure before attributing unexplained mass loss to water."
+      unit: "kg"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_carbon
+      process_id: "mill"
+      flow_role: "biogenic_co2; biogenic_ch4"
+      record_type: "Matched records and measurements"
+      raw_fields: "dry stream masses; measured carbon fractions; biological loss evidence; residence; CO2 and CH4 species; stocks"
+      collection_method: "Maintain a dry-wood carbon balance and measure/document actual biological releases or demonstrated absence; no combustion or carbon-neutrality assumption."
+      unit: "kg"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+    - protocol_id: cp_area
+      process_id: "mill"
+      flow_role: "shingle_out"
+      record_type: "Matched records and measurements"
+      raw_fields: "matched lot mass; moisture; grade; per-piece face dimensions; exposure; gaps; courses; starter/ridge cuts; installed coverage; overlap; layout"
+      collection_method: "Weigh and measure matched pieces and a documented test/specification layout; measure unique roof/wall plane coverage separately from summed full faces. Retain raw measurements and uncertainty."
+      unit: "kg; m2"
+      frequency: "Each lot; emission tests cover each operating mode"
+      temporal_coverage: "Declared production period with all grade lots, stocks and shutdowns"
+      site_scope: "Same mill, species and route; no pooled shake route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; traceability; sampling plan; balance and uncertainty"
+  calculation_rules:
+    - id: normalize_lot
+      applies_to: "all inventory rows"
+      rule: "x = X / P; X is the measured external exchange for the matched lot, P is its accepted net dispatched shingle mass in kg; shingle_out = 1 kg. Physical outputs remain unallocated."
+      inputs:
+        - X
+        - P
+        - "matched protocol"
+        - cp_output
+      output: "x"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: dry_wood
+      applies_to: "all wood streams"
+      rule: "m_dry = m_wet / (1 + u); u = (m_wet - m_dry) / m_dry. Use matched state and a fraction, not percent."
+      inputs:
+        - m_wet
+        - u
+        - cp_wood
+        - cp_output
+        - cp_residue
+      output: "m_dry"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: meter_mj
+      applies_to: "electricity_in"
+      rule: "MJ = kWh * 3.6 for metered electrical delivery; no calorific fuel factor or boiler efficiency."
+      inputs:
+        - kWh
+        - cp_energy
+      output: "MJ"
+      source_ids:
+        - corrim-northern-lumber-2025
+    - id: coverage_conversion
+      applies_to: "shingle_out"
+      rule: "r_cover = m_layout / A_cover; r_face = m_layout / A_face; A_face is the sum of full piece faces, A_cover is unique covered plane area after overlap. A_overlap is reported separately; gaps and starter/ridge/cut allowances stay in the layout ledger. For a downstream declared coverage A, required shingle mass = r_cover * A, at the matched moisture and grade. Measure, never assume r_cover from density or nominal exposure alone."
+      inputs:
+        - m_layout
+        - A_cover
+        - A_face
+        - A_overlap
+        - cp_area
+      output: "r_cover; r_face"
+      source_ids:
+        - usda-shingle-roofs-2011
+    - id: pm_partition
+      applies_to: "pm_fine; pm_middle; pm_coarse"
+      rule: "fine = PM2.5; middle = PM10 - PM2.5; coarse = PM_total - PM10, only for matched nested measurements. Each result must be nonnegative; do not add PM_total or PM10 again."
+      inputs:
+        - PM_total
+        - PM10
+        - PM2.5
+        - cp_air
+      output: "fine; middle; coarse"
+      source_ids:
+        - epa-sawmill-pte-2014
+    - id: shared_burdens
+      applies_to: "shared environmental burdens only"
+      rule: "a_j = D_j / sum(D_j); D_j is measured oven-dry mass of eligible saleable output j of the shared stage. B_j = a_j * B_shared + B_direct,j. Apply to burdens, never physical coproduct flows."
+      inputs:
+        - D_j
+        - "stage ledger"
+        - cp_residue
+        - cp_output
+      output: "a_j; B_j"
+      source_ids:
+        - corrim-northern-lumber-2025
+    - id: balance_closure
+      applies_to: "mill"
+      rule: "Dry wood input + opening stock = dry products + dry coproducts + dry wastes + wood-derived airborne matter + closing stock + documented degradation; reconcile water and measured carbon fractions separately. Captured dust stays in residue outlets. Carbon in CO2/CH4 uses species stoichiometry, not gas mass as carbon mass. Report residual and uncertainty; do not silently balance by adding a default emission."
+      inputs:
+        - cp_wood
+        - cp_output
+        - cp_residue
+        - cp_balance
+        - cp_air
+        - cp_carbon
+      output: "dry mass; water; carbon closure"
+      source_ids:
+        - corrim-northern-lumber-2025
+        - usda-wood-handbook-2021
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all rows"
+      requirement: "Verify full material/route, flow type, medium, reference property and unit; blank identities remain pending. A UUID alone does not establish a compatible background dataset."
+      evidence: "Supplier/test definitions and identity records"
+    - id: representativity
+      applies_to: "mill"
+      requirement: "Declare geographic/year and period coverage, species and grade mix; weight lots by accepted net mass. Never transfer northern lumber survey yields/emissions to cedar shingles."
+      evidence: "corrim-northern-lumber-2025"
+    - id: missing_data
+      applies_to: "all rows"
+      requirement: "Record absent, measured zero, below detection, estimated and missing distinctly; no implicit zero. Actual additional exchanges need atomic cards and matched identities."
+      evidence: "Collection package and limits"
+    - id: balance
+      applies_to: "mill"
+      requirement: "Keep physical and allocated ledgers separate and investigate unmatched closure beyond stated measurement uncertainty; show residue sale/waste split without duplication."
+      evidence: "Mass/water/carbon ledgers"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require exactly one finished reference output and 1 kg net basis; all external amounts and collection aggregation use the same P and lot scope. Verify species, route, grade, moisture, area layout and treatment qualifiers. Reject lumber substituted for shingles, duplicate external internal transfers, duplicate residue sales/wastes, nested additive PM, assumed generic density and unverified chip-volume/background conventions. Validate the unallocated physical balance and the separate partitioned burden sum. Each applicable blank identity, missing amount, unsupported background basis or unspeciated release is a data-package incompleteness, not scientific approval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground sawn-shingle production process; compatible upstream-expanded dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified matching untreated Thuja plicata manufacturing and explicitly measured mass-to-coverage conversion"
+  excluded_use: "Whole CPC equivalence; treated/dried or split shake proxy; installed weatherproof-service claims; automatic carbon credits"
+  required_metadata: "All reference qualifiers; upstream boundary; stage/lot balance; coproduct/waste decision; allocation and area basis; measured quantities; compatible datasets"
+  required_quality_disclosure: "Actual data period, sampling/uncertainty, blank identities, conditional absences, volume/property compatibility and missing emissions"
+  update_trigger: "Species/grade, moisture or delivery state, route, treatment, electricity, residue outlets, allocation or installed layout changes"
+data_sources:
+  - id: "cssb-cedar-lca-2007"
+    type: "literature"
+    reference: "[CSSB preliminary cedar-shake/shingle LCA summary (03/07)](https://www.cedarbureau.org/cms-assets/documents/41211-337868.life-cycle.pdf)"
+    used_for: "Page 1: named 2007 study products and cedar coproduct categories only; preliminary promotional summary, no case quantitative or superiority claims adopted"
+  - id: "usda-shingle-roofs-2011"
+    type: "official_guidance"
+    reference: "[USDA FPL-GTR-201 (2011)](https://research.fs.usda.gov/download/treesearch/39747.pdf)"
+    used_for: "Printed pp. 1-5, Table 1: sawn/split product distinction, grade/species and coverage/exposure context; no universal dimensions, installation or lifetime adopted"
+  - id: "usda-wood-handbook-2021"
+    type: "handbook"
+    reference: "[USDA Wood Handbook, FPL-GTR-282 (2021)](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf)"
+    used_for: "Ch. 4 pp. 4-1, 4-11; Ch. 13 p. 13-2: dry-basis moisture, density state and oven method; no species density or moisture default"
+  - id: "epa-sawmill-pte-2014"
+    type: "official_guidance"
+    reference: "[EPA Region 10 sawmill particulate PTE memorandum (2014)](https://www.epa.gov/sites/default/files/2016-09/documents/spmpteef_memo.pdf)"
+    used_for: "Memo p. 1, attachment p. 1: non-boiler mechanical activity and nested filterable PM definitions; PNW Indian Country PTE factors are not actual shingle emissions"
+  - id: "corrim-northern-lumber-2025"
+    type: "literature"
+    reference: "[CORRIM Northern softwood lumber LCA, July 22 2025](https://corrim.org/wp-content/uploads/2025/07/LCA-Report-Northern-Lumber-Report-07222025.pdf)"
+    used_for: "Sections 3.2.4, 3.2.6, 3.3, 4.6-4.7: balance, direct/shared allocation and emission screening method analogy only; northern-US lumber survey parameters are not cedar-shingle defaults"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:cd63a6686b843650a0d9d790a2cb0c3dfedadb7383be43fe194615a60f06cd08"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5523"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5523
+          line: 62
+          column: 1
+        end:
+          offset: 7107
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Untreated western redcedar roundwood at mill receipt, or prepared debarked bolts replacing it |\n| starting_condition_role | Purchased precursor; not a finished-shingle recursive input |\n| product_classification_scope | CPC 3.0 31624; narrower |\n| recursive_input_rule | In-house returned shingles/rework circulate inside mill; count net external exchanges once. Purchased finished shingles are excluded from this manufacturing route |\n| upstream_dataset_requirement | Compatible wood procurement/forestry, any bolt preparation, transport and electricity/material datasets required; disclose species, geography, moisture and allocation. UUID is not dataset evidence |\n| disclosure | Foreground gate-to-gate; upstream links expand to cradle-to-gate. External treatment tracked without importing combustion into foreground. Installation, use, maintenance and end-of-life excluded |\n\nOne aggregated mill process covers preparation, sawing, grading, handling and packaging. Keep separate stage meters and physical transfer records: each internal link has identical quantity and state at both ends, and cancels from the external inventory. No second finished-shingle output is created for a packaging handoff. Include residue chipping when actually performed, auxiliary electricity, maintenance consumables, packaging losses and actual releases. Missing applicable chemical/waste/emission species require another atomic card and compatible identity before dataset completion.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 326
+              line: 11
+              column: 1
+            end:
+              offset: 382
+              line: 11
+              column: 57
+          text: "# Untreated western redcedar sawn shingles, at mill gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5523
+              line: 62
+              column: 1
+            end:
+              offset: 5544
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_33592"
+      family: "allocation"
+      span:
+        start:
+          offset: 33592
+          line: 506
+          column: 1
+        end:
+          offset: 35121
+          line: 514
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nThe CSSB preliminary summary reports cedar wood-chip and sawdust coproduct outlets, alongside mixed hog fuel, for its named shake/shingle products. This supports looking for separate saleable residues, not a universal waste percentage or interchangeable shake/shingle yield. Keep any actual mixed hog fuel separate from the pure bark/chip/sawdust rows. Source: cssb-cedar-lca-2007.\n\nFirst assign separable operations directly: dedicated packaging belongs to shingles; dedicated chip processing belongs to chips. Partition genuinely shared burdens by measured oven-dry mass of saleable outputs at that stage; disclose the decision and test economic allocation sensitivity if prices or function indicate a materially different result. This adapts a documented lumber-study mass-allocation method, not its surveyed shares. Waste is not made a coproduct merely to reduce shingle burdens. Source: corrim-northern-lumber-2025.\n\nKeep two ledgers. The physical process graph and mass/water/carbon balance retain full actual inputs, products, coproducts, wastes and releases. The allocated environmental burden ledger partitions eligible shared upstream burdens, energy and emissions. Do not multiply coproduct physical outputs or internal transfers by an allocation fraction. An allocated single-product dataset must bind the unallocated balance and its partition reconciliation; inventory cards describe the unallocated exchanges before that projection. No avoided-burden credit is automatic.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 326
+              line: 11
+              column: 1
+            end:
+              offset: 382
+              line: 11
+              column: 57
+          text: "# Untreated western redcedar sawn shingles, at mill gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 33592
+              line: 506
+              column: 1
+            end:
+              offset: 33632
+              line: 506
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_45672"
+      family: "validation"
+      span:
+        start:
+          offset: 45672
+          line: 552
+          column: 1
+        end:
+          offset: 46367
+          line: 556
+          column: 1
+      markdown: "## 9. Validation Rules\n\nRequire exactly one finished reference output and 1 kg net basis; all external amounts and collection aggregation use the same P and lot scope. Verify species, route, grade, moisture, area layout and treatment qualifiers. Reject lumber substituted for shingles, duplicate external internal transfers, duplicate residue sales/wastes, nested additive PM, assumed generic density and unverified chip-volume/background conventions. Validate the unallocated physical balance and the separate partitioned burden sum. Each applicable blank identity, missing amount, unsupported background basis or unspeciated release is a data-package incompleteness, not scientific approval.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 326
+              line: 11
+              column: 1
+            end:
+              offset: 382
+              line: 11
+              column: 57
+          text: "# Untreated western redcedar sawn shingles, at mill gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 45672
+              line: 552
+              column: 1
+            end:
+              offset: 45694
+              line: 552
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5523"
+      source_span:
+        start:
+          offset: 6516
+          line: 75
+          column: 1
+        end:
+          offset: 7105
+          line: 75
+          column: 590
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_33592"
+      source_span:
+        start:
+          offset: 33634
+          line: 508
+          column: 1
+        end:
+          offset: 34015
+          line: 508
+          column: 382
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_33592"
+      source_span:
+        start:
+          offset: 34017
+          line: 510
+          column: 1
+        end:
+          offset: 34554
+          line: 510
+          column: 538
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_33592"
+      source_span:
+        start:
+          offset: 34556
+          line: 512
+          column: 1
+        end:
+          offset: 35119
+          line: 512
+          column: 564
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_45672"
+      source_span:
+        start:
+          offset: 45696
+          line: 554
+          column: 1
+        end:
+          offset: 46365
+          line: 554
+          column: 670
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5523"
+      source_span:
+        start:
+          offset: 5523
+          line: 62
+          column: 1
+        end:
+          offset: 5544
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5523"
+      source_span:
+        start:
+          offset: 5572
+          line: 66
+          column: 1
+        end:
+          offset: 6514
+          line: 73
+          column: 212
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_33592"
+      source_span:
+        start:
+          offset: 33592
+          line: 506
+          column: 1
+        end:
+          offset: 33632
+          line: 506
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_45672"
+      source_span:
+        start:
+          offset: 45672
+          line: 552
+          column: 1
+        end:
+          offset: 45694
+          line: 552
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cd63a6686b843650a0d9d790a2cb0c3dfedadb7383be43fe194615a60f06cd08"
+  generated_content_sha256: "sha256:ffe1f8738aec3a1db72db1322bc811a33e9913fd0ca34736ecca8d401b7373d7"

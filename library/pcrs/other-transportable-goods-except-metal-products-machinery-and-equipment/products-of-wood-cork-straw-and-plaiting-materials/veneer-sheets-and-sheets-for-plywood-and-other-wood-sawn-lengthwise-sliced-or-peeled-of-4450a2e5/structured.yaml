@@ -1,10 +1,1623 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "31513"
-  title: "Veneer sheets and sheets for plywood and other wood sawn lengthwise, sliced or peeled, of a thickness not exceeding 6 mm, of other non-coniferous wood"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.veneer-sheets-and-sheets-for-plywood-and-other-wood-sawn-lengthwise-sliced-or-peeled-of-4450a2e5"
+  classification_refs: "CPC 3.0 31513; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  covered_products: "Unbonded rotary-cut/sliced non-tropical hardwood sheets <=6 mm, dried for delivery at a declared buyer moisture specification"
+  excluded_products: "Thin sawn sheets; green sale; adhesive composing/backing; substrate-bonded veneer panels; plywood; LVL; coniferous and tropical reference objects"
+  representative_product: "Dried unbonded non-tropical hardwood sheet for later veneering or core manufacture"
+  production_route: "Log receipt/storage → debarking/bucking/flitch preparation → water or steam conditioning → rotary peeling or slicing → clipping → drying/redrying/cooling → grading/adhesive-free matching → packing and delivery"
+  market_state: "Single unbonded, unbacked, adhesive-free sheet at acceptance/delivery gate; packaging mass separate"
+functional_unit:
+  what: "Supply unbonded non-tropical hardwood sheet for later veneering/core manufacture; no claim of structural-panel functional equivalence"
+  how_much: "1 kg net delivered veneer"
+  how_well: "Thickness <=6 mm; buyer moisture, dimensions, grade and defect criteria; non-tropical hardwood with no adhesive/backing"
+  how_long_or_cycle: "One accepted delivery from a declared production period; no service-life claim"
+  reference_flow_link: "veneer_delivery"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Aggregate debarking, bucking/flitch preparation, actual water/steam conditioning, peeling or slicing, clipping, drying/redrying, cooling, grading, adhesive-free matching and packing into one veneer_mill foreground unit, retaining separate stage meters. Veneer acceptance/delivery precedes adhesive layup/hot pressing."
+      source_ids:
+        - epa-plywood-2002
+        - usda-wood-handbook-2021
+    - rule_id: boundary_heat
+      applies_to: "foreground_system_boundary"
+      rule: "Distinguish purchased steam, on-site boilers and direct firing. On-site combustion includes fuel, operation/abatement, ash and actual emissions; purchased steam retains supplier upstream production without invented site combustion. Attribute each heat portion once."
+      source_ids:
+        - epa-plywood-2002
+        - epa-wood-boiler-2022
+    - rule_id: boundary_completeness
+      applies_to: "foreground_system_boundary"
+      rule: "Separate physical process topology from allocated burden accounts. Both ends of an internal fuel transfer use identical wet mass, moisture and dry mass; no external exchange is added for the aggregated unit. Add and verify every other actual atomic flow. Any cut-off/equipment exclusion needs boundary, quantitative relevance and sensitivity, without an unsupported default threshold."
+      source_ids:
+        - epa-plywood-2002
+boundary_abstraction:
+  declared_starting_condition: "Untreated non-tropical hardwood veneer logs received at mill; declare bark, moisture, storage loss, supply gate and freight"
+  starting_condition_role: "Foreground inlet; upstream forestry/log production retained through traceable background"
+  product_classification_scope: "Dried delivered peeled/sliced unbonded subset within 31513"
+  recursive_input_rule: "Purchased same-category dry veneer is outside this log-inlet route; do not recursively duplicate log-to-veneer production. Use an explicit downstream matching boundary with supplier data. Internal redrying does not create another reference-product output."
+  upstream_dataset_requirement: "Forestry/log supply, actual inbound freight, water/power/heat/fuels, packaging and off-site waste treatment need state/geography/time/quantity-compatible backgrounds; an identity UUID is not a completed dataset."
+  disclosure: "Disclose inlet/outlet state, species, route, every stage and heat source, abatement, delivery moisture, stock, packaging, infrastructure/equipment treatment, unmeasured scope and background gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Veneer sheets and sheets for plywood and other wood sawn lengthwise, sliced or peeled, of a thickness not exceeding 6 mm, of other non-coniferous wood"
+    uuid: "7a8c3cba-0c6b-422a-ac79-b7032d874bcb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species and non-tropical status"
+    - "thickness/area/dimensions"
+    - "peeling or slicing"
+    - "no adhesive/backing/substrate"
+    - "grade/defects"
+    - "measured dry-basis delivery moisture and buyer tolerance"
+    - "site/period"
+    - "net mass"
+    - "delivery/packing gate"
+    - "conditioning and dryer/combustion technology"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference quantity and all inventory denominators are 1 kg reference flow. Use calibrated weighing of net veneer at the same accepted delivery moisture, excluding packaging; oven-dry mass, area or volume cannot replace it directly. cp_output retains complete-period accepted production and stock correction."
+  - id: wood_moisture
+    applies_to: "all physical wood ledgers"
+    required_property_ref:
+      name: "Mass / moisture"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Dry-basis moisture fraction u=(wet mass−oven-dry mass)/oven-dry mass; wet-basis w=(wet mass−oven-dry mass)/wet mass; u=w/(1−w). Sample and oven-dry to constant mass using cp_balance; do not mix percentages and fractions. Each state uses its own moisture."
+  - id: volume_compatibility
+    applies_to: "natural_gas, external_woodchips, sold_woodchips"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Gas T/P/composition/wet-dry basis and compressibility, and chip solid/bulk/packing convention must agree with supplier reference. Unknown compatibility leaves quantity linkage incomplete; a database secondary mass coefficient is not density."
+  - id: steam_basis
+    applies_to: "purchased_steam_heat"
+    required_property_ref:
+      name: "Net delivered heat"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Supplier background definition must correspond to the measured steam-inlet minus return/loss enthalpy boundary; MJ or calorific value alone does not establish this basis. Unknown compatibility remains unresolved."
+process_map:
+  - id: veneer_mill
+    name: "Log-to-unbonded-veneer delivery"
+    inclusion: "required"
+    inclusion_condition: "Declared knife-cut dried-sheet route; fuels, packaging and co-products included under row conditions"
+    role: "foreground production"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: veneer_mill
+    label: "Log-to-unbonded-veneer delivery"
+    inputs:
+      product:
+        - row_id: veneer_logs
+          role: "Non-tropical hardwood veneer logs"
+          name: "Non-tropical hardwood veneer logs"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Required: untreated non-tropical hardwood veneer logs at mill receipt, including declared bark and inlet moisture. Weigh receipt and storage change; trace forest/roadside supply and inbound freight separately."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: electricity_lv
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Conditional: actual grid consumption at the <1 kV user interface. Submeter conditioning, peeling/slicing, clipping, drying/redrying, cooling and packing. Include conversion and losses inside the declared boundary once; 1 kWh = 3.6 MJ. Do not substitute a power-plant generation flow."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: electricity_mv
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Conditional: actual grid consumption at the 1–35 kV user interface. Submeter conditioning, peeling/slicing, clipping, drying/redrying, cooling and packing. Include conversion and losses inside the declared boundary once; 1 kWh = 3.6 MJ. Do not substitute a power-plant generation flow."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: tap_water
+          role: "Water, tap"
+          name: "Water, tap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c6fb2442-d527-4e3d-bf01-4c94ea2b71ec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: purchased tap water for log conditioning, washing or boiler makeup. Meter net imported mass; reconcile recirculation, condensate, wood uptake, evaporation and wastewater. Supplier source and treatment remain site-specific; direct abstraction requires separately identified resource flows."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: purchased_steam_heat
+          role: "Net delivered heat from saturated process steam"
+          name: "Net delivered heat from saturated process steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional: purchased saturated steam supplying conditioning or indirect dryers. Obtain supplier definition and measure inlet pressure, temperature, dryness, steam mass, condensate return mass/enthalpy and meter boundary. Resolve net delivered heat to supplier reference before linking; a generic MJ or gross calorific value is insufficient. No fuel/combustion for this purchased portion is also counted on site."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional: pipeline gaseous natural gas burned on site. Reference property is Volume, not Mass. Record absolute T/P, dry/wet basis, composition, compressibility and supplier background m3 definition; convert with verified gas state relations. A secondary mass coefficient is not density. Unknown meter/background compatibility makes the quantity linkage incomplete."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: external_woodchips
+          role: "Wood Chip"
+          name: "Wood Chip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3fa2a6a7-224c-4d99-bd55-a214f0a83161"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional: purchased untreated wood chips burned in the included boiler. Reference Volume does not specify solid or bulk. Measure actual volume convention, packing/voids, mass, moisture and supplier reference quantity together; require compatibility. Do not impose a database-derived density, heating value or species. Internal chipped residues are recorded only in the physical transfer ledger, not as another imported exchange."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual diesel consumed by included yard handling. Weigh or use measured density at recorded temperature for volume conversion. Fuel grade, provider, heating value and combustion technology must be collected; identity does not establish refinery burdens or emissions."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: pao_lubricant
+          role: "lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: fully synthetic PAO lubricating oil matching the direct-read route and actual equipment specification. Record makeup and inventory change. Mineral oil is not this identity and requires its own atomic row and verification if used."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: pe_film
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: polyethylene film used to wrap accepted sheets. Collect polymer specification, net used mass and reusable/recycled fractions. Packaging is excluded from veneer reference mass and attributed to veneer alone."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pp_strap
+          role: "Polypropylene packaging strap"
+          name: "Polypropylene packaging strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional: actual polypropylene strapping for the sheet bundle. Weigh and record specification; polypropylene resin, fibres, twine and mixed packaging are not this fabricated strap."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: inbound_truck
+          role: "Road freight transport of veneer logs by truck"
+          name: "Road freight transport of veneer logs by truck"
+          flow_type: "product"
+          property_unit: "Transport service / t km"
+          description: "Required when upstream log background ends before mill receipt: record net log mass and actual loaded distance, vehicle capacity, load factor, empty return and fuel/terrain. Link a compatible truck transport service without duplicating diesel already in that service or inbound transport embedded in log supply."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transport
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: veneer_delivery
+          role: "Veneer sheets and sheets for plywood and other wood sawn lengthwise, sliced or peeled, of a thickness not exceeding 6 mm, of other non-coniferous wood"
+          name: "Veneer sheets and sheets for plywood and other wood sawn lengthwise, sliced or peeled, of a thickness not exceeding 6 mm, of other non-coniferous wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7a8c3cba-0c6b-422a-ac79-b7032d874bcb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "1 kg accepted unbonded rotary-cut or sliced non-tropical hardwood veneer, thickness <=6 mm, at declared delivery moisture, excluding transport packaging. The manufactured sheet record includes downstream use as a veneer/core, not a bonded substrate. Use only this product-output reference."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_output
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: sold_bark
+          role: "Untreated non-tropical hardwood bark sold for fuel"
+          name: "Untreated non-tropical hardwood bark sold for fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional: bark actually sold as a co-product; record physical dry and wet masses, value and destination. Mutually exclusive with waste bark and internal combustion for the same portion."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: peeler_core
+          role: "Non-tropical hardwood peeler core"
+          name: "Non-tropical hardwood peeler core"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional: actual residual core sold from rotary peeling; record diameter, species, dry/wet mass and moisture. It is not sawnwood or veneer. Slicing flitch residues require a separate identity."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: sold_offcuts
+          role: "Untreated non-tropical hardwood veneer offcuts sold"
+          name: "Untreated non-tropical hardwood veneer offcuts sold"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional: uncoated veneer clippings sold without chipping; weigh and separate from waste trim, internal fuel and chipped products."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: sold_sawdust
+          role: "Untreated non-tropical hardwood sawdust sold"
+          name: "Untreated non-tropical hardwood sawdust sold"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional: sold sawdust generated by log bucking or flitch preparation; physical amount unchanged by burden allocation. It is not a waste-flow identity."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: residual_flitch
+          role: "Non-tropical hardwood residual slicing flitch"
+          name: "Non-tropical hardwood residual slicing flitch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional: the actual residual flitch sold after knife slicing. Weigh wet/dry mass, record geometry and moisture; distinguish from rotary peeler core, clipped veneer and thin sawn sheets."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: sold_woodchips
+          role: "Wood Chip"
+          name: "Wood Chip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3fa2a6a7-224c-4d99-bd55-a214f0a83161"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional: actual chipped untreated residue sold across the gate. Use measured compatible solid/bulk volume and packing, not an inferred kg/m3 coefficient. Do not rename unchipped veneer offcuts as chips. Sold and internally burned portions must be disjoint."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_flitch
+          role: "Non-tropical hardwood residual slicing flitch waste"
+          name: "Non-tropical hardwood residual slicing flitch waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional: residual slicing flitch actually discarded off site, not sold or internally burned. Weigh and disclose treatment; source generation mass and destination portions must reconcile."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: waste_peeler_core
+          role: "Non-tropical hardwood peeler core waste"
+          name: "Non-tropical hardwood peeler core waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional: rotary peeler core actually discarded off site, excluding sold cores and internally burned cores. Weigh dry/wet quantities and preserve treatment route."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: waste_bark
+          role: "Bark"
+          name: "Bark"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a2536c07-fbe1-4a12-90fb-21bd2e99b74e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual debarking residue leaving as waste; weigh waste transfer and moisture. Exclude sold bark and internally combusted bark. Record treatment destination; this flow identity specifies no allocation or amount."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: waste_sawdust
+          role: "sawdust waste"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: untreated collected sawdust leaving for off-site combustion/recycling, generated by actual cutting/milling. Captured dust is not an air emission. Do not count material sold as a product or burned internally again here."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: waste_trim
+          role: "Uncoated non-tropical hardwood veneer trim waste"
+          name: "Uncoated non-tropical hardwood veneer trim waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional: rejected unchipped veneer trim exported as waste; weigh dry/wet masses and destination, separately from sold offcuts."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_wastewater
+          role: "Hardwood log-conditioning wastewater"
+          name: "Hardwood log-conditioning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional: spent log-conditioning water sent to off-site treatment; meter volume and density/mass, dissolved/suspended material and treatment contract. Do not represent untreated wastewater as an elementary discharge. Included on-site treatment instead requires its own atomic inputs, sludge and pollutant discharges."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: bottom_ash
+          role: "Untreated wood-boiler bottom ash"
+          name: "Untreated wood-boiler bottom ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional: on-site untreated wood fuel combustion produces collected bottom ash; weigh separately from fly ash and measure residual carbon. Imported heat does not cause this foreground ash."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: fly_ash
+          role: "Untreated wood-boiler fly ash"
+          name: "Untreated wood-boiler fly ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional: boiler air-control device captures fly ash; weigh separately from bottom ash and stack PM. Preserve treatment and carbon content."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: spent_pao
+          role: "Spent PAO lubricating oil"
+          name: "Spent PAO lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional: spent synthetic PAO oil actually transferred to a waste handler; measure quantity and contamination. Do not use mineral-oil waste or fresh lubricant identity."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: acetic_acid
+          role: "acetic acid"
+          name: "acetic acid"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-92c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Speciation is site-specific; do not transfer softwood dryer/plywood press factors. Retain screening results, detection limits and unmeasured organic scope; an undifferentiated VOC total is not added to constituent emissions."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: co2_bio
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Retain biogenic CO2 in LCI even if a greenhouse-gas reporting convention excludes it from a total."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: co2_fossil
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: co_bio
+          role: "carbon monoxide (biogenic)"
+          name: "carbon monoxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "8a313a02-e251-11e6-bf01-fe55135034f3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: co_fossil
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: ch4_bio
+          role: "methane (biogenic)"
+          name: "methane (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a8e8-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: ch4_fossil
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: n2o
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: nox
+          role: "Nitrogen oxides"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Record the NOx mass convention and require matching elementary-flow/background convention; unknown NO/NO2-equivalent definition is incomplete. Do not add individually speciated NO/NO2 on top of this reported total."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: so2
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Particle bins are disjoint: <=2.5, >2.5–10 and >10 micrometres; never add PM10 or total PM as another exchange over those bins. Preserve filterable/condensable and test-method compatibility."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm_between
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Particle bins are disjoint: <=2.5, >2.5–10 and >10 micrometres; never add PM10 or total PM as another exchange over those bins. Preserve filterable/condensable and test-method compatibility."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm_coarse
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Particle bins are disjoint: <=2.5, >2.5–10 and >10 micrometres; never add PM10 or total PM as another exchange over those bins. Preserve filterable/condensable and test-method compatibility."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Reconcile wood-water loss, conditioning evaporation and combustion water separately; use cp_balance to avoid counting water removal twice."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_balance
+              source_ids: []
+            ranges: []
+        - row_id: formaldehyde
+          role: "formaldehyde"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Speciation is site-specific; do not transfer softwood dryer/plywood press factors. Retain screening results, detection limits and unmeasured organic scope; an undifferentiated VOC total is not added to constituent emissions."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: methanol
+          role: "methanol"
+          name: "methanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Speciation is site-specific; do not transfer softwood dryer/plywood press factors. Retain screening results, detection limits and unmeasured organic scope; an undifferentiated VOC total is not added to constituent emissions."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: acetaldehyde
+          role: "acetaldehyde"
+          name: "acetaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a7a5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Speciation is site-specific; do not transfer softwood dryer/plywood press factors. Retain screening results, detection limits and unmeasured organic scope; an undifferentiated VOC total is not added to constituent emissions."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: phenol
+          role: "phenol"
+          name: "phenol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aa41-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional: actual outdoor-air release from included conditioning, dryer, boiler, abatement or handling, measured by source and time. Record this exact substance/size and carbon origin; use cp_emissions and sum non-overlapping release points after controls. No database amount, universal factor or zero by lack of measurement. Speciation is site-specific; do not transfer softwood dryer/plywood press factors. Retain screening results, detection limits and unmeasured organic scope; an undifferentiated VOC total is not added to constituent emissions."
+          amount:
+            expression: "Collect the actual net row exchange; normalize by same-period accepted net veneer mass. Retain complete physical accounts first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_physical
+    applies_to: "foreground_burden_allocation"
+    rule: "First submeter separable veneer/co-product-specific burdens by equipment/stage. For inseparable common wood-conversion burdens only, use measured oven-dry wood masses at the same physical node and period: a_v=D_v/(D_v+sum(D_c)). This is this method’s reviewable physical-allocation choice; CORRIM supplies a softwood-plywood mass-allocation precedent, not hardwood veneer shares, density or yield. Test physical causality and disclose sensitivity to alternative allocation."
+    source_ids:
+      - corrim-western-plywood-2025
+      - usda-wood-handbook-2021
+  - rule_id: allocation_ledgers
+    applies_to: "foreground_burden_allocation"
+    rule: "Allocation acts on common environmental burdens, not on physical log, delivered veneer, co-product, waste, water or carbon balances. Internally burned residues are not simultaneously sold co-products in the allocation denominator; preserve identical physical transfers. Sale, internal use, waste and stock portions are disjoint. Define economic co-product/waste status and destination; no automatic substitution credit."
+    source_ids:
+      - corrim-western-plywood-2025
+  - rule_id: allocation_specific
+    applies_to: "foreground_burden_allocation"
+    rule: "If drying serves veneer alone, drying energy/emissions, redrying and final packaging belong wholly to veneer; cores/bark that bypass the dryer receive none of that stage. Split shared boiler/site-service burdens by metered delivered heat/respective service before attributing actual served stages."
+    source_ids:
+      - epa-plywood-2002
+      - corrim-western-plywood-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "veneer_mill"
+      flow_role: "veneer_delivery"
+      record_type: "weighing/acceptance"
+      raw_fields: "lot; species; route; thickness; dimensions; grade; wet net mass; packaging tare; delivery moisture; stock; rejects"
+      collection_method: "Weigh accepted net sheets with calibrated scales, paired with cp_balance moisture tests, grade and buyer acceptance; record final delivery gate and reconcile beginning/end stock."
+      unit: "kg; dry-basis fraction"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+    - protocol_id: cp_materials
+      process_id: "veneer_mill"
+      flow_role: "veneer_logs; tap_water; pao_lubricant"
+      record_type: "purchase/receipt/meter"
+      raw_fields: "lot; species; inlet state; mass; moisture; stock; supplier; water meter; PAO specification"
+      collection_method: "Use calibrated weighing/meters and invoices with supplier/interface records; separate stage uses and recycle loops. Record actual chemicals individually if present."
+      unit: "kg"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+    - protocol_id: cp_energy
+      process_id: "veneer_mill"
+      flow_role: "electricity_lv; electricity_mv; natural_gas; external_woodchips; diesel; purchased_steam_heat"
+      record_type: "meter/fuel/enthalpy"
+      raw_fields: "stage; technology; meter; MJ/kWh; fuel mass/volume; T/P; moisture; Z; composition; packing; steam/condensate state; supplier definition"
+      collection_method: "Submeter each stage and utility inlet, including redrying/idle operation and abatement. Measure density/state/enthalpy as applicable; reconcile purchased and internally generated heat portions without overlap."
+      unit: "MJ; kg; m3"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+    - protocol_id: cp_packaging
+      process_id: "veneer_mill"
+      flow_role: "pe_film; pp_strap"
+      record_type: "weighing/issue"
+      raw_fields: "component; specification; mass issued; stock; returns; net used mass; accepted output"
+      collection_method: "Weigh each actual component and reconcile issue/return/stock, excluding all packaging from cp_output net veneer mass."
+      unit: "kg"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+    - protocol_id: cp_transport
+      process_id: "veneer_mill"
+      flow_role: "inbound_truck"
+      record_type: "route/activity"
+      raw_fields: "log mass; route; loaded km; empty return; vehicle/fuel/load; upstream transport inclusion"
+      collection_method: "Use weighbridge, delivery and route logs; derive actual freight work and check supply dataset gates. Yard handling diesel is distinct from included road transport service."
+      unit: "t km"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+    - protocol_id: cp_residues
+      process_id: "veneer_mill"
+      flow_role: "bark; cores; offcuts; chips; sawdust"
+      record_type: "weighing/dispatch/balance"
+      raw_fields: "stage; species; wet mass; dry mass; moisture; volume; packing; sold/internal/waste/stock split; value; destination"
+      collection_method: "Weigh each residue stream at its source and each sale/transfer; use measured moisture and volume convention. Reconcile both ends of internal transfers before burden allocation."
+      unit: "kg; m3"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+    - protocol_id: cp_wastes
+      process_id: "veneer_mill"
+      flow_role: "conditioning_wastewater; bottom_ash; fly_ash; spent_pao"
+      record_type: "meter/test/waste-transfer"
+      raw_fields: "waste species; quantity; density; solids; residual carbon; contamination; handler; treatment route"
+      collection_method: "Meter/weigh each waste independently and retain treatment manifests and wastewater tests. Distinguish off-site treatment from actual on-site discharge."
+      unit: "kg"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+    - protocol_id: cp_emissions
+      process_id: "veneer_mill"
+      flow_role: "outdoor air substance/size rows"
+      record_type: "stack/fugitive sampling"
+      raw_fields: "source; stage; operating time; flow rate; concentration; species; fossil/biogenic share; particle bin; sampling train; controls; detection limit; test uncertainty"
+      collection_method: "Use source-resolved accredited or validated stack/fugitive testing representative of operating modes, startup and abatement. Specify dry/wet gas and standard state; preserve unmeasured/BDL scope and uncertain speciation. Do not scale softwood surveys to hardwood."
+      unit: "kg"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+    - protocol_id: cp_balance
+      process_id: "veneer_mill"
+      flow_role: "all wood/water/carbon states; vapour"
+      record_type: "paired moisture and balance"
+      raw_fields: "stage; species; sample location; wet mass; oven-dry constant mass; moisture; water/steam; condensate; fuel C; ash C; veneer C; transfers; stock; uncertainty"
+      collection_method: "Immediately weigh representative veneer samples spanning sheet locations/lots; oven-dry to constant mass at 101–105 °C using validated laboratory protocol and weighing intervals. Calibrate electrical moisture instruments by species against oven-dry tests. Measure retained wood/fuel/ash carbon; keep wood evaporation separate from combustion-generated water."
+      unit: "kg; fraction"
+      frequency: "each lot/shift; emissions by representative operating mode"
+      temporal_coverage: "same complete production period including stock, startup/shutdown and redrying"
+      site_scope: "declared mill and included equipment/interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, raw records, sample coverage, supplier definition and uncertainty"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "q_i = sum(Q_i)/W; Q_i is the actual row exchange in the same period; W is accepted net delivered veneer kg after packaging and stock correction. Reference output is fixed at 1 kg. Preserve actual physical quantities separately from burden allocation."
+      inputs:
+        - Q_i
+        - W
+        - cp_output
+        - "linked row protocol"
+      output: "q_i"
+      source_ids: []
+    - id: moisture_balance
+      applies_to: "wood, residues and fuel"
+      rule: "u=(m_wet−m_dry)/m_dry; m_dry=m_wet/(1+u); m_water=m_wet−m_dry. Measure u for each state; divide percentages by 100 first. Reconcile dry wood in/out and stock change; water ledger separates conditioning uptake, evaporation and return."
+      inputs:
+        - m_wet
+        - m_dry
+        - cp_balance
+        - cp_residues
+      output: "dry wood and water accounts"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: wood_volume
+      applies_to: "same-state veneer and chips"
+      rule: "Use only measured same-state net volume V, mass m and moisture: rho=m/V; veneer V=sum(area×thickness), chip V requires solid/bulk and packing convention. Different states cannot share a density."
+      inputs:
+        - V
+        - m
+        - cp_balance
+        - cp_residues
+      output: "state-specific conversion"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: emission_load
+      applies_to: "each air emission row"
+      rule: "For each substance L=sum(c×gas_flow×operating_time)+measured fugitive release, after compatible concentration/gas-state unit conversion. Separate combustion carbon origins from actual fuel-carbon accounts; never infer zero from missing measurement. Retain actual releases before allocation beside allocated loads."
+      inputs:
+        - c
+        - gas_flow
+        - operating_time
+        - cp_emissions
+        - cp_balance
+      output: "species mass load"
+      source_ids:
+        - epa-plywood-2002
+        - epa-wood-boiler-2022
+    - id: pm_partition
+      applies_to: "pm25, pm_between, pm_coarse"
+      rule: "If one comparable test supplies cumulative PM2.5, PM10 and total PM: fine=PM2.5, middle=PM10−PM2.5, coarse=total PM−PM10. All must be nonnegative with identical test/filterable/condensable boundaries. If incompatible or unknown, retain the gap without invented size fractions."
+      inputs:
+        - "matched test totals"
+        - cp_emissions
+      output: "disjoint PM masses"
+      source_ids:
+        - epa-plywood-2002
+    - id: heat_balance
+      applies_to: "purchased_steam_heat"
+      rule: "Q_net=m_s×h_s−m_return×h_return−undelivered losses within the declared boundary; supplier definition, boundary and enthalpy states must correspond. This does not turn a gross-calorific property into net delivered heat or add site fuel for the same portion."
+      inputs:
+        - "steam and return states"
+        - "supplier definition"
+        - cp_energy
+      output: "compatible net delivered heat"
+      source_ids: []
+    - id: physical_carbon
+      applies_to: "all wood and combustion accounts"
+      rule: "Multiply state dry mass by measured carbon fraction; reconcile inlet, delivery, sales, internal fuel, ash residual carbon, CO2/CO/CH4 carbon and stock; equal internal transfers cancel. Convert actual CO2 carbon to CO2 mass by stoichiometric 44/12, using each other substance’s own molecular mass. Unmeasured carbon/organics do not establish closure; report residual and uncertainty."
+      inputs:
+        - "measured carbon"
+        - masses
+        - cp_balance
+        - cp_emissions
+      output: "physical carbon account"
+      source_ids:
+        - epa-wood-boiler-2022
+    - id: burden_allocation
+      applies_to: "common burden ledger"
+      rule: "B_v=B_common×a_v+B_veneer_specific; a_v uses the stated measured dry masses at the same node; do not mechanically multiply physical q_i by a_v. Retain stage selection, co-product shares, pre/post allocation burdens and sensitivity."
+      inputs:
+        - "dry masses"
+        - "stage burdens"
+        - cp_residues
+        - cp_energy
+      output: "allocated veneer burdens"
+      source_ids:
+        - corrim-western-plywood-2025
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all rows"
+      requirement: "Check substance/state/type/compartment/reference property/unit for each row; retain blank UUIDs and unknown quantity compatibility explicitly."
+      evidence: "supplier and direct identity records"
+    - id: dq_representative
+      applies_to: "veneer_mill"
+      requirement: "Cover species, route, grade, season, redrying, downtime, fuels and abatement; regional softwood surveys are not hardwood industry parameters."
+      evidence: "stratified raw records and uncertainty"
+    - id: dq_balance
+      applies_to: "physical ledgers"
+      requirement: "Reconcile stage dry wood, water, carbon and internal transfers, reporting residual; pre/post allocation accounts traceable, without invented universal tolerance."
+      evidence: "calibrations; balance residuals; buyer tolerances"
+    - id: dq_completeness
+      applies_to: "all flows"
+      requirement: "Add and verify actual additional atomic materials/water/fuels/wastes/emissions; disclose unmeasured scope, detection limits, equipment/infrastructure exclusions and background differences."
+      evidence: "complete site flow register and coverage review"
+validation_rules:
+  - rule_id: validation_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Exactly one product output matches veneer_delivery/reference UUID; net amount is 1 kg, all inventory/collection denominators agree, and moisture/species/thickness/delivery gate are explicit. No second reference output or species UUID selector."
+    source_ids: []
+  - rule_id: validation_routes
+    applies_to: "foreground_dataset_conformance"
+    rule: "Veneer must be adhesive-free/unbacked; document actual conditioning, knife cutting, clipping, drying, redrying, cooling, matching and packing. No duplicate heat portions, upstream log freight or internal fuel transfers. Thin sawn sheets or bonded products cannot pass this gate."
+    source_ids:
+      - epa-plywood-2002
+      - usda-wood-handbook-2021
+  - rule_id: validation_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check dry wood/water/carbon, disjoint co-product destinations and stock; allocation does not shrink physical quantities. PM bins do not overlap; VOC constituents are not added to their total; biogenic CO2 remains in LCI; captured material is not also emitted."
+    source_ids:
+      - epa-plywood-2002
+      - epa-wood-boiler-2022
+  - rule_id: validation_gaps
+    applies_to: "foreground_dataset_conformance"
+    rule: "Blank UUIDs, unverified supplier volume/steam enthalpy/NOx convention, unmeasured physical flows/emissions, unknown moisture or allocation causality remain explicitly incomplete, never completed/zero. Method measurement-declaration checks do not establish a complete site package or scientific approval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground log-to-unbonded-dried-veneer production dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Input to later veneering/core production only when species, knife-cut route, delivery state and measurement basis match; disclose review and gaps"
+  excluded_use: "Complete structural-panel functional comparisons; thin sawn sheets; automatic coniferous/tropical substitution; plywood/LVL products; green sale; generic factors without basis"
+  required_metadata: "All reference qualifiers; period; equipment/heat sources; sampling/moisture; supply gates; stock/physical balances; pre/post allocation ledgers; method sources"
+  required_quality_disclosure: "Measured/calculated distinction; uncertainty, unmeasured scope, detection limits, blank UUIDs, supplier-basis compatibility, geography/species representativeness and independent-review state"
+  update_trigger: "Changes to species, cutting/drying/heat supply, delivery moisture/grade/gate; added adhesive/backing; new flow identity/evidence; changed basis/allocation/emissions"
+data_sources:
+  - id: "un-cpc-3"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Ver.3.0, 30 June 2025 structure; subclasses 31511–31513. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Leaf scope includes knife-cut and longitudinally sawn thin sheets; species classification does not establish separate methodology"
+  - id: "usda-wood-handbook-2021"
+    type: "handbook"
+    reference: "USDA Forest Products Laboratory, Wood handbook—wood as an engineering material, FPL-GTR-282 (2021), printed 10–3 to 10–4 and 13–1 to 13–2; PDF pp.255–256,323–324. https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf"
+    used_for: "Knife/saw distinctions, pre-bonding veneer, wood moisture and constant-mass oven drying; no generic yield/density/drying target adoption"
+  - id: "epa-plywood-2002"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 §10.5 Plywood Manufacturing (January 2002), printed 10.5–1 to 10.5–4, Figure10.5-1. https://www.epa.gov/sites/default/files/2020-10/documents/c10s05.pdf"
+    used_for: "Conditioning, peeling/slicing, clipping, drying/redrying, composing/bonding gates and dryer/combustion emission distinction; no geography/species factor adoption"
+  - id: "epa-wood-boiler-2022"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 §1.6 Wood Residue Combustion in Boilers (March 2022), pp.1.6–1 to 1.6–3. https://www.epa.gov/system/files/documents/2022-03/c1s6_final.pdf"
+    used_for: "Actual wood-fuel boiler scope, PM, combustion gases and carbon origin; greenhouse-gas reporting does not delete biogenic LCI CO2; no efficiency/carbon-conversion/emission factor transfer"
+  - id: "corrim-western-plywood-2025"
+    type: "literature"
+    reference: "CORRIM, Life Cycle Assessment of Softwood Plywood Production – Western Region, edited July22,2025; 2022/2023 primary survey; PDF p.16, §3.2.6. https://corrim.org/wp-content/uploads/2025/07/LCA-Report-Western-Plywood-Report-Final-07222025.pdf"
+    used_for: "Mass-allocation and dedicated packaging method precedent; US Western softwood-plywood survey is not quantitative hardwood/tropical-veneer evidence"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b46553cdb307f941c5aa6835d90e60777af00e4906cd44e9ba65b2cb348b185f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6097"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6097
+          line: 61
+          column: 1
+        end:
+          offset: 8496
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Untreated non-tropical hardwood veneer logs received at mill; declare bark, moisture, storage loss, supply gate and freight |\n| starting_condition_role | Foreground inlet; upstream forestry/log production retained through traceable background |\n| product_classification_scope | Dried delivered peeled/sliced unbonded subset within 31513 |\n| recursive_input_rule | Purchased same-category dry veneer is outside this log-inlet route; do not recursively duplicate log-to-veneer production. Use an explicit downstream matching boundary with supplier data. Internal redrying does not create another reference-product output. |\n| upstream_dataset_requirement | Forestry/log supply, actual inbound freight, water/power/heat/fuels, packaging and off-site waste treatment need state/geography/time/quantity-compatible backgrounds; an identity UUID is not a completed dataset. |\n| disclosure | Disclose inlet/outlet state, species, route, every stage and heat source, abatement, delivery moisture, stock, packaging, infrastructure/equipment treatment, unmeasured scope and background gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_gate | Aggregate debarking, bucking/flitch preparation, actual water/steam conditioning, peeling or slicing, clipping, drying/redrying, cooling, grading, adhesive-free matching and packing into one veneer_mill foreground unit, retaining separate stage meters. Veneer acceptance/delivery precedes adhesive layup/hot pressing. | `epa-plywood-2002`; `usda-wood-handbook-2021` |\n| boundary_heat | Distinguish purchased steam, on-site boilers and direct firing. On-site combustion includes fuel, operation/abatement, ash and actual emissions; purchased steam retains supplier upstream production without invented site combustion. Attribute each heat portion once. | `epa-plywood-2002`; `epa-wood-boiler-2022` |\n| boundary_completeness | Separate physical process topology from allocated burden accounts. Both ends of an internal fuel transfer use identical wet mass, moisture and dry mass; no external exchange is added for the aggregated unit. Add and verify every other actual atomic flow. Any cut-off/equipment exclusion needs boundary, quantitative relevance and sensitivity, without an unsupported default threshold. | `epa-plywood-2002` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 386
+              line: 11
+              column: 1
+            end:
+              offset: 447
+              line: 11
+              column: 62
+          text: "# Unbonded rotary-cut and sliced non-tropical hardwood veneer"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6097
+              line: 61
+              column: 1
+            end:
+              offset: 6118
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50437"
+      family: "allocation"
+      span:
+        start:
+          offset: 50437
+          line: 767
+          column: 1
+        end:
+          offset: 51944
+          line: 775
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_physical | First submeter separable veneer/co-product-specific burdens by equipment/stage. For inseparable common wood-conversion burdens only, use measured oven-dry wood masses at the same physical node and period: a_v=D_v/(D_v+sum(D_c)). This is this method’s reviewable physical-allocation choice; CORRIM supplies a softwood-plywood mass-allocation precedent, not hardwood veneer shares, density or yield. Test physical causality and disclose sensitivity to alternative allocation. | `corrim-western-plywood-2025`; `usda-wood-handbook-2021` |\n| allocation_ledgers | Allocation acts on common environmental burdens, not on physical log, delivered veneer, co-product, waste, water or carbon balances. Internally burned residues are not simultaneously sold co-products in the allocation denominator; preserve identical physical transfers. Sale, internal use, waste and stock portions are disjoint. Define economic co-product/waste status and destination; no automatic substitution credit. | `corrim-western-plywood-2025` |\n| allocation_specific | If drying serves veneer alone, drying energy/emissions, redrying and final packaging belong wholly to veneer; cores/bark that bypass the dryer receive none of that stage. Split shared boiler/site-service burdens by metered delivered heat/respective service before attributing actual served stages. | `epa-plywood-2002`; `corrim-western-plywood-2025` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 386
+              line: 11
+              column: 1
+            end:
+              offset: 447
+              line: 11
+              column: 62
+          text: "# Unbonded rotary-cut and sliced non-tropical hardwood veneer"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50437
+              line: 767
+              column: 1
+            end:
+              offset: 50477
+              line: 767
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_63729"
+      family: "validation"
+      span:
+        start:
+          offset: 63729
+          line: 815
+          column: 1
+        end:
+          offset: 65090
+          line: 824
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validation_reference | Exactly one product output matches veneer_delivery/reference UUID; net amount is 1 kg, all inventory/collection denominators agree, and moisture/species/thickness/delivery gate are explicit. No second reference output or species UUID selector. |  |\n| validation_routes | Veneer must be adhesive-free/unbacked; document actual conditioning, knife cutting, clipping, drying, redrying, cooling, matching and packing. No duplicate heat portions, upstream log freight or internal fuel transfers. Thin sawn sheets or bonded products cannot pass this gate. | `epa-plywood-2002`; `usda-wood-handbook-2021` |\n| validation_balance | Check dry wood/water/carbon, disjoint co-product destinations and stock; allocation does not shrink physical quantities. PM bins do not overlap; VOC constituents are not added to their total; biogenic CO2 remains in LCI; captured material is not also emitted. | `epa-plywood-2002`; `epa-wood-boiler-2022` |\n| validation_gaps | Blank UUIDs, unverified supplier volume/steam enthalpy/NOx convention, unmeasured physical flows/emissions, unknown moisture or allocation causality remain explicitly incomplete, never completed/zero. Method measurement-declaration checks do not establish a complete site package or scientific approval. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 386
+              line: 11
+              column: 1
+            end:
+              offset: 447
+              line: 11
+              column: 62
+          text: "# Unbonded rotary-cut and sliced non-tropical hardwood veneer"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 63729
+              line: 815
+              column: 1
+            end:
+              offset: 63751
+              line: 815
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_6097"
+      source_span:
+        start:
+          offset: 7344
+          line: 76
+          column: 1
+        end:
+          offset: 7729
+          line: 76
+          column: 386
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_heat"
+      identity_kind: "explicit"
+      unit_id: "normative_6097"
+      source_span:
+        start:
+          offset: 7730
+          line: 77
+          column: 1
+        end:
+          offset: 8060
+          line: 77
+          column: 331
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_6097"
+      source_span:
+        start:
+          offset: 8061
+          line: 78
+          column: 1
+        end:
+          offset: 8494
+          line: 78
+          column: 434
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_50437"
+      source_span:
+        start:
+          offset: 50531
+          line: 771
+          column: 1
+        end:
+          offset: 51089
+          line: 771
+          column: 559
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_50437"
+      source_span:
+        start:
+          offset: 51090
+          line: 772
+          column: 1
+        end:
+          offset: 51566
+          line: 772
+          column: 477
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_specific"
+      identity_kind: "explicit"
+      unit_id: "normative_50437"
+      source_span:
+        start:
+          offset: 51567
+          line: 773
+          column: 1
+        end:
+          offset: 51942
+          line: 773
+          column: 376
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_63729"
+      source_span:
+        start:
+          offset: 63805
+          line: 819
+          column: 1
+        end:
+          offset: 64078
+          line: 819
+          column: 274
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_routes"
+      identity_kind: "explicit"
+      unit_id: "normative_63729"
+      source_span:
+        start:
+          offset: 64079
+          line: 820
+          column: 1
+        end:
+          offset: 64429
+          line: 820
+          column: 351
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_63729"
+      source_span:
+        start:
+          offset: 64430
+          line: 821
+          column: 1
+        end:
+          offset: 64759
+          line: 821
+          column: 330
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_gaps"
+      identity_kind: "explicit"
+      unit_id: "normative_63729"
+      source_span:
+        start:
+          offset: 64760
+          line: 822
+          column: 1
+        end:
+          offset: 65088
+          line: 822
+          column: 329
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6097"
+      source_span:
+        start:
+          offset: 6097
+          line: 61
+          column: 1
+        end:
+          offset: 6118
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6097"
+      source_span:
+        start:
+          offset: 6146
+          line: 65
+          column: 1
+        end:
+          offset: 7290
+          line: 72
+          column: 212
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50437"
+      source_span:
+        start:
+          offset: 50437
+          line: 767
+          column: 1
+        end:
+          offset: 50477
+          line: 767
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_63729"
+      source_span:
+        start:
+          offset: 63729
+          line: 815
+          column: 1
+        end:
+          offset: 63751
+          line: 815
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b46553cdb307f941c5aa6835d90e60777af00e4906cd44e9ba65b2cb348b185f"
+  generated_content_sha256: "sha256:ba9e86b2066d24ff01a121bdf49bb33859e23176107b13e95e0b2c43c4a96a5a"

@@ -14,9 +14,9 @@ whenToUpdate:
 checkPaths:
   - .github/dependabot.yml
   - docs/dependency-maintenance.md
-lastReviewedAt: 2026-10-16
-lastReviewedCommit: 176c63d6b115f3116a2ceda7172833ef0f83f7df
-lastReviewedNote: "PCR #117: bounded npm/Actions discovery reuses complete qualification and preserves readers, snapshots, toolchain and product/publication authority."
+lastReviewedAt: 2026-10-17
+lastReviewedCommit: 9147e85fa6610ede77b92dcb75caee33859c31db
+lastReviewedNote: "PCR #128: reviewed the generated root-lock route and positive/negative controls; exact root-lock guidance existence does not establish compatibility. Manifest/site-lock/source/workflow review, full qualification, runtime and product/publication authority, and canonical methodology remain unchanged."
 ---
 
 # Dependency maintenance
@@ -64,7 +64,17 @@ descriptor-anchored `/proc/self/fd` operations. macOS may exercise the supported
 runtime/type/lint, engineering and portable offline checks; it cannot substitute
 those results for full Linux corpus/Harness or hosted browser/native proof.
 Follow [the engineering contract](typescript-engineering.md#validation-commands).
-Preserve existing semantic Docpact rules for manifests, locks, source and assets.
+The generated root `package-lock.json` retains ownership and Docpact coverage,
+with an exact-path rule requiring this guide and the engineering contract to
+exist. A routine root-lock update does not require unchanged contract review
+metadata to be rewritten. This existence check does not review the dependency
+delta, establish compatibility or reduce the complete exact-source qualification
+and independent review required above. Docpact matches paths, so a lockfile's
+contents still need actual graph and behavioral review; its descriptive trigger
+kind does not prove that the file was generated correctly. Manifests, the site
+lock, runtime pins, source, workflows and other semantic surfaces retain their
+existing review obligations. Mixed changes retain each applicable rule, and
+unknown paths continue to select full CI.
 
 ## Acceptance and publication
 

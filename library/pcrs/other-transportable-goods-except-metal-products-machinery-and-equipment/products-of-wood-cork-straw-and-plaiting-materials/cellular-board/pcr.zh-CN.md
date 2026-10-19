@@ -15,14 +15,14 @@ translation_status: aligned
 
 排除实心细木工板/实心条芯板、全单板胶合板、纸蜂窝门芯、铝蜂窝、竹芯、泡沫塑料芯、带五金的组装门、涂饰/防腐板、购入已胶合面板、预混液态UF、其他胶种、原木转换、厂内生材干燥，以及燃料/蒸汽/购热压合路线。这些情况需重新审查实物清单与适用性。该配方路线用于有证据的现场采集，不是行业平均配方、排放因子或结构/防火/隔声等效性声明。
 
-联合国CPC3.0的31610说明明确为间隔木条；较宽的31411说明也提到空芯板，而31421标题与说明的差异不能裁定每一种物理芯层。须依据实际截面和物料表判断，分类交叉保留给维护者进行映射审查。不得由该措辞推定3141/3142的方法或已接受覆盖。本路线仅覆盖31610的narrower子集，已接受范围以权威映射及其ADR为准。来源：`un-cpc-cellular-3`、`un-cpc-plywood-3`、`un-cpc-laminated-3`。
+联合国CPC3.0的31610说明明确为间隔木条；较宽的31411说明也提到空芯板，而31421标题与说明的差异不能裁定每一种物理芯层。须依据实际截面和物料表判断，分类交叉保留给维护者进行映射审查。不得由该措辞推定3141/3142的方法或已接受覆盖。本路线对31610仅提出narrower建议，不自动成为已接受覆盖。来源：`un-cpc-cellular-3`、`un-cpc-plywood-3`、`un-cpc-laminated-3`。
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.cellular-board |
-| classification_refs | CPC 3.0 31610; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC3.0 31610；仅为间隔木芯物理边界语境 |
 | covered_products | 本UF电加热压合路线的未涂饰室内间隔木条/木格栅空芯板 |
 | excluded_products | 实心条芯、全单板板材、纸/铝蜂窝及第1节全部排除项 |
 | representative_product | 针叶间隔木芯、非热带阔叶单板面层的修边板 |
@@ -300,7 +300,7 @@ translation_status: aligned
 
 ###### 木屑废物（`waste_sawdust`）
 
-仅用于胶前切削或独立收集切削粉尘形成的清洁未处理锯屑，且实际接收方证据须符合所选e1a44d20的未处理焚烧/回收路线。记录完整实物质量、组成/含水、库存、运输及接收操作；UUID不允许任意处置。其他实际处置方式或已处理/含胶状态仍须保留独立实测实物流，待兼容身份/供方审查，不遗漏或置零。捕集颗粒为废物而非大气PM；不与sold_sawdust或内部回用重叠。
+仅纳入胶前切削锯屑或收集的切削粉尘，并记录废物去向。捕集颗粒计入该废物流，不是大气颗粒物交换；与sold_sawdust不重叠。
 
 - 选定流：木屑废物 `e1a44d20-d968-4d64-bd7c-253a1441ab35`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`；单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -477,7 +477,6 @@ translation_status: aligned
 | material_water_carbon | cellular_manufacture | 分配前分别衡算绝干木材、水和碳：输入加期初库存 = 产品加外送残余物/排放加期末库存，误差须在实测不确定性范围内。实测胶固体/水及化石有机碳与木碳分开；采用实测或有来源的树种碳分数，不设通用默认。解释未决差额、反应水和缺失挥发物；不得把质量差额自动归为水蒸气。 | cp_output; cp_wood; cp_recipe; cp_residue; cp_water; cp_air | 未分配实物衡算 | usda-wood-handbook-2021 |
 | disjoint_particles | pm25; pm25_10; pm_over10 | 对一致检测，PM_2.5_10 = PM10 - PM2.5，PM_over10 = total_PM - PM10，仅在采样边界兼容时使用。实物颗粒物质量为三个互斥部分之和。不得再次加入嵌套total_PM或PM10；差值为负须审查，不得强制置零。 | matched total_PM; PM10; PM2.5; cp_air | 互斥颗粒物交换 |  |
 | burden_attribution | cellular_manufacture | 单独保留负荷账。仅对有记录的不可避免联合负荷进行经济分配，f_j = revenue_j / sum(revenue_j)；assigned burden_j = f_j * joint burden 加产品特定负荷。所有实物输出保持原量；披露敏感性及实际销售基准。 | joint burden; product-specific burden; sales; cp_residue | 独立的分配负荷账 |  |
-| complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
 

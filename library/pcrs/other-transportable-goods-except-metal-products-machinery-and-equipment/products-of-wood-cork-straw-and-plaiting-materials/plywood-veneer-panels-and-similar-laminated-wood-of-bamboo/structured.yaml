@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.plywood-veneer-panels-and-similar-laminated-wood-of-bamboo"
-  classification_refs: "CPC 3.0 31450; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  classification_refs: "CPC 3.0 31450; proposed narrower subset, subject to independent mapping acceptance"
   covered_products: "Uncoated PF-impregnated woven-bamboo-mat flat plywood"
   excluded_products: "Curtain, strip-laminated, scrimber, flattened, wood-composite, overlaid and pretreated bamboo panels; unglued profiles"
   representative_product: "Accepted flat PF bamboo mat packaging or general board, without inferred structural grade"
@@ -76,7 +76,7 @@ measurement_rules:
       name: "Volume"
       uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
     required_unit: "m3"
-    rule: "Use cp_output: sum accepted final length × width × thickness in metres at measured dispatch moisture. Exclude rejected or unaccepted panels, unfinished rework, internal circulation, packaging and inter-panel voids. Count a reworked panel once when finally accepted at its final dimensions; retain all attributable original and rework activity in raw numerator records. Retain actual net mass and measured moisture; no assumed density."
+    rule: "Use cp_output: sum accepted final length × width × thickness in metres at measured dispatch moisture. Exclude rejected panels, rework, packaging and inter-panel voids. Retain actual net mass and measured moisture; no assumed density."
   - id: same_denominator
     applies_to: "all inventory rows"
     required_property_ref:
@@ -87,17 +87,17 @@ measurement_rules:
   - id: moisture_state
     applies_to: "mat_input; finished_panel; offcuts"
     required_property_ref:
-      name: "Auxiliary specimen/component Mass; each exchange retains its verified native reference property"
+      name: "Mass"
       uuid: ""
-    required_unit: "kg for auxiliary dry-matter/water ledgers and mass-reference exchanges; m3 for the native finished_panel reference"
-    rule: "Distinguish dry-basis and wet-basis moisture. Record laboratory method, specimen, conditioning and volatile/resin interference for each matrix; apparent oven loss from cured PF panels is not automatically water or bamboo loss. Specimen/component kg is an auxiliary moisture and physical-balance measurement, not a replacement of finished_panel Volume/m3 reference, output or denominator. Retain actual matched-state panel net mass and geometrical volume/density evidence without assumed density."
+    required_unit: "kg"
+    rule: "Distinguish dry-basis and wet-basis moisture. Record laboratory method, specimen, conditioning and volatile/resin interference for each matrix; apparent oven loss from cured PF panels is not automatically water or bamboo loss."
   - id: resin_basis
     applies_to: "pf_resin"
     required_property_ref:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Weigh actual complete wet delivered adhesive in its verified complete-product reference basis. Measure solids, water and free-species composition; maintain dry-resin subledger. Require a specific compatible whole-formulation identity/provider including supplier manufacture/preparation/delivery; a generic resin UUID or dry-solids conversion cannot stand for whole wet adhesive kg. Link background only after the complete supplied product and its quantity basis are reconciled; no universal solids percentage."
+    rule: "Weigh actual wet delivered adhesive. Measure solids, water and free-species composition; maintain dry-resin subledger. Link background only after provider wet-formulation or dry-resin kg basis is reconciled; no universal solids percentage."
   - id: steam_basis
     applies_to: "steam"
     required_property_ref:
@@ -144,11 +144,13 @@ process_inventory:
                 - itto-woven-mat-2014
             ranges: []
         - row_id: pf_resin
-          role: "Aqueous phenol-formaldehyde dipping adhesive"
-          name: "Aqueous phenol-formaldehyde dipping adhesive"
+          role: "Phenolic resin"
+          name: "Phenolic resin"
           flow_type: "product"
+          flow_ref:
+            uuid: "9f10798f-ffb5-402d-b805-27d2db4e2caf"
           property_unit: "Mass / kg"
-          description: "One actual complete purchased aqueous PF dipping adhesive supply, measured by net supplied wet-formulation mass. Require a specific compatible complete-product identity and provider preserving supplier resin manufacture, formulation preparation and delivery before use; until established, the UUID and corresponding provider link remain unresolved. A generic phenolic-polymer resin identity cannot receive whole wet adhesive kg; measured solids conversion alone does not establish the complete product. Measure included resin solids, carrier water, additives and free species analytically without extra purchases or duplicate process water. Genuine independently bought additions and actual onsite dilution/mixing water, utilities and losses remain separate exchanges under the declared route; separately bought resin with onsite adhesive manufacture requires an explicit applicability extension and its own verified supply rows."
+          description: "PF dipping formulation only; weigh delivered wet formulation and measure solids. Keep its carrier water in the constituent ledger, without adding it again to the process-water exchange. Identity alone does not establish wet/dry background quantity compatibility."
           amount:
             expression: "Net purchased aqueous PF adhesive consumed, divided by V."
             value_mode: "foreground_record"
@@ -662,7 +664,7 @@ dataset_production:
       flow_role: "PF bath"
       record_type: "batch stock and assay"
       raw_fields: "adhesive lot; wet mass; solids assay; water; free phenol/formaldehyde/methanol; formulation; fresh feed; bath return; squeeze return; opening/closing bath; purge"
-      collection_method: "Weigh fresh adhesive and bath stocks; assay lot solids/water/free species with validated methods. Measure mat uptake and returned squeeze liquid separately; only external net supply is an input. Verify the specific complete adhesive identity, supplier manufacture/formulation preparation/delivery and wet-product reference basis before linking; included constituents remain analytical, and actual separately procured additions/onsite dilution or mixing water/utilities/losses remain separate."
+      collection_method: "Weigh fresh adhesive and bath stocks; assay lot solids/water/free species with validated methods. Measure mat uptake and returned squeeze liquid separately; only external net supply is an input."
       unit: "kg; fraction"
       frequency: "Each lot and stage; meters continuous where available"
       temporal_coverage: "One disclosed representative production campaign including idle/rework and stock endpoints"
@@ -836,15 +838,6 @@ dataset_production:
       output: "Separate biogenic/fossil carbon balances and storage"
       source_ids:
         - inbar-industrial-bamboo-2015
-    - id: complete_period_normalization
-      applies_to: "all inventory rows"
-      rule: "Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity."
-      inputs:
-        - "all linked raw collection protocols"
-        - "accepted reference-product pool"
-        - "stock and rework links"
-      output: "native exchange unit per declared reference quantity; zero-output pool remains unnormalized"
-      source_ids: []
   data_quality_requirements:
     - id: quality_states
       applies_to: "p_panel"
@@ -926,18 +919,18 @@ data_sources:
     used_for: "Qualitative wood-process emission monitoring checklist only; actual bamboo/PF species and quantities require site testing. No wood/boiler factor transferred; particulate partition is an authored consistency rule"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3723775752c7bfcd5615e1f0c759a262c049c8cca1381f1f913f14959a88072c"
+  source_sha256: "sha256:cb483ed6a5cf11803f564bc4424b79b6c026f8f739c6a2318b56266e947d56fd"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8110"
+    - unit_id: "normative_7124"
       family: "system_boundary"
       span:
         start:
-          offset: 8110
+          offset: 7124
           line: 67
           column: 1
         end:
-          offset: 10817
+          offset: 9831
           line: 87
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased unglued woven mats and aqueous PF adhesive received; measured moisture, no thermal/chemical pretreatment |\n| starting_condition_role | Declared foreground cut at received constituents, with upstream production and inbound transport linked separately |\n| product_classification_scope | PF woven-mat flat panel subset of CPC 3.0 31450; classification does not define all included routes |\n| recursive_input_rule | Purchased finished panel in the same category is an explicit upstream input and not virgin mat. Internal uncured mat/board rework is counted once as stock/transfer; do not recursively repeat this PCR |\n| upstream_dataset_requirement | Actual bamboo cultivation/harvest, sliver manufacture, weaving and inbound transport; PF manufacture and delivery; electricity supply; verified steam production/delivery/condensate-return convention; water, release and wrapping supply; destination-specific waste treatment |\n| disclosure | Site, campaign, species, starting states, all transfers/stock, preprocessing, direct/indirect heat, provider definitions, exclusions, unreconciled balances and unlinked rows |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | p_panel | Include receiving, initial drying, resin dipping and squeezing, maturation/redrying, layup/pressing, cooling, edging/testing, wrapping, clean-up and pollution controls. Aggregate these stages into one foreground process; preserve each physical handoff and stage meter in cp_handoff. Do not export an intermediate board with the final reference UUID. | itto-woven-mat-2014 |\n| boundary_inputs | p_panel | Upstream supplier burdens and waste destinations must match the actual material states. Bought mats do not eliminate cultivation/sliver/weaving burdens. A matching flow identity is not a complete background provider. | itto-woven-mat-2014 |\n| boundary_utilities | p_panel | No onsite combustion or direct flue-gas drying is covered. Imported net steam heat includes its actual generation/distribution burdens via a separately verified provider; do not append provider boiler emissions to panel exhaust. Disclose capital-equipment exclusion, infrastructure sensitivity and all operating losses. | itto-woven-mat-2014 |\n| boundary_carbon | p_panel | Keep actual biological/fossil carbon transfers and emissions. No foreground atmospheric uptake is introduced merely by purchasing bamboo. Storage is separately reported; no generic carbon-neutral label, future combustion credit or delayed-emission correction replaces physical flows. | inbar-industrial-bamboo-2015 |\n\n"
@@ -957,11 +950,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8110
+              offset: 7124
               line: 67
               column: 1
             end:
-              offset: 8131
+              offset: 7145
               line: 67
               column: 22
           text: "## 5. System Boundary"
@@ -977,15 +970,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_30970"
+    - unit_id: "normative_29296"
       family: "allocation"
       span:
         start:
-          offset: 30970
+          offset: 29296
           line: 476
           column: 1
         end:
-          offset: 32243
+          offset: 30569
           line: 484
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | p_panel | Separate lots/routes and stage meters before attributing burdens to this panel. In-scope accepted panels receive their measured activities and associated losses. Allocate common utilities only from a documented causal meter/engineering relation; retain unallocated site totals and sensitivity. | itto-woven-mat-2014 |\n| allocation_residues | p_panel | Rejects, bonded offcuts, captured dust, adhesive purge and film scrap are waste in the default route; include their destination-specific treatment burdens without avoided-product credits. If a genuinely sold coproduct exists, first establish its distinct state/identity and quantity, subdivide and document the justified remaining allocation method for independent review. Waste value alone does not establish product function. | itto-woven-mat-2014 |\n| allocation_physical | p_panel | Preserve physical input/output and internal transfer quantities before allocation. An attribution fraction applies to environmental burdens, not mechanically to a measured coproduct mass or stock change. Do not multiply both ends of a physical link differently. | itto-woven-mat-2014 |\n\n"
@@ -1005,11 +998,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 30970
+              offset: 29296
               line: 476
               column: 1
             end:
-              offset: 31010
+              offset: 29336
               line: 476
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1025,16 +1018,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48832"
+    - unit_id: "normative_45471"
       family: "validation"
       span:
         start:
-          offset: 48832
-          line: 526
+          offset: 45471
+          line: 525
           column: 1
         end:
-          offset: 50931
-          line: 537
+          offset: 47570
+          line: 536
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validation_identity | p_panel | Require every reference qualifier and PF woven-mat route evidence. Reject inputs already carbonized, steamed/boiled, bleached, preserved or glued, and reject curtain/strip/scrimber or overlaid outputs under this PCR. General bamboo identity alone is insufficient. | fao-china-bamboo-1998; itto-woven-mat-2014; inbar-industrial-bamboo-2015 |\n| validation_reference | p_panel | Require exactly one finished reference product output, 1 m3 net accepted solid panel, the same denominator in both languages and all linked collection protocols. Preserve stage measurement records without a second intermediate reference output. | itto-woven-mat-2014 |\n| validation_balances | p_panel | Check absolute physical mass, water, PF stocks and separate biogenic/fossil carbon with uncertainty before attribution. Require identical sending/receiving links and separate burden accounting. Unexplained residuals remain incomplete, not assumed releases or allocated mass. | itto-woven-mat-2014 |\n| validation_quantities | all inventory rows | Require real protocols, unit/property evidence and supplier quantity correspondence, including wet/dry PF basis and net steam enthalpy definition. Missing UUIDs, net heat definitions, measured quantities or background links prevent a complete linked dataset; disclose them rather than claiming coverage. | itto-woven-mat-2014 |\n| validation_emissions | p_panel | Require chemical and medium-specific after-control emission records and three non-overlapping particulate bins. Do not discard biogenic CO2 or substitute correction flows. Record all newly observed species as their own atomic exchange. | epa-plywood-2002 |\n| validation_carbon_claims | p_panel | Reject carbon-neutral/negative or avoided-energy claims derived merely from bamboo growth, colour, heat treatment or a future combustion scenario. Declared material carbon storage is separate from emission inventory and chosen impact-method reporting. | inbar-industrial-bamboo-2015 |\n\n"
       headings:
@@ -1053,12 +1046,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48832
-              line: 526
+              offset: 45471
+              line: 525
               column: 1
             end:
-              offset: 48854
-              line: 526
+              offset: 45493
+              line: 525
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1077,220 +1070,220 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_8110"
+      unit_id: "normative_7124"
       source_span:
         start:
-          offset: 9418
+          offset: 8432
           line: 82
           column: 1
         end:
-          offset: 9820
+          offset: 8834
           line: 82
           column: 403
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_inputs"
       identity_kind: "explicit"
-      unit_id: "normative_8110"
+      unit_id: "normative_7124"
       source_span:
         start:
-          offset: 9821
+          offset: 8835
           line: 83
           column: 1
         end:
-          offset: 10091
+          offset: 9105
           line: 83
           column: 271
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_utilities"
       identity_kind: "explicit"
-      unit_id: "normative_8110"
+      unit_id: "normative_7124"
       source_span:
         start:
-          offset: 10092
+          offset: 9106
           line: 84
           column: 1
         end:
-          offset: 10468
+          offset: 9482
           line: 84
           column: 377
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_carbon"
       identity_kind: "explicit"
-      unit_id: "normative_8110"
+      unit_id: "normative_7124"
       source_span:
         start:
-          offset: 10469
+          offset: 9483
           line: 85
           column: 1
         end:
-          offset: 10815
+          offset: 9829
           line: 85
           column: 347
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_30970"
+      unit_id: "normative_29296"
       source_span:
         start:
-          offset: 31083
+          offset: 29409
           line: 480
           column: 1
         end:
-          offset: 31435
+          offset: 29761
           line: 480
           column: 353
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_residues"
       identity_kind: "explicit"
-      unit_id: "normative_30970"
+      unit_id: "normative_29296"
       source_span:
         start:
-          offset: 31436
+          offset: 29762
           line: 481
           column: 1
         end:
-          offset: 31921
+          offset: 30247
           line: 481
           column: 486
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_30970"
+      unit_id: "normative_29296"
       source_span:
         start:
-          offset: 31922
+          offset: 30248
           line: 482
           column: 1
         end:
-          offset: 32241
+          offset: 30567
           line: 482
           column: 320
     - pointer: "/validation_rules/0"
       rule_id: "validation_identity"
       identity_kind: "explicit"
-      unit_id: "normative_48832"
+      unit_id: "normative_45471"
       source_span:
         start:
-          offset: 48927
-          line: 530
+          offset: 45566
+          line: 529
           column: 1
         end:
-          offset: 49301
-          line: 530
+          offset: 45940
+          line: 529
           column: 375
     - pointer: "/validation_rules/1"
       rule_id: "validation_reference"
       identity_kind: "explicit"
-      unit_id: "normative_48832"
+      unit_id: "normative_45471"
       source_span:
         start:
-          offset: 49302
-          line: 531
+          offset: 45941
+          line: 530
           column: 1
         end:
-          offset: 49605
-          line: 531
+          offset: 46244
+          line: 530
           column: 304
     - pointer: "/validation_rules/2"
       rule_id: "validation_balances"
       identity_kind: "explicit"
-      unit_id: "normative_48832"
+      unit_id: "normative_45471"
       source_span:
         start:
-          offset: 49606
-          line: 532
+          offset: 46245
+          line: 531
           column: 1
         end:
-          offset: 49938
-          line: 532
+          offset: 46577
+          line: 531
           column: 333
     - pointer: "/validation_rules/3"
       rule_id: "validation_quantities"
       identity_kind: "explicit"
-      unit_id: "normative_48832"
+      unit_id: "normative_45471"
       source_span:
         start:
-          offset: 49939
-          line: 533
+          offset: 46578
+          line: 532
           column: 1
         end:
-          offset: 50313
-          line: 533
+          offset: 46952
+          line: 532
           column: 375
     - pointer: "/validation_rules/4"
       rule_id: "validation_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_48832"
+      unit_id: "normative_45471"
       source_span:
         start:
-          offset: 50314
-          line: 534
+          offset: 46953
+          line: 533
           column: 1
         end:
-          offset: 50605
-          line: 534
+          offset: 47244
+          line: 533
           column: 292
     - pointer: "/validation_rules/5"
       rule_id: "validation_carbon_claims"
       identity_kind: "explicit"
-      unit_id: "normative_48832"
+      unit_id: "normative_45471"
       source_span:
         start:
-          offset: 50606
-          line: 535
+          offset: 47245
+          line: 534
           column: 1
         end:
-          offset: 50929
-          line: 535
+          offset: 47568
+          line: 534
           column: 324
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8110"
+      unit_id: "normative_7124"
       source_span:
         start:
-          offset: 8110
+          offset: 7124
           line: 67
           column: 1
         end:
-          offset: 8131
+          offset: 7145
           line: 67
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8110"
+      unit_id: "normative_7124"
       source_span:
         start:
-          offset: 8159
+          offset: 7173
           line: 71
           column: 1
         end:
-          offset: 9345
+          offset: 8359
           line: 78
           column: 191
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_30970"
+      unit_id: "normative_29296"
       source_span:
         start:
-          offset: 30970
+          offset: 29296
           line: 476
           column: 1
         end:
-          offset: 31010
+          offset: 29336
           line: 476
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48832"
+      unit_id: "normative_45471"
       source_span:
         start:
-          offset: 48832
-          line: 526
+          offset: 45471
+          line: 525
           column: 1
         end:
-          offset: 48854
-          line: 526
+          offset: 45493
+          line: 525
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1299,5 +1292,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3723775752c7bfcd5615e1f0c759a262c049c8cca1381f1f913f14959a88072c"
-  generated_content_sha256: "sha256:d3ea7d8478bca21c47a30b7b4b4a7fcb6732c8c13dbb44d455280212456ab3b2"
+    sha256: "sha256:cb483ed6a5cf11803f564bc4424b79b6c026f8f739c6a2318b56266e947d56fd"
+  generated_content_sha256: "sha256:55e8646ff780a0fef013766a298f1db741ea517b676fddb1324f5266dcd90790"

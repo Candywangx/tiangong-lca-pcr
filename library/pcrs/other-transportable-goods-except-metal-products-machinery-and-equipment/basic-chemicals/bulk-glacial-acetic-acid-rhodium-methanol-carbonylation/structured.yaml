@@ -1,0 +1,1820 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.bulk-glacial-acetic-acid-rhodium-methanol-carbonylation"
+  classification_refs: "CPC 3.0:34140; narrower"
+  covered_products: "Bulk technical glacial acetic acid >=99.8 wt%, specified carbonylation route"
+  excluded_products: "Diluted acid; fatty/other acids; salicylic acid; salts; esters; anhydrides; other routes"
+  representative_product: "CH3COOH in bulk liquid dispatch"
+  production_route: "Fossil methanol + purified CO; rhodium/iodide catalysis; flash separation and distillation; actual guard bed if installed"
+  market_state: "Accepted liquid at plant loading gate, excluding transport-vessel mass"
+functional_unit:
+  what: "Technical acid feedstock"
+  how_much: "1 kg"
+  how_well: "Actual SKU passes >=99.8 wt% CH3COOH assay; declare water and individual impurities"
+  how_long_or_cycle: "One gate dispatch; no service-life function"
+  reference_flow_link: "finished_acid"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Aggregate reaction, flash, light/heavy-end distillation, guard-bed purification, tank/loading, assigned utility generation and onsite abatement into one foreground unit so intermediate acid is not a second reference output. Retain the site process drawing and stage meters: feed → reactor → flash → purification → tank → loading; flash catalyst liquid and recovered light ends return to the reactor; vent → absorption → actual recovery/oxidation/flare endpoint; aqueous purge → actual onsite or external treatment. Every internal link has identical mass/composition/time at its two ends. [celanese-carbonylation-2020; jrc-lvoc-2017]"
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Include start-up/shutdown, cleaning, purge, losses and actual onsite treatment over the declared period. Purchased steam excludes supplier generation emissions from this foreground; onsite fuel generation includes its fuel, water and measured stack releases. External wastewater transfer includes receiver burdens through a compatible dataset, without also counting raw wastewater as a direct water emission. Equipment construction/capital is excluded from routine operating exchange totals and disclosed; any study including it uses separately measured atomic material/service rows. Bulk dispatch uses reusable vessels. For every actual packing component, container, seal, liner, maintenance material and external return, collect the full physical quantity, composition, incoming/outgoing movement and opening/closing stock before any service or burden allocation. Preserve container tare separately from acid net mass. Record cleaning inputs and wastes atomically; document reuse cycles and measured service shares in a separate burden ledger. A reduced service share never replaces the whole physical amount or creates repeated fresh container consumption. No cut-off may silently remove hazardous iodide/metal/species streams. [jrc-cww-2016]"
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received methanol, purified CO and actual catalyst/promoter supplies"
+  starting_condition_role: "Independent chemical synthesis foreground; manufacturing from feedstocks"
+  product_classification_scope: "CPC 3.0:34140; narrower"
+  recursive_input_rule: "Purchased acetic acid charge requires its own upstream manufacturing dataset; internal recovered acid/catalyst/light ends are internal links, not recursive fresh production"
+  upstream_dataset_requirement: "Compatible supplier geography, technology, purity, state, reference quantity and temporal basis for every material, energy and external treatment; disclose unresolved links"
+  disclosure: "Reaction, separation, recycle, storage/loading, utilities, abatement, water and treatment ownership, stock changes, coproducts and all released species"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Acetic acid (acetic acid) ()"
+    uuid: "2cf748a4-30e8-4efd-aec4-05beb20604dc"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - CAS
+    - "assay method and mass fraction"
+    - water
+    - impurities
+    - SKU
+    - "rhodium route"
+    - "fossil feed origins"
+    - "net mass excluding vessel"
+    - "dispatch state/temperature"
+    - "site/period"
+    - "actual upstream providers"
+    - "utility basis"
+    - "actual waste/outfall media"
+    - "co-product status and allocation"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_reference
+    applies_to: "finished_acid"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh net accepted product using cp_product. Keep total product, CH3COOH, water and impurities separate; never divide by pure acid while labelling the result per kg commercial product."
+  - id: utility_basis
+    applies_to: "electricity; gas; steam"
+    required_property_ref:
+      name: "Native property or explicitly unresolved steam mass"
+      uuid: ""
+    required_unit: "MJ; m3; kg"
+    rule: "Electricity kWh × 3.6 = MJ. Gas volume needs T/P/composition/Z/provider basis. Steam requires mass and enthalpy delivery/return records; MJ property alone does not prove net usable heat. cp_energy."
+  - id: speciation
+    applies_to: "acetic_fresh; acetate_fresh; no_air; no2_air"
+    required_property_ref:
+      name: "Species mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Analytical acid equivalents, carbon totals or NO2-equivalent NOx are not direct species masses. Convert only with actual measured speciation and stated molecular basis; unresolved reporting remains pending. cp_emissions."
+process_map:
+  - id: acid_manufacture
+    name: "Carbonylation, purification, loading and actual onsite services"
+    inclusion: "required"
+    inclusion_condition: "All qualifying product manufacturing; conditional exchanges only when present"
+    role: "foreground_production"
+    quantitative_reference: "1 kg"
+process_inventory:
+  - id: acid_manufacture
+    label: "Carbonylation, purification, loading and actual onsite services"
+    inputs:
+      product:
+        - row_id: methanol
+          role: "Fossil industrial methanol"
+          name: "Methanol (market average) ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "adbc8430-7937-4ade-b7a5-cb1797dda661"
+          property_unit: "Mass / kg"
+          description: "Coal/coking/natural-gas industrial methanol only; measure received commercial mass, water, assay, carbon origin and provider basis. This identity does not prescribe a market-average upstream dataset."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: carbon_monoxide_feed
+          role: "Carbon monoxide feed"
+          name: "Carbon Monoxide ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "69422d71-f1a5-4c70-bb58-126262b8ddc2"
+          property_unit: "Mass / kg"
+          description: "Purified fossil-source CO supplied across the unit boundary, not raw syngas. Reconcile gas composition and measured mass; convert volume using actual temperature, absolute pressure, dry/wet basis and compressibility."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: methyl_iodide_makeup
+          role: "Methyl iodide promoter"
+          name: "Methyl iodide promoter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual methyl iodide (CH3I, CAS 74-88-4) SKU, phase, assay, whole received formulation, make-up and recovery; recycled circulation is not fresh consumption. Distinguish pure methyl iodide from solvent-diluted supply and separately retain its carrier composition. Do not substitute methylammonium or formamidinium iodide, or use an air-emission identity for the purchased promoter."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: rhodium_catalyst_makeup
+          role: "Rhodium carbonyl iodide catalyst solution"
+          name: "Rhodium carbonyl iodide catalyst solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on an actual rhodium carbonyl iodide catalyst solution supplied across the boundary; collect full solvent/water/metal/iodide composition, chemical form, phase, supplier and assay. Keep whole solution mass and contained Rh separate. If the active complex is formed onsite from a purchased precursor, record each actual precursor supply as its own concrete atomic exchange instead of inventing a purchased reaction-medium solution. Components already contained in the solution are not additional fresh inputs. No generic copper catalyst substitution."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: lithium_iodide
+          role: "Lithium iodide"
+          name: "Lithium iodide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual co-catalyst recipe; specify hydrate state, solution state and assay. No patent concentration is a default dosage."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: lithium_acetate
+          role: "Lithium acetate"
+          name: "Lithium acetate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual use; identify anhydrous/hydrated material and carrier water. Sodium acetate is a different species."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: fresh_acetic_charge
+          role: "Fresh glacial acetic acid charge"
+          name: "Acetic acid (acetic acid) ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cf748a4-30e8-4efd-aec4-05beb20604dc"
+          property_unit: "Mass / kg"
+          description: "Conditional purchased start-up or replacement acid of at least 99.8 wt% assay; track stock changes and supplier. Exclude internally recovered acid from this fresh input."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: process_water
+          role: "Deionised process water"
+          name: "Deionised water ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass / kg"
+          description: "Measure fresh reaction, washing and cleaning water from ion exchange/RO supply. Record purpose and treatment; carrier water already in received solutions is not charged twice."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: cooling_water
+          role: "Purchased tap water for cooling makeup"
+          name: "Water, tap ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6a8b6455-e9bb-4cb9-81ea-5e83413d5fe1"
+          property_unit: "Mass / kg"
+          description: "Conditional on treated tap-water supply. Record fresh makeup only, density if converted from volume, and actual origin; raw abstraction needs its own resource flow and treatment inventory."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: caustic
+          role: "Sodium hydroxide solution, 30%"
+          name: "Sodium hydroxide（30%） ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "47926319-2558-4b19-bbab-0ff264fca360"
+          property_unit: "Mass / kg"
+          description: "Conditional measured neutralisation with actual 30 wt% NaOH solution; amount is whole solution kg. Record NaOH and water fractions separately in the physical ledger. Other grades require their own compatible flow."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: guard_resin
+          role: "Metal-functionalised cation-exchange iodide guard resin"
+          name: "Metal-functionalised cation-exchange iodide guard resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional installed guard bed; collect actual polymer, functional metal, wet/dry basis, charge, replacement and regeneration recipe. An anion resin is not an automatic substitute."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: electricity
+          role: "Purchased medium-voltage electricity"
+          name: "Alternating current ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional CN grid-average 1–35 kV supply, matching the native locationOfSupply. Meter delivery; convert kWh to MJ using 3.6. Preserve the native Net calorific value property; other supply geographies, voltage levels or provider routes require separate compatible records. The product flow does not supply a site-specific electricity burden factor."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: steam
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One steam exchange on delivered mass basis. Measure pressure, absolute/gauge convention, temperature, dryness/superheat, mass, return condensate and enthalpies. Match supplier reference to delivered steam mass or demonstrated net heat before energy linkage."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: gas
+          role: "Pipeline natural gas"
+          name: "natural gas in the gaseous state ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Conditional onsite boiler/oxidiser fuel; native reference Volume/m3. Collect temperature, absolute pressure, wet/dry composition, compressibility, calorific basis and provider m3 definition. Secondary mass factors are not density."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: blanket_nitrogen
+          role: "Air-separated gaseous nitrogen"
+          name: "Nitrogen gas ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "92233c86-8e75-441c-94de-03cc91bc7c10"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual air-separated gaseous N2 for blanketing/purge; measure full fresh delivered N2 mass, purity, gas state, supply pressure and provider kg basis. The selected gaseous inerting product does not specify an exclusive manufacturing route or a fixed purity/pressure; actual air-separation supply still requires supplier evidence. Qualitative make-up or venting comments are not quantity or emission defaults. Liquid nitrogen or internally generated air is a different supply route."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_acid
+          role: "Accepted bulk glacial acetic acid"
+          name: "Acetic acid (acetic acid) ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cf748a4-30e8-4efd-aec4-05beb20604dc"
+          property_unit: "Mass / kg"
+          description: "1 kg net accepted commercial product at least 99.8 wt% CH3COOH, excluding transport vessel mass. Water and every impurity remain part of the product mass, not extra reference output."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: propionic_acid
+          role: "Separated propionic acid co-product"
+          name: "Separated propionic acid co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional only on actual separate recovered, accepted and sold propionic acid with declared assay. Trace impurity in main acid is not a co-product."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: methyl_acetate_coproduct
+          role: "Recovered methyl acetate co-product"
+          name: "Recovered methyl acetate co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on real export with specification and receiver. Internal light-end recycle is not a co-product."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: purge_fuel
+          role: "Exported carbonylation purge gas for fuel"
+          name: "Exported carbonylation purge gas for fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One measured gas mixture transferred to a named fuel user; disclose CO/H2/CO2/CH4/VOC/water composition and calorific basis. Onsite oxidation remains internal, followed by actual stack emissions."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: condensate_return
+          role: "Returned steam condensate"
+          name: "Returned steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional return to the steam supplier; meter clean condensate mass and temperature. It is an external water/enthalpy return, not an avoided burden or acid co-product."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+      waste:
+        - row_id: effluent_transfer
+          role: "Acetic-acid-unit wastewater sent to external treatment"
+          name: "Acetic-acid-unit wastewater sent to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One wastewater mixture at transfer point; measure whole wet mass, flow, pH, water, organics, salts, iodide and metals and receiver treatment. Do not use manganese-slag wash water."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: neutralization_purge
+          role: "Aqueous sodium-acetate neutralisation purge"
+          name: "Aqueous sodium-acetate neutralisation purge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One actual aqueous waste mixture separated for external treatment; quantify acetate, sodium, residual free acid, water and iodide. It is neither pure salt nor automatically a saleable co-product."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: spent_catalyst
+          role: "Spent rhodium-containing catalyst solution"
+          name: "Catalyst waste ()"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9f527622-cc4a-3014-a59e-a0383c602b5d"
+          property_unit: "Mass / kg"
+          description: "Conditional removed catalyst mixture sent to a named treatment/recovery route; report actual solution mass, Rh/iodide/solvent/water. Do not report contained metal again as an elementary release unless released."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: heavy_bottoms
+          role: "Acetic-acid heavy distillation bottoms"
+          name: "Acetic-acid heavy distillation bottoms"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One removed heavy organic residue mixture; analyse species, free acid, iodide, metals, water and physical state; include measured receiver route. Do not substitute citric acid residue."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: biological_sludge
+          role: "Chemical wastewater biological sludge"
+          name: "Sludge ()"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "725c8f6e-7975-4155-a250-1f95ef70c508"
+          property_unit: "Mass / kg"
+          description: "Conditional onsite biological treatment; collect whole removed sludge wet mass, dry solids, organic carbon, metal/iodide content and receiving conditions. Distinguish primary sludge; add its own atomic row when present."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+        - row_id: spent_guard_resin
+          role: "Spent metal-functionalised iodide guard resin"
+          name: "Spent metal-functionalised iodide guard resin"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One spent guard-resin waste exchange with retained liquid, functional metal and captured iodide measured; record regeneration versus disposal and receiver."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+                - celanese-acetic-2021
+                - celanese-carbonylation-2020
+                - jrc-cww-2016
+            ranges: []
+      elementary:
+        - row_id: co2_fossil
+          role: "Fossil carbon dioxide"
+          name: "carbon dioxide (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: co2_biogenic
+          role: "Biogenic carbon dioxide"
+          name: "carbon dioxide (biogenic) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known. Retain real biogenic CO2 even when a GHG reporting convention excludes it; no bio-carbon fraction is assumed."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: co_air
+          role: "Fossil carbon monoxide"
+          name: "carbon monoxide (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: methanol_air
+          role: "Methanol to air"
+          name: "methanol ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: acetic_air
+          role: "Acetic acid to air"
+          name: "acetic acid ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-92c3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: methyl_iodide_air
+          role: "Methyl iodide to air"
+          name: "iodomethane ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "7c2371e9-8623-4fe9-a6cc-a996a8d79d7a"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: methyl_acetate_air
+          role: "Methyl acetate to air"
+          name: "methyl acetate ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9690-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: acetaldehyde_air
+          role: "Acetaldehyde to air"
+          name: "acetaldehyde ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a7a5-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: hydrogen_air
+          role: "Hydrogen to air"
+          name: "hydrogen ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-949c-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: methane_air
+          role: "Fossil methane to air"
+          name: "methane (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: no_air
+          role: "Nitrogen monoxide to air"
+          name: "nitrogen monoxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known. Use actual species mass; total NOx as NO2-equivalent alone cannot populate NO or NO2. Keep unresolved speciation explicit and exclude N2O from NOx."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: no2_air
+          role: "Nitrogen dioxide to air"
+          name: "nitrogen dioxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known. Use actual species mass; total NOx as NO2-equivalent alone cannot populate NO or NO2. Keep unresolved speciation explicit and exclude N2O from NOx."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: n2o_air
+          role: "Nitrous oxide to air"
+          name: "nitrous oxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: so2_air
+          role: "Sulfur dioxide to air"
+          name: "sulfur dioxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: pm25_air
+          role: "PM2.5 to air"
+          name: "particles (PM2.5) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known. Use disjoint size fractions, never sum PM2.5, cumulative PM10 and total particulate as independent masses."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: pm10_air
+          role: "PM2.5–PM10 to air"
+          name: "particles (PM2.5 - PM10) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known. Use disjoint size fractions, never sum PM2.5, cumulative PM10 and total particulate as independent masses."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: pmover10_air
+          role: "PM above 10 µm to air"
+          name: "particles (> PM10) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known. Use disjoint size fractions, never sum PM2.5, cumulative PM10 and total particulate as independent masses."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: water_air
+          role: "Water vapour to air"
+          name: "water vapour ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air emission, unspecified subcompartment, after control; keep stack and fugitive raw records separate. Use site-specific compartment when known."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: water_fresh
+          role: "Liquid water to fresh water"
+          name: "Water ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume / m3"
+          description: "Actual fresh-water release at installation outfall after onsite treatment; transfer to an external treatment plant is a waste exchange, not this release. Retain measured whole effluent volume and composition separately from the water component and each dissolved/suspended species. The native reference is Volume/m3; conversion to a water-component mass requires actual density and water fraction. Do not add whole effluent mass to the same water and pollutant masses in physical closure, or use its total volume as proof of pure-water volume without a documented basis."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: acetic_fresh
+          role: "Free acetic acid to fresh water"
+          name: "acetic acid ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-92c7-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fresh-water release at installation outfall after onsite treatment; transfer to an external treatment plant is a waste exchange, not this release. Distinguish measured free acid from dissociated acetate at actual pH; acid-equivalent analytical reporting must be converted with documented speciation, not duplicated."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: acetate_fresh
+          role: "Acetate ion to fresh water"
+          name: "Acetate ion to fresh water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual fresh-water release at installation outfall after onsite treatment; transfer to an external treatment plant is a waste exchange, not this release. Distinguish measured free acid from dissociated acetate at actual pH; acid-equivalent analytical reporting must be converted with documented speciation, not duplicated."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: methanol_fresh
+          role: "Methanol to fresh water"
+          name: "methanol ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a939-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fresh-water release at installation outfall after onsite treatment; transfer to an external treatment plant is a waste exchange, not this release."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: iodide_fresh
+          role: "Iodide ion to fresh water"
+          name: "iodide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94d6-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fresh-water release at installation outfall after onsite treatment; transfer to an external treatment plant is a waste exchange, not this release."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: sodium_fresh
+          role: "Sodium ion to fresh water"
+          name: "Sodium, ion ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "6a3f413e-8aab-4c58-93b0-1f51c9714adb"
+          property_unit: "Mass / kg"
+          description: "Actual fresh-water release at installation outfall after onsite treatment; transfer to an external treatment plant is a waste exchange, not this release."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+        - row_id: rhodium_fresh
+          role: "Rhodium to fresh water"
+          name: "rhodium ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-abb9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fresh-water release at installation outfall after onsite treatment; transfer to an external treatment plant is a waste exchange, not this release. Native elemental-metal mass is total released Rh; dissolved/particulate speciation and treatment fate still need analysis."
+          amount:
+            expression: "Collected exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - jrc-cww-2016
+                - celanese-carbonylation-2020
+                - celanese-acetic-2021
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "First separate independently metered operations; retain unallocated physical mass/water/carbon/species accounts. Recovered internal solvent, catalyst, acid and condensate within the unit cancel as equal internal transfers. Only actual accepted external products with receiver/specification and positive documented economic or physical function are co-products; trace constituents and treatment wastes are not. Keep their full physical output masses before allocation."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "For inseparable joint operation, document the physical causal relationship and use measured causal allocation where defensible; otherwise use period-matched net sales values for economic allocation, disclosing prices, product quantities, market status and sensitivity. Shares sum to one. Allocate attributable environmental burdens and shared inputs, never multiply actual co-product physical outputs by the acid share. Do not use both an avoided-product credit and allocation for the same output. Waste treatment follows actual producer/receiver responsibility. Condensate return is a metered water/enthalpy transfer, not automatically a substitution credit. These are attributional modelling rules implemented through cp_allocation, following subdivision, physical causality and, when necessary, another supported relationship. For economic allocation, adjust observed sales values to the same joint-production gate by separately recording downstream purification, compression or packing costs; use a positive measured total value and disclose sensitivity. No preselected share or credit is provided. [ilcd-general-2010]"
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "acid_manufacture"
+      flow_role: "Reference output, accepted coproduct and return"
+      record_type: "dispatch scale and assays"
+      raw_fields: "SKU; CAS; net product kg; CH3COOH fraction x; water fraction w; impurity fractions; stock kg; rejects; temperature; destination"
+      collection_method: "Calibrated tank/vehicle weighing excluding tare; batch assay using validated supplier method with traceable uncertainty; sum accepted lots and reconcile opening/closing stocks"
+      unit: "kg; mass fractions"
+      frequency: "Each batch/event; continuous utility/outfall records where applicable"
+      temporal_coverage: "One declared representative consecutive operating year including start/stop, or complete measured shorter campaign with seasonality disclosure"
+      site_scope: "Qualifying production unit and assigned services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; methods; uncertainty; stock and flow reconciliation; receiver and provider evidence"
+    - protocol_id: cp_materials
+      process_id: "acid_manufacture"
+      flow_role: "Each supplied atomic material and physical container movement"
+      record_type: "receipts; meters; laboratory; recipe"
+      raw_fields: "row_id; SKU; CAS; supplier; route; actual chemical composition; received mass; water; hydrate; spent stock; recovery; carbon origin; full packaging/container/maintenance amounts; external returns; reuse cycles; service shares;"
+      collection_method: "Weigh or meter each fresh exchange; cross-check delivery and assay; separate whole mixture from active component; use stock-adjusted consumption, excluding internal circulation  Preserve full physical quantities before separate service/burden allocation."
+      unit: "kg"
+      frequency: "Each batch/event; continuous utility/outfall records where applicable"
+      temporal_coverage: "One declared representative consecutive operating year including start/stop, or complete measured shorter campaign with seasonality disclosure"
+      site_scope: "Qualifying production unit and assigned services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; methods; uncertainty; stock and flow reconciliation; receiver and provider evidence"
+    - protocol_id: cp_water
+      process_id: "acid_manufacture"
+      flow_role: "Each water intake and return"
+      record_type: "water meter; sampling; drawing"
+      raw_fields: "source; purpose; water mass or volume; temperature; density; return; evaporation; blowdown; carrier water; internal recycle"
+      collection_method: "Meter fresh and discharged water separately; analyse density/quality where conversion is needed; map every inlet, recycle and outlet without counting cooling circulation as uptake"
+      unit: "kg; m3"
+      frequency: "Each batch/event; continuous utility/outfall records where applicable"
+      temporal_coverage: "One declared representative consecutive operating year including start/stop, or complete measured shorter campaign with seasonality disclosure"
+      site_scope: "Qualifying production unit and assigned services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; methods; uncertainty; stock and flow reconciliation; receiver and provider evidence"
+    - protocol_id: cp_energy
+      process_id: "acid_manufacture"
+      flow_role: "Each delivered utility and onsite generation"
+      record_type: "utility meters and enthalpy balance"
+      raw_fields: "voltage; kWh; MJ; fuel volume; T; absolute P; dry/wet composition; Z; NCV/GCV; steam kg; supply P/T/dryness; condensate kg/T; supplier reference; meter loss; supply geography; exported energy; heat loss; energy stock changes; common enthalpy datum;"
+      collection_method: "Use calibrated stage and facility meters; reconcile shared utilities causally; actual thermodynamic records establish steam enthalpy and matched return; match native property and upstream reference quantity before linking"
+      unit: "MJ; m3; kg"
+      frequency: "Each batch/event; continuous utility/outfall records where applicable"
+      temporal_coverage: "One declared representative consecutive operating year including start/stop, or complete measured shorter campaign with seasonality disclosure"
+      site_scope: "Qualifying production unit and assigned services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; methods; uncertainty; stock and flow reconciliation; receiver and provider evidence"
+    - protocol_id: cp_wastes
+      process_id: "acid_manufacture"
+      flow_role: "Each external atomic waste mixture"
+      record_type: "weighbridge; manifests; analysis"
+      raw_fields: "row_id; wet mass; water; dry solids; acid; acetate; sodium; iodide; metals; organic carbon; physical state; receiver; treatment; fate"
+      collection_method: "Weigh each actual removed stream and obtain representative composition and receiver receipt; distinguish catalyst, heavy bottoms, aqueous purge, primary and biological sludge and guard resin; do not repeat one split under two rows"
+      unit: "kg"
+      frequency: "Each batch/event; continuous utility/outfall records where applicable"
+      temporal_coverage: "One declared representative consecutive operating year including start/stop, or complete measured shorter campaign with seasonality disclosure"
+      site_scope: "Qualifying production unit and assigned services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; methods; uncertainty; stock and flow reconciliation; receiver and provider evidence"
+    - protocol_id: cp_emissions
+      process_id: "acid_manufacture"
+      flow_role: "Each actual species/medium"
+      record_type: "source inventory; direct measurement; lab"
+      raw_fields: "species CAS; source; medium/submedium; exhaust or water flow; concentration; time; T/P; dry/wet; oxygen basis; pH/speciation; detector limits; control bypass; combustion carbon origin; size intervals; wet-air intake; humidity; O2/N2/other carrier components; gross outgoing carrier; inlet background; whole effluent and water fraction;"
+      collection_method: "Measure final stack/outfall and fugitive sources over operations and abnormal events; use validated species analysis and synchronized flow; sample before/after treatment for fate reconciliation; retain detection limits and uncertainty; include all discovered substances"
+      unit: "kg; m3; concentration"
+      frequency: "Each batch/event; continuous utility/outfall records where applicable"
+      temporal_coverage: "One declared representative consecutive operating year including start/stop, or complete measured shorter campaign with seasonality disclosure"
+      site_scope: "Qualifying production unit and assigned services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; methods; uncertainty; stock and flow reconciliation; receiver and provider evidence"
+    - protocol_id: cp_allocation
+      process_id: "acid_manufacture"
+      flow_role: "Physical joint production and burden allocation"
+      record_type: "unit meters; contracts; period sales"
+      raw_fields: "product mass; assay; causal relationship; independent unit inputs; receiver; same-period net price; burden share; sensitivity"
+      collection_method: "Keep full physical outputs separately from allocated burden ledger; justify subdivisions and causal/economic shares using real records, no assumed price or zero-value co-product"
+      unit: "kg; currency; share"
+      frequency: "Each batch/event; continuous utility/outfall records where applicable"
+      temporal_coverage: "One declared representative consecutive operating year including start/stop, or complete measured shorter campaign with seasonality disclosure"
+      site_scope: "Qualifying production unit and assigned services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; methods; uncertainty; stock and flow reconciliation; receiver and provider evidence"
+  calculation_rules:
+    - id: period_normalisation
+      applies_to: "all inventory rows"
+      rule: "a_i = A_i / P; retain every full physical exchange before allocation; fixed reference output = 1 kg. Allocated burden b_i = B_i / P is a separate ledger, never a replacement for physical a_i."
+      inputs:
+        - A_i
+        - B_i
+        - P
+        - cp_product
+        - "applicable collection protocol"
+      output: "a_i; b_i"
+      source_ids:
+        - ilcd-general-2010
+    - id: product_components
+      applies_to: "finished_acid"
+      rule: "Contained acid = sum(p_b × x_b); product water = sum(p_b × w_b); measured impurities = sum(p_b × respective fraction); P = sum(p_b); fractions close with actual uncertainty. Active-acid-basis burden, when separately requested, uses total burden / contained acid and is explicitly labelled a separate result."
+      inputs:
+        - p_b
+        - x_b
+        - w_b
+        - "impurity fractions"
+        - cp_product
+      output: "acid; water; impurities; P"
+      source_ids:
+        - celanese-acetic-2021
+    - id: species_load
+      applies_to: "elementary outputs"
+      rule: "For mass-referenced species, released kg = sum(C_s × Vdot × delta_t), where C_s is species kg/m3, Vdot is m3 per unit time and delta_t uses that same time unit; alternatively use C_s × measured interval volume without multiplying by time again, or validated integrated mass measurement. Convert reported units and T/P/wet/dry/oxygen bases explicitly to matching actual concentration/flow bases before integration. water_fresh retains its native m3 reference and a separately documented water-component basis. Convert analytical carbon/acid/NOx equivalents only with documented species definition and molecular masses. No default destruction fraction."
+      inputs:
+        - concentration
+        - flow
+        - time
+        - "measurement basis"
+        - cp_emissions
+      output: "species kg"
+      source_ids:
+        - jrc-cww-2016
+    - id: steam_delivery
+      applies_to: "steam; condensate_return"
+      rule: "Q_net = sum(m_in × h_in) - sum(m_return × h_return), with a declared common enthalpy datum and measured phases. Deduct other measured exported enthalpy as required by actual supplier definition; never reuse paper-drying MJ/kg factors. Steam mass is retained as its own exchange basis."
+      inputs:
+        - "steam mass"
+        - h_in
+        - "return mass"
+        - h_return
+        - cp_energy
+      output: "Q_net; delivered steam mass"
+      source_ids:
+        - jrc-cww-2016
+    - id: physical_closure
+      applies_to: "acid_manufacture"
+      rule: "Inputs + opening stocks = physical outputs + closing stocks, with reacted species balances and measured uncertainty. Water ledger includes carrier water, steam/return, cleaning, cooling makeup/blowdown, product, residues, effluent and evaporation; reaction water generation/consumption is explicit. Carbon ledger includes feed, fuel, actual products/residues and all C-containing emissions; distinguish fossil/biogenic and internal gas combustion. Iodine/Rh balances include catalyst/promoter makeup, stocks, recoveries, guard resin, waste and released species. Measured neutralisation CH3COOH + NaOH → CH3COONa + H2O is reconciled, not imposed as perfect yield."
+      inputs:
+        - cp_materials
+        - cp_water
+        - cp_product
+        - cp_wastes
+        - cp_emissions
+        - stocks
+      output: "mass; water; carbon; species residuals and uncertainty"
+      source_ids:
+        - jrc-cww-2016
+        - celanese-acetic-2021
+    - id: joint_burdens
+      applies_to: "shared operation"
+      rule: "Causal measured shares, or f_j = (p_j × net_price_j) / sum(p_k × net_price_k) if no defensible physical relationship; use measured prices adjusted to the same gate and positive total value; shares sum to 1. Preserve all full physical exchanges separately. Disclose subdivisions, price period, additional processing costs and sensitivity."
+      inputs:
+        - cp_allocation
+        - masses
+        - prices
+        - "causal evidence"
+      output: "allocated burden ledger"
+      source_ids:
+        - ilcd-general-2010
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all rows"
+      requirement: "Check species CAS, mixture composition, hard route/state restrictions, native property/unit group and exact localized display; match actual supply or receiver reference basis independently of UUID validity. No correction or nearby-species substitutes. Intended-use comments alone do not establish an exclusive manufacturing route or grade; enforce actual hard identity fields and measured supply compatibility."
+      evidence: "cp_materials; cp_product; native identity chain"
+    - id: coverage
+      applies_to: "acid_manufacture"
+      requirement: "Reconcile all feed and outputs over same declared period, stage and abnormal operation; sampling plans represent all actual sources, not only regulatory pollutants. Unknown amounts are missing, never zero."
+      evidence: "cp_emissions; jrc-cww-2016"
+    - id: balance
+      applies_to: "acid_manufacture"
+      requirement: "Report physical mass/water/carbon/Rh/iodine residuals and instrument/lab uncertainty; investigate imbalance rather than inventing compensating elementary flows."
+      evidence: "cp_water; cp_wastes; cp_product"
+    - id: supplier_link
+      applies_to: "steam; gas; all purchased exchanges"
+      requirement: "UUID identity alone does not approve provider, quantity, geography or burden compatibility. Demonstrate utility reference and matched net delivery; preserve concrete unresolved links until real supplier records are available."
+      evidence: "cp_energy; supplier evidence"
+validation_rules:
+  - rule_id: reference_acceptance
+    applies_to: "finished_acid"
+    rule: "One final reference product output; 1 kg commercial net mass; actual assay >=99.8 wt%; all required qualifiers and route confirmed."
+    source_ids:
+      - celanese-acetic-2021
+  - rule_id: stream_fates
+    applies_to: "all inventory rows"
+    rule: "Require actual occurrence/absence evidence, explicit flow direction, single exchange, collector, receiver/medium and per-1-kg basis. No duplicate wastewater transfer plus raw-water emission, internal recycle plus fresh input, or waste plus contained-metal emission."
+    source_ids:
+      - jrc-cww-2016
+  - rule_id: species_completeness
+    applies_to: "elementary outputs"
+    rule: "Release inventory includes actual VOC species and carbon source, metals/iodide and disjoint PM; NOx basis/speciation verified, N2O separate, biogenic CO2 retained. Add actual missing species atomically; reporting aggregate TOC/COD/TSS checks are diagnostics, not extra organic-species mass."
+    source_ids:
+      - jrc-cww-2016
+  - rule_id: physical_and_burden_accounts
+    applies_to: "acid_manufacture"
+    rule: "Physical outputs, stock changes, reaction/water/carbon/iodine/Rh balances and allocation burden ledger remain separately reviewable. Missing closure, utility/provider basis or unmeasured applicable exchanges prevent a complete production dataset, without fabricating PCR defaults."
+    source_ids:
+      - jrc-cww-2016
+published_dataset_profile:
+  dataset_role: "foreground_manufacturing; attributional inventory"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualifying route/SKU; transparent independent units or disclosed joint-operation allocation"
+  excluded_use: "All other acids/derivatives; aqueous lower grades; bio/fermentation or oxidation routes; claimed industry-average recipe; methodology approval from a checker result"
+  required_metadata: "Reference qualifiers; primary measurement periods; source and process drawing; native flow identities and compatible providers; physical balances; receiver routes; allocation and uncertainty"
+  required_quality_disclosure: "Measured scope, uncertainty, all missing quantities/UUIDs/provider bases, zero/non-use evidence and unreviewed scope"
+  update_trigger: "Changed route, catalyst, grade, source composition, utility basis, treatment, co-products or primary evidence"
+data_sources:
+  - id: "jrc-lvoc-2017"
+    type: "official_guidance"
+    reference: "European Commission JRC, LVOC BREF (2017), section 2.1.2.3.1 route C (printed 20 / PDF58), section 2.2.10 (printed56 / PDF94). https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/JRC109279_LVOC_Bref.pdf; retrieved 2026-10-13"
+    used_for: "Qualitative carbonylation/purification boundary; generic gas/catalyst fate. Route A/B emission lists are excluded. No temperatures, pressures, ratios or factors used as defaults."
+  - id: "celanese-acetic-2021"
+    type: "handbook"
+    reference: "Celanese, Glacial Acetic Acid Product Quality, Regulatory & Technical Information Package, status 11 October 2021, PDF1,4,9,10,18–20. https://www.celanese.com/-/media/cewebjssapp/project/documents/acetic-acid-product-dossier.pdf; retrieved 2026-10-13"
+    used_for: "Primary technical product, rhodium methanol/CO manufacturing and distillation, bulk delivery, acid/water blending and distinct derivatives. Historical 99.85 wt% freezing-point sales specification example only, distinct from the PCR 99.8 wt% reference floor; actual SKU assay and current specification required, no universal recipe."
+  - id: "jrc-cww-2016"
+    type: "official_guidance"
+    reference: "European Commission JRC, CWW BREF (2016), BAT2–5 printed543–544 / PDF573–574; treatment definitions PDF586. https://publications.jrc.ec.europa.eu/repository/bitstream/JRC103096/jrc103096_cww_bref_10_2016.pdf; retrieved 2026-10-13"
+    used_for: "Chemical-sector source/stream inventory, flow/species monitoring and treatment-fate collection. Method adapted to foreground LCI; no BAT-AEL or default efficiency represents actual emissions."
+  - id: "celanese-carbonylation-2020"
+    type: "literature"
+    reference: "Celanese International Corp, US10807935B2, Process for continuous acetic acid production, grant 20 October 2020; Background; Reaction medium; Flash vessel; Purification/guard beds; Figure1. https://patents.google.com/patent/US10807935B2/en; retrieved 2026-10-13"
+    used_for: "Primary patented topology and conditional component/impurity/guard-bed candidates. Patent embodiments, settings, concentrations and examples are not generic prescriptions; actual plant recipe and all additional species require measurement."
+  - id: "ilcd-general-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook, General guide for Life Cycle Assessment, Detailed guidance, first edition March 2010, allocation discussion printed79–81 / PDF99–101. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf; retrieved 2026-10-13"
+    used_for: "Attributional subdivision/allocation, physical causality and economic relationships; gate-adjusted observed market values and allocation limitations. No recipe, price, allocation share or provider quantity supplied."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:635aad76feb207699f293119743d72852d7ae31ec8cc8d18d1639483e2836422"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5024"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5024
+          line: 60
+          column: 1
+        end:
+          offset: 7829
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received methanol, purified CO and actual catalyst/promoter supplies |\n| starting_condition_role | Independent chemical synthesis foreground; manufacturing from feedstocks |\n| product_classification_scope | CPC 3.0:34140; narrower |\n| recursive_input_rule | Purchased acetic acid charge requires its own upstream manufacturing dataset; internal recovered acid/catalyst/light ends are internal links, not recursive fresh production |\n| upstream_dataset_requirement | Compatible supplier geography, technology, purity, state, reference quantity and temporal basis for every material, energy and external treatment; disclose unresolved links |\n| disclosure | Reaction, separation, recycle, storage/loading, utilities, abatement, water and treatment ownership, stock changes, coproducts and all released species |\n\nAggregate reaction, flash, light/heavy-end distillation, guard-bed purification, tank/loading, assigned utility generation and onsite abatement into one foreground unit so intermediate acid is not a second reference output. Retain the site process drawing and stage meters: feed → reactor → flash → purification → tank → loading; flash catalyst liquid and recovered light ends return to the reactor; vent → absorption → actual recovery/oxidation/flare endpoint; aqueous purge → actual onsite or external treatment. Every internal link has identical mass/composition/time at its two ends. [celanese-carbonylation-2020; jrc-lvoc-2017]\n\nInclude start-up/shutdown, cleaning, purge, losses and actual onsite treatment over the declared period. Purchased steam excludes supplier generation emissions from this foreground; onsite fuel generation includes its fuel, water and measured stack releases. External wastewater transfer includes receiver burdens through a compatible dataset, without also counting raw wastewater as a direct water emission. Equipment construction/capital is excluded from routine operating exchange totals and disclosed; any study including it uses separately measured atomic material/service rows. Bulk dispatch uses reusable vessels. For every actual packing component, container, seal, liner, maintenance material and external return, collect the full physical quantity, composition, incoming/outgoing movement and opening/closing stock before any service or burden allocation. Preserve container tare separately from acid net mass. Record cleaning inputs and wastes atomically; document reuse cycles and measured service shares in a separate burden ledger. A reduced service share never replaces the whole physical amount or creates repeated fresh container consumption. No cut-off may silently remove hazardous iodide/metal/species streams. [jrc-cww-2016]\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 10
+              column: 1
+            end:
+              offset: 364
+              line: 10
+              column: 73
+          text: "# Bulk glacial acetic acid from rhodium-catalysed methanol carbonylation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5024
+              line: 60
+              column: 1
+            end:
+              offset: 5045
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_52123"
+      family: "allocation"
+      span:
+        start:
+          offset: 52123
+          line: 968
+          column: 1
+        end:
+          offset: 53758
+          line: 974
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nFirst separate independently metered operations; retain unallocated physical mass/water/carbon/species accounts. Recovered internal solvent, catalyst, acid and condensate within the unit cancel as equal internal transfers. Only actual accepted external products with receiver/specification and positive documented economic or physical function are co-products; trace constituents and treatment wastes are not. Keep their full physical output masses before allocation.\n\nFor inseparable joint operation, document the physical causal relationship and use measured causal allocation where defensible; otherwise use period-matched net sales values for economic allocation, disclosing prices, product quantities, market status and sensitivity. Shares sum to one. Allocate attributable environmental burdens and shared inputs, never multiply actual co-product physical outputs by the acid share. Do not use both an avoided-product credit and allocation for the same output. Waste treatment follows actual producer/receiver responsibility. Condensate return is a metered water/enthalpy transfer, not automatically a substitution credit. These are attributional modelling rules implemented through cp_allocation, following subdivision, physical causality and, when necessary, another supported relationship. For economic allocation, adjust observed sales values to the same joint-production gate by separately recording downstream purification, compression or packing costs; use a positive measured total value and disclose sensitivity. No preselected share or credit is provided. [ilcd-general-2010]\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 10
+              column: 1
+            end:
+              offset: 364
+              line: 10
+              column: 73
+          text: "# Bulk glacial acetic acid from rhodium-catalysed methanol carbonylation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 52123
+              line: 968
+              column: 1
+            end:
+              offset: 52163
+              line: 968
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_67279"
+      family: "validation"
+      span:
+        start:
+          offset: 67279
+          line: 1012
+          column: 1
+        end:
+          offset: 68598
+          line: 1021
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| reference_acceptance | finished_acid | One final reference product output; 1 kg commercial net mass; actual assay >=99.8 wt%; all required qualifiers and route confirmed. | celanese-acetic-2021 |\n| stream_fates | all inventory rows | Require actual occurrence/absence evidence, explicit flow direction, single exchange, collector, receiver/medium and per-1-kg basis. No duplicate wastewater transfer plus raw-water emission, internal recycle plus fresh input, or waste plus contained-metal emission. | jrc-cww-2016 |\n| species_completeness | elementary outputs | Release inventory includes actual VOC species and carbon source, metals/iodide and disjoint PM; NOx basis/speciation verified, N2O separate, biogenic CO2 retained. Add actual missing species atomically; reporting aggregate TOC/COD/TSS checks are diagnostics, not extra organic-species mass. | jrc-cww-2016 |\n| physical_and_burden_accounts | acid_manufacture | Physical outputs, stock changes, reaction/water/carbon/iodine/Rh balances and allocation burden ledger remain separately reviewable. Missing closure, utility/provider basis or unmeasured applicable exchanges prevent a complete production dataset, without fabricating PCR defaults. | jrc-cww-2016 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 10
+              column: 1
+            end:
+              offset: 364
+              line: 10
+              column: 73
+          text: "# Bulk glacial acetic acid from rhodium-catalysed methanol carbonylation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 67279
+              line: 1012
+              column: 1
+            end:
+              offset: 67301
+              line: 1012
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5024"
+      source_span:
+        start:
+          offset: 5948
+          line: 73
+          column: 1
+        end:
+          offset: 6580
+          line: 73
+          column: 633
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5024"
+      source_span:
+        start:
+          offset: 6582
+          line: 75
+          column: 1
+        end:
+          offset: 7827
+          line: 75
+          column: 1246
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_52123"
+      source_span:
+        start:
+          offset: 52165
+          line: 970
+          column: 1
+        end:
+          offset: 52632
+          line: 970
+          column: 468
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_52123"
+      source_span:
+        start:
+          offset: 52634
+          line: 972
+          column: 1
+        end:
+          offset: 53756
+          line: 972
+          column: 1123
+    - pointer: "/validation_rules/0"
+      rule_id: "reference_acceptance"
+      identity_kind: "explicit"
+      unit_id: "normative_67279"
+      source_span:
+        start:
+          offset: 67374
+          line: 1016
+          column: 1
+        end:
+          offset: 67571
+          line: 1016
+          column: 198
+    - pointer: "/validation_rules/1"
+      rule_id: "stream_fates"
+      identity_kind: "explicit"
+      unit_id: "normative_67279"
+      source_span:
+        start:
+          offset: 67572
+          line: 1017
+          column: 1
+        end:
+          offset: 67892
+          line: 1017
+          column: 321
+    - pointer: "/validation_rules/2"
+      rule_id: "species_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_67279"
+      source_span:
+        start:
+          offset: 67893
+          line: 1018
+          column: 1
+        end:
+          offset: 68246
+          line: 1018
+          column: 354
+    - pointer: "/validation_rules/3"
+      rule_id: "physical_and_burden_accounts"
+      identity_kind: "explicit"
+      unit_id: "normative_67279"
+      source_span:
+        start:
+          offset: 68247
+          line: 1019
+          column: 1
+        end:
+          offset: 68596
+          line: 1019
+          column: 350
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5024"
+      source_span:
+        start:
+          offset: 5024
+          line: 60
+          column: 1
+        end:
+          offset: 5045
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5024"
+      source_span:
+        start:
+          offset: 5073
+          line: 64
+          column: 1
+        end:
+          offset: 5946
+          line: 71
+          column: 169
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_52123"
+      source_span:
+        start:
+          offset: 52123
+          line: 968
+          column: 1
+        end:
+          offset: 52163
+          line: 968
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_67279"
+      source_span:
+        start:
+          offset: 67279
+          line: 1012
+          column: 1
+        end:
+          offset: 67301
+          line: 1012
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:635aad76feb207699f293119743d72852d7ae31ec8cc8d18d1639483e2836422"
+  generated_content_sha256: "sha256:33f1347b11929f0d76e51416dff7efdbef3919646ac247f5710ab3d3635667e2"

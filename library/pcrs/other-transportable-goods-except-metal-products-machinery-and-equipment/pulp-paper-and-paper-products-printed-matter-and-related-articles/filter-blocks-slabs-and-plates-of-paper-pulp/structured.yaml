@@ -1,10 +1,1087 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "32198"
-  title: "Filter blocks, slabs and plates, of paper pulp"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.filter-blocks-slabs-and-plates-of-paper-pulp"
+  classification_refs: "CPC 3.0 32198; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  covered_products: "Dried cut-to-shape wet-formed wood-pulp depth sheets/plates within the stated route"
+  excluded_products: "Uncut filter-paper reels; moulded blocks without verified route; sorbent/support/composite media and assembled filters"
+  representative_product: "Cellulose flat depth sheet, with formulation-specific mineral and resin content"
+  production_route: "Purchased pulp → disintegrate/screen/refine/formulate → wire-belt vacuum forming → oven dry → dry cut/test/pack; internal water/broke recovery"
+  market_state: "Unused accepted finished sheet/plate at recorded gate moisture; packaging separate"
+functional_unit:
+  what: "Supply the specified physical cellulose depth medium for downstream filtration system integration"
+  how_much: "1 kg"
+  how_well: "Actual formulation/grade, thickness, grammage, porosity/permeability, wet strength, retention test method/challenge fluid/pressure and cleanliness; no default performance value"
+  how_long_or_cycle: "One factory-gate delivery; downstream throughput, flushing, regeneration, replacement and lifetime require separate actual-use evidence"
+  reference_flow_link: "filter_out"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground
+      applies_to: "foreground_system_boundary"
+      rule: "Collect the complete declared manufacturing campaign including losses, starts/stops and grade changes. Do not reuse conventional-writing-paper process settings."
+      source_ids:
+        - oiv-depth-sheets-2021
+        - jrc-paper-bref-2015
+    - rule_id: boundary_interfaces
+      applies_to: "foreground_system_boundary"
+      rule: "Document upstream supply and downstream waste-treatment providers; export of wastewater is a waste exchange, not a freshwater elementary emission. Excluded actual operations invalidate this route until extended."
+      source_ids:
+        - epa-lca-2006
+    - rule_id: boundary_internal
+      applies_to: "foreground_system_boundary"
+      rule: "Retain the physical substage diagram and internal water, furnish and broke ledger. An internal link has equal quantities at both ends; count no duplicate external exchange. One aggregate process owns the sole finished reference output."
+      source_ids:
+        - jrc-paper-bref-2015
+boundary_abstraction:
+  declared_starting_condition: "Purchased purified bleached chemical wood pulp and actual formulation ingredients received at the filter-media plant"
+  starting_condition_role: "Foreground input interface; upstream pulping and mineral/resin production linked through providers"
+  product_classification_scope: "CPC 3.0 32198 subset: finished flat wet-formed depth plates/sheets"
+  recursive_input_rule: "Internal same-grade broke stays inside manufacture; purchased finished sheet for conversion is a different starting condition and requires converter boundary review, without silently replacing purchased pulp."
+  upstream_dataset_requirement: "Match pulp species/bleaching, mineral grade/production, resin supplied basis, utility conditions and deliveries; include transport to receipt and treatment after handover, without boundary overlap."
+  disclosure: "Site, period, actual grade/formulation, excluded-operation checks, upstream cutoffs and external receivers"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Filter blocks, slabs and plates, of paper pulp"
+    uuid: "083aa644-72ee-464e-8ffa-f5b5f62321d5"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Net gate mass/moisture"
+    - "flat cut geometry"
+    - "unused state"
+    - "hardwood/softwood species and chemical-pulp route"
+    - "actual furnish/mineral/resin grade and supplied/active basis"
+    - "manufacturing/drying conditions"
+    - "performance test conditions"
+    - "absence of excluded operations"
+    - "utility voltage/steam conditions"
+    - "water source"
+    - "effluent/waste receivers"
+    - "site/period/provider boundaries"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use measured accepted net gate-moist output Q from cp_output; do not use packaging, theoretical recipe mass or unaccepted output as denominator."
+  - id: solution_basis
+    applies_to: "resin_in"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve supplied solution mass and measured solids separately; dry active mass is solution mass times verified active fraction. Carrier water belongs in the water balance, not a second purchased-water exchange."
+  - id: energy_basis
+    applies_to: "electricity_in"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Verified energy unit group supports 1 kWh = 3.6 MJ; retain provider voltage, delivery point and loss boundary. This conversion does not establish net steam heat."
+  - id: steam_basis
+    applies_to: "steam_in, condensate_out"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record delivered steam and returned liquid separately. Heat balance uses their measured states and supplier-defined reference; do not infer usable heat from a property label or default enthalpy."
+  - id: water_mass_basis
+    applies_to: "water_in"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve delivered tap-water mass. When measured by volume, convert using measured density and temperature compatible with the supplier reference; no default density."
+  - id: effluent_volume_basis
+    applies_to: "effluent_out"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Retain measured V (m3), actual mixture density rho (kg/m3) at recorded temperature, full liquid mass m = V × rho and actual H2O fraction separately. Use m/Q for this native mass exchange; no default density or pure-water assumption."
+  - id: particle_basis
+    applies_to: "pm_fine, pm_coarse, pm_large"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use disjoint aerodynamic size classes on compatible sample/control/time bases. Missing or inconsistent size data cannot establish zero or a default split."
+process_map:
+  - id: manufacture
+    name: "Wood-pulp depth-media manufacture and delivery preparation"
+    inclusion: "required"
+    inclusion_condition: "Declared route; conditional atomic rows enabled only by actual records"
+    role: "foreground production"
+    quantitative_reference: "1 kg net accepted finished medium"
+process_inventory:
+  - id: manufacture
+    label: "Wood-pulp depth-media manufacture and delivery preparation"
+    inputs:
+      product:
+        - row_id: pulp_in
+          role: "Chemical wood pulp, other than dissolving grades"
+          name: "Chemical wood pulp, other than dissolving grades"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fe36cb07-5527-4085-a80b-c8ef2cc7e0aa"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Purchased purified bleached non-dissolving chemical wood pulp; record hardwood/softwood species, bleaching route, supplied moisture, lot mass and dry solids. Separate supplies and species as distinct dataset exchanges; no universal furnish proportion."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_materials and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - oiv-depth-sheets-2021
+            ranges: []
+        - row_id: de_in
+          role: "Diatomaceous earth filter aid"
+          name: "Diatomaceous earth filter aid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "af13e1e4-290c-412d-b3fe-dcba0b4c5b81"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only for a formulation incorporating diatomaceous earth. Confirm incoming unused filter aid, calcined/flux-calcined/natural grade, silica phase, particle distribution, moisture and supplier. The beverage-clarification identity is a physical aid reference, not a filtration service or proof of upstream production burdens. This locator specifically describes a beverage-clarification filter aid; confirm the actual delivered grade and intended application satisfy that restriction. Other uses require another compatible identity."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_materials and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - oiv-depth-sheets-2021
+            ranges: []
+        - row_id: perlite_in
+          role: "Perlite filter aid"
+          name: "Perlite filter aid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "45203225-538a-422b-bf66-16f2e7931f18"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only for actual expanded ground perlite. This UUID describes selected ore expanded in a vertical shaft kiln using purified gas, then ground/purified; verify that supply route before linking it. Other furnace/fuel routes require an independently compatible identity/provider. Record grade, particle distribution and moisture; do not prescribe this kiln as the PCR default."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_materials and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - oiv-depth-sheets-2021
+            ranges: []
+        - row_id: resin_in
+          role: "Aqueous polyamidoamine wet-strength resin"
+          name: "Aqueous polyamidoamine wet-strength resin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only when the actual formulation uses this resin. Record supplied solution mass, polymer identity/CAS, crosslinker, grade, solids, carrier water, preservatives and residual monomers; distinguish solution from dry active polymer. Polyacrylamide, generic resin and paint resin are not substitutions. A different binder requires its own specific exchange and evidence."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_materials and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - oiv-depth-sheets-2021
+            ranges: []
+        - row_id: electricity_in
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter disintegration/refining, vacuum, dryer fans/electric heating if present, cutting, packing and mechanical water recovery separately, then total once. UUID applies only to grid-average low-voltage AC below 1 kV at user; another voltage/supply requires compatible identity. Convert measured kWh with the verified energy unit group; the property is named Net calorific value. The locator is CN supply; preserve China as its geographic limitation and select a compatible alternative for other supply geographies."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_energy and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: steam_in
+          role: "Purchased steam for indirect oven heating"
+          name: "Heat, from steam, in industrial boiler"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f80f700c-a9ca-47bf-b3f0-f0c435b291d7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional on steam-heated equipment. Measure steam mass and pressure/temperature/dryness at the delivery point and pair condensate return. Neither 11.0 nor 0.45 MPaG is assumed; the selected supplier dataset must match actual conditions. Retain the mass inventory; energy conversion requires measured enthalpy balance and supplier background quantity definition. The selected steam-heat locator has native Mass/kg and no specified pressure. It is usable only after the actual provider confirms that one reference kg denotes delivered steam at this interface; its title alone does not prove that quantity definition. Retain measured steam mass, pressure, temperature, dryness, condensate mass/state and the provider heat boundary. If the provider reference is heat energy, establish an evidenced enthalpy/reference conversion or replace the link; never equate kg, gross calorific value and useful heat."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_energy and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: water_in
+          role: "Water, tap"
+          name: "Water, tap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6a8b6455-e9bb-4cb9-81ea-5e83413d5fe1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Purchased tap-water make-up for slurry, showers and cleaning, including grade changes and quality testing. Count external intake once; internal white water is not new intake. Mass reference requires measured density if meters report volume; no database secondary factor is a site density."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_water and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: film_in
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only if actual shipping protection is non-cellular, non-laminated LDPE foil. Weigh issued material less unused returns and account for scrap. Other polymers or composites require separate specific exchanges. Packaging remains outside net filter mass."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_pack and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: carton_in
+          role: "Corrugated paperboard shipping carton"
+          name: "Corrugated paperboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional on actual carton use; record board construction, printing/coating and fibre shares. The database corrugated-box record specifies 16.6% primary and 83.4% recycled fibre; no actual carton furnish is assumed to match. Avoid laminated folding-carton identity for a shipping corrugated box."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_pack and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: filter_out
+          role: "Filter blocks, slabs and plates, of paper pulp"
+          name: "Filter blocks, slabs and plates, of paper pulp"
+          flow_type: "product"
+          flow_ref:
+            uuid: "083aa644-72ee-464e-8ffa-f5b5f62321d5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "1 kg net accepted finished filter plate/sheet at recorded gate moisture; exclude wrapping and cartons. This is the sole reference output. The broad identity does not prescribe a fibre/mineral/resin recipe or retention grade."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - oiv-depth-sheets-2021
+            ranges: []
+        - row_id: condensate_out
+          role: "Steam condensate returned to heat supplier"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only for actual supplier return: meter mass, temperature and pressure separately from wastewater. Keep full physical return; no automatic sale, avoided-water credit or heat credit. Do not use milk-evaporation condensate or steam as the liquid identity. The treated industrial/process-water identity is conditional on actual clean steam condensate returned for industrial reuse, with measured liquid mass, quality, treatment history and receiver acceptance. It does not assert that treatment occurs here. Contaminated discarded condensate needs a separately qualified waste exchange."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_energy and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+      waste:
+        - row_id: screen_out
+          role: "Purified wood-pulp stock screening rejects"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record external wet screening rejects separately from finished-sheet rejects. Measure moisture and fibre/contaminant composition and receiving treatment. Retained screening fibre returned internally is not external waste. Use the broad industrial discarded-solid identity only for this separately measured wet solid screening residue. Report its full as-transferred mass, H2O, dry fibre, minerals/resin and contaminants, physical phase and actual receiver route. A liquid screen purge is a separate liquid exchange; no generic composition, treatment or hazard classification follows from this UUID."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_waste and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: reject_out
+          role: "Rejected cellulose depth filter sheet"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "External dry trimmings/off-spec sheets of this formulation, before filtration use. Record mineral/resin content, moisture and receiver; compatible internal broke is an internal transfer only. Used contaminant-loaded filters and ordinary recycled paper are different identities. The broad industrial discarded-solid locator conditionally covers actual unused fibre/mineral/resin manufacturing offcuts. Preserve this row separately from screenings and sludge, including full moisture-bearing mass and actual receiver acceptance. It establishes neither recyclability nor substitution credit."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_waste and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: dust_out
+          role: "Dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only collected industrial cutting or powder-handling dust leaving the site as waste. This broad waste identity requires actual cellulose/mineral/resin fractions, silica phase, moisture, hazard class and receiver; it does not identify airborne elementary particulate releases. Internal recovery is not external waste."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_waste and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: sludge_out
+          role: "Dewatered primary cellulose-mineral recovery sludge"
+          name: "sludge (paper production)"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b48b29ab-4ead-4413-9adb-07631cd7af09"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional on an external purge from mechanical white-water solids recovery. Keep dry solids, retained water and fibre/mineral/resin composition; distinguish biological sludge and untreated wastewater. Do not assume all recovered solids leave as sludge. The native paper-production-sludge identity is broad and supplies no solids fraction or treatment assumption. Apply it conditionally to separately collected mechanical primary fibre/mineral recovery sludge from this route, with measured full wet mass, dry solids, resin/contaminants, consistency and receiver compatibility; do not substitute biological sewage sludge."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_waste and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: effluent_out
+          role: "Untreated cellulose depth-filter manufacturing wastewater to external treatment"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Exported liquid to a named external treatment receiver; not direct freshwater discharge. Meter volume and sample COD, BOD, suspended solids, dissolved constituents, total nitrogen/phosphorus and AOX where resin chemistry warrants. Keep oxygen-demand indices as wastewater characteristics, not separate species emissions; document composition and treatment compatibility. The generic industrial liquid-waste identity is conditional on the actual liquid phase and receiver compatibility. Its native quantity is full liquid-mixture Mass/kg. Preserve the original measured wastewater volume V in m3; obtain m = V × rho using the measured batch/temperature-specific mixture density rho in kg/m3, then normalize m by Q. Record actual H2O fraction independently for the water balance; suspended/dissolved material is included in m. Do not treat full mixture mass as pure water or infer a legal hazard classification from generic narrative. Gel, solid residues or another phase need separate exchanges."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_water and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+      elementary:
+        - row_id: pm_fine
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual PM2.5 leaving the site after abatement from dry cutting or powder handling; outdoor air, unspecified. Measure the fine size class, source, control, sampled exhaust flow and fugitive paths. Collected dust is excluded from this release."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_air and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: pm_coarse
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual outdoor-air particles in the disjoint PM2.5-PM10 class. For compatible cumulative samples only, subtract PM2.5 from PM10; do not add cumulative PM10 to these two fractions. Unresolved size distribution remains pending."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_air and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: pm_large
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual outdoor-air particles larger than PM10, not cumulative PM10. For compatible total particulate/PM10 measurements, use the difference with reported uncertainty; no sawmill factor or default size split."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_air and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Net process-water evaporation reaching outdoor air from drying and open wet stages. Use a measured whole-boundary H2O balance or compatible inlet/outlet humidity and gas-flow integration. Count inlet-air humidity separately and deduct it once from total outlet moisture when using gas measurements. Internal recirculation and internal condensate recovery cancel at both ends of the same boundary; do not subtract circulating water again. Count only actual externally returned condensate, liquid exports, product/residue water and stock changes as separate boundary terms. No combustion water is assumed in this declared indirect/electric route."
+          amount:
+            expression: "Collect the actual atomic exchange with cp_water and divide by accepted net finished mass; demonstrate absence for an inactive conditional row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "foreground_burden_allocation"
+    rule: "First avoid allocation through measured process subdivision or an evidenced system expansion that preserves the additional functions, functional unit and compatible reference flows. Explain infeasibility before using causal physical relationships; when those cannot be established or used, justify other relationships and sensitivity. No default fraction or automatic avoided-production credit."
+    source_ids:
+      - epa-lca-2006
+  - rule_id: allocation_physical
+    applies_to: "foreground_burden_allocation"
+    rule: "Keep full physical product/waste/water/carbon balances separately from the allocated environmental-burden ledger. Do not multiply physical co-product outputs or internal transfers by allocation shares."
+    source_ids:
+      - epa-lca-2006
+  - rule_id: allocation_recovery
+    applies_to: "foreground_burden_allocation"
+    rule: "Internal broke/white water gets no avoided virgin-input credit. External sale of rejects or residues requires actual receiver/use evidence and declared allocation or system-expansion boundaries, without double credits."
+    source_ids:
+      - epa-lca-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "manufacture"
+      flow_role: "filter_out"
+      record_type: "weighing and acceptance"
+      raw_fields: "batch; grade; accepted net mass Q; tare; gate moisture; geometry; performance test conditions"
+      collection_method: "Calibrated weighing of accepted unused cut sheets/plates excluding packaging; moisture and grade tests linked to the same campaign"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "representative production campaign, including start/stop and changes"
+      site_scope: "selected line and grade"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; lot acceptance; moisture and grade reports"
+    - protocol_id: cp_materials
+      process_id: "manufacture"
+      flow_role: "pulp_in; de_in; perlite_in; resin_in"
+      record_type: "lot issue and analysis"
+      raw_fields: "supplier; lot; species/CAS; grade/production route; received and returned mass; moisture/solids; composition; stocks"
+      collection_method: "Weigh actual ingredient issues and unused returns; reconcile opening/closing stock. Obtain supplier specifications and measure moisture/active solids; do not count carrier water twice"
+      unit: "kg"
+      frequency: "each lot/batch"
+      temporal_coverage: "same campaign as cp_output"
+      site_scope: "receipt and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "invoices; scales; certificates; formulation and stock reconciliation"
+    - protocol_id: cp_energy
+      process_id: "manufacture"
+      flow_role: "electricity_in; steam_in; condensate_out"
+      record_type: "stage meters and supplier interface"
+      raw_fields: "stage; kWh; steam kg; pressure; temperature; dryness; condensate kg and state; supplier reference; losses"
+      collection_method: "Submeter all active stages; separately measure delivered steam and returned condensate. Reconcile utilities with the supplier boundary and measured state; retain steam mass where heat compatibility is unestablished"
+      unit: "MJ; kg"
+      frequency: "continuous or each batch"
+      temporal_coverage: "same campaign including idle/changeover"
+      site_scope: "manufacture and supplier interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; supply contract; state measurements; stage reconciliation"
+    - protocol_id: cp_water
+      process_id: "manufacture"
+      flow_role: "water_in; effluent_out; water_vapour"
+      record_type: "water meters and laboratory measurements"
+      raw_fields: "source; intake volume/mass; density/temperature; slurry/water stocks; internal transfers; product/waste water; export volume; sample load indices; exhaust humidity/flow"
+      collection_method: "Meter external intake/export; use measured density for mass; reconcile formulation carrier water, product/waste moisture, condensate and evaporation. Flow-weighted wastewater samples include cleaning and changes; reconcile total nitrogen definitions and AOX applicability"
+      unit: "kg; m3"
+      frequency: "continuous balance; each batch and representative export sample"
+      temporal_coverage: "same campaign including cleaning"
+      site_scope: "wet/dry substages and named external treatment receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lab methods/LOD; receiver acceptance; water balance"
+    - protocol_id: cp_pack
+      process_id: "manufacture"
+      flow_role: "film_in; carton_in"
+      record_type: "packaging issue and weighing"
+      raw_fields: "material; polymer/board construction; grade; fibre shares; issued/returned/scrap kg; stock"
+      collection_method: "Weigh each packaging component separately and reconcile actual issues, unused returns and scrap; retain supplier material and route specifications"
+      unit: "kg"
+      frequency: "each packing lot"
+      temporal_coverage: "same campaign"
+      site_scope: "packaging station"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scales; purchase specs; issue records"
+    - protocol_id: cp_waste
+      process_id: "manufacture"
+      flow_role: "screen_out; reject_out; dust_out; sludge_out"
+      record_type: "weighing composition and transfer"
+      raw_fields: "stream; external wet mass; moisture/dry solids; fibre/mineral/resin fractions; silica phase; hazard state; stock; receiver; internal return"
+      collection_method: "Weigh each external waste separately; assay dry solids/composition and receiver compatibility. Retain internal wet/dry broke and captured dust recovery separately from external handover"
+      unit: "kg"
+      frequency: "each transfer/batch"
+      temporal_coverage: "same campaign"
+      site_scope: "manufacture and handover receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighbridge; analysis; transfer manifest; receiver route"
+    - protocol_id: cp_air
+      process_id: "manufacture"
+      flow_role: "pm_fine; pm_coarse; pm_large"
+      record_type: "source tests and fugitive assessment"
+      raw_fields: "source; grade; size cut; concentration; exhaust volume; temperature/pressure/wet-dry basis; control; hours; captured dust; fugitive paths; uncertainty"
+      collection_method: "Test dry cutting and powder-handling discharge after controls with compatible flow and size measurement. Integrate load across actual operations including fugitive releases; distinguish cumulative from disjoint fractions; no wood-processing factor"
+      unit: "kg"
+      frequency: "representative source/grade/control measurements and operating logs"
+      temporal_coverage: "same campaign including cutting/handling peaks"
+      site_scope: "outdoor air at site boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling/calibration/LOD; source map; controls; size and flow compatibility"
+  calculation_rules:
+    - id: campaign_normalization
+      applies_to: "all inventory rows"
+      rule: "For each atomic exchange, divide the measured campaign total in its declared unit by Q, the same accepted net kg finished reference product; product reference output is 1 kg. Preserve stage meters and units. No factor is inferred from this normalization."
+      inputs:
+        - "campaign totals"
+        - Q
+        - cp_output
+      output: "per 1 kg reference flow"
+      source_ids:
+        - epa-lca-2006
+  data_quality_requirements:
+    - id: physical_balances
+      applies_to: "manufacture"
+      requirement: "Close dry fibre, mineral, resin, total mass, water and carbon balances before allocation; include opening/closing stocks, full physical co-product outputs and internal links. Distinguish biogenic pulp carbon from fossil resin/film carbon; stored carbon is not an automatic removal credit. Any actual biogenic CO2 release must be retained separately from fossil CO2, regardless of greenhouse reporting conventions; extend species inventory if identified."
+      evidence: "weighing; composition; cp_water; full physical ledger"
+    - id: coverage
+      applies_to: "all inventory rows"
+      requirement: "Include losses, cleaning/changeovers and tests; demonstrate conditional absence. Inventory is not complete until every actual aid, packaging component, waste and emission has its own exchange and actual provider/receiver. Missing identity or amount is not zero."
+      evidence: "route audit; records; analytical screening"
+    - id: identity_quantity
+      applies_to: "all inventory rows"
+      requirement: "Audit flow physical identity separately from supplier dataset reference quantity, route, geography and boundary. Sparse identity fields cannot supply a process burden, concentration, density, dosage or default energy value."
+      evidence: "supplier specifications; verified identity; compatibility assessment"
+    - id: ranges
+      applies_to: "all inventory rows"
+      requirement: "No universal input, yield, utility, emission or waste range is supported here. Obtain actual grade/route-specific records and independent compatible sources before defining quantitative ranges; historical/single-factory observations remain case evidence."
+      evidence: "collection protocols; external-source applicability"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require finished unused cut depth medium, declared formulation and manufacturing route; do not resolve an undried preform, uncut base paper or filtration service as the reference product."
+    source_ids:
+      - oiv-depth-sheets-2021
+      - pall-seitz-sheets
+  - rule_id: validate_measurement
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require one 1 kg reference output, same net-moisture Q across rows and complete calibration/conversions. Product, dry ingredient, water and heat bases must be explicit and compatible with providers."
+    source_ids:
+      - jrc-paper-bref-2015
+  - rule_id: validate_completeness
+    applies_to: "foreground_dataset_conformance"
+    rule: "Missing UUID, unsupported supplier reference, incomplete source measurement or unaccounted actual exchange prevents claiming a complete dataset. Assess wastewater receiver and contaminant load; do not invent a matching flow or a zero emission."
+    source_ids:
+      - epa-lca-2006
+  - rule_id: validate_air
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check actual dry cutting and powder handling; particulate fractions must be disjoint, collected dust distinct and source/medium correct. Screen actual resin-related species; any identified chemical release requires separate exact species/media row. No universal emission factor."
+    source_ids:
+      - jrc-paper-bref-2015
+  - rule_id: validate_function
+    applies_to: "foreground_dataset_conformance"
+    rule: "A factory-gate material inventory cannot establish adsorption or filtration service equivalence. Comparisons require matching challenge conditions, throughput, retention, cleaning/regeneration and lifetime evidence for the stated actual grade."
+    source_ids:
+      - pall-seitz-sheets
+      - oiv-depth-sheets-2021
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing inventory; after completion/review, secondary_dataset or background_dataset"
+  downstream_use: "Input for explicitly modelled filtration-system product and actual-use studies"
+  allowed_use: "Declared gate-moist grade/route with matched providers and complete actual inventory"
+  excluded_use: "Automatic mass-based filtration/adsorption equivalence; universal recipe; manufacture of excluded products/routes"
+  required_metadata: "Reference qualifiers; grade/formulation; site/period; stage diagram; physical balances and allocated burden ledger; supplier/receiver boundaries"
+  required_quality_disclosure: "Measured/modelled amounts; identity gaps; provider compatibility; uncertainties; omitted ranges; unreviewed scope; treatment handover"
+  update_trigger: "Change in furnish, mineral/resin grade, porosity/retention requirement, drying/cutting, utilities, water/effluent route or waste receiver"
+data_sources:
+  - id: "oiv-depth-sheets-2021"
+    type: "official_guidance"
+    reference: "[OIV-OENO 629-2021, Monograph on depth filter sheets](https://www.oiv.int/node/2748/download/pdf); 2021; retrieved 2026-10-12; sections 3-5, PDF pp. 2-3"
+    used_for: ""
+  - id: "pall-seitz-sheets"
+    type: "handbook"
+    reference: "[Pall, Seitz Filter Sheets](https://www.pall.com/jp/ja/food-beverage/depth-filtration/seitz-sheets.html); snapshot retrieved 2026-10-12; Classical DE, Ion Reduced, Pure Cellulose, Support, Activated Carbon sections"
+    used_for: ""
+  - id: "jrc-paper-bref-2015"
+    type: "official_guidance"
+    reference: "[JRC, Production of Pulp, Paper and Board BREF](https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf); 2015; retrieved original 2026-10-11, re-read 2026-10-12; 2.2.2 (PDF 86-88), 7.1.1 (698), 7.1.3-4 (702-703), 7.1.10 (708/printed 670), 7.1.11.4 (713/printed 675), 7.2.2.3 (725)"
+    used_for: ""
+  - id: "epa-lca-2006"
+    type: "official_guidance"
+    reference: "[EPA/600/R-06/060, Life Cycle Assessment: Principles and Practice](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P1000L86.TXT); May 2006; re-read 2026-10-12; Chapter 3, printed pp. 28-29"
+    used_for: ""
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1f2b75d95d42ca04d2f00bb6edc73bbb2068299951e6defd0f54f3deeb31d760"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7688"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7688
+          line: 72
+          column: 1
+        end:
+          offset: 9567
+          line: 93
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased purified bleached chemical wood pulp and actual formulation ingredients received at the filter-media plant |\n| starting_condition_role | Foreground input interface; upstream pulping and mineral/resin production linked through providers |\n| product_classification_scope | CPC 3.0 32198 subset: finished flat wet-formed depth plates/sheets |\n| recursive_input_rule | Internal same-grade broke stays inside manufacture; purchased finished sheet for conversion is a different starting condition and requires converter boundary review, without silently replacing purchased pulp. |\n| upstream_dataset_requirement | Match pulp species/bleaching, mineral grade/production, resin supplied basis, utility conditions and deliveries; include transport to receipt and treatment after handover, without boundary overlap. |\n| disclosure | Site, period, actual grade/formulation, excluded-operation checks, upstream cutoffs and external receivers |\n\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_foreground | Collect the complete declared manufacturing campaign including losses, starts/stops and grade changes. Do not reuse conventional-writing-paper process settings. | oiv-depth-sheets-2021; jrc-paper-bref-2015 |\n| boundary_interfaces | Document upstream supply and downstream waste-treatment providers; export of wastewater is a waste exchange, not a freshwater elementary emission. Excluded actual operations invalidate this route until extended. | epa-lca-2006 |\n| boundary_internal | Retain the physical substage diagram and internal water, furnish and broke ledger. An internal link has equal quantities at both ends; count no duplicate external exchange. One aggregate process owns the sole finished reference output. | jrc-paper-bref-2015 |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 331
+              line: 10
+              column: 1
+            end:
+              offset: 384
+              line: 10
+              column: 54
+          text: "# Wet-formed wood-pulp depth filter sheets and plates"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7688
+              line: 72
+              column: 1
+            end:
+              offset: 7709
+              line: 72
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_34361"
+      family: "allocation"
+      span:
+        start:
+          offset: 34361
+          line: 442
+          column: 1
+        end:
+          offset: 35393
+          line: 451
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_avoid | First avoid allocation through measured process subdivision or an evidenced system expansion that preserves the additional functions, functional unit and compatible reference flows. Explain infeasibility before using causal physical relationships; when those cannot be established or used, justify other relationships and sensitivity. No default fraction or automatic avoided-production credit. | epa-lca-2006 |\n| allocation_physical | Keep full physical product/waste/water/carbon balances separately from the allocated environmental-burden ledger. Do not multiply physical co-product outputs or internal transfers by allocation shares. | epa-lca-2006 |\n| allocation_recovery | Internal broke/white water gets no avoided virgin-input credit. External sale of rejects or residues requires actual receiver/use evidence and declared allocation or system-expansion boundaries, without double credits. | epa-lca-2006 |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 331
+              line: 10
+              column: 1
+            end:
+              offset: 384
+              line: 10
+              column: 54
+          text: "# Wet-formed wood-pulp depth filter sheets and plates"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 34361
+              line: 442
+              column: 1
+            end:
+              offset: 34401
+              line: 442
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43022"
+      family: "validation"
+      span:
+        start:
+          offset: 43022
+          line: 485
+          column: 1
+        end:
+          offset: 44521
+          line: 496
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_identity | Require finished unused cut depth medium, declared formulation and manufacturing route; do not resolve an undried preform, uncut base paper or filtration service as the reference product. | oiv-depth-sheets-2021; pall-seitz-sheets |\n| validate_measurement | Require one 1 kg reference output, same net-moisture Q across rows and complete calibration/conversions. Product, dry ingredient, water and heat bases must be explicit and compatible with providers. | jrc-paper-bref-2015 |\n| validate_completeness | Missing UUID, unsupported supplier reference, incomplete source measurement or unaccounted actual exchange prevents claiming a complete dataset. Assess wastewater receiver and contaminant load; do not invent a matching flow or a zero emission. | epa-lca-2006 |\n| validate_air | Check actual dry cutting and powder handling; particulate fractions must be disjoint, collected dust distinct and source/medium correct. Screen actual resin-related species; any identified chemical release requires separate exact species/media row. No universal emission factor. | jrc-paper-bref-2015 |\n| validate_function | A factory-gate material inventory cannot establish adsorption or filtration service equivalence. Comparisons require matching challenge conditions, throughput, retention, cleaning/regeneration and lifetime evidence for the stated actual grade. | pall-seitz-sheets; oiv-depth-sheets-2021 |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 331
+              line: 10
+              column: 1
+            end:
+              offset: 384
+              line: 10
+              column: 54
+          text: "# Wet-formed wood-pulp depth filter sheets and plates"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43022
+              line: 485
+              column: 1
+            end:
+              offset: 43044
+              line: 485
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_7688"
+      source_span:
+        start:
+          offset: 8798
+          line: 88
+          column: 1
+        end:
+          offset: 9029
+          line: 88
+          column: 232
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_7688"
+      source_span:
+        start:
+          offset: 9030
+          line: 89
+          column: 1
+        end:
+          offset: 9282
+          line: 89
+          column: 253
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_internal"
+      identity_kind: "explicit"
+      unit_id: "normative_7688"
+      source_span:
+        start:
+          offset: 9283
+          line: 90
+          column: 1
+        end:
+          offset: 9564
+          line: 90
+          column: 282
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_avoid"
+      identity_kind: "explicit"
+      unit_id: "normative_34361"
+      source_span:
+        start:
+          offset: 34455
+          line: 446
+          column: 1
+        end:
+          offset: 34887
+          line: 446
+          column: 433
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_34361"
+      source_span:
+        start:
+          offset: 34888
+          line: 447
+          column: 1
+        end:
+          offset: 35130
+          line: 447
+          column: 243
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_34361"
+      source_span:
+        start:
+          offset: 35131
+          line: 448
+          column: 1
+        end:
+          offset: 35390
+          line: 448
+          column: 260
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_43022"
+      source_span:
+        start:
+          offset: 43098
+          line: 489
+          column: 1
+        end:
+          offset: 43352
+          line: 489
+          column: 255
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_43022"
+      source_span:
+        start:
+          offset: 43353
+          line: 490
+          column: 1
+        end:
+          offset: 43600
+          line: 490
+          column: 248
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_43022"
+      source_span:
+        start:
+          offset: 43601
+          line: 491
+          column: 1
+        end:
+          offset: 43887
+          line: 491
+          column: 287
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_air"
+      identity_kind: "explicit"
+      unit_id: "normative_43022"
+      source_span:
+        start:
+          offset: 43888
+          line: 492
+          column: 1
+        end:
+          offset: 44207
+          line: 492
+          column: 320
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_function"
+      identity_kind: "explicit"
+      unit_id: "normative_43022"
+      source_span:
+        start:
+          offset: 44208
+          line: 493
+          column: 1
+        end:
+          offset: 44518
+          line: 493
+          column: 311
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7688"
+      source_span:
+        start:
+          offset: 7688
+          line: 72
+          column: 1
+        end:
+          offset: 7709
+          line: 72
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7688"
+      source_span:
+        start:
+          offset: 7737
+          line: 76
+          column: 1
+        end:
+          offset: 8743
+          line: 83
+          column: 124
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_34361"
+      source_span:
+        start:
+          offset: 34361
+          line: 442
+          column: 1
+        end:
+          offset: 34401
+          line: 442
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43022"
+      source_span:
+        start:
+          offset: 43022
+          line: 485
+          column: 1
+        end:
+          offset: 43044
+          line: 485
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1f2b75d95d42ca04d2f00bb6edc73bbb2068299951e6defd0f54f3deeb31d760"
+  generated_content_sha256: "sha256:e301bd2fba9b8738c000fd0bfacd0b01dd5970108e00e23298be6ed1b16255cc"

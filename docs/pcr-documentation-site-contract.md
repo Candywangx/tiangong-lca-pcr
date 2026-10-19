@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-18"
-lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
-lastReviewedCommit: "5f0c9a8786d99b2594064726e31b571da73672e2"
+lastReviewedAt: "2026-10-19"
+lastReviewedNote: "Reconciled Candy main compound-unit, collection and evidence repairs with the CPC 01/02/03 phase-one corrections, fresh cut-flower methodology, accepted mappings and lossless documentation delivery. Preserved candidate and unresolved-identity qualifications; regenerated projections and indexes. Full hosted qualification remains required."
+lastReviewedCommit: "abd18053c9ea2860e2c1107ac65ae17730b4f4eb"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

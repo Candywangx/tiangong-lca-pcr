@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: "2026-10-19"
-lastReviewedCommit: "090cd1b192151c924de6651a8b0e39d5e3975121"
-lastReviewedNote: "Reviewed fresh cut-flower methodology and all fifty exchange cards, scoped CPC 01962 narrower mapping and its ADR, verified/unresolved identity evidence, generated indexes, and strict native Item(s) output parsing. Candidate status and full-suite/platform limitations are retained; no publication or upstream integration is asserted."
+lastReviewedCommit: "abd18053c9ea2860e2c1107ac65ae17730b4f4eb"
+lastReviewedNote: "Reconciled Candy main compound-unit, collection and evidence repairs with the CPC 01/02/03 phase-one corrections, fresh cut-flower methodology, accepted mappings and lossless documentation delivery. Preserved candidate and unresolved-identity qualifications; regenerated projections and indexes. Full hosted qualification remains required."
 ---
 
 # Authoring Guide
