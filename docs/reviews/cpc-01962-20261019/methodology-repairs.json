@@ -1,0 +1,205 @@
+{
+  "scope": "仅本轮01962当前未提交修复及关联映射，不是重审全部213份",
+  "findings": [
+    {
+      "id": "R01962-01",
+      "priority": "high",
+      "criteria": [
+        "P1",
+        "P2",
+        "P4",
+        "P7"
+      ],
+      "title": "中间前景与最终购买参考流缺少统一的执行口径",
+      "en_lines": [
+        55,
+        69,
+        73,
+        101,
+        1044,
+        1064
+      ],
+      "zh_lines": [
+        55,
+        69,
+        73,
+        101,
+        1044,
+        1064
+      ],
+      "evidence": "第3节允许短边界采用实际节点产出，第5节允许止于发运，第6节也允许节点数据作为中间贡献；但唯一参考是购买时1枝，所有节点行与采集汇总统一按最终购买枝数归一化。validate_process_coverage又一律要求栽培、采后、包装且没有消费者使用要求；dataset_role仍写下游可选。",
+      "impact": "独立农场/采后节点数据在未知下游损失时，不能据本PCR唯一确定自己的参考产品和分母；完整系统也可能按较弱的校验文字漏掉消费使用。",
+      "required_fix": "PCR先明确完整系统与中间贡献的适用合同：各自的交接点、参考产出/分母、可独立使用性、损失由谁承担、哪些阶段由兼容供应数据承接。若只支持最终购买参考，就收窄短边界声明。同步过程图、全部行/协议、校验、dataset_role与结构化内容。",
+      "classification": "第一阶段方法/口径缺口；不是缺某个实际花枝数。",
+      "status": "fixed_local_rechecked",
+      "closure": {
+        "decision": "Only the complete cradle-to-grave system can claim PCR conformance. Native node contributions remain unnormalised until linked coverage and final purchased stems are known.",
+        "rules": [
+          "boundary_required_stages",
+          "cp_system_coverage",
+          "validate_process_coverage",
+          "reference_flow_link",
+          "dataset_role"
+        ],
+        "association_check": "scope, reference prose, all six stage inclusions, collection basis, validation and published profile agree; old optional/short-boundary claims removed"
+      }
+    },
+    {
+      "id": "R01962-02",
+      "priority": "high",
+      "criteria": [
+        "P3",
+        "P5",
+        "P7"
+      ],
+      "title": "农药规则止于施用活性成分，缺少前景排放与去向方法",
+      "en_lines": [
+        65,
+        970,
+        990,
+        1028,
+        1045
+      ],
+      "zh_lines": [
+        65,
+        970,
+        990,
+        1028,
+        1045
+      ],
+      "evidence": "采集与计算只有制剂量×活性成分分数。清单仅列N2O/NH3/NO3/化石CO2等，没有农药逐活性成分、土壤/水/空气的排放规则；额外身份义务规定了分卡、不得重复负荷，却没有规定田间/设施/采后处理分别如何形成排放及残留/废物台账。",
+      "impact": "同一施药记录可以仅链接药剂制造负荷、也可以被当作全部直接排放，得到不同毒性清单；只补产品UUID不能解决。",
+      "required_fix": "按露地、设施/基质、采后处理明确适用方法和证据层级；规定施用量、有效成分量、排放量及残留/收集处理之间关系；给出选择方法的约束、区室与记录要求，以及供药制造负荷和本地释放不重复的边界。不能无适用性判断把露地默认比例套到温室。",
+      "source": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=PI_COM%3AC%282021%299332",
+      "classification": "第一阶段排放核算方法缺口；不是缺现场浓度。",
+      "status": "fixed_local_rechecked",
+      "closure": {
+        "decision": "Ingredient-specific first-release balance, measured/modelled protected and post-harvest routes, dated PEF open-field convention restricted to that route; parent-equivalent versus product masses separated.",
+        "rules": [
+          "calc_pesticide_release",
+          "cp_pesticide_fate",
+          "plant_protection_inputs_identity",
+          "validate_pesticide_fate"
+        ],
+        "association_check": "manufactured formulation supply versus active ingredient bookkeeping and environmental releases separated; recipient/collection/crop residues/transformation and treatment boundary retained"
+      }
+    },
+    {
+      "id": "R01962-03",
+      "priority": "high",
+      "criteria": [
+        "P2",
+        "P4",
+        "P5",
+        "P7"
+      ],
+      "title": "土地利用变化只有纳入要求，没有可执行的归属方法",
+      "en_lines": [
+        90,
+        96,
+        967,
+        1001
+      ],
+      "zh_lines": [
+        90,
+        96,
+        967,
+        1001
+      ],
+      "evidence": "正文要求相关土地利用变化和碳储量变化独立台账，但没有确定适用筛查、历史时段、转化面积/前后土地状态/碳库采集、排放计算、年度摊销及分配。土地占用卡仅为面积×时间，不能代替这些规则；多年生队列公式也未明确与土地变化摊销的区别。",
+      "impact": "发生真实土地转换时，建模者仍需自行选择把负荷全计首年、按生产寿命还是按外部方法规定的期间摊销，属于PCR应预先规定的选择。",
+      "required_fix": "确定本PCR采用的有版本LUC方法及其适用性、回溯/摊销、碳库存变化与原生产出归属；增补采集、计算和校验要求，区别土地占用、建园投入和LUC。20年等外部默认须按选定方法证据采纳，不作为本轮审查臆造的固定值。",
+      "source": "https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf",
+      "classification": "第一阶段边界/时间归属方法缺口；不是缺场址历史数据。",
+      "status": "fixed_local_rechecked",
+      "closure": {
+        "decision": "GHG Product 2011 Appendix B direct-LUC screening and carbon pools; fixed H=max(20 years, one harvest period), equal annual attribution, beneficiary allocation and final normalization once.",
+        "rules": [
+          "boundary_luc_method",
+          "calc_luc_attribution",
+          "cp_luc_history",
+          "validate_luc_attribution",
+          "cultivation_luc_co2_uptake",
+          "cultivation_luc_co2_release"
+        ],
+        "association_check": "land occupation, establishment/cohort life, LUC time window, supplier coverage and physical carbon origin not conflated"
+      }
+    },
+    {
+      "id": "R01962-04",
+      "priority": "medium",
+      "criteria": [
+        "P4",
+        "P6",
+        "P7"
+      ],
+      "title": "体积约束分配与仅按质量计算的运输服务缺少衔接",
+      "en_lines": [
+        613,
+        628,
+        643,
+        950,
+        974,
+        991
+      ],
+      "zh_lines": [
+        613,
+        628,
+        643,
+        950,
+        974,
+        991
+      ],
+      "evidence": "allocation_transport_physical要求体积受限时按体积分配，而公路/航空/海运卡均使用tkm，calc_transport_work统一按实际运输总质量×距离，仅笼统要求装载/空返处理。未规定体积约束如何进入服务数量、车辆份额或兼容因子。",
+      "impact": "同程等质量、占用体积9:1的两批货物，按实际tkm为1:1，而按声明体积分配为9:1；当前规则未指定两者如何在同一服务边界下保持一致。",
+      "required_fix": "明确各运输方式的实载量、服务量、体积约束分配、利用率/空返和冷藏边界；选择能执行体积分配的车辆/航段份额或经证实相容的数据集方案，禁止把质量与体积直接互换或重复校正装载率。同步公式、流卡与采集字段。",
+      "classification": "第一阶段分配/单位方法衔接缺口；不是缺一次实际运输距离。",
+      "status": "fixed_local_rechecked",
+      "closure": {
+        "decision": "Preserve measured consignment tkm; allocate matched total-leg freight service by actual capacity constraint. Volume shares apply to service work, without a density conversion.",
+        "rules": [
+          "allocation_transport_physical",
+          "calc_transport_work",
+          "cp_distribution_records",
+          "validate_transport_service"
+        ],
+        "association_check": "all three freight flow cards, factor/reference compatibility, mass/volume shares, actual loading, passenger/freight boundary, empty return and refrigeration agree"
+      }
+    }
+  ],
+  "associated_fixes": [
+    "water ownership and internal-delivery cancellation",
+    "soluble/particulate phosphorus fate and separate species conversions",
+    "Chan to Chen author spelling",
+    "ADR methodology and count updates"
+  ],
+  "current_target_audit": {
+    "status": "pass",
+    "languages": 2,
+    "processes": 6,
+    "atomic_rows": 50,
+    "protocols": 15,
+    "calculation_rules": 18,
+    "data_quality_requirements": 18,
+    "sources": 8,
+    "unresolved_identity_rows": 50,
+    "measurement": "pass",
+    "warnings": 33,
+    "existing_mapping_bytes_preserved": true,
+    "sha256": {
+      "manifest.yaml": "ae4edc0a4937f426c537d59f24d53f7bdf32fd0b4519956a23eed258ad4db34c",
+      "pcr.en-US.md": "5000d01c17ae7c1ce713da07a50402a7fab94d729f2d0a5166d226ba8776fe8d",
+      "pcr.zh-CN.md": "a8d393134eb125ae6e8400294f2bd87b293bcaab80a67285227103e22f09d851",
+      "structured.yaml": "6390ba54cd9b84891841d7c0e15cebb6084bc80ab0d4d88cfb5f7b55698ccc56"
+    }
+  },
+  "independent_examples": "worked-examples.json",
+  "validation": "validation-status.json (written after required repository validation attempt)",
+  "remaining_evidence_gaps": [
+    "50 unresolved atomic flow identities including two new LUC CO2 directions",
+    "33 missing evidence-backed numerical screen warnings",
+    "actual activity, formulation/fate, land history, transport-service compatibility and downstream scenario data",
+    "no current external FloriPEFCR/PEF certification claim"
+  ],
+  "git_policy": "local only; no commit, no push, no PR, no upstream writes"
+}

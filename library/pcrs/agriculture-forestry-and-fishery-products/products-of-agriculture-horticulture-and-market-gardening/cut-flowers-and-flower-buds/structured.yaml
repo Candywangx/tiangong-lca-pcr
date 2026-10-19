@@ -3,30 +3,29 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.cut-flowers-and-flower-buds"
-  classification_refs: "CPC 3.0: 01962, exact classification context"
+  classification_refs: "CPC 3.0: 01962, narrower relation: fresh, undyed cut flowers only"
   covered_products: "Fresh cut flowers and flower buds; individual stems; bouquets; wreaths; floral baskets; similar decorative articles whose principal function is supplied by cut flowers or flower buds"
   excluded_products: "Living potted plants; bulbs, cuttings, and planting stock; flower seed; dried or preserved flowers; artificial flowers; fragrances and extracts; edible flowers sold as food; separately modelled dyeing or other material transformation"
   representative_product: "One consumer-ready fresh cut-flower stem supplied for decoration"
-  production_route: "Starting material and cultivation in open field or protected systems; harvest; post-harvest handling and conditioning; packaging and dispatch; downstream distribution and end-of-life when included in the declared boundary"
+  production_route: "Starting material and cultivation in open field or protected systems; harvest; post-harvest handling and conditioning; packaging and dispatch; downstream distribution, decorative use and end-of-life in the required complete system"
   market_state: "Fresh, graded, conditioned, and saleable stem or declared multi-stem decorative article"
 functional_unit:
   what: "Provide decoration with a fresh cut-flower stem"
   how_much: "One stem, as purchased by the consumer"
   how_well: "Meets the declared producer or retailer specification for species or cultivar, grade, stem length, appearance, freshness, and packaging"
   how_long_or_cycle: "Expected decorative or vase life declared for the specific product and storage method"
-  reference_flow_link: "One consumer-ready stem; for a bouquet, wreath, basket, or similar article, inventory shall be decomposed to the declared number of flower stems and all non-floral components shall be recorded separately"
+  reference_flow_link: "delivered_stem"
 system_boundary:
   rules:
     - rule_id: system_boundary_rule_1
       applies_to: "foreground_system_boundary"
-      rule: "The default methodological boundary is cradle-to-grave. A foreground production dataset may stop at dispatch only when its shorter boundary is explicit and downstream users can attach the omitted stages without double counting."
+      rule: "The conformance boundary is cradle-to-grave. Directly measured records may cover only selected nodes, but conformance requires all remaining stages to be supplied by compatible linked datasets/scenarios before final-reference normalisation. A short-boundary contribution is not a complete PCR-conforming product dataset."
       source_ids: []
     - rule_id: boundary_required_stages
       applies_to: "Product system"
-      rule: "Include starting-material production and raw-material acquisition, cultivation and harvest, post-harvest handling, packaging, distribution, storage or auction and retail when applicable, consumer use assumptions, and end-of-life for the flowers and packaging. A shorter foreground boundary shall state every omitted downstream stage."
+      rule: "Conformance requires the complete cradle-to-grave system for one purchased fresh undyed stem, including propagation, cultivation, post-harvest, packing, distribution/retail, declared decorative use and material-specific end-of-life. A stage may be covered by a compatible linked dataset with an explicit coverage register instead of duplicate foreground expansion; it cannot be omitted from the completed system. Raw node records are contributions, not independently conforming PCR datasets."
       source_ids:
-        - wur-floripefcr-2024
-        - lan-cut-flower-review-2022
+        - count-mass-water-balance
     - rule_id: boundary_cultivation_inputs
       applies_to: "Cultivation"
       rule: "Include propagation material, growing media, greenhouse or protected-cultivation infrastructure when used, irrigation water, fertilisers, plant-protection products, biological-control disclosure, CO2 enrichment, energy, fuels, field operations, direct emissions, land occupation, and land-use change where relevant."
@@ -49,6 +48,20 @@ system_boundary:
       source_ids:
         - ec-pef-method-2021
         - wur-floripefcr-2024
+    - rule_id: system_boundary_rule_7
+      applies_to: "foreground_system_boundary"
+      rule: "A complete reference system includes distribution/retail, the declared decorative-use scenario and all material-specific disposal routes. An upstream-only foreground dataset remains an intermediate contribution. Missing downstream loss, use or disposal evidence must be collected or represented by an explicit supported scenario; it is not zero. Keep all technical, geographic and temporal scenario choices in the dataset. Land occupation is measured area multiplied by attributable time, with land type; land transformation and carbon-stock change are separate evidence-dependent ledgers, not inferred from occupation."
+      source_ids: []
+    - rule_id: boundary_water_ownership
+      applies_to: "Water supply and abstraction"
+      rule: "Purchased water links provider abstraction/supply once; supplier withdrawal is not an extra foreground elementary input. Foreground-owned direct abstraction is a source-specific elementary input with local supply activity, and its internal delivered-water transfer cancels within the aggregate boundary. Keep source/delivery meters and losses separate; do not add a second external water purchase for an internal delivery."
+      source_ids:
+        - count-mass-water-balance
+    - rule_id: boundary_luc_method
+      applies_to: "Land transformation and carbon stocks"
+      rule: "Use GHG Product Standard 2011 Appendix B for attributable direct land-use-change impacts. Keep occupation, establishment assets and LUC separate. Screen human-induced product-related conversions over the preceding H = max(20 years, one harvest period); plant service life is not automatically the harvest period. Use dated parcel history and the carbon pools before/after conversion, including biomass, dead organic matter and soil. A documented unchanged history can establish non-applicability; missing history cannot. Unknown parcel history requires a geographically and crop-compatible published land-history/LUC scenario under the same method, with proxy disclosure and uncertainty, or the LUC inventory remains incomplete."
+      source_ids:
+        - ghg-product-standard-2011
 boundary_abstraction:
   declared_starting_condition: "Purchased or internally produced seed, cutting, young plant, bulb, rootstock, or other propagation material entering the declared cut-flower production system"
   starting_condition_role: "Upstream product input to the first foreground cultivation process"
@@ -59,7 +72,7 @@ boundary_abstraction:
 reference_flow_definition:
   reference_amount: "1"
   product_flow_ref:
-    name: "Cut flower or flower bud, consumer-ready; Tiangong UUID unresolved"
+    name: "Fresh cut-flower stem, consumer-ready at purchase"
     uuid: ""
   flow_property_ref:
     uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
@@ -135,296 +148,425 @@ process_map:
   - id: cultivation
     name: "Starting material, cultivation, and harvest"
     inclusion: "required"
-    inclusion_condition: "Always"
-    role: "Foreground flower production"
-    quantitative_reference: "Harvested flower stems needed for one consumer-ready stem"
+    inclusion_condition: "Required coverage; foreground or compatible linked supply, no standalone node conformance"
+    role: "Separate stem and material ledger"
+    quantitative_reference: "Measured node activity attributable to one purchased stem"
   - id: post_harvest
     name: "Post-harvest preparation and conditioning"
     inclusion: "required"
-    inclusion_condition: "Always"
-    role: "Foreground grading, conditioning, cooling, and bunching or article assembly"
-    quantitative_reference: "Saleable conditioned stems needed for one consumer-ready stem"
+    inclusion_condition: "Required coverage; foreground or compatible linked supply, no standalone node conformance"
+    role: "Separate stem and material ledger"
+    quantitative_reference: "Measured node activity attributable to one purchased stem"
   - id: packaging_dispatch
     name: "Packaging and dispatch"
     inclusion: "required"
-    inclusion_condition: "Always"
-    role: "Foreground packaging and dispatch preparation"
-    quantitative_reference: "One consumer-ready stem at first dispatch"
+    inclusion_condition: "Required coverage; foreground or compatible linked supply, no standalone node conformance"
+    role: "Separate stem and material ledger"
+    quantitative_reference: "Measured node activity attributable to one purchased stem"
   - id: distribution_retail
-    name: "Distribution, storage, auction or trade, and retail"
-    inclusion: "conditional"
-    inclusion_condition: "Include when the declared boundary extends beyond first dispatch"
-    role: "Downstream transport, storage, trade, retail, and related losses"
-    quantitative_reference: "One stem delivered to the consumer"
+    name: "Distribution, storage, and retail"
+    inclusion: "required"
+    inclusion_condition: "Required coverage; foreground or compatible linked supply, no standalone node conformance"
+    role: "Separate stem and material ledger"
+    quantitative_reference: "Measured node activity attributable to one purchased stem"
+  - id: consumer_use
+    name: "Declared decorative use"
+    inclusion: "required"
+    inclusion_condition: "Required coverage; foreground or compatible linked supply, no standalone node conformance"
+    role: "Separate stem and material ledger"
+    quantitative_reference: "Measured node activity attributable to one purchased stem"
   - id: end_of_life
-    name: "Flower and packaging end-of-life"
-    inclusion: "conditional"
-    inclusion_condition: "Include for cradle-to-grave datasets or lifecycle models"
-    role: "Downstream waste collection and treatment"
-    quantitative_reference: "Waste generated by one purchased stem"
+    name: "Material-specific end-of-life routing"
+    inclusion: "required"
+    inclusion_condition: "Required coverage; foreground or compatible linked supply, no standalone node conformance"
+    role: "Separate stem and material ledger"
+    quantitative_reference: "Measured node activity attributable to one purchased stem"
 process_inventory:
   - id: cultivation
     label: "Starting material, cultivation, and harvest"
     inputs:
       product:
-        - row_id: starting_material
-          role: "Propagation or starting material"
-          name: "Select the matching Tiangong propagation-material product flow"
-          flow_type: "product"
-          property_unit: "Number of items / Item(s), with mass where needed"
-          description: "Record seed, cutting, young plant, bulb, rootstock, or other propagation material and its origin, quantity, losses, packaging, and supplier route."
-          amount:
-            expression: "Measured starting-material count and mass allocated to harvested stems"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_cultivation_materials
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-        - row_id: growing_media_materials
-          role: "Growing medium and cultivation materials"
-          name: "Select constituent-specific Tiangong product flows"
-          flow_type: "product"
-          property_unit: "Mass / kg; Volume / m3 where measured"
-          description: "Record growing-medium constituents, containers, mulch, supports, strings, films, and other cultivation materials when used."
-          amount:
-            expression: "Annual or crop-cycle purchases less documented unused stock, allocated by crop area and production"
-            value_mode: "calculated_value"
-            specificity: "technology_specific"
-            basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_cultivation_materials
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
         - row_id: cultivation_water
-          role: "Irrigation and cultivation water"
-          name: "Select source- and geography-specific Tiangong water flows"
+          role: "Supplied cultivation water"
+          name: "Supplied cultivation water"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record make-up water by source separately from recirculated water."
+          description: "Record supplied cultivation water at its delivery meter; apply boundary_water_ownership to distinguish purchase from internal delivery after owned abstraction."
           amount:
-            expression: "Metered or reconciled make-up water allocated to the declared crop"
-            value_mode: "foreground_record"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_water_records
               source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-        - row_id: fertiliser_inputs
-          role: "Fertilisers and soil amendments"
-          name: "Select formulation-specific Tiangong fertiliser and amendment flows"
-          flow_type: "product"
-          property_unit: "Mass / kg product; kg N; kg P; kg K"
-          description: "Record product mass, composition, nutrient mass, organic or synthetic origin, and application location."
-          amount:
-            expression: "Measured application or purchase-and-stock reconciliation converted with documented composition"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_fertiliser_records
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-        - row_id: plant_protection_inputs
-          role: "Plant-protection products"
-          name: "Select active-ingredient or formulated-product Tiangong flows"
-          flow_type: "product"
-          property_unit: "Mass / kg formulated product; kg active ingredient"
-          description: "Record every applied formulated product, active ingredient, concentration, rate, treatment location, and post-harvest application."
-          amount:
-            expression: "Applied formulated mass multiplied by active-ingredient concentration"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_plant_protection_records
-              source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
             ranges: []
         - row_id: cultivation_electricity
-          role: "Cultivation electricity"
-          name: "Select voltage-, supplier-, and geography-specific Tiangong electricity flow"
+          role: "Electricity at cultivation equipment supply"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "Record electricity for lighting, pumping, ventilation, cooling, automation, and other cultivation operations."
+          description: "Record cultivation equipment electricity and its share of common utilities under cp_energy_fuel_records."
           amount:
-            expression: "Metered consumption allocated to the declared crop by sub-metering or the allocation rule in section 7"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_fuel_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
             ranges: []
-        - row_id: cultivation_heat_fuel
-          role: "Heating fuels and supplied heat"
-          name: "Select carrier- and technology-specific Tiangong fuel or heat flows"
+        - row_id: cultivation_heat_fuel_natural_gas
+          role: "Natural gas fuel supplied for on-site combustion"
+          name: "Natural gas fuel supplied for on-site combustion"
           flow_type: "product"
-          property_unit: "Energy / MJ; fuel quantity in metered unit"
-          description: "Record each fuel or heat carrier, quantity, lower or higher heating-value convention, combustion technology, and CHP relationship."
+          property_unit: "Volume / m3"
+          description: "Record actual natural-gas supply before on-site combustion; retain native volume conditions and keep fuel supply separate from direct combustion emissions."
           amount:
-            expression: "Metered fuel or heat converted with a documented heating value and allocated to the crop"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_fuel_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+        - row_id: cultivation_purchased_heat
+          role: "Purchased heat delivered at the greenhouse connection"
+          name: "Purchased heat delivered at the greenhouse connection"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased heat at the greenhouse connection; distinguish its provider coverage from on-site fuel use."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_fuel_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: cultivation_enrichment_co2
+          role: "Carbon dioxide supplied for greenhouse enrichment"
+          name: "Carbon dioxide supplied for greenhouse enrichment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record delivered enrichment CO2 mass and origin; reconcile its supply, retention and release ledger."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cultivation_materials
+              source_ids:
+                - count-mass-water-balance
             ranges: []
       waste:
         []
       elementary:
-        []
+        - row_id: cultivation_water_withdrawal
+          role: "Natural freshwater withdrawn from the declared source"
+          name: "Natural freshwater withdrawn from the declared source"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Record only foreground-owned abstraction from the actual natural source; reconcile it with delivery and storage under boundary_water_ownership."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: cultivation_luc_co2_uptake
+          role: "Atmospheric carbon dioxide uptake attributed to eligible land-use stock gain"
+          name: "Carbon dioxide (land use change)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "b3d7c693-6465-4aec-86cb-68b4e457fc98"
+          property_unit: "Mass / kg"
+          description: "Apply calc_luc_attribution only to evidenced eligible atmospheric uptake from land-use stock gain; exclude imported carbon and already covered transfers."
+          amount:
+            expression: "Use the separately evidenced signed carbon-stock ledger, event attribution period, beneficiary share and matched final purchased-stem denominator; record this direction only for its documented eligible quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_luc_history
+              source_ids:
+                - ghg-product-standard-2011
+                - count-mass-water-balance
+            ranges: []
+        - row_id: cultivation_land_occupation
+          role: "Occupation of the declared cultivation land type"
+          name: "Occupation of the declared cultivation land type"
+          flow_type: "elementary"
+          property_unit: "Area-time / m2*a"
+          description: "Record actual cultivation land class and occupied area multiplied by attributable time; keep occupation separate from infrastructure and land transformation."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cultivation_materials
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
     outputs:
       product:
         - row_id: harvested_stems
-          role: "Harvested flower stems"
-          name: "Harvested cut-flower stems; Tiangong UUID unresolved"
+          role: "Harvested fresh cut-flower stems of the declared lot"
+          name: "Harvested fresh cut-flower stems of the declared lot"
           flow_type: "product"
-          property_unit: "Number of items / Item(s); Mass / kg"
-          description: "Record the count and measured representative mass of harvested stems before grading."
+          property_unit: "Number of items / Item(s)"
+          description: "Record harvested stem dispatch by lot and stock ledger; reconcile the same hand-off with post_harvest_stem_input."
           amount:
-            expression: "Counted harvested stems allocated to the declared product and harvest period"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_output_loss_records
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-      waste:
-        - row_id: cultivation_biomass_waste
-          role: "Cultivation and harvest biomass waste"
-          name: "Select the matching Tiangong biowaste flow"
-          flow_type: "waste"
-          property_unit: "Mass / kg"
-          description: "Record stems, leaves, roots, failed plants, and other biomass leaving the process as waste, with treatment route."
-          amount:
-            expression: "Measured or mass-balanced biomass waste by treatment route"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_output_loss_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
             ranges: []
-      elementary:
-        - row_id: cultivation_direct_emissions
-          role: "Direct cultivation emissions"
-          name: "Select substance- and compartment-specific Tiangong elementary flows"
-          flow_type: "elementary"
+      waste:
+        - row_id: cultivation_biomass_waste
+          role: "Discarded cultivation plant biomass sent to the declared treatment"
+          name: "Discarded cultivation plant biomass sent to the declared treatment"
+          flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Calculate direct emissions to air, water, and soil from fertiliser, manure, plant-protection products, fuel combustion, substrate, and field operations with the declared method and factors."
+          description: "Record removed cultivation biomass mass, moisture and actual destination; distinguish evidenced waste removal from unexplained stock residuals."
           amount:
-            expression: "Calculation from collected activity data using cited emission-factor methods"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per harvested stems needed for one consumer-ready stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
-              kind: "method_formula"
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_loss_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+      elementary:
+        - row_id: cultivation_nitrous_oxide
+          role: "Nitrous oxide emitted to the declared air compartment"
+          name: "Nitrous oxide emitted to the declared air compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N2O"
+          description: "Apply the declared nutrient-emission method and calc_species_mass on an N2O compound-mass basis, retaining the actual receiving air compartment."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_cultivation_emissions
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+        - row_id: cultivation_ammonia
+          role: "Ammonia emitted to the declared air compartment"
+          name: "Ammonia emitted to the declared air compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Apply the declared nutrient-emission method and calc_species_mass on an NH3 compound-mass basis, retaining the actual receiving air compartment."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cultivation_emissions
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: cultivation_nitrate
+          role: "Nitrate released to the declared receiving water compartment"
+          name: "Nitrate released to the declared receiving water compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO3-"
+          description: "Record nitrate release on a NO3- mass basis to the actual receiving water; retain pathway ownership under cp_cultivation_emissions."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cultivation_emissions
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: cultivation_fossil_co2
+          role: "Fossil carbon dioxide emitted to air"
+          name: "Fossil carbon dioxide emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record direct fossil CO2 to its air compartment; keep it separate from purchased-energy CO2e and land-use-change CO2."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cultivation_emissions
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: cultivation_luc_co2_release
+          role: "Carbon dioxide to air attributed to land-use carbon-stock loss"
+          name: "Carbon dioxide to air attributed to land-use carbon-stock loss"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Apply calc_luc_attribution to the evidenced positive carbon-stock release, retaining event/time attribution; do not present it as a measured annual vent flow."
+          amount:
+            expression: "Use the separately evidenced signed carbon-stock ledger, event attribution period, beneficiary share and matched final purchased-stem denominator; record this direction only for its documented eligible quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_luc_history
+              source_ids:
+                - ghg-product-standard-2011
+                - count-mass-water-balance
             ranges: []
   - id: post_harvest
     label: "Post-harvest preparation and conditioning"
     inputs:
       product:
         - row_id: post_harvest_stem_input
-          role: "Harvested stems entering post-harvest handling"
-          name: "Harvested cut-flower stems; Tiangong UUID unresolved"
+          role: "Harvested fresh cut-flower stems of the declared lot"
+          name: "Harvested fresh cut-flower stems of the declared lot"
           flow_type: "product"
           property_unit: "Number of items / Item(s)"
-          description: "Record the transfer of harvested stems without duplicating cultivation burdens."
+          description: "Receive the same lot recorded by harvested_stems; reconcile received count and stocks before conditioning losses."
           amount:
-            expression: "Calculated from saleable output plus measured rejects and handling losses"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
-            specificity: "product_specific"
+            specificity: "site_specific"
             basis:
-              text: "per one saleable conditioned stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_output_loss_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
             ranges: []
-        - row_id: post_harvest_water_agents
-          role: "Post-harvest water and conditioning agents"
-          name: "Select source-specific water and agent product flows"
+        - row_id: post_harvest_water
+          role: "Supplied post-harvest process water"
+          name: "Supplied post-harvest process water"
           flow_type: "product"
-          property_unit: "Volume / m3; Mass / kg"
-          description: "Record washing, hydration, bucket, and conditioning water and each conditioning or phytosanitary agent."
+          property_unit: "Volume / m3"
+          description: "Record water supplied for hydration, washing or conditioning at this node; reconcile material-carried water and wastewater under calc_water_components."
           amount:
-            expression: "Metered batch use divided by saleable conditioned stems from the batch"
-            value_mode: "calculated_value"
-            specificity: "product_specific"
-            basis:
-              text: "per one saleable conditioned stem"
-              kind: "process_output"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_post_harvest_records
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-        - row_id: post_harvest_energy_refrigerants
-          role: "Post-harvest electricity and refrigerants"
-          name: "Select voltage-, geography-, and refrigerant-specific Tiangong flows"
-          flow_type: "product"
-          property_unit: "Energy / kWh; Mass / kg refrigerant"
-          description: "Record electricity for sorting, washing, cooling, cold storage, and article assembly, plus refrigerant charge and leakage."
-          amount:
-            expression: "Metered energy and reconciled refrigerant leakage allocated by stem throughput, storage volume, and time"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per one saleable conditioned stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_post_harvest_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+        - row_id: post_harvest_electricity
+          role: "Electricity at post-harvest equipment supply"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy / kWh"
+          description: "Record electricity attributable to post-harvest handling, cooling and storage under cp_post_harvest_records."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_post_harvest_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: post_harvest_r134a
+          role: "R134a refrigerant supplied for equipment charging"
+          name: "refrigerant, R134a (tetrafluoroethane)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "210b4222-adda-4097-9e79-f2c9a6c172e4"
+          property_unit: "Mass / kg"
+          description: "For actual R134a equipment, record charging and make-up product mass under calc_refrigerant_balance; represent other refrigerants separately."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_post_harvest_records
+              source_ids:
+                - count-mass-water-balance
             ranges: []
       waste:
         []
@@ -433,124 +575,166 @@ process_inventory:
     outputs:
       product:
         - row_id: saleable_conditioned_stems
-          role: "Saleable conditioned stems"
-          name: "Saleable conditioned cut-flower stems; Tiangong UUID unresolved"
+          role: "Saleable conditioned fresh cut-flower stems"
+          name: "Saleable conditioned fresh cut-flower stems"
           flow_type: "product"
           property_unit: "Number of items / Item(s)"
-          description: "Record stems meeting the declared grade and post-harvest specification."
+          description: "Record accepted conditioned-stem dispatch after rejects and stock changes; pair this hand-off with packaging_stem_input."
           amount:
-            expression: "Counted saleable stems after grading and conditioning"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per one saleable conditioned stem"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_output_loss_records
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-      waste:
-        - row_id: post_harvest_waste
-          role: "Post-harvest rejects and wastewater"
-          name: "Select matching Tiangong biowaste and wastewater flows"
-          flow_type: "waste"
-          property_unit: "Mass / kg; Volume / m3"
-          description: "Record rejected biomass, trimmed material, spent conditioning solution, and wastewater by treatment route."
-          amount:
-            expression: "Measured waste plus batch mass and water balance"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per one saleable conditioned stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_output_loss_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
             ranges: []
-      elementary:
-        - row_id: post_harvest_refrigerant_emission
-          role: "Refrigerant leakage"
-          name: "Select the matching Tiangong elementary flow to air"
-          flow_type: "elementary"
+      waste:
+        - row_id: post_harvest_biomass_waste
+          role: "Discarded flower trimming and rejected plant biomass"
+          name: "Discarded flower trimming and rejected plant biomass"
+          flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record substance-specific refrigerant emitted to air."
+          description: "Record trimming and rejected-flower mass, moisture and destination at post-harvest removal."
           amount:
-            expression: "Beginning charge plus additions minus recovered and ending charge, allocated to stored volume and time"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
-              text: "per one saleable conditioned stem"
-              kind: "process_output"
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_loss_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: post_harvest_wastewater
+          role: "Post-harvest wastewater transferred to treatment"
+          name: "Post-harvest wastewater transferred to treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record untreated post-harvest wastewater transferred to its receiving treatment system; distinguish it from direct environmental discharge."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_post_harvest_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+      elementary:
+        - row_id: post_harvest_refrigerant_emission
+          role: "R134a released to air"
+          name: "R134a released to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "For actual R134a equipment, derive unrecovered air release from calc_refrigerant_balance; charging mass is not the emitted mass."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_post_harvest_records
+              source_ids:
+                - count-mass-water-balance
             ranges: []
   - id: packaging_dispatch
     label: "Packaging and dispatch"
     inputs:
       product:
         - row_id: packaging_stem_input
-          role: "Saleable stems for packaging"
-          name: "Saleable conditioned cut-flower stems; Tiangong UUID unresolved"
+          role: "Saleable conditioned fresh cut-flower stems"
+          name: "Saleable conditioned fresh cut-flower stems"
           flow_type: "product"
           property_unit: "Number of items / Item(s)"
-          description: "Record the stem count entering packaging or article assembly."
+          description: "Receive the conditioned lot recorded by saleable_conditioned_stems; retain its count and article-assembly ledger."
           amount:
-            expression: "Counted input stems by packaging or article batch"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per one consumer-ready stem"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_packaging_dispatch_records
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-        - row_id: packaging_materials
-          role: "Packaging, accessories, and transport water"
-          name: "Select material-specific Tiangong product flows"
-          flow_type: "product"
-          property_unit: "Mass / kg; Volume / m3"
-          description: "Record primary, secondary, and tertiary packaging, ties, sleeves, containers, floral foam, supports, non-floral decorations, and water transported with the product."
-          amount:
-            expression: "Measured packaging bill of materials divided by packaged consumer-ready stems; divide reusable packaging by verified reuse cycles"
-            value_mode: "calculated_value"
-            specificity: "product_specific"
-            basis:
-              text: "per one consumer-ready stem"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_packaging_dispatch_records
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-        - row_id: packaging_dispatch_energy
-          role: "Packaging and dispatch energy"
-          name: "Select carrier-, voltage-, and geography-specific Tiangong energy flows"
-          flow_type: "product"
-          property_unit: "Energy / kWh; MJ"
-          description: "Record electricity and fuels used for packing, article assembly, internal handling, and dispatch staging."
-          amount:
-            expression: "Metered batch energy divided by dispatched consumer-ready stems"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per one consumer-ready stem"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_packaging_dispatch_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+        - row_id: packaging_corrugated_box
+          role: "Corrugated fibreboard box"
+          name: "Corrugated fibreboard box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual corrugated-box mass, composition and attributable uses; apply calc_reusable_packaging when reused."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_dispatch_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: packaging_ldpe_film
+          role: "Low-density polyethylene wrapping film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Record actual LDPE wrapping-film mass separately from other polymers and article accessories."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_dispatch_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: packaging_dispatch_electricity
+          role: "Electricity at packing and dispatch equipment supply"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy / kWh"
+          description: "Record packing, assembly and dispatch electricity attributable to the declared lot."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_dispatch_records
+              source_ids:
+                - count-mass-water-balance
             ranges: []
       waste:
         []
@@ -559,202 +743,492 @@ process_inventory:
     outputs:
       product:
         - row_id: consumer_ready_stem
-          role: "Consumer-ready cut-flower stem"
-          name: "Cut flower or flower bud, consumer-ready; Tiangong UUID unresolved"
+          role: "Packed fresh cut-flower stems at first dispatch"
+          name: "Packed fresh cut-flower stems at first dispatch"
           flow_type: "product"
-          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
-          description: "Record exactly one conforming stem. For articles, this output represents one stem-equivalent and retains article composition as a qualifier."
+          property_unit: "Number of items / Item(s)"
+          description: "Record packed stems at first dispatch, with article configuration and stock reconciliation; pair with distribution_stem_input."
           amount:
-            expression: "Fixed reference output of one stem"
-            value_mode: "fixed_value"
-            specificity: "product_specific"
-            basis:
-              text: "one consumer-ready stem"
-              kind: "reference_flow"
-            evidence:
-              kind: "external_source"
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-      waste:
-        - row_id: packaging_assembly_waste
-          role: "Packaging and assembly waste"
-          name: "Select material-specific waste flows"
-          flow_type: "waste"
-          property_unit: "Mass / kg; Number of items / Item(s)"
-          description: "Record offcuts, damaged packaging, nonconforming accessories, and flower losses generated during packaging or assembly."
-          amount:
-            expression: "Measured waste by material and treatment route divided by dispatched stems"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per one consumer-ready stem"
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_loss_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+      waste:
+        - row_id: packaging_corrugated_waste
+          role: "Waste corrugated fibreboard sent to the declared treatment"
+          name: "Waste corrugated fibreboard sent to the declared treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record corrugated packaging waste removed during packing by mass and actual destination, separate from packaging retained with the product."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_packaging_dispatch_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+        - row_id: packaging_ldpe_waste
+          role: "Waste low-density polyethylene film sent to the declared treatment"
+          name: "Waste low-density polyethylene film sent to the declared treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record LDPE film waste removed during packing by mass and actual destination, separate from film retained with the product."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_dispatch_records
+              source_ids:
+                - count-mass-water-balance
             ranges: []
       elementary:
         []
   - id: distribution_retail
-    label: "Distribution, storage, auction or trade, and retail"
+    label: "Distribution, storage, and retail"
     inputs:
       product:
-        - row_id: distribution_inputs
-          role: "Dispatched stems and transport service"
-          name: "Consumer-ready stem plus mode-specific transport, storage, and energy service flows"
+        - row_id: distribution_stem_input
+          role: "Packed fresh cut-flower stems at first dispatch"
+          name: "Packed fresh cut-flower stems at first dispatch"
           flow_type: "product"
-          property_unit: "Number of items / Item(s); Transport work / tkm; Energy / kWh"
-          description: "Record all route legs, transport modes, distance, load, packaging mass, temperature control, storage duration, auction or trade handling, and retail storage."
+          property_unit: "Number of items / Item(s)"
+          description: "Receive the packed lot recorded by consumer_ready_stem; retain storage stocks and subsequent retail losses."
           amount:
-            expression: "Route-specific calculation from mass, volume, distance, load factor, storage volume, and time"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
-            specificity: "route_specific"
+            specificity: "site_specific"
             basis:
-              text: "per one stem delivered to the consumer"
-              kind: "transport_service"
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_distribution_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+        - row_id: distribution_road_transport
+          role: "Road freight transport service"
+          name: "Freight Truck"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d55f1329-cd61-44c0-8000-9367d38d5634"
+          property_unit: "Transport work / tkm"
+          description: "For actual road legs, apply calc_transport_work and allocation_transport_physical; retain physical consignment work and compatible allocated service separately."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_distribution_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: distribution_air_transport
+          role: "Air freight transport service"
+          name: "Air freight transport service"
+          flow_type: "product"
+          property_unit: "Transport work / tkm"
+          description: "For actual air legs, apply calc_transport_work and allocation_transport_physical with an air-freight provider of compatible boundary, payload and utilisation."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_distribution_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: distribution_sea_transport
+          role: "Sea freight transport service"
+          name: "Sea freight transport service"
+          flow_type: "product"
+          property_unit: "Transport work / tkm"
+          description: "For actual sea legs, apply calc_transport_work and allocation_transport_physical with a compatible ship/service class and coverage."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_distribution_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: distribution_electricity
+          role: "Electricity at storage and retail equipment supply"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy / kWh"
+          description: "Record distribution, storage and retail electricity attributable to the lot, with the declared storage allocation driver."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_distribution_records
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: distribution_r134a
+          role: "R134a refrigerant supplied for equipment charging"
+          name: "refrigerant, R134a (tetrafluoroethane)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "210b4222-adda-4097-9e79-f2c9a6c172e4"
+          property_unit: "Mass / kg"
+          description: "For actual distribution/retail R134a equipment, record charging and make-up under calc_refrigerant_balance; represent other refrigerants separately."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_distribution_records
+              source_ids:
+                - count-mass-water-balance
             ranges: []
       waste:
         []
       elementary:
-        - row_id: distribution_refrigerant_emission
-          role: "Distribution refrigerant leakage"
-          name: "Select the matching Tiangong elementary flow to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Record substance-specific refrigerant leakage from cold transport, storage, and retail."
+        []
+    outputs:
+      product:
+        - row_id: delivered_stem
+          role: "Fresh cut-flower stem, consumer-ready at purchase"
+          name: "Fresh cut-flower stem, consumer-ready at purchase"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "This is the unique consumer-purchase reference output: one Item(s). Reconcile its purchased lot with consumer_purchased_stem."
           amount:
-            expression: "Reconciled leakage allocated by product volume and storage time or transport work"
-            value_mode: "calculated_value"
-            specificity: "route_specific"
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "generic"
             basis:
-              text: "per one stem delivered to the consumer"
-              kind: "transport_service"
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+      waste:
+        - row_id: distribution_retail_losses
+          role: "Discarded unsold or damaged fresh flower biomass"
+          name: "Discarded unsold or damaged fresh flower biomass"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record removed unsold or damaged flower mass, moisture and destination; retain lost stem counts in the retail stock ledger."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_distribution_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
             ranges: []
-    outputs:
-      product:
-        - row_id: delivered_stem
-          role: "Stem delivered to consumer"
-          name: "Cut flower or flower bud, consumer-ready; Tiangong UUID unresolved"
-          flow_type: "product"
-          property_unit: "Number of items / Item(s)"
-          description: "Record one purchased stem after scaling upstream production for measured distribution, storage, trade, and retail losses."
+      elementary:
+        - row_id: distribution_refrigerant_emission
+          role: "R134a released to air"
+          name: "R134a released to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "For actual distribution/retail R134a equipment, derive unrecovered release under calc_refrigerant_balance, separately from charging and provider-included leakage."
           amount:
-            expression: "Fixed output of one delivered stem after loss scaling"
-            value_mode: "fixed_value"
-            specificity: "product_specific"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
             basis:
-              text: "one delivered stem"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
-              kind: "external_source"
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
-      waste:
-        - row_id: distribution_retail_losses
-          role: "Distribution and retail losses"
-          name: "Select matching flower-biowaste and packaging-waste flows"
-          flow_type: "waste"
-          property_unit: "Number of items / Item(s); Mass / kg"
-          description: "Record damaged, wilted, or unsold flowers and associated packaging waste at the stage where each loss occurs."
-          amount:
-            expression: "Counted losses by stage and treatment route"
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per one stem delivered to the consumer"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_distribution_records
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+  - id: consumer_use
+    label: "Declared decorative use"
+    inputs:
+      product:
+        - row_id: consumer_purchased_stem
+          role: "Fresh cut-flower stem, consumer-ready at purchase"
+          name: "Fresh cut-flower stem, consumer-ready at purchase"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Receive the same purchased lot as delivered_stem; retain actual count, mass, moisture and stocks without adding the upstream product burden again."
+          amount:
+            expression: "Collect actual count, mass, moisture and stock change for the same purchased lot under cp_consumer_use; reconcile the declared node-count and component-water balances, then divide by that lot's purchased stems. Use the same hand-off record at adjacent nodes without duplicating product burdens or waste treatment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumer_use
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: consumer_vase_water
+          role: "Supplied vase and flower-care water"
+          name: "Supplied vase and flower-care water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record supplied vase and care water for the declared decorative-life scenario; retain changes and water-balance ownership."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumer_use
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: consumer_electricity
+          role: "Electricity attributable to declared flower care"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy / kWh"
+          description: "Record only electricity attributable to actual declared flower care under cp_consumer_use; absence requires supported non-applicability."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumer_use
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: consumer_discarded_flower
+          role: "Discarded flower biomass after decorative use sent to treatment"
+          name: "Discarded flower biomass after decorative use sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record post-use flower removal by actual count, mass, moisture and destination; reconcile the same lot and end-of-life receipt."
+          amount:
+            expression: "Collect actual count, mass, moisture and stock change for the same purchased lot under cp_consumer_use; reconcile the declared node-count and component-water balances, then divide by that lot's purchased stems. Use the same hand-off record at adjacent nodes without duplicating product burdens or waste treatment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumer_use
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: consumer_wastewater
+          role: "Vase and cleaning wastewater transferred to treatment"
+          name: "Vase and cleaning wastewater transferred to treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record used vase and cleaning water transferred to its actual treatment system; do not subtract material-carried water twice."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumer_use
+              source_ids:
+                - count-mass-water-balance
             ranges: []
       elementary:
         []
   - id: end_of_life
-    label: "Flower and packaging end-of-life"
+    label: "Material-specific end-of-life routing"
     inputs:
       product:
-        []
-      waste:
-        - row_id: discarded_flower_packaging
-          role: "Discarded flower and packaging"
-          name: "Select material-specific Tiangong waste flows"
-          flow_type: "waste"
-          property_unit: "Mass / kg; Number of items / Item(s)"
-          description: "Record flower biomass, water, sleeves, ties, containers, foam, baskets, and other packaging by material and local treatment route."
+        - row_id: flower_composting_service
+          role: "Composting treatment service for flower biomass"
+          name: "Composting treatment service for flower biomass"
+          flow_type: "product"
+          property_unit: "Mass of waste treated / kg"
+          description: "Use the evidenced composting fraction of flower biomass; treatment-service coverage and recovered-product quantities follow validate_end_of_life_materials."
           amount:
-            expression: "Measured product and packaging composition multiplied by local collection and treatment shares"
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
             value_mode: "calculated_value"
-            specificity: "scenario_specific"
+            specificity: "site_specific"
             basis:
-              text: "waste from one purchased stem"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_end_of_life_scenario
               source_ids:
-                - wur-floripefcr-2024
+                - count-mass-water-balance
+            ranges: []
+        - row_id: flower_landfill_service
+          role: "Landfill treatment service for flower biomass"
+          name: "Landfill treatment service for flower biomass"
+          flow_type: "product"
+          property_unit: "Mass of waste treated / kg"
+          description: "Use the evidenced landfill fraction of flower biomass; keep it separate from composting, incineration and the waste hand-off."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life_scenario
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: flower_incineration_service
+          role: "Incineration treatment service for flower biomass"
+          name: "Incineration treatment service for flower biomass"
+          flow_type: "product"
+          property_unit: "Mass of waste treated / kg"
+          description: "Use the evidenced incineration fraction of flower biomass; retain the provider boundary and any separately evidenced recovery function."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life_scenario
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+      waste:
+        - row_id: discarded_flower_biomass
+          role: "Discarded flower biomass received for end-of-life routing"
+          name: "Discarded flower biomass received for end-of-life routing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Reconcile received flower biomass with its removal nodes by origin, state, mass and moisture before assigning treatment shares."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life_scenario
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: discarded_corrugated_board
+          role: "Discarded corrugated fibreboard received for end-of-life routing"
+          name: "Discarded corrugated fibreboard received for end-of-life routing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Reconcile received corrugated board with packing waste and discarded product packaging by origin and mass; retain its own material-specific fate."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life_scenario
+              source_ids:
+                - count-mass-water-balance
+            ranges: []
+        - row_id: discarded_ldpe_film
+          role: "Discarded low-density polyethylene film received for end-of-life routing"
+          name: "Discarded low-density polyethylene film received for end-of-life routing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Reconcile received LDPE film with packing waste and discarded product packaging by origin and mass; retain its own polymer-specific fate."
+          amount:
+            expression: "Divide the attributed native amount collected under the linked protocol by matching conforming purchased stems, once only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life_scenario
+              source_ids:
+                - count-mass-water-balance
             ranges: []
       elementary:
         []
     outputs:
       product:
-        - row_id: end_of_life_services
-          role: "Waste-treatment services and recovered products"
-          name: "Select route-specific Tiangong treatment and recovered-product flows"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Record composting, digestion, incineration, landfill, recycling, and recovered products without double counting avoided burdens."
-          amount:
-            expression: "Input waste mass multiplied by documented treatment shares and process yields"
-            value_mode: "calculated_value"
-            specificity: "scenario_specific"
-            basis:
-              text: "waste from one purchased stem"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_end_of_life_scenario
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
+        []
       waste:
         []
       elementary:
-        - row_id: end_of_life_emissions
-          role: "Direct end-of-life emissions"
-          name: "Select substance- and compartment-specific Tiangong elementary flows"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Record treatment-specific emissions to air, water, and soil using the selected treatment datasets or documented factors."
-          amount:
-            expression: "Treatment-specific calculation from waste mass and cited factors"
-            value_mode: "calculated_value"
-            specificity: "scenario_specific"
-            basis:
-              text: "waste from one purchased stem"
-              kind: "reference_flow"
-            evidence:
-              kind: "method_formula"
-              collection_protocol_id: cp_end_of_life_scenario
-              source_ids:
-                - wur-floripefcr-2024
-            ranges: []
+        []
 allocation_rules:
   - rule_id: allocation_avoid_first
     applies_to: "All multifunctional processes"
@@ -769,20 +1243,20 @@ allocation_rules:
       - wur-floripefcr-2024
   - rule_id: allocation_chp_energy
     applies_to: "Combined heat and power"
-    rule: "Subdivide fuel and direct emissions between useful heat and electricity by their produced energy content, retain measured efficiency, and separately attribute purification burdens for recovered CO2 supplied to cultivation."
+    rule: "Apply allocation_chp_boundary to residual shared fuel and direct emissions using net useful delivered heat and electricity in MJ; retain measured efficiency and separately attribute purification burdens for recovered CO2 supplied to cultivation."
     source_ids:
       - wur-floripefcr-2024
   - rule_id: allocation_rotation_inputs
     applies_to: "Organic fertiliser and green manure in rotations"
-    rule: "Allocate mineral nitrogen to the crop receiving it and allocate residual organic nutrients and green-manure burdens across the rotation using occupied area and the cited horticultural rule."
+    rule: "Attribute directly traceable inputs to the receiving crop. For residual organic-fertilizer/green-manure burdens, use each crop's measured or evidenced expected uptake of the relevant available nutrient over the complete rotation: share = crop uptake / total rotation uptake. Retain nutrient species, availability, rotation period and uncertainty; do not assign the total application to every crop. If nutrient causality cannot be evidenced, apply allocation_complete_residual and disclose the proxy; never infer zero."
     source_ids:
-      - bsi-pas-2050-1-2012
-      - wur-floripefcr-2024
+      - count-mass-water-balance
+      - ghg-product-standard-2011
   - rule_id: allocation_transport_physical
-    applies_to: "Shared transport"
-    rule: "Allocate by the physical constraint on load capacity: mass when mass-constrained, volume when volume-constrained; include documented empty return and cold-chain operation."
+    applies_to: "Shared freight service by homogeneous route leg"
+    rule: "For each constant-load leg, first separate the freight-service burden from passenger or other services using documented provider allocation. Within that freight boundary use actual payload-mass shares when mass-constrained and occupied cargo-volume shares when volume-constrained; record the actual limiting constraint and every consignment. Allocate the total leg service under calc_transport_work, not the shipment physical tonne-kilometres a second time. Do not convert volume to mass using an assumed density."
     source_ids:
-      - wur-floripefcr-2024
+      - count-mass-water-balance
   - rule_id: allocation_storage_volume_time
     applies_to: "Shared storage, auction, trade, and retail"
     rule: "Allocate utilities and leakage by occupied product volume multiplied by storage time."
@@ -798,31 +1272,41 @@ allocation_rules:
     rule: "Normalize article-level burdens by measured flower-stem count for this PCR while retaining each non-floral component as a separate input; do not allocate accessory burdens away from the article."
     source_ids:
       - wur-floripefcr-2024
+  - rule_id: allocation_complete_residual
+    applies_to: "all residual multifunctionality"
+    rule: "First subdivide and directly meter, then use an evidenced causal physical driver. For genuine co-products without an evidenced causal physical relationship, residual economic share = own quantity*price / sum(quantity*price) for all co-products at the same hand-off and representative period. Record all outputs and shares sum to one. Disposal cost does not turn a waste into a co-product; generating burdens remain. A missing denominator/price makes the inventory incomplete, not single-output or zero burden. Do not allocate the raw physical balance."
+    source_ids:
+      - ghg-product-standard-2011
+  - rule_id: allocation_chp_boundary
+    applies_to: "on-site CHP and recovered CO2"
+    rule: "Subdivide directly attributable equipment burdens first. Split residual shared CHP burdens by this PCR's declared physical choice of net useful electricity and heat, both in MJ, retaining all useful internal and exported outputs. Gross generation/internal losses are not delivered energy. External PEF certification-specific allocation must be demonstrated separately. Keep CO2 purification/delivery burdens and carbon origin/release ownership separate without duplication."
+    source_ids:
+      - ghg-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_cultivation_materials
       process_id: "cultivation"
       flow_role: "Starting material, growing media, infrastructure, and cultivation materials"
       record_type: "Purchase, stock, supplier, and field records"
-      raw_fields: "material identity; supplier; origin; quantity; composition; recycled content; opening and closing stock; crop area; service life; crop share"
+      raw_fields: "actual propagation species/state; each material/formulation; mass/count/volume; occupied area and time; crop cohort age/stage; establishment and non-bearing inputs; replacements; termination; asset bill of materials and life; lifetime accepted output; CO2 origin, supplied mass and release/fixation ledger"
       collection_method: "Reconcile purchases and stock; verify bills of materials and supplier specifications"
       unit: "item; kg; m3; m2-year"
       frequency: "Each receipt and annual reconciliation"
       temporal_coverage: "At least three recent years for annual or protected crops, or three recent crop cycles when shorter; steady-state representation for perennials"
       site_scope: "Every included farm and cultivation compartment"
-      aggregation_rule: "Sum net use, allocate by direct crop records or section 7, and divide by saleable stem count"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Invoices, stock sheets, supplier specifications, infrastructure records, and crop-area logs"
     - protocol_id: cp_water_records
       process_id: "cultivation"
       flow_role: "Irrigation and cultivation water"
       record_type: "Meter and water-source records"
-      raw_fields: "source; abstraction or supply meter; make-up volume; recirculated volume; discharge volume; crop area; stem output"
+      raw_fields: "actual source and resource compartment; supply versus own abstraction; source and delivery meters; opening/closing readings and storage; water carried by materials; make-up, discharge, evaporative and product-carried water; internal circulation; density and conditions if mass/volume converted ; meter owner and actual foreground abstraction/supply boundary; supplier withdrawal coverage; internal delivery cancellation"
       collection_method: "Read calibrated meters and reconcile water balance"
       unit: "m3"
       frequency: "Monthly and each crop cycle"
       temporal_coverage: "Same representative period as cultivation output"
       site_scope: "Every water source and included cultivation block"
-      aggregation_rule: "Sum make-up water by source and divide by saleable stems; report recirculation separately"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Meter calibration, bills, abstraction records, and water-balance check"
     - protocol_id: cp_fertiliser_records
       process_id: "cultivation"
@@ -834,55 +1318,55 @@ dataset_production:
       frequency: "Each application"
       temporal_coverage: "Same representative period as cultivation output"
       site_scope: "Every included field or compartment"
-      aggregation_rule: "Convert product mass to nutrients, apply rotation allocation, and divide by saleable stems"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Application logs, invoices, labels, laboratory or supplier composition"
     - protocol_id: cp_plant_protection_records
       process_id: "cultivation"
       flow_role: "Plant-protection and post-harvest treatment products"
       record_type: "Application records"
-      raw_fields: "product; active ingredient; concentration; formulated amount; treated area or batch; date; application method"
+      raw_fields: "product; active ingredient; concentration; formulated amount; treated area or batch; date; application method ; application route (open field, greenhouse/substrate or post-harvest); each active-ingredient fraction and retained/collected stock; first-release fate ledger linked to cp_pesticide_fate"
       collection_method: "Record each application and calculate active-ingredient mass"
       unit: "kg product; kg active ingredient"
       frequency: "Each application"
       temporal_coverage: "Same representative period as cultivation output"
       site_scope: "Every included field, greenhouse, and post-harvest area"
-      aggregation_rule: "Sum by active ingredient and divide by saleable stems"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Application logs, labels, invoices, and applicator calibration"
     - protocol_id: cp_energy_fuel_records
       process_id: "cultivation"
       flow_role: "Electricity, heat, fuels, CHP, and CO2 enrichment"
       record_type: "Meter, invoice, and operating records"
-      raw_fields: "carrier; meter; quantity; unit; supplier; voltage; fuel heating value; CHP heat and electricity; CO2 source; crop area and time"
+      raw_fields: "each actual carrier; raw quantity/unit; density or net calorific value if converted; local combustion versus purchased/inclusive service; submeter/equipment use; net useful CHP heat/electricity internally used and exported; shared-driver totals; matched stem output"
       collection_method: "Sub-meter where possible; otherwise reconcile facility totals and allocation drivers"
       unit: "kWh; MJ; kg; m3"
       frequency: "Monthly and each crop cycle"
       temporal_coverage: "Same representative period as cultivation output"
       site_scope: "Every included energy system and cultivation compartment"
-      aggregation_rule: "Convert with documented factors, allocate under section 7, and divide by saleable stems"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Meter calibration, invoices, fuel specifications, CHP logs, and allocation reconciliation"
     - protocol_id: cp_output_loss_records
       process_id: "cultivation_post_harvest"
       flow_role: "Harvested, saleable, rejected, and lost stems and biomass"
       record_type: "Harvest, grading, waste, and dispatch records"
-      raw_fields: "harvested count and mass; saleable count; reject count and mass; reason; waste route; product qualifier"
+      raw_fields: "node; lot; reporting dates; opening and closing stem stocks; receipts; accepted dispatch; other transfers; rejected stems; evidenced physical loss; actual water and biomass mass/moisture; final purchased stems; stage-to-final lot link"
       collection_method: "Count by batch and weigh representative stems and wastes"
       unit: "item; kg"
       frequency: "Each harvest and grading batch"
       temporal_coverage: "Same representative period as cultivation output"
       site_scope: "Every included crop, grade, and handling site"
-      aggregation_rule: "Reconcile harvested stems to saleable stems, transfers, rejects, and inventory change"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Batch tickets, scale records, grade reports, waste receipts, and mass/count balance"
     - protocol_id: cp_cultivation_emissions
       process_id: "cultivation"
       flow_role: "Direct emissions from cultivation"
       record_type: "Calculation workpaper linked to activity records"
-      raw_fields: "fertiliser and manure inputs; soil or substrate; climate; water discharge; fuel use; active ingredient; factor and factor source"
+      raw_fields: "actual mineral/organic N; residues; soil/climate/drainage; method/tier/version; factors and native species basis; direct and indirect pathway ownership; actual local fuels, lime/urea and CO2 enrichment; chemical-specific receiving compartment ; phosphorus input species, runoff/drainage concentration and volume, soluble versus particulate P, sediment mass/P fraction, crop removal and soil stock; model equations/version and region/soil/management applicability"
       collection_method: "Apply declared factor method to collected activity data"
       unit: "kg substance"
       frequency: "Each reporting period"
       temporal_coverage: "Same representative period as cultivation output"
       site_scope: "Every included field or compartment"
-      aggregation_rule: "Calculate by substance and compartment and divide by saleable stems"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Formula audit, source version, input traceability, and independent recalculation"
     - protocol_id: cp_post_harvest_records
       process_id: "post_harvest"
@@ -894,7 +1378,7 @@ dataset_production:
       frequency: "Each batch; monthly for shared utilities"
       temporal_coverage: "Same representative period as processed output"
       site_scope: "Every included post-harvest site"
-      aggregation_rule: "Allocate by measured batch, stem throughput, or volume-time and divide by saleable stems"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Batch sheets, meters, invoices, maintenance logs, and utility reconciliation"
     - protocol_id: cp_packaging_dispatch_records
       process_id: "packaging_dispatch"
@@ -906,19 +1390,19 @@ dataset_production:
       frequency: "Each configuration and annual reconciliation"
       temporal_coverage: "Current configuration and representative reporting year"
       site_scope: "Every included packhouse or assembly site"
-      aggregation_rule: "Divide batch materials and energy by conforming dispatched stems; divide reusable items by verified uses"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Packaging specifications, scale records, purchase data, reuse logs, and batch reconciliation"
     - protocol_id: cp_distribution_records
       process_id: "distribution_retail"
       flow_role: "Transport, storage, auction, trade, retail, losses, and refrigerants"
       record_type: "Route, shipment, facility, and sales records"
-      raw_fields: "origin and destination; mode; distance; fuel; load; mass and volume; storage volume and time; utility use; refrigerant; loss count and route"
+      raw_fields: "origin and destination; mode; distance; fuel; load; mass and volume; storage volume and time; utility use; refrigerant; loss count and route ; per constant-load leg all eligible consignment gross payload masses excluding vehicle tare, occupied volumes, limiting constraint, loaded distance, provider passenger/freight allocation, service reference/factor unit, total service, allocated shares/quantity, actual utilisation, return and cooling coverage"
       collection_method: "Collect each route leg and reconcile facility activity"
       unit: "km; tkm; m3-week; kWh; kg; item"
       frequency: "Each shipment and monthly facility totals"
       temporal_coverage: "Representative reporting year with seasonal coverage"
       site_scope: "Every included route leg and facility"
-      aggregation_rule: "Calculate transport work, allocate storage by volume-time, scale for stage-specific losses, and divide by delivered stems"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Freight documents, telematics, utility bills, inventory records, sales and waste records"
     - protocol_id: cp_end_of_life_scenario
       process_id: "end_of_life"
@@ -930,8 +1414,56 @@ dataset_production:
       frequency: "Each product configuration; scenario review at least annually"
       temporal_coverage: "Current market and waste-management year"
       site_scope: "Declared consumer market"
-      aggregation_rule: "Multiply material mass by treatment shares and route datasets; sum shares to one"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "Product disassembly record, official waste statistics, treatment evidence, and scenario checksum"
+    - protocol_id: cp_consumer_use
+      process_id: "consumer_use"
+      flow_role: "Decorative use"
+      record_type: "Measured or supported scenario"
+      raw_fields: "purchased stems; species; vase and service life; decorative days; water-change count/volume; care formulation; energy; wastewater; destination ; actual received and discarded flower counts, mass, moisture and destinations; opening/closing stocks"
+      collection_method: "Collect raw amounts for declared geography/configuration; scenario evidence states source, year and uncertainty"
+      unit: "Item(s); day; m3; kg; kWh"
+      frequency: "per configuration"
+      temporal_coverage: "declared decorative period"
+      site_scope: "declared consumer market"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Observation record or supported scenario"
+    - protocol_id: cp_system_coverage
+      process_id: "cultivation_post_harvest_packaging_dispatch_distribution_retail_consumer_use_end_of_life"
+      flow_role: "Complete-system linkage"
+      record_type: "Boundary register"
+      raw_fields: "each stage; actual provider and gate; foreground/link role; lot/period; native output; raw burdens; incorporated loss; end market/use/fate; final purchased stems"
+      collection_method: "Reconcile transfers and stage coverage before final-reference normalisation; missing final denominator retains raw contributions only"
+      unit: "item; native activity units"
+      frequency: "per system"
+      temporal_coverage: "matched reporting period"
+      site_scope: "complete linked system"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Provider boundaries, lot ledger and coverage register"
+    - protocol_id: cp_pesticide_fate
+      process_id: "cultivation_post_harvest"
+      flow_role: "Named active-ingredient fate"
+      record_type: "Application and compartment ledger"
+      raw_fields: "ingredient/CAS and fraction; route; formulation/application mass; opening/closing stocks; exhaust flux/volume and concentrations; discharge volumes/concentrations; soil deposition; crop residues; collected waste; degradation products; model version/equations/parameters/conditions; actual recipient and later-treatment coverage"
+      collection_method: "Apply the route-specific first-release mass balance in calc_pesticide_release; pair sampling with actual discharge/time; separate model convention from measured fate"
+      unit: "kg ingredient; native concentration; m3; time; area"
+      frequency: "each application/batch"
+      temporal_coverage: "matched application and fate period"
+      site_scope: "actual field/equipment/bath"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Sampling/calibration, application records, model and stock reconciliation"
+    - protocol_id: cp_luc_history
+      process_id: "cultivation"
+      flow_role: "Direct land transformation"
+      record_type: "Parcel history and carbon-pool ledger"
+      raw_fields: "parcel/geography/area; prior/current land state; conversion cause/date; before/after biomass/dead-organic/soil carbon and units; transfer/pool boundaries; harvest period and H; period overlap; gas factors/activity; atmospheric-uptake eligibility; product beneficiaries and shares; supplier LUC coverage; proxy and uncertainty"
+      collection_method: "Use boundary_luc_method screening and calc_luc_attribution; retain dated land records, compatible carbon-stock evidence or explicit permitted proxy; no absence inferred from missing history"
+      unit: "m2; year; kg C; kg substance"
+      frequency: "per event and annual review"
+      temporal_coverage: "H-year event window and matched reporting period"
+      site_scope: "each included parcel/supply"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Land register/maps, pool methods, dated event/period ledger and independent recalculation"
   calculation_rules:
     - id: calc_stem_normalization
       applies_to: "All process rows"
@@ -953,7 +1485,7 @@ dataset_production:
         - wur-floripefcr-2024
     - id: calc_loss_scaling
       applies_to: "Successive life-cycle stages"
-      rule: "required upstream stems = one delivered stem / product of retained fractions at each included loss stage; do not combine losses without retaining stage records"
+      rule: "Use calc_stage_stock_loss on paired lot/node ledgers. Where stock changes and route partitions have already been reconciled, upstream stems required for one purchased stem = 1 / product of non-overlapping retained fractions, each greater than zero and at most one. Apply a loss factor once; local measured intensities and upstream linked datasets must not contain the same loss twice."
       inputs:
         - "counted input"
         - output
@@ -963,7 +1495,7 @@ dataset_production:
         - wur-floripefcr-2024
     - id: calc_three_period_average
       applies_to: "Cultivation"
-      rule: "Calculate each annual or crop-cycle inventory first, then average three representative years or three recent consecutive cycles; use a shorter period only with explicit justification and never less than one year for a new annual system."
+      rule: "Use three representative years or three recent complete crop cycles where applicable; retain the declared temporal window and any justified shorter new-system period. Sum attributable raw activity across periods and divide by summed matching accepted purchased-stem output. Do not take an unweighted mean of annual per-stem intensities."
       inputs:
         - "period inputs"
         - "period outputs"
@@ -974,7 +1506,7 @@ dataset_production:
         - bsi-pas-2050-1-2012
     - id: calc_perennial_steady_state
       applies_to: "Perennial cut-flower systems"
-      rule: "Weight development stages so the reporting period represents theoretical steady state; document any correction and exclude pre-yield-only inventory from an unqualified mature-product dataset."
+      rule: "Represent the declared cohort and its productive life with measured development-stage areas, time, inputs and accepted outputs. Include establishment and non-bearing burdens and replacements using calc_perennial_cohort; a zero-output juvenile phase is not an excluded burden. Keep forecasts separately evidenced and disclose steady-state assumptions."
       inputs:
         - "stage area"
         - time
@@ -1004,17 +1536,13 @@ dataset_production:
       source_ids:
         - wur-floripefcr-2024
     - id: calc_transport_work
-      applies_to: "Distribution"
-      rule: "tonne-kilometres = transported gross mass in tonnes × one-way loaded distance; apply documented load and empty-return treatment without duplicating refrigerated energy"
+      applies_to: "distribution_road_transport, distribution_air_transport, distribution_sea_transport"
+      rule: "Split routes when loads or consignments change. Actual consignment work = payload tonnes * loaded km, excluding vehicle tare; retain this physical ledger. Total leg work = sum(actual consignment work). The linked service quantity is total leg work * the mass share or occupied-volume share fixed by allocation_transport_physical; shares across all eligible freight sum to one. For a volume-constrained leg this allocated service quantity is not the consignment physical tkm and is never presented as measured mass. Use a freight dataset/factor compatible with that same total-leg payload, utilisation, technology and provider allocation; otherwise obtain an explicit vehicle/leg burden and multiply by the same share, or retain a service-compatibility gap. Apply empty return, utilisation and refrigeration once within the chosen service boundary; do not multiply already actual payload by load factor again. Normalize the attributed service/burden once by matched purchased stems."
       inputs:
-        - mass
-        - distance
-        - load
-        - "empty return"
-        - mode
-      output: "tkm by route leg"
+        - "Matched raw ledgers under collection protocols"
+      output: "Native service/substance amount attributed per purchased stem"
       source_ids:
-        - wur-floripefcr-2024
+        - count-mass-water-balance
     - id: calc_reusable_packaging
       applies_to: "Reusable packaging"
       rule: "material burden per use = packaging manufacture and end-of-life burden / verified lifetime uses; add cleaning and return transport for the current use"
@@ -1036,6 +1564,80 @@ dataset_production:
       source_ids:
         - ec-pef-method-2021
         - wur-floripefcr-2024
+    - id: calc_stage_stock_loss
+      applies_to: "all stem hand-offs"
+      rule: "On a matched lot and count basis, opening stock + receipts = accepted external dispatch + other transfers + rejected removals + evidenced physical losses + closing stock. Pair rework as one transfer; unexplained residual is not an automatic waste. Required upstream stems per purchased stem = 1 / product of measured retained fractions only where no stock/route mismatch exists; every denominator is positive. Otherwise use the complete measured node ledger."
+      inputs:
+        - "Linked collection protocols"
+        - "species/material and matched output"
+      output: "Evidenced quantities and reconciled ledgers"
+      source_ids:
+        - count-mass-water-balance
+    - id: calc_water_components
+      applies_to: "water-using stages"
+      rule: "External water + material-carried inlet water + opening stock = product-carried water + liquid discharge + evidenced evaporation + other exported water + closing stock. Internal recirculation cancels. Metered external wastewater is not reduced by reuse/evaporation a second time; distinguish waste transferred to treatment from specific direct releases."
+      inputs:
+        - "Linked collection protocols"
+        - "species/material and matched output"
+      output: "Evidenced quantities and reconciled ledgers"
+      source_ids:
+        - count-mass-water-balance
+    - id: calc_species_mass
+      applies_to: "cultivation emissions"
+      rule: "IPCC 2019 Refinement Volume 4 Chapter 11 Tier 1 is the default for applicable soil N2O and lime/urea CO2 pathways; Tier 2/3 requires a complete applicable regional/site method and activity record. For NH3 and nitrate, prefer pathway-specific measured species mass (concentration times measured discharge volume, or flux times area times time); otherwise apply a species-specific emissions model with declared version, equations, species basis and geographic/technical applicability, retaining the source of every factor and activity input. Total volatilized or leached N factors are not automatically NH3 or nitrate; unresolved species remain a gap, never zero. Use one declared regionally applicable method/tier and its actual N inputs and pathway factors. Species-specific N2O-N *44/28 gives N2O, NH3-N *17/14 gives NH3, nitrate-N *62/14 gives nitrate; measured compound mass is not reconverted. Total nutrient loss cannot be wholly assigned to one species; retain direct/indirect pathway ownership once. Local fuel/lime/urea fossil CO2 uses actual activity and compatible species factors; purchased-electricity/heat life-cycle CO2e is not local CO2 mass."
+      inputs:
+        - "Linked collection protocols"
+        - "species/material and matched output"
+      output: "Evidenced quantities and reconciled ledgers"
+      source_ids:
+        - count-mass-water-balance
+        - ipcc-2019-managed-soils
+    - id: calc_perennial_cohort
+      applies_to: "cultivation and infrastructure"
+      rule: "Include establishment, non-bearing periods, replacements and termination even when no current-year event occurs. Attribute their total supported burden in proportion to accepted output over the same cohort/asset service life; period burden = total burden * period accepted output / total accepted life output. Sum raw attributable burdens and stem outputs before deriving an intensity. Forecast future output only with a documented site-specific scenario and uncertainty; no default life/yield or zero historical burden.  LUC follows its separate fixed event/time attribution and is not amortised again by this cohort formula."
+      inputs:
+        - "Linked collection protocols"
+        - "species/material and matched output"
+      output: "Evidenced quantities and reconciled ledgers"
+      source_ids:
+        - count-mass-water-balance
+    - id: calc_refrigerant_balance
+      applies_to: "refrigeration equipment"
+      rule: "For the same refrigerant and equipment, opening contained mass + charges = closing contained mass + recovered/removed mass + actual release, with documented transfers and uncertainty. Do not equate replacement purchases with leakage, assume a leak fraction, or report kg CO2e as refrigerant mass. Inclusive refrigerated transport datasets and local equipment inventories must not overlap."
+      inputs:
+        - "Linked collection protocols"
+        - "species/material and matched output"
+      output: "Evidenced quantities and reconciled ledgers"
+      source_ids:
+        - count-mass-water-balance
+    - id: calc_phosphorus_release
+      applies_to: "Cultivation phosphorus"
+      rule: "Use a field/equipment-to-receiving-water boundary for phosphorus loss. Soluble P mass = sum(matched dissolved-P concentration * actual runoff/drainage volume); particulate P mass = exported dry sediment * evidenced particulate-P fraction. Retain concentration species/units; convert elemental P to phosphate only for an evidenced phosphate-specific fraction by 94.97/30.97, never for all total P, and never reconvert measured phosphate mass. Use a measured loss ledger first; otherwise a source-backed field/soil/management-compatible runoff/erosion mass-balance model with its explicit equations and actual P input, crop removal, retention, water/sediment and stock parameters. Unexplained P-balance residual is not discharge; missing parameters remain incomplete. Report separate named P/phosphate receiving-compartment cards, without also entering the same P application as a second emission or duplicating inclusive upstream fate."
+      inputs:
+        - cp_cultivation_emissions
+        - "P species and physical water/sediment ledger"
+      output: "kg of actual P species per purchased stem"
+      source_ids:
+        - ec-pef-method-2021
+        - count-mass-water-balance
+    - id: calc_pesticide_release
+      applies_to: "Cultivation and post-harvest protection applications"
+      rule: "For each actual active ingredient, applied mass = formulation mass * its mass fraction. Keep formulation manufacture as one upstream product input; active-ingredient bookkeeping is not another upstream purchase. Prefer an ingredient-specific first-release mass balance: opening contained stock + actual additions = closing stock + collected transfers + crop/material retention exported + evidenced degradation/transformation + releases to each actual air/water/soil compartment. Express the parent-ingredient balance on a parent-active-mass-equivalent basis; identify actual transformation products and their separate chemical mass/fate with documented stoichiometry, without assuming detoxification. Internal recirculation cancels; a balance residual is not an emission. Measure liquid release as the sum of time-matched concentration * discharged volume, air release as integrated substance mass flux * area * time (or concentration * exhaust volume), and soil release from supported deposition measurements or the declared mass-balance model. Models must close the same ingredient ledger with versioned equations, actual equipment/ventilation/drainage/application inputs and compatible measured or source-backed fate parameters; a regulatory worst-case concentration is not an inventory mass. For open-field applications only, absent more specific compatible fate data, adopt the dated PEF 2021 first-compartment convention of 0.90 soil, 0.09 air and 0.01 water times the actual field-applied active mass. Mark this as a modelled convention, not measured physical fate; do not simultaneously add later releases of that same applied mass. Do not use it for contained mixing residues, greenhouse/substrate systems or post-harvest baths. Those routes use the measured/modelled first-release ledger above; no undocumented universal fractions are permitted. Distinguish waste sent to treatment from direct environmental release, retain actual crop residues/collected liquid and assign treatment once. Missing a required fate parameter leaves an incomplete record under this fixed method, not permission to select zero or count all applied mass as released. Create separate named ingredient/compartment cards after actual ingredients are identified, never a generic pesticide-emissions card."
+      inputs:
+        - "Raw protocol ledgers"
+      output: "Attributed native amounts"
+      source_ids:
+        - ec-pef-method-2021
+        - count-mass-water-balance
+    - id: calc_luc_attribution
+      applies_to: "Attributable land-use-change events"
+      rule: "For each event under boundary_luc_method, use H = max(20 years, one harvest period) and dated carbon stocks in the same area and pools. Signed CO2 amount = (carbon before - carbon after) * 44/12, preserving the native mass unit; convert tonnes to kg by 1000 explicitly if used. Exclude transfers already counted in harvested products, imported organic material or other processes; include conversion non-CO2 gases separately using compatible event activity and species factors, never as kg CO2e in a substance card. Attribute event amounts evenly over H years from the event: annual share = event amount/H, with evidenced reporting-period overlap; events outside the attribution window do not receive a new charge. Allocate that period share among actual beneficiary products under section 7 and divide once by matched final purchased stems. Keep positive release and eligible negative carbon-stock change in separate substance ledgers; uptake requires evidence of atmospheric origin and retained stock, not imported carbon or an automatic permanence credit. LUC is not spread again over plant/greenhouse life by calc_perennial_cohort. Unknown event date, pools or denominator needs supported proxy evidence under the declared method or blocks completeness; no automatic zero."
+      inputs:
+        - "Raw protocol ledgers"
+      output: "Attributed native amounts"
+      source_ids:
+        - ghg-product-standard-2011
+        - count-mass-water-balance
   data_quality_requirements:
     - id: dq_identity
       applies_to: "Reference product"
@@ -1069,7 +1671,52 @@ dataset_production:
       applies_to: "Tiangong identity"
       requirement: "Resolve each selected public flow, property, and unit-group UUID against the current Tiangong row before activation or publication; do not substitute a narrower flow."
       evidence: "Tiangong readback record retained outside PCR content"
+    - id: starting_material_identity
+      applies_to: "cultivation"
+      requirement: "All actually used propagation lots, species and physical propagation states; reject purchased-cut-flower double cultivation. Collection protocol: cp_cultivation_materials."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: growing_media_materials_identity
+      applies_to: "cultivation"
+      requirement: "Every growing-medium constituent, support, container, greenhouse structure and infrastructure asset actually used; measured native quantities, service life and productive output. Collection protocol: cp_cultivation_materials."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: fertiliser_inputs_identity
+      applies_to: "cultivation"
+      requirement: "Every actual formulated fertilizer, organic amendment and lime product separately, with product mass and nutrient fractions. Collection protocol: cp_fertiliser_records."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: plant_protection_inputs_identity
+      applies_to: "cultivation"
+      requirement: "Require each actual formulation product input and each named active-ingredient/first-release-compartment elementary output under calc_pesticide_release and cp_pesticide_fate; ingredient bookkeeping does not create a second upstream product burden."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: other_cultivation_utilities_identity
+      applies_to: "cultivation"
+      requirement: "Each actual fuel, heat carrier and utility not represented by an applicable specific card. Collection protocol: cp_energy_fuel_records."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: post_harvest_water_agents_identity
+      applies_to: "post_harvest"
+      requirement: "Each actual hydration, preservation, sanitation and phytosanitary chemical, its concentration and separate supplied water. Collection protocol: cp_post_harvest_records."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: other_refrigerants_identity
+      applies_to: "post_harvest; distribution_retail"
+      requirement: "Each actual refrigerant formulation and its charge, recovery and species-specific release. R134a cards apply only where R134a is actually used. Collection protocol: cp_post_harvest_records; cp_distribution_records."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: packaging_materials_identity
+      applies_to: "packaging_dispatch"
+      requirement: "Every actual article accessory, filler, reusable bucket/tray/trolley and remaining packaging constituent; no assumed LDPE or cardboard recipe. Collection protocol: cp_packaging_dispatch_records."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: consumer_care_materials_identity
+      applies_to: "consumer_use"
+      requirement: "Every actual care product and reusable vase component attributable to the declared decorative use. Collection protocol: cp_consumer_use."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
+    - id: all_waste_material_routes_identity
+      applies_to: "end_of_life"
+      requirement: "Each additional discarded material, destination-specific treatment service and real recovered product; foreground treatment emissions are distinct substance/compartment exchanges. Collection protocol: cp_end_of_life_scenario."
+      evidence: "Site records, specifications, raw measurements and identity readback; preserve unresolved gaps."
 validation_rules:
+  - rule_id: validate_inventory_card_controls
+    applies_to: "All process inventory cards"
+    rule: "For every actual exchange retain material/substance, physical state, process gate, period and source/destination, including the receiving compartment when applicable. Confirm actual use and route; missing records do not establish non-applicability. Keep unverified identities unresolved rather than substituting a narrower or different material. For collected or calculated activity rows, collect native quantities under the linked protocol, reconcile matched node counts, stocks and material ledgers, and attribute shared activity using its measured driver. Apply calc_stem_normalization exactly once to the conforming purchased-stem denominator for the same complete system, period and scenario; do not divide already normalized amounts again. The fixed identity-reference output remains 1 Item(s); preserve the explicit LUC and consumer hand-off amount rules without adding another conversion. Adjacent nodes share the same physical hand-off record and cancel internal transfers on aggregation without adding product or treatment burdens twice. Reconcile on-site fuel combustion, purchased heat and enrichment CO2 with inclusive utility-service coverage; temporary plant uptake is not an automatic negative emission. For treatment services, any recovered product requires its own measured quantity and function; retain the no-duplicate-emissions and no-automatic-credit rules of validate_end_of_life_materials."
+    source_ids:
+      - count-mass-water-balance
   - rule_id: validate_product_identity
     applies_to: "Reference product"
     rule: "Fail conformance when species or cultivar, grade, product form, stem count for an article, cultivation system, production geography, and boundary are missing."
@@ -1077,19 +1724,19 @@ validation_rules:
       - wur-floripefcr-2024
   - rule_id: validate_reference_flow
     applies_to: "Quantitative reference"
-    rule: "Require exactly one consumer-ready stem in Item(s), or a transparent article-to-stem calculation whose qualifying stem count is positive and whose non-floral components remain in inventory."
+    rule: "Require one Item(s) at the consumer-purchase output delivered_stem, with the article stem count positive and accessories retained. Intermediate harvested, conditioned and dispatched counts follow the measured stock/loss ledger and are not fixed to one."
     source_ids:
       - wur-floripefcr-2024
       - lan-cut-flower-review-2022
   - rule_id: validate_reference_uuid
     applies_to: "Tiangong reference flow"
-    rule: "Block activation, publication, and claims of full PCR conformance until a semantically matching generic cut-flower product flow UUID is selected and read back; reject the narrower Dye Flower flow for this role."
+    rule: "Classification mapping accepts only this fresh-flower semantic scope; it is not current external-scheme certification or publication readiness. Verify actual dataset identity against species, fresh undyed state, hand-off and count-compatible property; otherwise retain unresolved status and do not claim full linking. Do not substitute Dyed flower. Activation/publication remain subject to their independent identity and methodology gates."
     source_ids: []
   - rule_id: validate_process_coverage
-    applies_to: "Foreground inventory"
-    rule: "Require cultivation, post-harvest, and packaging-dispatch process inventories. Require distribution and end-of-life inventories whenever those stages are within the declared boundary."
+    applies_to: "Completed system and source contributions"
+    rule: "Require all six mapped stages, including consumer_use and end_of_life, covered once by foreground records or identified compatible linked datasets. Verify their actual gates, physical transfers, period/lot matching, supplier coverage and allocation. A short-boundary farm, packhouse or retail dataset alone cannot claim conformance with this PCR or substitute its node output for delivered_stem. Missing downstream scenario, coverage or purchased-stem denominator blocks a completed system."
     source_ids:
-      - wur-floripefcr-2024
+      - count-mass-water-balance
   - rule_id: validate_required_inputs
     applies_to: "Cultivation"
     rule: "Require explicit rows or justified non-applicability for starting material, growing medium, cultivation materials, water, fertilisers, plant-protection products, energy, heating or cooling, infrastructure, direct emissions, output, and losses."
@@ -1097,11 +1744,11 @@ validation_rules:
       - wur-floripefcr-2024
   - rule_id: validate_count_balance
     applies_to: "Stem transfers"
-    rule: "For each stage, require input stems = conforming output stems + rejected or lost stems ± documented inventory change."
+    rule: "Reconcile opening stocks, receipts, accepted dispatch, other transfers, rejected removals, physical loss and closing stocks under calc_stage_stock_loss; adjacent hand-offs share quantities, and post-use flowers also require mass/moisture reconciliation."
     source_ids: []
   - rule_id: validate_water_balance
     applies_to: "Water-using stages"
-    rule: "Require make-up water = incorporated or transported water + discharge + evaporation or other loss ± stock change, within declared measurement uncertainty; keep recirculated water separate."
+    rule: "Apply calc_water_components to external supply, material-carried water, discharge, evaporation and opening/closing water stocks, retaining measurement uncertainty; internal circulation is not another external input, and measured wastewater is not reduced twice."
     source_ids: []
   - rule_id: validate_allocation
     applies_to: "Shared processes"
@@ -1117,7 +1764,7 @@ validation_rules:
       - bsi-pas-2050-1-2012
   - rule_id: validate_loss_scaling
     applies_to: "Downstream stages"
-    rule: "Require stage-specific measured loss fractions in the interval from zero through one and verify that upstream stem scaling reproduces one delivered stem."
+    rule: "Loss fractions are at least zero and strictly below one for a route delivering a positive final reference; retain positive output and matched stocks. Verify the full node ledger and stage-factor ownership rather than assigning a missing loss to zero."
     source_ids:
       - wur-floripefcr-2024
   - rule_id: validate_source_traceability
@@ -1131,12 +1778,39 @@ validation_rules:
     source_ids:
       - ec-pef-method-2021
       - wur-floripefcr-2024
+  - rule_id: validate_end_of_life_materials
+    applies_to: "end_of_life"
+    rule: "Treatment fractions for each actual material sum to one on the same time/geography basis; reconcile composition and moisture first. Treatment services are inputs, not recovered outputs; do not repeat service-included emissions. Missing fate evidence blocks completeness. Recovery/substitution credit is not automatic; an external scheme's circularity formula requires separate conformance evidence."
+    source_ids:
+      - count-mass-water-balance
+  - rule_id: validate_pesticide_fate
+    applies_to: "Actual protection products and releases"
+    rule: "Verify every active ingredient from application to each first-release compartment or evidenced retention/collection/transformation. Enforce the declared route and method hierarchy; reject open-field default fractions for protected/contained/post-harvest systems, duplicate active-ingredient supply, double-counted later fate, unexplained balance residuals and regulatory concentrations presented as mass. Missing route/fate evidence blocks a complete inventory."
+    source_ids:
+      - ec-pef-method-2021
+      - count-mass-water-balance
+  - rule_id: validate_luc_attribution
+    applies_to: "Land history, stocks and attribution"
+    rule: "Require dated parcel/conversion history or the permitted explicit proxy, carbon pools and units, harvest-period evidence, H, event/period overlap, eligible gas/uptake ledgers, beneficiary shares and matched output. Reconcile linked supplier LUC coverage, land occupation and establishment inventories so each burden is counted once; reject zero inferred from missing history or an arbitrary plant-life amortisation."
+    source_ids:
+      - ghg-product-standard-2011
+  - rule_id: validate_transport_service
+    applies_to: "Freight legs and allocated service quantities"
+    rule: "Reconcile physical consignment tkm separately from allocated service tkm or vehicle/leg burden. Confirm the actual limiting constraint, eligible total payload/volume, shares summing to one and compatible provider/service boundary. The allocated quantities must sum to the complete freight-leg service, with no duplicated loading, return or refrigeration correction. A volume-constrained allocation cannot silently use individual physical tkm as its allocated amount."
+    source_ids:
+      - count-mass-water-balance
+  - rule_id: validate_phosphorus_fate
+    applies_to: "Cultivation P"
+    rule: "Require soluble versus particulate P loss/retention evidence under calc_phosphorus_release for actual P inputs; verify the chosen field-to-water boundary, species/unit conversion and measured or modelled runoff/sediment inputs. Do not treat total applied P or an unexplained balance residual as measured phosphate release, or count both P application and the same receiving-water emission. Missing applicable fate evidence blocks completeness."
+    source_ids:
+      - ec-pef-method-2021
+      - count-mass-water-balance
 published_dataset_profile:
-  dataset_role: "Foreground cut-flower production data package, with optional downstream distribution and end-of-life extensions"
+  dataset_role: "Complete cradle-to-grave cut-flower system per purchased stem; raw node contributions have no standalone PCR conformance"
   downstream_use: "secondary_dataset; background_dataset; input to process and lifecyclemodel projections"
   allowed_use: "Product-specific modelling for cut flowers and flower buds when the declared species, grade, cultivation route, geography, time, post-harvest treatment, packaging, distribution, loss, and boundary match the study"
   excluded_use: "Potted plants, planting material, seed, dried or artificial flowers, edible flowers sold as food, undisclosed generic global proxies, or comparison of unlike product specifications and decorative lives"
-  required_metadata: "PCR id and version; species or cultivar; grade; stem length; product or article form and stem count; cultivation system and substrate; geography; harvest and data period; post-harvest treatment; packaging; cold-chain and route; expected decorative life; boundary; allocation; source and proxy register; Tiangong UUID readback status"
+  required_metadata: "PCR id/version; full-stage coverage register with foreground/linked provider gates, lot/period and purchased-stem denominator; product qualifiers; raw node quantities; site and scenario evidence; pesticide route/fate; land history/LUC window and pools; freight constraint, physical and allocated service ledgers; sources/proxies and identity readback status"
   required_quality_disclosure: "Site and production coverage; collection period; measurement and calculation methods; data-quality criteria; unresolved flows; excluded processes; proxy data and direction of bias; allocation drivers; mass, count, water, and utility reconciliation"
   update_trigger: "Change in species or grade, cultivation technology, energy system, greenhouse infrastructure, water source, nutrient or plant-protection regime, post-harvest treatment, packaging, route or cold chain, loss pattern, waste treatment, source method, or any material input or emission"
 data_sources:
@@ -1146,33 +1820,49 @@ data_sources:
     used_for: "Flower-specific functional unit and reference flow; life-cycle stages; mandatory company-specific data; allocation; temporal coverage; packaging, distribution, loss, data-quality, and end-of-life rules"
   - id: "ec-pef-method-2021"
     type: "official_guidance"
-    reference: "European Commission Recommendation (EU) 2021/2279, Annex I: Product Environmental Footprint Method, https://environment.ec.europa.eu/document/download/680503dc-5a19-4f6a-bb92-84d9bfc8f312_en, retrieved 2026-07-30"
-    used_for: "General PEF boundary, multifunctionality, data-needs, data-quality, secondary-data, and reporting rules"
+    reference: "European Commission Recommendation (EU) 2021/2279, Annex I, sections 4.4.1.4-4.4.1.5 and general PEF method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Boundary, allocation and quality guidance; dated open-field pesticide first-compartment convention and phosphorus/compartment distinction. No current certification is asserted."
   - id: "bsi-pas-2050-1-2012"
     type: "standard"
     reference: "BSI PAS 2050-1:2012, Assessment of life cycle greenhouse gas emissions from horticultural products - Supplementary requirements for the cradle-to-gate stages, official BSI record, retrieved 2026-07-30"
     used_for: "Horticultural temporal averaging, perennial steady state, rotation allocation, land-use-change, and cradle-to-gate disclosure"
   - id: "lan-cut-flower-review-2022"
     type: "literature"
-    reference: "Lan, Y.-C., Tam, V. W. Y., Xing, W., Datt, R., and Chan, Z. (2022), Life cycle environmental impacts of cut flowers: A review, Journal of Cleaner Production 369, 133415, DOI: 10.1016/j.jclepro.2022.133415"
+    reference: "Lan, Y.-C., Tam, V. W. Y., Xing, W., Datt, R., and Chen, Z. (2022), Life cycle environmental impacts of cut flowers: A review, Journal of Cleaner Production 369, 133415, DOI: 10.1016/j.jclepro.2022.133415"
     used_for: "Independent evidence for stem-count functional units, category variability, and the relevance of cultivation, post-harvest, consumer, energy, water, chemical, land-use, and waste stages"
+  - id: "count-mass-water-balance"
+    type: "method_factor"
+    reference: "Conservation of item count, material, water and attributable burdens; explicit choices defined in this PCR"
+    used_for: "Node, stock, loss and conversion consistency; no default quantity ranges"
+  - id: "ghg-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9 and Appendix B, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Allocation hierarchy and direct-LUC screening, carbon-stock calculation and temporal attribution; specific choices are declared in this PCR"
+  - id: "ipcc-2019-managed-soils"
+    type: "method_factor"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Applicable direct/indirect soil-N and lime/urea CO2 pathways; not site quantity evidence"
+  - id: "fsi-benchmarking-2024"
+    type: "official_guidance"
+    reference: "FSI FloriPEFCR Benchmarking Guidance, July 2024, https://fsi2030.com/wp-content/uploads/2024/07/20240701-FSI-FloriPEFCR-Benchmarking-guidance.pdf, sections 2-3"
+    used_for: "Distinguish technical method evidence, tool benchmarking and formal scheme compliance; continued use is not inferred renewal"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:686b6af527fbfc82e87eac0b386d463b98eb8007503a1dbf9b07ae6cb349aadf"
+  source_sha256: "sha256:9f6ce98590149323999257f607c316b7c22bbd4419d7956dd02182aa10db6aa8"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6668"
+    - unit_id: "normative_8413"
       family: "system_boundary"
       span:
         start:
-          offset: 6668
-          line: 63
+          offset: 8413
+          line: 72
           column: 1
         end:
-          offset: 9916
-          line: 86
+          offset: 13922
+          line: 103
           column: 1
-      markdown: "## 5. System Boundary\n\nThe default methodological boundary is cradle-to-grave. A foreground production dataset may stop at dispatch only when its shorter boundary is explicit and downstream users can attach the omitted stages without double counting.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased or internally produced seed, cutting, young plant, bulb, rootstock, or other propagation material entering the declared cut-flower production system |\n| starting_condition_role | Upstream product input to the first foreground cultivation process |\n| product_classification_scope | Fresh cut flowers and flower buds and the flower-stem content of in-scope decorative articles |\n| recursive_input_rule | An input already representing an in-scope consumer-ready cut flower shall be recorded as an upstream product flow and shall not be expanded again inside the receiving foreground process. |\n| upstream_dataset_requirement | Use a separately documented upstream dataset for purchased propagation material, externally cultivated stems, packaging, energy, fertiliser, plant-protection products, transport, and waste treatment; disclose proxy use and data quality. |\n| disclosure | Declare starting-material type and origin, cultivation system, land and infrastructure treatment, included post-harvest operations, distribution route, article assembly, losses, and the exact terminal boundary. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_required_stages` | Product system | Include starting-material production and raw-material acquisition, cultivation and harvest, post-harvest handling, packaging, distribution, storage or auction and retail when applicable, consumer use assumptions, and end-of-life for the flowers and packaging. A shorter foreground boundary shall state every omitted downstream stage. | wur-floripefcr-2024; lan-cut-flower-review-2022 |\n| `boundary_cultivation_inputs` | Cultivation | Include propagation material, growing media, greenhouse or protected-cultivation infrastructure when used, irrigation water, fertilisers, plant-protection products, biological-control disclosure, CO2 enrichment, energy, fuels, field operations, direct emissions, land occupation, and land-use change where relevant. | wur-floripefcr-2024; bsi-pas-2050-1-2012 |\n| `boundary_post_harvest` | Harvest to dispatch | Include harvesting, grading, trimming, washing or hydration, conditioning chemicals, phytosanitary treatment, cooling, cold storage, bunching or article assembly, packaging, on-site handling, product losses, wastewater, and wastes. | wur-floripefcr-2024 |\n| `boundary_capital_goods` | Protected cultivation | Include greenhouse structures and cultivation-specific infrastructure through documented bill of materials, service life, occupied area, and production over that life; disclose any excluded capital goods. | wur-floripefcr-2024 |\n| `boundary_cutoff_disclosure` | All stages | Do not omit a known material, energy, transport, waste, or direct-emission flow merely because it lacks data. Record it as unresolved, use a disclosed proxy, or justify exclusion against the applied study rule. | ec-pef-method-2021; wur-floripefcr-2024 |\n\n"
+      markdown: "## 5. System Boundary\n\nThe conformance boundary is cradle-to-grave. Directly measured records may cover only selected nodes, but conformance requires all remaining stages to be supplied by compatible linked datasets/scenarios before final-reference normalisation. A short-boundary contribution is not a complete PCR-conforming product dataset.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased or internally produced seed, cutting, young plant, bulb, rootstock, or other propagation material entering the declared cut-flower production system |\n| starting_condition_role | Upstream product input to the first foreground cultivation process |\n| product_classification_scope | Fresh cut flowers and flower buds and the flower-stem content of in-scope decorative articles |\n| recursive_input_rule | An input already representing an in-scope consumer-ready cut flower shall be recorded as an upstream product flow and shall not be expanded again inside the receiving foreground process. |\n| upstream_dataset_requirement | Use a separately documented upstream dataset for purchased propagation material, externally cultivated stems, packaging, energy, fertiliser, plant-protection products, transport, and waste treatment; disclose proxy use and data quality. |\n| disclosure | Declare starting-material type and origin, cultivation system, land and infrastructure treatment, included post-harvest operations, distribution route, article assembly, losses, and the exact terminal boundary. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_required_stages` | Product system | Conformance requires the complete cradle-to-grave system for one purchased fresh undyed stem, including propagation, cultivation, post-harvest, packing, distribution/retail, declared decorative use and material-specific end-of-life. A stage may be covered by a compatible linked dataset with an explicit coverage register instead of duplicate foreground expansion; it cannot be omitted from the completed system. Raw node records are contributions, not independently conforming PCR datasets. | count-mass-water-balance |\n| `boundary_cultivation_inputs` | Cultivation | Include propagation material, growing media, greenhouse or protected-cultivation infrastructure when used, irrigation water, fertilisers, plant-protection products, biological-control disclosure, CO2 enrichment, energy, fuels, field operations, direct emissions, land occupation, and land-use change where relevant. | wur-floripefcr-2024; bsi-pas-2050-1-2012 |\n| `boundary_post_harvest` | Harvest to dispatch | Include harvesting, grading, trimming, washing or hydration, conditioning chemicals, phytosanitary treatment, cooling, cold storage, bunching or article assembly, packaging, on-site handling, product losses, wastewater, and wastes. | wur-floripefcr-2024 |\n| `boundary_capital_goods` | Protected cultivation | Include greenhouse structures and cultivation-specific infrastructure through documented bill of materials, service life, occupied area, and production over that life; disclose any excluded capital goods. | wur-floripefcr-2024 |\n| `boundary_cutoff_disclosure` | All stages | Do not omit a known material, energy, transport, waste, or direct-emission flow merely because it lacks data. Record it as unresolved, use a disclosed proxy, or justify exclusion against the applied study rule. | ec-pef-method-2021; wur-floripefcr-2024 |\n\n\nA complete reference system includes distribution/retail, the declared decorative-use scenario and all material-specific disposal routes. An upstream-only foreground dataset remains an intermediate contribution. Missing downstream loss, use or disposal evidence must be collected or represented by an explicit supported scenario; it is not zero. Keep all technical, geographic and temporal scenario choices in the dataset. Land occupation is measured area multiplied by attributable time, with land type; land transformation and carbon-stock change are separate evidence-dependent ledgers, not inferred from occupation.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_water_ownership` | Water supply and abstraction | Purchased water links provider abstraction/supply once; supplier withdrawal is not an extra foreground elementary input. Foreground-owned direct abstraction is a source-specific elementary input with local supply activity, and its internal delivered-water transfer cancels within the aggregate boundary. Keep source/delivery meters and losses separate; do not add a second external water purchase for an internal delivery. | count-mass-water-balance |\n| `boundary_luc_method` | Land transformation and carbon stocks | Use GHG Product Standard 2011 Appendix B for attributable direct land-use-change impacts. Keep occupation, establishment assets and LUC separate. Screen human-induced product-related conversions over the preceding H = max(20 years, one harvest period); plant service life is not automatically the harvest period. Use dated parcel history and the carbon pools before/after conversion, including biomass, dead organic matter and soil. A documented unchanged history can establish non-applicability; missing history cannot. Unknown parcel history requires a geographically and crop-compatible published land-history/LUC scenario under the same method, with proxy disclosure and uncertainty, or the LUC inventory remains incomplete. | ghg-product-standard-2011 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1181,20 +1871,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 236
+              offset: 250
               line: 8
-              column: 30
-          text: "# Cut flowers and flower buds"
+              column: 44
+          text: "# Fresh, undyed cut flowers and flower buds"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 6668
-              line: 63
+              offset: 8413
+              line: 72
               column: 1
             end:
-              offset: 6689
-              line: 63
+              offset: 8434
+              line: 72
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1209,18 +1899,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_33745"
+    - unit_id: "normative_55625"
       family: "allocation"
       span:
         start:
-          offset: 33745
-          line: 606
+          offset: 55625
+          line: 979
           column: 1
         end:
-          offset: 36090
-          line: 619
+          offset: 60004
+          line: 998
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_first` | All multifunctional processes | First subdivide processes and use direct measurements for the flower crop, compartment, batch, article, or route. Apply allocation only to residual shared inputs or emissions. | ec-pef-method-2021; wur-floripefcr-2024 |\n| `allocation_greenhouse_land_time` | Shared greenhouse cultivation | Allocate shared energy, cleaning, land occupation, and generic operations using crop-specific sub-metering where available; otherwise use occupied area integrated over growing time. Apply economic allocation only to remaining co-products that cannot be separated physically. | wur-floripefcr-2024 |\n| `allocation_chp_energy` | Combined heat and power | Subdivide fuel and direct emissions between useful heat and electricity by their produced energy content, retain measured efficiency, and separately attribute purification burdens for recovered CO2 supplied to cultivation. | wur-floripefcr-2024 |\n| `allocation_rotation_inputs` | Organic fertiliser and green manure in rotations | Allocate mineral nitrogen to the crop receiving it and allocate residual organic nutrients and green-manure burdens across the rotation using occupied area and the cited horticultural rule. | bsi-pas-2050-1-2012; wur-floripefcr-2024 |\n| `allocation_transport_physical` | Shared transport | Allocate by the physical constraint on load capacity: mass when mass-constrained, volume when volume-constrained; include documented empty return and cold-chain operation. | wur-floripefcr-2024 |\n| `allocation_storage_volume_time` | Shared storage, auction, trade, and retail | Allocate utilities and leakage by occupied product volume multiplied by storage time. | wur-floripefcr-2024 |\n| `allocation_reuse_cycles` | Reusable buckets, trays, trolleys, and containers | Divide manufacture and end-of-life burdens by verified lifetime uses and include cleaning and return transport for each use. | wur-floripefcr-2024 |\n| `allocation_article_components` | Bouquets and similar articles | Normalize article-level burdens by measured flower-stem count for this PCR while retaining each non-floral component as a separate input; do not allocate accessory burdens away from the article. | wur-floripefcr-2024 |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_first` | All multifunctional processes | First subdivide processes and use direct measurements for the flower crop, compartment, batch, article, or route. Apply allocation only to residual shared inputs or emissions. | ec-pef-method-2021; wur-floripefcr-2024 |\n| `allocation_greenhouse_land_time` | Shared greenhouse cultivation | Allocate shared energy, cleaning, land occupation, and generic operations using crop-specific sub-metering where available; otherwise use occupied area integrated over growing time. Apply economic allocation only to remaining co-products that cannot be separated physically. | wur-floripefcr-2024 |\n| `allocation_chp_energy` | Combined heat and power | Apply allocation_chp_boundary to residual shared fuel and direct emissions using net useful delivered heat and electricity in MJ; retain measured efficiency and separately attribute purification burdens for recovered CO2 supplied to cultivation. | wur-floripefcr-2024 |\n| `allocation_rotation_inputs` | Organic fertiliser and green manure in rotations | Attribute directly traceable inputs to the receiving crop. For residual organic-fertilizer/green-manure burdens, use each crop's measured or evidenced expected uptake of the relevant available nutrient over the complete rotation: share = crop uptake / total rotation uptake. Retain nutrient species, availability, rotation period and uncertainty; do not assign the total application to every crop. If nutrient causality cannot be evidenced, apply allocation_complete_residual and disclose the proxy; never infer zero. | count-mass-water-balance; ghg-product-standard-2011 |\n| `allocation_transport_physical` | Shared freight service by homogeneous route leg | For each constant-load leg, first separate the freight-service burden from passenger or other services using documented provider allocation. Within that freight boundary use actual payload-mass shares when mass-constrained and occupied cargo-volume shares when volume-constrained; record the actual limiting constraint and every consignment. Allocate the total leg service under calc_transport_work, not the shipment physical tonne-kilometres a second time. Do not convert volume to mass using an assumed density. | count-mass-water-balance |\n| `allocation_storage_volume_time` | Shared storage, auction, trade, and retail | Allocate utilities and leakage by occupied product volume multiplied by storage time. | wur-floripefcr-2024 |\n| `allocation_reuse_cycles` | Reusable buckets, trays, trolleys, and containers | Divide manufacture and end-of-life burdens by verified lifetime uses and include cleaning and return transport for each use. | wur-floripefcr-2024 |\n| `allocation_article_components` | Bouquets and similar articles | Normalize article-level burdens by measured flower-stem count for this PCR while retaining each non-floral component as a separate input; do not allocate accessory burdens away from the article. | wur-floripefcr-2024 |\n\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_complete_residual` | all residual multifunctionality | First subdivide and directly meter, then use an evidenced causal physical driver. For genuine co-products without an evidenced causal physical relationship, residual economic share = own quantity*price / sum(quantity*price) for all co-products at the same hand-off and representative period. Record all outputs and shares sum to one. Disposal cost does not turn a waste into a co-product; generating burdens remain. A missing denominator/price makes the inventory incomplete, not single-output or zero burden. Do not allocate the raw physical balance. | `ghg-product-standard-2011` |\n| `allocation_chp_boundary` | on-site CHP and recovered CO2 | Subdivide directly attributable equipment burdens first. Split residual shared CHP burdens by this PCR's declared physical choice of net useful electricity and heat, both in MJ, retaining all useful internal and exported outputs. Gross generation/internal losses are not delivered energy. External PEF certification-specific allocation must be demonstrated separately. Keep CO2 purification/delivery burdens and carbon origin/release ownership separate without duplication. | `ghg-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1229,20 +1919,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 236
+              offset: 250
               line: 8
-              column: 30
-          text: "# Cut flowers and flower buds"
+              column: 44
+          text: "# Fresh, undyed cut flowers and flower buds"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 33745
-              line: 606
+              offset: 55625
+              line: 979
               column: 1
             end:
-              offset: 33785
-              line: 606
+              offset: 55665
+              line: 979
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1257,18 +1947,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49157"
+    - unit_id: "normative_92037"
       family: "validation"
       span:
         start:
-          offset: 49157
-          line: 665
+          offset: 92037
+          line: 1086
           column: 1
         end:
-          offset: 52208
-          line: 682
+          offset: 100443
+          line: 1119
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_product_identity` | Reference product | Fail conformance when species or cultivar, grade, product form, stem count for an article, cultivation system, production geography, and boundary are missing. | wur-floripefcr-2024 |\n| `validate_reference_flow` | Quantitative reference | Require exactly one consumer-ready stem in Item(s), or a transparent article-to-stem calculation whose qualifying stem count is positive and whose non-floral components remain in inventory. | wur-floripefcr-2024; lan-cut-flower-review-2022 |\n| `validate_reference_uuid` | Tiangong reference flow | Block activation, publication, and claims of full PCR conformance until a semantically matching generic cut-flower product flow UUID is selected and read back; reject the narrower `Dye Flower` flow for this role. |  |\n| `validate_process_coverage` | Foreground inventory | Require cultivation, post-harvest, and packaging-dispatch process inventories. Require distribution and end-of-life inventories whenever those stages are within the declared boundary. | wur-floripefcr-2024 |\n| `validate_required_inputs` | Cultivation | Require explicit rows or justified non-applicability for starting material, growing medium, cultivation materials, water, fertilisers, plant-protection products, energy, heating or cooling, infrastructure, direct emissions, output, and losses. | wur-floripefcr-2024 |\n| `validate_count_balance` | Stem transfers | For each stage, require input stems = conforming output stems + rejected or lost stems ± documented inventory change. |  |\n| `validate_water_balance` | Water-using stages | Require make-up water = incorporated or transported water + discharge + evaporation or other loss ± stock change, within declared measurement uncertainty; keep recirculated water separate. |  |\n| `validate_allocation` | Shared processes | Require subdivision evidence or a cited allocation rule and measured driver; reject unexplained economic allocation where physical separation or causality is available. | ec-pef-method-2021; wur-floripefcr-2024 |\n| `validate_temporal_coverage` | Cultivation | Require the representative period or an explicit exception consistent with annual, short-cycle, or perennial rules. | wur-floripefcr-2024; bsi-pas-2050-1-2012 |\n| `validate_loss_scaling` | Downstream stages | Require stage-specific measured loss fractions in the interval from zero through one and verify that upstream stem scaling reproduces one delivered stem. | wur-floripefcr-2024 |\n| `validate_source_traceability` | Calculated rows | Require every method factor, externally constrained rule, and non-default scenario to reference a listed source id; require every foreground calculated row to link to a collection protocol. | ec-pef-method-2021 |\n| `validate_data_quality` | Dataset profile | Require disclosed precision, time, geography, and technology representativeness and an explicit proxy register. | ec-pef-method-2021; wur-floripefcr-2024 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_inventory_card_controls` | All process inventory cards | For every actual exchange retain material/substance, physical state, process gate, period and source/destination, including the receiving compartment when applicable. Confirm actual use and route; missing records do not establish non-applicability. Keep unverified identities unresolved rather than substituting a narrower or different material. For collected or calculated activity rows, collect native quantities under the linked protocol, reconcile matched node counts, stocks and material ledgers, and attribute shared activity using its measured driver. Apply calc_stem_normalization exactly once to the conforming purchased-stem denominator for the same complete system, period and scenario; do not divide already normalized amounts again. The fixed identity-reference output remains 1 Item(s); preserve the explicit LUC and consumer hand-off amount rules without adding another conversion. Adjacent nodes share the same physical hand-off record and cancel internal transfers on aggregation without adding product or treatment burdens twice. Reconcile on-site fuel combustion, purchased heat and enrichment CO2 with inclusive utility-service coverage; temporary plant uptake is not an automatic negative emission. For treatment services, any recovered product requires its own measured quantity and function; retain the no-duplicate-emissions and no-automatic-credit rules of validate_end_of_life_materials. | count-mass-water-balance |\n| `validate_product_identity` | Reference product | Fail conformance when species or cultivar, grade, product form, stem count for an article, cultivation system, production geography, and boundary are missing. | wur-floripefcr-2024 |\n| `validate_reference_flow` | Quantitative reference | Require one Item(s) at the consumer-purchase output delivered_stem, with the article stem count positive and accessories retained. Intermediate harvested, conditioned and dispatched counts follow the measured stock/loss ledger and are not fixed to one. | wur-floripefcr-2024; lan-cut-flower-review-2022 |\n| `validate_reference_uuid` | Tiangong reference flow | Classification mapping accepts only this fresh-flower semantic scope; it is not current external-scheme certification or publication readiness. Verify actual dataset identity against species, fresh undyed state, hand-off and count-compatible property; otherwise retain unresolved status and do not claim full linking. Do not substitute Dyed flower. Activation/publication remain subject to their independent identity and methodology gates. |  |\n| `validate_process_coverage` | Completed system and source contributions | Require all six mapped stages, including consumer_use and end_of_life, covered once by foreground records or identified compatible linked datasets. Verify their actual gates, physical transfers, period/lot matching, supplier coverage and allocation. A short-boundary farm, packhouse or retail dataset alone cannot claim conformance with this PCR or substitute its node output for delivered_stem. Missing downstream scenario, coverage or purchased-stem denominator blocks a completed system. | count-mass-water-balance |\n| `validate_required_inputs` | Cultivation | Require explicit rows or justified non-applicability for starting material, growing medium, cultivation materials, water, fertilisers, plant-protection products, energy, heating or cooling, infrastructure, direct emissions, output, and losses. | wur-floripefcr-2024 |\n| `validate_count_balance` | Stem transfers | Reconcile opening stocks, receipts, accepted dispatch, other transfers, rejected removals, physical loss and closing stocks under calc_stage_stock_loss; adjacent hand-offs share quantities, and post-use flowers also require mass/moisture reconciliation. |  |\n| `validate_water_balance` | Water-using stages | Apply calc_water_components to external supply, material-carried water, discharge, evaporation and opening/closing water stocks, retaining measurement uncertainty; internal circulation is not another external input, and measured wastewater is not reduced twice. |  |\n| `validate_allocation` | Shared processes | Require subdivision evidence or a cited allocation rule and measured driver; reject unexplained economic allocation where physical separation or causality is available. | ec-pef-method-2021; wur-floripefcr-2024 |\n| `validate_temporal_coverage` | Cultivation | Require the representative period or an explicit exception consistent with annual, short-cycle, or perennial rules. | wur-floripefcr-2024; bsi-pas-2050-1-2012 |\n| `validate_loss_scaling` | Downstream stages | Loss fractions are at least zero and strictly below one for a route delivering a positive final reference; retain positive output and matched stocks. Verify the full node ledger and stage-factor ownership rather than assigning a missing loss to zero. | wur-floripefcr-2024 |\n| `validate_source_traceability` | Calculated rows | Require every method factor, externally constrained rule, and non-default scenario to reference a listed source id; require every foreground calculated row to link to a collection protocol. | ec-pef-method-2021 |\n| `validate_data_quality` | Dataset profile | Require disclosed precision, time, geography, and technology representativeness and an explicit proxy register. | ec-pef-method-2021; wur-floripefcr-2024 |\n\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_end_of_life_materials` | end_of_life | Treatment fractions for each actual material sum to one on the same time/geography basis; reconcile composition and moisture first. Treatment services are inputs, not recovered outputs; do not repeat service-included emissions. Missing fate evidence blocks completeness. Recovery/substitution credit is not automatic; an external scheme's circularity formula requires separate conformance evidence. | `count-mass-water-balance` |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_pesticide_fate` | Actual protection products and releases | Verify every active ingredient from application to each first-release compartment or evidenced retention/collection/transformation. Enforce the declared route and method hierarchy; reject open-field default fractions for protected/contained/post-harvest systems, duplicate active-ingredient supply, double-counted later fate, unexplained balance residuals and regulatory concentrations presented as mass. Missing route/fate evidence blocks a complete inventory. | ec-pef-method-2021; count-mass-water-balance |\n| `validate_luc_attribution` | Land history, stocks and attribution | Require dated parcel/conversion history or the permitted explicit proxy, carbon pools and units, harvest-period evidence, H, event/period overlap, eligible gas/uptake ledgers, beneficiary shares and matched output. Reconcile linked supplier LUC coverage, land occupation and establishment inventories so each burden is counted once; reject zero inferred from missing history or an arbitrary plant-life amortisation. | ghg-product-standard-2011 |\n| `validate_transport_service` | Freight legs and allocated service quantities | Reconcile physical consignment tkm separately from allocated service tkm or vehicle/leg burden. Confirm the actual limiting constraint, eligible total payload/volume, shares summing to one and compatible provider/service boundary. The allocated quantities must sum to the complete freight-leg service, with no duplicated loading, return or refrigeration correction. A volume-constrained allocation cannot silently use individual physical tkm as its allocated amount. | count-mass-water-balance |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_phosphorus_fate` | Cultivation P | Require soluble versus particulate P loss/retention evidence under calc_phosphorus_release for actual P inputs; verify the chosen field-to-water boundary, species/unit conversion and measured or modelled runoff/sediment inputs. Do not treat total applied P or an unexplained balance residual as measured phosphate release, or count both P application and the same receiving-water emission. Missing applicable fate evidence blocks completeness. | ec-pef-method-2021; count-mass-water-balance |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1277,20 +1967,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 236
+              offset: 250
               line: 8
-              column: 30
-          text: "# Cut flowers and flower buds"
+              column: 44
+          text: "# Fresh, undyed cut flowers and flower buds"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 49157
-              line: 665
+              offset: 92037
+              line: 1086
               column: 1
             end:
-              offset: 49179
-              line: 665
+              offset: 92059
+              line: 1086
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1309,389 +1999,568 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_6668"
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 6691
-          line: 65
+          offset: 8436
+          line: 74
           column: 1
         end:
-          offset: 6918
-          line: 65
-          column: 228
+          offset: 8756
+          line: 74
+          column: 321
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_required_stages"
       identity_kind: "explicit"
-      unit_id: "normative_6668"
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 8183
-          line: 80
+          offset: 10021
+          line: 89
           column: 1
         end:
-          offset: 8616
-          line: 80
-          column: 434
+          offset: 10589
+          line: 89
+          column: 569
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_cultivation_inputs"
       identity_kind: "explicit"
-      unit_id: "normative_6668"
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 8617
-          line: 81
+          offset: 10590
+          line: 90
           column: 1
         end:
-          offset: 9025
-          line: 81
+          offset: 10998
+          line: 90
           column: 409
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_post_harvest"
       identity_kind: "explicit"
-      unit_id: "normative_6668"
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 9026
-          line: 82
+          offset: 10999
+          line: 91
           column: 1
         end:
-          offset: 9331
-          line: 82
+          offset: 11304
+          line: 91
           column: 306
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_capital_goods"
       identity_kind: "explicit"
-      unit_id: "normative_6668"
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 9332
-          line: 83
+          offset: 11305
+          line: 92
           column: 1
         end:
-          offset: 9613
-          line: 83
+          offset: 11586
+          line: 92
           column: 282
     - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_cutoff_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_6668"
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 9614
-          line: 84
+          offset: 11587
+          line: 93
           column: 1
         end:
-          offset: 9914
-          line: 84
+          offset: 11887
+          line: 93
           column: 301
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "system_boundary_rule_7"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_8413"
+      source_span:
+        start:
+          offset: 11890
+          line: 96
+          column: 1
+        end:
+          offset: 12509
+          line: 96
+          column: 620
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "boundary_water_ownership"
+      identity_kind: "explicit"
+      unit_id: "normative_8413"
+      source_span:
+        start:
+          offset: 12582
+          line: 100
+          column: 1
+        end:
+          offset: 13095
+          line: 100
+          column: 514
+    - pointer: "/system_boundary/rules/8"
+      rule_id: "boundary_luc_method"
+      identity_kind: "explicit"
+      unit_id: "normative_8413"
+      source_span:
+        start:
+          offset: 13096
+          line: 101
+          column: 1
+        end:
+          offset: 13920
+          line: 101
+          column: 825
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_first"
       identity_kind: "explicit"
-      unit_id: "normative_33745"
+      unit_id: "normative_55625"
       source_span:
         start:
-          offset: 33858
-          line: 610
+          offset: 55738
+          line: 983
           column: 1
         end:
-          offset: 34138
-          line: 610
+          offset: 56018
+          line: 983
           column: 281
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_greenhouse_land_time"
       identity_kind: "explicit"
-      unit_id: "normative_33745"
+      unit_id: "normative_55625"
       source_span:
         start:
-          offset: 34139
-          line: 611
+          offset: 56019
+          line: 984
           column: 1
         end:
-          offset: 34507
-          line: 611
+          offset: 56387
+          line: 984
           column: 369
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_chp_energy"
       identity_kind: "explicit"
-      unit_id: "normative_33745"
+      unit_id: "normative_55625"
       source_span:
         start:
-          offset: 34508
-          line: 612
+          offset: 56388
+          line: 985
           column: 1
         end:
-          offset: 34808
-          line: 612
-          column: 301
+          offset: 56711
+          line: 985
+          column: 324
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rotation_inputs"
       identity_kind: "explicit"
-      unit_id: "normative_33745"
+      unit_id: "normative_55625"
       source_span:
         start:
-          offset: 34809
-          line: 613
+          offset: 56712
+          line: 986
           column: 1
         end:
-          offset: 35127
-          line: 613
-          column: 319
+          offset: 57369
+          line: 986
+          column: 658
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_transport_physical"
       identity_kind: "explicit"
-      unit_id: "normative_33745"
+      unit_id: "normative_55625"
       source_span:
         start:
-          offset: 35128
-          line: 614
+          offset: 57370
+          line: 987
           column: 1
         end:
-          offset: 35378
-          line: 614
-          column: 251
+          offset: 57998
+          line: 987
+          column: 629
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_storage_volume_time"
       identity_kind: "explicit"
-      unit_id: "normative_33745"
+      unit_id: "normative_55625"
       source_span:
         start:
-          offset: 35379
-          line: 615
+          offset: 57999
+          line: 988
           column: 1
         end:
-          offset: 35570
-          line: 615
+          offset: 58190
+          line: 988
           column: 192
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_reuse_cycles"
       identity_kind: "explicit"
-      unit_id: "normative_33745"
+      unit_id: "normative_55625"
       source_span:
         start:
-          offset: 35571
-          line: 616
+          offset: 58191
+          line: 989
           column: 1
         end:
-          offset: 35801
-          line: 616
+          offset: 58421
+          line: 989
           column: 231
     - pointer: "/allocation_rules/7"
       rule_id: "allocation_article_components"
       identity_kind: "explicit"
-      unit_id: "normative_33745"
+      unit_id: "normative_55625"
       source_span:
         start:
-          offset: 35802
-          line: 617
+          offset: 58422
+          line: 990
           column: 1
         end:
-          offset: 36088
-          line: 617
+          offset: 58708
+          line: 990
           column: 287
+    - pointer: "/allocation_rules/8"
+      rule_id: "allocation_complete_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_55625"
+      source_span:
+        start:
+          offset: 58782
+          line: 995
+          column: 1
+        end:
+          offset: 59434
+          line: 995
+          column: 653
+    - pointer: "/allocation_rules/9"
+      rule_id: "allocation_chp_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_55625"
+      source_span:
+        start:
+          offset: 59435
+          line: 996
+          column: 1
+        end:
+          offset: 60002
+          line: 996
+          column: 568
     - pointer: "/validation_rules/0"
+      rule_id: "validate_inventory_card_controls"
+      identity_kind: "explicit"
+      unit_id: "normative_92037"
+      source_span:
+        start:
+          offset: 92132
+          line: 1090
+          column: 1
+        end:
+          offset: 93643
+          line: 1090
+          column: 1512
+    - pointer: "/validation_rules/1"
       rule_id: "validate_product_identity"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 49252
-          line: 669
+          offset: 93644
+          line: 1091
           column: 1
         end:
-          offset: 49486
-          line: 669
+          offset: 93878
+          line: 1091
           column: 235
-    - pointer: "/validation_rules/1"
+    - pointer: "/validation_rules/2"
       rule_id: "validate_reference_flow"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 49487
-          line: 670
+          offset: 93879
+          line: 1092
           column: 1
         end:
-          offset: 49783
-          line: 670
-          column: 297
-    - pointer: "/validation_rules/2"
+          offset: 94238
+          line: 1092
+          column: 360
+    - pointer: "/validation_rules/3"
       rule_id: "validate_reference_uuid"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 49784
-          line: 671
+          offset: 94239
+          line: 1093
           column: 1
         end:
-          offset: 50057
-          line: 671
-          column: 274
-    - pointer: "/validation_rules/3"
+          offset: 94739
+          line: 1093
+          column: 501
+    - pointer: "/validation_rules/4"
       rule_id: "validate_process_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 50058
-          line: 672
+          offset: 94740
+          line: 1094
           column: 1
         end:
-          offset: 50320
-          line: 672
-          column: 263
-    - pointer: "/validation_rules/4"
+          offset: 95335
+          line: 1094
+          column: 596
+    - pointer: "/validation_rules/5"
       rule_id: "validate_required_inputs"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 50321
-          line: 673
+          offset: 95336
+          line: 1095
           column: 1
         end:
-          offset: 50633
-          line: 673
+          offset: 95648
+          line: 1095
           column: 313
-    - pointer: "/validation_rules/5"
+    - pointer: "/validation_rules/6"
       rule_id: "validate_count_balance"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 50634
-          line: 674
+          offset: 95649
+          line: 1096
           column: 1
         end:
-          offset: 50802
-          line: 674
-          column: 169
-    - pointer: "/validation_rules/6"
+          offset: 95953
+          line: 1096
+          column: 305
+    - pointer: "/validation_rules/7"
       rule_id: "validate_water_balance"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 50803
-          line: 675
+          offset: 95954
+          line: 1097
           column: 1
         end:
-          offset: 51046
-          line: 675
-          column: 244
-    - pointer: "/validation_rules/7"
+          offset: 96270
+          line: 1097
+          column: 317
+    - pointer: "/validation_rules/8"
       rule_id: "validate_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 51047
-          line: 676
+          offset: 96271
+          line: 1098
           column: 1
         end:
-          offset: 51304
-          line: 676
+          offset: 96528
+          line: 1098
           column: 258
-    - pointer: "/validation_rules/8"
+    - pointer: "/validation_rules/9"
       rule_id: "validate_temporal_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 51305
-          line: 677
+          offset: 96529
+          line: 1099
           column: 1
         end:
-          offset: 51512
-          line: 677
+          offset: 96736
+          line: 1099
           column: 208
-    - pointer: "/validation_rules/9"
+    - pointer: "/validation_rules/10"
       rule_id: "validate_loss_scaling"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 51513
-          line: 678
+          offset: 96737
+          line: 1100
           column: 1
         end:
-          offset: 51738
-          line: 678
-          column: 226
-    - pointer: "/validation_rules/10"
+          offset: 97059
+          line: 1100
+          column: 323
+    - pointer: "/validation_rules/11"
       rule_id: "validate_source_traceability"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 51739
-          line: 679
+          offset: 97060
+          line: 1101
           column: 1
         end:
-          offset: 52004
-          line: 679
+          offset: 97325
+          line: 1101
           column: 266
-    - pointer: "/validation_rules/11"
+    - pointer: "/validation_rules/12"
       rule_id: "validate_data_quality"
       identity_kind: "explicit"
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 52005
-          line: 680
+          offset: 97326
+          line: 1102
           column: 1
         end:
-          offset: 52206
-          line: 680
+          offset: 97527
+          line: 1102
           column: 202
+    - pointer: "/validation_rules/13"
+      rule_id: "validate_end_of_life_materials"
+      identity_kind: "explicit"
+      unit_id: "normative_92037"
+      source_span:
+        start:
+          offset: 97601
+          line: 1107
+          column: 1
+        end:
+          offset: 98081
+          line: 1107
+          column: 481
+    - pointer: "/validation_rules/14"
+      rule_id: "validate_pesticide_fate"
+      identity_kind: "explicit"
+      unit_id: "normative_92037"
+      source_span:
+        start:
+          offset: 98154
+          line: 1111
+          column: 1
+        end:
+          offset: 98736
+          line: 1111
+          column: 583
+    - pointer: "/validation_rules/15"
+      rule_id: "validate_luc_attribution"
+      identity_kind: "explicit"
+      unit_id: "normative_92037"
+      source_span:
+        start:
+          offset: 98737
+          line: 1112
+          column: 1
+        end:
+          offset: 99252
+          line: 1112
+          column: 516
+    - pointer: "/validation_rules/16"
+      rule_id: "validate_transport_service"
+      identity_kind: "explicit"
+      unit_id: "normative_92037"
+      source_span:
+        start:
+          offset: 99253
+          line: 1113
+          column: 1
+        end:
+          offset: 99829
+          line: 1113
+          column: 577
+    - pointer: "/validation_rules/17"
+      rule_id: "validate_phosphorus_fate"
+      identity_kind: "explicit"
+      unit_id: "normative_92037"
+      source_span:
+        start:
+          offset: 99902
+          line: 1117
+          column: 1
+        end:
+          offset: 100441
+          line: 1117
+          column: 540
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6668"
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 6668
-          line: 63
+          offset: 8413
+          line: 72
           column: 1
         end:
-          offset: 6689
-          line: 63
+          offset: 8434
+          line: 72
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6668"
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 6946
-          line: 69
+          offset: 8784
+          line: 78
           column: 1
         end:
-          offset: 8110
-          line: 76
+          offset: 9948
+          line: 85
           column: 228
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_33745"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8413"
       source_span:
         start:
-          offset: 33745
-          line: 606
+          offset: 11890
+          line: 96
           column: 1
         end:
-          offset: 33785
-          line: 606
+          offset: 12509
+          line: 96
+          column: 620
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8413"
+      source_span:
+        start:
+          offset: 12582
+          line: 100
+          column: 1
+        end:
+          offset: 13095
+          line: 100
+          column: 514
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8413"
+      source_span:
+        start:
+          offset: 13096
+          line: 101
+          column: 1
+        end:
+          offset: 13920
+          line: 101
+          column: 825
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_55625"
+      source_span:
+        start:
+          offset: 55625
+          line: 979
+          column: 1
+        end:
+          offset: 55665
+          line: 979
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49157"
+      unit_id: "normative_92037"
       source_span:
         start:
-          offset: 49157
-          line: 665
+          offset: 92037
+          line: 1086
           column: 1
         end:
-          offset: 49179
-          line: 665
+          offset: 92059
+          line: 1086
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1700,5 +2569,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:686b6af527fbfc82e87eac0b386d463b98eb8007503a1dbf9b07ae6cb349aadf"
-  generated_content_sha256: "sha256:ec7cac3008600c58a8ff3f25d7e744450845201935fe650b4be5c322fd9a33f1"
+    sha256: "sha256:9f6ce98590149323999257f607c316b7c22bbd4419d7956dd02182aa10db6aa8"
+  generated_content_sha256: "sha256:c5081e45a193f4999963c08c81fe691326d68416141ab91eeea7b58dc1b05129"

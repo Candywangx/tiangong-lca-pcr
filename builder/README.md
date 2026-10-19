@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
+lastReviewedAt: "2026-10-19"
+lastReviewedCommit: "090cd1b192151c924de6651a8b0e39d5e3975121"
 ---
 
 # PCR Library Builder
@@ -115,6 +115,7 @@ npm run validate
   legacy-target, or template mismatch error as a compatibility risk that requires manual review; do not force or
   repair around it.
 - `pcr:sync-structured` regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, process-inventory rules, and deterministic projection metadata. `--workspace` defaults to `current`; published and deprecated current files are immutable, so an open revision must be synced with `--workspace revision`.
+- Completed-output measurement checking recognizes the native count-unit spelling `Item(s)`, for example `1 Item(s)`. The declared reference, completed-output quantity and exchange unit must still agree exactly; alternatives and mismatches require review or fail the check. This syntax support does not verify a flow UUID or establish publication readiness.
 - `pcr:check` checks one selected current or revision PCR without syncing files or reading shared catalog/mapping indexes. It reuses Builder inspection for lifecycle, bilingual alignment, projection freshness and finite measurement consistency. Exit 0 requires complete measurement coverage with `status: pass`; a conflict fails with `PCR_CHECK_FAILED`, and an unsupported relationship with `PCR_MEASUREMENT_REVIEW_REQUIRED`. Definite Schema, lifecycle or stale-projection errors take precedence when both occur. Use `--format human|json` (default human); JSON failures leave stdout empty and emit `{ok:false,error:{code,message,details}}` on stderr. Details identify rows/rules and checks skipped. General `lint` reports measurement findings as warnings so historical PCRs are not retroactively blocked or rewritten. See [Measurement rules](docs/methods/measurement-unit-rules.md) for supported bilingual forms.
 - `goal:prepare-report` runs in the assigned clean author worktree after the four-file commit. For tasks pinned to authoring contract 2 it reads an absolute draft conforming to `builder/schemas/goal-author-draft.schema.json`, audits finalized receipts and direct UUID identity, runs actual PCR inspection and two deterministic syncs in a review worktree, then preserves draft/report/manifest in ignored Goal state. It fills only rejection fields and receipt membership; explicit UUID/decision/membership conflicts fail. Default JSON output is the submission envelope containing a hash-bound report reference. `--format human` is available for inspection. Identical inputs reuse the same reference; changed content, task/attempt/turn or evidence invalidates it. Independent intake still verifies sources and reruns quality/evidence/commit checks. See [Goal Harness](docs/tools/goal-harness.md#prepared-reports-for-new-authors).
 - `pcr:lifecycle` validates manifest lifecycle transitions and runs a material preflight before a PCR becomes active. Use `--workspace revision` for revision review state. A published current record permits only the one-way transition to `deprecated/deprecated_methodology`; a deprecated record cannot be reopened.
