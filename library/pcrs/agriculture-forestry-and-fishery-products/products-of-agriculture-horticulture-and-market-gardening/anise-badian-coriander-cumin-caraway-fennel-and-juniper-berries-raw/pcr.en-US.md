@@ -751,6 +751,7 @@ Raw activity or stage basis: per 1,000 kg dried output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_drying`
+- Sources: `mass-balance-identity`
 - Range: Evaporated-water QA screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -936,7 +937,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_moisture_conversion` | Mass conversion | dry matter = wet mass × (1 − wet-basis moisture); target wet mass = dry matter ÷ (1 − target wet-basis moisture) | mass; moisture; basis | Comparable mass |  |
-| `calc_drying_water` | `evaporated_water` | wet input × input moisture − dried output × output moisture; investigate negative results | input/output mass and wet-basis moisture | kg water |  |
+| `calc_drying_water` | `evaporated_water` | Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference. | `cp_drying`; incoming and all outgoing wet masses and wet-basis moisture fractions; actual added/rain water; separate liquid exports and density; opening/closing water stock; evaporation evidence and uncertainty; matched accepted final output | raw kg water to air and once-normalized contribution per declared reference flow | `mass-balance-identity` |
 | `calc_land` | Land occupation | hectares × occupied days ÷ 365.25; normalize by output | area; dates; output | ha·year/1,000 kg |  |
 | `calc_soil_n2o` | Managed-soil N2O | Apply IPCC managed-soil equations to recorded synthetic/organic N and residue N; convert N2O-N to N2O by 44/28 | N inputs, residue N, factors | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_perennial` | Perennial periods | attributable establishment + termination burden divided by recorded productive life; reflect documented area changes | period inventories; productive years/area | Annualized burden |  |
@@ -967,6 +968,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `validate_periods` | Perennial route | Require period and replacement/termination decisions and reject duplicated establishment or maintenance burdens. | `ncsu-common-juniper` |
 | `validate_rework` | Post-harvest | Route every off-spec state exactly once; accepted output excludes unresolved rejects; rework retains prior burdens. |  |
 | `validate_star_anise` | Star anise claiming cited specification | For Illicium verum lots explicitly claiming the cited Indian star-anise specification, verify its stated dry-basis tests and limits: moisture 10%, extraneous matter 1%, stalks 3%, and broken/abnormal fruits 25%. Record the applicable market/specification/version and matched sampling/test basis. These regional specification values do not define every star-anise grade or another species; other legitimate lots retain their actual declared specification, quality and measured mass, without automatic rejection or normalization changes. | `fssai-star-anise-2023` |
+| `validate_drying_water_balance` | drying water release | Check `calc_drying_water` against `cp_drying` on the same batch, water boundary and moisture basis. Include water carried by every reject/residue and other material exit, actual additions, separate liquid exports and opening/closing stock; internal recirculation cancels. Require supported evaporation, investigate an unexplained or negative balance without clipping it to zero, and attribute and normalize the evidenced release once to matched accepted final output. | `mass-balance-identity` |
 
 ## 10. Published Dataset Profile
 
@@ -990,3 +992,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `codex-cxs-358-2024` | standard | Codex CXS 358-2024, dried/dehydrated fruits and berries including juniper berry and star anise. https://www.fao.org/fao-who-codexalimentarius/codex-texts/standards/en | Dried fruit/berry market route |
 | `ncsu-common-juniper` | extension_guidance | North Carolina State Extension, *Common Juniper*. https://plants.ces.ncsu.edu/plants/juniperus-communis-var-communis/common-name/common-juniper/ | Woody perennial route and second/third-year cone maturation |
 | `ipcc-2019-managed-soils` | method_factor | IPCC, *2019 Refinement*, Volume 4, Chapter 11. https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | Managed-soil N2O method |
+| `mass-balance-identity` | method_factor | Conservation of water mass for a matched drying batch/control volume, including water in every material exit, actual additions, separate liquid exports and opening/closing water stock; a PCR calculation identity, not an empirical evaporation factor. | Closed drying-water balance and once-only reference normalization |

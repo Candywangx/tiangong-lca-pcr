@@ -743,6 +743,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：根据采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_drying`
+- 来源：`mass-balance-identity`
 - 数量范围：蒸发水 QA 筛选
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -926,7 +927,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_moisture_conversion` | 质量换算 | 干物质=湿质量×(1−湿基水分)；目标湿质量=干物质÷(1−目标湿基水分) | 质量；水分；基准 | 可比质量 |  |
-| `calc_drying_water` | `evaporated_water` | 湿输入×输入水分−干燥产出×产出水分；负值须调查 | 输入/产出质量及湿基水分 | kg 水 |  |
+| `calc_drying_water` | `evaporated_water` | 在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。 | `cp_drying`；进入及全部出口湿质量和湿基含水率；实际加水／降雨；单独液体转出及密度；期初期末水库存；蒸发证据和不确定性；匹配合格最终产出 | 原始 kg 向空气释放水及按声明参考流仅归一化一次的贡献 | `mass-balance-identity` |
 | `calc_land` | 土地占用 | 公顷×占用天数÷365.25，再按产出归一化 | 面积；日期；产出 | ha·year/1,000 kg |  |
 | `calc_soil_n2o` | 受管理土壤 N2O | 对合成/有机 N 和残余物 N 应用 IPCC 公式；N2O-N 乘 44/28 转为 N2O | N 输入、残余物 N、因子 | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_perennial` | 多年生期间 | 可归属建植+终止负荷除以实测生产寿命；反映有据的面积变化 | 期间清单；生产年限/面积 | 年化负荷 |  |
@@ -957,6 +958,7 @@ sync_with: pcr.en-US.md
 | `validate_periods` | 多年生路线 | 要求期间及替换/终止决策，拒绝跨年重复建植或维护负荷。 | `ncsu-common-juniper` |
 | `validate_rework` | 采后 | 每个不合格状态仅进入一个路径；合格产出排除未解析拒收；返工保留既有负荷。 |  |
 | `validate_star_anise` | 声称符合引用规范的八角 | 仅对明确声明符合所引印度八角规格的Illicium verum批次，按该规格规定的干基试验和限值核对：水分10%、杂物1%、果梗3%、破损/异常果25%。记录适用市场/规格/版本及匹配抽样试验基准。这些地区规格值不能定义所有八角等级或其他物种；其他合法批次保留其实际声明规格、品质和实测质量，不自动拒绝或改变归一化。 | `fssai-star-anise-2023` |
+| `validate_drying_water_balance` | 干燥向空气释放水 | 按同一批次、水控制边界及含水率基准，依据 `cp_drying` 核对 `calc_drying_water`。纳入全部拒收物／残体及其他材料出口带水、实际加水、单独液体转出与期初期末库存；内部循环抵销。蒸发须有证据，未解释或负平衡须调查，不得截为零；有据释放量按匹配合格最终产出仅归属和归一化一次。 | `mass-balance-identity` |
 
 ## 10. 发布数据集画像
 
@@ -980,3 +982,4 @@ sync_with: pcr.en-US.md
 | `codex-cxs-358-2024` | standard | Codex CXS 358-2024，含杜松子和八角的干燥/脱水果实和浆果标准。https://www.fao.org/fao-who-codexalimentarius/codex-texts/standards/en | 干燥果实/浆果市场路线 |
 | `ncsu-common-juniper` | extension_guidance | North Carolina State Extension，*Common Juniper*。https://plants.ces.ncsu.edu/plants/juniperus-communis-var-communis/common-name/common-juniper/ | 木本多年生路线和第二/第三年球果成熟 |
 | `ipcc-2019-managed-soils` | method_factor | IPCC，《2019 Refinement》，第 4 卷第 11 章。https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | 受管理土壤 N2O 方法 |
+| `mass-balance-identity` | method_factor | 对范围匹配的干燥批次／控制体应用水质量守恒，包含全部材料出口带水、实际加水、单独液体转出及期初期末水库存；这是 PCR 计算恒等式，不是经验蒸发因子。 | 闭合干燥水平衡及仅一次的参考量归一化 |

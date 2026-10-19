@@ -828,7 +828,8 @@ process_inventory:
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_drying
-              source_ids: []
+              source_ids:
+                - mass-balance-identity
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -1079,11 +1080,18 @@ dataset_production:
       source_ids: []
     - id: calc_drying_water
       applies_to: "evaporated_water"
-      rule: "wet input × input moisture − dried output × output moisture; investigate negative results"
+      rule: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
       inputs:
-        - "input/output mass and wet-basis moisture"
-      output: "kg water"
-      source_ids: []
+        - cp_drying
+        - "incoming and all outgoing wet masses and wet-basis moisture fractions"
+        - "actual added/rain water"
+        - "separate liquid exports and density"
+        - "opening/closing water stock"
+        - "evaporation evidence and uncertainty"
+        - "matched accepted final output"
+      output: "raw kg water to air and once-normalized contribution per declared reference flow"
+      source_ids:
+        - mass-balance-identity
     - id: calc_land
       applies_to: "Land occupation"
       rule: "hectares × occupied days ÷ 365.25; normalize by output"
@@ -1196,6 +1204,11 @@ validation_rules:
     rule: "For Illicium verum lots explicitly claiming the cited Indian star-anise specification, verify its stated dry-basis tests and limits: moisture 10%, extraneous matter 1%, stalks 3%, and broken/abnormal fruits 25%. Record the applicable market/specification/version and matched sampling/test basis. These regional specification values do not define every star-anise grade or another species; other legitimate lots retain their actual declared specification, quality and measured mass, without automatic rejection or normalization changes."
     source_ids:
       - fssai-star-anise-2023
+  - rule_id: validate_drying_water_balance
+    applies_to: "drying water release"
+    rule: "Check calc_drying_water against cp_drying on the same batch, water boundary and moisture basis. Include water carried by every reject/residue and other material exit, actual additions, separate liquid exports and opening/closing stock; internal recirculation cancels. Require supported evaporation, investigate an unexplained or negative balance without clipping it to zero, and attribute and normalize the evidenced release once to matched accepted final output."
+    source_ids:
+      - mass-balance-identity
 published_dataset_profile:
   dataset_role: "Species-, organ-, route-, geography-, and period-specific foreground farm-gate production dataset"
   downstream_use: "secondary_dataset; background_dataset after representativeness and uncertainty review"
@@ -1229,9 +1242,13 @@ data_sources:
     type: "method_factor"
     reference: "IPCC, *2019 Refinement*, Volume 4, Chapter 11. https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html"
     used_for: "Managed-soil N2O method"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of water mass for a matched drying batch/control volume, including water in every material exit, actual additions, separate liquid exports and opening/closing water stock; a PCR calculation identity, not an empirical evaporation factor."
+    used_for: "Closed drying-water balance and once-only reference normalization"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f4b25466de5962f47c7159aa851e741b0ab53572c3a5c0b6fbdb64a3079ecfd3"
+  source_sha256: "sha256:b451ec2cd0c417410a3d9f60a782ea722025478f780f2b65a8cc968127ed11e0"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4503"
@@ -1282,16 +1299,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46073"
+    - unit_id: "normative_46108"
       family: "allocation"
       span:
         start:
-          offset: 46073
-          line: 907
+          offset: 46108
+          line: 908
           column: 1
         end:
-          offset: 47464
-          line: 917
+          offset: 47499
+          line: 918
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_first` | All multi-output nodes | Subdivide by species lot, field/stand, crop cycle or harvest year, operation, and batch; directly assign causal burdens. |  |\n| `allocation_co_outputs` | Marketed leaves, stems, straw, planting seed, wood, or downgraded spice | After subdivision, use physical dry mass when outputs have comparable biological function; otherwise use documented economic allocation with contemporaneous prices and a physical-mass sensitivity. Residues without economic function receive no upstream burden, but handling remains included. |  |\n| `allocation_periods` | Perennial stands | Annualize operator-incurred establishment/termination over recorded productive life. Assign annual maintenance and harvest burdens to their year/cohort. Do not invent establishment for naturally established collection stands. | `ncsu-common-juniper` |\n| `allocation_batches` | Conditioning, drying, grading | Assign metered batch burdens directly; allocate shared cleaning/changeover once by processed mass or run time. Rework retains previous and incremental burdens. |  |\n| `allocation_rejects` | Rework and rejects | Link each rejected state to exactly one rework, downgrade, recovery, return, or disposal path; never count it as accepted output. |  |\n\n"
       headings:
@@ -1310,12 +1327,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46073
-              line: 907
+              offset: 46108
+              line: 908
               column: 1
             end:
-              offset: 46113
-              line: 907
+              offset: 46148
+              line: 908
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1330,18 +1347,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_55791"
+    - unit_id: "normative_56874"
       family: "validation"
       span:
         start:
-          offset: 55791
-          line: 956
+          offset: 56874
+          line: 957
           column: 1
         end:
-          offset: 58862
-          line: 971
+          offset: 60500
+          line: 973
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | Reference flow | Fail if species, crop, organ, route, geography, harvest year, grade, moisture/basis, or drying status is missing, or unrelated species are averaged without separate datasets and mass shares. |  |\n| `validate_route` | Graph | Require one production delta per lot and matching period/input records; annual and perennial routes coexist only as traceable lots. | `icar-rabi-coriander-2021`; `ncsu-common-juniper` |\n| `validate_nodes` | Graph | Require production, harvest, conditioning, and grading; require drying when moisture reduction occurs. Every node declares states and hand-offs. | `codex-spice-hygiene` |\n| `validate_mass` | Harvest through grading | Batch input equals accepted + downgraded + rejects + measured moisture loss ± inventory change within 5%; otherwise investigate/disclose. |  |\n| `validate_ranges` | Inventory | For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening. |  |\n| `validate_nutrients` | Production | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_outputs` | Multi-output nodes | Enumerate intended outputs/hand-offs, residue/waste, allocation precedence, and shares summing to 1; prevent duplicate hand-offs. |  |\n| `validate_periods` | Perennial route | Require period and replacement/termination decisions and reject duplicated establishment or maintenance burdens. | `ncsu-common-juniper` |\n| `validate_rework` | Post-harvest | Route every off-spec state exactly once; accepted output excludes unresolved rejects; rework retains prior burdens. |  |\n| `validate_star_anise` | Star anise claiming cited specification | For Illicium verum lots explicitly claiming the cited Indian star-anise specification, verify its stated dry-basis tests and limits: moisture 10%, extraneous matter 1%, stalks 3%, and broken/abnormal fruits 25%. Record the applicable market/specification/version and matched sampling/test basis. These regional specification values do not define every star-anise grade or another species; other legitimate lots retain their actual declared specification, quality and measured mass, without automatic rejection or normalization changes. | `fssai-star-anise-2023` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | Reference flow | Fail if species, crop, organ, route, geography, harvest year, grade, moisture/basis, or drying status is missing, or unrelated species are averaged without separate datasets and mass shares. |  |\n| `validate_route` | Graph | Require one production delta per lot and matching period/input records; annual and perennial routes coexist only as traceable lots. | `icar-rabi-coriander-2021`; `ncsu-common-juniper` |\n| `validate_nodes` | Graph | Require production, harvest, conditioning, and grading; require drying when moisture reduction occurs. Every node declares states and hand-offs. | `codex-spice-hygiene` |\n| `validate_mass` | Harvest through grading | Batch input equals accepted + downgraded + rejects + measured moisture loss ± inventory change within 5%; otherwise investigate/disclose. |  |\n| `validate_ranges` | Inventory | For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening. |  |\n| `validate_nutrients` | Production | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_outputs` | Multi-output nodes | Enumerate intended outputs/hand-offs, residue/waste, allocation precedence, and shares summing to 1; prevent duplicate hand-offs. |  |\n| `validate_periods` | Perennial route | Require period and replacement/termination decisions and reject duplicated establishment or maintenance burdens. | `ncsu-common-juniper` |\n| `validate_rework` | Post-harvest | Route every off-spec state exactly once; accepted output excludes unresolved rejects; rework retains prior burdens. |  |\n| `validate_star_anise` | Star anise claiming cited specification | For Illicium verum lots explicitly claiming the cited Indian star-anise specification, verify its stated dry-basis tests and limits: moisture 10%, extraneous matter 1%, stalks 3%, and broken/abnormal fruits 25%. Record the applicable market/specification/version and matched sampling/test basis. These regional specification values do not define every star-anise grade or another species; other legitimate lots retain their actual declared specification, quality and measured mass, without automatic rejection or normalization changes. | `fssai-star-anise-2023` |\n| `validate_drying_water_balance` | drying water release | Check `calc_drying_water` against `cp_drying` on the same batch, water boundary and moisture basis. Include water carried by every reject/residue and other material exit, actual additions, separate liquid exports and opening/closing stock; internal recirculation cancels. Require supported evaporation, investigate an unexplained or negative balance without clipping it to zero, and attribute and normalize the evidenced release once to matched accepted final output. | `mass-balance-identity` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1358,12 +1375,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 55791
-              line: 956
+              offset: 56874
+              line: 957
               column: 1
             end:
-              offset: 55813
-              line: 956
+              offset: 56896
+              line: 957
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1447,198 +1464,211 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_first"
       identity_kind: "explicit"
-      unit_id: "normative_46073"
+      unit_id: "normative_46108"
       source_span:
         start:
-          offset: 46186
-          line: 911
+          offset: 46221
+          line: 912
           column: 1
         end:
-          offset: 46365
-          line: 911
+          offset: 46400
+          line: 912
           column: 180
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_co_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_46073"
+      unit_id: "normative_46108"
       source_span:
         start:
-          offset: 46366
-          line: 912
+          offset: 46401
+          line: 913
           column: 1
         end:
-          offset: 46763
-          line: 912
+          offset: 46798
+          line: 913
           column: 398
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_periods"
       identity_kind: "explicit"
-      unit_id: "normative_46073"
+      unit_id: "normative_46108"
       source_span:
         start:
-          offset: 46764
-          line: 913
+          offset: 46799
+          line: 914
           column: 1
         end:
-          offset: 47059
-          line: 913
+          offset: 47094
+          line: 914
           column: 296
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_batches"
       identity_kind: "explicit"
-      unit_id: "normative_46073"
+      unit_id: "normative_46108"
       source_span:
         start:
-          offset: 47060
-          line: 914
+          offset: 47095
+          line: 915
           column: 1
         end:
-          offset: 47281
-          line: 914
+          offset: 47316
+          line: 915
           column: 222
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_46073"
+      unit_id: "normative_46108"
       source_span:
         start:
-          offset: 47282
-          line: 915
+          offset: 47317
+          line: 916
           column: 1
         end:
-          offset: 47462
-          line: 915
+          offset: 47497
+          line: 916
           column: 181
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 55886
-          line: 960
+          offset: 56969
+          line: 961
           column: 1
         end:
-          offset: 56122
-          line: 960
+          offset: 57205
+          line: 961
           column: 237
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 56123
-          line: 961
+          offset: 57206
+          line: 962
           column: 1
         end:
-          offset: 56337
-          line: 961
+          offset: 57420
+          line: 962
           column: 215
     - pointer: "/validation_rules/2"
       rule_id: "validate_nodes"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 56338
-          line: 962
+          offset: 57421
+          line: 963
           column: 1
         end:
-          offset: 56537
-          line: 962
+          offset: 57620
+          line: 963
           column: 200
     - pointer: "/validation_rules/3"
       rule_id: "validate_mass"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 56538
-          line: 963
+          offset: 57621
+          line: 964
           column: 1
         end:
-          offset: 56726
-          line: 963
+          offset: 57809
+          line: 964
           column: 189
     - pointer: "/validation_rules/4"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 56727
-          line: 964
+          offset: 57810
+          line: 965
           column: 1
         end:
-          offset: 57499
-          line: 964
+          offset: 58582
+          line: 965
           column: 773
     - pointer: "/validation_rules/5"
       rule_id: "validate_nutrients"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 57500
-          line: 965
+          offset: 58583
+          line: 966
           column: 1
         end:
-          offset: 57711
-          line: 965
+          offset: 58794
+          line: 966
           column: 212
     - pointer: "/validation_rules/6"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 57712
-          line: 966
+          offset: 58795
+          line: 967
           column: 1
         end:
-          offset: 57890
-          line: 966
+          offset: 58973
+          line: 967
           column: 179
     - pointer: "/validation_rules/7"
       rule_id: "validate_periods"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 57891
-          line: 967
+          offset: 58974
+          line: 968
           column: 1
         end:
-          offset: 58070
-          line: 967
+          offset: 59153
+          line: 968
           column: 180
     - pointer: "/validation_rules/8"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 58071
-          line: 968
+          offset: 59154
+          line: 969
           column: 1
         end:
-          offset: 58228
-          line: 968
+          offset: 59311
+          line: 969
           column: 158
     - pointer: "/validation_rules/9"
       rule_id: "validate_star_anise"
       identity_kind: "explicit"
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 58229
-          line: 969
+          offset: 59312
+          line: 970
           column: 1
         end:
-          offset: 58860
-          line: 969
+          offset: 59943
+          line: 970
           column: 632
+    - pointer: "/validation_rules/10"
+      rule_id: "validate_drying_water_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_56874"
+      source_span:
+        start:
+          offset: 59944
+          line: 971
+          column: 1
+        end:
+          offset: 60498
+          line: 971
+          column: 555
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1666,27 +1696,27 @@ normative_context:
           column: 201
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46073"
+      unit_id: "normative_46108"
       source_span:
         start:
-          offset: 46073
-          line: 907
+          offset: 46108
+          line: 908
           column: 1
         end:
-          offset: 46113
-          line: 907
+          offset: 46148
+          line: 908
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_55791"
+      unit_id: "normative_56874"
       source_span:
         start:
-          offset: 55791
-          line: 956
+          offset: 56874
+          line: 957
           column: 1
         end:
-          offset: 55813
-          line: 956
+          offset: 56896
+          line: 957
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1695,5 +1725,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f4b25466de5962f47c7159aa851e741b0ab53572c3a5c0b6fbdb64a3079ecfd3"
-  generated_content_sha256: "sha256:a3f30f97bb345552c6e474a3107217e4ef7999ebb19da6423eb5ed83b604bee8"
+    sha256: "sha256:b451ec2cd0c417410a3d9f60a782ea722025478f780f2b65a8cc968127ed11e0"
+  generated_content_sha256: "sha256:e796dab065d9e514114a75873266899611ca6355ab7d7254d6510cb75ff5e6d0"

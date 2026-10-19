@@ -843,6 +843,8 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 
 本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
 
+计算方法对应第 8 节规则：`calc_drying_water`。
+
 ### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
 该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
 #### 输入
@@ -941,7 +943,7 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 | `calc_field_normalization` | Field inventory | field amount ÷ same-field net accepted grain | field amount; accepted grain | amount/kg reference | `mass-balance-identity` |
 | `calc_direct_n2o` | Soil N2O | N2O-N = Σ(N pool × EF1); N2O = N2O-N × 44/28 | N pools; EF1 | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_batch_balance` | Harvest/cleaning/drying | input = accepted + co-products/downgrades + rejects + losses + moisture change | all hand-off masses and moisture | closure and residual | `mass-balance-identity` |
-| `calc_drying_water` | Stabilization | input wet mass × input moisture − output wet mass × output moisture | wet masses; moisture | kg water removed | `mass-balance-identity` |
+| `calc_drying_water` | `drying_water_vapour` | 在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。 | `cp_drying_batch`；进入及全部出口湿质量和湿基含水率；实际加水／降雨；单独液体转出及密度；期初期末水库存；蒸发证据和不确定性；匹配合格最终产出 | 原始 kg 向空气释放水及按声明参考流仅归一化一次的贡献 | `mass-balance-identity` |
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 环境覆盖计算规则
@@ -974,6 +976,7 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 | `validate_ranges` | Inventory | 逐条检查已提供范围的上下限、单位、基准、证据及双语一致性。任何强制界限均须有相容定量证据；无支持界限时保留实测数量并明确报告范围筛查不可用，不得编造范围或宣称该项检查完整。调查偏离，不以范围覆盖实测值。 | |
 | `validate_mass_balance` | Harvest/cleaning/drying | Require moisture-corrected reconciliation and review residual above 5%. | `mass-balance-identity` |
 | `validate_drying_condition` | `drying_aeration` | Require input/output moisture and temperature, route, duration and energy; destination limits override the general storage screen. | `saskatchewan-dry-pea-guide` |
+| `validate_drying_water_balance` | 干燥向空气释放水 | 按同一批次、水控制边界及含水率基准，依据 `cp_drying_batch` 核对 `calc_drying_water`。纳入全部拒收物／残体及其他材料出口带水、实际加水、单独液体转出与期初期末库存；内部循环抵销。蒸发须有证据，未解释或负平衡须调查，不得截为零；有据释放量按匹配合格最终产出仅归属和归一化一次。 | `mass-balance-identity` |
 
 ## 10. 发布数据集画像
 
