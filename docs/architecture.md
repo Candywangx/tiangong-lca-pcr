@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: "2026-10-19"
-lastReviewedCommit: "abd18053c9ea2860e2c1107ac65ae17730b4f4eb"
-lastReviewedNote: "Reconciled Candy main compound-unit, collection and evidence repairs with the CPC 01/02/03 phase-one corrections, fresh cut-flower methodology, accepted mappings and lossless documentation delivery. Preserved candidate and unresolved-identity qualifications; regenerated projections and indexes. Full hosted qualification remains required."
+lastReviewedCommit: "0b573ce10cbdb352a5a67855aad6fb14e9161663"
+lastReviewedNote: "Reviewed the documentation and full test-shard job timeout increase from 60 to 120 minutes. PCR content, dependency pins, workflow selection, qualification checks and evidence bindings are unchanged. Local macOS checks remain partial; fresh hosted Linux qualification is required."
 ---
 
 # PCR 资料库架构

@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
-lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
+lastReviewedAt: "2026-10-19"
+lastReviewedCommit: "0b573ce10cbdb352a5a67855aad6fb14e9161663"
+lastReviewedNote: "Reviewed the documentation and full test-shard job timeout increase from 60 to 120 minutes. PCR content, dependency pins, workflow selection, qualification checks and evidence bindings are unchanged. Local macOS checks remain partial; fresh hosted Linux qualification is required."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -235,6 +235,10 @@ Formal sealed artifact and live publication evidence remain separate.
 `scripts/engineering/ci-gate.ts` requires every job selected by that decision to
 succeed and rejects unexpected skips, missing jobs and failed jobs. Local
 `npm run validate`, `npm test` and `all`/`root` remain complete entrypoints.
+
+The full test-shard jobs and documentation build each have a 120-minute GitHub
+Actions job timeout. This limit applies independently to each job; dependency
+waiting time and the complete workflow duration are separate.
 
 Full qualification partitions the entire discovered test inventory into eight
 fixed shards: `harness`, `core`, `builder`, `consumer`, `docs`, `engineering`,
