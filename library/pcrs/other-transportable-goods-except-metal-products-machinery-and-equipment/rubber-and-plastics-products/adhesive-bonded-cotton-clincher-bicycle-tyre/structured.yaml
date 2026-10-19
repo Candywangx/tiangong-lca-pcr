@@ -1,0 +1,1090 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.adhesive-bonded-cotton-clincher-bicycle-tyre"
+  classification_refs: "CPC3.0 36112; narrower"
+  covered_products: "Complete adhesive-bonded latex-coated cotton/polyester corespun open clincher, aramid folding beads, separately formed tread cap and bead-area reinforcement, no puncture belt."
+  excluded_products: "Motorcycle, nylon whole-mold-cured, tubular, tubeless-ready, solid, inner tube, retread, standalone tread or mere relabeling."
+  representative_product: "Cotton-based open-clincher bicycle tyre with declared polyester core and aramid bead; no transferred nominal mass or pressure."
+  production_route: "Prepared components to latex coating, cutting/bead formation, adhesive assembly, drying/conditioning, first quality release and packing; actual purchased-component manufacture remains upstream."
+  market_state: "Complete new tyre at plant, dry/conditioned as actually released, excluding inner tube, rim and transport-packaging mass."
+functional_unit:
+  what: "Manufacture a complete declared open-clincher bicycle tyre, ready for subsequent installation with a separate inner tube."
+  how_much: "1 kg net tyre at first positive manufacturing quality release; Q is newly released accepted net mass of the matched route/product/state cohort, not shipment mass."
+  how_well: "Conformity to the actual declared drawing, bead interface, materials, dimensions, bond acceptance and finished-quality criteria; no universal numerical specification."
+  how_long_or_cycle: "One manufacture and first quality-release cycle; no service-life or replacement equivalence inferred."
+  reference_flow_link: "finished_tyre"
+system_boundary:
+  rules:
+    - rule_id: b_complete
+      applies_to: "all inventory rows"
+      rule: "Include actual coating, cloth cutting/orientation, bead forming/encapsulation, adhesive bonding, drying/conditioning, acceptance, material storage, packing, handling, failed runs, QA samples, ancillary services, waste and measured emissions. No omission of real burdens because a batch has zero output."
+      source_ids:
+        - vittoria-casing-2023
+        - challenge-handmade
+    - rule_id: b_supplied
+      applies_to: "all material rows"
+      rule: "Purchased compounded articles/formulations are single whole commercial inputs with supplier burdens. Onsite compounding is outside this bounded starting condition until every separately acquired ingredient and its actual energy/losses is represented. Add every actual extra chemical, fuel, refrigerant, packaging component, waste composition and elemental species as a separate atomic card before dataset use."
+      source_ids: []
+    - rule_id: b_gate
+      applies_to: "finished_tyre"
+      rule: "Q is new first accepted quality-release net mass, not sales. Do not add closing finished inventory of the same Q again as production output. Opening/closing WIP and its carried burdens remain reconciled. Warehouse receipts/issues and opening/closing finished stock form a separate ledger; when extending scope retain actual stock residence, packaging, handling/dispatch and carried burdens by cohort, cancel internal transfers and never assume release equals shipment. Returns/reacceptance create no new output."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Actual purchased uncoated cloth, wet formulations, aramid cord, reinforcement strip and formed tread cap with supplier manufacture upstream; no purchased complete tyre."
+  starting_condition_role: "foreground_boundary"
+  product_classification_scope: "CPC3.0 36112 narrower; adhesive-bonded cotton-based open clincher only"
+  recursive_input_rule: "A purchased complete tyre is not an allowed recursive input to this manufacturing route. Internal returns/rework remain identified stock with carried burdens and create no new Q."
+  upstream_dataset_requirement: "Actual supplier/route/formulation and transport for each separate purchased article and wet preparation, including tread-cap compounding/molding/any curing and all retained coating constituents."
+  disclosure: "One factory integrated manufacturing process with stage subledgers. Declare included storage, drying/conditioning, packing, handling and dispatch. Production release and finished warehouse/shipment are separate ledgers; cancel internal transfers when combined."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "New pneumatic tyres, of rubber, of a kind used on motorcycles or bicycles"
+    uuid: "433f8624-3103-4661-918b-2093658bda5f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturer/site and period"
+    - "product model and size"
+    - "cotton/polyester corespun composition and moisture"
+    - "aramid bead and reinforcement identity"
+    - "actual tread-cap and adhesive formulations with carrier/solids"
+    - "no puncture belt or included tube/rim"
+    - "adhesive route and any upstream cap curing"
+    - "first-release gate and Q cohort"
+    - "drawing/bond/quality acceptance"
+    - "WIP and finished-stock carried burdens"
+    - "allocation meters and actual storage/packing/dispatch scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net accepted complete tyre mass at the stated moisture/conditioning state, excluding separate tube, rim and transport packaging. Counts require size/configuration-specific traceable net weights; never a borrowed SKU mass."
+  - id: wet_supply
+    applies_to: "all material rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Whole wet formulation input is measured once. Rubber, solids, preservatives, solvent and carrier-water assays are composition subledgers, not duplicate external inputs. Track incoming and released moisture separately."
+  - id: raw_then_report
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual numerator property"
+      uuid: ""
+    required_unit: "declared row unit"
+    rule: "Collection retains unnormalized raw-period amounts and opening/closing WIP with carried burdens. Only report_once divides attributable numerator A_i by positive matched first-release Q. Rate times actual duration may form a raw amount; an already integrated volume has no extra time factor."
+process_map:
+  - id: tyre_manufacture
+    name: "Coating, bead construction, adhesive assembly, conditioning and first release"
+    inclusion: "required"
+    inclusion_condition: "Complete declared route and site, with separately metered stages and all failed batches"
+    role: "foreground"
+    quantitative_reference: "finished_tyre"
+process_inventory:
+  - id: tyre_manufacture
+    label: "Coating, bead construction, adhesive assembly, conditioning and first release"
+    inputs:
+      product:
+        - row_id: carcass_cloth
+          role: "Corespun carcass cloth"
+          name: "Cotton-polyester corespun woven carcass cloth"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one purchased fabric with its actual cotton and polyester composition, yarn structure, finish and moisture. Cutting, angled layup and latex coating are foreground steps, not a purchased finished tyre."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - vittoria-casing-2023
+                - veloflex-record
+            ranges: []
+        - row_id: latex_coating
+          role: "Wet latex coating formulation"
+          name: "Natural-rubber latex coating formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh the whole as-supplied wet coating formulation, including water, preservative and other declared constituents. Its assayed rubber and carrier-water amounts are subledgers, not additional purchases. If the same formulation also serves as adhesive, split actual withdrawals by role without duplicate procurement."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - vittoria-casing-2023
+                - challenge-handmade
+            ranges: []
+        - row_id: bead_cord
+          role: "Aramid folding bead cord"
+          name: "Aramid tyre-bead cord"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the supplied aramid cord, including its actual sizing/coating, and foreground cutting, hoop forming and encapsulation. No steel belt or steel bead quantity is inferred."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - veloflex-record
+            ranges: []
+        - row_id: bead_strip
+          role: "Bead-area sidewall reinforcement strip"
+          name: "Bead-area sidewall reinforcement strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One separately supplied physical strip, with its actual textile/polymer composition and dimensions declared from the supplier BOM. It is bead-area protection, not an inferred under-tread puncture belt; do not invent the proprietary SPS composition."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - veloflex-record
+            ranges: []
+        - row_id: tread_cap
+          role: "Separately formed tread cap"
+          name: "Natural-rubber silica tyre tread cap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One complete supplied tread-cap formulation/article. Its upstream dataset must include actual rubber grades, fillers, oils, chemicals, compounding, molding, any curing and losses. Do not also buy its constituents in this foreground. An onsite tread-compounding route requires explicit separate ingredient exchanges and process records before use."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - vittoria-casing-2023
+                - challenge-handmade
+                - veloflex-record
+            ranges: []
+        - row_id: bond_adhesive
+          role: "Whole purchased bonding adhesive"
+          name: "Tyre tread-cap bonding adhesive formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one actual supplied adhesive formulation by wet mass, solids and full carrier composition. Waterborne and solvent-bearing recipes must not be assumed interchangeable. Each extra separately acquired formulation, cleaner or additive needs its own atomic row; measured carrier emissions and residues remain separate outputs."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - vittoria-casing-2023
+                - challenge-handmade
+            ranges: []
+        - row_id: electricity
+          role: "Factory electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Electricity / kWh"
+          description: "Include coating/cutting/bead work, adhesive application, drying ventilation, conditioning, inspection, air compression, input storage and packing/handling loads, with failed and zero-output periods. Meter actual electricity; no claim of carbon neutrality or renewable mix."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: purchased_heat
+          role: "Purchased drying heat"
+          name: "Purchased process heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual imported heat, distinguished from heat generated using already counted electricity or fuel. Actual onsite fuel, steam, refrigerant loss or compressed-air purchase requires its own specific exchange before dataset use; no generic energy-carrier substitution."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Added process and cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Added water crosses the boundary once; water already in purchased latex or glue is not a second supply. Use measured mass or integrated volume times independently measured density with temperature and unit conversion; never multiply integrated volume by duration."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated cardboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual single carton composition, reuse count and tare; keep its mass outside net tyre reference Q while retaining its upstream and packing burdens."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+        - row_id: label
+          role: "Paper identification label"
+          name: "Self-adhesive paper tyre label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One actual paper label including adhesive as supplied. Track release liner as a separate waste; do not treat label application as complete tyre manufacture."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+        - row_id: strap
+          role: "Polypropylene carton strap"
+          name: "Polypropylene packaging strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this strap only where actually used. No bundling with film, cartons or labels; any other packaging component needs its own row."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_tyre
+          role: "First quality-released complete tyre"
+          name: "New pneumatic tyres, of rubber, of a kind used on motorcycles or bicycles"
+          flow_type: "product"
+          flow_ref:
+            uuid: "433f8624-3103-4661-918b-2093658bda5f"
+          property_unit: "Mass / kg"
+          description: "The unique terminal reference: complete adhesive-bonded cotton-based bicycle open clincher with aramid folding beads, no anti-puncture belt, inner tube, valve or rim supplied. Native identity is Production mix, at plant; Finished product, manufactured, with no stated geography/locationOfSupply, CAS, recipe or grade. The broad name does not establish a supplier inventory or extend this methodology to motorcycles, tubulars, molded nylon tyres or solid tyres."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - vittoria-casing-2023
+                - challenge-handmade
+                - veloflex-record
+            ranges: []
+      waste:
+        - row_id: fabric_trim
+          role: "Uncoated carcass cloth offcuts"
+          name: "Cotton-polyester carcass cloth offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Keep uncoated textile offcuts separate from latex-coated trim and other waste compositions. Offsite recycling is a treatment route, not a free coproduct credit."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: coated_trim
+          role: "Latex-coated carcass offcuts"
+          name: "Latex-coated cotton-polyester carcass offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure complete composite waste including coating solids and retained water; avoid counting its textile and rubber twice as additional waste."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: aramid_trim
+          role: "Aramid cord offcuts"
+          name: "Aramid cord offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure rejected lengths and hoop-making offcuts with actual coating."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: strip_trim
+          role: "Bead reinforcement offcuts"
+          name: "Bead-area reinforcement strip offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Retain the actual supplied strip composition and destination independently of carcass scrap."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: tread_trim
+          role: "Tread cap trimmings"
+          name: "Natural-rubber silica tread-cap trimmings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual excess tread and rejected caps. Upstream manufacture is not omitted merely because unused caps become waste."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: latex_residue
+          role: "Spent latex coating residue"
+          name: "Spent natural-rubber latex coating formulation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent bath, skin and contaminated wet residue of this one formulation, including measured solids and water. Different contaminated compositions require separate exchanges."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: adhesive_residue
+          role: "Spent bonding adhesive"
+          name: "Spent tyre bonding adhesive formulation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wet adhesive residue and its actual carrier content, separate from coated textiles and cleaning wastewater."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: rejected_tyre
+          role: "Rejected complete tyre"
+          name: "Rejected adhesive-bonded bicycle tyre"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include failed assemblies and destructive QA samples. No first accepted output is created by rejected units or by returns accepted again. Internally repaired material remains internal with retained burdens."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Offsite cleaning wastewater"
+          name: "Latex-contaminated cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One actual collected wastewater stream with its wet mass, solids, sampled constituents and treatment destination. It is not elemental discharge to water. COD is a quality measure, not a species mass or closure substitute. Distinct solvent-cleaning waste is a separate required row if used."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: carton_waste
+          role: "Discarded carton board"
+          name: "Waste corrugated cardboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual incoming and packing carton waste, with reuse and outgoing packaging tracked separately."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: liner_waste
+          role: "Label release liner"
+          name: "Waste paper label release liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One actual paper liner, including its coating; plastic liner needs a distinct specific row instead."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+        - row_id: strap_waste
+          role: "Waste polypropylene strap"
+          name: "Waste polypropylene packaging strap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual damaged and trimmed strap; outgoing useful strap belongs to the packaging subledger."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Measured water evaporation to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure or independently substantiate evaporation from carrier water, cleaning and conditioning; distinguish retained moisture and liquid effluent. Drying is a phase transfer, not invented reaction-water generation. Never fit both unknown reaction water and an unknown outlet to one residual."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: ammonia_air
+          role: "Ammonia from actual preserved latex"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual ammonia-containing coating or adhesive and demonstrated release. Quantify NH3 independently of water and COD; do not infer ammonia from every latex or zero out a real measured release. Every other actual organic species needs its own named atomic emission row."
+          amount:
+            expression: "A_i / Q; complete matched raw numerator divided once in the reporting operation defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: a_stages
+    applies_to: "all inventory rows"
+    rule: "Prefer dedicated raw meters, weighing and run records by product/route. Allocate shared coating, drying/ventilation and plant services through demonstrated causal machine-hours, occupied capacity, metered energy or material throughput appropriate to that specific service. Record drivers for successful and failed/zero-output runs; do not use accepted-output share to erase failures."
+    source_ids:
+      - jrc-ilcd-allocation-2010
+  - rule_id: a_no_credit
+    applies_to: "all waste rows"
+    rule: "No automatic coproduct or avoided-production credit for scrap, returns, offcuts or wastewater. Keep actual waste treatment burdens. Document any genuine sold co-product and justified allocation separately before using the dataset. Internal rework is recirculation, not an additional product; count external input only once and all extra processing each time."
+    source_ids: []
+  - rule_id: a_once
+    applies_to: "all inventory rows"
+    rule: "First reconcile raw stage/stock ledgers and allocate attributable raw burdens to the same first-release cohort. Retain burdens carried into opening WIP and defer burdens remaining in closing WIP with traceable unit/cohort identities. Failed burdens stay with the responsible production cohort or explicit carried stock; they cannot vanish. Only then apply report_once once. A zero Q is not a zero-burden dataset and cannot be normalized."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "tyre_manufacture"
+      flow_role: "First-release output and stock reconciliation"
+      record_type: "foreground_record"
+      raw_fields: "QA owner and stock custodian retain unique tyre/batch identities, product/route/state, net weighed mass, first acceptance time, rejected/destructive samples, returns/rework, WIP opening/closing mass/composition/carried burdens, finished-stock opening/closing receipts/issues/carried burdens, release and shipment links."
+      collection_method: "Calibrated weighing and signed first-quality-release register; deduplicate returns and reacceptance. Keep production Q and warehouse issues separate. Record raw totals only, no division."
+      unit: "kg"
+      frequency: "Each lot/run and reconciled reporting period"
+      temporal_coverage: "One complete matched period with opening/closing WIP and finished-stock carried burdens"
+      site_scope: "Declared factory and measured service/cohort scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Signed owner records, calibration/assays, supplier BOM, meter/stock reconciliation and full failure retention"
+    - protocol_id: cp_materials
+      process_id: "tyre_manufacture"
+      flow_role: "Raw material and formulation withdrawals"
+      record_type: "foreground_record"
+      raw_fields: "Material owner retains supplier/BOM/lot, full commercial preparation identity, purchased and withdrawn wet mass, solids/carrier assays and density/temperature, opening/closing raw stock and WIP, returns, failed runs, reused bath and transferred burden identities."
+      collection_method: "Weigh raw withdrawals/returns and reconcile full raw-period material ledger. Inventory changes and reused portions are tracked without duplicate purchase. Assay subledgers never add external inputs. No A_i/Q at collection."
+      unit: "kg"
+      frequency: "Each lot/run and reconciled reporting period"
+      temporal_coverage: "One complete matched period with opening/closing WIP and finished-stock carried burdens"
+      site_scope: "Declared factory and measured service/cohort scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Signed owner records, calibration/assays, supplier BOM, meter/stock reconciliation and full failure retention"
+    - protocol_id: cp_energy
+      process_id: "tyre_manufacture"
+      flow_role: "Energy, ventilation and shared services"
+      record_type: "foreground_record"
+      raw_fields: "Utility owner retains stage meter start/end, kWh, imported MJ, run timestamps, actual machine-hours/service drivers by product, failures, idle/zero-output periods and storage/dispatch cohort attribution."
+      collection_method: "Read actual meters and attributable service logs; rate times duration only for a true rate. Electricity-derived heat is not another import. Preserve raw-period energy including drying and all actual site services before allocation; no normalization."
+      unit: "kWh; MJ"
+      frequency: "Each lot/run and reconciled reporting period"
+      temporal_coverage: "One complete matched period with opening/closing WIP and finished-stock carried burdens"
+      site_scope: "Declared factory and measured service/cohort scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Signed owner records, calibration/assays, supplier BOM, meter/stock reconciliation and full failure retention"
+    - protocol_id: cp_packing
+      process_id: "tyre_manufacture"
+      flow_role: "Packing, handling and optional dispatch ledger"
+      record_type: "foreground_record"
+      raw_fields: "Packing/logistics owner retains each packaging SKU/composition/tare, issues, reuse, incoming/outgoing stock, packaged tyre links, storage time, handling work, shipment mass, carrier/service identity and carried burdens."
+      collection_method: "Weigh each component separately; separate tyre net mass from outgoing packaging. Retain real packaging, storage, handling and dispatch burdens within declared scope using separate production/warehouse ledgers; cancel internal transfers when combined. Raw numerators only."
+      unit: "kg"
+      frequency: "Each lot/run and reconciled reporting period"
+      temporal_coverage: "One complete matched period with opening/closing WIP and finished-stock carried burdens"
+      site_scope: "Declared factory and measured service/cohort scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Signed owner records, calibration/assays, supplier BOM, meter/stock reconciliation and full failure retention"
+    - protocol_id: cp_residuals
+      process_id: "tyre_manufacture"
+      flow_role: "Atomic waste and rejection ledger"
+      record_type: "foreground_record"
+      raw_fields: "Waste owner retains each waste identity/composition, wet/dry mass and moisture, destination, rejected test specimens, actual returns/rework, onsite reuse, offsite treatment, manifest and stock/WIP burden links."
+      collection_method: "Weigh each actual waste separately over the complete period. Internal recirculation is reconciled with repeated processing energy, not repeated external material supply. Retain every failed batch and its burdens; do not infer zero waste from no sale. No normalization."
+      unit: "kg"
+      frequency: "Each lot/run and reconciled reporting period"
+      temporal_coverage: "One complete matched period with opening/closing WIP and finished-stock carried burdens"
+      site_scope: "Declared factory and measured service/cohort scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Signed owner records, calibration/assays, supplier BOM, meter/stock reconciliation and full failure retention"
+    - protocol_id: cp_emissions
+      process_id: "tyre_manufacture"
+      flow_role: "Actual species, phase water and material closure"
+      record_type: "foreground_record"
+      raw_fields: "Environment owner retains actual wet-formulation composition/SDS/assays, independently supported emitted species, inlet/outlet concentration and dry/wet gas flow, integrated volumes or true rates/duration, blanks, temperature, retained moisture, effluent and phase/element ledgers."
+      collection_method: "Measure species and water independently where present, including captured fractions and treatment outlets. Integrated volume times concentration with consistent units forms a raw mass, not volume times time. No generic VOC-as-species or COD conversion; no invented reaction-water term to close a balance. Add actual named species rows before dataset use."
+      unit: "kg"
+      frequency: "Each lot/run and reconciled reporting period"
+      temporal_coverage: "One complete matched period with opening/closing WIP and finished-stock carried burdens"
+      site_scope: "Declared factory and measured service/cohort scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Signed owner records, calibration/assays, supplier BOM, meter/stock reconciliation and full failure retention"
+  calculation_rules:
+    - id: report_once
+      applies_to: "all inventory rows"
+      rule: "q_i = A_i / Q; A_i is the raw attributable exchange after actual unit conversion, raw service allocation and opening/closing WIP carried-burden reconciliation for the matched first-release cohort, including failures and all retained burdens; Q is unique positive first accepted net tyre mass in kg, never shipment mass or Q plus same-cohort closing finished inventory. This is the sole normalization; card amount rules and protocol aggregation refer to this same reporting operation, not sequential divisions. The reference row is 1 kg."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+        - cp_materials
+        - cp_energy
+        - cp_packing
+        - cp_residuals
+        - cp_emissions
+      output: "q_i"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all material rows"
+      requirement: "Supplier full name/grade/formulation and wet composition match this route; broad native identity is not recipe/provider compatibility. Distinguish supplied whole preparations from onsite separate ingredients."
+      evidence: "Supplier BOM/SDS, assays, delivery and batch records"
+    - id: dq_mass
+      applies_to: "all inventory rows"
+      requirement: "Close physical material and element balances on matched boundaries using independent water/species evidence: external wet inputs plus opening material/WIP equal accepted net tyres, actual wastes/emissions, closing material/WIP and outgoing packaging with internal transfers canceled. Keep packaging on its own mass ledger. Explain residual uncertainty without fitting unknown outlets."
+      evidence: "Calibrated balances, full composition and stock/phase/element worksheets"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "No omitted full failed lot, zero-output run, rework burden, actual ancillary input, emitted species or stock-carried burden. Explicit not_applicable requires evidence of absence; unknown is not zero."
+      evidence: "Full-period ledger and stage/owner completeness review"
+validation_rules:
+  - rule_id: v_reference
+    applies_to: "finished_tyre"
+    rule: "Require one terminal Product output linked by finished_tyre with the reference UUID and 1 kg net first-quality-release basis in both languages; require all qualifiers and exact declared assembly route. Do not accept inner tubes, tread caps, solid tyres or repeated return acceptance as the terminal reference."
+    source_ids: []
+  - rule_id: v_sources
+    applies_to: "all inventory rows"
+    rule: "Check original-source limitations, BOM, exact native full names/type/property/unit support and any route/geography/grade conflict. Source independence does not turn a manufacturer example into a universal recipe, measured input, lifetime or emission factor."
+    source_ids:
+      - vittoria-casing-2023
+      - challenge-handmade
+      - veloflex-record
+  - rule_id: v_ledger
+    applies_to: "all inventory rows"
+    rule: "Check raw-period inputs/outputs, separate production and warehouse ledgers, positive nonduplicate Q, full WIP/stock carried burdens, failures, unit conversions, elemental/phase water and species closure, explicit shared-service allocation and exactly one report_once division. A missing measurement or unexplained balance is incomplete, never a fabricated zero."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "Supplier-specific complete open-clincher manufacturing inventory per kg first released net tyre, with actual supplier inputs linked upstream."
+  allowed_use: "Only declared cotton-based adhesive-bonded open-clincher route/product/state/site scope; subsequent bicycle assembly may use measured tyre mass."
+  excluded_use: "Universal motorcycle/bicycle coverage, tire-service equivalence, safety approval, pressure recommendation, uncollected factory inventory or automatic mapping acceptance."
+  required_metadata: "All required qualifiers; gate/cohort; actual source/provider and upstream cap curing; full wet BOM, protocol owners, stock and allocation records."
+  required_quality_disclosure: "UUID/provider gaps, original-source limitations, measured and missing quantities, stock-carried burdens, shared-service allocation, species/closure uncertainty and scientific review state."
+  update_trigger: "Change in carcass, bead, cap/adhesive formulation, whole-tyre curing, tube/belt structure, starting condition, reference gate or new material/species requires applicability review and projection refresh."
+data_sources:
+  - id: "vittoria-casing-2023"
+    type: "literature"
+    reference: "Ken Avery, Vittoria White Paper03, February2023, Bicycle Tire Casing Materials and Processes, printed pp.3 and6 (PDF pp.4 and7). https://mediahub.vittoria.com/m/9b1d26a647c16851/original/White-Paper-03-English-Version.pdf"
+    used_for: "Clincher bead versus tubular interface; latex impregnation of cotton cloth and adhesive bonding of a tread cap. Cotton can also be vulcanized: only its non-vulcanized assembly branch is used. No recipe, supplier quantity, drying schedule, lifespan or emissions factor."
+  - id: "challenge-handmade"
+    type: "handbook"
+    reference: "Challenge North America, Handmade Tires, undated manufacturer technical page. https://us.challengetires.com/pages/tech-handmade"
+    used_for: "Independent manufacturer description of fabric casing, latex coating and adhesive assembly with natural-rubber tread. Marketing environmental/performance comparisons, general nylon composition and thread-count claims are excluded. No whole-chain no-vulcanization claim."
+  - id: "veloflex-record"
+    type: "handbook"
+    reference: "Veloflex, Record Open Tubular, manufacturer article technical details. https://www.veloflex.it/en/clincher-tire-record.html"
+    used_for: "Concrete open-clincher example with Pes/Co corespun carcass, aramid folding beads, natural-rubber/silica tread and bead-area sidewall protection. Technical table says no protection belt, overriding generic RKB copy. No mass, pressure, lifetime or all-rim compatibility transferred. Not proof that all process steps share one SKU."
+  - id: "jrc-ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment — Detailed guidance, First edition March2010, section7.9.3, printed pp.257–258 (PDF277–278); https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "LCA method support only within attributional cases where allocation rather than substitution is selected: virtual subdivision and flow-specific determining physical causality support dedicated raw meters/run records and service-specific shared coating, drying/ventilation and plant-service allocation. Manufacturing sources establish construction, not this LCA hierarchy. No default output/mass/time share, economic coefficient, recipe, yield/utility/emission factor, automatic coproduct or avoided-burden credit, or PEF/CFF conformity is established; actual service drivers, full site totals, failures and stock-cohort attribution remain required."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:5a7e5a51d5a2a6be3f4343de9adf013d6133b55cb6317313b38ccd88f17d78e6"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5741"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5741
+          line: 58
+          column: 1
+        end:
+          offset: 8346
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual purchased uncoated cloth, wet formulations, aramid cord, reinforcement strip and formed tread cap with supplier manufacture upstream; no purchased complete tyre. |\n| starting_condition_role | foreground_boundary |\n| product_classification_scope | CPC3.0 36112 narrower; adhesive-bonded cotton-based open clincher only |\n| recursive_input_rule | A purchased complete tyre is not an allowed recursive input to this manufacturing route. Internal returns/rework remain identified stock with carried burdens and create no new Q. |\n| upstream_dataset_requirement | Actual supplier/route/formulation and transport for each separate purchased article and wet preparation, including tread-cap compounding/molding/any curing and all retained coating constituents. |\n| disclosure | One factory integrated manufacturing process with stage subledgers. Declare included storage, drying/conditioning, packing, handling and dispatch. Production release and finished warehouse/shipment are separate ledgers; cancel internal transfers when combined. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_complete | all inventory rows | Include actual coating, cloth cutting/orientation, bead forming/encapsulation, adhesive bonding, drying/conditioning, acceptance, material storage, packing, handling, failed runs, QA samples, ancillary services, waste and measured emissions. No omission of real burdens because a batch has zero output. | vittoria-casing-2023; challenge-handmade |\n| b_supplied | all material rows | Purchased compounded articles/formulations are single whole commercial inputs with supplier burdens. Onsite compounding is outside this bounded starting condition until every separately acquired ingredient and its actual energy/losses is represented. Add every actual extra chemical, fuel, refrigerant, packaging component, waste composition and elemental species as a separate atomic card before dataset use. |  |\n| b_gate | finished_tyre | Q is new first accepted quality-release net mass, not sales. Do not add closing finished inventory of the same Q again as production output. Opening/closing WIP and its carried burdens remain reconciled. Warehouse receipts/issues and opening/closing finished stock form a separate ledger; when extending scope retain actual stock residence, packaging, handling/dispatch and carried burdens by cohort, cancel internal transfers and never assume release equals shipment. Returns/reacceptance create no new output. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 9
+              column: 1
+            end:
+              offset: 333
+              line: 9
+              column: 70
+          text: "# Adhesive-bonded cotton-based open-clincher bicycle tyre manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5741
+              line: 58
+              column: 1
+            end:
+              offset: 5762
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_29548"
+      family: "allocation"
+      span:
+        start:
+          offset: 29548
+          line: 508
+          column: 1
+        end:
+          offset: 30981
+          line: 516
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_stages | all inventory rows | Prefer dedicated raw meters, weighing and run records by product/route. Allocate shared coating, drying/ventilation and plant services through demonstrated causal machine-hours, occupied capacity, metered energy or material throughput appropriate to that specific service. Record drivers for successful and failed/zero-output runs; do not use accepted-output share to erase failures. | jrc-ilcd-allocation-2010 |\n| a_no_credit | all waste rows | No automatic coproduct or avoided-production credit for scrap, returns, offcuts or wastewater. Keep actual waste treatment burdens. Document any genuine sold co-product and justified allocation separately before using the dataset. Internal rework is recirculation, not an additional product; count external input only once and all extra processing each time. |  |\n| a_once | all inventory rows | First reconcile raw stage/stock ledgers and allocate attributable raw burdens to the same first-release cohort. Retain burdens carried into opening WIP and defer burdens remaining in closing WIP with traceable unit/cohort identities. Failed burdens stay with the responsible production cohort or explicit carried stock; they cannot vanish. Only then apply report_once once. A zero Q is not a zero-burden dataset and cannot be normalized. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 9
+              column: 1
+            end:
+              offset: 333
+              line: 9
+              column: 70
+          text: "# Adhesive-bonded cotton-based open-clincher bicycle tyre manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 29548
+              line: 508
+              column: 1
+            end:
+              offset: 29588
+              line: 508
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39291"
+      family: "validation"
+      span:
+        start:
+          offset: 39291
+          line: 545
+          column: 1
+        end:
+          offset: 40490
+          line: 553
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | finished_tyre | Require one terminal Product output linked by finished_tyre with the reference UUID and 1 kg net first-quality-release basis in both languages; require all qualifiers and exact declared assembly route. Do not accept inner tubes, tread caps, solid tyres or repeated return acceptance as the terminal reference. |  |\n| v_sources | all inventory rows | Check original-source limitations, BOM, exact native full names/type/property/unit support and any route/geography/grade conflict. Source independence does not turn a manufacturer example into a universal recipe, measured input, lifetime or emission factor. | vittoria-casing-2023; challenge-handmade; veloflex-record |\n| v_ledger | all inventory rows | Check raw-period inputs/outputs, separate production and warehouse ledgers, positive nonduplicate Q, full WIP/stock carried burdens, failures, unit conversions, elemental/phase water and species closure, explicit shared-service allocation and exactly one report_once division. A missing measurement or unexplained balance is incomplete, never a fabricated zero. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 264
+              line: 9
+              column: 1
+            end:
+              offset: 333
+              line: 9
+              column: 70
+          text: "# Adhesive-bonded cotton-based open-clincher bicycle tyre manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39291
+              line: 545
+              column: 1
+            end:
+              offset: 39313
+              line: 545
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5741"
+      source_span:
+        start:
+          offset: 6967
+          line: 73
+          column: 1
+        end:
+          offset: 7350
+          line: 73
+          column: 384
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_supplied"
+      identity_kind: "explicit"
+      unit_id: "normative_5741"
+      source_span:
+        start:
+          offset: 7351
+          line: 74
+          column: 1
+        end:
+          offset: 7800
+          line: 74
+          column: 450
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5741"
+      source_span:
+        start:
+          offset: 7801
+          line: 75
+          column: 1
+        end:
+          offset: 8344
+          line: 75
+          column: 544
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_29548"
+      source_span:
+        start:
+          offset: 29661
+          line: 512
+          column: 1
+        end:
+          offset: 30107
+          line: 512
+          column: 447
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_29548"
+      source_span:
+        start:
+          offset: 30108
+          line: 513
+          column: 1
+        end:
+          offset: 30504
+          line: 513
+          column: 397
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_once"
+      identity_kind: "explicit"
+      unit_id: "normative_29548"
+      source_span:
+        start:
+          offset: 30505
+          line: 514
+          column: 1
+        end:
+          offset: 30979
+          line: 514
+          column: 475
+    - pointer: "/validation_rules/0"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_39291"
+      source_span:
+        start:
+          offset: 39386
+          line: 549
+          column: 1
+        end:
+          offset: 39732
+          line: 549
+          column: 347
+    - pointer: "/validation_rules/1"
+      rule_id: "v_sources"
+      identity_kind: "explicit"
+      unit_id: "normative_39291"
+      source_span:
+        start:
+          offset: 39733
+          line: 550
+          column: 1
+        end:
+          offset: 40087
+          line: 550
+          column: 355
+    - pointer: "/validation_rules/2"
+      rule_id: "v_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_39291"
+      source_span:
+        start:
+          offset: 40088
+          line: 551
+          column: 1
+        end:
+          offset: 40488
+          line: 551
+          column: 401
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5741"
+      source_span:
+        start:
+          offset: 5741
+          line: 58
+          column: 1
+        end:
+          offset: 5762
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5741"
+      source_span:
+        start:
+          offset: 5790
+          line: 62
+          column: 1
+        end:
+          offset: 6894
+          line: 69
+          column: 278
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_29548"
+      source_span:
+        start:
+          offset: 29548
+          line: 508
+          column: 1
+        end:
+          offset: 29588
+          line: 508
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39291"
+      source_span:
+        start:
+          offset: 39291
+          line: 545
+          column: 1
+        end:
+          offset: 39313
+          line: 545
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5a7e5a51d5a2a6be3f4343de9adf013d6133b55cb6317313b38ccd88f17d78e6"
+  generated_content_sha256: "sha256:06323fa7ea8fef22ec5e1c5f169e8e0e4fbdca0d71ed95cb71cd028448664345"

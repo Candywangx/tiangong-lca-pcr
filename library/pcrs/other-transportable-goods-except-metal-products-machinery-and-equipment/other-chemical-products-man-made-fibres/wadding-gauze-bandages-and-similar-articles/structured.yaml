@@ -1,10 +1,1110 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "35279"
-  title: "Wadding, gauze, bandages and similar articles"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.wadding-gauze-bandages-and-similar-articles"
+  classification_refs: "CPC 3.0 35279; classification broader than method; mapping review pending"
+  covered_products: "Wrapped, unmedicated non-sterile pure-cotton absorbent wool roll of one declared SKU"
+  excluded_products: "Gauze; bandages; balls/pads; other fibres; impregnated/composite/sterile products"
+  representative_product: "Non-sterile cotton wool roll, e.g. GIMA 34838; nominal pack size is not a universal measured mass"
+  production_route: "Virgin cotton lint; alkaline scour; peroxide bleach; wash; conditional HCl finish; extract; dry; card; roll; cut; pack; release"
+  market_state: "Dry-to-declared-moisture non-sterile roll in declared paper/PE packaging; carton when actually included"
+functional_unit:
+  what: "Manufacture the declared non-sterile absorbent pure-cotton roll; a material supply function without a clinical equivalence claim"
+  how_much: "1 kg net cotton, excluding all packaging, at the declared release moisture"
+  how_well: "Meet the actual SKU acceptance specification and report its test evidence; no universal absorption or sterility performance is imposed"
+  how_long_or_cycle: "One matched actual production/release cohort; no number of uses or lifetime is assumed"
+  reference_flow_link: "finished_roll"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "manufacture"
+      rule: "Include actual opening/cleaning, scour, bleach, all rinses/finishing, extraction, drying, carding, conversion, QC, packing, internal movement and cleaning, including failed runs and rework. Keep purchased heat/electricity and actual outsourced operations once. An onsite boiler, onsite effluent treatment or other energy route requires explicit process expansion with separate fuel, water, chemical, waste and elementary exchanges, not omitted loads."
+      source_ids:
+        - msme-cotton-wool-roadmap
+    - rule_id: boundary_gate
+      applies_to: "production and finished goods"
+      rule: "Production ends at new quality release. Do not add closing finished stock of the same released Q as another production output. Maintain opening/closing finished stocks and carried burdens in the separate storage/dispatch ledger; preserve actual storage, packing, handling, freight and returns burdens. When combining ledgers, cancel internal product and burden handoffs. A delivery-gate dataset must use actual net deliveries and matched opening/closing finished inventory with carried burdens; it cannot relabel Q or assume release equals delivery."
+      source_ids: []
+    - rule_id: boundary_state
+      applies_to: "supplied state"
+      rule: "Non-sterile does not justify deleting actual treatment. Record any real subcontract treatment and its losses; sterile or medicated output is outside this scope until independently reassessed. Exclude clinical use and end of life from this manufacturing dataset and disclose them."
+      source_ids:
+        - gima-nonsterile-cotton-roll
+boundary_abstraction:
+  declared_starting_condition: "Received virgin ginned cotton lint and separately supplied chemicals, utilities and packaging"
+  starting_condition_role: "Externally acquired inputs, with upstream agricultural/ginning burdens"
+  product_classification_scope: "Only the qualified non-sterile unmedicated pure-cotton roll subset of CPC 35279"
+  recursive_input_rule: "Purchased already purified cotton retains its prior processing burden; disclose the shifted entry gate and do not model purification twice. This is a boundary variant requiring review, not virgin lint by relabelling."
+  upstream_dataset_requirement: "Compatible fibre origin/grade, commercial formulations, utility supply, packaging and outsourced treatment providers; generic identity does not select a provider"
+  disclosure: "Declare all included sites, periods, subcontractors, pre-release storage, rejects and post-release ledger coverage; no measured industrial averages are supplied"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Wadding, gauze, bandages and similar articles"
+    uuid: "6014f191-3872-4607-8c5a-c4a216c96724"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "pure cotton fibre grade and origin"
+    - "virgin ginned lint"
+    - "supply and release moisture"
+    - "roll dimensions and actual net cotton mass"
+    - "non-sterile and unmedicated state"
+    - "scour and peroxide/finishing formulation"
+    - "drying and steam supply"
+    - "outsourced steps"
+    - "paper and PE grade and actual packaging architecture"
+    - "release gate and lot cohort"
+    - "site geography and period"
+    - "waste/treatment route"
+    - "storage and dispatch coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh unique newly released cotton net of paper, bag and carton at actual release moisture using cp_release; the terminal row is 1 kg."
+  - id: wet_supply
+    applies_to: "fibre and commercial solutions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record whole supplied wet mass; use independently assayed moisture/concentration for dry fibre, active and carrier-water subledgers only. No duplicate purchase of constituents."
+  - id: unit_conversion
+    applies_to: "raw meters and count records"
+    required_property_ref:
+      name: "Measured quantity"
+      uuid: ""
+    required_unit: "kg; kWh; t km"
+    rule: "Convert mass with actual net pack weights, volume with independently applicable density and conditions, and rates with duration. An already integrated volume has no extra time multiplier. Secondary property factors are not density."
+process_map:
+  - id: manufacture
+    name: "Integrated cotton preparation, conversion, packing and release"
+    inclusion: "required"
+    inclusion_condition: "Declared virgin-cotton/peroxide route"
+    role: "Owns all pre-release raw numerators and new release Q"
+    quantitative_reference: "finished_roll: 1 kg"
+  - id: storage_dispatch
+    name: "Separate post-release storage and dispatch ledger"
+    inclusion: "conditional"
+    inclusion_condition: "Actual post-release activities included in the reported dataset"
+    role: "Owns its raw loads and finished-stock carried burdens; no new output Q"
+    quantitative_reference: "Same identified released cohort; supplementary load per 1 kg reference flow"
+process_inventory:
+  - id: manufacture
+    label: "Integrated cotton preparation, conversion, packing and release"
+    inputs:
+      product:
+        - row_id: cotton_lint
+          role: "Virgin ginned cotton lint"
+          name: "Virgin ginned cotton lint"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the received bale grade, origin, moisture and contaminants; this is cotton lint, not linters, yarn, fabric or synthetic fibre."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: caustic_solution
+          role: "Sodium hydroxide aqueous solution"
+          name: "Sodium hydroxide aqueous solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Whole purchased scouring solution at its assayed supply concentration; constituent NaOH and carrier water are subledgers."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: peroxide_solution
+          role: "Hydrogen peroxide aqueous solution"
+          name: "Hydrogen peroxide aqueous solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Whole purchased peroxide solution for this declared bleaching route, including its actual stabilizer formulation; no hypochlorite substitution."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: soda_ash
+          role: "Sodium carbonate"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the actual scouring recipe uses this separately purchased chemical; otherwise document absence."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: detergent
+          role: "Scouring detergent formulation"
+          name: "Scouring detergent formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One identified purchased detergent formulation, with supplier grade and full supply composition; do not invent surfactant species or dose."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: acid_solution
+          role: "Hydrochloric acid aqueous solution"
+          name: "Hydrochloric acid aqueous solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include whole purchased dilute acid only if actually used to remove residual alkalinity; another acid requires its own atomic exchange and route reassessment."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meter actual separate water additions for scouring, washing, rinsing and cleaning. Recycled water is an internal loop; solution carrier water is not purchased twice."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: steam
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use delivered steam mass, inlet and return enthalpy and actual condensate return; purchased steam generation burdens are upstream and are not duplicated as onsite fuel."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Purchased electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record opening, extraction, dryer, carding, rolling, cutting, sealing, QC, cleaning, failed runs and pre-release handling loads, with actual supply voltage and geography."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: paper_interleaf
+          role: "Paper interleaf"
+          name: "Paper interleaf"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual paper grade and mass supplied with the roll where used. Packaging is excluded from cotton reference mass but its production, conversion and losses remain included."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: pe_bag
+          role: "Polyethylene packaging bag"
+          name: "Polyethylene packaging bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual single heat-sealed polyethylene bag grade and mass. The manufacturer example does not establish its resin grade, thickness or package mass."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include actual corrugated carton only where supplied in the declared release configuration; do not infer carton count or composition from a sales unit."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_roll
+          role: "Wadding, gauze, bandages and similar articles"
+          name: "Wadding, gauze, bandages and similar articles"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6014f191-3872-4607-8c5a-c4a216c96724"
+          property_unit: "Mass / kg"
+          description: "Terminal Product output: only the qualified non-sterile, unmedicated pure-cotton roll. Native name is a broad family, with empty flowProperties name component, Production mix at plant, Finished product manufactured, HS 2022 30.05 comment, no CAS or geography/locationOfSupply field, Product flow type and one Mass property. Its Chinese basename repeats bandages and is retained verbatim; it is not evidence of a gauze or bandage construction. It provides no fibre, sterility, package, performance or provider quantities. Declare all SKU qualifiers independently."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_release
+              source_ids:
+                - gima-nonsterile-cotton-roll
+            ranges: []
+        - row_id: condensate_return
+          role: "Returned steam condensate"
+          name: "Returned steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual condensate crossing the boundary and its enthalpy; internal condensate circulation is not an external exchange or a cotton coproduct."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+      waste:
+        - row_id: cotton_reject
+          role: "Rejected cotton fibre"
+          name: "Rejected cotton fibre"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh disposed opening/card waste, QC samples and irrecoverable rejects by destination. Internal rework transfers are not discarded waste."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: wastewater
+          role: "Cotton-processing wastewater"
+          name: "Cotton-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure the combined wet-process effluent and actual composition to external treatment. Carry its treatment burden and transport once; no direct-river emission is invented."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: paper_scrap
+          role: "Paper interleaf scrap"
+          name: "Paper interleaf scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this paper scrap separately from cotton and plastic rejects and attach actual treatment."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: pe_scrap
+          role: "Polyethylene bag scrap"
+          name: "Polyethylene bag scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this film scrap separately and attach actual recovery or disposal."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: carton_scrap
+          role: "Corrugated carton scrap"
+          name: "Corrugated carton scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged cartons separately, when cartons are used."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Water vapour to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Determine actual evaporated water from independently measured wet/dry fibre, water, steam and effluent balances; do not infer unknown reaction water and an unknown outlet from the same residual."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_balance
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+        - row_id: fibre_dust
+          role: "Cotton particulate matter to air"
+          name: "Cotton particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include measured particulate escape after capture when present; collected dust belongs in the waste row and is not emitted again."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - msme-cotton-wool-roadmap
+            ranges: []
+  - id: storage_dispatch
+    label: "Separate post-release storage and dispatch ledger"
+    inputs:
+      product:
+        - row_id: storage_electricity
+          role: "Purchased electricity"
+          name: "Purchased electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "For an actually included post-release warehouse ledger, retain metered storage and electric handling energy by the same released cohort and residence. Do not move it into the manufacturing raw numerator."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage
+              source_ids: []
+            ranges: []
+        - row_id: handling_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include actual diesel-powered handling fuel for that ledger where used, with upstream fuel and separately evidenced combustion emissions in the dataset; absence requires records, not a default zero."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage
+              source_ids: []
+            ranges: []
+        - row_id: dispatch_freight
+          role: "Road freight transport service"
+          name: "Road freight transport service"
+          flow_type: "product"
+          property_unit: "Transport service / t km"
+          description: "Include actual attributable shipment mass times distance for reported dispatch; retain empty-return and load-factor treatment from the provider. No default distance or delivery quantity is assigned."
+          amount:
+            expression: "A_i / Q, reported once in the original row unit per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_separate
+    applies_to: "shared equipment and utilities"
+    rule: "Separate SKU/route/sterility/packaging cohorts first. Use meters or documented physical causation for shared loads; retain failed and zero-output runs in their causal cohort. No default yield, inspection loss or economic allocation factor is assigned."
+    source_ids:
+      - jrc-ilcd-2010-allocation
+  - rule_id: allocation_rework
+    applies_to: "rework, waste and coproducts"
+    rule: "Internal recirculation cancels on integration and adds its actual repeated processing burdens. Returned/reaccepted cotton is not new production. Cotton rejects are waste unless an evidenced saleable coproduct specification and allocation are declared; no avoided-product credit by assumption. External treatment and recycling are counted once under the declared accounting convention."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "manufacture"
+      flow_role: "new accepted output"
+      record_type: "foreground_records"
+      raw_fields: "SKU; lot ID; first release event; net cotton mass; tare; moisture; rejects; returns; WIP"
+      collection_method: "Weigh newly accepted finished rolls on calibrated scales and reconcile unique lot first release. Q is positive new net cotton release, not dispatch or reacceptance. Preserve failed/zero-output lots and WIP ledgers without creating Q."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Complete actual period and matched cohort with carried burdens"
+      site_scope: "Declared site and named subcontractors"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Release register, scale calibration and SKU acceptance tests"
+    - protocol_id: cp_materials
+      process_id: "manufacture"
+      flow_role: "fibre and chemical supplies"
+      record_type: "foreground_records"
+      raw_fields: "Receipt mass; issued mass; grade; cotton origin; assay; moisture; carrier water; stock opening/closing; returned issues; WIP burdens"
+      collection_method: "Owner collects undivided raw period totals and opening/closing WIP quantities with carried burdens, including failed, zero-output and rework runs; never perform A_i/Q here. Reconcile issued/returned stocks, whole solutions and separately acquired blend ingredients; count mixing energy/losses."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Complete actual period and matched cohort with carried burdens"
+      site_scope: "Declared site and named subcontractors"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Invoices, stock records, supplier composition and assays"
+    - protocol_id: cp_water
+      process_id: "manufacture"
+      flow_role: "water and wet processing"
+      record_type: "foreground_records"
+      raw_fields: "Water meter; batch; wash/rinse additions; recycle; solution water; moisture; WIP water"
+      collection_method: "Owner collects undivided raw period totals and opening/closing WIP quantities with carried burdens, including failed, zero-output and rework runs; never perform A_i/Q here. Measure water additions and loops separately without duplicate carrier-water procurement."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Complete actual period and matched cohort with carried burdens"
+      site_scope: "Declared site and named subcontractors"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated meters and batch water records"
+    - protocol_id: cp_utilities
+      process_id: "manufacture"
+      flow_role: "power and steam"
+      record_type: "foreground_records"
+      raw_fields: "Meter start/end; kWh; steam mass; inlet enthalpy; condensate mass/enthalpy; interval; allocations; standby and failed-run use"
+      collection_method: "Owner collects undivided raw period totals and opening/closing WIP quantities with carried burdens, including failed, zero-output and rework runs; never perform A_i/Q here. Meter supplied energy and condensate, retaining actual utility supply voltage, geography and conversion bases."
+      unit: "kWh; kg; kJ/kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Complete actual period and matched cohort with carried burdens"
+      site_scope: "Declared site and named subcontractors"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meters, utility bills, steam state and return records"
+    - protocol_id: cp_packaging
+      process_id: "manufacture"
+      flow_role: "each package component"
+      record_type: "foreground_records"
+      raw_fields: "SKU BOM; component grade; issued/returned mass; unit tare; packed lots; scrap; package stocks and WIP"
+      collection_method: "Owner collects undivided raw period totals and opening/closing WIP quantities with carried burdens, including failed, zero-output and rework runs; never perform A_i/Q here. Weigh each component separately; keep all actual paper, bag, carton, ink, label or closure burdens as separate dataset exchanges if present."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Complete actual period and matched cohort with carried burdens"
+      site_scope: "Declared site and named subcontractors"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "BOM, packaging weighing and issue records"
+    - protocol_id: cp_waste
+      process_id: "manufacture"
+      flow_role: "rejects, effluent and emissions"
+      record_type: "foreground_records"
+      raw_fields: "Stream; mass; moisture; composition; treatment destination; manifests; particulate tests; sampling; failed lots; WIP carried waste burden"
+      collection_method: "Owner collects undivided raw period totals and opening/closing WIP quantities with carried burdens, including failed, zero-output and rework runs; never perform A_i/Q here. Measure each stream and independently supported actual emission species; retain outsourced treatment and transport. Do not use COD as a species or physical mass closure surrogate."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Complete actual period and matched cohort with carried burdens"
+      site_scope: "Declared site and named subcontractors"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Waste manifests, effluent analyses, provider and emission records"
+    - protocol_id: cp_balance
+      process_id: "manufacture"
+      flow_role: "physical and water balance"
+      record_type: "foreground_records"
+      raw_fields: "Wet and dry fibre; all solution masses/assays; free and bound water; steam/condensate; wastewater; evaporation; rejects; independent species/reactions; WIP"
+      collection_method: "Owner collects undivided raw period totals and opening/closing WIP quantities with carried burdens, including failed, zero-output and rework runs; never perform A_i/Q here. Reconcile physical mass/elements separately from independently evidenced chemistry and water phase changes; report unresolved balance uncertainty rather than fit reaction water to a residual."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Complete actual period and matched cohort with carried burdens"
+      site_scope: "Declared site and named subcontractors"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Independent moisture, composition, water and outlet measurements"
+    - protocol_id: cp_storage
+      process_id: "storage_dispatch"
+      flow_role: "actual separate storage and dispatch loads"
+      record_type: "foreground_records"
+      raw_fields: "Release cohort; opening/closing finished mass and carried burdens; internal handoffs; residence; dispatch/return masses; electricity; diesel; transport mass/distance; repacking and waste"
+      collection_method: "Owner retains undivided raw storage, packing, handling, dispatch, return and rework amounts for identified lots and actual residence, plus opening/closing finished-stock carried burdens. No division, new Q, or removal of undispatched burdens occurs here. Add atomic repacking, combustion-emission and waste rows in the dataset when actually present."
+      unit: "kg; kWh; t km"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Complete actual period and matched cohort with carried burdens"
+      site_scope: "Declared site and named subcontractors"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Warehouse lot ledger, stock burdens, dispatch records and meters"
+  calculation_rules:
+    - id: raw_cohort
+      applies_to: "all manufacturing numerators"
+      rule: "For each exchange, retain complete raw consumption/burden, including failed/zero-output and repeated rework. Attribute A_i = raw period burden + opening WIP carried burden - closing WIP carried burden for the same product, route and supplied-state cohort; substantiate actual transfer records. Direct raw physical exchanges and carried historical burdens remain separately traceable; do not add carried mass as a second purchase. Do not subtract finished stock already counted in Q."
+      inputs:
+        - raw_period
+        - opening_WIP
+        - closing_WIP
+        - cp_materials
+        - cp_utilities
+        - cp_waste
+      output: "A_i"
+      source_ids: []
+    - id: normalize_release
+      applies_to: "all included inventory rows except terminal reference"
+      rule: "q_i = A_i / Q; Q = unique positive newly quality-released net cotton mass in kg for the matched cohort from cp_release. First convert raw records once to each row unit. This is the only normalization: inventory amount expressions, protocol aggregation references and this rule describe the same report operation, not sequential divisions. For storage_dispatch use its separately reconciled A_i attributable to that same release cohort and Q, retaining any unfinished residence as a disclosed scope limit. Q <= 0 cannot produce a normalized released-product dataset; retain its burdens for the matched causal cohort."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+        - cp_storage
+      output: "q_i"
+      source_ids: []
+    - id: supply_subledgers
+      applies_to: "solutions, cotton moisture and water"
+      rule: "For each whole purchased formulation m, constituent mass = m times its independent assay fraction. For cotton, dry mass = wet mass times (1 - measured moisture fraction). Carrier water, active matter and fibre dry mass are subledgers, not extra external inputs. Independently support actual species and any reaction-water formation/consumption; keep phase/free/bound-water changes distinct. No COD or closure-residual fitting."
+      inputs:
+        - whole_supply_mass
+        - assay_fraction
+        - measured_moisture
+        - cp_balance
+      output: "constituent_and_water_subledgers"
+      source_ids: []
+    - id: finished_ledger
+      applies_to: "storage and dispatch reconciliation"
+      rule: "Closing finished stock = opening finished stock + new release + actual returns - actual dispatch - disposal, with other documented physical movements shown explicitly. Carry historical burdens with the same lots. Returns/reacceptance do not increase new release. Integration cancels the release-to-storage internal handoff and its burdens. Actual net delivery, if separately reported, excludes undispatched stock and is a different denominator requiring its own matched carried-burden calculation."
+      inputs:
+        - cp_release
+        - cp_storage
+        - stock_movements
+        - carried_burdens
+      output: "reconciled_finished_ledger"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "supplied product"
+      requirement: "Retain fibre identification, non-sterile/unmedicated declaration, actual formulation, dimensions, moisture, package BOM and acceptance tests. Generic flow identity does not prove performance or background/provider compatibility."
+      evidence: "Supplier and release evidence"
+    - id: quality_completeness
+      applies_to: "all raw loads and transfer burdens"
+      requirement: "Reconcile stock, WIP, zero-output runs, rejects, rework, outsourcing, utility supply and treatment destinations. Every additional actual ingredient, package component, fuel, waste and emission must have its own atomic dataset exchange. Document excluded scope and remaining uncertainty explicitly."
+      evidence: "Raw ledgers and independent balance"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference and scope"
+    rule: "Require terminal Product output finished_roll, matching reference UUID, 1 kg net cotton, complete required qualifiers and the declared new-release gate. Reject a different fibre, form, sterile/drug/composite state or unassessed packaging route."
+    source_ids:
+      - gima-nonsterile-cotton-roll
+  - rule_id: validate_period
+    applies_to: "normalization and ownership"
+    rule: "Require positive unique Q, matched raw numerators with failed/zero-output and rework, full WIP carried burdens, and one normalize_release operation. Collection cannot already divide by Q. Do not add closing finished goods to new release or count returns twice. Separate warehouse/dispatch owner and retained loads are mandatory when included."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "mass, water and environmental exchanges"
+    rule: "Check physical mass/elements and moisture on stated bases, using independent actual species/reaction evidence. Whole formulations cannot be duplicated as constituent purchases; integrated volume cannot be multiplied by time again. Unknown reaction water cannot close an unknown outlet by the same residual. Retain treatment/provider evidence and uncertainty rather than claim closure from COD."
+    source_ids: []
+  - rule_id: validate_evidence
+    applies_to: "claim limits"
+    rule: "Public project recipes, losses, nominal package counts, absorption tests and sterilization discussion are contextual evidence, not industry defaults, clinical equivalence or operating instructions. Missing actual foreground evidence makes the concrete dataset incomplete; it does not create measured values."
+    source_ids:
+      - msme-cotton-wool-roadmap
+      - gima-nonsterile-cotton-roll
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Environmental modelling of this exact supplied roll and declared release gate"
+  allowed_use: "Manufacturing inventories with matched SKU, route, fibre, supplied state, moisture, packaging, geography and period"
+  excluded_use: "Clinical efficacy/safety equivalence, treatment instruction, sterile or other-fibre substitution, whole-CPC coverage and unqualified delivery-gate comparison"
+  required_metadata: "pure cotton fibre grade and origin; virgin ginned lint; supply and release moisture; roll dimensions and actual net cotton mass; non-sterile and unmedicated state; scour and peroxide/finishing formulation; drying and steam supply; outsourced steps; paper and PE grade and actual packaging architecture; release gate and lot cohort; site geography and period; waste/treatment route; storage and dispatch coverage"
+  required_quality_disclosure: "Actual raw period and cohort; Q and first-release deduplication; WIP and finished-stock carried burdens; each protocol owner; missing auxiliary identities/provider matching; source and native identity limitations; allocation and scope uncertainty"
+  update_trigger: "Fibre origin/grade, recipe, outsourcing, bleaching, treatment/sterility, drying, package, release gate, provider or site/period changes"
+data_sources:
+  - id: "msme-cotton-wool-roadmap"
+    type: "official_guidance"
+    reference: "MSME Development Institute Chennai, S. Suresh Babuji, Road map for domestic manufacturing of Cotton Wool Absorbent, section 3.5/3.8 and section 5 part 7, PDF pp. 8-9, 25-26; https://www.dcmsme.gov.in/23_COTTON%20WOOL%20by%20Suresh%20Babuji-converted.pdf"
+    used_for: "Process decomposition and paper/PE packing example only. Indian indicative project, not measured LCI or proof of the GIMA route. Its gamma/sterility passages are contrary scope context; no process settings, quality numbers, recipe, yield, absorption or lifetime defaults are adopted."
+  - id: "gima-nonsterile-cotton-roll"
+    type: "handbook"
+    reference: "GIMA S.p.A., COTTON WOOL 1000 g - roll, product 34838, Description and product information; https://www.gimaitaly.com/Prodotti/first-aid-emergency/dressing-medication-gauzes-plasters/cotton-wool/cotton-wool-1000-g-roll-34838"
+    used_for: "Primary manufacturer product evidence: hydrophilic 100% cotton, roll, non-sterile. Nominal mass and sales-unit count identify one product only, not universal measured mass, usage, performance or packaging intensity. No factory route, cultivar, supply geography or polymer grade is established."
+  - id: "jrc-ilcd-2010-allocation"
+    type: "handbook"
+    reference: "European Commission JRC, ILCD Handbook General guide Detailed guidance, first edition March 2010, section 7.9.3, PDF pp277–278 / printed pp257–258; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Virtual subdivision and determining physical causality for attributional shared-service burden assignment only. No product-specific route, composition, yield, emission or utility factor, fixed allocation share, substitution credit or full PEF conformity is supplied. Stock and normalization rules remain PCR-specific consistency reasoning."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b82335385def522d096ef2a5c2fb411aaa1201c847803157d859200eafaf9684"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5676"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5676
+          line: 58
+          column: 1
+        end:
+          offset: 8268
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received virgin ginned cotton lint and separately supplied chemicals, utilities and packaging |\n| starting_condition_role | Externally acquired inputs, with upstream agricultural/ginning burdens |\n| product_classification_scope | Only the qualified non-sterile unmedicated pure-cotton roll subset of CPC 35279 |\n| recursive_input_rule | Purchased already purified cotton retains its prior processing burden; disclose the shifted entry gate and do not model purification twice. This is a boundary variant requiring review, not virgin lint by relabelling. |\n| upstream_dataset_requirement | Compatible fibre origin/grade, commercial formulations, utility supply, packaging and outsourced treatment providers; generic identity does not select a provider |\n| disclosure | Declare all included sites, periods, subcontractors, pre-release storage, rejects and post-release ledger coverage; no measured industrial averages are supplied |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_operations | manufacture | Include actual opening/cleaning, scour, bleach, all rinses/finishing, extraction, drying, carding, conversion, QC, packing, internal movement and cleaning, including failed runs and rework. Keep purchased heat/electricity and actual outsourced operations once. An onsite boiler, onsite effluent treatment or other energy route requires explicit process expansion with separate fuel, water, chemical, waste and elementary exchanges, not omitted loads. | `msme-cotton-wool-roadmap` |\n| boundary_gate | production and finished goods | Production ends at new quality release. Do not add closing finished stock of the same released Q as another production output. Maintain opening/closing finished stocks and carried burdens in the separate storage/dispatch ledger; preserve actual storage, packing, handling, freight and returns burdens. When combining ledgers, cancel internal product and burden handoffs. A delivery-gate dataset must use actual net deliveries and matched opening/closing finished inventory with carried burdens; it cannot relabel Q or assume release equals delivery. |  |\n| boundary_state | supplied state | Non-sterile does not justify deleting actual treatment. Record any real subcontract treatment and its losses; sterile or medicated output is outside this scope until independently reassessed. Exclude clinical use and end of life from this manufacturing dataset and disclose them. | `gima-nonsterile-cotton-roll` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 274
+              line: 9
+              column: 1
+            end:
+              offset: 322
+              line: 9
+              column: 49
+          text: "# Non-sterile unmedicated absorbent cotton rolls"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5676
+              line: 58
+              column: 1
+            end:
+              offset: 5697
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_24617"
+      family: "allocation"
+      span:
+        start:
+          offset: 24617
+          line: 466
+          column: 1
+        end:
+          offset: 25512
+          line: 473
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_separate | shared equipment and utilities | Separate SKU/route/sterility/packaging cohorts first. Use meters or documented physical causation for shared loads; retain failed and zero-output runs in their causal cohort. No default yield, inspection loss or economic allocation factor is assigned. | jrc-ilcd-2010-allocation |\n| allocation_rework | rework, waste and coproducts | Internal recirculation cancels on integration and adds its actual repeated processing burdens. Returned/reaccepted cotton is not new production. Cotton rejects are waste unless an evidenced saleable coproduct specification and allocation are declared; no avoided-product credit by assumption. External treatment and recycling are counted once under the declared accounting convention. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 274
+              line: 9
+              column: 1
+            end:
+              offset: 322
+              line: 9
+              column: 49
+          text: "# Non-sterile unmedicated absorbent cotton rolls"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 24617
+              line: 466
+              column: 1
+            end:
+              offset: 24657
+              line: 466
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35557"
+      family: "validation"
+      span:
+        start:
+          offset: 35557
+          line: 506
+          column: 1
+        end:
+          offset: 37244
+          line: 515
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | reference and scope | Require terminal Product output finished_roll, matching reference UUID, 1 kg net cotton, complete required qualifiers and the declared new-release gate. Reject a different fibre, form, sterile/drug/composite state or unassessed packaging route. | `gima-nonsterile-cotton-roll` |\n| validate_period | normalization and ownership | Require positive unique Q, matched raw numerators with failed/zero-output and rework, full WIP carried burdens, and one normalize_release operation. Collection cannot already divide by Q. Do not add closing finished goods to new release or count returns twice. Separate warehouse/dispatch owner and retained loads are mandatory when included. |  |\n| validate_balance | mass, water and environmental exchanges | Check physical mass/elements and moisture on stated bases, using independent actual species/reaction evidence. Whole formulations cannot be duplicated as constituent purchases; integrated volume cannot be multiplied by time again. Unknown reaction water cannot close an unknown outlet by the same residual. Retain treatment/provider evidence and uncertainty rather than claim closure from COD. |  |\n| validate_evidence | claim limits | Public project recipes, losses, nominal package counts, absorption tests and sterilization discussion are contextual evidence, not industry defaults, clinical equivalence or operating instructions. Missing actual foreground evidence makes the concrete dataset incomplete; it does not create measured values. | `msme-cotton-wool-roadmap`; `gima-nonsterile-cotton-roll` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 274
+              line: 9
+              column: 1
+            end:
+              offset: 322
+              line: 9
+              column: 49
+          text: "# Non-sterile unmedicated absorbent cotton rolls"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35557
+              line: 506
+              column: 1
+            end:
+              offset: 35579
+              line: 506
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_5676"
+      source_span:
+        start:
+          offset: 6792
+          line: 73
+          column: 1
+        end:
+          offset: 7311
+          line: 73
+          column: 520
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5676"
+      source_span:
+        start:
+          offset: 7312
+          line: 74
+          column: 1
+        end:
+          offset: 7916
+          line: 74
+          column: 605
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_state"
+      identity_kind: "explicit"
+      unit_id: "normative_5676"
+      source_span:
+        start:
+          offset: 7917
+          line: 75
+          column: 1
+        end:
+          offset: 8266
+          line: 75
+          column: 350
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_separate"
+      identity_kind: "explicit"
+      unit_id: "normative_24617"
+      source_span:
+        start:
+          offset: 24730
+          line: 470
+          column: 1
+        end:
+          offset: 25067
+          line: 470
+          column: 338
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_24617"
+      source_span:
+        start:
+          offset: 25068
+          line: 471
+          column: 1
+        end:
+          offset: 25510
+          line: 471
+          column: 443
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_35557"
+      source_span:
+        start:
+          offset: 35652
+          line: 510
+          column: 1
+        end:
+          offset: 35975
+          line: 510
+          column: 324
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_period"
+      identity_kind: "explicit"
+      unit_id: "normative_35557"
+      source_span:
+        start:
+          offset: 35976
+          line: 511
+          column: 1
+        end:
+          offset: 36373
+          line: 511
+          column: 398
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_35557"
+      source_span:
+        start:
+          offset: 36374
+          line: 512
+          column: 1
+        end:
+          offset: 36835
+          line: 512
+          column: 462
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_35557"
+      source_span:
+        start:
+          offset: 36836
+          line: 513
+          column: 1
+        end:
+          offset: 37242
+          line: 513
+          column: 407
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5676"
+      source_span:
+        start:
+          offset: 5676
+          line: 58
+          column: 1
+        end:
+          offset: 5697
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5676"
+      source_span:
+        start:
+          offset: 5725
+          line: 62
+          column: 1
+        end:
+          offset: 6719
+          line: 69
+          column: 178
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_24617"
+      source_span:
+        start:
+          offset: 24617
+          line: 466
+          column: 1
+        end:
+          offset: 24657
+          line: 466
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35557"
+      source_span:
+        start:
+          offset: 35557
+          line: 506
+          column: 1
+        end:
+          offset: 35579
+          line: 506
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b82335385def522d096ef2a5c2fb411aaa1201c847803157d859200eafaf9684"
+  generated_content_sha256: "sha256:0f703d56130642172f916701147e23d61eb48373be6255f4b5ee6962b0240bfd"

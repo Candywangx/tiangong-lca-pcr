@@ -1,10 +1,1133 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "35130"
-  title: "Printing ink"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.printing-ink"
+  classification_refs: "CPC 3.0: 35130 Printing ink; bounded subset; classification acceptance remains separate"
+  covered_products: "PY12 toluene-based publication-gravure printing ink"
+  excluded_products: "All routes, pigments and forms excluded in section 1; paints, artists’ colours and printing services"
+  representative_product: "Liquid PY12 pigment ink in purchased rosin-modified phenolic/toluene vehicle, delivered in steel drums"
+  production_route: "Receipt and wet preparation dosing; premix and bead mill; let-down and filtration; QC/rework; drum filling; stock/dispatch reconciliation; cleaning and actual waste/air-release management"
+  market_state: "Net wet liquid ink actually handed over at factory gate; declared pigment grade, solids, solvent and viscosity state"
+functional_unit:
+  what: "PY12 toluene-based publication-gravure printing ink"
+  how_much: "1 kg net actually delivered ink, excluding drum and other packaging mass"
+  how_well: "One declared PY12 grade and purchased resin-vehicle formulation meets site release and delivery specifications: pigment content, nonvolatiles, solvent composition, viscosity at test temperature, colour strength/shade and dispersion fineness; actual tests required, no imposed patent limits"
+  how_long_or_cycle: "Declared actual reporting period and traceable delivery/batch cohort; no use lifetime"
+  reference_flow_link: "dp_delivered"
+system_boundary:
+  rules:
+    - rule_id: sb_route
+      applies_to: "manufacture"
+      rule: "Include dosing, onsite pigment wetting/bead milling, let-down, cooling/extraction, filtering, tests, failures and rework. Whole purchased vehicle upstream production remains attached; its solvent/resin subledgers are not duplicate inputs."
+      source_ids:
+        - epa-eiip-ink-manufacture-2005
+        - wipo-py12-gravure-2004
+    - rule_id: sb_delivery
+      applies_to: "delivery"
+      rule: "Include real filling, packaging, finished storage, handling, dispatch and associated losses up to actual factory-gate delivery. Preserve opening/closing finished stocks with burdens; consolidate paired P transfers exactly once. Printing drying/curing does not enter this boundary."
+      source_ids:
+        - epa-eiip-ink-manufacture-2005
+    - rule_id: sb_releases
+      applies_to: "manufacture; cleaning"
+      rule: "Separate retained product solvent, collected liquid/solid waste, captured material, actual after-control emissions and inventory changes. Record each actual VOC/high-impact species and medium separately; no default release, capture percentage or recovery credit. Add atomic rows for any additional actual high-impact species, fuel, heat, packaging or treatment exchange; retain measured zeros and justified absence."
+      source_ids:
+        - epa-eiip-ink-manufacture-2005
+boundary_abstraction:
+  declared_starting_condition: "Purchased PY12 dry preparation, whole resin/toluene vehicle, separate toluene, packaging and utilities received at plant; opening WIP and finished stocks enter with traceable physical quantities and carried upstream/foreground burdens"
+  starting_condition_role: "Foreground receipt-to-actual-factory-gate-delivery; cradle-to-gate results additionally attach upstream production, inbound transport and actual treatment"
+  product_classification_scope: "Bounded PY12 toluene publication-gravure ink subset of CPC35130; not complete printing-ink coverage"
+  recursive_input_rule: "No recursive copy of this ink process for purchased vehicle or dispersion; use actual independent upstream formulation datasets. Internal P transfer is paired and eliminated, not another procurement"
+  upstream_dataset_requirement: "Match grade, wet/dry form, concentrations, route, delivery point, geography and period for each actual input. Identity UUID does not establish a supplier or numeric burden; unresolved auxiliary matches stay explicit"
+  disclosure: "Document included storage, packaging, handling/dispatch, rework, shared utilities, actual capture/waste recipients, stock and carried burdens, exclusions and uncertainty. Outbound transport beyond factory-gate handover is a separate declared extension"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Gravure Ink"
+    uuid: "c2ed843f-16bf-462a-8ff7-ae78e95e5c4c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual delivery gate and period"
+    - "net Q and return convention"
+    - "lot cohort"
+    - "PY12 CAS/grade/surface treatment"
+    - "vehicle resin chemistry and supplied solids"
+    - "solvent/impurity composition"
+    - "viscosity and temperature"
+    - "pigment/nonvolatile fractions"
+    - "paper publication-gravure use"
+    - "plant and geography"
+    - "below-1-kV CN electricity"
+    - "drum specification"
+    - "WIP/finished-stock and carried-burden records"
+    - "capture/treatment recipients"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_gate
+    applies_to: "dp_delivered"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Q is positive unique net actual delivery of the same product/route/state cohort, not production release P. Weigh net ink with tare and trace outward/return events; undelivered finished goods are excluded from Q."
+  - id: mu_wet
+    applies_to: "mf_vehicle; mf_py12; mf_toluene"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use supplied whole preparation mass. Active pigment/resin, carrier solvent and water are subledgers. Volumes require actual formulation- and temperature-specific density with uncertainty, never a secondary native coefficient treated as density."
+  - id: mu_energy
+    applies_to: "mf_electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain raw meter kWh; convert once using 1 kWh = 3.6 MJ before the single reporting normalization. Resolve the native Net calorific value reference property through its energy unit group to MJ; this is an energy dimension, not a fuel combustion prescription."
+  - id: mu_integrals
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Measured physical quantity"
+      uuid: ""
+    required_unit: "kg; MJ; m3"
+    rule: "Rate times observed duration is valid for a measured rate. An already integrated volume gets no second time multiplier. Keep raw volume, duration, temperature, pressure and calibration as applicable."
+  - id: mu_mass_species
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass and species"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile total physical mass and relevant elements separately from actual measured species. This physical mixing route assumes no chemical reaction or reaction-water term; do not invent reaction water, total VOC or another outlet to close a residual, and do not infer species from COD."
+process_map:
+  - id: manufacture
+    name: "Premix, bead milling and finishing"
+    inclusion: "required"
+    inclusion_condition: "Selected onsite PY12 dispersion route"
+    role: "Manufacture quality-released bulk P; collect shared energy once"
+    quantitative_reference: "P kg internal transfer, reported per 1 kg reference flow"
+  - id: delivery
+    name: "Filling, stock and factory-gate delivery"
+    inclusion: "required"
+    inclusion_condition: "All delivered lots"
+    role: "Terminal actual net delivery Q"
+    quantitative_reference: "1 kg reference flow"
+  - id: cleaning
+    name: "Cleaning and collected waste management"
+    inclusion: "required"
+    inclusion_condition: "Actual operations; unused stream requires evidence of zero/absence"
+    role: "Retain actual cleaning inputs, captured wastes and releases"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: manufacture
+    label: "Premix, bead milling and finishing"
+    inputs:
+      product:
+        - row_id: mf_vehicle
+          role: "Rosin-modified phenolic resin solution in toluene"
+          name: "Rosin-modified phenolic resin solution in toluene"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased whole liquid vehicle, including its resin and toluene. Assay solids, solvent composition and any impurities as subledgers; do not also procure their contained masses. No resin synthesis/cooking is performed in this route."
+          amount:
+            expression: "A_mf_vehicle / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacture
+              source_ids:
+                - wipo-py12-gravure-2004
+            ranges: []
+        - row_id: mf_py12
+          role: "C.I. Pigment Yellow 12 dry pigment preparation"
+          name: "C.I. Pigment Yellow 12 dry pigment preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One declared PY12 commercial grade; retain CAS, surface treatment, active pigment and moisture. It is not a dye, arbitrary colour blend or purchased pigment dispersion. The patent comparative grade establishes a route, not a prescribed supplier or dosage."
+          amount:
+            expression: "A_mf_py12 / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacture
+              source_ids:
+                - wipo-py12-gravure-2004
+            ranges: []
+        - row_id: mf_toluene
+          role: "Toluene"
+          name: "Toluene"
+          flow_type: "product"
+          flow_ref:
+            uuid: "33ac34b7-d691-4eda-8563-daef49a05157"
+          property_unit: "Mass / kg"
+          description: "Separately purchased formulation/let-down toluene only; CAS 108-88-3, production mix at plant, native geography unspecified. Its native residual CPC35499 classification is disclosed metadata debt; physical identity is consistent. Solvent already inside the vehicle is not added again."
+          amount:
+            expression: "A_mf_toluene / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacture
+              source_ids:
+                - wipo-py12-gravure-2004
+            ranges: []
+        - row_id: mf_beads
+          role: "Glass grinding beads"
+          name: "Glass grinding beads"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual make-up/replacement beads consumed by the bead mill; initial media charge and closing retained charge reconciled, not a fresh full charge every batch."
+          amount:
+            expression: "A_mf_beads / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacture
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: mf_filter
+          role: "Polypropylene filter bag"
+          name: "Polypropylene filter bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One filter medium; weigh actual replacement consumption. Captured ink is counted in residue mass and not as additional polymer procurement."
+          amount:
+            expression: "A_mf_filter / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacture
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: mf_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Energy / MJ"
+          description: "Native identity is CN, grid-average consumption mix to user, below 1 kV. It is not medium-voltage electricity or a universal supplier. Include milling, mixing, extraction, cooling, filtration, filling, warehouse handling, cleaning and allocated shared services once; internally generated compressed air is not a second purchase."
+          amount:
+            expression: "A_mf_electricity / Q MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mf_bulk
+          role: "Gravure Ink"
+          name: "Gravure Ink"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c2ed843f-16bf-462a-8ff7-ae78e95e5c4c"
+          property_unit: "Mass / kg"
+          description: "Internal quality-released bulk transfer P, not the terminal reference output. Preserve the native toluene-based low-viscosity production mix at plant; no native geography or CAS is specified. The paper and resin/pigment qualifiers come from this PCR and foreground records, not a more specific native grade."
+          amount:
+            expression: "A_mf_bulk / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacture
+              source_ids:
+                - wipo-py12-gravure-2004
+            ranges: []
+      waste:
+        - row_id: mf_reject
+          role: "Rejected PY12 toluene gravure ink"
+          name: "Rejected PY12 toluene gravure ink"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded wet ink only, with actual receiving treatment operator and mass/composition; returned ink retained for rework stays internal and is not a waste output or new accepted production."
+          amount:
+            expression: "A_mf_reject / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacture
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: mf_beads_waste
+          role: "Spent glass grinding beads"
+          name: "Spent glass grinding beads"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual separated spent media to its recipient; distinguish adhering ink from dry bead mass and avoid duplicating the same residue in filter waste."
+          amount:
+            expression: "A_mf_beads_waste / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacture
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+      elementary:
+        - row_id: mf_toluene_air
+          role: "Toluene to air"
+          name: "Toluene to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual after-control stack plus fugitive toluene, measured/speciated independently of total physical closure. Record medium, capture path and control performance; no assumption that all input solvent evaporates."
+          amount:
+            expression: "A_mf_toluene_air / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: mf_pigment_air
+          role: "C.I. Pigment Yellow 12 dust to air"
+          name: "C.I. Pigment Yellow 12 dust to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Uncaptured pigment-bearing airborne dust after control. Record actual composition and particle-size evidence; do not assume PM2.5 or turn captured filter material into an elementary emission."
+          amount:
+            expression: "A_mf_pigment_air / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+  - id: delivery
+    label: "Filling, stock and factory-gate delivery"
+    inputs:
+      product:
+        - row_id: dp_bulk
+          role: "Gravure Ink"
+          name: "Gravure Ink"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c2ed843f-16bf-462a-8ff7-ae78e95e5c4c"
+          property_unit: "Mass / kg"
+          description: "Same physical P transfer as mf_bulk; preserve the same native limitations. Match lot and transferred burdens, then eliminate this paired internal transfer when consolidating. Opening/closing finished stocks and their carried burdens are separately reconciled in cp_delivery."
+          amount:
+            expression: "A_dp_bulk / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - wipo-py12-gravure-2004
+            ranges: []
+        - row_id: dp_drum
+          role: "Steel drum with closure"
+          name: "Steel drum with closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One assembled solvent-compatible drum. Measure empty mass separately from net ink, retain actual reuse/return history and cleaning. A compatible Mass/kg identity for the complete drum remains to be verified. Record separately any actual non-integral packaging components."
+          amount:
+            expression: "A_dp_drum / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dp_delivered
+          role: "Gravure Ink"
+          name: "Gravure Ink"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c2ed843f-16bf-462a-8ff7-ae78e95e5c4c"
+          property_unit: "Mass / kg"
+          description: "Terminal Product output: exactly 1 kg net delivered liquid PY12 toluene publication-gravure ink; excludes packaging mass. Native identity remains low-viscosity toluene-based production mix at plant, geography unspecified; it supplies no recipe, loss, energy, supplier or application factor."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - wipo-py12-gravure-2004
+            ranges: []
+      waste:
+        - row_id: dp_loss
+          role: "Discarded PY12 gravure ink from filling and storage"
+          name: "Discarded PY12 gravure ink from filling and storage"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual wet loss or disposed expired ink with destination. Undelivered good stock is carried, not counted as delivered Q or discarded by default."
+          amount:
+            expression: "A_dp_loss / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+      elementary:
+        - row_id: dp_toluene_air
+          role: "Toluene to air"
+          name: "Toluene to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual independently supported after-control filling, finished-storage and dispatch toluene releases. The environmental monitoring lead supplies species evidence to the dispatch owner; exclude sources already counted in manufacture or cleaning."
+          amount:
+            expression: "A_dp_toluene_air / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+  - id: cleaning
+    label: "Cleaning and collected waste management"
+    inputs:
+      product:
+        - row_id: cl_toluene
+          role: "Toluene"
+          name: "Toluene"
+          flow_type: "product"
+          flow_ref:
+            uuid: "33ac34b7-d691-4eda-8563-daef49a05157"
+          property_unit: "Mass / kg"
+          description: "Separately acquired fresh cleaning toluene only; same CAS and native limitations as mf_toluene. Assign invoices/withdrawals disjointly between formulation and cleaning. Internal recirculation is not repeated external purchase."
+          amount:
+            expression: "A_cl_toluene / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: cl_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Treated municipal water, production mix at plant; native geography unspecified and treatment varies by source. Ancillary aqueous cleaning/cooling make-up only if used, not a water-based ink carrier. Mass is the reference property; native secondary volume coefficient is not a measured site density."
+          amount:
+            expression: "A_cl_water / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: cl_wipe
+          role: "Polypropylene cleaning wipe"
+          name: "Polypropylene cleaning wipe"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Specific dry wipe material; independently weigh solvent retained in used wipes and do not procure it a second time."
+          amount:
+            expression: "A_cl_wipe / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cl_spent_solvent
+          role: "Spent toluene cleaning liquor"
+          name: "Spent toluene cleaning liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whole collected liquid with resin/pigment content, water fraction and actual receiving operator. It is neither emitted to air nor credited as recovered solvent without a separate verified recovery system."
+          amount:
+            expression: "A_cl_spent_solvent / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: cl_washwater
+          role: "Ink-contaminated cleaning wastewater"
+          name: "Ink-contaminated cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whole actual aqueous waste to its recipient, with independently measured pollutants. Collection/transfer is a waste exchange, not direct discharge; model actual treatment and any verified releases separately."
+          amount:
+            expression: "A_cl_washwater / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: cl_used_filter
+          role: "Used polypropylene filter bag with retained ink"
+          name: "Used polypropylene filter bag with retained ink"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whole captured solid, filter polymer plus retained ink; identify composition, hazardous constituents, destination and receiving facility. Do not duplicate ink drained into spent cleaning liquor."
+          amount:
+            expression: "A_cl_used_filter / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+        - row_id: cl_used_wipe
+          role: "Used polypropylene wipe with retained ink"
+          name: "Used polypropylene wipe with retained ink"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One actual solid stream to its receiving facility; retain water/solvent subledgers and avoid counting the same collected material as an elementary flow."
+          amount:
+            expression: "A_cl_used_wipe / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+      elementary:
+        - row_id: cl_toluene_air
+          role: "Toluene to air"
+          name: "Toluene to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Independently quantified after-control cleaning/tank-storage fugitives not already in cp_air. Reconcile retained solvent in waste, product and inventory; residual uncertainty remains explicit."
+          amount:
+            expression: "A_cl_toluene_air / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids:
+                - epa-eiip-ink-manufacture-2005
+            ranges: []
+allocation_rules:
+  - rule_id: al_trace
+    applies_to: "all inventory rows"
+    rule: "Trace physical lots and causal service use before allocation. Retain every failed/zero-output run, test, cleaning and rework burden attributable to the selected product cohort. Assign shared services by measured machine time/load or another documented physical driver; never dilute with other colours or routes. No patent output yield is assumed."
+    source_ids:
+      - epa-eiip-ink-manufacture-2005
+  - rule_id: al_stock
+    applies_to: "manufacture; delivery"
+    rule: "Maintain separate WIP, production-transfer and finished-stock ledgers and carried burden vectors by lot. Production transfer P is paired with its receipt, then cancelled in consolidation. Do not count P plus closing stock as two production outputs. Q remains actual net delivery; closing undelivered stock and its burdens are carried, never included in Q or granted an avoided-production credit. Opening stock delivered now brings its historical burdens."
+    source_ids:
+      - epa-eiip-ink-manufacture-2005
+  - rule_id: al_returns
+    applies_to: "delivery; cleaning"
+    rule: "Link every return/reacceptance/rework event to its original lot and delivery. A return cancels the relevant delivery contribution and restores traceable stock and carried burdens; a later handover enters net delivered Q only after that cancellation, never as a second unique delivery. Returned reacceptance is not new production. Disclose cross-period reconciliation; nonpositive Q cannot be normalized. Captured residues or solvents are wastes unless actual coproduct functionality and receiving system are separately demonstrated; no default substitution credit."
+    source_ids:
+      - epa-eiip-ink-manufacture-2005
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_manufacture
+      process_id: "manufacture"
+      flow_role: "Material, WIP, P and rejects"
+      record_type: "batch ledger"
+      raw_fields: "lot; product/route/state; period; full supplied vehicle/pigment/toluene issues and returns; active/solvent/water assays; opening/closing WIP masses and carried burdens; P transfers; failures/zero output; rework links; beads/filter consumed; rejects and receivers"
+      collection_method: "Owner: production/material-accounting lead. Calibrated weighing, issue/return slips, batch/QC sheets and opening/closing WIP counts; pair P by lot with delivery receipt. Retain all runs, including failed and zero-output runs. Retain undivided raw period numerator records, conversions and carried WIP/finished-stock burden vectors; do not execute A/Q during collection."
+      unit: "kg"
+      frequency: "Each batch and stock close"
+      temporal_coverage: "Complete actual period plus historical carry records"
+      site_scope: "Selected ink line and causal shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scales; batch identity; assays; stock/burden ledger; acceptance and disposal receipts"
+    - protocol_id: cp_delivery
+      process_id: "delivery"
+      flow_role: "Finished stock, drums, Q and returns"
+      record_type: "delivery stock ledger"
+      raw_fields: "lot; P receipt; opening/closing finished mass and carried burdens; drum tare/closure; filled gross/net; accepted dispatch event; returns/original event; reacceptance; storage residence/handling/filling loads; spills/expiry and receiver; positive net Q; after-control filling/storage toluene concentrations and measured integrated gas volumes"
+      collection_method: "Owner: warehouse/dispatch controller. Use calibrated gross-minus-tare and signed factory-gate handover/return documents, unique event IDs and physical stock reconciliation; quality release alone is not delivery. Trace returns across periods and restored burdens; no reacceptance creates output. Retain actual included storage, packaging, handling and dispatch burdens. The environmental monitoring lead provides independent species/air-medium and control evidence for filling/storage/dispatch releases, including fugitive sources; no closure residual substitutes for measurement. Retain undivided raw period numerator records, conversions and carried WIP/finished-stock burden vectors; do not execute A/Q during collection."
+      unit: "kg; event; residence time"
+      frequency: "Each handover/return and stock close"
+      temporal_coverage: "Complete actual period and returned-lot history"
+      site_scope: "Declared factory-gate handover; selected lots only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Net weight/tare; signed receipts; unique IDs; physical stocks; historical burden vectors"
+    - protocol_id: cp_energy
+      process_id: "manufacture"
+      flow_role: "Purchased electricity for whole declared system"
+      record_type: "meter record"
+      raw_fields: "period; opening/closing kWh; submeter; voltage; CN provider/grid period; machine hours/load; milling/cooling/extraction/filling/storage/handling/cleaning allocations; historical stock energy burden"
+      collection_method: "Owner: site energy engineer. Meter all included operations once and reconcile shared meter allocation without duplicating downstream row purchases; retain raw kWh, use mu_energy for MJ. A different voltage or country requires a compatible identity, not silent reuse of the CN below-1-kV native row. Retain undivided raw period numerator records, conversions and carried WIP/finished-stock burden vectors; do not execute A/Q during collection."
+      unit: "kWh; MJ"
+      frequency: "Continuous meters and each reporting close"
+      temporal_coverage: "Same complete period, plus carried-stock energy"
+      site_scope: "All included operations at selected site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration; voltage; bills; causal allocation and no double counting"
+    - protocol_id: cp_air
+      process_id: "manufacture"
+      flow_role: "Manufacturing toluene and PY12 dust to air"
+      record_type: "species monitoring"
+      raw_fields: "species/CAS; medium; source; sampled concentrations; measured flow rates and duration or integrated volume; standard conditions; stack/fugitive split; capture; control inlet/outlet; retained solvent in ink/stocks/wastes; dust composition/size; detection limits"
+      collection_method: "Owner: environmental monitoring lead. Retain independently supported species masses using measured concentrations and appropriately integrated gas volumes, or a verified species-specific model with all retention paths. Separate captured waste from air releases, do not infer pollutant mass from a total-mass or COD residual. Record actual high-impact impurity species as additional separate rows if present. Retain undivided raw period numerator records, conversions and carried WIP/finished-stock burden vectors; do not execute A/Q during collection."
+      unit: "kg; concentration; gas volume"
+      frequency: "Representative source campaigns linked to actual batches and period"
+      temporal_coverage: "Whole actual period including start-up/failure/cleaning interface"
+      site_scope: "Manufacturing sources only; cp_cleaning handles disjoint cleaning sources"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Laboratory reports; species/medium; detection limits; gas integration; uncertainty"
+    - protocol_id: cp_cleaning
+      process_id: "cleaning"
+      flow_role: "Cleaning inputs, liquid/solid waste and cleaning emissions"
+      record_type: "cleaning and transfer record"
+      raw_fields: "event/lot; fresh toluene; water mass or volume/density/temperature; dry wipe; return loop; spent liquor/washwater/used filter/used wipe gross and composition; retained solvent/water; tank opening/closing; recipient/treatment; actual after-control cleaning toluene emission evidence"
+      collection_method: "Owner: cleaning and waste coordinator. Weigh fresh supply and each separate captured liquid/solid stream; record receiving facility and actual treatment. Keep independent species analysis and cleaning source measurements with no overlap with cp_air. Closed circulation is internal; no automatic recovery yield or substitution credit. Retain undivided raw period numerator records, conversions and carried WIP/finished-stock burden vectors; do not execute A/Q during collection."
+      unit: "kg; m3 if measured"
+      frequency: "Each cleaning/transfer and tank close"
+      temporal_coverage: "Same complete actual period including failure/rework cleaning"
+      site_scope: "Selected line plus causally allocated shared cleaning"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Weighing; composition; storage; manifests/recipient; species monitoring"
+  calculation_rules:
+    - id: cr_match_ledgers
+      applies_to: "all inventory rows"
+      rule: "Before normalization, construct raw attributable A_r for the delivered cohort from actual supplies and services plus opening WIP/finished-stock burden vectors and their historical records, less quantities/burdens genuinely retained in closing WIP/finished stocks. Trace actual returns and failure/rework causes; do not erase failures or invent negative burdens. Close physical production and stock accounts separately, pair mf_bulk with dp_bulk by P and cancel the internal transfer when consolidated. Unresolved stock/burden attribution is a data gap, never zero."
+      inputs:
+        - "raw supplies"
+        - "raw services"
+        - "WIP records"
+        - "finished-stock records"
+        - "carried burden vectors"
+        - P
+        - "delivery events"
+      output: "A_r; positive Q"
+      source_ids:
+        - epa-eiip-ink-manufacture-2005
+    - id: cr_report_once
+      applies_to: "all inventory rows"
+      rule: "For each exchange r report x_r = A_r / Q once, after raw unit conversion and lot/burden matching. Q is unique positive net actually delivered kg of the declared cohort after linked return cancellations; dp_delivered is 1 kg. Inventory amount cards and protocol aggregation refer to this same operation, not additional divisions. Never normalize failed runs separately or replace Q with P."
+      inputs:
+        - A_r
+        - Q
+      output: "x_r per 1 kg reference flow"
+      source_ids:
+        - epa-eiip-ink-manufacture-2005
+    - id: cr_physical_balances
+      applies_to: "manufacture; delivery"
+      rule: "Before attribution or normalization, close physical kg ledgers: manufacturing opening WIP plus actual wet material input equals P plus closing WIP plus actual waste and air/water outlets. Separately, delivery opening bulk-buffer/filling-WIP/finished stock plus P and actual returns equals gross outward handovers plus closing bulk-buffer/filling-WIP/finished stock plus measured filling/storage waste and air outlets. Stock burdens travel with these same lots. P is an internal release, never a second terminal output; its inclusion does not authorize adding same-lot closing stock again as production. Net delivered Q follows the linked return convention in cp_delivery; it excludes every undelivered closing stock. Packaging has its own physical ledger, outside net ink mass. Species/element checks use independent assays and monitored species, not an unknown outlet fitted to either residual."
+      inputs:
+        - "raw wet masses"
+        - P
+        - "WIP masses"
+        - "finished stocks"
+        - "gross handovers"
+        - "linked returns"
+        - "independent assays"
+      output: "separate physical mass balances"
+      source_ids:
+        - epa-eiip-ink-manufacture-2005
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify complete native names/routes/form/grade/geography/reference dimensions; qualify actual providers independently. Explicitly retain toluene residual classification debt, CN below-1-kV electricity limits and unspecified ink/water geography. Unresolved auxiliary UUIDs require later matching, not invented substitutions."
+      evidence: "Direct native records; supplier documents; traceable exact support chain"
+    - id: dq_complete
+      applies_to: "all inventory rows"
+      requirement: "Preserve actual complete reporting period, matched product/route/state, failed and zero-output runs, rework/returns, opening/closing WIP and finished goods plus carried burdens. Record zero/absence with evidence and independently measured actual species; investigate mass/element residuals without fitting them."
+      evidence: "Raw ledgers; historical burden vectors; QC; monitoring and uncertainty"
+validation_rules:
+  - rule_id: val_gate
+    applies_to: "dp_delivered"
+    rule: "Require a unique terminal Product output with the reference UUID and exactly 1 kg; both languages select dp_delivered. P transfers and stocks cannot be substituted for Q. Require positive matched net delivery, returned-event cancellation and stock/burden closure before accepting dataset amounts."
+    source_ids:
+      - epa-eiip-ink-manufacture-2005
+  - rule_id: val_quantities
+    applies_to: "all inventory rows"
+    rule: "Verify complete raw numerator coverage, one raw conversion and one cr_report_once operation, paired/cancelled internal transfers, no repeated purchased formulation components, no duplicate return production and no omitted warehouse/dispatch/cleaning/failure burdens. Retain undelivered stocks and historical burdens separately."
+    source_ids:
+      - epa-eiip-ink-manufacture-2005
+  - rule_id: val_species
+    applies_to: "manufacture; cleaning"
+    rule: "Validate physical mass/elements independently of actual species evidence. Require after-control medium, sampling/model basis, captured liquid/solid recipients and no assumed total-solvent release or recovery credit. Hazardous minor constituents cannot disappear by a generic mass cutoff. Unmeasured applicable pathways remain explicit gaps."
+    source_ids:
+      - epa-eiip-ink-manufacture-2005
+  - rule_id: val_route
+    applies_to: "all inventory rows"
+    rule: "Reject incompatible colour/vehicle/milling form, water/UV/toner route, native hard CAS/grade/medium or reference dimension. Require the packaging reference dimension to support measured mass, including its declared closure coverage. A record UUID or schema pass alone does not establish scientific or supplier applicability."
+    source_ids:
+      - wipo-py12-gravure-2004
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Declared paper publication-gravure ink input with the same formulation/state and actual delivery gate"
+  allowed_use: "Foreground study or qualified background use after full upstream, site, supplier, inventory-carry and waste-treatment matching"
+  excluded_use: "Universal printing ink; other colours/vehicles/routes; printed-area equivalence; legal/food-contact suitability; default recovery credit; science approval from technical checks"
+  required_metadata: "actual delivery gate and period; net Q and return convention; lot cohort; PY12 CAS/grade/surface treatment; vehicle resin chemistry and supplied solids; solvent/impurity composition; viscosity and temperature; pigment/nonvolatile fractions; paper publication-gravure use; plant and geography; below-1-kV CN electricity; drum specification; WIP/finished-stock and carried-burden records; capture/treatment recipients"
+  required_quality_disclosure: "Actual period, recipe, provider/voltage/geography, opening/closing stock and burden vectors, failed/zero-output/rework/return handling, included storage/packing/dispatch, species evidence, waste recipients, UUID gaps, uncertainty and explicit exclusions"
+  update_trigger: "Pigment/vehicle/solvent/form/route or delivery-gate change; native identity correction; material stock/burden or control-system change; new representative foreground evidence"
+data_sources:
+  - id: "epa-eiip-ink-manufacture-2005"
+    type: "official_guidance"
+    reference: "US EPA, EIIP Volume II Chapter 8, February 2005, sections 2.1-2.3 and 4-5. https://www.epa.gov/sites/production/files/2015-08/documents/ii08_feb2005.pdf"
+    used_for: "Manufacturing operations, filling, cleaning, source/species-specific emission assessment and material-balance cautions. US historical technical guidance; no adopted numeric emission/default loss/control factor, recipe or universal LCA stock-allocation formula. Raw stock/normalization protocols are explicit requirements of this PCR."
+  - id: "wipo-py12-gravure-2004"
+    type: "literature"
+    reference: "Ciba Specialty Chemicals, WO2004013237A1, Organic solvent-based printing inks, 12 February 2004, printed p15 (PDF p16), Comparative Examples A and B. https://patents.google.com/patent/WO2004013237A1/en"
+    used_for: "Primary patent original scanned publication acquired through Google Patents PDF mirror, visually verified p16. Supports PY12 dry pigment bead-milled into rosin-modified phenolic resin solution in toluene with additional toluene. Comparative laboratory examples only; does not establish factory quantities, yield, emissions, energy, contemporary supplier coverage or approval. Dye/carbinol embodiments excluded."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f58b9e51eea86e3c9544e5c6fdbf13ceebb442fbe048b694d97b37e8561441eb"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6445"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6445
+          line: 62
+          column: 1
+        end:
+          offset: 9090
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased PY12 dry preparation, whole resin/toluene vehicle, separate toluene, packaging and utilities received at plant; opening WIP and finished stocks enter with traceable physical quantities and carried upstream/foreground burdens |\n| starting_condition_role | Foreground receipt-to-actual-factory-gate-delivery; cradle-to-gate results additionally attach upstream production, inbound transport and actual treatment |\n| product_classification_scope | Bounded PY12 toluene publication-gravure ink subset of CPC35130; not complete printing-ink coverage |\n| recursive_input_rule | No recursive copy of this ink process for purchased vehicle or dispersion; use actual independent upstream formulation datasets. Internal P transfer is paired and eliminated, not another procurement |\n| upstream_dataset_requirement | Match grade, wet/dry form, concentrations, route, delivery point, geography and period for each actual input. Identity UUID does not establish a supplier or numeric burden; unresolved auxiliary matches stay explicit |\n| disclosure | Document included storage, packaging, handling/dispatch, rework, shared utilities, actual capture/waste recipients, stock and carried burdens, exclusions and uncertainty. Outbound transport beyond factory-gate handover is a separate declared extension |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_route | manufacture | Include dosing, onsite pigment wetting/bead milling, let-down, cooling/extraction, filtering, tests, failures and rework. Whole purchased vehicle upstream production remains attached; its solvent/resin subledgers are not duplicate inputs. | epa-eiip-ink-manufacture-2005, wipo-py12-gravure-2004 |\n| sb_delivery | delivery | Include real filling, packaging, finished storage, handling, dispatch and associated losses up to actual factory-gate delivery. Preserve opening/closing finished stocks with burdens; consolidate paired P transfers exactly once. Printing drying/curing does not enter this boundary. | epa-eiip-ink-manufacture-2005 |\n| sb_releases | manufacture; cleaning | Separate retained product solvent, collected liquid/solid waste, captured material, actual after-control emissions and inventory changes. Record each actual VOC/high-impact species and medium separately; no default release, capture percentage or recovery credit. Add atomic rows for any additional actual high-impact species, fuel, heat, packaging or treatment exchange; retain measured zeros and justified absence. | epa-eiip-ink-manufacture-2005 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 296
+              line: 9
+              column: 54
+          text: "# PY12 toluene-based publication-gravure printing ink"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6445
+              line: 62
+              column: 1
+            end:
+              offset: 6466
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26040"
+      family: "allocation"
+      span:
+        start:
+          offset: 26040
+          line: 491
+          column: 1
+        end:
+          offset: 27730
+          line: 499
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_trace | all inventory rows | Trace physical lots and causal service use before allocation. Retain every failed/zero-output run, test, cleaning and rework burden attributable to the selected product cohort. Assign shared services by measured machine time/load or another documented physical driver; never dilute with other colours or routes. No patent output yield is assumed. | epa-eiip-ink-manufacture-2005 |\n| al_stock | manufacture; delivery | Maintain separate WIP, production-transfer and finished-stock ledgers and carried burden vectors by lot. Production transfer P is paired with its receipt, then cancelled in consolidation. Do not count P plus closing stock as two production outputs. Q remains actual net delivery; closing undelivered stock and its burdens are carried, never included in Q or granted an avoided-production credit. Opening stock delivered now brings its historical burdens. | epa-eiip-ink-manufacture-2005 |\n| al_returns | delivery; cleaning | Link every return/reacceptance/rework event to its original lot and delivery. A return cancels the relevant delivery contribution and restores traceable stock and carried burdens; a later handover enters net delivered Q only after that cancellation, never as a second unique delivery. Returned reacceptance is not new production. Disclose cross-period reconciliation; nonpositive Q cannot be normalized. Captured residues or solvents are wastes unless actual coproduct functionality and receiving system are separately demonstrated; no default substitution credit. | epa-eiip-ink-manufacture-2005 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 296
+              line: 9
+              column: 54
+          text: "# PY12 toluene-based publication-gravure printing ink"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26040
+              line: 491
+              column: 1
+            end:
+              offset: 26080
+              line: 491
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37650"
+      family: "validation"
+      span:
+        start:
+          offset: 37650
+          line: 528
+          column: 1
+        end:
+          offset: 39309
+          line: 537
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| val_gate | dp_delivered | Require a unique terminal Product output with the reference UUID and exactly 1 kg; both languages select dp_delivered. P transfers and stocks cannot be substituted for Q. Require positive matched net delivery, returned-event cancellation and stock/burden closure before accepting dataset amounts. | epa-eiip-ink-manufacture-2005 |\n| val_quantities | all inventory rows | Verify complete raw numerator coverage, one raw conversion and one cr_report_once operation, paired/cancelled internal transfers, no repeated purchased formulation components, no duplicate return production and no omitted warehouse/dispatch/cleaning/failure burdens. Retain undelivered stocks and historical burdens separately. | epa-eiip-ink-manufacture-2005 |\n| val_species | manufacture; cleaning | Validate physical mass/elements independently of actual species evidence. Require after-control medium, sampling/model basis, captured liquid/solid recipients and no assumed total-solvent release or recovery credit. Hazardous minor constituents cannot disappear by a generic mass cutoff. Unmeasured applicable pathways remain explicit gaps. | epa-eiip-ink-manufacture-2005 |\n| val_route | all inventory rows | Reject incompatible colour/vehicle/milling form, water/UV/toner route, native hard CAS/grade/medium or reference dimension. Require the packaging reference dimension to support measured mass, including its declared closure coverage. A record UUID or schema pass alone does not establish scientific or supplier applicability. | wipo-py12-gravure-2004 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 296
+              line: 9
+              column: 54
+          text: "# PY12 toluene-based publication-gravure printing ink"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37650
+              line: 528
+              column: 1
+            end:
+              offset: 37672
+              line: 528
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "sb_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6445"
+      source_span:
+        start:
+          offset: 7933
+          line: 77
+          column: 1
+        end:
+          offset: 8256
+          line: 77
+          column: 324
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_delivery"
+      identity_kind: "explicit"
+      unit_id: "normative_6445"
+      source_span:
+        start:
+          offset: 8257
+          line: 78
+          column: 1
+        end:
+          offset: 8598
+          line: 78
+          column: 342
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_releases"
+      identity_kind: "explicit"
+      unit_id: "normative_6445"
+      source_span:
+        start:
+          offset: 8599
+          line: 79
+          column: 1
+        end:
+          offset: 9088
+          line: 79
+          column: 490
+    - pointer: "/allocation_rules/0"
+      rule_id: "al_trace"
+      identity_kind: "explicit"
+      unit_id: "normative_26040"
+      source_span:
+        start:
+          offset: 26153
+          line: 495
+          column: 1
+        end:
+          offset: 26567
+          line: 495
+          column: 415
+    - pointer: "/allocation_rules/1"
+      rule_id: "al_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_26040"
+      source_span:
+        start:
+          offset: 26568
+          line: 496
+          column: 1
+        end:
+          offset: 27093
+          line: 496
+          column: 526
+    - pointer: "/allocation_rules/2"
+      rule_id: "al_returns"
+      identity_kind: "explicit"
+      unit_id: "normative_26040"
+      source_span:
+        start:
+          offset: 27094
+          line: 497
+          column: 1
+        end:
+          offset: 27728
+          line: 497
+          column: 635
+    - pointer: "/validation_rules/0"
+      rule_id: "val_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_37650"
+      source_span:
+        start:
+          offset: 37745
+          line: 532
+          column: 1
+        end:
+          offset: 38103
+          line: 532
+          column: 359
+    - pointer: "/validation_rules/1"
+      rule_id: "val_quantities"
+      identity_kind: "explicit"
+      unit_id: "normative_37650"
+      source_span:
+        start:
+          offset: 38104
+          line: 533
+          column: 1
+        end:
+          offset: 38505
+          line: 533
+          column: 402
+    - pointer: "/validation_rules/2"
+      rule_id: "val_species"
+      identity_kind: "explicit"
+      unit_id: "normative_37650"
+      source_span:
+        start:
+          offset: 38506
+          line: 534
+          column: 1
+        end:
+          offset: 38920
+          line: 534
+          column: 415
+    - pointer: "/validation_rules/3"
+      rule_id: "val_route"
+      identity_kind: "explicit"
+      unit_id: "normative_37650"
+      source_span:
+        start:
+          offset: 38921
+          line: 535
+          column: 1
+        end:
+          offset: 39307
+          line: 535
+          column: 387
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6445"
+      source_span:
+        start:
+          offset: 6445
+          line: 62
+          column: 1
+        end:
+          offset: 6466
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6445"
+      source_span:
+        start:
+          offset: 6494
+          line: 66
+          column: 1
+        end:
+          offset: 7860
+          line: 73
+          column: 269
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26040"
+      source_span:
+        start:
+          offset: 26040
+          line: 491
+          column: 1
+        end:
+          offset: 26080
+          line: 491
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37650"
+      source_span:
+        start:
+          offset: 37650
+          line: 528
+          column: 1
+        end:
+          offset: 37672
+          line: 528
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f58b9e51eea86e3c9544e5c6fdbf13ceebb442fbe048b694d97b37e8561441eb"
+  generated_content_sha256: "sha256:40acda50f3a64533803616a53feb04ef3f7abb35c77b8a17b1d60a805915afd3"

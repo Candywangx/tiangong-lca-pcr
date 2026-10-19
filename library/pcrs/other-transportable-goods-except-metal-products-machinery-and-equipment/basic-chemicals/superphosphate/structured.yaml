@@ -1,10 +1,1082 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34621"
-  title: "Superphosphate"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.superphosphate"
+  classification_refs: "CPC 3.0 34621 Superphosphate; narrower"
+  covered_products: "Cured bulk ungranulated SSP"
+  excluded_products: "TSP; mixed-acid concentrated products; PAPR; granular, ammoniated, blended or fortified products; pure monocalcium phosphate"
+  representative_product: "SSP powder with measured moisture and grade"
+  production_route: "Purchased-acid dilution; electric rock grinding; acidulation; curing; crushing and bulk dispatch"
+  market_state: "Solid powder mixture at actual moisture; mass reference is not P2O5 nutrient mass"
+functional_unit:
+  what: "Supply accepted cured SSP powder at the plant for phosphatic-fertilizer use; no field-effect equivalence asserted"
+  how_much: "1 kg accepted net SSP mixture"
+  how_well: "Declare moisture, total/available/water-soluble P2O5, free acidity, S/Ca, particle size, impurities and acceptance evidence for the applicable grade"
+  how_long_or_cycle: "Plant delivery for one declared period/campaign; no assumed service life or application count"
+  reference_flow_link: "ssp"
+system_boundary:
+  rules:
+    - rule_id: include_stages
+      applies_to: "ssp_production"
+      rule: "Include receiving/grinding, dilution, acidulation, curing, crushing, bulk handling, dust/scrubbing controls and rinsing. Meter stages separately then aggregate one foreground unit; internal SSP transfers are not another reference-product output."
+      source_ids:
+        - ec-lvic-aaf-2007
+        - epa-ap42-ssp-1993
+    - rule_id: retain_sulfate
+      applies_to: "ssp_production"
+      rule: "Calcium sulfate retained in SSP belongs to the product mixture; do not import wet-process phosphoric-acid filtration and invent a gypsum co-product."
+      source_ids:
+        - ec-lvic-aaf-2007
+    - rule_id: scope_conditions
+      applies_to: "ssp_production"
+      rule: "Verify absence of combustion-driven equipment, supplied steam/fuel drying, bagging, granulation, ammoniation, saleable scrubber acid and direct liquid environmental release. If any occurs, extend separately reviewed exchanges/process rules; do not continue this scope by assigning missing items zero."
+      source_ids:
+        - ec-lvic-aaf-2007
+        - epa-ap42-ssp-1993
+    - rule_id: emission_survey
+      applies_to: "ssp_production"
+      rule: "Survey post-control, curing-building and fugitive releases. Screen rock-borne metals/radionuclides/organics and cleaning agents; add each actually present unlisted species/aid separately with identity and quantity verification. This table alone does not prove inventory completeness. Verify stormwater and wastewater routes."
+      source_ids:
+        - epa-ap42-ssp-1993
+        - ec-lvic-aaf-2007
+boundary_abstraction:
+  declared_starting_condition: "Received beneficiated phosphate rock and purchased virgin contact-process 93–98% sulfuric acid solution; treated tap water and 1–35 kV power; traceable lots/providers"
+  starting_condition_role: "foreground production"
+  product_classification_scope: "Cured ungranulated bulk SSP subset of CPC 34621"
+  recursive_input_rule: "Purchased SSP is not phosphate-rock feed; disclose any same-category input and reassess applicability. Internal recycle does not import another background production burden"
+  upstream_dataset_requirement: "Use compatible upstream rock mining/beneficiation, acid manufacture, power, tap-water, inbound transport and off-site waste-treatment data; provider/composition/amount bases must match; missing backgrounds are not zero burdens"
+  disclosure: "Disclose start, upstream completion, campaign stocks, supplied solution/as-is product, waste destinations and release coverage; methodology is not a completed dataset"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Superphosphate"
+    uuid: "8c9749b5-e19f-4480-a575-3058aff804b3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - SKU
+    - "site/period"
+    - "SSP not TSP"
+    - "ungranulated/unammoniated/unblended"
+    - "acid/rock suppliers"
+    - "bulk delivery"
+    - moisture
+    - "total/available/water-soluble P2O5 and assay basis"
+    - "free acidity"
+    - "S/Ca"
+    - size
+    - "impurities/grade acceptance"
+    - "starting condition"
+    - "voltage/meter boundary and absence of combustion equipment"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "ssp"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "1 kg is delivered as-is net SSP mass excluding packaging; pair moisture with dry/as-is assay basis. Do not substitute pure phosphate or nutrient mass. Use cp_product."
+  - id: solution_basis
+    applies_to: "acid"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Input is delivered 93–98% solution mass; actual H2SO4 mass = solution mass times measured mass fraction. Carrier water is already included; added dilution water is separate."
+  - id: nutrient_basis
+    applies_to: "ssp"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Available P2O5 mass = as-is product mass times measured available-P2O5 fraction on the same basis. Distinguish total, available and water-soluble phosphorus; no nominal-label or historical-grade default conversion."
+  - id: electricity_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh using 1 kWh = 3.6 MJ; verify supplier electrical-energy reference, voltage and loss boundary. Unit conversion does not prove background compatibility."
+  - id: water_basis
+    applies_to: "water"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Measure new supplied volume; mass water balance uses measured/traceable density and temperature, not the database secondary mass coefficient."
+  - id: same_denominator
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "reference flow"
+      uuid: ""
+    required_unit: "1 kg"
+    rule: "Divide exchange totals by concurrent accepted net SSP mass in kg; reconcile curing work-in-progress, recycle, stocks and rejects separately. Every stage uses the same denominator."
+process_map:
+  - id: ssp_production
+    name: "Cured ungranulated SSP production"
+    inclusion: "required"
+    inclusion_condition: "When scoped route applies"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted SSP"
+process_inventory:
+  - id: ssp_production
+    label: "Cured ungranulated SSP production"
+    inputs:
+      product:
+        - row_id: rock
+          role: "rock"
+          name: "Phosphate Ore"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f71b42aa-e220-4371-8fa4-9aa8946a6262"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Phosphate ore received for electric grinding; measure delivered wet mass, moisture, P2O5 assay, carbonate carbon, organic carbon, F, Fe, Al, Mg and contaminants. Record beneficiation and grind size; do not treat the ore as pure apatite."
+          amount:
+            expression: "Collected exchange amount using cp_feed, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: acid
+          role: "acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Received 93–98% sulfuric acid solution before measured on-site dilution. Record actual concentration, virgin contact-acid supplier, impurities and delivered mass. This row includes its carrier water; not kg of pure H2SO4."
+          amount:
+            expression: "Collected exchange amount using cp_feed, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: electricity
+          role: "electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Purchased CN grid-average AC at 1–35 kV; the selected native locationOfSupply is CN, and another geography requires a separately verified compatible flow/provider. Meter electricity for grinding, conveyors, crushing, handling, pumps and air-pollution control. Record meter boundary, supplier/grid period and transformer losses. The native property is Net calorific value; use MJ of metered electrical energy and disclose this naming convention, not a fuel heating value."
+          amount:
+            expression: "Collected exchange amount using cp_energy, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: water
+          role: "water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a8411b6-e476-4f98-9d77-0d492661a07f"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 ; unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Purchased treated tap water for acid dilution, scrubbing and cleaning. This selected UUID specifies production/supply at a water-treatment plant in Hong Kong (HK); use only for a compatible actual supply. Another geography or treatment requires a separately verified flow/provider. Meter only new supply; internally circulated water is not another input. Native reference is volume m3; do not apply the database screening mass coefficient as site density."
+          amount:
+            expression: "Collected exchange amount using cp_water, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ssp
+          role: "ssp"
+          name: "Superphosphate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8c9749b5-e19f-4480-a575-3058aff804b3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One accepted cured ungranulated SSP mixture at bulk dispatch, including actual moisture and retained calcium sulfate, excluding packaging and rejected product. Its grade must be measured; the identity record’s 0-20-0-11S description is not a default assay."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+                - agrophos-ssp-process
+            ranges: []
+      waste:
+        - row_id: scrubber_purge
+          role: "scrubber_purge"
+          name: "Fluoride/phosphate-bearing aqueous SSP scrubber purge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Fluoride/phosphate-bearing aqueous SSP scrubber purge sent to off-site treatment; wet solution mass, acidity, dissolved/suspended solids and receiver acceptance required. Rinse liquor joining the same tank is included once. Internal reuse is excluded from this outward exchange."
+          amount:
+            expression: "Collected exchange amount using cp_waste, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: scrubber_sludge
+          role: "scrubber_sludge"
+          name: "Silica/phosphate-bearing SSP scrubber sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional settled silica/phosphate-bearing scrubber sludge sent off site; measure wet mass, dry solids, fluoride, metals and acceptance. This is not assumed pure calcium fluoride or biological sewage sludge. Record zero with evidence if no separate solids removal occurs."
+          amount:
+            expression: "Collected exchange amount using cp_waste, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: dust_waste
+          role: "dust_waste"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional captured phosphate dust actually discarded, not returned to the den. Identify rock/product dust and contamination; weigh receiver-bound mass and document acceptance. Recycled dust remains an internal physical loop, not waste or airborne emission."
+          amount:
+            expression: "Collected exchange amount using cp_waste, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+      elementary:
+        - row_id: hf
+          role: "hf"
+          name: "hydrogen fluoride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9804-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Hydrogen fluoride after controls plus captured-site fugitive discharge to outdoor air, unspecified subcompartment. Measure kg of molecular HF with validated species-resolved sampling. Total fluorine alone cannot define this quantity."
+          amount:
+            expression: "Collected exchange amount using cp_air, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: sif4
+          role: "sif4"
+          name: "silicium tetrafluoride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a706-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Silicon tetrafluoride leaving controls/curing to outdoor air, unspecified subcompartment. Account for hydrolysis and actual sampling species; do not call scrubber hexafluorosilicate liquor airborne SiF4 or duplicate fluorine particulate mass."
+          amount:
+            expression: "Collected exchange amount using cp_air, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: pm_fine
+          role: "pm_fine"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Emitted aerodynamic PM2.5 from ore unloading/grinding, den, curing, crushing and dispatch; measure after controls plus fugitives, to outdoor air unspecified. Do not use collected baghouse dust as emitted PM."
+          amount:
+            expression: "Collected exchange amount using cp_air, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+                - epa-method201a-2020
+            ranges: []
+        - row_id: pm_mid
+          role: "pm_mid"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Emitted aerodynamic particles above 2.5 and up to 10 micrometres, to outdoor air unspecified. Derive only from paired compatible PM10 and PM2.5 measurements; report uncertainty and reject a negative difference."
+          amount:
+            expression: "Collected exchange amount using cp_air, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+                - epa-method201a-2020
+            ranges: []
+        - row_id: pm_coarse
+          role: "pm_coarse"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Emitted aerodynamic particles above 10 micrometres, to outdoor air unspecified. Requires compatible total filterable PM and PM10 coverage; no assumed fraction and no nested addition of total PM, PM10 and PM2.5."
+          amount:
+            expression: "Collected exchange amount using cp_air, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+                - epa-method201a-2020
+            ranges: []
+        - row_id: co2
+          role: "co2"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional mineral/fossil carbon dioxide released during acidulation, to outdoor air unspecified; measure carbonate carbon reacted and emitted CO2, with carbon retained in product/purge/stock reconciled. Electricity background CO2 is not another foreground emission."
+          amount:
+            expression: "Collected exchange amount using cp_carbon, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: co2_biogenic
+          role: "co2_biogenic"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional biogenic carbon dioxide, only where carbon-origin evidence and oxidation measurements establish it. Retain it in LCI even if a separate greenhouse-gas reporting convention omits it. Unknown rock organic-carbon origin must not be assigned biogenic by assumption."
+          amount:
+            expression: "Collected exchange amount using cp_carbon, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: methanethiol
+          role: "methanethiol"
+          name: "methyl mercaptan"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-9e59-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional methyl mercaptan to outdoor air unspecified only if species analysis detects CAS 74-93-1. BREF identifies mercaptan odour potential, not universal methanethiol release; an odour score or total VOC cannot supply this row. Add separately identified other compounds when the survey finds them."
+          amount:
+            expression: "Collected exchange amount using cp_air, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+        - row_id: water_vapour
+          role: "water_vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 ; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual process-attributable water vapour reaching outdoor air, unspecified subcompartment, from acidulation, curing or wet offgas controls after any actual capture/condensation. Reconcile outlet gaseous water with incoming carrier-air moisture on matched gas-quantity and T/P bases. Internal evaporation followed by recovery is not this external exchange. Keep recovered condensate, aqueous purge, product free/structural water and entrained liquid/aerosol water distinct; do not count the same water twice with particulate mass. No positive amount follows from the word evaporation, and zero requires actual absence or a supported net-water reconciliation; missing data remain unresolved. Use cp_water and the common complete-period normalization."
+          amount:
+            expression: "Collected exchange amount using cp_water, divided by concurrent accepted net SSP mass in kg, per 1 kg reference flow; no default quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-ssp-1993
+            ranges: []
+allocation_rules:
+  - rule_id: separate_recycle
+    applies_to: "ssp_production"
+    rule: "Retain internal dust/liquor recycle physically; it is not a co-product and does not duplicate upstream burdens. Disposed residues carry actual treatment burdens, without automatic substitution credits."
+    source_ids:
+      - ec-lvic-aaf-2007
+      - epa-ap42-ssp-1993
+  - rule_id: single_mixture
+    applies_to: "ssp"
+    rule: "Reference product is the complete SSP mixture; calcium sulfate, monocalcium phosphate and moisture are not separate co-products. No other sold product exists in this scope; do not allocate among nutrient components."
+    source_ids:
+      - ec-lvic-aaf-2007
+  - rule_id: shared_utilities
+    applies_to: "ssp_production"
+    rule: "Prefer submetering/campaign segregation for shared electricity, water and controls; otherwise use documented causal drivers and disclose shared scope/uncertainty. No default revenue split; never scale physical product quantity by a burden share."
+    source_ids:
+      - agrophos-ssp-process
+      - ec-lvic-aaf-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "ssp_production"
+      flow_role: "ssp"
+      record_type: "weighing/acceptance"
+      raw_fields: "campaign; SKU; net dispatch; returns/reacceptance; opening/closing WIP and finished stock; production history and carried inventory burdens; rejects/recycle; moisture; P2O5 forms/bases; free acid; S/Ca; size; impurities/grade"
+      collection_method: "Calibrated scales and stock reconciliation; paired laboratory samples and applicable-grade acceptance"
+      unit: "kg"
+      frequency: "each batch/dispatch"
+      temporal_coverage: "same declared period including starts/abnormal operation and cross-period curing"
+      site_scope: "declared scoped site, with stock/shared facilities identified"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; acceptance; detection limits; reconciliation; uncertainty"
+    - protocol_id: cp_feed
+      process_id: "ssp_production"
+      flow_role: "rock; acid"
+      record_type: "supply/feed records"
+      raw_fields: "provider; lot; receipt/feed amount; stock; acid concentration/impurities; ore moisture/composition/carbon origin/size; dilution water"
+      collection_method: "Calibrated weighing/mass meters, receipt assays and stock reconciliation; volume delivery needs measured density/temperature"
+      unit: "kg"
+      frequency: "each lot/feed"
+      temporal_coverage: "same declared period including starts/abnormal operation and cross-period curing"
+      site_scope: "declared scoped site, with stock/shared facilities identified"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; acceptance; detection limits; reconciliation; uncertainty"
+    - protocol_id: cp_energy
+      process_id: "ssp_production"
+      flow_role: "electricity"
+      record_type: "submeter records"
+      raw_fields: "kWh; voltage; provider/grid period; meter boundary; stages; losses/shared drivers; abnormal operation"
+      collection_method: "Stage electrical submeters and supply records; reconcile transformer/background loss boundaries"
+      unit: "MJ"
+      frequency: "continuous/campaign"
+      temporal_coverage: "same declared period including starts/abnormal operation and cross-period curing"
+      site_scope: "declared scoped site, with stock/shared facilities identified"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; acceptance; detection limits; reconciliation; uncertainty"
+    - protocol_id: cp_water
+      process_id: "ssp_production"
+      flow_role: "water; water_vapour"
+      record_type: "meter/recycle records"
+      raw_fields: "new water m3; use; temperature/density; acid carrier water; stocks; recycle liquor; purge; inlet/outlet gas moisture and matched gas quantities/rates; T/P and wet/dry basis; actual condensate/capture records; separate gas-phase H2O kg; evaporation/product water; free versus structural water and test conditions; independently measured reaction/phase conversion and water formation/consumption"
+      collection_method: "Meter new supplied liquid in m3 and reconcile uses; retain circulation separately without adding to supply. For water_vapour, use validated paired outlet gas-moisture/quantity measurements and inlet carrier-air moisture to determine process-attributable gaseous H2O kg after actual recovery. Keep liquid condensate/purge, entrained droplets, product free/structural water, independently evidenced reaction water and stocks separate. Use already integrated gas volume once, or integrate moisture concentration times volumetric flow rate over time. Do not infer evaporation from liquid supply volume or an unexplained balance residual; reconcile uncertainty and retain missing measurements as findings"
+      unit: "m3; kg"
+      frequency: "continuous/campaign"
+      temporal_coverage: "same declared period including starts/abnormal operation and cross-period curing"
+      site_scope: "declared scoped site, with stock/shared facilities identified"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; acceptance; detection limits; reconciliation; uncertainty"
+    - protocol_id: cp_waste
+      process_id: "ssp_production"
+      flow_role: "scrubber_purge; scrubber_sludge; dust_waste"
+      record_type: "outbound records/assays"
+      raw_fields: "wet mass; dry solids; F/P; acidity; metals/contamination; internal reuse; stock; receiver/treatment route"
+      collection_method: "Weigh outbound consignments and reconcile manifests; assay receiver conditions; generated internal amount is not external disposal"
+      unit: "kg"
+      frequency: "each consignment"
+      temporal_coverage: "same declared period including starts/abnormal operation and cross-period curing"
+      site_scope: "declared scoped site, with stock/shared facilities identified"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; acceptance; detection limits; reconciliation; uncertainty"
+    - protocol_id: cp_air
+      process_id: "ssp_production"
+      flow_role: "hf; sif4; pm_fine; pm_mid; pm_coarse; methanethiol"
+      record_type: "emission tests/survey"
+      raw_fields: "species/compartment; total-F/molecular basis; size; concentration; dry/wet gas volume; T/P; moisture; operating hours; controls/bypass; fugitives; detection limits/uncertainty"
+      collection_method: "Integrate post-control concentration with matching gas volume/time by source; quantify fugitives independently; validate species/size methods and use suitable alternatives for saturated wet gas"
+      unit: "kg"
+      frequency: "representative tests plus annual operating reconciliation"
+      temporal_coverage: "same declared period including starts/abnormal operation and cross-period curing"
+      site_scope: "declared scoped site, with stock/shared facilities identified"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; acceptance; detection limits; reconciliation; uncertainty"
+    - protocol_id: cp_carbon
+      process_id: "ssp_production"
+      flow_role: "co2; co2_biogenic"
+      record_type: "carbon balance/offgas"
+      raw_fields: "ore/acid carbon; carbonate/organic carbon; origin split; retained carbon in product/waste/stocks; measured CO2/gas volume"
+      collection_method: "Cross-check assays with gas volume/species measurements; unknown origin stays unresolved; origin labels do not replace measurement"
+      unit: "kg"
+      frequency: "each campaign assay/representative test"
+      temporal_coverage: "same declared period including starts/abnormal operation and cross-period curing"
+      site_scope: "declared scoped site, with stock/shared facilities identified"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; assays; acceptance; detection limits; reconciliation; uncertainty"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Sum raw exchange quantities over the complete same route, as-is grade and declared period, including attributable failed/zero-output batches, starts/stops, cleaning and rework, then divide once by positive accepted net SSP mass in kg; ssp output = 1 kg. Do not average successful-batch ratios or divide pre-normalized per-kg amounts again. Reconcile returns/reacceptance, curing WIP and finished stocks with production history and carried burdens so acceptance is credited once and the attributed numerator covers the same output; burden adjustments do not erase raw physical exchanges. Internal recycle is not new accepted output. Do not divide whole-plant input by partial dispatch. If accepted output is zero, preserve raw totals and disclose no unit result rather than divide or omit burdens."
+      inputs:
+        - cp_product
+        - cp_feed
+        - cp_energy
+        - cp_water
+        - cp_waste
+        - cp_air
+        - cp_carbon
+      output: "exchange amounts per 1 kg reference flow"
+      source_ids:
+        - ec-lvic-aaf-2007
+        - agrophos-ssp-process
+    - id: composition_reconciliation
+      applies_to: "rock; acid; ssp; scrubber_purge; scrubber_sludge"
+      rule: "Use measured composition to conserve total mass and actual elements, including P/F/C and relevant Ca/S/H/O: inputs plus opening stocks equal outputs plus closing stocks and disclosed uncertainty/residual. Keep MCP/calcium-sulfate formation, actual acid/carbonate/fluoride reactions and water/dry-component species accounts separate. Water inputs plus independently evidenced reaction formation equal outputs plus stock change and actual consumption; distinguish structural water from free water and do not count hydration/dehydration as new water molecules. Validate balanced actual reaction equations against independent reactant/product/phase measurements and uncertainty; do not import an ideal ore recipe, fit reaction water or dry matter to a residual, or use COD as carbon mass. Wet mass times (1 minus measured moisture fraction) is only method-defined dry mass: state which free/structural water or other volatiles the test removes; it is not automatically the mass of anhydrous phosphate/calcium-sulfate phases. Identify each P2O5 assay form and basis. Reaction checks do not supply ore composition, acid demand, yield or emissions."
+      inputs:
+        - cp_product
+        - cp_feed
+        - cp_water
+        - cp_waste
+        - cp_carbon
+      output: "element/water balances and composition disclosure"
+      source_ids:
+        - ec-lvic-aaf-2007
+    - id: fluorine_accounting
+      applies_to: "hf; sif4"
+      rule: "For species-resolved F-basis mass, convert to molecular mass using that assayed species molecular mass divided by the total mass of all F atoms in one molecule (conversion ratio M_species / (n_F × M_F), where n_F is 1 for HF and 4 for SiF4). Treat HF and SiF4 separately. Unspeciated total F cannot be arbitrarily split or added again to fluorine-bearing particle mass."
+      inputs:
+        - cp_air
+        - cp_waste
+      output: "molecular species releases and F balance"
+      source_ids:
+        - epa-ap42-ssp-1993
+        - ec-lvic-aaf-2007
+    - id: particle_partition
+      applies_to: "pm_fine; pm_mid; pm_coarse"
+      rule: "Paired compatible tests: middle fraction = PM10 minus PM2.5; coarse fraction = total filterable PM minus PM10. Preserve uncertainty and reject negative differences. Determine/report condensable PM separately and check overlap with species/size entries; do not force Method 201A onto wet-droplet conditions."
+      inputs:
+        - cp_air
+      output: "nonoverlapping air-particle fractions and coverage disclosure"
+      source_ids:
+        - epa-method201a-2020
+        - epa-ap42-ssp-1993
+  data_quality_requirements:
+    - id: identity_and_provider
+      applies_to: "all inventory rows"
+      requirement: "Establish UUID identity separately from provider amount/background compatibility; never replace unresolved UUIDs with adjacent species."
+      evidence: "provider specification, lot, composition, dimension and background metadata"
+    - id: coverage_and_time
+      applies_to: "ssp_production"
+      requirement: "Prove scoped operations and all boundary exchanges; disclose representativeness, annual/campaign coverage, missing/below-detection values and uncertainty."
+      evidence: "process map, meter register, assays/control records and source-by-source survey"
+    - id: no_defaults
+      applies_to: "all inventory rows"
+      requirement: "No 1993 factors, 2007 plant tables/BAT concentrations or commercial grade become positive-release, recipe or energy defaults; site_specific means future collection requirements."
+      evidence: "actual collection and method applicability"
+validation_rules:
+  - rule_id: reference_unique
+    applies_to: "ssp"
+    rule: "Exactly one ssp reference output: 1 kg accepted as-is net mass. Internal transfers are not another reference output; both languages, inventory, collection and conversion share the denominator."
+    source_ids:
+      - agrophos-ssp-process
+      - ec-lvic-aaf-2007
+  - rule_id: scope_and_background
+    applies_to: "ssp_production"
+    rule: "Verify every scope condition, upstream completion and provider basis; missing/incompatible backgrounds, unresolved waste identity or unproven zero releases prohibit a complete-dataset claim."
+    source_ids:
+      - ec-lvic-aaf-2007
+      - epa-ap42-ssp-1993
+  - rule_id: balances
+    applies_to: "ssp_production"
+    rule: "Recheck physical mass/water/P/F/C and burden ledgers separately; investigate discrepancies, match internal link quantities, retain sulfate in SSP without a gypsum co-product, and use no invented reaction yield."
+    source_ids:
+      - ec-lvic-aaf-2007
+  - rule_id: emission_completeness
+    applies_to: "ssp_production"
+    rule: "Verify HF/SiF4 molecular bases, nonoverlapping PM/condensable coverage and all actual species. Total F/VOC/odour is not a specific species; retain biogenic CO2 in LCI. Unmeasured or method-inapplicable releases remain unresolved."
+    source_ids:
+      - epa-ap42-ssp-1993
+      - epa-method201a-2020
+      - ec-lvic-aaf-2007
+published_dataset_profile:
+  dataset_role: "Production dataset after complete site collection/review; this record is methodology only"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Upstream modelling of compatible powdered SSP route/delivery, with actual grade and moisture disclosed"
+  excluded_use: "TSP/granular/mixed-acid/PAPR/fortified fertilizer; pure monocalcium phosphate; field nutrient equivalence; generic complete background with missing upstream data"
+  required_metadata: "All reference qualifiers, period/providers, map, stock/composition, units, upstream/waste links and compartments"
+  required_quality_disclosure: "Collection coverage, detection limits, basis compatibility, unresolved identity/releases, uncertainty and scientific-review status"
+  update_trigger: "Changed feed/acid origin or concentration, grade/size, route/delivery/controls, energy, release or background"
+data_sources:
+  - id: "ec-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "European Commission, LVIC-AAF BREF, August 2007, chapter 10, especially 10.1, 10.2, Figure 10.1 and 10.4.1–10.4.3; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic_aaf.pdf ; retrieved 2026-10-14"
+    used_for: "Route/SSP mixture, sale after curing, dust/fluorine control; no historical plant quantity, BAT concentration/efficiency, grade or residence-time default"
+  - id: "epa-ap42-ssp-1993"
+    type: "official_guidance"
+    reference: "US EPA AP-42 section 8.5.1 Normal Superphosphates, July 1993, reformatted January 1995, pp. 8.5.1-1–4; https://www.epa.gov/sites/default/files/2020-09/documents/8.5.1_normal_superphosphates.pdf ; retrieved 2026-10-14"
+    used_for: "Acidulation/curing and source-specific fluorine/particles; E-rated historical factors not adopted; absent metal/organic factors do not establish zero releases"
+  - id: "epa-ap42-tsp-1993"
+    type: "official_guidance"
+    reference: "US EPA AP-42 section 8.5.2 Triple Superphosphates, July 1993, reformatted January 1995, p. 8.5.2-1; https://www.epa.gov/sites/default/files/2020-09/documents/8.5.2_triple_superphosphates.pdf ; retrieved 2026-10-14"
+    used_for: "Counterevidence/exclusion for phosphoric-acid TSP route; no imported TSP feed/yield"
+  - id: "agrophos-ssp-process"
+    type: "literature"
+    reference: "Agro Phos India Limited, Manufacturing Process, section 1 Single Super Phosphate (SSP); https://www.agrophos.com/manufacturing-process/ ; retrieved 2026-10-14"
+    used_for: "Producer purchased acid, powder/granular branches and assay acceptance; single-site bags/temperature/details not universal defaults; bagging branch not adopted"
+  - id: "epa-method201a-2020"
+    type: "method_factor"
+    reference: "US EPA Method 201A, October 7 2020, sections 1.1–1.6; https://www.epa.gov/sites/default/files/2019-08/documents/method_201a_0.pdf ; retrieved 2026-10-14"
+    used_for: "Stationary filterable PM2.5/PM10 and differences; unsuitable for saturated wet-droplet gas; condensables require suitable separate testing/overlap checks; no default coarse fraction"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:4ecbc7637429ec8ac024c63e7325e7463f0c0ce6b9b397fc2d0badaa7ddf480c"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5252"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5252
+          line: 62
+          column: 1
+        end:
+          offset: 7697
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received beneficiated phosphate rock and purchased virgin contact-process 93–98% sulfuric acid solution; treated tap water and 1–35 kV power; traceable lots/providers |\n| starting_condition_role | foreground production |\n| product_classification_scope | Cured ungranulated bulk SSP subset of CPC 34621 |\n| recursive_input_rule | Purchased SSP is not phosphate-rock feed; disclose any same-category input and reassess applicability. Internal recycle does not import another background production burden |\n| upstream_dataset_requirement | Use compatible upstream rock mining/beneficiation, acid manufacture, power, tap-water, inbound transport and off-site waste-treatment data; provider/composition/amount bases must match; missing backgrounds are not zero burdens |\n| disclosure | Disclose start, upstream completion, campaign stocks, supplied solution/as-is product, waste destinations and release coverage; methodology is not a completed dataset |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| include-stages | ssp_production | Include receiving/grinding, dilution, acidulation, curing, crushing, bulk handling, dust/scrubbing controls and rinsing. Meter stages separately then aggregate one foreground unit; internal SSP transfers are not another reference-product output. | ec-lvic-aaf-2007; epa-ap42-ssp-1993 |\n| retain-sulfate | ssp_production | Calcium sulfate retained in SSP belongs to the product mixture; do not import wet-process phosphoric-acid filtration and invent a gypsum co-product. | ec-lvic-aaf-2007 |\n| scope-conditions | ssp_production | Verify absence of combustion-driven equipment, supplied steam/fuel drying, bagging, granulation, ammoniation, saleable scrubber acid and direct liquid environmental release. If any occurs, extend separately reviewed exchanges/process rules; do not continue this scope by assigning missing items zero. | ec-lvic-aaf-2007; epa-ap42-ssp-1993 |\n| emission-survey | ssp_production | Survey post-control, curing-building and fugitive releases. Screen rock-borne metals/radionuclides/organics and cleaning agents; add each actually present unlisted species/aid separately with identity and quantity verification. This table alone does not prove inventory completeness. Verify stormwater and wastewater routes. | epa-ap42-ssp-1993; ec-lvic-aaf-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 251
+              line: 10
+              column: 1
+            end:
+              offset: 322
+              line: 10
+              column: 72
+          text: "# Cured ungranulated single superphosphate from purchased sulfuric acid"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5252
+              line: 62
+              column: 1
+            end:
+              offset: 5273
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_24689"
+      family: "allocation"
+      span:
+        start:
+          offset: 24689
+          line: 362
+          column: 1
+        end:
+          offset: 25672
+          line: 370
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| separate-recycle | ssp_production | Retain internal dust/liquor recycle physically; it is not a co-product and does not duplicate upstream burdens. Disposed residues carry actual treatment burdens, without automatic substitution credits. | ec-lvic-aaf-2007; epa-ap42-ssp-1993 |\n| single-mixture | ssp | Reference product is the complete SSP mixture; calcium sulfate, monocalcium phosphate and moisture are not separate co-products. No other sold product exists in this scope; do not allocate among nutrient components. | ec-lvic-aaf-2007 |\n| shared-utilities | ssp_production | Prefer submetering/campaign segregation for shared electricity, water and controls; otherwise use documented causal drivers and disclose shared scope/uncertainty. No default revenue split; never scale physical product quantity by a burden share. | agrophos-ssp-process; ec-lvic-aaf-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 251
+              line: 10
+              column: 1
+            end:
+              offset: 322
+              line: 10
+              column: 72
+          text: "# Cured ungranulated single superphosphate from purchased sulfuric acid"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 24689
+              line: 362
+              column: 1
+            end:
+              offset: 24729
+              line: 362
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35742"
+      family: "validation"
+      span:
+        start:
+          offset: 35742
+          line: 401
+          column: 1
+        end:
+          offset: 36970
+          line: 410
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| reference-unique | ssp | Exactly one ssp reference output: 1 kg accepted as-is net mass. Internal transfers are not another reference output; both languages, inventory, collection and conversion share the denominator. | agrophos-ssp-process; ec-lvic-aaf-2007 |\n| scope-and-background | ssp_production | Verify every scope condition, upstream completion and provider basis; missing/incompatible backgrounds, unresolved waste identity or unproven zero releases prohibit a complete-dataset claim. | ec-lvic-aaf-2007; epa-ap42-ssp-1993 |\n| balances | ssp_production | Recheck physical mass/water/P/F/C and burden ledgers separately; investigate discrepancies, match internal link quantities, retain sulfate in SSP without a gypsum co-product, and use no invented reaction yield. | ec-lvic-aaf-2007 |\n| emission-completeness | ssp_production | Verify HF/SiF4 molecular bases, nonoverlapping PM/condensable coverage and all actual species. Total F/VOC/odour is not a specific species; retain biogenic CO2 in LCI. Unmeasured or method-inapplicable releases remain unresolved. | epa-ap42-ssp-1993; epa-method201a-2020; ec-lvic-aaf-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 251
+              line: 10
+              column: 1
+            end:
+              offset: 322
+              line: 10
+              column: 72
+          text: "# Cured ungranulated single superphosphate from purchased sulfuric acid"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35742
+              line: 401
+              column: 1
+            end:
+              offset: 35764
+              line: 401
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "include_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_5252"
+      source_span:
+        start:
+          offset: 6387
+          line: 77
+          column: 1
+        end:
+          offset: 6708
+          line: 77
+          column: 322
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "retain_sulfate"
+      identity_kind: "explicit"
+      unit_id: "normative_5252"
+      source_span:
+        start:
+          offset: 6709
+          line: 78
+          column: 1
+        end:
+          offset: 6914
+          line: 78
+          column: 206
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "scope_conditions"
+      identity_kind: "explicit"
+      unit_id: "normative_5252"
+      source_span:
+        start:
+          offset: 6915
+          line: 79
+          column: 1
+        end:
+          offset: 7293
+          line: 79
+          column: 379
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "emission_survey"
+      identity_kind: "explicit"
+      unit_id: "normative_5252"
+      source_span:
+        start:
+          offset: 7294
+          line: 80
+          column: 1
+        end:
+          offset: 7695
+          line: 80
+          column: 402
+    - pointer: "/allocation_rules/0"
+      rule_id: "separate_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_24689"
+      source_span:
+        start:
+          offset: 24802
+          line: 366
+          column: 1
+        end:
+          offset: 25081
+          line: 366
+          column: 280
+    - pointer: "/allocation_rules/1"
+      rule_id: "single_mixture"
+      identity_kind: "explicit"
+      unit_id: "normative_24689"
+      source_span:
+        start:
+          offset: 25082
+          line: 367
+          column: 1
+        end:
+          offset: 25343
+          line: 367
+          column: 262
+    - pointer: "/allocation_rules/2"
+      rule_id: "shared_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_24689"
+      source_span:
+        start:
+          offset: 25344
+          line: 368
+          column: 1
+        end:
+          offset: 25670
+          line: 368
+          column: 327
+    - pointer: "/validation_rules/0"
+      rule_id: "reference_unique"
+      identity_kind: "explicit"
+      unit_id: "normative_35742"
+      source_span:
+        start:
+          offset: 35837
+          line: 405
+          column: 1
+        end:
+          offset: 36099
+          line: 405
+          column: 263
+    - pointer: "/validation_rules/1"
+      rule_id: "scope_and_background"
+      identity_kind: "explicit"
+      unit_id: "normative_35742"
+      source_span:
+        start:
+          offset: 36100
+          line: 406
+          column: 1
+        end:
+          offset: 36372
+          line: 406
+          column: 273
+    - pointer: "/validation_rules/2"
+      rule_id: "balances"
+      identity_kind: "explicit"
+      unit_id: "normative_35742"
+      source_span:
+        start:
+          offset: 36373
+          line: 407
+          column: 1
+        end:
+          offset: 36634
+          line: 407
+          column: 262
+    - pointer: "/validation_rules/3"
+      rule_id: "emission_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_35742"
+      source_span:
+        start:
+          offset: 36635
+          line: 408
+          column: 1
+        end:
+          offset: 36968
+          line: 408
+          column: 334
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5252"
+      source_span:
+        start:
+          offset: 5252
+          line: 62
+          column: 1
+        end:
+          offset: 5273
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5252"
+      source_span:
+        start:
+          offset: 5301
+          line: 66
+          column: 1
+        end:
+          offset: 6314
+          line: 73
+          column: 184
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_24689"
+      source_span:
+        start:
+          offset: 24689
+          line: 362
+          column: 1
+        end:
+          offset: 24729
+          line: 362
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35742"
+      source_span:
+        start:
+          offset: 35742
+          line: 401
+          column: 1
+        end:
+          offset: 35764
+          line: 401
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4ecbc7637429ec8ac024c63e7325e7463f0c0ce6b9b397fc2d0badaa7ddf480c"
+  generated_content_sha256: "sha256:af05ca163a5e367e2470849feae2d820bca5353a12606bf52937849836e89866"

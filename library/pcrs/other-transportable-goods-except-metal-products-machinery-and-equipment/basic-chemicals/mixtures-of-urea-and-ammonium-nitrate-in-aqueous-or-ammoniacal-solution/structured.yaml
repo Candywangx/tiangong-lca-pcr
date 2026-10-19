@@ -1,10 +1,1000 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34616"
-  title: "Mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.mixtures-of-urea-and-ammonium-nitrate-in-aqueous-or-ammoniacal-solution"
+  classification_refs: "CPC 3.0 34616; proposed narrower relation, not an accepted edge [un-cpc3-3461]"
+  covered_products: "Additive-free bulk aqueous UAN solution from received liquid urea/AN continuous mixing, with declared residual free NH3"
+  excluded_products: "Ammoniacal solvent recipes; additive grades; solid feed dissolution; integrated synthesis/recovery; batch heating; solid fertilizers; packaged supply"
+  representative_product: "Actual accepted bulk aqueous UAN grade; Yara UAN-32 is a liquid-product example, not its prescribed recipe"
+  production_route: "Received solution measurement; continuous static mixing; actual pH adjustment; indirect water cooling; storage/recovery; bulk net loadout"
+  market_state: "Accepted aqueous liquid mixture at factory gate; net solution mass as supplied"
+functional_unit:
+  what: "Supply a declared aqueous UAN manufacturing product; no equivalent yield or fertilizer application service is claimed"
+  how_much: "1 kg accepted net supplied solution"
+  how_well: "Actual urea/AN/free-NH3/water composition, total-N and three N-form assays, density/temperature, pH and bulk acceptance"
+  how_long_or_cycle: "One factory-gate supply event; storage time belongs to the declared manufacturing period, not an agricultural lifetime"
+  reference_flow_link: "uan_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "uan_mixing"
+      rule: "Include feed receipt, meters/static mixers, actual pH adjustment, indirect cooling, storage, transfer/loadout, sump recovery and attributable cleaning within one foreground unit. Keep stage measurements; internal blended UAN does not create another reference product."
+      source_ids:
+        - eu-lvic-aaf-2007
+        - efma-uan-2000
+    - rule_id: boundary_upstream
+      applies_to: "all external inputs"
+      rule: "Received feed solutions are not burden-free. Separate integrated synthesis from blending; do not import urea-prilling or AN-granulation emission factors into this liquid route. Unknown supplier solution mass/dry-solute basis leaves background linkage pending."
+      source_ids:
+        - eu-lvic-aaf-2007
+        - efma-uan-2000
+    - rule_id: boundary_losses
+      applies_to: "uan_mixing"
+      rule: "Include actual external wastes and emissions and demonstrate recovery/containment. EFMA's achievable zero for non-pressure aqueous mixing depends on operation and recycle; it cannot set adjustment, storage, cooling or loss quantities to zero without evidence. Off-site treatment is linked, not removed."
+      source_ids:
+        - efma-uan-2000
+    - rule_id: boundary_extensions
+      applies_to: "uan_mixing"
+      rule: "Verify the exclusion conditions before use. If added ingredients, utility chemicals, instrument air, steam, refrigerant, solid dissolution or final onsite treatment occurs, require scoped method evidence and its separate atomic inventory before calling the dataset complete. Disclose exclusion of capital construction and explain its relevance to the study."
+      source_ids:
+        - eu-lvic-aaf-2007
+        - efma-uan-2000
+boundary_abstraction:
+  declared_starting_condition: "Received concentrated urea and AN aqueous solutions and measured pH reagent at mixing-line inlet; their origins, assays, temperatures and stock coverage declared"
+  starting_condition_role: "Documented foreground feed-receipt interface, not a cradle-to-gate burden exemption"
+  product_classification_scope: "Aqueous continuous received-solution subset of CPC34616; classification does not establish reference composition or route"
+  recursive_input_rule: "No external UAN reprocessing feed in this method; internal sump/storage return remains internal. Recovered feed from a different unit requires a separately evidenced input and burden link before method extension"
+  upstream_dataset_requirement: "Link production and delivery of every external feed and electricity using actual solution assay/state and supplier reference amount; include upstream urea, AN, ammonia and nitric-acid manufacture, energy and emissions exactly once"
+  disclosure: "Declare site/grade/period, foreground interfaces, cooling and pH configuration, suppliers, origin, transport, capital-equipment boundary, recovery, losses, stock changes, wastewater receivers and any unmatched provider/flow basis"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution"
+    uuid: "0dc0af45-dde1-49e1-85d7-887b9c3f193d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Aqueous solvent"
+    - "urea and AN mass fractions"
+    - "free NH3"
+    - "water and impurities"
+    - total-N
+    - urea-N
+    - "ammoniacal-N and nitrate-N with analytical basis"
+    - "density and temperature"
+    - pH
+    - "absence of added inhibitors/other additives"
+    - "corrosion-compatible equipment"
+    - "feed-solution assays and origins"
+    - "continuous non-pressure route"
+    - "electric water-cooling configuration"
+    - "bulk delivery"
+    - "site/period"
+    - "compatible background-provider quantity bases"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference is 1 kg net accepted aqueous solution including carried water and measured solutes; exclude tank/truck/container mass. Collect with cp_product. All inventory and collection bases are per 1 kg reference flow."
+  - id: solution_basis
+    applies_to: "urea_solution; an_solution; nitric_adjustment; ammonia_adjustment; process_water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve each external feed's supplied-mass basis and measured assay. Do not substitute dry solute, kg N, nominal density or solid products. Carrier water within solution inputs is accounted in composition ledgers without adding a duplicate external water exchange."
+  - id: nitrogen_basis
+    applies_to: "uan_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Product kg, active urea/AN kg and nutrient kg N are distinct. Measured total-N and N-form fractions define optional nutrient results; nitrate/ammonium methods must state N versus full-species basis. No universal nutrient split is imposed."
+  - id: electric_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the direct-read electrical reference property name. Meter actual <1 kV electricity, convert kWh to MJ by 3.6 and link the same user boundary and supply mix; this property label is not a thermal-fuel recipe."
+  - id: balances
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile total mass, water, elemental N and urea-derived carbon including stocks and external losses. Internal recycle is recorded at both ends with equal quantity; unknown balance residuals cannot be labelled evaporation or assumed zero."
+process_map:
+  - id: uan_mixing
+    name: "Received-solution continuous mixing, pH control, water cooling, storage/recovery and bulk loadout"
+    inclusion: "required"
+    inclusion_condition: "Only declared aqueous additive-free solution route; separately measured stages aggregated in one unit"
+    role: "Foreground production"
+    quantitative_reference: "1 kg accepted net aqueous UAN solution"
+process_inventory:
+  - id: uan_mixing
+    label: "Received-solution continuous mixing, pH control, water cooling, storage/recovery and bulk loadout"
+    inputs:
+      product:
+        - row_id: urea_solution
+          role: "Concentrated aqueous urea solution"
+          name: "Concentrated aqueous urea solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Received liquid feed only. Measure net delivered solution mass, urea assay, carrier water, temperature and supplier basis; do not use a solid-urea or kg-N record as this entire solution."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: an_solution
+          role: "Concentrated aqueous ammonium nitrate solution"
+          name: "Concentrated aqueous ammonium nitrate solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Received AN solution, not CAN, double salt or solid prills. Retain actual NH4NO3 assay, water and trace impurities. A broad AN species identity does not establish the solution/provider mass convention."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: process_water
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Purchased de-ionised water added for formulation or clean-water rinsing. Count only external additions; water already in feed solutions is included in their full supplied mass and is not another purchase."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: cooling_makeup
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Purchased de-ionised make-up to the additive-free, indirect recirculating cooling-water loop when used. Keep its meter separate from formulation water and from internal circulated volume."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter electricity for feed pumps, electric actuators/instruments, mixing transfer, cooling fans/pumps and loadout at the declared low-voltage user boundary. Convert kWh to MJ; do not substitute a transmission service or thermal fuel. The selected native flow is CN grid-average consumption mix supplied to the user at <1 kV. For another geography, voltage or supply mix, verify a compatible flow and provider rather than extending this identity."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: ammonia_adjustment
+          role: "Ammonia"
+          name: "Ammonia"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9874382d-672c-4601-a3ce-9a4ae21e663b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Anhydrous gaseous NH3 for pH adjustment only when used. Measure actual mass and purity, inlet state and dosing; aqueous ammonia, a generic nitrogen index and ammonium-ion emissions are different identities. Supplier background must match the actual delivery interface."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: nitric_adjustment
+          role: "Aqueous nitric acid for UAN pH adjustment"
+          name: "Aqueous nitric acid for UAN pH adjustment"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When used, measure supplied solution mass, HNO3 assay and carrier water. Confirm its exact concentration and grade before UUID/provider linkage; neither a 40%, 50% nor 60% record covers all assays. Do not assume acid and ammonia doses both occur."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: uan_product
+          role: "Mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution"
+          name: "Mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0dc0af45-dde1-49e1-85d7-887b9c3f193d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One final accepted bulk aqueous UAN solution output after cooling, storage and net loadout acceptance. It includes measured dissolved urea, AN, residual free ammonia and water, but excludes shipping equipment. Internal blended solution and storage transfers are not additional reference outputs."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+      waste:
+        - row_id: rejected_solution
+          role: "Off-specification aqueous urea-ammonium-nitrate solution for external treatment"
+          name: "Off-specification aqueous urea-ammonium-nitrate solution for external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only net solution actually sent outside the unit as waste. Measure urea, nitrate/ammonium nitrogen, free ammonia, water, contamination and receiver conditions. Material recovered within the same unit remains an internal loop, not a waste output or credit."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: nitrogen_wastewater
+          role: "Urea-ammonium-nitrate-bearing cleaning wastewater for external treatment"
+          name: "Urea-ammonium-nitrate-bearing cleaning wastewater for external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Segregate cleaning/leak-collection wastewater not reused from rejected saleable concentrate. Measure water mass and nitrogen species/organic carbon; retain external treatment acceptance. Do not select electro-manganese-residue washing wastewater or a pollutant monitoring index."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: cooling_blowdown
+          role: "Additive-free indirect cooling-water blowdown for external treatment"
+          name: "Additive-free indirect cooling-water blowdown for external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only when the indirect recirculating loop has an external liquid purge. Measure salts, temperature, water mass and absence/presence of product leakage; do not combine it with nitrogen-bearing cleaning wastewater. A contaminated purge requires its composition and receiver to be reconsidered."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+      elementary:
+        - row_id: ammonia_air
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual NH3 reaching outdoor air from pH adjustment, vents, storage and loadout after any recovery; compartment is air, unspecified, CAS7664-41-7. Collect actual occurrence and species mass, not kg N or aqueous ammonium. Normal mixing has no prescribed emission factor; unknown losses are not zero."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+        - row_id: water_vapour_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual evaporated water reaching outdoor air from the cooling loop or liquid storage, CAS7732-18-5; air, unspecified. Distinguish evaporation from full recirculating water flow, liquid blowdown, condensate recovery and water retained in UAN."
+          amount:
+            expression: "Collect actual external quantity in the same period with the linked protocol and divide by accepted net supplied product mass; demonstrate non-occurrence, never replace unknown quantity with zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-uan-2000
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_physical
+    applies_to: "all inventory rows"
+    rule: "Retain the full physical mass/water/N/carbon ledger, stocks and internal-return measurements before assigning burdens. Internal recovered UAN and water are not co-products, avoided-product credits or external exchanges. Waste remains waste unless its actual beneficial product identity and recipient are separately established."
+    source_ids:
+      - efma-uan-2000
+  - rule_id: allocation_grade
+    applies_to: "uan_mixing"
+    rule: "Only one accepted product grade is represented by this dataset. Subdivide shared meters by measured line/grade activity and demonstrably causal pumping/cooling or cleaning demand; justify the key and uncertainty using site records. No generic mass fraction, energy demand or economic share is imposed. Never multiply physical product or waste output by an environmental allocation share."
+    source_ids:
+      - eu-lvic-aaf-2007
+      - efma-uan-2000
+  - rule_id: allocation_extension
+    applies_to: "uan_mixing"
+    rule: "A genuine exported usable heat stream or co-product falls outside this scoped single-product mixing method; establish functions, measurements and a justified allocation/subdivision rule before extension. No automatic negative burden for sump recovery, off-spec waste or hypothetical heat recovery."
+    source_ids:
+      - eu-lvic-aaf-2007
+      - efma-uan-2000
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "uan_mixing"
+      flow_role: "uan_product"
+      record_type: "Dispatch and acceptance"
+      raw_fields: "SKU; route; additives absence; equipment compatibility; net loaded mass; acceptance/return/reacceptance lot links; opening/closing stocks and WIP with carried burdens; urea/AN/free NH3/water/impurities; total-N and N forms; density/T; pH; receiver"
+      collection_method: "Calibrated tank/loadout mass meter or calibrated truck gross/tare scales; lot sampling with traceable urea, nitrate, ammoniacal-N and total-N analyses; verify supplied mass and composition closure, reconcile stock-adjusted accepted output"
+      unit: "kg"
+      frequency: "Continuous metering and every accepted lot"
+      temporal_coverage: "Same complete campaign/year"
+      site_scope: "Same aqueous grade and site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration; laboratory method and uncertainty; lot acceptance; stock reconciliation; actual formulation and corrosion-compatible equipment evidence"
+    - protocol_id: cp_feed
+      process_id: "uan_mixing"
+      flow_role: "urea_solution; an_solution; ammonia_adjustment; nitric_adjustment"
+      record_type: "Feed receipts and dosing"
+      raw_fields: "Supplier/source; lot; net solution mass; actual assay and species basis; water; temperature/density; gas T/P and purity; stock change; dosing and pH"
+      collection_method: "Calibrated mass flow meters and stock-corrected receipt/dosing records; representative lot analyses. Any volume-to-mass conversion requires measured same-temperature density; gas conversion requires actual T/P/composition/Z and supplier volumetric convention"
+      unit: "kg"
+      frequency: "Continuous feed/dose plus every incoming lot"
+      temporal_coverage: "Same complete campaign/year"
+      site_scope: "Same mixing-line boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Assay provenance; full supplied-mass versus active-component ledger; meter calibration; supplier interface and provider denominator"
+    - protocol_id: cp_water
+      process_id: "uan_mixing"
+      flow_role: "process_water; cooling_makeup; water_vapour_air"
+      record_type: "Water meters and balances"
+      raw_fields: "Separate formulation/rinse/cooling inlet masses; circulating flow; stocks; retained product water; recovery; blowdown; evaporated mass; leakage; measurement uncertainty"
+      collection_method: "Calibrated inlet meters; distinguish external make-up and internal recirculation; reconcile supplied-solution water, retained product, recovered liquid, measured blowdown and independently assessed evaporation; unclosed residual remains pending"
+      unit: "kg"
+      frequency: "Continuous meters and each cleaning/stock event"
+      temporal_coverage: "Same complete campaign/year"
+      site_scope: "Process and indirect cooler, separate sub-meters"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Water-balance residual; method for evaporation; recovered-liquid routing; additive-free cooling confirmation"
+    - protocol_id: cp_energy
+      process_id: "uan_mixing"
+      flow_role: "electricity"
+      record_type: "Electric meters"
+      raw_fields: "kWh by pump/fan/actuator/control/loadout stage; <1 kV interface; meter coverage; shared grade activity; supply region/time"
+      collection_method: "Calibrated user-side electric submeter totals; retain stage and operating-mode attribution and use 3.6 MJ/kWh; no imported steam or fuel inferred from an energy label"
+      unit: "MJ"
+      frequency: "Continuous meter and period reconciliation"
+      temporal_coverage: "Same complete campaign/year"
+      site_scope: "Same electric-drive mixing and cooler"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration; causal sharing key and uncertainty; provider grid/voltage and quantity compatibility"
+    - protocol_id: cp_waste
+      process_id: "uan_mixing"
+      flow_role: "rejected_solution; nitrogen_wastewater; cooling_blowdown"
+      record_type: "Waste transfer and analyses"
+      raw_fields: "Stream identity; net waste mass; urea/AN/N forms/free NH3/water/organic C; salts; temperature; contamination; internal-return split; receiver; acceptance; treatment"
+      collection_method: "Separate calibrated weighing/volume and measured density, transfer tickets and representative analyses; reconcile all non-recycled external liquid transfers; verify receiving-treatment conditions. Do not count recycled material as an external waste"
+      unit: "kg"
+      frequency: "Every external transfer and representative stream sample"
+      temporal_coverage: "Same complete campaign/year"
+      site_scope: "Separate off-spec, cleaning effluent and cooling purge"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Receiver permit/acceptance evidence; composition and density; measured return routing; waste-versus-product decision"
+    - protocol_id: cp_air
+      process_id: "uan_mixing"
+      flow_role: "ammonia_air"
+      record_type: "Species-resolved vents and fugitives"
+      raw_fields: "NH3 concentration definition; gas flow; normal T/P; wet/dry convention; operating duration; recovery; fugitive losses; uncertainty"
+      collection_method: "Identify vent/storage/loadout points and actual release occurrence; integrate species-compatible concentration and gas volume, plus separately assessed fugitives after recovery. No emission requires verified closed operation/recycle evidence, not an assumed EFMA zero"
+      unit: "kg"
+      frequency: "Representative monitored modes including dosing and loadout"
+      temporal_coverage: "Same complete campaign/year"
+      site_scope: "Outdoor boundary of declared mixing/storage/loadout"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "NH3 versus N basis; sampling and gas-state compatibility; recovery capture; completeness and detection-limit treatment"
+  calculation_rules:
+    - id: period_normalisation
+      applies_to: "all inventory rows"
+      rule: "For each non-reference exchange i, a_i = Q_i / P exactly once. Q_i is its raw stock-reconciled attributable amount for the complete matched pool above, before any per-kg division. P is unique accepted net supplied UAN kg for that pool, reconciled with production, returns/reacceptance, delivery and stocks and their matched burdens. Keep failed/zero-output/rework burdens and exclude internal returns as new external exchanges. P must be positive; if the complete pool has no positive P, retain totals for a justified matched wider pool or report the unit result unavailable, never zero burden or division by zero. Keep uan_product exactly 1 kg."
+      inputs:
+        - Q_i
+        - P
+        - "collection records"
+      output: "Exchange per 1 kg reference flow"
+      source_ids:
+        - eu-lvic-aaf-2007
+        - efma-uan-2000
+    - id: solution_components
+      applies_to: "urea_solution; an_solution; nitric_adjustment; uan_product"
+      rule: "Component mass = supplied solution mass times its measured component fraction. Carrier water is separately analysed or derived from a complete validated composition, not every unidentified non-active remainder. Component ledgers never add extra external feed exchanges."
+      inputs:
+        - "Supplied masses"
+        - assays
+        - "complete compositions"
+      output: "Species and carrier-water ledgers"
+      source_ids:
+        - efma-uan-2000
+    - id: nutrient_result
+      applies_to: "uan_product"
+      rule: "Nitrogen output = P times measured total-N mass fraction. An explicitly optional per-kg-N result divides the supplied-product inventory by the same measured fraction; keep urea-N, ammoniacal-N and nitrate-N analytical bases consistent. It does not replace the 1 kg solution reference."
+      inputs:
+        - P
+        - "measured total-N"
+        - "measured N forms"
+      output: "Declared kg N and separately labelled nutrient result"
+      source_ids:
+        - yara-uan32
+        - efma-uan-2000
+    - id: electricity_conversion
+      applies_to: "electricity"
+      rule: "MJ = measured kWh times 3.6; retain actual user voltage and provider definition."
+      inputs:
+        - "Metered kWh"
+      output: "MJ electrical input"
+      source_ids:
+        - efma-uan-2000
+    - id: air_integration
+      applies_to: "ammonia_air"
+      rule: "Integrate compatible NH3 species concentration times gas volume over measured modes; for mg/Nm3 times Nm3 divide by 1000000 for kg. Match T/P, wet/dry and N versus NH3 definitions and add separately assessed fugitives once."
+      inputs:
+        - Concentrations
+        - "gas volumes"
+        - "measured operating modes"
+        - fugitives
+      output: "External NH3 species mass"
+      source_ids:
+        - efma-uan-2000
+    - id: physical_balance
+      applies_to: "all inventory rows"
+      rule: "Reconcile feed inputs against full net accepted solution, external wastes, evaporated water, NH3 emissions and stock changes in total-mass, water, elemental-N and urea-carbon ledgers. pH neutralisation can change N speciation; measured recovery and compositions govern, not a fixed yield. Compare every internal link at both ends. Preserve residual and uncertainty."
+      inputs:
+        - "Feed/output/waste assays"
+        - meters
+        - "stock and recycle records"
+      output: "Reconciled physical balance with uncertainty"
+      source_ids:
+        - eu-lvic-aaf-2007
+        - efma-uan-2000
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Exact physical state, composition, route and recipient; blank UUID is a named identity gap. Match the reference aqueous subset and official flow names; inspect contrary CAS or hard route limits before use."
+      evidence: "Lot/SKU evidence; retained flow identity support; un-cpc3-3461"
+    - id: dq_provider
+      applies_to: "all external inputs"
+      requirement: "Match actual solution assay, supplied/dry/N denominator, electricity voltage, geography/time and waste receiver. Flow identity is separate from background quantitative compatibility."
+      evidence: "Supplier declarations and reference-amount definitions"
+    - id: dq_completeness
+      applies_to: "uan_mixing"
+      requirement: "Include same-period stocks, startup/shutdown, dosing, cooling, cleaning, recovery and non-recycled losses. No extrapolated recipe or blanket zero; extend inventories for confirmed unexpected species without duplicating nested PM categories."
+      evidence: "Complete meters/assays and event records; efma-uan-2000"
+    - id: dq_scope
+      applies_to: "uan_mixing"
+      requirement: "Prove additive absence and electric additive-free water-cooling configuration before applicability. Source examples and historical zero-emission potential do not prove the current site or set defaults."
+      evidence: "Actual formulation, equipment and operating evidence; eu-lvic-aaf-2007; efma-uan-2000"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "uan_product"
+    rule: "Require exactly one final product output linked as uan_product, 1 kg net supplied solution, with the same inventory, protocol and calculation denominator. Product mass includes water; internal transfers are not extra reference products."
+    source_ids:
+      - efma-uan-2000
+  - rule_id: validate_applicability
+    applies_to: "uan_mixing"
+    rule: "Check aqueous solvent, continuous received-solution route, absent product additives, compatible corrosion protection, declared electric water cooling, composition/N forms and bulk acceptance. CPC title or similar fertilizer use cannot establish applicability."
+    source_ids:
+      - eu-lvic-aaf-2007
+      - efma-uan-2000
+      - un-cpc3-3461
+  - rule_id: validate_balance
+    applies_to: "all inventory rows"
+    rule: "Reconcile mass/water/N/carbon and stocks, actual pH inputs, internal-return equality, external wastes/emissions and energy; report residuals/uncertainties. No hidden default quantity, near-match UUID or supplier-basis substitution."
+    source_ids:
+      - eu-lvic-aaf-2007
+      - efma-uan-2000
+  - rule_id: validate_losses
+    applies_to: "uan_mixing"
+    rule: "Independently verify loss/recovery evidence, no-release claims and receiver conditions. Unknown or below-detection losses retain their treatment and uncertainty. Elementary NH3 is outdoor-air species mass; water vapour is evaporated water, not circulated or drained liquid."
+    source_ids:
+      - efma-uan-2000
+  - rule_id: validate_gaps
+    applies_to: "all inventory rows"
+    rule: "Exact missing flow identities and unmatched providers remain explicitly pending. A concrete dataset cannot claim complete identity linkage or full quantitative validation while an applicable row is unresolved. Any actual excluded utility/ingredient/operation needs evidence and a method extension before acceptance."
+    source_ids:
+      - eu-lvic-aaf-2007
+      - efma-uan-2000
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after complete foreground collection and declared review"
+  downstream_use: "Supply-chain models requiring the same aqueous UAN grade, route and factory-gate net solution basis"
+  allowed_use: "Explicitly qualified product supply; optional separately labelled nutrient normalization with measured N fraction"
+  excluded_use: "Universal fertilizer recipe; pure urea/AN substitutes; ammoniacal/additive mixtures; solid dissolution or integrated syntheses; equal crop performance; farm application emissions; packaged product"
+  required_metadata: "Site/period/route; full supplied composition/N forms; acceptance; stock-adjusted denominator; feed origins/assays; corrosion and cooling configuration; reference property; providers and quantity definitions; transport and capital boundary"
+  required_quality_disclosure: "Source age and dependence; inventory/measurement coverage; identity/provider gaps; balance residuals; uncertainty and detection limits; recovery/no-release evidence; independent review status"
+  update_trigger: "Change in grade/solvent/additive, input state or origin, cooling/utility/process route, recovery/receiver, supplier quantity convention, monitoring evidence or material mass-balance failure"
+data_sources:
+  - id: "un-cpc3-3461"
+    type: "official_guidance"
+    reference: "[UNSD CPC Version3.0 class3461](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/3461), accessed 2026-10-14; subclass34616"
+    used_for: "Official classification boundary includes aqueous or ammoniacal mixtures; supports narrower proposal, not recipe or methodology approval"
+  - id: "eu-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "[European Commission LVIC-AAF BREF, August2007](https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic_aaf.pdf), §§8.1,8.2.2/Figure8.2,8.4.14,8.5; printed323,326,361–362; PDF351,354,389–390"
+    used_for: "Received-solution continuous mixing/pH/cooling/storage; alternative integrated route exclusions. Urea finishing, consumption and treatment figures are not this route's defaults. BREF cites EFMA2000 and is not independent of that source"
+  - id: "efma-uan-2000"
+    type: "handbook"
+    reference: "[EFMA Production of Urea and Urea Ammonium Nitrate, Booklet5,2000](https://www.fertilizerseurope.com/wp-content/uploads/2019/08/Booklet_5_final.pdf), §§9.1–9.5,9.8/Figures6–7; printed29–32; PDF31–34"
+    used_for: "Actual mixing-route decomposition, conditional corrosion inhibition/equipment protection, pH reagents, utility/containment/recycle and process monitoring. Historical recipe/grade/utility data and achievable zero emissions are conditional observations, not universal values"
+  - id: "yara-uan32"
+    type: "handbook"
+    reference: "[Yara UAN-32 SOLUTION](https://www.yara.us/crop-nutrition/fertilizer-products/other-fertilizers2/uan-32-solution/), product description and Nutrients, accessed2026-10-14"
+    used_for: "Producer original confirms commercial liquid UAN and three N forms. One product; no route, absence of additives, universal formula, quantity or target-site claims"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:ed96fa2413e8470be6e8aadd1b7bd71894e8235489660e24658e91d6f46ef295"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7270"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7270
+          line: 63
+          column: 1
+        end:
+          offset: 10104
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received concentrated urea and AN aqueous solutions and measured pH reagent at mixing-line inlet; their origins, assays, temperatures and stock coverage declared |\n| starting_condition_role | Documented foreground feed-receipt interface, not a cradle-to-gate burden exemption |\n| product_classification_scope | Aqueous continuous received-solution subset of CPC34616; classification does not establish reference composition or route |\n| recursive_input_rule | No external UAN reprocessing feed in this method; internal sump/storage return remains internal. Recovered feed from a different unit requires a separately evidenced input and burden link before method extension |\n| upstream_dataset_requirement | Link production and delivery of every external feed and electricity using actual solution assay/state and supplier reference amount; include upstream urea, AN, ammonia and nitric-acid manufacture, energy and emissions exactly once |\n| disclosure | Declare site/grade/period, foreground interfaces, cooling and pH configuration, suppliers, origin, transport, capital-equipment boundary, recovery, losses, stock changes, wastewater receivers and any unmatched provider/flow basis |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | uan_mixing | Include feed receipt, meters/static mixers, actual pH adjustment, indirect cooling, storage, transfer/loadout, sump recovery and attributable cleaning within one foreground unit. Keep stage measurements; internal blended UAN does not create another reference product. | eu-lvic-aaf-2007; efma-uan-2000 |\n| boundary_upstream | all external inputs | Received feed solutions are not burden-free. Separate integrated synthesis from blending; do not import urea-prilling or AN-granulation emission factors into this liquid route. Unknown supplier solution mass/dry-solute basis leaves background linkage pending. | eu-lvic-aaf-2007; efma-uan-2000 |\n| boundary_losses | uan_mixing | Include actual external wastes and emissions and demonstrate recovery/containment. EFMA's achievable zero for non-pressure aqueous mixing depends on operation and recycle; it cannot set adjustment, storage, cooling or loss quantities to zero without evidence. Off-site treatment is linked, not removed. | efma-uan-2000 |\n| boundary_extensions | uan_mixing | Verify the exclusion conditions before use. If added ingredients, utility chemicals, instrument air, steam, refrigerant, solid dissolution or final onsite treatment occurs, require scoped method evidence and its separate atomic inventory before calling the dataset complete. Disclose exclusion of capital construction and explain its relevance to the study. | eu-lvic-aaf-2007; efma-uan-2000 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 308
+              line: 10
+              column: 1
+            end:
+              offset: 360
+              line: 10
+              column: 53
+          text: "# Aqueous UAN by continuous received-solution mixing"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7270
+              line: 63
+              column: 1
+            end:
+              offset: 7291
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_24922"
+      family: "allocation"
+      span:
+        start:
+          offset: 24922
+          line: 302
+          column: 1
+        end:
+          offset: 26257
+          line: 310
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_physical | all inventory rows | Retain the full physical mass/water/N/carbon ledger, stocks and internal-return measurements before assigning burdens. Internal recovered UAN and water are not co-products, avoided-product credits or external exchanges. Waste remains waste unless its actual beneficial product identity and recipient are separately established. | efma-uan-2000 |\n| allocation_grade | uan_mixing | Only one accepted product grade is represented by this dataset. Subdivide shared meters by measured line/grade activity and demonstrably causal pumping/cooling or cleaning demand; justify the key and uncertainty using site records. No generic mass fraction, energy demand or economic share is imposed. Never multiply physical product or waste output by an environmental allocation share. | eu-lvic-aaf-2007; efma-uan-2000 |\n| allocation_extension | uan_mixing | A genuine exported usable heat stream or co-product falls outside this scoped single-product mixing method; establish functions, measurements and a justified allocation/subdivision rule before extension. No automatic negative burden for sump recovery, off-spec waste or hypothetical heat recovery. | eu-lvic-aaf-2007; efma-uan-2000 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 308
+              line: 10
+              column: 1
+            end:
+              offset: 360
+              line: 10
+              column: 53
+          text: "# Aqueous UAN by continuous received-solution mixing"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 24922
+              line: 302
+              column: 1
+            end:
+              offset: 24962
+              line: 302
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36452"
+      family: "validation"
+      span:
+        start:
+          offset: 36452
+          line: 345
+          column: 1
+        end:
+          offset: 38216
+          line: 355
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | uan_product | Require exactly one final product output linked as uan_product, 1 kg net supplied solution, with the same inventory, protocol and calculation denominator. Product mass includes water; internal transfers are not extra reference products. | efma-uan-2000 |\n| validate_applicability | uan_mixing | Check aqueous solvent, continuous received-solution route, absent product additives, compatible corrosion protection, declared electric water cooling, composition/N forms and bulk acceptance. CPC title or similar fertilizer use cannot establish applicability. | eu-lvic-aaf-2007; efma-uan-2000; un-cpc3-3461 |\n| validate_balance | all inventory rows | Reconcile mass/water/N/carbon and stocks, actual pH inputs, internal-return equality, external wastes/emissions and energy; report residuals/uncertainties. No hidden default quantity, near-match UUID or supplier-basis substitution. | eu-lvic-aaf-2007; efma-uan-2000 |\n| validate_losses | uan_mixing | Independently verify loss/recovery evidence, no-release claims and receiver conditions. Unknown or below-detection losses retain their treatment and uncertainty. Elementary NH3 is outdoor-air species mass; water vapour is evaporated water, not circulated or drained liquid. | efma-uan-2000 |\n| validate_gaps | all inventory rows | Exact missing flow identities and unmatched providers remain explicitly pending. A concrete dataset cannot claim complete identity linkage or full quantitative validation while an applicable row is unresolved. Any actual excluded utility/ingredient/operation needs evidence and a method extension before acceptance. | eu-lvic-aaf-2007; efma-uan-2000 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 308
+              line: 10
+              column: 1
+            end:
+              offset: 360
+              line: 10
+              column: 53
+          text: "# Aqueous UAN by continuous received-solution mixing"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36452
+              line: 345
+              column: 1
+            end:
+              offset: 36474
+              line: 345
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7270"
+      source_span:
+        start:
+          offset: 8642
+          line: 78
+          column: 1
+        end:
+          offset: 8977
+          line: 78
+          column: 336
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_7270"
+      source_span:
+        start:
+          offset: 8978
+          line: 79
+          column: 1
+        end:
+          offset: 9317
+          line: 79
+          column: 340
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_7270"
+      source_span:
+        start:
+          offset: 9318
+          line: 80
+          column: 1
+        end:
+          offset: 9671
+          line: 80
+          column: 354
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_extensions"
+      identity_kind: "explicit"
+      unit_id: "normative_7270"
+      source_span:
+        start:
+          offset: 9672
+          line: 81
+          column: 1
+        end:
+          offset: 10102
+          line: 81
+          column: 431
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_24922"
+      source_span:
+        start:
+          offset: 25035
+          line: 306
+          column: 1
+        end:
+          offset: 25425
+          line: 306
+          column: 391
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_grade"
+      identity_kind: "explicit"
+      unit_id: "normative_24922"
+      source_span:
+        start:
+          offset: 25426
+          line: 307
+          column: 1
+        end:
+          offset: 25883
+          line: 307
+          column: 458
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_24922"
+      source_span:
+        start:
+          offset: 25884
+          line: 308
+          column: 1
+        end:
+          offset: 26255
+          line: 308
+          column: 372
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_36452"
+      source_span:
+        start:
+          offset: 36547
+          line: 349
+          column: 1
+        end:
+          offset: 36838
+          line: 349
+          column: 292
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_36452"
+      source_span:
+        start:
+          offset: 36839
+          line: 350
+          column: 1
+        end:
+          offset: 37188
+          line: 350
+          column: 350
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_36452"
+      source_span:
+        start:
+          offset: 37189
+          line: 351
+          column: 1
+        end:
+          offset: 37498
+          line: 351
+          column: 310
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_36452"
+      source_span:
+        start:
+          offset: 37499
+          line: 352
+          column: 1
+        end:
+          offset: 37823
+          line: 352
+          column: 325
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_gaps"
+      identity_kind: "explicit"
+      unit_id: "normative_36452"
+      source_span:
+        start:
+          offset: 37824
+          line: 353
+          column: 1
+        end:
+          offset: 38214
+          line: 353
+          column: 391
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7270"
+      source_span:
+        start:
+          offset: 7270
+          line: 63
+          column: 1
+        end:
+          offset: 7291
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7270"
+      source_span:
+        start:
+          offset: 7319
+          line: 67
+          column: 1
+        end:
+          offset: 8569
+          line: 74
+          column: 247
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_24922"
+      source_span:
+        start:
+          offset: 24922
+          line: 302
+          column: 1
+        end:
+          offset: 24962
+          line: 302
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36452"
+      source_span:
+        start:
+          offset: 36452
+          line: 345
+          column: 1
+        end:
+          offset: 36474
+          line: 345
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ed96fa2413e8470be6e8aadd1b7bd71894e8235489660e24658e91d6f46ef295"
+  generated_content_sha256: "sha256:1d1aeb62747cbc2da18c44423a3defcf18fcb6d05cf0d42ba05dbf99b712d3ee"

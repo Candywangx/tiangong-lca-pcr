@@ -1,10 +1,1201 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34615"
-  title: "Mixtures of ammonium nitrate with calcium carbonate or other inorganic non-fertilizing substances"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.mixtures-of-ammonium-nitrate-with-calcium-carbonate-or-other-inorganic-non-fertilizing-e5b3fc53"
+  classification_refs: "CPC 3.0 34615; proposed narrower coverage [un-cpc3-2025]"
+  covered_products: "Natural-limestone-filled solid CAN granules with declared AN, carbonate, moisture and conditioning composition"
+  excluded_products: "Calcium-nitrate/AN double salts; AN solution sales; straight AN; UAN; prilled CAN; dolomite-dominant CAN; other filler mixtures; nitrophosphate integrated co-production; bagged delivery"
+  representative_product: "Accepted bulk limestone CAN granules, actual measured grade"
+  production_route: "Received concentrated AN solution; natural ground limestone mixing; granulation; screening and safe recycle; actual drying; cooling; actual conditioning; bulk loadout"
+  market_state: "Solid granules at factory bulk dispatch, net mass as supplied"
+functional_unit:
+  what: "Supply a declared limestone CAN fertilizer product; no agronomic-performance equivalence is claimed"
+  how_much: "1 kg accepted net supplied product"
+  how_well: "Actual AN/carbonate recipe, total and speciated nitrogen, moisture, particle distribution and conditioning satisfying declared lot acceptance"
+  how_long_or_cycle: "At factory bulk dispatch during the recorded production period, without a field-service duration"
+  reference_flow_link: "finished_granules"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_finishing: Include receiving/storage, any onsite filler milling, mixing, granulation, actual drying/cooling, screens/recycle crushing, actual conditioning, emission controls, cleaning and bulk handling. Retain stage meters and an unallocated mass/water/N/inorganic-carbon ledger. Equal physical internal transfers have equal amounts at both ends [eu-lvic-aaf-2007; efma-an-can-2000]."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_utilities: This route uses electric drives and indirect heating. Steam generation is a separate upstream utility; record gross steam/condensate interfaces and net heat without counting closed-loop heat-carrier water as process makeup. Direct-fired drying or an onsite boiler requires explicit fuel and combustion rows plus applicable original evidence before extending this method."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_treatment: Residual liquor and solids go to identified external treatment, linked with treatment/transport burdens. Internal recovery is not an external emission. Direct final liquid discharge or onsite biological treatment lies outside this route and requires explicit water, species, treatment chemical, sludge and gaseous-emission inventories."
+      source_ids: []
+    - rule_id: system_boundary_rule_4
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_completeness: Identify every actual externally supplied material/service and external loss stream before dataset acceptance, with a separate atomic exchange and its evidence/identity. For whole purchased formulations retain constituent/carrier composition subledgers without duplicate component procurement; onsite separately purchased ingredients remain separate inputs. Include actual lubricant and replacement control media. Include upstream freight once at the supplier interface. No gap, unverified UUID or unmeasured amount authorizes a burdenless cutoff. Capital construction, bagged delivery and agricultural use remain excluded and disclosed."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Metered concentrated aqueous AN and ground natural limestone received for the CAN finishing unit, with purchased utilities and actual conditioning ingredients"
+  starting_condition_role: "Supplier-interface foreground start; upstream burdens remain linked through compatible production and delivery datasets"
+  product_classification_scope: "Limestone-filled CAN granulation subset of CPC 3.0 34615; no full-leaf equivalence"
+  recursive_input_rule: "Safe internal fines/oversize and recovered AN liquor remain internal. Purchased CAN rework requires distinct upstream production, explicit composition and no recursive self-supply."
+  upstream_dataset_requirement: "AN solution provider must cover actual neutralisation, concentration, nitric-acid and ammonia supply burdens, including applicable upstream N2O/NOx; limestone provider includes actual extraction and milling. Match solution, water, utility and transport bases."
+  disclosure: "Feed receipt state and assay; upstream interfaces; recipe; actual drying energy; safe recycle; conditioning; net product basis; air methods and controls; external waste treatment; exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Mixtures of ammonium nitrate with calcium carbonate or other inorganic non-fertilizing substances"
+    uuid: "faaf63a5-c8b0-462b-b84e-09dad6e9319f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "AN/carbonate mixture"
+    - "not calcium nitrate double salt"
+    - "natural limestone composition and particle size"
+    - "AN feed assay and carrier water"
+    - "total N"
+    - "ammoniacal-N and nitrate-N"
+    - "product moisture and recipe"
+    - "actual granulation/drying/cooling/conditioning route"
+    - "bulk net mass"
+    - "site and period"
+    - "supplier interfaces"
+    - "emissions controls"
+    - "waste receivers"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Net accepted bulk mass as supplied, including actual moisture and additives, excluding packaging; collect cp_product. All inventory rows use per 1 kg reference flow."
+  - id: solution_basis
+    applies_to: "an_solution, scrubber_acid"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh total supplied solution and independently assay active species and carrier water. Match the provider solution basis; never combine active-only amounts with total-solution background data."
+  - id: nutrient_basis
+    applies_to: "finished_granules"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Product mass is not nutrient mass. Use measured lot N fractions for any nutrient conversion; report ammoniacal-N and nitrate-N separately."
+  - id: heat_basis
+    applies_to: "steam_heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Net transferred process heat requires cp_heat steam/condensate enthalpy balance and provider-boundary agreement; a steam mass, pressure or MJ property alone is insufficient."
+  - id: particles_basis
+    applies_to: "pm25_air, pm25_10_air, pm_over10_air, an_condensable_air, nitric_acid_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep sampling phase, particle size and chemical-species coverage disjoint; unresolved partition is incomplete data, not zero."
+process_map:
+  - id: can_granulation
+    name: "Integrated limestone CAN finishing"
+    inclusion: "required"
+    inclusion_condition: "Received AN solution and natural ground limestone, granulation route, bulk output"
+    role: "One foreground unit retaining separate stage and recycle measurements"
+    quantitative_reference: "finished_granules; 1 kg accepted net product"
+process_inventory:
+  - id: can_granulation
+    label: "Integrated limestone CAN finishing"
+    inputs:
+      product:
+        - row_id: an_solution
+          role: "Ammonium nitrate solution"
+          name: "Ammonium nitrate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d621a16-cd12-4fc1-9499-21cd8001941f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record received concentrated aqueous AN as total solution mass, separately assayed AN and carrier water. The broad AN identity has no contrary state limitation; it supplies no concentration or solution-compatible background dataset. Match the actual supplier solution, concentration, receipt temperature and delivery basis; never link dry-prill production as though it supplied the solution."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: limestone
+          role: "Ground natural limestone"
+          name: "Limestone"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cf9f186-6e7e-40b5-800e-6759a429e7a8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use naturally occurring carbonate limestone as delivered, including its measured impurities and moisture. Determine CaCO3, Mg carbonate and insoluble fractions, grinding route and particle size. The broad limestone identity does not establish powder grade, purity or provider. Do not substitute quicklime, precipitated carbonate or calcium nitrate; supplier grinding belongs upstream unless performed onsite."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - eu-lvic-aaf-2007
+                - yara-mineral-fertilizers
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter mixing, pumps, screens, recycle crushing, cooling fans, controls, coating and bulk conveying. This UUID specifies native locationOfSupply CN (China) and user-side grid-average 1–35 kV supply. Use it only for a documented matching CN supply interface; record actual supply location, voltage, provider and period under cp_power. Non-CN supply requires a separately verified matching electricity flow and provider before linkage. Keep raw kWh and report 3.6 MJ per kWh using the record reference property Net calorific value; this property label does not imply combustion."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-an-can-2000
+            ranges: []
+        - row_id: steam_heat
+          role: "Net process heat transferred by indirect steam heating"
+          name: "Net process heat transferred by indirect steam heating"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "One thermal-energy service, not steam mass or boiler fuel. Record steam and condensate mass, pressure, temperature, dryness, enthalpies and losses at the same provider interface; derive delivered heat and verify the supplier dataset uses that basis. Steam pressure or an MJ property alone proves no usable-heat basis. Resolve an exact heat-service identity before dataset linkage. No default energy demand or zero for autothermal drying."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: process_water
+          role: "Deionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased deionised makeup water for the recorded scrubbing, cleaning or utility circuit. This is a technosphere supply, not a water abstraction elementary flow. Meter net makeup; internal recycled liquor and closed-loop cooling water do not become additional purchased water. Other supplied water grades require their own atomic rows and identities."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: scrubber_acid
+          role: "Aqueous nitric acid for gas scrubbing"
+          name: "Aqueous nitric acid for gas scrubbing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when the actual ammonia-removal scrubber uses HNO3. Weigh delivered acid solution and assay its HNO3/water fractions, record dosing and recycled liquor. Retain this specific solution row without a UUID until the actual grade is known; a verified 60% candidate must not become the default concentration."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-an-can-2000
+            ranges: []
+        - row_id: coating_oil
+          role: "Mineral oil coating component"
+          name: "Mineral Oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e4d87634-a041-48d6-b071-da57551c8ab5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use this petroleum mineral-oil row, CAS8012-95-1, only for actual neat oil or an oil ingredient separately procured for onsite blending; record its actual grade and quantity without a prescribed dose. If a complete commercial coating is purchased, add its specifically identified whole-formulation input on the actual supplier reference basis and include its formulation-production burdens. Its oil, wax, amine, carrier and other constituents remain measured composition subledgers, not duplicate external component purchases. Onsite formulation instead records each separately acquired ingredient and actual blending energy/losses. Unknown whole-formulation identity/basis remains explicit before dataset acceptance. Nynas NPK laboratory performance is not a CAN emission factor."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - nynas-fertilizer-coatings
+                - efma-an-can-2000
+            ranges: []
+        - row_id: lubricant
+          role: "Petroleum lubricating oil"
+          name: "Lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional petroleum-fraction equipment lubricant; maintain grade, additives and receiver records. This identity cannot cover a fully synthetic oil, a wax/solvent coating, or oil already mixed into the fertilizer. Account for actual consumed maintenance oil and retained stock separately; other lubricant chemistry requires a new verified row."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_maintenance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_granules
+          role: "Limestone CAN granules"
+          name: "Mixtures of ammonium nitrate with calcium carbonate or other inorganic non-fertilizing substances"
+          flow_type: "product"
+          flow_ref:
+            uuid: "faaf63a5-c8b0-462b-b84e-09dad6e9319f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The one reference output: accepted carbonate-filled CAN granules at bulk loadout, net supplied mass including residual moisture and actual conditioning. Declare ammoniacal-N, nitrate-N, carbonate composition and recipe. No calcium-nitrate double salt, solution or straight AN is represented. Intermediate granules and safe recycle remain internal to this aggregated unit."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - yara-mineral-fertilizers
+                - eu-lvic-aaf-2007
+            ranges: []
+      waste:
+        - row_id: waste_offspec
+          role: "Non-recycled off-specification limestone CAN solids"
+          name: "Non-recycled off-specification limestone CAN solids"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only material actually leaving the foreground for a named waste receiver: weigh wet mass and assay water, AN, carbonate, coating and contamination. Safe internally crushed oversize and fines are not this waste. A sold non-conforming product requires an explicitly distinct output identity and allocation review; it cannot be hidden in reference yield."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - efma-an-can-2000
+            ranges: []
+        - row_id: waste_liquor
+          role: "AN-bearing scrubber purge liquor to external treatment"
+          name: "AN-bearing scrubber purge liquor to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual liquid waste, with water, ammonium-N, nitrate-N, suspended carbonate, pH and coating contamination characterized. Meter volume and measured density or directly weigh total liquid; separate dissolved solutes analytically without duplicating total waste mass. Link receiver treatment and transport. Do not substitute manganese-residue washing wastewater or an elementary fresh-water emission."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvic-aaf-2007
+                - efma-an-can-2000
+            ranges: []
+        - row_id: waste_sludge
+          role: "Carbonate-bearing scrubber settlement sludge"
+          name: "Carbonate-bearing scrubber settlement sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional separated wet scrubber sludge sent offsite, characterized by dry solids, carbonate, retained AN, moisture and contamination. This is neither biological sludge nor recycled filler. If solids are transferred inside a measured liquid purge, count them there rather than again here. Receiver treatment is required."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: waste_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional spent equipment lubricant, collected separately from fertilizer rejects and coating residues. Record actual base-oil grade, water, contaminants, receiving facility, treatment and transport. The waste identity does not establish a recovery credit or a provider. Reconcile fresh oil, remaining equipment inventory and actual removed oil."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_maintenance
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ammonia_air
+          role: "Ammonia to air"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "NH3 molecular mass emitted to outdoor air, unspecified subcompartment, after abatement including applicable fugitive sources. Analyze ammonia separately from AN aerosol and ammonium in liquid waste. If results are reported as NH3-N, convert using documented molecular masses; no nitrogen-equivalent convention is assumed."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - efma-an-can-2000
+            ranges: []
+        - row_id: nitric_acid_air
+          role: "Nitric acid to air"
+          name: "nitric acid"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "1df287ba-2f10-461e-95ce-7714a3e76ac6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional HNO3 emission to outdoor air, unspecified, where actual acid scrubbing or process measurements establish release. Record gas versus mist sampling and molecular mass. Distinguish nitrate-N from nitric acid identity; exclude any mist mass already included in size-resolved PM before separately reporting it."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - efma-an-can-2000
+            ranges: []
+        - row_id: pm25_air
+          role: "Filterable PM2.5"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Filterable particles with aerodynamic diameter at most 2.5 micrometres, outdoor air unspecified, across actual filler handling, granulation, drying, screening, cooling and loadout outlets. Sampling and chemical content must distinguish airborne discharge from collected/recycled powder. No default allocation of total dust to PM2.5."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm
+              source_ids:
+                - epa-pm-201a-2020
+                - efma-an-can-2000
+            ranges: []
+        - row_id: pm25_10_air
+          role: "Filterable particles PM2.5 to PM10"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Disjoint fraction above 2.5 and at most 10 micrometres, outdoor air unspecified. Derive only from compatible simultaneous filterable PM10 and PM2.5 data or a validated direct fraction method; retain raw cumulative results as diagnostics, not extra additive inventory."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm
+              source_ids:
+                - epa-pm-201a-2020
+            ranges: []
+        - row_id: pm_over10_air
+          role: "Filterable particles above PM10"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Particles above 10 micrometres, outdoor air unspecified. Use compatible measured total filterable dust minus filterable PM10 only when sampling conditions and recovery include the same sources. Never subtract an incompatible condensable-PM result or count total dust alongside all three fractions."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm
+              source_ids:
+                - epa-pm-201a-2020
+            ranges: []
+        - row_id: an_condensable_air
+          role: "Condensable ammonium nitrate aerosol"
+          name: "ammonium nitrate"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "82852b6b-e66e-4c96-b2b8-7249bc9b2377"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a chemically identified, separately sampled AN condensable fraction not already recovered in filterable PM, outdoor air unspecified. This species identity has no aerodynamic-size definition and cannot replace a PM fraction or total unspecified fume. Require validated sampling blanks, formation/artifact correction and chemical speciation; absence of such evidence leaves condensable coverage incomplete. Do not report NH3 and HNO3 precursor mass again as the same condensed AN."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - efma-an-can-2000
+                - epa-pm-201a-2020
+            ranges: []
+        - row_id: water_vapour_air
+          role: "Water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net process water evaporated to outdoor air, unspecified, after recovered condensate and closed utility returns are removed. Reconcile AN carrier water, makeup, retained product moisture and aqueous wastes. Recirculated steam is not an air emission; ambient inlet-air moisture is not purchased or consumed process water."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvic-aaf-2007
+            ranges: []
+        - row_id: carbonate_co2_air
+          role: "Carbon dioxide from inorganic carbonate to air"
+          name: "Carbon dioxide from inorganic carbonate to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional molecular CO2 from measured carbonate reaction/carbon loss, not limestone feed multiplied by a presumed full-decomposition factor. Record inorganic-carbon input, retained carbonate and waste carbon; confirm actual gas release independently. Keep a specific blank UUID until a non-biogenic mineral-carbon air identity and characterization convention are resolved. Do not use biogenic, resource-uptake or correction flows."
+          amount:
+            expression: "Measure the actual attributable amount under the linked collection protocol and divide by accepted net product mass of the same period; non-occurrence requires evidence and unknown quantities are not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_physical: Safe recycle, scrubber recovery and screen fines within the unit are physical loops, not co-products. Preserve pre-allocation physical mass, water, N and inorganic-carbon balances. Never multiply co-product physical outputs or internal transfers by a burden share."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_shared: Separate CAN campaigns, grades and other fertilizer production through measured submetering and process subdivision first. Attribute common electric drives and controls using a documented causal service measure, such as actual operating time with measured loads; report the chosen basis and uncertainty. Do not apply a neighbouring plant's energy quantity."
+    source_ids: []
+  - rule_id: allocation_rule_3
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_coproduct: This baseline has one saleable output and gives no waste or steam credit. Actual exported recovered material or energy requires separate physical identity, recipient and usable-output evidence, then a documented study-specific co-product method. Preserve physical quantities; apply allocation only to eligible shared burdens, ensuring burden shares sum to one. Unresolved co-product scope prevents claiming a complete dataset."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "can_granulation"
+      flow_role: "finished_granules"
+      record_type: "acceptance and stock ledger"
+      raw_fields: "lot; SKU; gross/tare/net mass; product stocks; AN; water; carbonate; conditioning; total N; ammoniacal-N; nitrate-N; size; reject status"
+      collection_method: "Calibrated net loadout weighing reconciled to accepted production and finished-stock change; assay representative lot samples"
+      unit: "kg"
+      frequency: "each lot and period reconciliation"
+      temporal_coverage: "representative declared continuous period, normally one full year; justify shorter coverage"
+      site_scope: "one site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; acceptance; assays; stock reconciliation"
+    - protocol_id: cp_feed
+      process_id: "can_granulation"
+      flow_role: "an_solution, limestone, scrubber_acid, coating_oil"
+      record_type: "receipt, dosing and assay records"
+      raw_fields: "supplier; lot; delivered and consumed mass; stocks; concentration; moisture; carbonate purity; coating components; temperature; particle size; supplier dataset basis"
+      collection_method: "Calibrated weighing/mass flow, certificates and representative independent assay; reconcile withdrawals and storage changes; separately identify each actual ingredient"
+      unit: "kg"
+      frequency: "receipt and dosing batch"
+      temporal_coverage: "same period as cp_product including starts/stops and cleaning"
+      site_scope: "supplier interfaces and dosing stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "invoices; assay method; sampling coverage; grade/provider compatibility"
+    - protocol_id: cp_power
+      process_id: "can_granulation"
+      flow_role: "electricity"
+      record_type: "interval meters"
+      raw_fields: "kWh; meter; voltage; supplier; operating states; common-service load; calibration; campaign output"
+      collection_method: "Meter stages and controls; reconcile bills and assign common services by measured causal use; retain kWh to MJ conversion"
+      unit: "kWh; MJ"
+      frequency: "interval and period closure"
+      temporal_coverage: "same period as cp_product"
+      site_scope: "entire finishing unit and actual auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter logs; bill closure; allocation evidence"
+    - protocol_id: cp_heat
+      process_id: "can_granulation"
+      flow_role: "steam_heat"
+      record_type: "utility interface metering and enthalpy records"
+      raw_fields: "steam/return mass; absolute/gauge pressure; temperature; dryness; supply/return enthalpy; flash; losses; supplier usable-heat definition"
+      collection_method: "Meter matched steam/condensate interfaces; determine phase and enthalpy with a traceable property method; reconcile delivered heat with the provider definition and actual drying duty"
+      unit: "kg; kJ/kg; MJ"
+      frequency: "matched intervals and campaign closure"
+      temporal_coverage: "same period as cp_product"
+      site_scope: "upstream utility/foreground indirect exchanger interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meters; thermodynamic basis; return/loss closure; provider-boundary agreement"
+    - protocol_id: cp_water
+      process_id: "can_granulation"
+      flow_role: "process_water, water_vapour_air"
+      record_type: "water meters and process balance"
+      raw_fields: "makeup; AN/acid/carrier solution water; cooling circuit; recovered condensate; inlet-air humidity; retained moisture; wastewater; stocks/WIP; actual net reaction-water formation/consumption; stage assays and independently supported reaction-extent/model evidence; uncertainty"
+      collection_method: "Meter purchased makeup and sample moisture; measure or independently validate net process evaporation. Establish actual net reaction-water terms through the reaction evidence in physical_balances before reconciling water destinations; do not fit them to a closure residual. Keep closed heat-carrier water, carrier solution water and phase transfers separate, with stock/WIP uncertainty."
+      unit: "kg"
+      frequency: "batch/interval and period closure"
+      temporal_coverage: "same period as cp_product"
+      site_scope: "process water and cooling makeup, without recirculation double count"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; moisture/chemical methods; independent reaction-extent evidence; water ledger and uncertainty"
+    - protocol_id: cp_air
+      process_id: "can_granulation"
+      flow_role: "ammonia_air, nitric_acid_air, an_condensable_air"
+      record_type: "stack/fugitive sampling and outlet-time records"
+      raw_fields: "outlet; wet/dry gas flow; T/P; moisture; load; operating hours; NH3; acid phase; nitrate/ammonium assay; filterable/condensable split; blanks; method; limit of quantification"
+      collection_method: "Source-specific representative sampling after actual abatement; follow EFMA wet/dry sample conditioning; establish molecular basis and integrated concentration-times-flow; chemically verify any separate AN condensable fraction"
+      unit: "mg/m3; m3/h; h; kg"
+      frequency: "repeated representative load/start/stop campaigns and period integration"
+      temporal_coverage: "same period as cp_product, record measured and extrapolated intervals"
+      site_scope: "all actual outdoor-air outlets and assessed fugitives"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "test reports; blank/artifact correction; speciation; gas-basis consistency; extrapolation uncertainty"
+    - protocol_id: cp_pm
+      process_id: "can_granulation"
+      flow_role: "pm25_air, pm25_10_air, pm_over10_air"
+      record_type: "particle sampling and source register"
+      raw_fields: "outlet; dust source; aerodynamic cuts; total filterable PM; cumulative PM10/PM2.5; condensables; water droplets; gas T/P/flow; hours; blanks; uncertainty"
+      collection_method: "Compatible isokinetic source sampling; EPA 201A addresses filterable size fractions only under its scope. Water-droplet exhaust cannot use its size split; establish a validated suitable method. Method 5 total mass alone does not establish all three fractions. Quantify condensable coverage separately without assumed partition"
+      unit: "kg; mg/m3; m3/h; h"
+      frequency: "representative campaigns and whenever route/control changes"
+      temporal_coverage: "same period as cp_product with disclosed unmeasured source intervals"
+      site_scope: "filler handling/milling, granulator, actual dryer, screens, cooler, loadout and relevant fugitives"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling validation; moisture/phase check; matched cumulative results; repeat tests; completeness statement"
+    - protocol_id: cp_waste
+      process_id: "can_granulation"
+      flow_role: "waste_offspec, waste_liquor, waste_sludge"
+      record_type: "receiver manifests, meters and analyses"
+      raw_fields: "waste source; wet/dry mass; liquid volume/density; AN/N/carbonate/water; pH; oil contamination; receiver; treatment; transport; returned stocks"
+      collection_method: "Weigh each separately transferred waste; for liquid use measured volume and density; assay representative composition; reconcile internal recycling and prevent liquid/sludge overlap"
+      unit: "kg"
+      frequency: "each transfer and period closure"
+      temporal_coverage: "same period as cp_product including cleaning/purges"
+      site_scope: "factory-to-external-treatment interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated measurement; receiver proof; analyses; compatible treatment provider"
+    - protocol_id: cp_maintenance
+      process_id: "can_granulation"
+      flow_role: "lubricant, waste_oil"
+      record_type: "maintenance purchase/use/removal ledger"
+      raw_fields: "grade; chemistry; quantity; installed stock; retained oil; spent mass; contamination; receiver; treatment; machine allocation"
+      collection_method: "Weigh actual consumed and collected oil, reconcile equipment inventory and records; assign shared maintenance to actual service; separate lubricant from product coating"
+      unit: "kg"
+      frequency: "maintenance event and period closure"
+      temporal_coverage: "same period as cp_product"
+      site_scope: "equipment serving the unit"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "service records; chemistry/SDS; mass reconciliation; receiver evidence"
+    - protocol_id: cp_carbon
+      process_id: "can_granulation"
+      flow_role: "carbonate_co2_air"
+      record_type: "carbonate assays, carbon balance and gas testing"
+      raw_fields: "inorganic-carbon feed; product carbonate; stocks; sludge/liquid/solid carbonate; gas CO2; origin; reaction evidence; uncertainty"
+      collection_method: "Combine representative inorganic-carbon analyses with independent actual gas evidence; investigate any residual before attributing it to emitted CO2; distinguish organic/coating carbon and mineral carbonate"
+      unit: "kg C; kg CO2"
+      frequency: "batch/campaign and period closure"
+      temporal_coverage: "same period as cp_product"
+      site_scope: "carbonate paths within the finishing unit"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "assays; carbon closure; gas confirmation; origin and characterization convention"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For each non-reference external exchange, q_i = Q_i / P exactly once. Q_i is the raw attributable stock-corrected period quantity, after any unit conversion but before per-product division. All protocols and intermediate calculations retain raw totals for one complete matched site/route/grade/state pool, including failed/zero-output runs, rework, starts/stops, cleaning and opening/closing WIP with its burdens. P is that pool's accepted net supplied product kg, reconciled to production, dispatch, stocks and returns; prior-period stock requires matched prior burdens or exclusion from P. Count a returned/reaccepted net lot only once; internal rework is not additional accepted output or a new external exchange. Zero-output intervals retain their burdens in a justified positive-P pool; if no positive matched P exists, report per-kg results unavailable, not zero or division by zero. The aggregation basis is the final inventory basis; do not divide an already normalized result again. Keep finished_granules exactly1kg and physical output quantities independent of burden allocation."
+      inputs:
+        - Q_i
+        - P
+        - "linked collection protocol"
+      output: "q_i in the native row unit per kg reference flow; unavailable if no positive matched P exists"
+      source_ids: []
+    - id: solution_components
+      applies_to: "an_solution, scrubber_acid"
+      rule: "active mass = received solution mass × measured active mass fraction; carrier water = solution mass × measured water fraction. Retain total supplied mass for a total-solution provider; these are composition subledgers, not duplicate supply rows."
+      inputs:
+        - "solution mass"
+        - assay
+        - cp_feed
+      output: "active and carrier-water subledgers"
+      source_ids: []
+    - id: electricity_conversion
+      applies_to: "electricity"
+      rule: "Raw period electrical energy in MJ = recorded kWh ×3.6. Retain the attributable raw period total; apply normalize_period once afterward, without dividing here."
+      inputs:
+        - kWh
+        - cp_power
+      output: "raw attributable period MJ before normalize_period"
+      source_ids:
+        - efma-an-can-2000
+    - id: delivered_heat
+      applies_to: "steam_heat"
+      rule: "Raw period interface heat in MJ = (sum incoming steam mass × incoming enthalpy - sum actual outgoing condensate/flash mass × outgoing enthalpy - separately measured interface losses) /1000 for kg and kJ/kg. Match the provider boundary and avoid subtracting losses twice. No unmeasured heat term is assumed. Retain the raw attributable period MJ, then apply normalize_period once; do not divide here."
+      inputs:
+        - "interface masses"
+        - enthalpies
+        - losses
+        - cp_heat
+      output: "raw attributable period net MJ before normalize_period"
+      source_ids: []
+    - id: emission_integration
+      applies_to: "ammonia_air, nitric_acid_air, an_condensable_air, pm25_air, pm25_10_air, pm_over10_air"
+      rule: "Raw period emitted mass in kg = sum of compatible concentration in mg/m3 × outlet volume flow rate in m3/h × actual interval operating h /1000000; use consistent wet/dry and T/P bases and separate fugitives. Preserve this correct rate-times-duration calculation and disclose extrapolation/censored values. Retain raw period species/fraction loads and apply normalize_period once afterward; do not divide by P here."
+      inputs:
+        - sampling
+        - "outlet flow"
+        - hours
+        - cp_air
+        - cp_pm
+      output: "raw period species or fraction kg before normalize_period"
+      source_ids:
+        - efma-an-can-2000
+    - id: particle_partition
+      applies_to: "pm25_air, pm25_10_air, pm_over10_air"
+      rule: "fine = measured filterable PM2.5; coarse = compatible filterable PM10 - PM2.5; large = compatible total filterable PM - PM10. Reject negative/incompatible differences; cumulative totals are not additive exchanges. Keep chemically identified condensable AN and acid phase disjoint."
+      inputs:
+        - "matched particle tests"
+        - cp_pm
+      output: "disjoint fraction masses"
+      source_ids:
+        - epa-pm-201a-2020
+    - id: physical_balances
+      applies_to: "all inventory rows"
+      rule: "On the unallocated physical ledger, conserve total material mass and relevant elements, including N, carbon and H/O: external inputs plus opening stocks equal external outputs plus closing stocks, with residual uncertainty. For molecular water, AN, carbonate, acid and other reactive components separately record inputs + opening stocks + actual formation = outputs + closing stocks + actual consumption. Establish actual reaction occurrence and net extents independently from stage assays, a supported chemical model and measured gas/species evidence; include any actual carbonate/acid/free-ammonia reactions without assuming they occur or fully convert. Do not infer reaction water or dry-component changes from the residual needed to close water/dry-mass accounts. Retain independent CO2 gas confirmation under cp_carbon, measured moisture/carrier water, phase transfers and equal internal links; never invent emission, yield or correction flows."
+      inputs:
+        - cp_product
+        - cp_feed
+        - cp_water
+        - cp_air
+        - cp_pm
+        - cp_waste
+        - cp_maintenance
+        - cp_carbon
+      output: "unallocated conserved mass/element and reactive-species ledgers, independent evidence and residual uncertainty"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all exchanges"
+      requirement: "Exact material/mixture state, chemistry/CAS and any hard route limitations must match; broad identity never proves provider quantity compatibility. Blank UUIDs prevent automatic linkage but never justify omitted exchange amounts."
+      evidence: "raw flow record; actual supplier/SDS/assay; receiver"
+    - id: period
+      applies_to: "all inventory rows"
+      requirement: "Same declared site, grade, route and period; record seasonal loads, starts/stops, cleaning, stock changes and any extrapolation. Avoid silent averaging of different recipes."
+      evidence: "synchronized logs and uncertainty"
+    - id: sampling
+      applies_to: "air and material assays"
+      requirement: "Choose validated methods for actual matrix, gas moisture and phases; retain calibration, blanks, repeat tests, quantification limits and measured versus inferred intervals. No literature performance default."
+      evidence: "eu-lvic-aaf-2007; efma-an-can-2000; epa-pm-201a-2020; actual reports"
+    - id: completeness
+      applies_to: "foreground package"
+      requirement: "Include each actual externally purchased conditioning material, separately acquired onsite ingredient and maintenance/control consumable as its own exchange; retain constituents of a whole purchased formulation in composition subledgers without duplicate procurement. Prove non-occurrence and retain unknown heat/waste/emission identity, provider basis and particle-partition gaps explicitly until resolved."
+      evidence: "ingredient/service register; flow and provider checks"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_identity: Verify carbonate-mixture identity, one finished_granules reference output, natural limestone and declared granulation route. Reject calcium-nitrate double salts, straight AN and substitute filler routes [un-cpc3-2025; yara-mineral-fertilizers]."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_basis: All inventory rows and linked aggregation use per 1 kg accepted net supplied reference flow. Check product water/additives, AN solution/acid composition, nutrient fractions, utility provider definitions and measured heat balance; no empirical default is imposed."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_balance: Inspect the unallocated physical and internal-transfer ledgers before burden allocation. Require documented residual uncertainty and equal internal transfers; do not mechanically scale physical co-product mass by an allocation share."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_emissions: Require correct species, outdoor-air subcompartment, phase and disjoint particles. Wet-stack limitations and condensable uncertainty remain explicit; a test reporting only total PM cannot establish resolved size fractions [efma-an-can-2000; epa-pm-201a-2020]."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_linkage: Resolve applicable blank identities and compatible background/receiver datasets before declaring a complete LCI. Actual additional ingredients, fuel, waste or emissions need individual evidence-backed rows. Unknown data are not zero; preserve biogenic CO2 separately if an actual added biogenic ingredient emits it."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Declared-site limestone CAN granulation manufacturing dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Compatible carbonate-filled bulk CAN manufacturing supply with matching recipe, route, utility and provider bases"
+  excluded_use: "Fertilizer application equivalence; calcium nitrate double salts; generic CPC 34615 coverage; prilling; other filler routes; unverified solution or heat basis"
+  required_metadata: "Site and period; SKU/grade; actual recipe and water; AN solution supplier interface; natural limestone grade/milling; N forms; granulation/drying/cooling/conditioning; utilities; emission controls; waste receivers; allocation"
+  required_quality_disclosure: "Measured and extrapolated coverage; unresolved identities/providers; particle/condensable uncertainty; balance residuals; exclusions; study-specific allocation; no generic quantity defaults"
+  update_trigger: "Recipe, moisture, filler/AN supplier, technology, utilities, controls, treatment, sampling or provider-basis change"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025, printed/PDF p.165; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Distinguish 34613 AN, 34614 nitrate double salts, 34615 carbonate mixtures and 34616 UAN; classification only"
+  - id: "eu-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "European Commission, LVIC-AAF BREF, August 2007, §§9.2.2–9.2.7 and 9.4.6, printed pp.365,367–369,383 / PDF pp.393,395–397,411; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic_aaf.pdf"
+    used_for: "AN solution upstream interface; carbonate mixing/granulation, actual drying/cooling/conditioning and controls; plant quantities and emission limits are not defaults"
+  - id: "efma-an-can-2000"
+    type: "handbook"
+    reference: "EFMA, BAT Booklet 6, Production of Ammonium Nitrate and Calcium Ammonium Nitrate, 2000, §§2.3–2.6 Appendix 1 and Units, printed pp.13–15,29–31 / PDF pp.15–17,31–33; https://www.fertilizerseurope.com/wp-content/uploads/2019/08/Booklet_6_final.pdf"
+    used_for: "Finishing/recycle/conditioning, electricity unit conversion and AN/CAN gas measurement; no universal recipe, safe operating specification or emission factor"
+  - id: "yara-mineral-fertilizers"
+    type: "handbook"
+    reference: "Yara Guide to Mineral Fertilizers, glossary printed p.26 / PDF p.27 ; https://www.yara.co.uk/siteassets/crop-nutrition/media/uk/uk-agronomy/yara-guide-to-mineral-fertilizers.pdf/"
+    used_for: "Producer carbonate CAN identity distinct from calcium nitrate; commercial nutrient figures are examples"
+  - id: "nynas-fertilizer-coatings"
+    type: "handbook"
+    reference: "Nynas, Fertile formulations, main article and Coatings Checklist; https://www.nynas.com/en/products/process-oils/knowledge-tank/fertile-formulations/"
+    used_for: "Neat or formulated mineral-oil conditioning; separate actual constituents; NPK laboratory reductions are excluded as CAN defaults"
+  - id: "epa-pm-201a-2020"
+    type: "official_guidance"
+    reference: "US EPA, Method 201A, October 7 2020, §§1–2, PDF pp.1–2; https://www.epa.gov/sites/default/files/2019-08/documents/method_201a_0.pdf"
+    used_for: "Filterable size fractions, droplet limitations and distinct condensable scope; use the actual validated site method, no emission factors"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f6f95d7872647ce64d1d3a76f941e445a12dc10d8c9c0a319eaf98b57fcab9d0"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5339"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5339
+          line: 60
+          column: 1
+        end:
+          offset: 8411
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Metered concentrated aqueous AN and ground natural limestone received for the CAN finishing unit, with purchased utilities and actual conditioning ingredients |\n| starting_condition_role | Supplier-interface foreground start; upstream burdens remain linked through compatible production and delivery datasets |\n| product_classification_scope | Limestone-filled CAN granulation subset of CPC 3.0 34615; no full-leaf equivalence |\n| recursive_input_rule | Safe internal fines/oversize and recovered AN liquor remain internal. Purchased CAN rework requires distinct upstream production, explicit composition and no recursive self-supply. |\n| upstream_dataset_requirement | AN solution provider must cover actual neutralisation, concentration, nitric-acid and ammonia supply burdens, including applicable upstream N2O/NOx; limestone provider includes actual extraction and milling. Match solution, water, utility and transport bases. |\n| disclosure | Feed receipt state and assay; upstream interfaces; recipe; actual drying energy; safe recycle; conditioning; net product basis; air methods and controls; external waste treatment; exclusions |\n\n- `boundary_finishing`: Include receiving/storage, any onsite filler milling, mixing, granulation, actual drying/cooling, screens/recycle crushing, actual conditioning, emission controls, cleaning and bulk handling. Retain stage meters and an unallocated mass/water/N/inorganic-carbon ledger. Equal physical internal transfers have equal amounts at both ends [eu-lvic-aaf-2007; efma-an-can-2000].\n- `boundary_utilities`: This route uses electric drives and indirect heating. Steam generation is a separate upstream utility; record gross steam/condensate interfaces and net heat without counting closed-loop heat-carrier water as process makeup. Direct-fired drying or an onsite boiler requires explicit fuel and combustion rows plus applicable original evidence before extending this method.\n- `boundary_treatment`: Residual liquor and solids go to identified external treatment, linked with treatment/transport burdens. Internal recovery is not an external emission. Direct final liquid discharge or onsite biological treatment lies outside this route and requires explicit water, species, treatment chemical, sludge and gaseous-emission inventories.\n- `boundary_completeness`: Identify every actual externally supplied material/service and external loss stream before dataset acceptance, with a separate atomic exchange and its evidence/identity. For whole purchased formulations retain constituent/carrier composition subledgers without duplicate component procurement; onsite separately purchased ingredients remain separate inputs. Include actual lubricant and replacement control media. Include upstream freight once at the supplier interface. No gap, unverified UUID or unmeasured amount authorizes a burdenless cutoff. Capital construction, bagged delivery and agricultural use remain excluded and disclosed.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 302
+              line: 9
+              column: 1
+            end:
+              offset: 357
+              line: 9
+              column: 56
+          text: "# Limestone-filled calcium ammonium nitrate granulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5339
+              line: 60
+              column: 1
+            end:
+              offset: 5360
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_33082"
+      family: "allocation"
+      span:
+        start:
+          offset: 33082
+          line: 414
+          column: 1
+        end:
+          offset: 34248
+          line: 420
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n- `allocation_physical`: Safe recycle, scrubber recovery and screen fines within the unit are physical loops, not co-products. Preserve pre-allocation physical mass, water, N and inorganic-carbon balances. Never multiply co-product physical outputs or internal transfers by a burden share.\n- `allocation_shared`: Separate CAN campaigns, grades and other fertilizer production through measured submetering and process subdivision first. Attribute common electric drives and controls using a documented causal service measure, such as actual operating time with measured loads; report the chosen basis and uncertainty. Do not apply a neighbouring plant's energy quantity.\n- `allocation_coproduct`: This baseline has one saleable output and gives no waste or steam credit. Actual exported recovered material or energy requires separate physical identity, recipient and usable-output evidence, then a documented study-specific co-product method. Preserve physical quantities; apply allocation only to eligible shared burdens, ensuring burden shares sum to one. Unresolved co-product scope prevents claiming a complete dataset.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 302
+              line: 9
+              column: 1
+            end:
+              offset: 357
+              line: 9
+              column: 56
+          text: "# Limestone-filled calcium ammonium nitrate granulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 33082
+              line: 414
+              column: 1
+            end:
+              offset: 33122
+              line: 414
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48316"
+      family: "validation"
+      span:
+        start:
+          offset: 48316
+          line: 458
+          column: 1
+        end:
+          offset: 49770
+          line: 466
+          column: 1
+      markdown: "## 9. Validation Rules\n\n- `validate_identity`: Verify carbonate-mixture identity, one finished_granules reference output, natural limestone and declared granulation route. Reject calcium-nitrate double salts, straight AN and substitute filler routes [un-cpc3-2025; yara-mineral-fertilizers].\n- `validate_basis`: All inventory rows and linked aggregation use per 1 kg accepted net supplied reference flow. Check product water/additives, AN solution/acid composition, nutrient fractions, utility provider definitions and measured heat balance; no empirical default is imposed.\n- `validate_balance`: Inspect the unallocated physical and internal-transfer ledgers before burden allocation. Require documented residual uncertainty and equal internal transfers; do not mechanically scale physical co-product mass by an allocation share.\n- `validate_emissions`: Require correct species, outdoor-air subcompartment, phase and disjoint particles. Wet-stack limitations and condensable uncertainty remain explicit; a test reporting only total PM cannot establish resolved size fractions [efma-an-can-2000; epa-pm-201a-2020].\n- `validate_linkage`: Resolve applicable blank identities and compatible background/receiver datasets before declaring a complete LCI. Actual additional ingredients, fuel, waste or emissions need individual evidence-backed rows. Unknown data are not zero; preserve biogenic CO2 separately if an actual added biogenic ingredient emits it.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 302
+              line: 9
+              column: 1
+            end:
+              offset: 357
+              line: 9
+              column: 56
+          text: "# Limestone-filled calcium ammonium nitrate granulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48316
+              line: 458
+              column: 1
+            end:
+              offset: 48338
+              line: 458
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5339"
+      source_span:
+        start:
+          offset: 6593
+          line: 73
+          column: 1
+        end:
+          offset: 6989
+          line: 73
+          column: 397
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5339"
+      source_span:
+        start:
+          offset: 6990
+          line: 74
+          column: 1
+        end:
+          offset: 7384
+          line: 74
+          column: 395
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "system_boundary_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5339"
+      source_span:
+        start:
+          offset: 7385
+          line: 75
+          column: 1
+        end:
+          offset: 7744
+          line: 75
+          column: 360
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "system_boundary_rule_4"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5339"
+      source_span:
+        start:
+          offset: 7745
+          line: 76
+          column: 1
+        end:
+          offset: 8409
+          line: 76
+          column: 665
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_33082"
+      source_span:
+        start:
+          offset: 33124
+          line: 416
+          column: 1
+        end:
+          offset: 33413
+          line: 416
+          column: 290
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_33082"
+      source_span:
+        start:
+          offset: 33414
+          line: 417
+          column: 1
+        end:
+          offset: 33793
+          line: 417
+          column: 380
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_33082"
+      source_span:
+        start:
+          offset: 33794
+          line: 418
+          column: 1
+        end:
+          offset: 34246
+          line: 418
+          column: 453
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_48316"
+      source_span:
+        start:
+          offset: 48340
+          line: 460
+          column: 1
+        end:
+          offset: 48607
+          line: 460
+          column: 268
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_48316"
+      source_span:
+        start:
+          offset: 48608
+          line: 461
+          column: 1
+        end:
+          offset: 48890
+          line: 461
+          column: 283
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_48316"
+      source_span:
+        start:
+          offset: 48891
+          line: 462
+          column: 1
+        end:
+          offset: 49146
+          line: 462
+          column: 256
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_rule_4"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_48316"
+      source_span:
+        start:
+          offset: 49147
+          line: 463
+          column: 1
+        end:
+          offset: 49430
+          line: 463
+          column: 284
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_rule_5"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_48316"
+      source_span:
+        start:
+          offset: 49431
+          line: 464
+          column: 1
+        end:
+          offset: 49768
+          line: 464
+          column: 338
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5339"
+      source_span:
+        start:
+          offset: 5339
+          line: 60
+          column: 1
+        end:
+          offset: 5360
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5339"
+      source_span:
+        start:
+          offset: 5388
+          line: 64
+          column: 1
+        end:
+          offset: 6591
+          line: 71
+          column: 208
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_33082"
+      source_span:
+        start:
+          offset: 33082
+          line: 414
+          column: 1
+        end:
+          offset: 33122
+          line: 414
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48316"
+      source_span:
+        start:
+          offset: 48316
+          line: 458
+          column: 1
+        end:
+          offset: 48338
+          line: 458
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f6f95d7872647ce64d1d3a76f941e445a12dc10d8c9c0a319eaf98b57fcab9d0"
+  generated_content_sha256: "sha256:5c34496348a169056636166106feee378b39470d70406f93bfe7464d3764cc71"

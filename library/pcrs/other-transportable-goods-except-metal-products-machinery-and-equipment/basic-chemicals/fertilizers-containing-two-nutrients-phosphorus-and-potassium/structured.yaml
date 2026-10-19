@@ -1,10 +1,1117 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34645"
-  title: "Fertilizers containing two nutrients: phosphorus and potassium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.fertilizers-containing-two-nutrients-phosphorus-and-potassium"
+  classification_refs: "CPC 3.0 34645; proposed narrower relation, no accepted mapping"
+  covered_products: "TSP/MOP physical PK blends with actual accepted composition; compatible limestone only when documented"
+  excluded_products: "Other nutrient combinations, potassium-phosphate synthesis, reacted/granulated/compacted/coated production and liquid or organic products"
+  representative_product: "One real accepted TSP/MOP PK SKU; no prescribed nutrient grade"
+  production_route: "Purchased granules, physical screening/blending, dry dust collection and dispatch"
+  market_state: "Solid blend at plant gate, actual moisture and conditioning included; transport packaging excluded from net fertilizer mass"
+functional_unit:
+  what: "Supply a physically blended fertilizer with phosphorus and potassium and no intentionally added nitrogen"
+  how_much: "1 kg accepted net finished fertilizer"
+  how_well: "Actual nutrient assays, solubility, moisture, particle distribution, homogeneity and agreed storage/delivery acceptance"
+  how_long_or_cycle: "One complete declared manufacturing and storage period through plant-gate delivery; no agronomic service-life claim"
+  reference_flow_link: "pk_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_stages
+      applies_to: "blend"
+      rule: "Collect all operated stages in the period, including dust control, packing, ancillary cleaning and failed batches. Keep upstream acidulation separate from the blending foreground, with complete supply links."
+      source_ids:
+        - eu-jrc-lvic-aaf-2007
+        - efba-solid-blending-2016
+    - rule_id: boundary_actual
+      applies_to: "all inventory rows"
+      rule: "Conditional absence requires evidence. Retain every actual observed exchange and its origin/destination; additional carriers, reagents, releases, transport and treatment require separate atomic rows and methods before use. A no-output operation is not omitted."
+      source_ids:
+        - efba-solid-blending-2016
+        - origin-pk-sds-2016
+    - rule_id: boundary_capital
+      applies_to: "blend"
+      rule: "Declare actual assets and capital scope. If equipment burdens are included, retain physical asset quantity/materials, service period, productive capacity and measured allocation separately from period service equivalents, with individually identified exchanges. No fictitious per-kg equipment mass or default lifetime; any exclusion needs a documented scope decision and sensitivity."
+      source_ids:
+        - efba-solid-blending-2016
+boundary_abstraction:
+  declared_starting_condition: "Purchased complete granular TSP, MOP and any proven-compatible actual filler/packaging at the foreground receipt gate"
+  starting_condition_role: "Foreground collection boundary, not an upstream cut-off"
+  product_classification_scope: "Only the defined physical TSP/MOP PK subtype within the broad CPC leaf"
+  recursive_input_rule: "Record an external same-category blend once with its actual quantity and qualified provider; keep internal returned material in transfer/WIP records without a second purchase or credit"
+  upstream_dataset_requirement: "Link supplier-compatible TSP, KCl, conditioning, filler, electricity, water and packaging production plus actual inbound transport and waste-treatment services; reveal missing links rather than zero burdens"
+  disclosure: "Declare grades, locations, period, storage, meters, transport, capital-equipment treatment, packaging, external treatment and all cut-offs with reasons and sensitivity"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Multi-nutrient compound fertilizer, formulation unspecified"
+    uuid: "b4e892e2-0421-4512-88e7-a5f8ae556d7a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Actual SKU"
+    - "full recipe including coating/filler"
+    - "no intentional N source"
+    - "total and water-soluble P2O5 and K2O-equivalent assays with methods"
+    - "elemental reporting if used"
+    - moisture
+    - "free acidity"
+    - "feed and product particle distributions"
+    - "blending/conditioning route"
+    - "delivery state"
+    - packaging
+    - "suppliers and their quantity bases"
+    - "site/period"
+    - "storage acceptance and segregation"
+    - "waste destinations"
+    - "measurement and allocation coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "pk_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "B is the sum of net newly completed fertilizer of this exact SKU/state/route crossing the final acceptance/release gate during the declared period, counted once and excluding packaging, resale of already completed opening stock and sold off-grade output. Weigh gross and tare independently; retain moisture and all raw totals."
+  - id: period_coverage
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Consistent exchange property"
+      uuid: ""
+    required_unit: "per 1 kg reference flow"
+    rule: "Preserve the complete same-product/state/route period, including start-up, shutdown, failed/zero-output batches, cleaning, rework and work in progress. Attribute its full resource/emission pool, then normalize once by positive B. If the whole pool has B = 0, retain totals and do not invent a normalized result."
+  - id: material_basis
+    applies_to: "feed_tsp; feed_kcl; limestone_filler; pk_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Supplied fertilizer mass is not nutrient-equivalent mass or pure active-component mass. Record water, coating and impurities within supplied mass; component assays are parallel balances, not repeated purchased exchanges. Retain both P versus P2O5 and K versus K2O conventions and use documented molar conversion only when needed."
+  - id: provider_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Native reference property"
+      uuid: ""
+    required_unit: "native reference unit"
+    rule: "Store supplier reference quantity separately from period demand. Verify state, grade, actual kg/m3/MJ definitions and any density, pressure, temperature, wet/dry or normal/actual volume conditions. Identity lookup alone proves no provider compatibility."
+  - id: package_basis
+    applies_to: "bag_pp; liner_pe; waste_pp; waste_pe"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh each actual empty component and retain counts/capacity as separate checks. Do not infer package mass from fertilizer capacity or impose a default number of bags."
+  - id: emission_basis
+    applies_to: "pm25; pm2510; pm10plus; carbonate_co2"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Concentration times an already integrated compatible gas volume gives mass; multiply by time only when integrating a volume flow rate. Retain pressure/temperature, moisture, normal/actual volume, operating coverage and detection limits; no repeated time multiplier."
+process_map:
+  - id: blend
+    name: "Receiving, dry blending, control, acceptance and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Actual TSP/MOP physical PK production"
+    role: "Single foreground unit with stage meters and internal return/WIP ledger"
+    quantitative_reference: "1 kg accepted net finished PK fertilizer"
+process_inventory:
+  - id: blend
+    label: "Receiving, dry blending, control, acceptance and dispatch"
+    inputs:
+      product:
+        - row_id: feed_tsp
+          role: "Calcium superphosphate"
+          name: "Calcium superphosphate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2e8dcdd0-493e-4426-ad0e-e9871e139405"
+          property_unit: "Mass / kg"
+          description: "Purchased granular TSP made by phosphate-rock/phosphoric-acid acidulation. Require the actual supplier grade, moisture, P assay, free acidity and any upstream coating. Record the complete supplied granule mass; do not treat it as pure monocalcium phosphate or purchase its constituents again. The native comment supports TSP but the synonym SSP and mineral classification conflict; retain supplier clarification and use no native percentage as a default."
+          amount:
+            expression: "Use cp_material for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: feed_kcl
+          role: "Potassium chloride"
+          name: "Potassium chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c0f36a80-f6a0-4926-9a92-9c80f5fcb662"
+          property_unit: "Volume / m3"
+          description: "Purchased fertilizer-grade granular MOP; actual KCl assay, K2O-equivalent assay, moisture, impurities, particle distribution, conditioning and provider basis are required. The chemical UUID does not establish a particular commercial nutrient grade or upstream process dataset. Its native reference is Volume/m3, not Mass/kg. Keep measured complete supplied kg in the physical ledger and measure the corresponding provider-compatible volume convention, granule packing, moisture and bulk density. No generic density or secondary property coefficient supplies this conversion; an undefined provider m3 basis leaves the linkage incomplete."
+          amount:
+            expression: "Retain actual supplied kg and measured corresponding m3. Use the independently measured density for that same packing/moisture convention only when compatible with the provider reference; report m3 per 1 kg reference flow once using positive B. No default conversion."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: limestone_filler
+          role: "limestone powder"
+          name: "Ground natural limestone filler"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional natural ground limestone filler only if the recipe actually uses it and compatibility with acidic TSP is demonstrated. Verify the actual physical grade and fineness, carbonate/mineral composition, free acidity and storage stability. The retrieved a3317ee0-aae8-4d22-b720-fe24bc73d3c4 record is not adopted: its CAS 587-26-8 identifies lanthanum carbonate, conflicting with its limestone name/comment. Do not transfer its 200–600 mesh restriction to this unresolved row or substitute quicklime or precipitated carbonate. Unexpected reaction gas requires separate measurement and route review."
+          amount:
+            expression: "Use cp_material for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - origin-pk-sds-2016
+                - efba-solid-blending-2016
+                - pubchem-lanthanum-carbonate-168924
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value / MJ"
+          description: "User-side grid electricity below 1 kV in China (CN) only; meter reception, conveying, screening, blending, dust extraction, compressed-air generation and packing separately where possible. Verify the actual delivery voltage, location, period and provider reference. A different purchased voltage requires its verified flow and conversion boundary, not this UUID by assumption."
+          amount:
+            expression: "Retain metered campaign kWh and convert once using 1 kWh = 3.6 MJ; attribute shared consumption before division by B."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: bag_pp
+          role: "Woven polypropylene fertilizer sack"
+          name: "Woven polypropylene fertilizer sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional bagged delivery. Weigh the actual empty PP sack component and retain issued counts and capacity separately. No fixed bag count or kg per bag is prescribed. The seed-specific 25 kg bag record is not adopted. A complete composite sack must not be represented as pure PP resin."
+          amount:
+            expression: "Use cp_pack for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: liner_pe
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Conditional physically separate PE liner. Verify polymer CAS 9002-88-4, thickness/grade, empty component mass and upstream film/conversion coverage. Use this only for the PE film component, not the entire lined PP sack. The native luggage classification is a disclosed defect."
+          amount:
+            expression: "Use cp_pack for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: cleaning_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Conditional ancillary cleaning water, not added formulation water. Retain metered m3 and measured density/temperature if converting to kg; do not adopt the database secondary volume coefficient as measured density. Collect the entire cleaning cycle, including no-output periods, and the corresponding wastewater fate."
+          amount:
+            expression: "Use cp_water for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - origin-pk-sds-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: humidity_uptake
+          role: "Water vapour absorbed from ambient air"
+          name: "Water vapour absorbed from ambient air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional real atmospheric moisture uptake during hygroscopic storage; determine independently from representative inlet/outlet moisture, stock and environmental observations. Ambient-air resource identity is unresolved; an air emission or liquid-water flow cannot replace it. Do not force the water-balance residual into uptake."
+          amount:
+            expression: "Use cp_water for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - origin-pk-sds-2016
+                - efba-solid-blending-2016
+            ranges: []
+    outputs:
+      product:
+        - row_id: pk_product
+          role: "Dry blended TSP and potassium chloride PK fertilizer"
+          name: "Multi-nutrient compound fertilizer, formulation unspecified"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b4e892e2-0421-4512-88e7-a5f8ae556d7a"
+          property_unit: "Mass / kg"
+          description: "The sole quantitative reference is accepted net supplied fertilizer, including its actual moisture and supplied conditioning, excluding packaging. Final acceptance occurs after storage/packing and checks composition and segregation. Use the selected generic reference only with the physical-subset, whole-mass and source-context conditions in Section 3; no source recipe or upstream cut-off is inherited."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - bartholomews-pk-blends
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: offgrade_product
+          role: "Off-specification TSP and KCl PK blend sold for nutrient use"
+          name: "Off-specification TSP and KCl PK blend sold for nutrient use"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional real sale with demonstrated nutrient function, quality and receiver acceptance. Keep its full physical mass and assays; exclude it from accepted target output B. It is not simultaneously a waste. No credit or allocation factor is assumed."
+          amount:
+            expression: "Use cp_waste for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+      waste:
+        - row_id: reject_fertilizer
+          role: "Discarded off-specification TSP and KCl PK blend"
+          name: "Discarded off-specification TSP and KCl PK blend"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual off-spec blend sent to external treatment, with composition, moisture and contamination declared; exclude separately collected dust. Record treatment acceptance and destination. Reworked material staying inside the foreground is a separately tracked internal transfer, not another external input or waste."
+          amount:
+            expression: "Use cp_waste for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: captured_dust
+          role: "Dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass / kg"
+          description: "Actual collected fertilizer dust leaving the site for waste treatment. Verify its TSP/KCl/filler composition, moisture, impurities and receiver conditions against this broad waste identity. Internally returned captured dust stays in the physical return ledger; it is neither emitted PM nor an avoided-production credit."
+          amount:
+            expression: "Use cp_waste for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: waste_pp
+          role: "Polypropylene Wastes"
+          name: "Polypropylene Wastes"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "88215d1b-e6b6-4ec7-af7f-83375e80637b"
+          property_unit: "Mass / kg"
+          description: "Only separated PP sack waste accepted for the native mechanical recycling route. Measure polymer and adhered fertilizer separately and document receiver acceptance. Contaminated, composite or differently treated waste requires a compatible identity; do not claim this route without evidence."
+          amount:
+            expression: "Use cp_waste for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: waste_pe
+          role: "Discarded polyethylene fertilizer liner"
+          name: "Discarded polyethylene fertilizer liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Keep separated liner waste with measured contamination and actual destination. The retrieved cleaned PE waste at a recycling plant does not establish the identity of uncleaned fertilizer liner at this factory gate; retain the unresolved UUID."
+          amount:
+            expression: "Use cp_waste for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: cleaning_effluent
+          role: "Contained PK fertilizer equipment-cleaning wastewater"
+          name: "Contained PK fertilizer equipment-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional separately collected cleaning liquid sent to off-site treatment; retain the full wet mass, water and dissolved/suspended P/K/Cl and carbonate composition. Do not use source-specific PV or manganese wastewater. If treatment/discharge actually occurs on site, extend the inventory with its real reagents, sludge and individually speciated receiving-medium releases before dataset use."
+          amount:
+            expression: "Use cp_water for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - origin-pk-sds-2016
+            ranges: []
+      elementary:
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual residual PM below 2.5 micrometres released to outdoor air, unspecified subcompartment. Include representative stack and fugitive releases after controls. Indoor occupational dust concentration is not the mass released across the site boundary."
+          amount:
+            expression: "Use cp_air for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: pm2510
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air particles in the non-overlapping 2.5–10 micrometre bin. Derive from cumulative PM10 minus PM2.5 only when sampling boundaries, time coverage, gas basis and methods are compatible; no negative residual or nested double counting."
+          amount:
+            expression: "Use cp_air for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: pm10plus
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual outdoor-air particles above 10 micrometres, separate from the two finer bins. Use total suspended particles minus compatible cumulative PM10 only with validated size coverage; no default split. Captured dust that remains in a bin is not an air release."
+          amount:
+            expression: "Use cp_air for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - efba-solid-blending-2016
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual water evaporated to outdoor air, unspecified subcompartment, from ancillary cleaning or handling. Determine independently from measured moisture/air observations and retained physical records; neither COD nor an unexplained balance residual establishes evaporation or reaction-water generation."
+          amount:
+            expression: "Use cp_water for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - origin-pk-sds-2016
+            ranges: []
+        - row_id: carbonate_co2
+          role: "Carbon dioxide from mineral carbonate to outdoor air"
+          name: "Carbon dioxide from mineral carbonate to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional observed mineral-carbon release if free acid and carbonate filler actually react. Measure the species, mineral carbon origin, quantity and receiving air compartment, reconcile consumed carbonate and resulting water, and reopen the no-reaction applicability decision. Atmospheric resource CO2 and delayed-emission correction records are rejected. No positive emission, zero emission, carbonate conversion or reaction yield is assumed."
+          amount:
+            expression: "Use cp_air for actual attributable period quantity; retain raw totals and report per 1 kg reference flow only when B is positive. No default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - origin-pk-sds-2016
+            ranges: []
+allocation_rules:
+  - rule_id: physical_ledger
+    applies_to: "all inventory rows"
+    rule: "Preserve the full unallocated material/water/P/K/Cl/mineral-carbon and packaging ledger, with opening/closing stocks, all failed lots and paired equal internal returns. Do not multiply physical outputs by an allocation share or credit internal recycling."
+    source_ids:
+      - efba-solid-blending-2016
+  - rule_id: burden_attribution
+    applies_to: "blend"
+    rule: "First separate grade campaigns and directly measured operations. Attribute common electricity, cleaning and dust control by measured causal duty; retain all same-route zero-output events in the attributable pool. Keep environmental-burden allocation in a separate ledger. If a genuine off-grade nutrient co-product is sold, document function/quality and first seek subdivision; any remaining allocation needs a justified method, sum-to-one shares and sensitivity before completed use."
+    source_ids:
+      - efba-solid-blending-2016
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "blend"
+      flow_role: "pk_product"
+      record_type: "foreground_record"
+      raw_fields: "SKU; gross; tare; accepted net mass B; P/P2O5 and K/K2O assays; solubility; moisture; sieve results; start/end pre-acceptance stocks/WIP; separate completed-goods warehouse ledger; one-time release event; failed lots; WIP embodied-burden carryover"
+      collection_method: "Calibrated final net weighing and representative composition/segregation sampling at receipt, storage and dispatch"
+      unit: "kg"
+      frequency: "Each batch/stage and linked representative monitoring period"
+      temporal_coverage: "Complete declared period including start/stop, failed/zero-output events, rework, storage and WIP"
+      site_scope: "Actual selected site, SKU/state/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, certificates, sampling scope, stock/transfer reconciliation and receiver/provider records"
+    - protocol_id: cp_material
+      process_id: "blend"
+      flow_role: "feed_tsp; feed_kcl; limestone_filler"
+      record_type: "foreground_record"
+      raw_fields: "lot; supplier; complete supplied mass; KCl measured m3, packing convention, moisture and independently measured bulk density; opening/closing feed stock; metered charge; full formulation; nutrient and impurity assay; coating; moisture; free acidity; compatibility; internal returns"
+      collection_method: "Calibrated receipt/feed scales, compatible KCl volume/bulk-density measurement and stock reconciliation; retain grade certificates, real physical tests and supplied quantity definition"
+      unit: "kg; m3"
+      frequency: "Each batch/stage and linked representative monitoring period"
+      temporal_coverage: "Complete declared period including start/stop, failed/zero-output events, rework, storage and WIP"
+      site_scope: "Actual selected site, SKU/state/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, certificates, sampling scope, stock/transfer reconciliation and receiver/provider records"
+    - protocol_id: cp_energy
+      process_id: "blend"
+      flow_role: "electricity"
+      record_type: "foreground_record"
+      raw_fields: "stage; kWh; meter; voltage; period; start/stop/idle consumption; shared loads; equipment duty; supplier reference amount; provider region/year"
+      collection_method: "Read calibrated stage meters including fans and packing; reconcile site bills and measured common-load attribution"
+      unit: "MJ"
+      frequency: "Each batch/stage and linked representative monitoring period"
+      temporal_coverage: "Complete declared period including start/stop, failed/zero-output events, rework, storage and WIP"
+      site_scope: "Actual selected site, SKU/state/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, certificates, sampling scope, stock/transfer reconciliation and receiver/provider records"
+    - protocol_id: cp_pack
+      process_id: "blend"
+      flow_role: "bag_pp; liner_pe"
+      record_type: "foreground_record"
+      raw_fields: "supplier; actual sack and liner grade; total issue; empty component mass; package counts; capacity; stock change; shipped mass; damaged mass"
+      collection_method: "Weigh actual empty components separately; reconcile purchased, issued, shipped, retained and discarded packaging without conflating capacity and material mass"
+      unit: "kg"
+      frequency: "Each batch/stage and linked representative monitoring period"
+      temporal_coverage: "Complete declared period including start/stop, failed/zero-output events, rework, storage and WIP"
+      site_scope: "Actual selected site, SKU/state/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, certificates, sampling scope, stock/transfer reconciliation and receiver/provider records"
+    - protocol_id: cp_waste
+      process_id: "blend"
+      flow_role: "offgrade_product; reject_fertilizer; captured_dust; waste_pp; waste_pe"
+      record_type: "foreground_record"
+      raw_fields: "origin; actual full wet mass; dry matter; P/K/Cl/mineral carbon; polymer; contamination; internal return quantity; offgrade sale; receiver; treatment; transfer receipts"
+      collection_method: "Weigh separate physical streams and internal transfers; verify sale/function or waste status and destination, never assign both statuses to the same material"
+      unit: "kg"
+      frequency: "Each batch/stage and linked representative monitoring period"
+      temporal_coverage: "Complete declared period including start/stop, failed/zero-output events, rework, storage and WIP"
+      site_scope: "Actual selected site, SKU/state/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, certificates, sampling scope, stock/transfer reconciliation and receiver/provider records"
+    - protocol_id: cp_water
+      process_id: "blend"
+      flow_role: "cleaning_water; humidity_uptake; cleaning_effluent; water_vapour"
+      record_type: "foreground_record"
+      raw_fields: "cleaning cycle; measured supply mass or m3; density/temperature; wet effluent; dissolved/suspended material; raw/product/stock moisture; ambient humidity; independently measured evaporation/uptake; destination"
+      collection_method: "Meter complete cleaning periods, sample water and solids separately and measure moisture exchange independently; retain unexplained residual, no COD-based water generation"
+      unit: "kg"
+      frequency: "Each batch/stage and linked representative monitoring period"
+      temporal_coverage: "Complete declared period including start/stop, failed/zero-output events, rework, storage and WIP"
+      site_scope: "Actual selected site, SKU/state/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, certificates, sampling scope, stock/transfer reconciliation and receiver/provider records"
+    - protocol_id: cp_air
+      process_id: "blend"
+      flow_role: "pm25; pm2510; pm10plus; carbonate_co2"
+      record_type: "foreground_record"
+      raw_fields: "source; species; mineral carbon origin; size bins; concentration; integrated gas volume or flow rate/time; actual/normal and wet/dry bases; pressure; temperature; controls; fugitives; represented hours; detection limits"
+      collection_method: "Measure residual stack and fugitive releases under represented operating states; match concentration and volume basis, distinguish integrated volume from volume rate; verify mineral-carbon source if CO2 occurs"
+      unit: "kg"
+      frequency: "Each batch/stage and linked representative monitoring period"
+      temporal_coverage: "Complete declared period including start/stop, failed/zero-output events, rework, storage and WIP"
+      site_scope: "Actual selected site, SKU/state/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original logs, certificates, sampling scope, stock/transfer reconciliation and receiver/provider records"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide each full attributable period exchange by positive accepted net B once; retain raw totals. Target reference output is exactly 1 kg. If B = 0, report the period totals and unresolved normalization, not a fabricated unit inventory."
+      inputs:
+        - cp_product
+        - cp_material
+        - cp_energy
+        - cp_pack
+        - cp_waste
+        - cp_water
+        - cp_air
+      output: "Exchanges per 1 kg reference flow and preserved raw totals"
+      source_ids:
+        - efba-solid-blending-2016
+    - id: energy_conversion
+      applies_to: "electricity"
+      rule: "Convert metered kWh to MJ using 3.6, once; preserve provider reference quantity separately. The native flow property is Net calorific value, not a renamed generic electricity property."
+      inputs:
+        - cp_energy
+        - cp_product
+      output: "MJ per 1 kg reference flow"
+      source_ids:
+        - efba-solid-blending-2016
+    - id: kcl_volume_basis
+      applies_to: "feed_kcl"
+      rule: "Preserve measured supplied kg for mass/P/K/Cl balances; use measured compatible m3, or supplied kg divided by measured density for the identical supplier volume/packing/moisture definition. Keep supplier reference m3 separate from campaign m3 demand, then divide once by positive B. Undefined solid/bulk volume convention is unresolved, never a default conversion."
+      inputs:
+        - cp_material
+        - cp_product
+      output: "m3 per 1 kg reference flow and parallel kg ledger"
+      source_ids:
+        - efba-solid-blending-2016
+    - id: material_balance
+      applies_to: "all inventory rows"
+      rule: "Received supplied materials plus opening in-process stock and measured environmental uptake equal accepted product, sold off-grade, discarded fertilizer/dust, actual releases and closing in-process stock/WIP (excluding the already counted released target output), on matching wet and dry bases. Keep internal returns equal on both sides and cancel only in the aggregate. Balance P, K and Cl from measured composition across each outlet; solubility assays do not equal total elemental content. Packaging has a separate stock/ship/waste ledger. Preserve residuals and measurement uncertainty; never tune yield, losses or emissions to force closure."
+      inputs:
+        - cp_product
+        - cp_material
+        - cp_waste
+        - cp_water
+        - cp_air
+        - cp_pack
+      output: "Full unallocated physical and element ledgers"
+      source_ids:
+        - efba-solid-blending-2016
+    - id: water_carbon_balance
+      applies_to: "all inventory rows"
+      rule: "Balance molecular water and measured mineral/organic carbon independently of wet total mass. Distinguish material moisture, contained cleaning liquid, real vapour exchange and any evidenced reaction generation/consumption. A measured carbonate reaction needs stoichiometric/species and route review; no residual or COD value establishes reaction water, evaporated water or CO2. Packaging/coating carbon retained in product or waste is not a direct air emission."
+      inputs:
+        - cp_material
+        - cp_water
+        - cp_air
+        - cp_waste
+        - cp_pack
+      output: "Water and carbon ledgers with explained and unexplained differences"
+      source_ids:
+        - origin-pk-sds-2016
+    - id: air_mass
+      applies_to: "pm25; pm2510; pm10plus; carbonate_co2"
+      rule: "Multiply compatible concentration by integrated gas volume; or integrate concentration times volume flow rate over time. Never multiply an already integrated volume by time again. Retain residual post-control emissions separately from collected solids and non-overlapping particle bins."
+      inputs:
+        - cp_air
+      output: "Measured campaign mass then one normalization"
+      source_ids:
+        - efba-solid-blending-2016
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Confirm whole supplied identity, grade, CAS where relevant, native property and provider quantity basis. Blank UUIDs are explicit gaps, never zero exchanges; chemical components do not substitute for complete preparations."
+      evidence: "cp_material; cp_pack; cp_product"
+    - id: quality_representative
+      applies_to: "pk_product"
+      requirement: "Demonstrate actual accepted PK composition and no intentional N source; retain sampling, compatibility, storage and segregation results. Do not transplant a supplier example or SDS minimum as a recipe or universal grade."
+      evidence: "bartholomews-pk-blends; origin-pk-sds-2016; efba-solid-blending-2016"
+    - id: quality_completeness
+      applies_to: "all inventory rows"
+      requirement: "Distinguish demonstrated absence, measured zero, below detection, missing measurement and unresolved identity. Include complete period stocks/WIP and every real outlet. An incomplete upstream/treatment link or measurement relationship remains disclosed."
+      evidence: "cp_product; cp_waste; cp_air; cp_water"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "pk_product"
+    rule: "Require one compatible whole finished-blend reference identity with Mass/kg, matching route and delivery state. Verify the conditional generic identity against the actual whole PK product and provider basis with source-context debts disclosed. Mechanical checks alone do not establish physical or provider compatibility."
+    source_ids:
+      - eu-jrc-lvic-aaf-2007
+  - rule_id: validate_period
+    applies_to: "all inventory rows"
+    rule: "Verify bilingual denominator/aggregation equality, all original totals and exactly one division by positive B. No discarded failed batches or fabricated zero-output normalization. Each protocol belongs to blend and covers its linked rows."
+    source_ids:
+      - efba-solid-blending-2016
+  - rule_id: validate_physics
+    applies_to: "all inventory rows"
+    rule: "Check unallocated wet/dry mass, water, P, K, Cl, carbon, packaging and stock/return ledgers separately from allocated burdens. Investigate residuals and reaction indications; no default recipe, assay, loss, water generation or emission factor."
+    source_ids:
+      - origin-pk-sds-2016
+      - efba-solid-blending-2016
+  - rule_id: validate_air
+    applies_to: "pm25; pm2510; pm10plus; carbonate_co2; water_vapour"
+    rule: "Verify species/origin, outdoor-air medium, native reference property, compatible sampling/volume basis and non-overlapping particulate bins. Correction/resource flows do not replace emissions; captured dust is not emitted again."
+    source_ids:
+      - efba-solid-blending-2016
+  - rule_id: validate_scope
+    applies_to: "blend"
+    rule: "Verify actual dry physical route and complete supplied coating/ingredient coverage. Real additional process or exchange requires atomic inventory and source-supported method extension, not silent omission or a scope change to satisfy checks."
+    source_ids:
+      - eu-jrc-lvic-aaf-2007
+      - bartholomews-pk-blends
+published_dataset_profile:
+  dataset_role: "Candidate foreground production methodology for the declared physical PK subtype; scientific approval pending"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Future verified plant-gate supply inventory for the defined TSP/MOP PK blend"
+  excluded_use: "Unverified product/provider links, universal PK coverage, pure potassium phosphate, other nutrient combinations, field fertilization emissions or agronomic equivalence"
+  required_metadata: "All reference qualifiers; full raw period totals and positive B; actual upstream quantity links; site/route; sampling and balance ledgers; allocation and capital scope"
+  required_quality_disclosure: "Conditional generic reference and source-context debts; withdrawn limestone CAS conflict; package/waste/atmospheric-uptake/mineral-CO2 gaps; native metadata conflicts; provider and measurement uncertainties; independent scientific review pending"
+  update_trigger: "Verified finished reference available, different ingredients/coating/route/voltage, changed grade, waste/treatment fate, provider quantity basis or monitoring methods"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, p.166. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification context only; the leaf does not prescribe a route or canonical identity"
+  - id: "eu-jrc-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "European Commission, LVIC-AAF BREF, August 2007, §§7.1 and 7.2.1, printed pp.283/285, PDF pp.311/313. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-03/LVIC-AAF.pdf?download=1"
+    used_for: "PK nutrient reporting and distinction of mechanical blending from reacted routes; no plant size, recipe or consumption defaults"
+  - id: "bartholomews-pk-blends"
+    type: "literature"
+    reference: "Bartholomews, Bespoke Fertiliser Blends, PK subsection, web snapshot 15 October 2026. https://www.bartholomews.co.uk/blends"
+    used_for: "Producer corroboration of TSP/MOP PK blends; supplier examples and coated TSP do not establish a universal recipe, particle size or coating composition"
+  - id: "origin-pk-sds-2016"
+    type: "literature"
+    reference: "Origin Fertilisers (UK), Group 9 nitrogen-free P and PK SDS, Revision B, 17 June 2016, §§1,3,6–10. https://originsoilnutrition.co.uk/wp-content/uploads/2021/01/1.-Origin-SDS-Group-9.pdf"
+    used_for: "Historical product-family identity, possible limestone, moisture/compatibility and containment; not a complete formulation, current legal instruction or normal-operation emission factor"
+  - id: "efba-solid-blending-2016"
+    type: "handbook"
+    reference: "EFBA, Handbook of Solid Fertiliser Blending, Code of Good Practice for Quality, third edition 2016, March 2017 file, §§2–5,7–9. https://fertiliser-society.org/wp-content/uploads/2019/11/Blender-Handbook-2017-efba.pdf"
+    used_for: "Dry-blend definition, weighing/calibration, material compatibility, segregation and sampling; no table examples or historical legal provisions become defaults"
+  - id: "pubchem-lanthanum-carbonate-168924"
+    type: "dataset"
+    reference: "NCBI PubChem, CID168924 molecular formula and IUPAC name, CAS-name query 587-26-8, retained 15 October 2026. https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/587-26-8/property/MolecularFormula,IUPACName/JSON"
+    used_for: "Chemical-identity counterevidence only: CAS587-26-8 resolves to lanthanum carbonate (C3La2O9), supporting rejection of the contradictory limestone record; no limestone grade, recipe, exchange amount or conversion factor follows"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f60946c22e9babfa60f2e103785fe600c014084d4e234ead6bcad61527235e3d"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7399"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7399
+          line: 62
+          column: 1
+        end:
+          offset: 9616
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased complete granular TSP, MOP and any proven-compatible actual filler/packaging at the foreground receipt gate |\n| starting_condition_role | Foreground collection boundary, not an upstream cut-off |\n| product_classification_scope | Only the defined physical TSP/MOP PK subtype within the broad CPC leaf |\n| recursive_input_rule | Record an external same-category blend once with its actual quantity and qualified provider; keep internal returned material in transfer/WIP records without a second purchase or credit |\n| upstream_dataset_requirement | Link supplier-compatible TSP, KCl, conditioning, filler, electricity, water and packaging production plus actual inbound transport and waste-treatment services; reveal missing links rather than zero burdens |\n| disclosure | Declare grades, locations, period, storage, meters, transport, capital-equipment treatment, packaging, external treatment and all cut-offs with reasons and sensitivity |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_stages | blend | Collect all operated stages in the period, including dust control, packing, ancillary cleaning and failed batches. Keep upstream acidulation separate from the blending foreground, with complete supply links. | eu-jrc-lvic-aaf-2007; efba-solid-blending-2016 |\n| boundary_actual | all inventory rows | Conditional absence requires evidence. Retain every actual observed exchange and its origin/destination; additional carriers, reagents, releases, transport and treatment require separate atomic rows and methods before use. A no-output operation is not omitted. | efba-solid-blending-2016; origin-pk-sds-2016 |\n| boundary_capital | blend | Declare actual assets and capital scope. If equipment burdens are included, retain physical asset quantity/materials, service period, productive capacity and measured allocation separately from period service equivalents, with individually identified exchanges. No fictitious per-kg equipment mass or default lifetime; any exclusion needs a documented scope decision and sensitivity. | efba-solid-blending-2016 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 298
+              line: 10
+              column: 1
+            end:
+              offset: 357
+              line: 10
+              column: 60
+          text: "# Dry blended PK fertilizer from TSP and potassium chloride"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7399
+              line: 62
+              column: 1
+            end:
+              offset: 7420
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28645"
+      family: "allocation"
+      span:
+        start:
+          offset: 28645
+          line: 405
+          column: 1
+        end:
+          offset: 29629
+          line: 412
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| physical_ledger | all inventory rows | Preserve the full unallocated material/water/P/K/Cl/mineral-carbon and packaging ledger, with opening/closing stocks, all failed lots and paired equal internal returns. Do not multiply physical outputs by an allocation share or credit internal recycling. | efba-solid-blending-2016 |\n| burden_attribution | blend | First separate grade campaigns and directly measured operations. Attribute common electricity, cleaning and dust control by measured causal duty; retain all same-route zero-output events in the attributable pool. Keep environmental-burden allocation in a separate ledger. If a genuine off-grade nutrient co-product is sold, document function/quality and first seek subdivision; any remaining allocation needs a justified method, sum-to-one shares and sensitivity before completed use. | efba-solid-blending-2016 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 298
+              line: 10
+              column: 1
+            end:
+              offset: 357
+              line: 10
+              column: 60
+          text: "# Dry blended PK fertilizer from TSP and potassium chloride"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28645
+              line: 405
+              column: 1
+            end:
+              offset: 28685
+              line: 405
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40915"
+      family: "validation"
+      span:
+        start:
+          offset: 40915
+          line: 447
+          column: 1
+        end:
+          offset: 42684
+          line: 457
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | pk_product | Require one compatible whole finished-blend reference identity with Mass/kg, matching route and delivery state. Verify the conditional generic identity against the actual whole PK product and provider basis with source-context debts disclosed. Mechanical checks alone do not establish physical or provider compatibility. | eu-jrc-lvic-aaf-2007 |\n| validate_period | all inventory rows | Verify bilingual denominator/aggregation equality, all original totals and exactly one division by positive B. No discarded failed batches or fabricated zero-output normalization. Each protocol belongs to blend and covers its linked rows. | efba-solid-blending-2016 |\n| validate_physics | all inventory rows | Check unallocated wet/dry mass, water, P, K, Cl, carbon, packaging and stock/return ledgers separately from allocated burdens. Investigate residuals and reaction indications; no default recipe, assay, loss, water generation or emission factor. | origin-pk-sds-2016; efba-solid-blending-2016 |\n| validate_air | pm25; pm2510; pm10plus; carbonate_co2; water_vapour | Verify species/origin, outdoor-air medium, native reference property, compatible sampling/volume basis and non-overlapping particulate bins. Correction/resource flows do not replace emissions; captured dust is not emitted again. | efba-solid-blending-2016 |\n| validate_scope | blend | Verify actual dry physical route and complete supplied coating/ingredient coverage. Real additional process or exchange requires atomic inventory and source-supported method extension, not silent omission or a scope change to satisfy checks. | eu-jrc-lvic-aaf-2007; bartholomews-pk-blends |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 298
+              line: 10
+              column: 1
+            end:
+              offset: 357
+              line: 10
+              column: 60
+          text: "# Dry blended PK fertilizer from TSP and potassium chloride"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40915
+              line: 447
+              column: 1
+            end:
+              offset: 40937
+              line: 447
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_7399"
+      source_span:
+        start:
+          offset: 8535
+          line: 77
+          column: 1
+        end:
+          offset: 8821
+          line: 77
+          column: 287
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_actual"
+      identity_kind: "explicit"
+      unit_id: "normative_7399"
+      source_span:
+        start:
+          offset: 8822
+          line: 78
+          column: 1
+        end:
+          offset: 9172
+          line: 78
+          column: 351
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_capital"
+      identity_kind: "explicit"
+      unit_id: "normative_7399"
+      source_span:
+        start:
+          offset: 9173
+          line: 79
+          column: 1
+        end:
+          offset: 9614
+          line: 79
+          column: 442
+    - pointer: "/allocation_rules/0"
+      rule_id: "physical_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_28645"
+      source_span:
+        start:
+          offset: 28758
+          line: 409
+          column: 1
+        end:
+          offset: 29082
+          line: 409
+          column: 325
+    - pointer: "/allocation_rules/1"
+      rule_id: "burden_attribution"
+      identity_kind: "explicit"
+      unit_id: "normative_28645"
+      source_span:
+        start:
+          offset: 29083
+          line: 410
+          column: 1
+        end:
+          offset: 29627
+          line: 410
+          column: 545
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_40915"
+      source_span:
+        start:
+          offset: 41010
+          line: 451
+          column: 1
+        end:
+          offset: 41391
+          line: 451
+          column: 382
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_period"
+      identity_kind: "explicit"
+      unit_id: "normative_40915"
+      source_span:
+        start:
+          offset: 41392
+          line: 452
+          column: 1
+        end:
+          offset: 41700
+          line: 452
+          column: 309
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_physics"
+      identity_kind: "explicit"
+      unit_id: "normative_40915"
+      source_span:
+        start:
+          offset: 41701
+          line: 453
+          column: 1
+        end:
+          offset: 42035
+          line: 453
+          column: 335
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_air"
+      identity_kind: "explicit"
+      unit_id: "normative_40915"
+      source_span:
+        start:
+          offset: 42036
+          line: 454
+          column: 1
+        end:
+          offset: 42364
+          line: 454
+          column: 329
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_40915"
+      source_span:
+        start:
+          offset: 42365
+          line: 455
+          column: 1
+        end:
+          offset: 42682
+          line: 455
+          column: 318
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7399"
+      source_span:
+        start:
+          offset: 7399
+          line: 62
+          column: 1
+        end:
+          offset: 7420
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7399"
+      source_span:
+        start:
+          offset: 7448
+          line: 66
+          column: 1
+        end:
+          offset: 8462
+          line: 73
+          column: 185
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28645"
+      source_span:
+        start:
+          offset: 28645
+          line: 405
+          column: 1
+        end:
+          offset: 28685
+          line: 405
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40915"
+      source_span:
+        start:
+          offset: 40915
+          line: 447
+          column: 1
+        end:
+          offset: 40937
+          line: 447
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f60946c22e9babfa60f2e103785fe600c014084d4e234ead6bcad61527235e3d"
+  generated_content_sha256: "sha256:1fb2633edeb136add3b2cd070ec210e3eb15e3ec95967bbbf7bd16f5838146a8"

@@ -1,10 +1,1594 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "36111"
-  title: "New pneumatic tyres, of rubber, of a kind used on motor cars"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.new-pneumatic-tyres-of-rubber-of-a-kind-used-on-motor-cars"
+  classification_refs: "CPC 3.0 36111; narrower"
+  covered_products: "New tubeless steel-belted radial rubber passenger-car tyres"
+  excluded_products: "Exclude motorcycle/bicycle tyres, truck/bus/agricultural/aircraft tyres, solid tyres, separate inner tubes/treads/flaps, retreads and tyre recycling; also exclude bias construction and special run-flat, self-sealing or foam-lined designs pending an explicit method extension. Upstream E-SBR and greige tyre-cord methods end at different intermediate products and cannot replace this finished-tyre method. A classification leaf or a use label alone cannot establish method identity."
+  representative_product: "One declared size/model, polyester radial carcass, nylon bandage, steel belts and bead cores, bromobutyl innerliner"
+  production_route: "The foreground is one consolidated integrated tyre line, not a purchased-finished-tyre packing operation. Stage ledgers remain separate inside this unit process: receiving/weighing and recipe-specific nonproductive/final mixing; calendering steel cord, textile cord and liner; extrusion/cooling/cutting of tread and sidewall plus bead winding/coating/apex; carcass and belt/tread building; curing and cooling; visual/X-ray/uniformity inspection and actual finishing/rework; finished warehousing, packaging, handling and dispatch. Retain each compound and component lot internally; these are internal transfers, not extra purchases or extra final output. Separate material, utility, emissions and stock owners below preserve this stage detail."
+  market_state: "New cured, inspected accepted tyre actually net dispatched, excluding wheel/rim and packaging mass from tyre net mass"
+functional_unit:
+  what: "Supply a new accepted pneumatic tyre for a declared passenger-car fitment; no asserted vehicle-kilometre service equivalence"
+  how_much: "1 item of the declared finished tyre"
+  how_well: "Actual declared size/load/speed, construction and factory acceptance results; no invented universal performance threshold"
+  how_long_or_cycle: "One production and net-supply cycle; use life is outside this manufacturing boundary"
+  reference_flow_link: "finished_tyre"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "tyre_line"
+      rule: "The foreground is one consolidated integrated tyre line, not a purchased-finished-tyre packing operation. Stage ledgers remain separate inside this unit process: receiving/weighing and recipe-specific nonproductive/final mixing; calendering steel cord, textile cord and liner; extrusion/cooling/cutting of tread and sidewall plus bead winding/coating/apex; carcass and belt/tread building; curing and cooling; visual/X-ray/uniformity inspection and actual finishing/rework; finished warehousing, packaging, handling and dispatch. Retain each compound and component lot internally; these are internal transfers, not extra purchases or extra final output. Separate material, utility, emissions and stock owners below preserve this stage detail."
+      source_ids:
+        - continental-tyre-production
+        - continental-radial-components
+    - rule_id: boundary_delivery
+      applies_to: "tyre_line"
+      rule: "Q is the positive net number of unique accepted new tyres actually supplied across the declared factory dispatch gate for one matched product/route/state cohort, not newly released production. Record opening/closing finished stock and their full carried burdens, first quality-release output, outward deliveries, returns, scrapping and rework separately. An undelivered accepted tyre is not in Q. Returned tyres retain their identity and original burdens; reinspection is not new production. Reverse the original delivery attribution for returns and reconcile redispatch by unique IDs so no tyre is counted twice. A factory delivery dataset cannot assume quality release equals delivery."
+      source_ids:
+        - continental-tyre-production
+    - rule_id: boundary_integrity
+      applies_to: "tyre_line"
+      rule: "Include real failed/zero-output runs, idle/cleanup, rework, emission-control and all included warehouse/pack/handling burdens. Extend separate atomic cards for every actual ingredient, fuel, refrigerant, waste and emitted species absent from the exemplars. Conditional absence requires records, not a default zero."
+      source_ids:
+        - continental-tyre-production
+        - epa-rubber-process-2008
+boundary_abstraction:
+  declared_starting_condition: "Purchased identified dry elastomers, individual fillers/cure preparations, pretreated reinforcement cord/wire and actual utilities entering the integrated tyre line"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Qualified steel-belted radial passenger-car tyres, narrower than CPC 3.0 36111"
+  recursive_input_rule: "No purchased finished tyres substitute for this foreground. Returned own tyres carry original burdens and real rework once; do not recurse into new virgin production or double count internal compound/component transfers."
+  upstream_dataset_requirement: "Independently match each actual supplied polymer/formulation/reinforcement and utility with its geography, route, grade, reference property and acquisition boundary; include upstream supply and transport once. UUID identity alone does not supply its burden."
+  disclosure: "Declare plant/time, all stage owners, actual recipe/BOM and purchased treatments, utility generation boundary, finished-stock/WIP carried burdens, delivery/return reconciliation, packaging and exclusions."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Tire"
+    uuid: "11c2e97a-624f-41de-957d-543cddb777ef"
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "passenger-car application and steel-belted radial/tubeless construction"
+    - "size/model and load/speed rating"
+    - "actual carcass/belt/bead/innerliner materials and supplied state"
+    - "each compound recipe revision and purchased-formulation basis"
+    - "factory/site/time and actual utility configuration"
+    - "net-dispatch gate and unique accepted delivery cohort Q"
+    - "opening/closing WIP and finished-stock quantities with carried burdens"
+    - "return/rework/reinspection attribution and waste destinations"
+    - "reference identity limits and native classification debt"
+    - "actual packaging/handling/warehouse boundaries and measured net tyre mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: count_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "item denotes the exact native reference unit Item(s), reference factor 1. Count actual individual tyres, not axles, pairs, sets, rims or tonnes; Q comes from cp_delivery."
+  - id: net_mass
+    applies_to: "physical balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure net tyre mass by calibrated weighing and configuration, excluding rims and all packaging; retain physical kg ledger separately from the count reference. Do not assign a universal tyre weight or infer density from a secondary coefficient."
+  - id: one_normalization
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "declared row unit"
+    rule: "Collection retains raw period numerators in cp_recipe/cp_reinforcement/cp_utilities/cp_waste/cp_emissions/cp_delivery/cp_stock. Only calc_normalize divides matched A_i by Q once. Card formulas and aggregation_rule repeat this same reporting operation, not sequential divisions."
+  - id: formulation_basis
+    applies_to: "supplied formulations"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Each purchased formulation is one whole supplied input. Active contents, water, oil and coating are subledgers; add only independently acquired dilution/blend ingredients as external inputs. Internally compounded rubber is not purchased again."
+  - id: integrated_volume
+    applies_to: "gas and liquid measurements"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "For rate readings integrate actual rate over its matching time; already integrated meter volumes are not multiplied by time again. Record standard/actual temperature, pressure and dry/wet gas basis before conversion."
+process_map:
+  - id: tyre_line
+    name: "Integrated tyre manufacture and net dispatch"
+    inclusion: "required"
+    inclusion_condition: "Declared steel-belted radial route, all stages in consolidated boundary"
+    role: "foreground"
+    quantitative_reference: "finished_tyre"
+process_inventory:
+  - id: tyre_line
+    label: "Integrated tyre manufacture and net dispatch"
+    inputs:
+      product:
+        - row_id: natural_rubber
+          role: "Natural rubber, dry bale"
+          name: "Natural rubber, dry bale"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual dry-rubber grade and supplied bale mass separately from each synthetic polymer; assay moisture without adding it as another procurement."
+          amount:
+            expression: "A_natural_rubber / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: sbr
+          role: "Styrene-butadiene rubber, dry bale"
+          name: "Styrene-butadiene rubber, dry bale"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual SBR polymerization route, bound styrene, oil extension and compound uses. Neither SBS nor an SBR-latex or sealing-cover record substitutes for this dry polymer."
+          amount:
+            expression: "A_sbr / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: br
+          role: "Polybutadiene rubber, dry bale"
+          name: "Polybutadiene rubber, dry bale"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separate BR from SBR and natural rubber; retain actual cis content/grade, oil extension and supplier mass. No fixed percentage is specified."
+          amount:
+            expression: "A_br / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: biir
+          role: "Bromobutyl rubber, dry bale"
+          name: "Bromobutyl rubber, dry bale"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This chosen innerliner route uses bromobutyl rubber; confirm actual grade and supplied formulation. A butyl-named record declaring butadiene/styrene copolymerization contradicts this identity and is not selected. Chlorobutyl is a different material, not an automatic synonym."
+          amount:
+            expression: "A_biir / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - exxon-innerliner-materials
+            ranges: []
+        - row_id: carbon_black
+          role: "Carbon black, reinforcing grade"
+          name: "Carbon black, reinforcing grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Keep each actual reinforcing grade and recipe amount identifiable; different grades become separate cards in a concrete dataset. Do not use tyre pyrolysis char as virgin carbon black."
+          amount:
+            expression: "A_carbon_black / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: silica
+          role: "Precipitated amorphous silica"
+          name: "Precipitated amorphous silica"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record where this filler is actually used, its supplied moisture and grade; not interchangeable with carbon black or crystalline quartz. No marketing mass share is a recipe."
+          amount:
+            expression: "A_silica / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-radial-components
+            ranges: []
+        - row_id: silane
+          role: "Sulfur-functional organosilane coupling-agent formulation"
+          name: "Sulfur-functional organosilane coupling-agent formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual silica recipe. Record one identified supplied commercial formulation in full; active silane and carrier are composition subledgers, not duplicate purchases. Identify actual species before matching its UUID."
+          amount:
+            expression: "A_silane / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-radial-components
+            ranges: []
+        - row_id: oil
+          role: "Rubber process oil"
+          name: "Rubber process oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use actual supplied oil grade and mass. Oil already inside purchased oil-extended rubber or masterbatch is not separately purchased here."
+          amount:
+            expression: "A_oil / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: resin
+          role: "Hydrocarbon tackifier resin"
+          name: "Hydrocarbon tackifier resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on an identified actual formulation; resin chemistry and solid supplied state must be verified, not inferred from total plasticizer share."
+          amount:
+            expression: "A_resin / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-radial-components
+            ranges: []
+        - row_id: zinc_oxide
+          role: "Zinc oxide"
+          name: "Zinc oxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual supplied grade, assay and weighed amount for the cure system; no fixed cure loading or reaction-water yield follows from its presence."
+          amount:
+            expression: "A_zinc_oxide / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: stearic_acid
+          role: "Stearic acid"
+          name: "Stearic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual cure-system ingredient; distinguish supplied technical fatty-acid formulation from a pure-species identity before adopting a provider."
+          amount:
+            expression: "A_stearic_acid / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: sulfur
+          role: "Sulfur vulcanizing-agent formulation"
+          name: "Sulfur vulcanizing-agent formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one actual supplied sulfur grade/formulation, including any oil coating or carrier. Sulfur/active content is an internal assay ledger, not an extra input; no universal sulfur-to-water stoichiometry is imposed."
+          amount:
+            expression: "A_sulfur / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: accelerator
+          role: "Benzothiazolesulfenamide accelerator formulation"
+          name: "Benzothiazolesulfenamide accelerator formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual cure recipe; identify the specific accelerator and whole supplied preparation. Additional accelerator species require separate cards; no fixed recipe is prescribed."
+          amount:
+            expression: "A_accelerator / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: antioxidant
+          role: "Amine rubber-antioxidant formulation"
+          name: "Amine rubber-antioxidant formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One actual supplier preparation, conditional on recipe. Its composition/active content and every separately supplied antioxidant must be distinguished."
+          amount:
+            expression: "A_antioxidant / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: wax
+          role: "Paraffin antiozonant wax"
+          name: "Paraffin antiozonant wax"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when actually compounded; measure the supplied wax grade separately from process oil and amine antioxidant."
+          amount:
+            expression: "A_wax / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-radial-components
+            ranges: []
+        - row_id: steel_cord
+          role: "Pretreated high-strength steel tyre cord"
+          name: "Pretreated high-strength steel tyre cord"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cord construction, coating, received state and mass for steel belts. Purchased pretreated cord includes its upstream treatment; do not count its metal/coating a second time."
+          amount:
+            expression: "A_steel_cord / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reinforcement
+              source_ids:
+                - continental-tyre-production
+                - continental-radial-components
+            ranges: []
+        - row_id: bead_wire
+          role: "Tyre bead steel wire"
+          name: "Tyre bead steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bead-core wire is separate from steel belt cord; retain actual coating, wire dimensions and winding/covering records."
+          amount:
+            expression: "A_bead_wire / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reinforcement
+              source_ids:
+                - continental-tyre-production
+                - continental-radial-components
+            ranges: []
+        - row_id: polyester_cord
+          role: "Adhesion-treated polyester tyre cord fabric"
+          name: "Adhesion-treated polyester tyre cord fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Chosen textile-carcass material. Record exact treatment and fabric construction; supplier treatment is upstream, rubber calendering remains foreground. Do not substitute greige nylon fabric merely because it has a tyre-cord name."
+          amount:
+            expression: "A_polyester_cord / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reinforcement
+              source_ids:
+                - continental-tyre-production
+                - continental-radial-components
+            ranges: []
+        - row_id: nylon_cord
+          role: "Adhesion-treated nylon tyre cord"
+          name: "Adhesion-treated nylon tyre cord"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Selected winding-bandage reinforcement, kept separate from polyester carcass cord; retain polymer type, treatment, linear density and supplied mass."
+          amount:
+            expression: "A_nylon_cord / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reinforcement
+              source_ids:
+                - continental-radial-components
+            ranges: []
+        - row_id: release_emulsion
+          role: "Aqueous silicone tyre-release emulsion"
+          name: "Aqueous silicone tyre-release emulsion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual release-agent use. Record the complete identified purchased emulsion and its actual dilution water separately; water already in the emulsion is not purchased again. If the plant uses different chemistry, replace with a separately verified atomic formulation."
+          amount:
+            expression: "A_release_emulsion / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+            ranges: []
+        - row_id: cement
+          role: "Rubber bonding cement formulation"
+          name: "Rubber bonding cement formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual building/repair use, not compulsory solvent use. Record one whole supplied formulation, its solids/solvent assays and recovery; add each independently bought ingredient only when actually blended onsite."
+          amount:
+            expression: "A_cement / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meter actual fresh cooling make-up, cleaning and dilution water; recirculated water is an internal ledger, not repeated external withdrawal. Record the real supply source."
+          amount:
+            expression: "A_water / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - continental-tyre-production
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter the integrated line, including mixing, mills, calenders, extruders, bead making, building, presses, cooling, inspection, compressor/chiller, pollution control, warehouse and electric handling. Split actual stage readings without summing the same main and submeter twice."
+          amount:
+            expression: "A_electricity / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: steam
+          role: "Industrial steam"
+          name: "Industrial steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual external steam supplied for the declared press-heating route, with pressure, temperature and condensate-return boundary. Internally generated steam is an internal transfer: replace external steam purchase with actual separate fuel/feedwater/boiler-emission cards and include boiler losses; never count both."
+          amount:
+            expression: "A_steam / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: nitrogen
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual press/tyre inflation use; record supplied gas mass, leaks and recovery. Onsite air compression instead uses actual electricity and air-system records, not an invented nitrogen input."
+          amount:
+            expression: "A_nitrogen / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - continental-tyre-production
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on diesel handling/dispatch vehicles within this gate; measure actual fuel, retain combustion emissions and do not add it for electric forklifts."
+          amount:
+            expression: "A_diesel / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: film
+          role: "Polyethylene wrapping film"
+          name: "Polyethylene wrapping film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual dispatch packaging only; measure net applied film and scrap separately. Absence requires shipment evidence, not silent omission."
+          amount:
+            expression: "A_film / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_delivery
+              source_ids: []
+            ranges: []
+        - row_id: label
+          role: "Adhesive paper tyre label"
+          name: "Adhesive paper tyre label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one supplied label including adhesive and actual backing loss, without separately procuring its internal components."
+          amount:
+            expression: "A_label / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_delivery
+              source_ids: []
+            ranges: []
+        - row_id: pallet
+          role: "Wooden transport pallet"
+          name: "Wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual pallet dispatch; retain return/reuse trips and attributable production/repair burden with its own measured service life. No arbitrary reuse count."
+          amount:
+            expression: "A_pallet / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_delivery
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: condensate
+          role: "Steam condensate"
+          name: "Steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "If returned outside the boundary, retain actual returned mass and enthalpy and supplier return convention; it is not tyre product or reaction water. Internal recirculation cancels."
+          amount:
+            expression: "A_condensate / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: finished_tyre
+          role: "Net supplied accepted passenger-car radial tyre"
+          name: "Tire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "11c2e97a-624f-41de-957d-543cddb777ef"
+          property_unit: "Number of items / item"
+          description: "Native identity is Tire, a Product flow with Number of items, production mix at plant. Its name has no fixed radial structure, passenger-car grade, CAS, geography or locationOfSupply; its comment covers a broad wheel-rim tyre concept including metal and rubber. The leaf classification says Other new pneumatic tyres (36113), inconsistent with the broad physical name and this explicitly qualified passenger-car subset; retain that classification debt and never infer a positive mapping. Use only for the physically verified new rubber passenger-car radial tyre here, not metal, solid, retread or an intermediate. Native identity supplies neither a supplier recipe, a regional background dataset, service life, tyre mass nor impact quantity. Actual site, construction, size, supplied state and provider compatibility require independent records."
+          amount:
+            expression: "1 item"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - continental-tyre-production
+                - continental-radial-components
+            ranges: []
+      waste:
+        - row_id: uncured_scrap
+          role: "Uncured tyre-rubber scrap"
+          name: "Uncured tyre-rubber scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only externally transferred uncured scrap; internal trim return carries its existing ingredients and extra remilling burden without becoming a second purchase."
+          amount:
+            expression: "A_uncured_scrap / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: cured_reject
+          role: "Rejected cured rubber tyre"
+          name: "Rejected cured rubber tyre"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual rejects, destructive-test tyres and scrapped returns by ID and mass; none is accepted delivered Q."
+          amount:
+            expression: "A_cured_reject / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: steel_scrap
+          role: "Tyre steel-cord scrap"
+          name: "Tyre steel-cord scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure externally transferred belt-cord cutting scrap; bead-wire scrap is a distinct stream if present and requires its own card."
+          amount:
+            expression: "A_steel_scrap / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: textile_scrap
+          role: "Polyester tyre-cord offcuts"
+          name: "Polyester tyre-cord offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure polyester cutting waste separately; actual nylon offcuts must be added as a different atomic stream."
+          amount:
+            expression: "A_textile_scrap / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: filter_dust
+          role: "Captured tyre-compounding filter dust"
+          name: "Captured tyre-compounding filter dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One actual mixed captured filter-dust waste with measured composition and destination; not the same exchange as uncaptured carbon-black or silica emissions."
+          amount:
+            expression: "A_filter_dust / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: effluent
+          role: "Tyre-process wastewater"
+          name: "Tyre-process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual externally treated wastewater with volume/mass and pollutant analyses. COD does not identify an emitted chemical species or establish missing reaction water."
+          amount:
+            expression: "A_effluent / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: film_waste
+          role: "Waste polyethylene film"
+          name: "Waste polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual packaging-film waste and destination, not the net film supplied with tyres."
+          amount:
+            expression: "A_film_waste / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: backing_waste
+          role: "Waste silicone-coated label backing paper"
+          name: "Waste silicone-coated label backing paper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate actual backing-paper waste from the applied supplied label."
+          amount:
+            expression: "A_backing_waste / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: nylon_scrap
+          role: "Nylon tyre-cord offcuts"
+          name: "Nylon tyre-cord offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate actual winding/cutting nylon waste from polyester waste; retain treatment and receiving destination."
+          amount:
+            expression: "A_nylon_scrap / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-radial-components
+            ranges: []
+        - row_id: bead_scrap
+          role: "Tyre bead-wire scrap"
+          name: "Tyre bead-wire scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual externally transferred bead-wire scrap is distinct from belt-cord scrap."
+          amount:
+            expression: "A_bead_scrap / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - continental-tyre-production
+            ranges: []
+      elementary:
+        - row_id: carbon_black_air
+          role: "Carbon black"
+          name: "Carbon black"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual uncaptured carbon-black release to air from handling/mixing. Use species/size and capture data; captured dust is waste, not an air release."
+          amount:
+            expression: "A_carbon_black_air / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: silica_air
+          role: "Amorphous silicon dioxide"
+          name: "Amorphous silicon dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual silica release to air where silica is handled; separate from carbon black and total particulate indicator totals."
+          amount:
+            expression: "A_silica_air / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: cs2_air
+          role: "Carbon disulfide"
+          name: "Carbon disulfide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional measured process release to air from actual rubber chemistry; sulfur in a recipe does not set its yield. No generic EPA factor is adopted."
+          amount:
+            expression: "A_cs2_air / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: toluene_air
+          role: "Toluene"
+          name: "Toluene"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional only if identified in the actual cement/solvent and measured emissions; add every other actual solvent species separately. No blanket VOC mass replaces species rows."
+          amount:
+            expression: "A_toluene_air / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: water_air
+          role: "Water vapour"
+          name: "Water vapour"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual evaporation/venting to air, separated into feed/carrier water, cooling/steam losses and independently supported reaction changes. Sulfur crosslinking alone is not a water-production equation."
+          amount:
+            expression: "A_water_air / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: co2_air
+          role: "Carbon dioxide, fossil"
+          name: "Carbon dioxide, fossil"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual in-boundary diesel combustion to air only, with monitored or independently carbon-balanced amounts and complete fuel carbon evidence; do not repeat upstream electricity/steam-provider emissions here."
+          amount:
+            expression: "A_co2_air / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: nox_air
+          role: "Nitrogen dioxide"
+          name: "Nitrogen dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual combustion emission to air. NOx as NO2 equivalent is an indicator requiring explicit speciation, not automatically pure nitrogen dioxide mass."
+          amount:
+            expression: "A_nox_air / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_trace
+    applies_to: "tyre_line"
+    rule: "First subdivide actual product/recipe/stage batches and measured utilities; retain mass-linked ingredient attribution and causally supported shared services. For unavoidable shared equipment use measured machine time/load with documented idle and rejected-output attribution. Do not allocate total factory burden by finished mass alone across dissimilar tyre routes."
+    source_ids:
+      - continental-tyre-production
+      - epa-rubber-process-2008
+      - ilcd-attributional-allocation-2010
+  - rule_id: allocation_loss
+    applies_to: "tyre_line"
+    rule: "Rejects/failed runs are not positive tyre output and retain burdens in the matched cohort. Scrap revenue does not create a coproduct or avoided-virgin credit. Any real coproduct or recycling allocation must be separately evidenced and disclosed; no automatic substitution credit. Internal recovery carries original burden and only additional processing once."
+    source_ids:
+      - epa-rubber-process-2008
+      - ilcd-attributional-allocation-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_recipe
+      process_id: "tyre_line"
+      flow_role: "Compounding engineer: ingredient and recipe ledgers"
+      record_type: "weighing and supplier assay"
+      raw_fields: "lot/recipe revision; each supplied input mass; active/moisture/oil assay; opening/closing raw stock; internal returns; failed batches; masterbatch receipts"
+      collection_method: "Collect calibrated batch scales and stock/receipt/issue records before any normalization. Reconcile each polymer/filler/preparation separately; purchased masterbatch is whole procurement, its constituent subledger replaces rather than duplicates internal ingredient procurement for that fraction."
+      unit: "kg"
+      frequency: "Each lot/run and period reconciliation"
+      temporal_coverage: "Complete matched period including opening/closing burdens and failures"
+      site_scope: "Declared plant, product, route and dispatch cohort; no unverified site pooling"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "scale calibration; recipe authorization; COA and reconciliation"
+    - protocol_id: cp_reinforcement
+      process_id: "tyre_line"
+      flow_role: "Component engineer: cords and bead wire"
+      record_type: "receipts and cutting/weighing logs"
+      raw_fields: "cord polymer/construction/coating; supplier treatment; spool mass; issued/returned length and linear mass; calender coating; cutting scrap; WIP transfers"
+      collection_method: "Retain actual received treated state and separate steel belt cord, bead wire, polyester carcass and nylon bandage. Measure rubber coatings from onsite recipe ledgers, not duplicate purchased-cord components."
+      unit: "kg; m; kg/m"
+      frequency: "Each lot/run and period reconciliation"
+      temporal_coverage: "Complete matched period including opening/closing burdens and failures"
+      site_scope: "Declared plant, product, route and dispatch cohort; no unverified site pooling"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "supplier construction; treatment certificate; calibrated scales"
+    - protocol_id: cp_operations
+      process_id: "tyre_line"
+      flow_role: "Production engineer: stage/run records"
+      record_type: "batch and machine logs"
+      raw_fields: "mix passes; temperature/time/load; extruder/calender settings; component lots; build IDs; cure press/cycle; cooling; inspection results; failed/zero-output/rework; cleanup/idle"
+      collection_method: "Record the entire actual route, all campaigns and included post-release stages. Do not copy historical test temperatures, marketing recipe shares or nominal capacity into site values."
+      unit: "stage-specific measured units"
+      frequency: "Each lot/run and period reconciliation"
+      temporal_coverage: "Complete matched period including opening/closing burdens and failures"
+      site_scope: "Declared plant, product, route and dispatch cohort; no unverified site pooling"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "machine logs; inspection and downtime records"
+    - protocol_id: cp_utilities
+      process_id: "tyre_line"
+      flow_role: "Utilities engineer: each carrier and water"
+      record_type: "meter and fuel/steam records"
+      raw_fields: "carrier meter start/end; stage/submeter link; actual load/duration; steam pressure/temperature/mass; condensate; water make-up/recirculation; compressed air; fuel stock; warehouse/handling; provider boundary"
+      collection_method: "Collect raw carrier quantities including startup, failures, rework, ventilation/control, storage and dispatch. Separate imported utilities from onsite conversion, avoiding double counted primary fuel/electricity and internal steam/air. Keep steam enthalpy and condensate-return evidence; volume-rate integration only when required."
+      unit: "kWh; kg; MJ; m3"
+      frequency: "Each lot/run and period reconciliation"
+      temporal_coverage: "Complete matched period including opening/closing burdens and failures"
+      site_scope: "Declared plant, product, route and dispatch cohort; no unverified site pooling"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; meter topology; invoices; utility balance"
+    - protocol_id: cp_waste
+      process_id: "tyre_line"
+      flow_role: "Environment officer: each external waste"
+      record_type: "weighbridge and transfer records"
+      raw_fields: "waste stream; wet/dry mass; composition; source stage; internal recovery; external destination; wastewater volume/assays; rejected IDs"
+      collection_method: "Collect each actual external stream separately. Distinguish circulating scrap from disposal and captured dust from air emissions; keep treatment and transportation burdens within declared responsibility."
+      unit: "kg; m3"
+      frequency: "Each lot/run and period reconciliation"
+      temporal_coverage: "Complete matched period including opening/closing burdens and failures"
+      site_scope: "Declared plant, product, route and dispatch cohort; no unverified site pooling"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "transfer tickets; receiving treatment records; laboratory reports"
+    - protocol_id: cp_emissions
+      process_id: "tyre_line"
+      flow_role: "Environment officer: species and media"
+      record_type: "sampling and monitored balance"
+      raw_fields: "species; air/water medium; concentration; flow rate or integrated volume; duration; dry/wet and standard/actual conditions; capture/removal; nondetect limit; process stage; fuel carbon"
+      collection_method: "Collect raw results separately for mixing, extrusion, building solvent use, curing release/cooling and actual combustion. Concentration times an already integrated matched volume is sufficient; do not multiply time again. Retain unmeasured species as gaps, not zero. Actual species/reaction pathways require evidence separate from bulk closure."
+      unit: "kg; mg/m3; m3; h"
+      frequency: "Each lot/run and period reconciliation"
+      temporal_coverage: "Complete matched period including opening/closing burdens and failures"
+      site_scope: "Declared plant, product, route and dispatch cohort; no unverified site pooling"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "sampling method; detection limits; gas basis; species analysis"
+    - protocol_id: cp_delivery
+      process_id: "tyre_line"
+      flow_role: "Quality and dispatch controller: terminal gate"
+      record_type: "acceptance/serial and dispatch ledgers"
+      raw_fields: "product/route/state; first quality-release IDs; net tyre mass; dispatch IDs/count; returns/redispatch; destruction; packaging and handling; finished-stock quantities"
+      collection_method: "Retain raw unique accepted outward delivery and return counts for the declared gate, configuration and cohort; compute positive Q with return reconciliation. Reinspection alone adds no new production. Weigh net tyres separately from packaging/rims; retain actual warehouse dwell/handling and every packaging component quantity. No division here."
+      unit: "item; kg; day"
+      frequency: "Each lot/run and period reconciliation"
+      temporal_coverage: "Complete matched period including opening/closing burdens and failures"
+      site_scope: "Declared plant, product, route and dispatch cohort; no unverified site pooling"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "acceptance and serial records; dispatch/return documents; calibrated scales"
+    - protocol_id: cp_stock
+      process_id: "tyre_line"
+      flow_role: "Inventory accountant: WIP/finished carried burdens"
+      record_type: "stock and burden reconciliation"
+      raw_fields: "opening/closing WIP by mix/component/green/cured status; opening/closing accepted finished stock; quantity/mass; batch IDs; carried material/energy/emission burdens; production release; scrapping and returns"
+      collection_method: "Keep raw physical stock and full burden vectors before normalization. Reconcile each stage and internal transfer; carry unfinished and undelivered burdens forward instead of deleting or assigning them twice. Opening stock delivered this period brings its original burdens. Keep all failed/zero-output and rework burdens assigned to the affected cohort."
+      unit: "item; kg; original exchange units"
+      frequency: "Each lot/run and period reconciliation"
+      temporal_coverage: "Complete matched period including opening/closing burdens and failures"
+      site_scope: "Declared plant, product, route and dispatch cohort; no unverified site pooling"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "stock counts; prior-period burden receipts; cohort linkage"
+  calculation_rules:
+    - id: calc_stock
+      applies_to: "all inventory rows"
+      rule: "Before normalization, reconstruct attributed raw exchange vector A_i = current matched-period burden + opening WIP/finished carried burden - closing WIP/finished retained burden, removing duplicated internal transfers only. Preserve actual failed, zero-output, rework, return, scrap-treatment and included post-release warehouse/dispatch burdens in their cohort. Allocate shared burdens by allocation_trace. Component stocks and prior delivery reversals require batch links, not a residual credit."
+      inputs:
+        - cp_recipe
+        - cp_reinforcement
+        - cp_operations
+        - cp_utilities
+        - cp_waste
+        - cp_emissions
+        - cp_delivery
+        - cp_stock
+      output: "A_i"
+      source_ids:
+        - continental-tyre-production
+        - epa-rubber-process-2008
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "q_i = A_i / Q, exactly once after raw conversions and calc_stock attribution. Q is the positive unique net accepted supplied tyre count from cp_delivery, not quality-release output or closing finished stock. The fixed finished_tyre reference is Q/Q = 1 item. Collection methods never divide; inventory formulas and protocol aggregation_rule describe this same single final operation."
+      inputs:
+        - A_i
+        - Q
+        - cp_delivery
+        - cp_stock
+      output: "q_i"
+      source_ids:
+        - continental-tyre-production
+    - id: calc_physical_balance
+      applies_to: "tyre_line"
+      rule: "Maintain separate physical ledgers: opening WIP + actual process material inputs + actual returned stock = newly released/other stage transfers + closing WIP + measured wastes/emissions; opening finished stock + first accepted release + actual returns = physical outward shipments + closing finished stock + actual scrapping/rework transfers. Cancel internal transfers on merging, including release-to-warehouse handoff. Physical outward count and net Q are reconciled by IDs and return attribution. Keep tyre kg, packaging, water and each conserved element separately; reaction/phase/free-water changes need independently evidenced species and stoichiometry. Do not fit unknown reaction water and another unknown outlet to one closure residual."
+      inputs:
+        - cp_recipe
+        - cp_reinforcement
+        - cp_stock
+        - cp_delivery
+        - cp_waste
+        - cp_emissions
+      output: "physical stock and species balances"
+      source_ids:
+        - continental-tyre-production
+        - epa-rubber-process-2008
+    - id: calc_emission
+      applies_to: "tyre_line"
+      rule: "For each measured species use integral of matched concentration times volumetric flow over time with consistent gas conditions; if matched volume is already integrated use concentration times volume only. Record actual capture/removal and destination. Indicators such as total VOC, COD or NOx equivalents are not additional independent species masses."
+      inputs:
+        - cp_emissions
+        - cp_utilities
+      output: "species raw mass"
+      source_ids:
+        - epa-rubber-process-2008
+  data_quality_requirements:
+    - id: quality_route
+      applies_to: "tyre_line"
+      requirement: "Verify product size/rating, radial layer construction, recipe revisions and every supplied state; actual recipe rather than marketing proportions."
+      evidence: "BOM; cross-section/build specification; COAs; batch records"
+    - id: quality_coverage
+      applies_to: "tyre_line"
+      requirement: "No omitted failure/rework/stock burden; no finished-stock assumption or invented loss/energy/recipe/emission factor. Every actual atomic flow added with data or an explicit gap."
+      evidence: "Complete period/cohort reconciliation and signed owner review"
+    - id: quality_native
+      applies_to: "finished_tyre"
+      requirement: "Native identity is Tire, a Product flow with Number of items, production mix at plant. Its name has no fixed radial structure, passenger-car grade, CAS, geography or locationOfSupply; its comment covers a broad wheel-rim tyre concept including metal and rubber. The leaf classification says Other new pneumatic tyres (36113), inconsistent with the broad physical name and this explicitly qualified passenger-car subset; retain that classification debt and never infer a positive mapping. Use only for the physically verified new rubber passenger-car radial tyre here, not metal, solid, retread or an intermediate. Native identity supplies neither a supplier recipe, a regional background dataset, service life, tyre mass nor impact quantity. Actual site, construction, size, supplied state and provider compatibility require independent records."
+      evidence: "Direct identity, exact reference-property/unit chain and actual foreground compatibility evidence"
+    - id: quality_uncertainty
+      applies_to: "tyre_line"
+      requirement: "Retain calibration, uncertainty, detection limits, missing species, actual geography/time/provider limits and causal allocation evidence. Future plant measurements and auxiliary UUID matches remain required for a real dataset."
+      evidence: "Measurements, stock carry receipts, source applicability and gap register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "finished_tyre"
+    rule: "Require exactly the declared Product output finished_tyre, the same tyre UUID and count basis in both languages; native count unit does not imply a mass. Verify all qualifiers, raw delivery IDs and Q > 0."
+    source_ids:
+      - continental-tyre-production
+  - rule_id: validate_inventory
+    applies_to: "tyre_line"
+    rule: "Verify raw-to-final attribution and one normalization, complete physical/element closure independent of actual species/reaction-water evidence, external formulation/component purchasing without double count, all failed runs/rework/WIP/finished-stock carried burdens and actual included delivery operations. Unknowns are findings, not residual balancing or assumed zeros."
+    source_ids:
+      - continental-tyre-production
+      - epa-rubber-process-2008
+  - rule_id: validate_applicability
+    applies_to: "tyre_line"
+    rule: "Reject physical identity/grade/route/CAS contradictions and unsupported regional or provider assumptions. Keep disclosed native classification debt distinct from physical identity and scientific approval; no automatic mapping or methodology approval follows from a UUID or a schema check."
+    source_ids:
+      - continental-radial-components
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Manufacturing and declared factory net-supply burden for the exact qualified tyre, linked to independent use/end-of-life modelling"
+  allowed_use: "Same actual route, materials, supplied state, geography/time and accepted foreground evidence"
+  excluded_use: "No service-life/vehicle-km comparison from tyre count alone; no generic all-tyre, non-car, bias, retread, solid-tyre, inner-tube or bought-finished-tyre packing proxy"
+  required_metadata: "passenger-car application and steel-belted radial/tubeless construction; size/model and load/speed rating; actual carcass/belt/bead/innerliner materials and supplied state; each compound recipe revision and purchased-formulation basis; factory/site/time and actual utility configuration; net-dispatch gate and unique accepted delivery cohort Q; opening/closing WIP and finished-stock quantities with carried burdens; return/rework/reinspection attribution and waste destinations; reference identity limits and native classification debt; actual packaging/handling/warehouse boundaries and measured net tyre mass"
+  required_quality_disclosure: "Complete raw/stock/carry attribution, one normalization, actual recipes, utility and delivery boundaries, emissions coverage, auxiliary UUID/provider gaps and complete reference native limitations"
+  update_trigger: "Changed construction, compound/supplier state, utility route, site, process, delivery gate, stock accounting, new measurements or resolved contradictory identity metadata"
+data_sources:
+  - id: "continental-tyre-production"
+    type: "literature"
+    reference: "Continental, Tire production, undated technical overview, https://www.continental-tires.com/tire-knowledge/tire-production/"
+    used_for: "Five-stage route, raw-material roles, component manufacture, curing, final inspection and warehouse shipment. Qualitative scope only; no plant recipe, yield, energy, temperature or loss default."
+  - id: "continental-radial-components"
+    type: "literature"
+    reference: "Continental, Tire components, undated technical overview, https://www.continental-tires.com/tire-knowledge/tire-components/"
+    used_for: "Steel-belted radial passenger-car architecture, nylon bandage, steel belts/beads, textile carcass and synthetic airtight layer; filler/plasticizer/cure roles. Example mass percentages and performance claims are not quantitative recipe or LCA evidence."
+  - id: "epa-rubber-process-2008"
+    type: "official_guidance"
+    reference: "US EPA, Emission Factor Documentation for AP-42 Section 4.12, Manufacture of Rubber Products, Final Report, November 2008, sections 2.1-2.3 and 3.1-3.3, https://www.epa.gov/sites/default/files/2020-10/documents/db04s12.pdf"
+    used_for: "Independent historical process/material and emissions sampling context. Natural rubber/SBR/BR, additives and press/cool-down zones; no universal recipe, sulfur-water yield, site temperature, process energy or emission factor adopted from sampled tests."
+  - id: "exxon-innerliner-materials"
+    type: "literature"
+    reference: "ExxonMobil Product Solutions, Tires, overview paragraph on conventional innerliners, https://www.exxonmobilchemical.com/en/industries/automotive/tires"
+    used_for: "Publisher page read through a tool-rendered primary excerpt, not a locally acquired publisher PDF. Supports bromobutyl/chlorobutyl innerliner material roles only; selected bromobutyl is an authored route subset. No grade, formula, quantity, energy, performance or lifetime claim adopted."
+  - id: "ilcd-attributional-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment - Detailed guidance, first edition March 2010, section 7.9.3, printed pp. 257-258 (PDF 277-278), https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Bounded attributional subdivision and causal shared-service allocation method; supports documented drivers and no automatic avoided-production credit. No tyre recipe, fixed split, waste cutoff, industrial factor, economic default, performance or service-life claim. Actual cohort/site evidence remains required."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:3278065046c1d818981f17572ee3d865ac32f65e5dbfb4e6ceb51fd76378c3d8"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8170"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8170
+          line: 62
+          column: 1
+        end:
+          offset: 11445
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased identified dry elastomers, individual fillers/cure preparations, pretreated reinforcement cord/wire and actual utilities entering the integrated tyre line |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Qualified steel-belted radial passenger-car tyres, narrower than CPC 3.0 36111 |\n| recursive_input_rule | No purchased finished tyres substitute for this foreground. Returned own tyres carry original burdens and real rework once; do not recurse into new virgin production or double count internal compound/component transfers. |\n| upstream_dataset_requirement | Independently match each actual supplied polymer/formulation/reinforcement and utility with its geography, route, grade, reference property and acquisition boundary; include upstream supply and transport once. UUID identity alone does not supply its burden. |\n| disclosure | Declare plant/time, all stage owners, actual recipe/BOM and purchased treatments, utility generation boundary, finished-stock/WIP carried burdens, delivery/return reconciliation, packaging and exclusions. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | tyre_line | The foreground is one consolidated integrated tyre line, not a purchased-finished-tyre packing operation. Stage ledgers remain separate inside this unit process: receiving/weighing and recipe-specific nonproductive/final mixing; calendering steel cord, textile cord and liner; extrusion/cooling/cutting of tread and sidewall plus bead winding/coating/apex; carcass and belt/tread building; curing and cooling; visual/X-ray/uniformity inspection and actual finishing/rework; finished warehousing, packaging, handling and dispatch. Retain each compound and component lot internally; these are internal transfers, not extra purchases or extra final output. Separate material, utility, emissions and stock owners below preserve this stage detail. | continental-tyre-production; continental-radial-components |\n| boundary_delivery | tyre_line | Q is the positive net number of unique accepted new tyres actually supplied across the declared factory dispatch gate for one matched product/route/state cohort, not newly released production. Record opening/closing finished stock and their full carried burdens, first quality-release output, outward deliveries, returns, scrapping and rework separately. An undelivered accepted tyre is not in Q. Returned tyres retain their identity and original burdens; reinspection is not new production. Reverse the original delivery attribution for returns and reconcile redispatch by unique IDs so no tyre is counted twice. A factory delivery dataset cannot assume quality release equals delivery. | continental-tyre-production |\n| boundary_integrity | tyre_line | Include real failed/zero-output runs, idle/cleanup, rework, emission-control and all included warehouse/pack/handling burdens. Extend separate atomic cards for every actual ingredient, fuel, refrigerant, waste and emitted species absent from the exemplars. Conditional absence requires records, not a default zero. | continental-tyre-production; epa-rubber-process-2008 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 278
+              line: 9
+              column: 1
+            end:
+              offset: 351
+              line: 9
+              column: 74
+          text: "# Steel-belted radial passenger-car tyre manufacture through net dispatch"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8170
+              line: 62
+              column: 1
+            end:
+              offset: 8191
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_41735"
+      family: "allocation"
+      span:
+        start:
+          offset: 41735
+          line: 829
+          column: 1
+        end:
+          offset: 42797
+          line: 836
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_trace | tyre_line | First subdivide actual product/recipe/stage batches and measured utilities; retain mass-linked ingredient attribution and causally supported shared services. For unavoidable shared equipment use measured machine time/load with documented idle and rejected-output attribution. Do not allocate total factory burden by finished mass alone across dissimilar tyre routes. | continental-tyre-production; epa-rubber-process-2008; ilcd-attributional-allocation-2010 |\n| allocation_loss | tyre_line | Rejects/failed runs are not positive tyre output and retain burdens in the matched cohort. Scrap revenue does not create a coproduct or avoided-virgin credit. Any real coproduct or recycling allocation must be separately evidenced and disclosed; no automatic substitution credit. Internal recovery carries original burden and only additional processing once. | epa-rubber-process-2008; ilcd-attributional-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 278
+              line: 9
+              column: 1
+            end:
+              offset: 351
+              line: 9
+              column: 74
+          text: "# Steel-belted radial passenger-car tyre manufacture through net dispatch"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 41735
+              line: 829
+              column: 1
+            end:
+              offset: 41775
+              line: 829
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_55126"
+      family: "validation"
+      span:
+        start:
+          offset: 55126
+          line: 871
+          column: 1
+        end:
+          offset: 56323
+          line: 879
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | finished_tyre | Require exactly the declared Product output finished_tyre, the same tyre UUID and count basis in both languages; native count unit does not imply a mass. Verify all qualifiers, raw delivery IDs and Q > 0. | continental-tyre-production |\n| validate_inventory | tyre_line | Verify raw-to-final attribution and one normalization, complete physical/element closure independent of actual species/reaction-water evidence, external formulation/component purchasing without double count, all failed runs/rework/WIP/finished-stock carried burdens and actual included delivery operations. Unknowns are findings, not residual balancing or assumed zeros. | continental-tyre-production; epa-rubber-process-2008 |\n| validate_applicability | tyre_line | Reject physical identity/grade/route/CAS contradictions and unsupported regional or provider assumptions. Keep disclosed native classification debt distinct from physical identity and scientific approval; no automatic mapping or methodology approval follows from a UUID or a schema check. | continental-radial-components |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 278
+              line: 9
+              column: 1
+            end:
+              offset: 351
+              line: 9
+              column: 74
+          text: "# Steel-belted radial passenger-car tyre manufacture through net dispatch"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 55126
+              line: 871
+              column: 1
+            end:
+              offset: 55148
+              line: 871
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 9446
+          line: 77
+          column: 1
+        end:
+          offset: 10282
+          line: 77
+          column: 837
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_delivery"
+      identity_kind: "explicit"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 10283
+          line: 78
+          column: 1
+        end:
+          offset: 11036
+          line: 78
+          column: 754
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_integrity"
+      identity_kind: "explicit"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 11037
+          line: 79
+          column: 1
+        end:
+          offset: 11443
+          line: 79
+          column: 407
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_trace"
+      identity_kind: "explicit"
+      unit_id: "normative_41735"
+      source_span:
+        start:
+          offset: 41848
+          line: 833
+          column: 1
+        end:
+          offset: 42340
+          line: 833
+          column: 493
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_loss"
+      identity_kind: "explicit"
+      unit_id: "normative_41735"
+      source_span:
+        start:
+          offset: 42341
+          line: 834
+          column: 1
+        end:
+          offset: 42795
+          line: 834
+          column: 455
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_55126"
+      source_span:
+        start:
+          offset: 55221
+          line: 875
+          column: 1
+        end:
+          offset: 55496
+          line: 875
+          column: 276
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_55126"
+      source_span:
+        start:
+          offset: 55497
+          line: 876
+          column: 1
+        end:
+          offset: 55959
+          line: 876
+          column: 463
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_55126"
+      source_span:
+        start:
+          offset: 55960
+          line: 877
+          column: 1
+        end:
+          offset: 56321
+          line: 877
+          column: 362
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 8170
+          line: 62
+          column: 1
+        end:
+          offset: 8191
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 8219
+          line: 66
+          column: 1
+        end:
+          offset: 9373
+          line: 73
+          column: 222
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_41735"
+      source_span:
+        start:
+          offset: 41735
+          line: 829
+          column: 1
+        end:
+          offset: 41775
+          line: 829
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_55126"
+      source_span:
+        start:
+          offset: 55126
+          line: 871
+          column: 1
+        end:
+          offset: 55148
+          line: 871
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3278065046c1d818981f17572ee3d865ac32f65e5dbfb4e6ceb51fd76378c3d8"
+  generated_content_sha256: "sha256:162329420e5b329c3e18ece8ef1ef9f39f986a29c48d2f5363a3e1c848bd73d0"

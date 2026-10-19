@@ -1,10 +1,1377 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34530"
-  title: "Roasted iron pyrites"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.roasted-iron-pyrites"
+  classification_refs: "CPC 3.0 34530; proposed narrower scope; classification is not methodology identity"
+  covered_products: "Cooled bulk roasted natural pyrite calcine from the specified oxidative fluidised-bed route"
+  excluded_products: "Unroasted pyrite; pure iron oxide; pigment; metal-specific calcine; sulfate-decomposition residue; two-stage high-arsenic calcine; pellets"
+  representative_product: "Accepted iron-oxide-rich calcine with measured residual sulfur, gangue, phases and moisture"
+  production_route: "Natural pyrite concentrate -> fluidised-bed oxidative roasting -> solids recovery/cooling -> bulk loading; parallel heat recovery and gas cleaning"
+  market_state: "Bulk cooled mineral mixture at declared roaster/calcine plant loading gate, with receiving-use specification"
+functional_unit:
+  what: "Supply specified bulk roasted pyrite calcine as an iron-bearing material"
+  how_much: "1 kg dry accepted calcine at the declared loading gate"
+  how_well: "Actual receiving specification for Fe/phase/residual S/gangue/contaminants/particle size; retain actual moisture and temperature"
+  how_long_or_cycle: "One delivery at plant gate; no assumed use lifetime or service equivalence"
+  reference_flow_link: "calcine"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Include upstream delivered feed and actual consumption burdens, air fans, startup and shutdown, roaster, waste-heat system, dry solids collection/cooling/handling, gas cleaning, wastewater treatment and bulk loading. Include incoming transport to the gate exactly once through measured shipment data and compatible upstream transport models; do not assume delivered-product UUIDs already include freight. Account for attributable infrastructure/refractory over real service life and document broader equipment-data cutoffs. Sources: jrc-lvic-aaf-2007, metso-roasting-2022."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Gas cleaning may be subdivided internally, but identical transfers must cancel. SO2-rich gas is a mixture supplied to acid production, with composition and burden handoff specified. Downstream conversion, absorption, acid conditioning and its emissions belong to the receiving model. If acid operations cannot be separated from shared site burdens, expand the joint model and document it before using calcine guidance; do not omit acid-site common services or charge all acid-only operations to calcine. Residual site releases, water treatment and transferred waste retain actual fate; no zero-burden assumption for a marketable by-product."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Identified natural unroasted pyrite concentrate delivered to roaster feed preparation"
+  starting_condition_role: "Supplied mineral feed, with actual upstream mining/beneficiation burden"
+  product_classification_scope: "Single-stage fluidised-bed oxidative roasted pyrite calcine; proposed narrower CPC 34530 relation"
+  recursive_input_rule: "Same-category returned calcine and captured fines are measured internal recycles, not new external purchases or independent credits; external same-category inputs need supplier datasets and applicability checks"
+  upstream_dataset_requirement: "Actual feed, utility, chemical, refractory, transport-to-gate and treatment providers; identity UUID alone is not a background dataset"
+  disclosure: "Actual starting gate, feed source/assay, physical units, delivered-product basis, gas/heat handoff, internal transfers, site allocation, provider cutoffs, waste fate and actual emission compartments"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Roasted iron pyrites ()"
+    uuid: "4cf6c76c-7236-4704-8c8f-73d026ec456f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "site/year"
+    - "natural unroasted feed mineralogy and source"
+    - "single-stage oxidative fluidised-bed route"
+    - "accepted cooled bulk grade"
+    - "net dry/as-dispatched masses and free-water assay"
+    - "Fe/oxide phases/residual sulfur/gangue/trace metals"
+    - "size and temperature"
+    - "receiving specification"
+    - "gas and steam transfer state"
+    - "allocation and upstream provider bases"
+    - "waste/discharge compartments"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "D is positive net dry accepted calcine produced in the matched collection period, reconciled with opening/closing stocks, rejects and dispatch; exclude packaging. Weigh net product with calibrated scales; measure representative sealed-lot free water with a matrix-validated laboratory method that preserves mineral phase and avoids confusing oxidation/volatile loss with water. D = sum(net accepted wet mass * (1 - measured wet-basis free-water fraction)). Record method, temperature, moisture basis, sampling and uncertainty. Do not infer moisture from total loss on ignition or assume zero. Every row and protocol uses per 1 kg reference flow."
+  - id: reference_properties
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Native reference property"
+      uuid: ""
+    required_unit: "kg; m3; MJ"
+    rule: "Use each row native reference unit: Volume/m3 for natural gas, direct river abstraction and liquid discharge; the specific unresolved wastewater/blowdown rows are also collected in m3; electricity is collected in MJ, with the compatible native energy property pending identity resolution. Other rows use Mass/kg, including purchased deionised water. 1 kWh = 3.6 MJ; 1 t = 1000 kg. Other mass-volume conversion requires measured state-dependent density, gas composition, absolute pressure, temperature, dry/wet state and compressibility with supplier reference-basis compatibility. Native secondary flow-property factors are not densities or heating values."
+  - id: physical_balances
+    applies_to: "roasting"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep unallocated physical ledgers for wet mass, dry solids, Fe, S, carbon provenance, relevant trace elements and water. The illustrative pure-pyrite oxidation equation 4 FeS2 + 11 O2 -> 2 Fe2O3 + 8 SO2 establishes elemental accounting only; actual oxide phases, incomplete conversion, gangue, feed assay and gas composition control quantities. Include absorbed oxygen and split S among calcine, transferred gas, captured solids/liquor, stock and actual environmental release. No theoretical yield substitutes for measurements."
+  - id: steam_state
+    applies_to: "steam"
+    required_property_ref:
+      name: "Mass and usable net heat"
+      uuid: ""
+    required_unit: "kg; MJ"
+    rule: "Record steam mass and state, matched return condensate/feedwater and agreed heat-transfer boundary. Compute each stream enthalpy from measured absolute pressure/temperature/quality using a valid IAPWS-IF97 region; Qnet = (sum outgoing mass*enthalpy - sum returning mass*enthalpy)/1000 when enthalpy is kJ/kg, with any unmatched water/steam explicitly balanced. For an export without condensate return, use the explicitly agreed replacement-water/feedwater reference state in the complete boundary enthalpy balance; missing reference state makes usable net heat unresolved, not zero. Distinguish net heat from gross boiler production and count steam export/internal electricity once. Identity/support property alone does not establish usable heat."
+process_map:
+  - id: roasting
+    name: "Feed preparation, oxidative roasting, heat recovery, gas cleaning, calcine cooling and bulk loading"
+    inclusion: "required"
+    inclusion_condition: "Specified single-stage natural-pyrite route"
+    role: "Aggregated foreground manufacturing with separately metered stages and complete joint-product physical ledger"
+    quantitative_reference: "1 kg dry accepted calcine"
+process_inventory:
+  - id: roasting
+    label: "Feed preparation, oxidative roasting, heat recovery, gas cleaning, calcine cooling and bulk loading"
+    inputs:
+      product:
+        - row_id: feed
+          role: "Unroasted iron pyrites"
+          name: "Unroasted iron pyrites ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d39ec36e-8318-4a73-a652-a988fe60a58d"
+          property_unit: "Mass / kg"
+          description: "Natural unroasted pyrite mineral concentrate supplied to the roaster; assay free water, Fe/S and phase, gangue and trace metals. Carry actual mining/beneficiation supplier burdens. Do not treat the feed as pure FeS2."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solids
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: power
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Electrical energy; compatible native reference property unresolved / MJ"
+          description: "Meter total purchased electricity for feed preparation, air fans, roasting auxiliaries, cooling, gas cleaning, wastewater treatment and loading. Separate on-site generation/internal consumption from exported power. Collect electricity on an energy/MJ basis and convert metered kWh using 3.6 MJ/kWh. Resolve a compatible electricity UUID and its native reference property against the actual voltage, geography, year and supplier before linking a background dataset; no default grid mix or unrelated site-case identity is specified."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Conditional fossil pipeline gas used for startup or auxiliary heating. Reference Volume/m3; retain temperature, absolute pressure, dry/wet composition and compressibility, and match the supplier background m3 definition. The secondary mass coefficient is not a density; methane CAS metadata does not establish pure methane or a site composition. Include real startup/shutdown consumption."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: air
+          role: "Air"
+          name: "Air ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a483c088-1554-4193-b0d2-a8c9eca1e69f"
+          property_unit: "Mass / kg"
+          description: "Ambient air delivered by the roaster fan is a mass-balance stream, not purchased pure oxygen. Determine dry and moist-air mass from metered volume and measured state/composition; count fan electricity once in power. The generic product identity does not supply an upstream air-production burden. Report the ambient intake as an auxiliary physical ledger where the modelling framework omits atmospheric air from LCI. Its miscellaneous-services classification does not establish a manufactured-air provider or justify purchased-air burdens."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: water
+          role: "de-ionised water"
+          name: "de-ionised water ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Purchased deionised water for waste-heat boiler make-up where used; native Mass/kg. Weigh or convert measured volume with measured density/temperature, track condensate return separately and link actual treatment/supply. Exclude internally recirculated water from fresh input."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: lime
+          role: "Slaked lime"
+          name: "Slaked lime ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "49bf5000-b2da-4a30-8349-b0bb44171616"
+          property_unit: "Mass / kg"
+          description: "Conditional powdered industrial slaked lime from traditional hydration for effluent neutralisation. The selected native identity describes European production; retain this source/route/grade restriction and resolve a different identity when actual supply is incompatible. Record commercial powder mass and actual Ca(OH)2 assay; slaking/milk preparation water is separate. The qualified UUID does not represent quicklime, lime milk or another supplier route. Other reagents need additional atomic rows and identity checks."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solids
+              source_ids:
+                - metso-roasting-2022
+            ranges: []
+        - row_id: lining_in
+          role: "Roaster refractory lining"
+          name: "Roaster refractory lining"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Replacement roaster refractory lining consumed over its measured service life; disclose composition, supplier, installation mass and campaign coverage. No generic aluminium oxide or fuel record substitutes for this component."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solids
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: river_water
+          role: "river water"
+          name: "river water ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume / m3"
+          description: "Conditional direct river abstraction for cooling/scrubbing, Volume/m3; record basin, country, intake and discharge. Purchased water and in-house treated water retain supplier/abstraction separation to avoid double counting. This resource flow is not a liquid emission."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+    outputs:
+      product:
+        - row_id: calcine
+          role: "Roasted iron pyrites"
+          name: "Roasted iron pyrites ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4cf6c76c-7236-4704-8c8f-73d026ec456f"
+          property_unit: "Mass / kg"
+          description: "Accepted cooled roasted pyrite calcine delivered in bulk. Reference output is 1 kg dry accepted calcine, excluding free water, packaging and rejected solids. Retain as-dispatched wet mass and moisture conversion, total Fe, phase fractions, residual sulfur, gangue, trace metals, particle size, temperature and recipient specification. It is an iron-oxide-rich mineral mixture, not pure Fe2O3 or purified pigment."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: process_gas
+          role: "Cleaned SO2-rich pyrite roasting gas"
+          name: "Cleaned SO2-rich pyrite roasting gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cleaned SO2-rich roasting gas mixture transferred to a separately modelled acid plant before catalytic conversion; record total mixture mass, SO2/O2/N2/water and relevant contaminants, pressure/temperature and dry/wet basis. Internal inter-process transfer is not an air emission. No pure SO2 UUID is assigned. Match transfer quantity/state on both models and allocate the roasting joint burdens once."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: steam
+          role: "Exported waste-heat steam"
+          name: "Exported waste-heat steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional exported waste-heat steam; measure gross outward delivered steam mass, absolute pressure, temperature/quality, feedwater and returned condensate state and quantity. Count gross boiler steam, internal use and vents separately, with only outward delivered steam here and condensate return recorded separately, never subtracted from this steam mass. Keep steam mass/kg and independently calculated usable net heat/MJ; no arbitrary mass-to-heat factor. UUID awaits compatible pressure/state and provider boundary."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+                - iapws-if97-2012
+            ranges: []
+      waste:
+        - row_id: dust_waste
+          role: "Pyrite cinder"
+          name: "Pyrite cinder ()"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "7e956d6a-4b43-495a-8aac-ca00d22820f7"
+          property_unit: "Mass / kg"
+          description: "Discarded pyrite cinder fines removed by collectors or product rejection and sent outside the foreground; weigh free water and assay contaminants, specify recipient and recovery/disposal. The broad cinder waste identity is conditional on actual roasted-pyrite solids. Dust internally returned or included in accepted calcine is not this output; captured dust is not airborne PM."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: sludge
+          role: "Dewatered pyrite-roasting scrubber sludge"
+          name: "Dewatered pyrite-roasting scrubber sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Dewatered sludge from roasting-gas cleaning/effluent neutralisation; record wet and dry mass, actual Fe/As/sulfate/lime content and acceptance/fate. It is not generic pyrite cinder, biological sludge or an assumed ferric arsenate formula."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: wastewater
+          role: "Pyrite-roasting scrubber wastewater to off-site treatment"
+          name: "Pyrite-roasting scrubber wastewater to off-site treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional off-site transfer of scrubber wastewater to contracted treatment; measured volume and actual acidity/suspended solids/Fe/As/sulfate load with receiver specification. The specific manganese-residue washing wastewater identity is incompatible. Transfer is not final discharge; use final elementary releases only for treatment actually included inside the boundary, with no duplicate outsourced releases."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: lining
+          role: "Spent pyrite-roaster refractory lining"
+          name: "Spent pyrite-roaster refractory lining"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent roaster refractory lining at replacement; actual material composition/metal contamination and recipient. Aluminium-production refractory and unspecified furnace slag are not demonstrated equivalents."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: boiler_blowdown
+          role: "Waste-heat boiler blowdown to treatment"
+          name: "Waste-heat boiler blowdown to treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional external transfer of separately metered waste-heat boiler blowdown to treatment. Record actual dissolved-solids/chemical composition, pressure/cooling state, receiver and volume; internal treated return is only a balance transfer. Boiler blowdown is not pyrite scrubber wastewater and has no borrowed manganese-washing identity."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+      elementary:
+        - row_id: so2
+          role: "sulfur dioxide"
+          name: "sulfur dioxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual SO2 released to outdoor air after gas collection/controls, including fugitives and startup. Integrate matched concentrations and exhaust volume at the same state; exclude SO2 retained in exported gas or acid and do not substitute total SOx."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - epa-so2-6c-2017
+            ranges: []
+        - row_id: co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Fossil CO2 from actually combusted natural gas and identified fossil carbon in feed. Reconcile carbon and exhaust monitoring; oxidation of iron sulfide alone produces no CO2. Do not adopt a producer carbon-free marketing claim for the whole site."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: co2_mineral
+          role: "Carbon dioxide from mineral carbonate decomposition"
+          name: "Carbon dioxide from mineral carbonate decomposition"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional CO2 from measured carbonate decomposition in gangue; quantify carbonate-derived carbon separately from fossil fuel and biogenic carbon. Do not assign a biogenic CO2 identity to mineral carbon."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: co2_bio
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional biogenic CO2 only where actual biogenic carbon enters this route; determine carbon provenance and balance. Retain this LCI exchange even when a greenhouse-gas reporting convention excludes it from a particular total."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: co
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fossil CO from incomplete oxidation of gas/identified fossil carbon; measured species mass, not CO2 equivalent or an assumed burner factor."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: no
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual NO species mass released outdoors, from applicable measured combustion/roasting sources. If only total NOx as NO2 equivalent is reported, obtain validated speciation/conversion before filling NO and NO2 rows; never invent a split."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: no2
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual NO2 species mass released outdoors. Do not duplicate total NOx alongside NO/NO2; N2O is a different species requiring a separate row if present."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Escaped PM2.5 after collection, from stacks and feed/calcine handling. Measured aerodynamic-size fraction; no total dust-to-PM2.5 default."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - epa-pm-201a-2020
+            ranges: []
+        - row_id: pm2510
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Escaped particles above 2.5 and up to 10 micrometres. Derive this non-overlapping interval from paired cumulative measurements for the same source/time and sampling basis."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - epa-pm-201a-2020
+            ranges: []
+        - row_id: pm10
+          role: "particles (> PM10)"
+          name: "particles (> PM10) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Escaped particles above 10 micrometres, separately measured or obtained by compatible total-minus-PM10. Never sum total PM10 together with its nested PM2.5 fraction."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - epa-pm-201a-2020
+            ranges: []
+        - row_id: as_air
+          role: "arsenic"
+          name: "arsenic ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-91d7-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual airborne arsenic mass from trace feed contamination; analyse collected particulate and gaseous metal fractions without double counting arsenic as both compound and element. High-arsenic dearsenifying/two-stage routes are excluded."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - metso-roasting-2022
+                - epa-metals-29-2017
+            ranges: []
+        - row_id: hg_air
+          role: "mercury"
+          name: "mercury ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a8c4-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual airborne mercury mass where assay/monitoring identifies it; retain sampling recovery, blanks and gaseous/particulate fractions."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - metso-roasting-2022
+                - epa-metals-29-2017
+            ranges: []
+        - row_id: pb_air
+          role: "lead"
+          name: "lead ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-91dc-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual airborne lead mass where feed/lining contamination warrants measurement; no default emission proportional to total metal content."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-metals-29-2017
+            ranges: []
+        - row_id: hcl
+          role: "hydrogen chloride"
+          name: "hydrogen chloride ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual HCl species released after gas cleaning where feed chlorine is present; not elemental chlorine or undifferentiated acid gas."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - metso-roasting-2022
+            ranges: []
+        - row_id: hf
+          role: "hydrogen fluoride"
+          name: "hydrogen fluoride ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9804-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual HF species released after gas cleaning where feed fluorine is present; do not confuse HF mass with fluoride-ion or elemental-F mass."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - metso-roasting-2022
+            ranges: []
+        - row_id: as_water
+          role: "arsenic"
+          name: "arsenic ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-91df-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual residual arsenic mass in final on-site-treated discharge to freshwater. Paired effluent concentration/volume and blanks; not arsenic transferred in off-site wastewater or sludge."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - metso-roasting-2022
+            ranges: []
+        - row_id: iron_water
+          role: "iron"
+          name: "iron ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9595-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual total-iron element mass in final discharge to freshwater with dissolved/particulate analytical basis; not ferric oxide, ferrous sulfate or a guessed species mass."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: sulfate_water
+          role: "sulfate"
+          name: "sulfate ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac59-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual sulfate-ion mass in final freshwater discharge; record whether laboratory result is SO4 or S and convert with stated molar basis only. Exclude internal liquor recycle and outsourced treatment loads."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+        - row_id: water_discharge
+          role: "Water"
+          name: "Water ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume / m3"
+          description: "Conditional actual liquid water released to freshwater after included on-site cooling/effluent treatment, Volume/m3. Measure outfall volume and temperature, retaining pollutant loads as separate chemical exchanges. This is not river abstraction, off-site wastewater transfer, evaporation or an internally reused cooling-water stream."
+          amount:
+            expression: "Measure the defined physical exchange and normalize; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvic-aaf-2007
+            ranges: []
+allocation_rules:
+  - rule_id: separate_physical_accounts
+    applies_to: "roasting"
+    rule: "Keep a reconciled unallocated process ledger containing all actual calcine, cleaned gas and exported steam. D is accepted calcine dry output before allocation. Preserve full co-product output quantities and identical internal links; allocation never scales the physical gas or steam to an invented output."
+    source_ids:
+      - jrc-lvic-aaf-2007
+      - metso-roasting-2022
+      - ilcd-allocation-2010
+  - rule_id: joint_burdens
+    applies_to: "roasting"
+    rule: "Declare an attributional modelling goal. First subdivide dedicated calcine cooling/loading, gas cleaning and heat-delivery auxiliaries where physically separable. For genuinely joint roasting burdens, use a demonstrated causal physical relation if supported; otherwise use documented economic allocation at the actual separation gate and condition. For economic allocation, share_i = revenue_i / sum(revenue of all useful co-products); revenue uses measured output and representative matched-period gate price. An internal gas stream needs a defensible transfer value adjusted for downstream acid conversion/conditioning costs; final acid revenue is not an unadjusted gas price. Missing/zero/negative prices do not justify silently assigning zero burden; justify another method and sensitivity. Avoid adding steam credits to already allocated joint burdens."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: product_waste_state
+    applies_to: "calcine, dust_waste, sludge, process_gas, steam"
+    rule: "Determine useful product versus disposal obligation from actual specification, receiver and fate. Only accepted supplied calcine enters D. Waste/nonmarketable gas requires its actual treatment; it is not a positive co-product merely because a label says by-product. No default allocation percentage, yield, oxide purity, recipe or energy recovery is specified."
+    source_ids:
+      - ilcd-allocation-2010
+      - jrc-lvic-aaf-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "roasting"
+      flow_role: "calcine reference"
+      record_type: "Weighing and laboratory lot records"
+      raw_fields: "gross/tare/net mass; accepted/rejected lots; opening/closing stock; wet-basis free water; Fe/S/phase/gangue/metals; size; temperature; destination"
+      collection_method: "Calibrated scales and traceable lot acceptance; representative sealed-lot moisture and mineral phase/chemical assays with validated methods, corrections and uncertainty"
+      unit: "kg; mass fraction; degC"
+      frequency: "Each accepted lot; stock at period boundaries"
+      temporal_coverage: "Matched year or justified campaign"
+      site_scope: "Same grade, route and site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scale calibration, certificates, sampling preservation, laboratory QA and receiver specification"
+    - protocol_id: cp_solids
+      process_id: "roasting"
+      flow_role: "feed, lime, lining_in"
+      record_type: "Receipt, dosing and service-life records"
+      raw_fields: "Individual commercial material mass; composition/purity/free water; delivered gate; supplier; internal returns; installation and life"
+      collection_method: "Weigh each atomic material; supplier assay/phase verification; campaign-attributable refractory replacement records"
+      unit: "kg; mass fraction"
+      frequency: "Each receipt/batch; each replacement"
+      temporal_coverage: "Same production period and measured refractory service coverage"
+      site_scope: "Feed preparation, neutralisation and roaster"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Weighing checks, supplier/reference-basis match, solids and Fe/S balances"
+    - protocol_id: cp_utilities
+      process_id: "roasting"
+      flow_role: "electricity"
+      record_type: "Meter records"
+      raw_fields: "Purchase, on-site generation, internal use and export; equipment submeters; voltage; geography/year"
+      collection_method: "Calibrated incoming and stage electricity meters; reconcile bills and meter coverage"
+      unit: "kWh; MJ"
+      frequency: "Interval or daily; billing reconciliation"
+      temporal_coverage: "Same production period including downtime"
+      site_scope: "All included stages; exclude separately allocated acid-only stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration, missing interval estimation, generation/export reconciliation"
+    - protocol_id: cp_gas
+      process_id: "roasting"
+      flow_role: "gas, air, process_gas"
+      record_type: "Flow metering and analysis"
+      raw_fields: "Separate stream volume; absolute pressure; temperature; moisture; composition; compressibility; standard-state definition; gas supplier; transferred gas mass"
+      collection_method: "Calibrated gas meters with matched state/composition analysis; density/state conversion trace; matched sending/receiving readings"
+      unit: "m3; kg; K; Pa; mass or mole fraction"
+      frequency: "Interval and composition-change sampling"
+      temporal_coverage: "Same production period, including start/stop"
+      site_scope: "Gas inlet, fan outlet and cleaned-gas handoff"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter QA, state and supplier-background agreement, independent sulfur balance"
+    - protocol_id: cp_water
+      process_id: "roasting"
+      flow_role: "water, river_water, wastewater, boiler_blowdown; separate actual external water returns/losses"
+      record_type: "Intake, transfer and balance records"
+      raw_fields: "Separate source/intake/return/evaporation/effluent volumes; density/temperature; basin; supplier; wastewater receiver and composition"
+      collection_method: "Calibrated meters or weighing; matched intake and wastewater transfer; isolate internal recirculation"
+      unit: "m3; kg; degC"
+      frequency: "Daily/interval and transfer batch"
+      temporal_coverage: "Same production period"
+      site_scope: "Boiler/cooling/scrubbing and effluent system"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter QA, basin/fate evidence, actual density conversion and water balance"
+    - protocol_id: cp_heat
+      process_id: "roasting"
+      flow_role: "exported steam"
+      record_type: "State, mass and energy balance"
+      raw_fields: "Gross generated, internally used, exported and vented steam; pressure absolute; temperature; quality; condensate/feedwater mass and state; heat boundary"
+      collection_method: "Calibrated mass/state meters at agreed interfaces; use IAPWS-IF97 in valid regions for ordinary water/steam; account for all actual returns"
+      unit: "kg; K; Pa; kJ/kg; MJ"
+      frequency: "Interval; reconcile monthly"
+      temporal_coverage: "Same production period"
+      site_scope: "Waste-heat boiler, internal users and export/return interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, quality evidence, state/return reconciliation, separate usable heat calculation and receiving provider match"
+    - protocol_id: cp_waste
+      process_id: "roasting"
+      flow_role: "dust_waste, sludge, lining"
+      record_type: "Weighbridge and laboratory/fate records"
+      raw_fields: "Separate wet/dry mass; free water; metals/sulfate/composition; collector returns; receiver and treatment"
+      collection_method: "Weigh each waste stream independently; representative compositional assays; transfer and acceptance manifests"
+      unit: "kg; mass fraction"
+      frequency: "Each batch/shipment and replacement"
+      temporal_coverage: "Same production period with lifetime attribution for lining"
+      site_scope: "Collectors, effluent treatment and roaster"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Moisture QA, receiver compatibility, internal-return cancellation and contamination evidence"
+    - protocol_id: cp_air
+      process_id: "roasting"
+      flow_role: "Individual gaseous, metal and particulate emissions"
+      record_type: "Stack/fugitive monitoring and source mass balance"
+      raw_fields: "Species concentration, exhaust volume, dry/wet/temperature/pressure/O2 reference, duration, detection limits, carbon provenance, particle-size fractions, startup and fugitives"
+      collection_method: "Calibrated species-specific monitoring or validated source balance; SO2 instrumental scope per EPA6C with all applicable referenced methods; metals per EPA29 or documented equivalent with applicable dependencies; validated size-selective PM and separate fugitive surveys; no vendor factor"
+      unit: "kg; mg/m3; m3; h"
+      frequency: "Matched intervals; validated representative tests with coverage of operating modes"
+      temporal_coverage: "Same production period"
+      site_scope: "Actual outdoor releases after control, across all included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, blanks/recovery, interferences, compatible exhaust basis, speciation, source coverage and uncertainty; nondetects are bounded, not assumed zero"
+    - protocol_id: cp_effluent
+      process_id: "roasting"
+      flow_role: "as_water, iron_water, sulfate_water, water_discharge"
+      record_type: "Paired final-discharge laboratory and volume records"
+      raw_fields: "Actual receiving freshwater; volume; representative concentrations; total/dissolved basis; species versus element; detection limits; bypasses"
+      collection_method: "Flow-proportional composite samples or justified equivalent; calibrated volume and validated laboratory methods; final discharge only"
+      unit: "m3; mg/L; kg"
+      frequency: "Paired volume and representative samples, including nonroutine release"
+      temporal_coverage: "Same production period"
+      site_scope: "Only on-site treatment final freshwater boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Laboratory blanks, recovery, speciation basis, recipient/fate verification and treatment/transfer de-duplication"
+  calculation_rules:
+    - id: period_normalisation
+      applies_to: "all inventory rows"
+      rule: "Divide each physically measured, stock-corrected period exchange by the same positive dry accepted calcine D. Reference product is exactly 1 kg. Retain raw unallocated physical totals separately from allocation of joint burdens. Each protocol retains raw, unallocated period records and the row total before normalisation. Include all attributable accepted, rejected, failed and zero-accepted-output batches, startup, shutdown, outages and rework within the same representative period; do not remove their inputs, wastes or releases because an individual batch has no accepted output. Reconcile applicable stocks and internal returns and attribute lining to its real service period. cp_product independently establishes positive D from unique accepted calcine output lots, reconciling production, dispatch and stocks without counting returned or reaccepted material twice. Apply period_normalisation exactly once to each reconciled period total; the protocol aggregation and calculation rule describe that same division, not successive divisions. A complete period with D <= 0 cannot produce a per-kg dataset and requires an explicitly justified wider representative period or an incomplete result. Machine or furnace-batch counts are not the denominator."
+      inputs:
+        - "Row records"
+        - D
+        - stocks
+        - "applicable collection protocol"
+      output: "Quantity per 1 kg reference flow"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: effluent_load
+      applies_to: "as_water, iron_water, sulfate_water"
+      rule: "For paired samples, mass kg = sum(concentration mg/L * corresponding water volume m3) / 1000. Concentration and volume cover the same outfall/time; retain whether species or elemental mass."
+      inputs:
+        - "Paired concentrations/volumes and QA"
+        - cp_effluent
+      output: "Species mass before normalisation"
+      source_ids:
+        - jrc-lvic-aaf-2007
+    - id: air_load
+      applies_to: "so2, co2, co2_mineral, co2_bio, co, no, no2, pm25, pm2510, pm10, as_air, hg_air, pb_air, hcl, hf"
+      rule: "Mass kg = sum(concentration mg/m3 * corresponding exhaust volume m3) / 1000000. Undo any O2 reporting correction consistently and align dry/wet state, pressure/temperature before multiplying. Fugitive releases are separately measured/validated and added once."
+      inputs:
+        - "Species-specific concentrations and exhaust volume"
+        - "duration/state"
+        - cp_air
+      output: "Species mass before normalisation"
+      source_ids:
+        - epa-so2-6c-2017
+        - epa-metals-29-2017
+    - id: nonoverlap_particles
+      applies_to: "pm25, pm2510, pm10"
+      rule: "Use matched filterable PM2.5, PM10 and total filterable particulate measurements: interval 2.5-10 = PM10 - PM2.5; above10 = total - PM10. Require nonnegative fractions within uncertainty; never fabricate a split from a single total or add cumulative fractions to their component intervals."
+      inputs:
+        - "Matched size-selective measurements"
+        - cp_air
+      output: "Non-overlapping particulate masses"
+      source_ids:
+        - epa-pm-201a-2020
+  data_quality_requirements:
+    - id: physical_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify complete native flow name, CAS where present, route, classification/comment conflicts, reference property/mean, unit group and actual physical stream. Generic identity does not verify provider or quantities. Unresolved identity remains explicit; never substitute nearby product/waste/species."
+      evidence: "Native identity, supplier/lot/assay and state documentation"
+    - id: mass_sulfur_carbon
+      applies_to: "roasting"
+      requirement: "Retain process diagram and independent Fe/S/dry-solids/water/carbon balances before environmental-burden allocation. Reconcile oxidation oxygen, gas sulfur, material moisture, dust returns, stock and observed releases; flag closure outside measured uncertainty without inventing a correction flow."
+      evidence: "cp_product, cp_solids, cp_gas, cp_water, cp_waste, cp_air, cp_effluent"
+    - id: quantitative_scope
+      applies_to: "all inventory rows"
+      requirement: "Require site measurements and documented uncertainty. Source acid-denominator ratios, vendor temperature/capacity, gas percentages and single-plant energy examples are not per-calcine defaults. No numerical recipe, yield, purity or allocation share is transferred here."
+      evidence: "Actual sampling and meters; jrc-lvic-aaf-2007, metso-roasting-2022"
+    - id: completeness
+      applies_to: "roasting"
+      requirement: "Screen real feed/lining composition and operating conditions for every additional metal, gas species, wastewater constituent, reagent, fuel or packaging component; add atomic rows as required. PM and metal mass components may describe the same physical particulate for chemistry but must not be summed as independent total solids."
+      evidence: "Source diagram, laboratory screening and inventories"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject a data package with undefined/nonpositive D, incompatible dry/wet quantities, absent product/route qualification, missing physical balance or hidden joint-product allocation. Require one final reference output; any inter-stage product transfers must cancel with identical quantities."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "Do not declare complete environmental LCI when actual SO2/NOx speciation, PM size partition, gas basis, steam state/usable heat, emission/discharge compartment, required additional pollutant or background reference quantity remains unknown. Treat identity resolution and provider compatibility separately. A missing UUID is an explicit linking gap; no process is approved merely because UUID lookup succeeded. Future measurements can fulfil this method; until supplied, the produced dataset must disclose its incomplete fields. EPA6C/29 references are technical measurement evidence for the cited editions, not a claim of current regulatory certification or a complete standalone testing SOP."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for qualified roasted pyrite calcine"
+  downstream_use: "secondary_dataset; background_dataset after declared independent methodology and data review"
+  allowed_use: "Iron-bearing raw-material supply at the stated dry product gate with actual receiving-specification applicability"
+  excluded_use: "Pure iron oxide/pigment; unroasted pyrite; sulphate decomposition; gold/copper-specific roasting; unspecified calcine blends; acid manufacturing method; assumed avoided steel/acid/steam credits"
+  required_metadata: "All reference qualifiers, actual source/gate, physical raw totals, sampling period, process stages, provider reference bases, gas/steam handoffs and allocation"
+  required_quality_disclosure: "All missing identities, measurements and upstream/treatment coverage; bounded nondetects, uncertainty, allocation sensitivity and applicable source limitations"
+  update_trigger: "Feed/phase/impurity change, roasting route or control change, gate/moisture basis change, utility provider/state change, co-product price/fate change or new measured pollutant"
+data_sources:
+  - id: "jrc-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "European Commission JRC, Large Volume Inorganic Chemicals — Ammonia, Acids and Fertilisers, August2007, §4.2.3.3, printed157/PDF185; process overview Figure4.3 (printed151/PDF179) and §1.4.6 physical balances (printed19/PDF47). https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-03/LVIC-AAF.pdf"
+    used_for: "Pyrite fluidised-bed oxidation, jointly produced iron oxide/energy, multistage gas cleaning and scrubber-water treatment; distinction from §4.2.3.4 sulphate decomposition"
+  - id: "metso-roasting-2022"
+    type: "literature"
+    reference: "Metso Outotec, Roasting Solutions, brochure4788-08/2022, PDF2-3 and route table PDF4. https://www.metso.com/globalassets/portfolio/technologies/roasting/brochure-roasting-solutions-4788-08-22-en-met.pdf?r=3"
+    used_for: "Actual equipment maker's process decomposition, pyrite concentrate-to-oxide route, heat recovery, separate gas cleaning/acid stages and impurity/effluent handling"
+  - id: "ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "JRC ILCD Handbook, General guide for LCA, Detailed guidance, March2010, §7.9.2-7.9.3, especially printed256-257/PDF276-277 and printed264/PDF284. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Subdivision, justified physical/economic allocation and actual co-product condition at allocation gate"
+  - id: "epa-so2-6c-2017"
+    type: "official_guidance"
+    reference: "US EPA Method6C, edition8/2/2017, §§1-2 and applicable dependent methods. https://www.epa.gov/sites/default/files/2017-08/documents/method_6c.pdf"
+    used_for: "Instrumental stationary-source SO2 measurement scope, QA and SO2 species identity"
+  - id: "epa-metals-29-2017"
+    type: "official_guidance"
+    reference: "US EPA Method29, edition8/2/2017, §§1-2. https://www.epa.gov/sites/default/files/2017-08/documents/method_29.pdf"
+    used_for: "Stationary-source As/Pb/Hg and other metals, particulate and gaseous collection and QA"
+  - id: "iapws-if97-2012"
+    type: "standard"
+    reference: "IAPWS R7-97(2012), Revised Release on Industrial Formulation1997 for Water and Steam, §2 and corresponding phase-region equations. https://iapws.org/technical-guidance/release/IF97-Rev.download"
+    used_for: "Ordinary water/steam state-dependent enthalpy and region validity"
+  - id: "epa-pm-201a-2020"
+    type: "official_guidance"
+    reference: "US EPA Method201A, October7 2020, §§1.1-1.6 and §3.1 (PDF1-3). https://www.epa.gov/sites/default/files/2019-08/documents/method_201a_0.pdf"
+    used_for: "Filterable PM10/PM2.5 and coarse interval measurement, paired total and size-fraction conditions"
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 Structure, 30June2025, code34530. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official roasted-pyrites classification label, distinct from 16120 unroasted pyrites and 14100 ordinary iron ores"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:03b389801128dd4f710af31b1a51ed581aa3c559e135716431fd201a1f363fc1"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_10101"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 10101
+          line: 67
+          column: 1
+        end:
+          offset: 12382
+          line: 84
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified natural unroasted pyrite concentrate delivered to roaster feed preparation |\n| starting_condition_role | Supplied mineral feed, with actual upstream mining/beneficiation burden |\n| product_classification_scope | Single-stage fluidised-bed oxidative roasted pyrite calcine; proposed narrower CPC 34530 relation |\n| recursive_input_rule | Same-category returned calcine and captured fines are measured internal recycles, not new external purchases or independent credits; external same-category inputs need supplier datasets and applicability checks |\n| upstream_dataset_requirement | Actual feed, utility, chemical, refractory, transport-to-gate and treatment providers; identity UUID alone is not a background dataset |\n| disclosure | Actual starting gate, feed source/assay, physical units, delivered-product basis, gas/heat handoff, internal transfers, site allocation, provider cutoffs, waste fate and actual emission compartments |\n\nInclude upstream delivered feed and actual consumption burdens, air fans, startup and shutdown, roaster, waste-heat system, dry solids collection/cooling/handling, gas cleaning, wastewater treatment and bulk loading. Include incoming transport to the gate exactly once through measured shipment data and compatible upstream transport models; do not assume delivered-product UUIDs already include freight. Account for attributable infrastructure/refractory over real service life and document broader equipment-data cutoffs. Sources: `jrc-lvic-aaf-2007`, `metso-roasting-2022`.\n\nGas cleaning may be subdivided internally, but identical transfers must cancel. SO2-rich gas is a mixture supplied to acid production, with composition and burden handoff specified. Downstream conversion, absorption, acid conditioning and its emissions belong to the receiving model. If acid operations cannot be separated from shared site burdens, expand the joint model and document it before using calcine guidance; do not omit acid-site common services or charge all acid-only operations to calcine. Residual site releases, water treatment and transferred waste retain actual fate; no zero-burden assumption for a marketable by-product.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 10
+              column: 1
+            end:
+              offset: 317
+              line: 10
+              column: 61
+          text: "# Roasted iron pyrites from fluidised-bed oxidative roasting"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 10101
+              line: 67
+              column: 1
+            end:
+              offset: 10122
+              line: 67
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40062"
+      family: "allocation"
+      span:
+        start:
+          offset: 40062
+          line: 639
+          column: 1
+        end:
+          offset: 41992
+          line: 647
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| separate_physical_accounts | roasting | Keep a reconciled unallocated process ledger containing all actual calcine, cleaned gas and exported steam. D is accepted calcine dry output before allocation. Preserve full co-product output quantities and identical internal links; allocation never scales the physical gas or steam to an invented output. | `jrc-lvic-aaf-2007`, `metso-roasting-2022`, `ilcd-allocation-2010` |\n| joint_burdens | roasting | Declare an attributional modelling goal. First subdivide dedicated calcine cooling/loading, gas cleaning and heat-delivery auxiliaries where physically separable. For genuinely joint roasting burdens, use a demonstrated causal physical relation if supported; otherwise use documented economic allocation at the actual separation gate and condition. For economic allocation, share_i = revenue_i / sum(revenue of all useful co-products); revenue uses measured output and representative matched-period gate price. An internal gas stream needs a defensible transfer value adjusted for downstream acid conversion/conditioning costs; final acid revenue is not an unadjusted gas price. Missing/zero/negative prices do not justify silently assigning zero burden; justify another method and sensitivity. Avoid adding steam credits to already allocated joint burdens. | `ilcd-allocation-2010` |\n| product_waste_state | calcine, dust_waste, sludge, process_gas, steam | Determine useful product versus disposal obligation from actual specification, receiver and fate. Only accepted supplied calcine enters D. Waste/nonmarketable gas requires its actual treatment; it is not a positive co-product merely because a label says by-product. No default allocation percentage, yield, oxide purity, recipe or energy recovery is specified. | `ilcd-allocation-2010`, `jrc-lvic-aaf-2007` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 10
+              column: 1
+            end:
+              offset: 317
+              line: 10
+              column: 61
+          text: "# Roasted iron pyrites from fluidised-bed oxidative roasting"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40062
+              line: 639
+              column: 1
+            end:
+              offset: 40102
+              line: 639
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_55233"
+      family: "validation"
+      span:
+        start:
+          offset: 55233
+          line: 687
+          column: 1
+        end:
+          offset: 56243
+          line: 693
+          column: 1
+      markdown: "## 9. Validation Rules\n\nReject a data package with undefined/nonpositive D, incompatible dry/wet quantities, absent product/route qualification, missing physical balance or hidden joint-product allocation. Require one final reference output; any inter-stage product transfers must cancel with identical quantities.\n\nDo not declare complete environmental LCI when actual SO2/NOx speciation, PM size partition, gas basis, steam state/usable heat, emission/discharge compartment, required additional pollutant or background reference quantity remains unknown. Treat identity resolution and provider compatibility separately. A missing UUID is an explicit linking gap; no process is approved merely because UUID lookup succeeded. Future measurements can fulfil this method; until supplied, the produced dataset must disclose its incomplete fields. EPA6C/29 references are technical measurement evidence for the cited editions, not a claim of current regulatory certification or a complete standalone testing SOP.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 10
+              column: 1
+            end:
+              offset: 317
+              line: 10
+              column: 61
+          text: "# Roasted iron pyrites from fluidised-bed oxidative roasting"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 55233
+              line: 687
+              column: 1
+            end:
+              offset: 55255
+              line: 687
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_10101"
+      source_span:
+        start:
+          offset: 11162
+          line: 80
+          column: 1
+        end:
+          offset: 11738
+          line: 80
+          column: 577
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_10101"
+      source_span:
+        start:
+          offset: 11740
+          line: 82
+          column: 1
+        end:
+          offset: 12380
+          line: 82
+          column: 641
+    - pointer: "/allocation_rules/0"
+      rule_id: "separate_physical_accounts"
+      identity_kind: "explicit"
+      unit_id: "normative_40062"
+      source_span:
+        start:
+          offset: 40175
+          line: 643
+          column: 1
+        end:
+          offset: 40593
+          line: 643
+          column: 419
+    - pointer: "/allocation_rules/1"
+      rule_id: "joint_burdens"
+      identity_kind: "explicit"
+      unit_id: "normative_40062"
+      source_span:
+        start:
+          offset: 40594
+          line: 644
+          column: 1
+        end:
+          offset: 41507
+          line: 644
+          column: 914
+    - pointer: "/allocation_rules/2"
+      rule_id: "product_waste_state"
+      identity_kind: "explicit"
+      unit_id: "normative_40062"
+      source_span:
+        start:
+          offset: 41508
+          line: 645
+          column: 1
+        end:
+          offset: 41990
+          line: 645
+          column: 483
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_55233"
+      source_span:
+        start:
+          offset: 55257
+          line: 689
+          column: 1
+        end:
+          offset: 55547
+          line: 689
+          column: 291
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_55233"
+      source_span:
+        start:
+          offset: 55549
+          line: 691
+          column: 1
+        end:
+          offset: 56241
+          line: 691
+          column: 693
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_10101"
+      source_span:
+        start:
+          offset: 10101
+          line: 67
+          column: 1
+        end:
+          offset: 10122
+          line: 67
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_10101"
+      source_span:
+        start:
+          offset: 10150
+          line: 71
+          column: 1
+        end:
+          offset: 11160
+          line: 78
+          column: 216
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40062"
+      source_span:
+        start:
+          offset: 40062
+          line: 639
+          column: 1
+        end:
+          offset: 40102
+          line: 639
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_55233"
+      source_span:
+        start:
+          offset: 55233
+          line: 687
+          column: 1
+        end:
+          offset: 55255
+          line: 687
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:03b389801128dd4f710af31b1a51ed581aa3c559e135716431fd201a1f363fc1"
+  generated_content_sha256: "sha256:aa017a31a7ad43d5e5c5267d42c3628a3a38406e8f4b8721384c649ce30d3ab3"
