@@ -389,7 +389,7 @@ sync_with: pcr.en-US.md
 
 ###### Seed cotton internal input (`gin_seed_cotton`)
 
-按规定的物料状态、路线和去向记录该流。
+接收相连采收批次的原始籽棉，在初级调理和分离前保留含水率、等级及污染情况。
 
 - 选定流：籽棉
 - 流属性/单位: Mass / kg
@@ -437,7 +437,7 @@ sync_with: pcr.en-US.md
 
 ###### Intended ginned cotton lint output (`ginned_lint`)
 
-按规定的物料状态、路线和去向记录该流。
+记录经清洁、含水率稳定和分级后，在打包／轧花交付门交接的预期皮棉产出；不合格皮棉须降级或拒收，不计入合格皮棉。
 
 - 选定流：轧花皮棉
 - 流属性/单位: Mass / kg
@@ -465,7 +465,7 @@ sync_with: pcr.en-US.md
 
 ###### Intended cottonseed co-product output (`cottonseed_coproduct`)
 
-按规定的物料状态、路线和去向记录该流。
+在出售、压榨、饲料、播种或其他已声明交接点，将分离的棉籽记为预期共产品；拒收种子须另行记录去向。
 
 - 选定流：棉籽联产品
 - 流属性/单位: Mass / kg

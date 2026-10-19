@@ -218,6 +218,8 @@ translation_status: aligned
 
 ###### 灌溉供水（`irrigation_water_input`）
 
+将输送的灌溉水、源头取水和泵送能源分别记录。
+
 - 选定流：灌溉供水（unmapped 或 parameterized）
 - 流属性/单位：体积 / m3
 - 数量规则：按田块和事件计量或记录的输送灌溉量

@@ -336,6 +336,8 @@ sync_with: pcr.en-US.md
 
 ###### 进入起收的可收获作物（`crop_entering_lifting`）
 
+该卡片将种植环节同一待采收批次链接至起收边界。
+
 - 选定流： Harvest-ready yautia corms and cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `harvest_ready_crop` for the represented field
@@ -405,6 +407,8 @@ sync_with: pcr.en-US.md
 
 ###### 起收原始牙芋（`raw_lifted_yautia`）
 
+已收集的原始起收状态含附着土壤，位于修整或清洗之前。
+
 - 选定流： Raw lifted yautia corms and cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed collected mass before conditioning
@@ -428,6 +432,8 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ###### 起收损失与损伤物料（`lifting_loss`）
+
+记录留在田间或已受损而未进入原始收集状态的作物，并声明去向。
 
 - 选定流： Yautia lifting loss and damaged material
 - 流属性/单位： Mass / kg fresh mass
@@ -460,6 +466,8 @@ sync_with: pcr.en-US.md
 
 ###### 进入整理的原始物料（`raw_material_conditioning_input`）
 
+该卡片将同一原始起收批次链接至初级调理边界。
+
 - 选定流： Raw lifted yautia corms and cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `raw_lifted_yautia` for the represented lot
@@ -483,6 +491,8 @@ sync_with: pcr.en-US.md
 
 ###### 整理用水（`conditioning_water`）
 
+仅在实际湿法清洗时记录供水；干法调理记为零。
+
 - 选定流： Process water
 - 流属性/单位： Volume / m3
 - 数量规则： Metered water supplied; dry-cleaned lots report zero
@@ -504,6 +514,8 @@ sync_with: pcr.en-US.md
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
 ###### 整理用电（`conditioning_electricity`）
+
+仅在实际使用泵、清洗机或输送机时记录其用电。
 
 - 选定流： Electricity
 - 流属性/单位： Energy / kWh
@@ -534,6 +546,8 @@ sync_with: pcr.en-US.md
 
 ###### 进入分级的已整理牙芋（`prepared_yautia`）
 
+准备好的状态为已经修整和清洁、即将按去向分级的材料。
+
 - 选定流： Prepared fresh yautia cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed prepared mass after included trimming/cleaning
@@ -558,6 +572,8 @@ sync_with: pcr.en-US.md
 
 ###### 整理剔除物与移除物料（`conditioning_rejects`）
 
+记录允许时，将移除土壤与作物修整物分开，并声明各自去向。
+
 - 选定流： Removed soil, trimmings and conditioning rejects
 - 流属性/单位： Mass / kg
 - 数量规则： Weighed outputs or mass-balance difference, distinguishing soil and crop material
@@ -579,6 +595,8 @@ sync_with: pcr.en-US.md
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
 ###### 整理废水（`conditioning_wastewater`）
+
+仅在湿法清洗时记录排水，并与供水和回用水核对。
 
 - 选定流： Wastewater from yautia washing
 - 流属性/单位： Volume / m3
@@ -611,6 +629,8 @@ sync_with: pcr.en-US.md
 
 ###### 进入分级的已整理物料（`prepared_material_grading_input`）
 
+该卡片将同一准备好的批次链接至按去向分级环节。
+
 - 选定流： Prepared fresh yautia cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `prepared_yautia` for the represented lot
@@ -641,6 +661,8 @@ sync_with: pcr.en-US.md
 
 ###### 合格鲜牙芋（`accepted_fresh_yautia`）
 
+这是完好合格的等级，也是农场门唯一的参考产品交接点。
+
 - 选定流： Yautia `72013e1f-538d-4031-b97a-03bfaa42b37d`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：Weighed accepted mass; normalize final dataset to exactly 1,000 kg
@@ -666,6 +688,8 @@ sync_with: pcr.en-US.md
 
 ###### 降级食用牙芋（`downgraded_edible_yautia`）
 
+仅在有食用用途及交接证据时记录为产品产出。
+
 - 选定流： Downgraded fresh yautia
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed downgraded mass by buyer or use
@@ -687,6 +711,8 @@ sync_with: pcr.en-US.md
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
 ###### 留用或出售的种植材料（`planting_material_output`）
+
+将有意留作或出售用于繁殖的球茎或小球茎记为独立的预期产出。
 
 - 选定流： Yautia planting material
 - 流属性/单位： Mass and number / kg and item
@@ -712,6 +738,8 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ###### 分级剔除物与残余物（`grading_rejects`）
+
+按饲料、堆肥、还田、处理或处置去向记录拒收材料。
 
 - 选定流： Yautia grading rejects and residues
 - 流属性/单位： Mass / kg fresh mass

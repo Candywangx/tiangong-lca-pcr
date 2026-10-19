@@ -309,6 +309,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 ###### Harvested material received (`harvested_material_input`)
 
+可追溯采收批次进入分离过程，不得替换为另一作物。
+
 - 选定流： Harvested flower seed-bearing material; UUID unresolved
 - 流属性/单位： Mass / kg
 - 数量规则： linked measured mass from production
@@ -373,6 +375,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 ###### Raw extracted flower seed (`raw_seed`)
 
+分离后尚未调理的种子转入干燥和清选。
+
 - 选定流： Raw extracted flower seed; UUID unresolved
 - 流属性/单位： Mass / kg
 - 数量规则： measured output mass and moisture by lot
@@ -397,6 +401,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 ##### 废物流
 
 ###### Extraction residues (`extraction_residue`)
+
+非种子作物材料及未回收部分按有记录的去向离开。
 
 - 选定流： Flower-seed extraction residue; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -429,6 +435,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 ##### 产品流
 
 ###### Raw flower seed received (`raw_seed_input`)
+
+相连的原始种子批次进入水分稳定和清选。
 
 - 选定流： Raw extracted flower seed; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -494,6 +502,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 ###### Conditioned flower seed (`conditioned_seed`)
 
+含水率稳定且已清选的种子转入放行检验。
+
 - 选定流： Conditioned flower seed for sowing; UUID unresolved
 - 流属性/单位： Mass / kg
 - 数量规则： measured conditioned mass at declared moisture
@@ -518,6 +528,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 ##### 废物流
 
 ###### Cleaning and grading rejects (`cleaning_rejects`)
+
+不合格种子、颖壳及惰性杂质不计入合格种子。
 
 - 选定流： Flower-seed cleaning rejects; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -550,6 +562,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 ##### 产品流
 
 ###### Conditioned seed received (`conditioned_seed_input`)
+
+相连的调理后批次进入取样、检验及最终准备。
 
 - 选定流： Conditioned flower seed for sowing; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -598,6 +612,8 @@ Treatment, coating or pelleting material is recorded only when applied before ha
   - 证据类型： `reasoned_estimate`
 
 ###### Seed packaging (`seed_packaging`)
+
+记录放行批次实际使用的包装组件。
 
 - 选定流： Flexible packaging for flower seed
 - 流属性/单位： Mass / kg
@@ -663,6 +679,8 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 
 ###### Released flower seed (`released_flower_seed`)
 
+只有放行决定所覆盖的种子净质量才能成为参考产出。
+
 - 选定流： Flower seed for sowing; UUID unresolved
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：measured net mass covered by the release decision
@@ -689,6 +707,8 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 ##### 废物流
 
 ###### Failed-test or treatment rejects (`release_rejects`)
+
+未通过放行或处理控制的材料不计入参考产出。
 
 - 选定流： Rejected flower seed; UUID unresolved
 - 流属性/单位： Mass / kg

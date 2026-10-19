@@ -93,7 +93,7 @@ translation_status: aligned
 
 | process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
 | --- | --- | --- | --- | --- | --- |
-| `orchard_establishment_and_removal` | 果园建园、补植和移除 | conditional | 声明期间发生建园、重植、补植或移除时纳入 | foreground | 每 1 kg 合格水果的可归属生命周期投入 |
+| `orchard_establishment_and_removal` | 果园建园、补植和移除 | conditional | 建园、重植、补植或移除的负荷可归属于声明期间时纳入 | foreground | 每 1 kg 合格水果的可归属生命周期投入 |
 | `orchard_cultivation_and_protection` | 果园种植管理和植物保护 | required | 每个受管理果园或黑刺李园地均纳入 | foreground | 一个采收年度或声明平均期，每 1 kg 合格水果 |
 | `harvest_and_field_collection` | 采收和田间收集 | required | 向果园门交接交付水果的每条路线均纳入 | foreground | 每 1 kg 合格水果的采收和分流输出 |
 | `primary_conditioning_and_gate_handoff` | 初步调理和果园门交接 | conditional | 清洗、冷却、分拣、分级、周转箱或其他准备步骤位于声明门点内时纳入 | foreground | 每 1 kg 参考产品的调理后合格水果 |

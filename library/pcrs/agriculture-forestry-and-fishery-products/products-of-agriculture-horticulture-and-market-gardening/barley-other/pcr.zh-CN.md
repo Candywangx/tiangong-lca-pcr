@@ -261,6 +261,8 @@ translation_status: aligned
 ##### 基本流
 ###### 土地占用（`land_occupation`）
 
+记录大麦田的种植面积及作物周期土地占用基准。
+
 - 选定流：农业用地占用
 - Flow property / unit: Area-time / ha a
 - Amount rule: 实测田块面积乘以声明作物持续时间
@@ -274,6 +276,8 @@ translation_status: aligned
 - Collection protocol: `cp_land_and_output_records`
 
 ###### 灌溉水取水（`water_withdrawal`）
+
+按水源分别记录取水量，并与输送的灌溉水分开记录。
 
 - 选定流：来源特定的水取用
 - Flow property / unit: Volume or mass / m3 or kg
@@ -470,6 +474,8 @@ translation_status: aligned
 
 ###### 处理工艺热（`conditioning_process_heat`）
 
+纳入调理节点时，按载能体和批次记录干燥或调理所用热量。
+
 - 选定流：干燥或处理用工艺热
 - Flow property / unit: Energy / MJ or kWh
 - Amount rule: 分配到处理批次的计量或供应商记录能量
@@ -483,6 +489,8 @@ translation_status: aligned
 - Collection protocol: `cp_conditioning_energy_records`
 
 ###### 处理机械动力（`conditioning_mechanical_power`）
+
+记录清选、分级和输送使用的电力或其他机械动力。
 
 - 选定流：清理、分级或输送用机械动力
 - Flow property / unit: Energy / MJ or kWh
@@ -638,6 +646,8 @@ translation_status: aligned
 此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
 
 ###### 发运运输服务（`dispatch_transport_service`）
+
+记录从储存到所选交付门的已声明运输或内部搬运服务。
 
 - 选定流：从储存点或声明门出发的货运服务
 - Flow property / unit: Mass-distance / kg*km or t*km

@@ -215,6 +215,8 @@ sync_with: pcr.en-US.md
 
 ###### 供给咖啡园的灌溉水（`coffee_irrigation_water`）
 
+将输送灌溉水与自然资源取水和降雨分开记录。经核实的雨养路线须凭水源和区块证据记录有依据的零值。
+
 - 选定流：灌溉水供应 [parameterized]
 - 流属性/单位：体积 / m3
 - 数量规则：按水源、区块和作物年度记录计量或有证据的供水量
@@ -273,6 +275,8 @@ sync_with: pcr.en-US.md
 
 ###### 咖啡园土地占用（`coffee_land_occupation`）
 
+记录占用面积、作物阶段、遮荫或间作状态及作物年度。土地转化须单独记录，不得由土地占用推定。
+
 - 选定流：咖啡农业土地占用 [unmapped]
 - 流属性/单位：面积-时间 / ha·year
 - 数量规则：按区块面积及生产阶段记录，并按生产年度分配
@@ -290,6 +294,8 @@ sync_with: pcr.en-US.md
 ##### 产品流
 
 ###### 可供采收的咖啡樱桃（`coffee_cherry_crop_output`）
+
+按区块、品种组、作物年度及含水率基准，记录采收损失和加工发生之前的咖啡樱桃产量。这是中间产出，不是 PCR 参考流。
 
 - 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries
@@ -315,6 +321,8 @@ sync_with: pcr.en-US.md
 
 ###### 田间残余和未采收樱桃（`coffee_field_residues`）
 
+记录落果、受损、未采收或其他非主要咖啡材料及去向。不得仅凭去向名称将其认定为共产品。
+
 - 选定流：咖啡田间残余或损失 [unmapped]
 - 流属性/单位：质量 / kg fresh or dry matter
 - 数量规则：由作物输出、采收批次和记录的田间去向计算
@@ -337,6 +345,8 @@ sync_with: pcr.en-US.md
 ##### 产品流
 
 ###### 可收集咖啡樱桃（`coffee_cherry_harvest_input`）
+
+记录从声明咖啡林分接收的樱桃批次，保留区块、作物年度、成熟度和含水率信息。
 
 - 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries
@@ -393,6 +403,8 @@ sync_with: pcr.en-US.md
 
 ###### 交接处理的咖啡樱桃（`coffee_harvested_cherry_output`）
 
+记录交给湿法或干法加工的采收批次，包括接收方、交接时间及路线状态。
+
 - 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries
 - 数量规则：磅单或批次质量平衡
@@ -416,6 +428,8 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ###### 采收损失和偶然材料（`coffee_harvest_losses`）
+
+将未收集樱桃、受损材料、异物及采收损失与加工残余物分开记录。
 
 - 选定流：采收损失或偶然材料 [unmapped]
 - 流属性/单位：质量 / kg fresh matter
@@ -446,6 +460,8 @@ sync_with: pcr.en-US.md
 
 ###### 接收的生咖啡批次（`coffee_raw_lot_input`）
 
+记录声明的初级调理运行起点处的新鲜樱桃、湿带羊皮纸咖啡豆（wet parchment）或其他原始批次状态。一次运行内不得混合路线或含水率基准。
+
 - 选定流：生咖啡批次 [unmapped]
 - 流属性/单位：质量 / kg as received
 - 数量规则：按路线和批次称量投入；同一批次不得混合处理路线或含水率基准
@@ -459,6 +475,8 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_coffee_processing_batch_records`
 
 ###### 处理用水（`coffee_process_water`）
+
+将去果肉、清洗、发酵、卫生清洁及其他工艺用水与灌溉和源头取水分开记录。无水干法加工仅在有路线证据时才记为零。
 
 - 选定流：处理用水 [parameterized]
 - 流属性/单位：体积 / m3
@@ -556,6 +574,8 @@ sync_with: pcr.en-US.md
 
 ###### 果肉、黏液、羊皮纸、外壳和干法残余（`coffee_processing_residues`）
 
+按残余物状态和路线分别记录。湿果浆、黏液、羊皮纸层（parchment）和干果壳的含水率、处理或去向不同时，不得合并。
+
 - 选定流：咖啡处理残余物 [unmapped]
 - 流属性/单位：质量 / kg wet or dry matter
 - 数量规则：在产品和有记录的共产品路线之后测量残余
@@ -600,6 +620,8 @@ sync_with: pcr.en-US.md
 ##### 产品流
 
 ###### 干燥咖啡中间状态（`coffee_dry_mill_input`）
+
+记录干磨环节接收的干带羊皮纸咖啡豆（dry parchment）、干咖啡樱桃或其他已声明中间物，并关联前一加工批次。
 
 - 选定流：干羊皮纸或干咖啡樱桃 [unmapped]
 - 流属性/单位：质量 / kg at declared moisture basis
@@ -701,6 +723,8 @@ sync_with: pcr.en-US.md
 
 ###### 缺陷豆、异物和脱壳废物（`coffee_dry_mill_rejects`）
 
+记录缺陷豆、碎豆、羊皮纸层（parchment）、果壳、石块、粉尘及其他拒收状态，并声明实际去向或处理方式。
+
 - 选定流：干磨拒收物和废物 [unmapped]
 - 流属性/单位：质量 / kg wet or dry matter
 - 数量规则：按批次称量拒收流或质量平衡差额
@@ -729,6 +753,8 @@ sync_with: pcr.en-US.md
 ##### 产品流
 
 ###### 进入储存的绿咖啡（`coffee_storage_input`）
+
+记录入库合格生咖啡批次，包括含水率基准、批次身份及声明的储存开始时间。
 
 - 选定流：Coffee, green `b8869823-9c26-4580-9c45-95a626e0ca2a`
 - 流属性/单位：质量 / kg
@@ -787,6 +813,8 @@ sync_with: pcr.en-US.md
 
 ###### 声明门发出的绿咖啡（`coffee_gate_output`）
 
+记录储存对账后在声明交付门发运的生咖啡净批次。
+
 - 选定流：Coffee, green `b8869823-9c26-4580-9c45-95a626e0ca2a`
 - 流属性/单位：质量 / kg
 原始产出计量与核对要求：声明门发出的称重批次，扣除皮重和记录的储存损失
@@ -804,6 +832,8 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ###### 储存损失、霉变或拒收绿咖啡（`coffee_storage_losses`）
+
+记录霉变、拒收或其他损失的生咖啡，以及有证据的去向。
 
 - 选定流：储存损失、霉变或拒收绿咖啡 [unmapped]
 - 流属性/单位：质量 / kg

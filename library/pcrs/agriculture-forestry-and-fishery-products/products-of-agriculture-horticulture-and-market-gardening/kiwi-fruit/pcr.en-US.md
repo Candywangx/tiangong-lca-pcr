@@ -286,7 +286,7 @@ Raw activity or stage basis: per 1 kg reference product.
 
 Record prunings, dropped fruit, and other residues separately from intended fruit output, with their declared treatment.
 
-This card remains unmapped because it combines route-specific residue identities that have no applicable reviewed
+This card remains unmapped because it combines route-specific residue identities.
 Dataset production shall split it by actual residue and fate.
 
 - Selected flow: Actual orchard residue or loss stream
