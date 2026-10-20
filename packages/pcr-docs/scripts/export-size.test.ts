@@ -1,6 +1,99 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { summarizeExportFiles } from "./export-size.ts";
+import { INLINE_MANIFEST_LIMIT, INLINE_MARKDOWN_LIMIT, inlineDownloadUrl, decodeInlineDownloadUrl } from "./raw-download.ts";
+
+test('medium required-language downloads preserve original Unicode bytes within candidate eligibility', () => {
+  const directory = 'library/pcrs/domain/category/item/';
+  const manifest = Buffer.from('status: candidate\ncontent_maturity: authored_methodology\n');
+  const sibling = {path: directory + 'manifest.yaml', bytes: manifest};
+  for (const name of ['pcr.en-US.md', 'pcr.zh-CN.md']) {
+    const opening = Buffer.from('\ufeff# Source / 原文🙂\r\n\r\n' + name + '\r\n');
+    const original = Buffer.concat([opening, Buffer.alloc(40 * 1024 - opening.length, 32)]);
+    const url = inlineDownloadUrl(directory + name, original, false, sibling);
+    assert.ok(url, 'medium canonical Markdown should retain native inline transport');
+    assert.deepEqual(decodeInlineDownloadUrl(url), original);
+    assert.equal(inlineDownloadUrl(directory + name, original, true, sibling), undefined);
+    assert.equal(inlineDownloadUrl(directory + name, original, false,
+      {path: sibling.path, bytes: Buffer.from('status: published\ncontent_maturity: authored_methodology\n')}), undefined);
+  }
+  assert.equal(inlineDownloadUrl(directory + 'manifest.yaml', Buffer.concat([manifest, Buffer.alloc(40 * 1024, 32)]), false), undefined);
+  assert.equal(inlineDownloadUrl(directory + 'structured.yaml', Buffer.alloc(40 * 1024), false, sibling), undefined);
+  assert.equal(inlineDownloadUrl(directory + 'pcr.de-DE.md', Buffer.alloc(40 * 1024), false, sibling), undefined);
+});
+
+test("bounded candidate manifest downloads preserve exact bytes and physical release artifacts", () => {
+  const source = "library/pcrs/domain/category/product/manifest.yaml";
+  const bytes = Buffer.from("\ufeffstatus: candidate\r\ncontent_maturity: authored_methodology\r\ntitle: 测试\r\n");
+  const url = inlineDownloadUrl(source, bytes, false);
+  assert.ok(url);
+  assert.deepEqual(decodeInlineDownloadUrl(url), bytes);
+  const exact = Buffer.concat([bytes, Buffer.alloc(INLINE_MANIFEST_LIMIT - bytes.length, 32)]);
+  assert.ok(inlineDownloadUrl(source, exact, false));
+  for (const [file, content, history] of [
+    [source, Buffer.concat([exact, Buffer.from(" ")]), false],
+    [source, bytes, true],
+    [source.replace("manifest.yaml", "structured.yaml"), bytes, false],
+    [source.replace("manifest.yaml", "releases/1.0.0/manifest.snapshot.yaml"), bytes, false],
+    [source.replace("manifest.yaml", "revision/manifest.next.yaml"), bytes, false],
+    [source.replace("pcrs", "modules"), bytes, false],
+    [source, Buffer.from("status: active\ncontent_maturity: reviewed_methodology\n"), false],
+    [source, Buffer.from("status: deprecated\ncontent_maturity: deprecated_methodology\n"), false],
+    [source, Buffer.from("status: candidate\ncontent_maturity: empty_scaffold\n"), false],
+  ] as const) assert.equal(inlineDownloadUrl(file, content, history), undefined);
+  assert.equal(decodeInlineDownloadUrl("/generated/raw/manifest.yaml"), undefined);
+  for (const malformed of ["data:text/html;base64,PGgxPng8L2gxPg==", "data:application/octet-stream;base64,!!!!", "data:application/octet-stream;base64,YQ", "data:application/octet-stream;base64," + Buffer.alloc(INLINE_MARKDOWN_LIMIT + 1).toString("base64")]) {
+    assert.throws(() => decodeInlineDownloadUrl(malformed), /inline download/iu);
+  }
+});
+
+test("bounded required-language downloads use their exact sibling candidate manifest", () => {
+  const manifestPath = "library/pcrs/domain/category/product/manifest.yaml";
+  const manifest = Buffer.from("status: candidate\ncontent_maturity: authored_methodology\n");
+  const bytes = Buffer.from("\ufeff# 原始 methodology\r\n\r\nExact UTF-8 bytes.\r\n");
+  const eligibility = {path: manifestPath, bytes: manifest};
+  for (const language of ["en-US", "zh-CN"]) {
+    const source = manifestPath.replace("manifest.yaml", `pcr.${language}.md`);
+    const url = inlineDownloadUrl(source, bytes, false, eligibility);
+    assert.ok(url, "small unpublished required-language Markdown is a native inline download");
+    assert.deepEqual(decodeInlineDownloadUrl(url), bytes);
+    assert.ok(inlineDownloadUrl(source, Buffer.from("status: active\ncontent_maturity: reviewed_methodology\n"), false, eligibility),
+      "Markdown never supplies its own lifecycle eligibility");
+    for (const malformed of [Buffer.from([0xff]), Buffer.from("status: [")])
+      assert.throws(() => inlineDownloadUrl(source, bytes, false, {...eligibility, bytes:malformed}),
+        "malformed manifest eligibility must fail closed");
+    const exact = Buffer.concat([bytes, Buffer.alloc(INLINE_MARKDOWN_LIMIT - bytes.length, 32)]);
+    const boundary = inlineDownloadUrl(source, exact, false, eligibility);
+    assert.ok(boundary);
+    assert.deepEqual(decodeInlineDownloadUrl(boundary), exact);
+    assert.equal(inlineDownloadUrl(source, Buffer.concat([exact, Buffer.from(" ")]), false, eligibility), undefined);
+    for (const [file, history, bound] of [
+      [source, true, eligibility],
+      [source, false, undefined],
+      [source, false, {...eligibility, path: manifestPath.replace("product", "other")}],
+      [source, false, {...eligibility, bytes: Buffer.from("status: active\ncontent_maturity: reviewed_methodology\n")}],
+      [source, false, {...eligibility, bytes: Buffer.from("status: deprecated\ncontent_maturity: deprecated_methodology\n")}],
+      [source, false, {...eligibility, bytes: Buffer.from("status: candidate\ncontent_maturity: empty_scaffold\n")}],
+      [source.replace(`pcr.${language}.md`, "pcr.de-DE.md"), false, eligibility],
+      [source.replace(`pcr.${language}.md`, `releases/1.0.0/pcr.${language}.md`), false, eligibility],
+      [source.replace(`pcr.${language}.md`, `revision/pcr.${language}.md`), false, eligibility],
+      [source.replace("pcrs", "modules"), false, eligibility],
+      [source.replace("product", "../product"), false, eligibility],
+    ] as const) assert.equal(inlineDownloadUrl(file, bytes, history, bound), undefined);
+  }
+});
+
+test("identical inline bytes reserve one URL and retain later source filenames through physical fallback", () => {
+  const directory = "library/pcrs/domain/category/product/";
+  const bytes = Buffer.from("\ufeff# 同样 bytes\r\n");
+  const bound = {path:directory + "manifest.yaml", bytes:Buffer.from("status: candidate\ncontent_maturity: authored_methodology\n")};
+  const used = new Set<string>();
+  const english = inlineDownloadUrl(directory + "pcr.en-US.md", bytes, false, bound, used);
+  assert.ok(english);
+  used.add(english);
+  assert.equal(inlineDownloadUrl(directory + "pcr.zh-CN.md", bytes, false, bound, used), undefined,
+    "the second artifact must use its source-relative physical URL and native filename");
+});
 
 test("export accounting separates navigation, documents and shared artifacts", () => {
   const report = summarizeExportFiles([
