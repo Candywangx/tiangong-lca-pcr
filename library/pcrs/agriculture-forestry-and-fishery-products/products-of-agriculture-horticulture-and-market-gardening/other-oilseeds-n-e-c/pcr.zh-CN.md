@@ -35,7 +35,7 @@ sync_with: pcr.en-US.md
 | how_much | 声明水分下 1 kg 净油籽质量。 |
 | how_well | 必须声明具名物种、用途、水分基础、等级或纯度、路线和门点。 |
 | how_long_or_cycle | 一个作物周期及关联整理批次，按合格产品归一化。 |
-| reference_flow_link | reference_product |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | 字段 | 值 |
 | --- | --- |
@@ -45,6 +45,8 @@ sync_with: pcr.en-US.md
 | reference_unit_group | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | reference_unit | kg |
 | required_qualifiers | 一个具名物种；用途；水分基础；等级或纯度；生产与整理路线；声明门点 |
+
+唯一参考产出为 `declared_reference_handoff` 的 `reference_product_at_declared_handoff`，它仅对既有声明交接点的实际合格产品作必需计量。`grading_packaging_and_storage` 的实体活动仍为条件性活动；省略该活动不取消参考产出。选择实际最后纳入的产品交接并记录过程/产出 id，物种、物理状态、等级、含水率基准及交接点必须与第3节一致。原 `reference_product` 行仅在其作业实际发生时记录该作业实测产出，不是另一笔最终销售。旁路不新增加工、得率假设或负担，也不改变产品边界。
 
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需属性 | 必需单位 | 规则 |
@@ -77,6 +79,7 @@ sync_with: pcr.en-US.md
 | harvest_and_extraction | 收获与籽粒脱出 | required | 始终纳入；脱粒、开荚或脱果壳依物种路线。 | 收集作物并将油籽籽粒与田间生物质分离。 | 收获的含籽物料总量。 |
 | drying_and_conditioning | 干燥与初级整理 | conditional | 农场门交付前发生干燥、通风、清理或稳定化时纳入。 | 达到声明的安全水分并去除杂质。 | 声明水分条件下的整理后油籽质量。 |
 | grading_packaging_and_storage | 分级、包装与储存 | conditional | 发生前景控制的分级、装袋、散装储存或装车时纳入。 | 在声明门点交付一个明确等级和用途路线。 | 声明门点的净参考产品。 |
+| `declared_reference_handoff` | 声明交接点合格产品计量 | required | 每条实际选定路线，包括条件处理/包装/储存的旁路 | 仅计量及核对，不新增实体加工 | 1 kg 同一声明交接点净合格产品 |
 
 
 ### 过程：受控种植生产 (`managed_production`)
@@ -255,8 +258,8 @@ sync_with: pcr.en-US.md
 
 - 选定流: 待采收的油料作物，声明物种
 - 流属性 / 单位: 质量 / kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 数量规则：根据实测地块/作物记录计算交付收获的可采收作物质量。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: site_specific（`site_specific`）
 原始活动或阶段基准：harvestable mass at field maturity。
 
@@ -285,8 +288,8 @@ sync_with: pcr.en-US.md
 
 - 选定流: 按声明物种、状态、介质和去向选择具体流
 - 流属性 / 单位: kg N2O
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 数量规则：根据记录的实际氮输入，按声明的地区适用方法计算，不从筛选范围填入排放量。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: route_specific（`route_specific`）
 原始活动或阶段基准：per crop cycle, normalized by accepted oilseed output。
 
@@ -308,9 +311,9 @@ sync_with: pcr.en-US.md
 本卡记录该过程角色的真实物理流；仅在路线启用时按声明批次或作物周期建模。
 
 - 选定流: 按声明物种、状态、介质和去向选择具体流
-- 流属性 / 单位: kg nitrate-N
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 流属性/单位: Mass / kg NO3-
+- 数量规则：仅在声明适用方法、活动数据和实际接收水环境有据时计算硝酸盐排放。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: route_specific（`route_specific`）
 原始活动或阶段基准：per crop cycle, normalized by accepted oilseed output。
 
@@ -327,6 +330,8 @@ sync_with: pcr.en-US.md
   - 基准类型: `crop_cycle`
   - 证据类型: Reasoned estimate（`reasoned_estimate`）
 
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
+
 ### 过程：收获与籽粒脱出 (`harvest_and_extraction`)
 
 #### 输入
@@ -338,8 +343,8 @@ sync_with: pcr.en-US.md
 
 - 选定流: 待采收的油料作物，声明物种
 - 流属性 / 单位: 质量 / kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 数量规则：转移来自受管理生产的同批可采收作物实测/有据计算质量，与上游输出配对。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: site_specific（`site_specific`）
 原始活动或阶段基准：gross harvestable crop entering harvest。
 
@@ -405,7 +410,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：计量按实际物种提取后、整理前的原始籽粒质量。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：gross raw seed at measured moisture。
@@ -468,7 +473,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6`
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：按进入时水分状态转移实测原始种子质量。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：incoming conditioning lot。
@@ -551,7 +556,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：计量声明水分和纯度下的整理后种子质量。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：conditioned lot output。
@@ -605,8 +610,8 @@ sync_with: pcr.en-US.md
 
 - 选定流: 按声明物种、状态、介质和去向选择具体流
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
-- 数值来源模式: 前景记录（`foreground_record`）
+- 数量规则：计量或按有据方法计算捕集后的实际释放粉尘；不使用未核验的通用颗粒物UUID，不将捕集固体重复作空气排放。
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围: technology_specific（`technology_specific`）
 原始活动或阶段基准：per conditioned lot。
 
@@ -634,7 +639,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6`
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：将同批整理后种子的实测质量转移至分级、储存或装运。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：incoming finalization lot。
@@ -729,29 +734,21 @@ sync_with: pcr.en-US.md
 
 ###### 门点声明的其他油籽 (`reference_product`)
 
-本卡记录该过程角色的真实物理流；仅在路线启用时按声明批次或作物周期建模。
+仅在 `grading_packaging_and_storage` 作业实际发生时记录该作业实测合格产出，保留物种、状态、等级、含水率、批次和真实移出交接点。此稳定行 id 表示实际路线产出；唯一最终参考产出为 reference_product_at_declared_handoff。保留原始产出并关联选定最终批次，不作为另一份最终产品重复计数。所列 UUID 仅适用于已独立确认的物理状态/交接点；不相容的上游/中间状态须另行核实或明确保持身份未解析。保留原阶段计量及采集记录。
 
 - 选定流: 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6`
 - 流属性 / 单位: kg
-原始产出计量与核对要求：按前景记录测量或计算；不得以筛选区间代替实际值。
+原始产出计量及核对：按 `cp_final` 称量实际作业净合格批次产出，保留毛重/皮重、拒收、库存、含水率及匹配后续批次记录，在最终归一化前核对。
 
-- 数量规则：1 千克
-- 数值来源模式: 前景记录（`foreground_record`）
-- 适用范围: product_specific（`product_specific`）
-原始活动或阶段基准：reference flow。
+- 数量规则：按 `cp_final` 实测实际作业净合格产出；保留原始批次数量及实际阶段处理量，依第8节最终交接归一化规则换算一次，不规定固定中间得率
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：实测实际作业/批次产出及处理量，在一次最终参考归一化前保留。
 
 - 归一化基准：每声明的参考流
 - 基准类型: `reference_flow`
-- 证据类型: collected_record（`collected_record`）
-- 采集协议: `cp_final`
-- 数量范围: 暂定筛选区间；实际前景记录决定数值
-  - 范围角色: QA guardrail（`qa_guardrail`）
-  - 下限: 1
-  - 上限: 1
-  - 单位: kg/kg product
-  - 基础: reference flow
-  - 基准类型: `reference_flow`
-  - 证据类型: Reasoned estimate（`reasoned_estimate`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_final`
 
 ###### 降级但可销售的油籽 (`downgraded_oilseed`)
 
@@ -759,7 +756,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 其他未另分类油籽
 - 流属性 / 单位: kg
-- 数量规则: 按前景记录测量或计算；不得以筛选区间代替实际值。
+- 数量规则：较低等级确仍作为油料商品销售时，分开计量其实际质量和交付去向。
 - 数值来源模式: 前景记录（`foreground_record`）
 - 适用范围: product_specific（`product_specific`）
 原始活动或阶段基准：per grading lot。
@@ -801,6 +798,46 @@ sync_with: pcr.en-US.md
 
 无。
 
+### 过程：声明交接点合格产品计量（`declared_reference_handoff`）
+本计量不新增加工、废物产生或排放。保留全部真实上游作业和损失，仅旁路有据未发生的活动。选择一个实际终端产品批次，系统汇总时将其成对内部转移抵销一次；不得把未启用路线、共产品或来源产出与交接产出相加为合格最终产出。
+
+#### 输入
+##### 产品流
+###### 同一交接点实际路线合格产品 (`actual_route_product_for_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：其他油籽（未另说明） `b547a596-eefe-42d3-82b9-78cbbb445eb6`
+- 流属性/单位：质量 / kg
+- 数量规则：本同一交接点实测净合格质量，按 R/R × 1 kg 归一化；成对投入与合格产出相等，保留原始 R
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+##### 基本流
+#### 输出
+##### 产品流
+###### 声明交接点参考产品 (`reference_product_at_declared_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：其他油籽（未另说明） `b547a596-eefe-42d3-82b9-78cbbb445eb6`
+- 流属性/单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+实际废物保留在其产生作业，不在此重复。
+##### 基本流
+实际释放保留在其负责的实体作业，不在此重复。
+
 ## 7. 分配与联产品处理
 
 | rule_id | 适用对象 | 规则 | source_ids |
@@ -830,6 +867,7 @@ sync_with: pcr.en-US.md
 | cp_conditioning | drying_and_conditioning | moisture, product and rejects | batch record | incoming and outgoing mass, moisture, foreign matter, dust, water and route | scale, moisture test, meter and batch log；原始汇总与分配：dry-matter and wet-mass reconciliation by batch | kg; %; m3 | each batch | all conditioning batches | conditioning line and batch | 每声明的参考流 | scale and moisture calibration, batch sheet |
 | cp_packaging | grading_packaging_and_storage | packaging | material issue record | material type, mass, count, reuse and product lot | warehouse issue and packaging log；原始汇总与分配：sum virgin and reused materials separately | kg; item | each lot | all packed lots | packing line and lot | 每声明的参考流 | invoice, issue ticket, count check |
 | cp_final | grading_packaging_and_storage | grades and reference product | final lot record | species, use, moisture, grade, accepted, downgraded, rejected and stock change | calibrated scale, grade test and dispatch ticket；原始汇总与分配：reconcile incoming with grades, rejects and stock change | kg; % | each lot | all released lots | facility, store and lot | 每声明的参考流 | scale certificate, lab or grade report, dispatch ticket |
+| `cp_phase1_environment_coverage` | managed_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -839,15 +877,35 @@ sync_with: pcr.en-US.md
 | moisture_balance | 干燥 | 干物质守恒；以实测进出水分计算除水量并核对损失。 | 进出质量及水分 | 干物质差异 | mass-balance-identity |
 | lot_balance | 收获及整理 | 投入加库存减少等于所有产品、残余、废物、排放及库存增加。 | 全部实测批次流 | 质量差异 | mass-balance-identity |
 | nutrient_expand | 养分投入 | 每个物理产品只生成一次交换，并保留组成用于分析 N/P/K，禁止重复。 | 产品 ID、质量及组成 | 具体产品交换及养分台账 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_identity | 参考产品 | 物种、用途、水分、等级、路线及门点均非空。 | 批次和发运记录 |
 | dq_mass | 全过程 | 校准秤并核对田间、收获、整理和最终批次质量平衡。 | 校准证书与平衡表 |
 | dq_route | 条件过程 | 仅启用实际发生的整理、包装和储存路线。 | 作业和批次日志 |
 | dq_binding | 全部交换 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | 流身份审计 |
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | 实际合格终端产品及成对转移 | 称量/批次/验收记录 | 物种；状态；等级；含水率/基准；交接点；actual_terminal_process_id；actual_terminal_output_row_id；lot/transfer_id；毛/皮/净质量 R；阶段原始总量/吞吐量；库存、拒收及去向 | 在既有交接点称量净合格 R，匹配唯一实际同批次/同状态终端来源，并核对前序损失及库存。若未发生条件性准备，采用最后实际纳入的适格产品产出，不虚构该准备作业。保留原活动记录及全部必需限定项。 | kg 及原生活动单位 | 每个合格批次 | 匹配生产及交接期间 | 既有声明生产者/初级交接点 | 每声明的参考流 | 校准称量、验收/等级记录、批次链、启用/旁路证据及闭合平衡 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | 全部前景数量及实际路线产出 | R 为匹配单一物种/状态/等级/交接点/期间且实测为正的合格最终质量 kg，剔除皮重、拒收、共产品及留存库存。物理台账＝原始物理数量/R×1 kg，不乘负荷分配份额；归属清单贡献＝可归属原始数量/R×1 kg，保留分子原生单位及原有产品/期间归属。阶段强度 q_i＝Q_i/O_i 须先按实际关联 O_i 还原 Q_i＝q_i×O_i；已最终归一化后不得再次除以 R。交接两侧均为同一实测事件 R/R×1 kg，不是另一实体得率。仅纳入实际启用作业，旁路须记录并有据。R 缺失/非正或终端记录未关联会阻断完整归一化结果，不能记零。保留原始阶段数据，成对内部转移抵销一次。 | cp_declared_reference_handoff; original linked collection protocols | 按声明最终参考报告的原生数量 | `declared-handoff-measurement-definition` |
 
 ## 9. 验证规则
 
@@ -858,6 +916,11 @@ sync_with: pcr.en-US.md
 | validate_balance | 各批次 | 核对投入、产出、损失、库存变化及水分变化，不得重复计算转移流。 | mass-balance-identity |
 | validate_ranges | 每张卡 | 超出筛选区间须调查，但有支持的真实测量不得仅因此被拒绝。 |  |
 | validate_sets | 参数化投入 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | 实际选定路线及全部条件旁路状态 | 按实际记录检查可选处理/包装/储存启用及省略两种状态：始终保留唯一必需交接参考；来源产品/状态/交接点与第3节一致；启用的实体行保留实测吞吐量，未启用实体活动不新增交换。要求原始合格质量、上游闭合、唯一转移配对及一次最终归一化；未知状态或缺少身份不得当作已成立分支。 | `declared-handoff-measurement-definition` |
 
 ## 10. 发布数据集画像
 
@@ -878,3 +941,8 @@ sync_with: pcr.en-US.md
 | unsd-cpc-30 | official_guidance | United Nations Statistics Division, CPC Version 3.0, https://unstats.un.org/unsd/classifications/Econ/cpc | 类别边界及剩余类别判断 |
 | fao-grain-storage | official_guidance | FAO, Grain storage techniques, https://www.fao.org/4/s1250e/S1250E0u.htm | 干燥、清理、储存及水分记录路线 |
 | mass-balance-identity | method_factor | 质量投入与产出、损失及库存变化的守恒关系 | 批次及水分质量核对 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | 本 PCR 第3、6及8节：同一合格交接质量除以自身再乘声明参考数量；属于物理转移配对及量纲归一化恒等式，不是经验得率或新增实体操作。 | 唯一合格参考及实测路线吞吐关联 |

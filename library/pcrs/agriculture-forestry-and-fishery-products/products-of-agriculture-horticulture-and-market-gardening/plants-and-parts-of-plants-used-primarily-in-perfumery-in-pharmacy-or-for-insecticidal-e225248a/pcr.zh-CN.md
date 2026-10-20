@@ -364,7 +364,7 @@ sync_with: pcr.en-US.md
 按实际受纳水体子环境记录硝酸根淋失或径流，并保留报告基准为硝酸根还是硝态氮。
 
 - 选定流: Nitrate to reported water compartment
-- 流属性/单位: Mass / kg NO3 or kg NO3-N
+- 流属性/单位: Mass / kg NO3-
 - 数量规则: measured or modelled nitrate loss by compartment
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -384,6 +384,9 @@ sync_with: pcr.en-US.md
   - 基准类型: 作物周期 (`crop_cycle`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
   - 来源:
+
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
+
 ###### 磷酸根，排放至水体（`phosphorus_to_water`）
 
 仅在实测或所选适用方法确认该排放路径时，将磷酸根，排放至水体作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
@@ -750,7 +753,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: water vapour `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - 流属性/单位: Mass / kg water
-- 数量规则: moisture removed by mass and moisture balance
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 产品特定 (`product_specific`)
 原始活动或阶段基准：per 1,000 kg accepted product.
@@ -802,6 +805,10 @@ sync_with: pcr.en-US.md
 | `allocation_mass_balance_first` | 合格品、降级品与废物 | 首先分别记录所有产出和去向并应用质量平衡。仅当多个具有经济价值的产品共享不可分割负担时才分配，并报告方法、价格期和敏感性。 | `who-quality-control-herbal-materials` |
 | `allocation_rework_and_runs` | 批次、连续期、返工与换批 | 将投入、产出、清洁和换批事件关联到一次运行或报告期；返工保留原产生节点负担并只计新增操作，防止共享运行负担重复计算。 | `who-gacp-medicinal-plants` |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
@@ -821,7 +828,7 @@ sync_with: pcr.en-US.md
 | `cp_wild_collection` | `wild_collection` | population, collection effort, withdrawal and residuals | collector and source-area records | taxon; plant part; ecosystem; source area; permit; collector; dates; gross removal; target output; incidental material; residual condition | verified collection log and field observation；原始汇总与分配：retain source-area strata and reconcile gross removal | kg; items; ha or declared collection unit | each collection event | complete collection period | all source areas and collectors | 每声明的参考流 | permit, collector log, geolocation and field inspection |
 | `cp_conditioning_mass_balance` | `primary_conditioning` | incoming, accepted, downgraded, waste and loss states | batch or continuous-period records | origin lot; input mass/moisture; accepted grades; downgraded mass/destination; waste mass/destination; output moisture | calibrated weighing and same-lot moisture tests；原始汇总与分配：close mass and moisture balance per run before aggregation | kg; % | each batch or continuous period | complete conditioning campaign | all conditioning sites | 每声明的参考流 | scale calibration, lab/test record and destination receipt |
 | `cp_conditioning_inputs` | `primary_conditioning` | water and wastewater | meter and discharge records | water source; supplied volume; wastewater mass/volume; composition; destination | metering, tank balance and discharge documentation；原始汇总与分配：balance supplied water, retained moisture and wastewater | m3; kg | each batch or reporting period | complete conditioning campaign | all wet-conditioning sites | 每声明的参考流 | meter calibration and discharge receipt |
-| `cp_drying_records` | `primary_conditioning` | drying moisture and dust | dryer and environmental records | input/output mass; input/output moisture; run time; controls; dust measurement/model; particle size; air compartment | same-lot moisture balance plus measured or documented emission model；原始汇总与分配：calculate water removed and dust after controls by run | kg water; kg particulate; particle-size fraction | each drying run | complete drying campaign | all drying units | 每声明的参考流 | moisture test, run log, control record and emission evidence |
+| `cp_drying_records` | `primary_conditioning` | drying moisture and dust | dryer and environmental records | input/output mass; input/output moisture; run time; controls; dust measurement/model; particle size; air compartment ；含拒收物和残体的全部进出材料带水；实际加水/降雨；单独液体转出；期初期末水库存；湿基含水率/密度；有据蒸发及不确定性| same-lot moisture balance plus measured or documented emission model；原始汇总与分配：calculate water removed and dust after controls by run | kg water; kg particulate; particle-size fraction | each drying run | complete drying campaign | all drying units | 每声明的参考流 | moisture test, run log, control record and emission evidence |
 | `cp_reject_destinations` | `primary_conditioning` | downgrade, reject, rework and waste routing | grade and destination records | state; mass; reason; rework loop; recipient; beneficial use or waste destination; receipt | reconcile sorting record with recipient or disposal evidence；原始汇总与分配：each rejected quantity has exactly one path and is excluded from accepted output | kg | each batch or period | complete campaign | all grading sites | 每声明的参考流 | grade record, recipient confirmation or waste receipt |
 
 ### 计算规则
@@ -832,6 +839,7 @@ sync_with: pcr.en-US.md
 | `calc_conditioning_balance` | 初级调制 | 进入质量 = 合格品 + 降级品 + 固体废物 + 未回收损失 + 净去除水分；报告未解释差额。 | 运行级质量与含水率记录 | 运行级质量平衡与差额 | `who-gacp-medicinal-plants` |
 | `calc_managed_soil_n2o` | 栽培土壤 | 使用声明的 IPCC 层级、氮活动数据和因子计算 N2O-N，并乘以 44/28 转为 N2O。 | 各氮源；土壤与气候；因子 | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_route_weighting` | 多来源汇总 | 汇总值 = 各完整互斥分层值按合格质量加权；缺失分层不得隐式归零。 | 分层清单；分层合格质量 | 加权清单 | `who-gacp-medicinal-plants`; `fairwild-standard` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -851,7 +859,7 @@ sync_with: pcr.en-US.md
 | `validate_identity_qualifiers` | 参考产品 | 缺少物种/类群、植物部位、预期用途、鲜/干状态、含水率基准、地理或批次时验证失败；不同状态不得在无换算和分层时合并。 | `who-quality-control-herbal-materials` |
 | `validate_nutrient_cardinality` | `managed_cultivation` | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validate_runs_and_rework` | 调制运行 | 所有投入、产出、清洁、换批、降级、返工和废弃路径关联到运行/期间；拒收物不得计入合格产出，共享负担不得重复。 | `who-gacp-medicinal-plants` |
-| `validate_mass_moisture_balance` | 调制 | 每次运行完成质量与水分平衡；鲜品路线的干燥能耗和水蒸气为零，湿法路线必须平衡供水和废水。 | `who-quality-control-herbal-materials` |
+| `validate_mass_moisture_balance` | 调制 | 按匹配材料和水组分基准核对每项实际种植/采集/整理运行及库存。无主动干燥的新鲜路线不虚构干燥能源，但仍记录独立有据的自然水分变化或其他损失，不强制为零；未解释湿质量损失不能自动成为水汽。湿法路线单独核对供水、材料含水和外排废水。 | `who-quality-control-herbal-materials` |
 | `validate_deferred_elementary_identity` | 硝酸根、磷、植保释放、野生生物量和粉尘 | 最终过程交换前必须将每张总括卡展开为已核实的具体物质/物种、属性和受纳或来源子环境 UUID；不得用宽泛检索候选自动绑定。 |  |
 
 ## 10. 已发布数据集配置
@@ -874,3 +882,4 @@ sync_with: pcr.en-US.md
 | `fairwild-standard` | `standard` | FairWild Foundation, FairWild Standard Version 3.0 | wild collection source, collection practice, traceability and sustainable resource-removal records |
 | `who-quality-control-herbal-materials` | `official_guidance` | World Health Organization (2011), Quality control methods for herbal materials, ISBN 978 92 4 150073 9 | identity, foreign matter, moisture, sampling and quality evidence |
 | `ipcc-2019-managed-soils` | `method_factor` | IPCC (2019), 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11 | managed-soil nitrogen emissions and N2O conversion |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

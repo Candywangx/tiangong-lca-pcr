@@ -300,8 +300,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_pistachio_energy_records`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Gasoline supplied to equipment (`pistachio_field_energy_gasoline`)
 
 Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
@@ -416,10 +414,9 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_pistachio_energy_records`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 ##### Waste flows
-
 
 #### Outputs
 
@@ -519,7 +516,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_pistachio_energy_records`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 ##### Product flows
 
@@ -714,7 +711,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_pistachio_energy_records`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 ##### Product flows
 
@@ -781,11 +778,11 @@ No fixed numerical screening bound is prescribed for this row. Derive any lot-sp
 
 ###### Storage loss and damaged product (`pistachio_storage_loss`)
 
-Record spoilage, drying or freshness loss, pests, breakage, and other storage losses with treatment or disposal fate.
+Record only material actually discarded from this storage lot, by measured mass, actual condition and treatment/disposal recipient. Keep mould-damaged nuts or other physically removed product separate from water evaporation, respiratory change, internal rework, transfers and unexplained stock differences under calc_06. Where distinct actual materials have different identities or destinations, create separate concrete cards; do not duplicate a physical mixture and its components. Raw activity or stage basis: retain the original lot mass and storage duration before final-reference normalization.
 
 - Selected flow: pistachio storage loss or damaged product
 - Flow property / unit: Mass / kg
-- Amount rule: stock reconciliation and measured damaged or removed mass
+- Amount rule: measured actual discarded material mass by lot, identity and recipient; reconcile under the storage reconciliation in Section 8 without assigning unexplained or evaporative loss to this Waste quantity
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per 1,000 kg declared gate output.
@@ -794,15 +791,8 @@ Raw activity or stage basis: per 1,000 kg declared gate output.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_pistachio_storage_records`
-- Range: Storage-loss screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg per 1,000 kg declared gate output
-  - Basis: storage spoilage, handling damage, freshness loss, and unexplained residual under investigation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+No generic numerical range is prescribed for this actual discarded-material exchange. Check independently measured discarded mass against the matched available lot of the same material, with moisture, stocks and transfers reconciled. A total storage-decrease screen including evaporation or unexplained difference cannot be applied to this Waste amount; no bound generates a quantity or replaces recipient evidence.
 
 ### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
 This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
@@ -894,19 +884,27 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_pistachio_dehusking_conditioning_records` | `pistachio_primary_conditioning_and_grading` | dehusking, cleaning, water, energy, moisture, batch yield | conditioning batch record | input mass; husk status; method; duration; energy; water; output state; output mass; husk mass; cleaning loss; wastewater | batch log, meter, scale, moisture or freshness test, and water balance; Raw aggregation and attribution: link all inputs and outputs to one batch and gate `pistachio_conditioning_residuals_specific_emission`: Record wastewater, dust, soil, fibers, and wash solids only when they cross the boundary or receive treatment; identify receiving medium and fate. measured residual mass or calculated from batch water and solids balance This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability.  | kg, %, hours, L, kWh | every batch | declared post-harvest period | each conditioning facility or farm unit | per declared reference flow | calibrated scale, batch ticket, freshness or moisture test |
 | `cp_pistachio_husk_destination_records` | `pistachio_primary_conditioning_and_grading` | husk co-product, residue, or waste | destination and transfer record | husk mass; dry matter or moisture; destination; recipient; price or use; fate; transfer date | scale, transfer record, and destination confirmation; Raw aggregation and attribution: separate intended output from residue and waste | kg and declared fraction | every transfer | conditioning period | each husk destination | per declared reference flow | receipt, transfer note, destination evidence |
 | `cp_pistachio_grade_reject_records` | `pistachio_primary_conditioning_and_grading` | grade, downgrade, reject, foreign material | inspection and grade record | lot; maturity; husk status; shell condition; mold; insects; foreign material; accepted mass; rework; fate | inspection, sampling, and scale record; Raw aggregation and attribution: mutually exclusive grade and reject states | kg, %, grade code | every lot | declared post-harvest period | each grading point | per declared reference flow | inspection sheet, sample plan, scale calibration |
-| `cp_pistachio_storage_records` | `pistachio_storage_and_gate_handoff` | storage input, loss, packaging, gate output | stock and dispatch ledger | opening stock; receipts; lot; product state; moisture or freshness; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate | stock ledger, dispatch ticket, and storage log; Raw aggregation and attribution: opening + receipts = dispatch + closing + loss | kg, %, days, kWh, item | receipt, inspection, and dispatch | declared storage period | each storage facility | per declared reference flow | stock reconciliation, dispatch ticket, freshness or moisture and pest record |
+| `cp_pistachio_storage_records` | `pistachio_storage_and_gate_handoff` | storage input, loss, packaging, gate output | stock and dispatch ledger | opening stock; receipts; lot; product state; moisture or freshness; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate; external transfers, actual discarded mass by material/recipient, separately evidenced evaporation/respiration and other physical losses, signed unexplained difference, uncertainty, common moisture/component basis | Measure and reconcile the separate stock, waste and physical-loss ledgers under calc_06; aggregate actual discarded material by identity and recipient, not by total stock difference. | kg, %, days, kWh, item | receipt, inspection, and dispatch | declared storage period | each storage facility | per declared reference flow | stock reconciliation, dispatch ticket, freshness or moisture and pest record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | pistachio_orchard_establishment_and_management | managed environmental coverage by actual node | site/activity/method ledger | actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_01` | perennial tree inputs | Allocate tree establishment, immature years, replacement, intercropping share, and removal over the declared tree-life basis and accepted output by crop year. | tree asset register; tree life; crop-year output; intercropping driver | annualized tree input per reference flow | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |
-| `calc_02` | every harvest, conditioning, and storage lot | `opening mass + inputs = accepted outputs + husk co-product + rejects + residues + measured losses`; investigate any unexplained residual. | lot weights and fates | reconciled mass balance | `mass-balance-identity` |
+| `calc_02` | every harvest, conditioning, and storage lot | `opening mass + inputs = accepted outputs + husk co-product + rejects + residues + measured losses + closing mass`; investigate any unexplained residual. Keep terms matched to the same lot, period and moisture basis; closing stock is neither dispatched output nor loss. | lot weights and fates | reconciled mass balance | `mass-balance-identity` |
 | `calc_03` | whole-fruit to dehusked lots | `dehusked mass = whole-fruit input mass − measured husk and non-product losses`; do not infer husk mass from an unrelated average when a lot record exists. | input/output mass; husk record; loss record | state- and fate-corrected product mass | `mass-balance-identity`; `ucdavis-pistachio-postharvest` |
 | `calc_04` | marketed husk co-product | If husk is intended and transferred, apply measured dry-matter mass allocation to shared harvest and dehusking burdens; if not intended, model residue fate without co-product credit. | pistachio mass; husk mass; moisture or dry matter; declared destination | allocated burdens and co-product share | `iso-14044-2006` |
 | `calc_05` | grades, downgraded, reworked, and rejected lots | Grade outputs must be mutually exclusive. Accepted output equals input less husk, declared downgraded, rework, reject, foreign-material, water-loss, and unexplained-loss terms; rework is linked once. | batch input; grade and reject records | normalized output rows | `mass-balance-identity` |
-| `calc_06` | storage | `opening stock + receipts − dispatches − closing stock = measured storage loss`; storage loss is not accepted gate output. | stock ledger; dispatches; closing stock; loss records | storage loss per storage duration | `mass-balance-identity` |
+| `calc_06` | storage | On one matched lot, period and moisture/component basis, reconcile opening stock + external receipts = accepted dispatch + other documented external transfers + actual discarded removals + independently evidenced physical losses + closing stock + signed unexplained difference. Internal movements cancel once. Measure discarded material by identity and destination; evaporation/respiration or other supported physical losses are separate from Waste. The signed difference is an investigation item, never automatically a measured loss, waste exchange or emission. Keep actual measurements and uncertainty; do not clip or infer zero. Attribute supported external quantities and normalize once to matched accepted final output. | lot/period stocks, receipts, dispatch, other transfers, weighed waste, supported physical losses and measurement uncertainty | separate material-waste, physical-loss and unexplained-difference ledgers; supported exports per final reference | `mass-balance-identity` |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 
@@ -968,3 +966,4 @@ The crop sources below support qualitative identity and handling context within 
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-forest-equipment` | official_guidance | FAO Appropriate technologies for forest harvesting, https://www.fao.org/4/x5596E/x5596e06.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |

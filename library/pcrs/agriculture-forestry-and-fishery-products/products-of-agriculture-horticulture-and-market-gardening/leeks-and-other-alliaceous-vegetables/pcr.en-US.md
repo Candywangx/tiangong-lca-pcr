@@ -100,31 +100,6 @@ The foreground system begins with accepted planting material and the production 
 
 ##### Product flows
 
-###### Planting material used for establishment (`planting_material`)
-
-Seed, sets, bulbs, cloves, or transplants used to establish the allium crop are recorded as product inputs. The actual material type, species or cultivar, lot, treatment, and mass are required for later identity resolution.
-
-- Selected flow: Allium planting material (seed, set, bulb, clove, or transplant; evidence gap)
-- Flow property / unit: Mass / kg as supplied
-- Amount rule: measured material issued to the crop cycle
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg fresh marketable allium product at the declared gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_planting_material_records`
-- Sources:
-- Range: Provisional planting-material screening range
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0.001
-  - Upper: 0.25
-  - Unit: kg material/kg product
-  - Basis: planting material mass per reference product mass
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Diesel fuel (`establishment_fuel_diesel`)
 
 Only for documented diesel-powered machinery within this operation. Retain fuel grade and formulation; convert recorded volume with measured or supplier-supported density. Other powertrains require their actual carrier, not a diesel equivalent. Apply `establishment_fuel_specific_input`; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable.
@@ -914,13 +889,15 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `normalize_mass_to_reference_flow` | all product and waste mass rows | Convert each recorded mass to the declared moisture basis, then divide by the mass of the relevant process output and scale to 1 kg reference product. | harvest, conditioning, and delivery records | kg per reference product | `mass-balance-identity` |
+| `normalize_mass_to_reference_flow` | all product and waste mass rows | Retain raw quantities and moisture/component bases. Let R be positive measured accepted final handoff mass in kg for the matched lot, state and gate. Final contribution = attributable raw quantity / R * 1 kg. If a source is a local intensity q_i = Q_i/O_i, first recover Q_i = q_i*O_i from the actual linked stage throughput, then attribute and normalize once; never treat O_i as R or divide a final-reference quantity again. Keep the unallocated physical material balance separate from burden allocation. | harvest, conditioning, and delivery records | kg per reference product | `mass-balance-identity` |
 | `calculate_nutrient_basis` | fertilizer and soil-amendment inputs | nutrient mass = applied product mass × declared nutrient fraction; retain product mass and each nutrient basis as separate reported values. | `cp_nutrient_product_records` | kg N, P, K, or organic nutrient basis per reference product | `mass-balance-identity` |
 | `calculate_irrigation_requirement` | irrigation water supplied to the crop | Determine crop water requirement from site weather, soil, crop stage, effective rainfall, and irrigation efficiency; report metered delivery where available and document the balance when calculated. | `cp_irrigation_records` | m3 water per reference product | `fao-56-crop-evapotranspiration` |
 | `calculate_nutrient_emissions` | nutrient-related elementary outputs | Apply the selected IPCC or site method factor to the recorded nutrient input and pathway, retain the receiving medium and reported substance, and document direct versus indirect pathways. | `cp_nutrient_product_records`; `cp_nutrient_emission_calculations` | kg reported substance per reference product | `ipcc-2019-refinement-vol4-ch11` |
 | `allocate_shared_operations` | shared field, conditioning, or delivery operations | Allocate shared input quantities by measured product mass at the declared moisture basis after subdivision has been exhausted. | field, conditioning, and delivery operation records | allocated input per reference product | `iso-14044-2006` |
 | `amortize_reusable_packaging` | reusable crates and containment | reusable packaging amount = issued packaging mass × attributable use share; use a documented number of cycles and loss or replacement record. | `cp_conditioning_packaging_records` | kg packaging per conditioned product | `iso-14044-2006` |
 | `reconcile_gate_mass_balance` | field, conditioning, and delivery outputs | At each declared gate, reconcile incoming mass with marketable output, rejects, removed residues, and documented moisture or transport losses. | harvest, conditioning, and delivery records | gate mass-balance check | `mass-balance-identity` |
+| `planting_material_identity_and_fate` | `field_preparation_and_establishment` | For the original planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_planting_material_records` | Identity-specific exchanges and reconciled activity records |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_emission_calculations`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

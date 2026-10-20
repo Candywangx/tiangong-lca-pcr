@@ -57,8 +57,8 @@ boundary_abstraction:
 reference_flow_definition:
   reference_amount: "1"
   product_flow_ref:
-    name: "Cinnamon and cinnamon-tree flowers, raw"
-    uuid: "6e9b5ee6-fbb3-48f8-9b7a-dc50936ee79a"
+    name: "Cinnamon bark or flower/bud in declared actual fresh/dried state"
+    uuid: ""
   flow_property_ref:
     uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
   unit_group_ref:
@@ -321,34 +321,7 @@ process_inventory:
       waste:
         []
       elementary:
-        - row_id: soil_n2o
-          role: "Direct managed-soil nitrous oxide"
-          name: "Dinitrogen monoxide to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg N2O-N"
-          description: "Calculate direct soil N2O from actual nitrogen inputs with the declared inventory method. Raw activity or stage basis: per kg nitrogen applied."
-          amount:
-            expression: "Apply the named current managed-soil method to collected nitrogen inputs and site conditions."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "n_input"
-            evidence:
-              kind: "method_formula"
-              collection_protocol_id: cp_stand_management
-              source_ids:
-                - ipcc-2019-managed-soils
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.1"
-                unit: "kg N2O-N/kg N input"
-                basis: "per kg nitrogen input evaluated for direct managed-soil emissions"
-                basis_kind: "n_input"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - ipcc-2019-managed-soils
+        []
     outputs:
       product:
         - row_id: harvest_ready_crop
@@ -382,7 +355,25 @@ process_inventory:
       waste:
         []
       elementary:
-        []
+        - row_id: soil_n2o
+          role: "Direct managed-soil nitrous oxide"
+          name: "Dinitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N2O"
+          description: "Calculate direct soil N2O from actual nitrogen inputs with the declared inventory method. Raw activity or stage basis: per kg nitrogen applied. The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
+          amount:
+            expression: "Apply the named current managed-soil method to collected nitrogen inputs and site conditions."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_stand_management
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
   - id: bark_harvest_conditioning
     label: "Bark harvest, peeling and primary conditioning"
     inputs:
@@ -547,7 +538,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Calculate water removed from paired mass and moisture measurements; record zero when drying is inactive. Raw activity or stage basis: per 1 kg farm-dried prepared bark."
           amount:
-            expression: "Pre-drying water mass minus post-drying water mass."
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -705,7 +696,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Calculate removed water from paired states; record zero for a fresh hand-off or inactive drying. Raw activity or stage basis: per 1 kg farm-dried flower/bud."
           amount:
-            expression: "Pre-drying water mass minus post-drying water mass."
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -763,12 +754,10 @@ process_inventory:
       product:
         - row_id: accepted_cinnamon_product
           role: "Accepted raw cinnamon product at farm gate"
-          name: "Cinnamon and cinnamon-tree flowers, raw"
+          name: "Cinnamon bark or flower/bud in declared actual fresh/dried state"
           flow_type: "product"
-          flow_ref:
-            uuid: "6e9b5ee6-fbb3-48f8-9b7a-dc50936ee79a"
           property_unit: "Mass / kg"
-          description: "This is the reference-flow hand-off and excludes downgraded product and rejects. Raw output measurement and reconciliation: Measured accepted intended output mass normalized to 1 kg. Raw activity or stage basis: per 1 kg reference product at farm gate."
+          description: "This is the reference-flow hand-off and excludes downgraded product and rejects. Raw output measurement and reconciliation: Measured accepted intended output mass normalized to 1 kg. Raw activity or stage basis: per 1 kg reference product at farm gate. Identity applicability: Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match."
           amount:
             expression: "1 kg"
             value_mode: "foreground_record"
@@ -928,7 +917,7 @@ dataset_production:
       process_id: "bark_harvest_conditioning_flower_harvest_conditioning"
       flow_role: "Conditional drying"
       record_type: "drying log and moisture test"
-      raw_fields: "lot_id, route_id, drying_active, method, start_mass, end_mass, start_moisture, end_moisture, duration, energy"
+      raw_fields: "lot_id, route_id, drying_active, method, start_mass, end_mass, start_moisture, end_moisture, duration, energy ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation"
       collection_method: "Paired mass and moisture before and after drying; Raw aggregation and attribution: Calculate dry-matter closure and evaporated water; zero when inactive"
       unit: "kg, mass fraction, hour, kWh"
       frequency: "Each drying lot"
@@ -959,7 +948,7 @@ dataset_production:
         - iso-6539-2014
     - id: calc_drying_water
       applies_to: "Conditional drying"
-      rule: "evaporated_water = start_mass × start_moisture − end_mass × end_moisture"
+      rule: "Water removed to air = incoming material water + actual external water addition + opening water stock - water in every outgoing accepted/downgraded/reject/residue stream - separately exported liquid water - closing water stock, using matched measured wet masses and moisture fractions or compatible densities. Internal recirculation cancels. Include actual rain uptake/rewetting; separate dry-matter and non-water losses. Establish actual evaporation and receiving air boundary from measurement or a supported closed balance; missing components or unexplained difference do not prove vapour or zero. Normalize once to matched accepted final output."
       inputs:
         - "paired mass and moisture"
       output: "kg water to air"
@@ -996,6 +985,16 @@ dataset_production:
       output: "direct and indirect N emissions"
       source_ids:
         - ipcc-2019-managed-soils
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_stand_management
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "Route products"
@@ -1028,7 +1027,7 @@ dataset_production:
 validation_rules:
   - rule_id: validate_reference_identity
     applies_to: "Reference flow"
-    rule: "Reject missing species/type, plant part, form, moisture status, grade/destination, harvest year, cycle position or farm-gate declaration."
+    rule: "Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match."
     source_ids: []
   - rule_id: validate_route_exclusivity
     applies_to: "Process map"
@@ -1112,18 +1111,18 @@ data_sources:
     used_for: "Managed-soil nitrogen emission method"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:8dfe5a13689fce4311660376937cab2270dcf96d9a62e7fff51ebcb61cdc48ab"
+  source_sha256: "sha256:fd3af0616e523f0e6dad03f231d6c91f579c8dbcb2525fea1422efed94028f6b"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4231"
+    - unit_id: "normative_4217"
       family: "system_boundary"
       span:
         start:
-          offset: 4231
+          offset: 4217
           line: 56
           column: 1
         end:
-          offset: 6657
+          offset: 6643
           line: 79
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Established or newly established managed *Cinnamomum* stand, including attributable nursery and establishment inputs |\n| starting_condition_role | Beginning of foreground perennial crop production |\n| product_classification_scope | Raw cinnamon bark products and raw cinnamon-tree flowers/buds sharing this category boundary |\n| recursive_input_rule | Purchased raw cinnamon in this category is recorded once as an upstream product input with a conforming dataset and is not regenerated in this foreground system. |\n| upstream_dataset_requirement | Product and service inputs require representative upstream datasets; actual nutrient products are resolved individually to verified UUIDs during data-package generation. |\n| disclosure | Declare species, route, establishment year, stand age, planting density, coppice or selective-harvest regime, reporting years, moisture basis, intended co-products and exclusions. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_perennial_stand` | Nursery, establishment and management | Include attributable nursery and establishment, soil preparation, replacement, maintenance, nutrient and water supply, crop protection, field energy and direct field emissions through harvest readiness. | `suriyagoda-2021-ceylon-cinnamon` |\n| `boundary_bark_route` | Bark route | Include coppicing or stem cutting, leaf and branch separation, scraping, rubbing, peeling, quill formation where used, conditional primary drying and grading. | `sri-lanka-dcd-postharvest`; `eurlex-2020-ceylon-cinnamon` |\n| `boundary_flower_route` | Flower/bud route | Include flower or immature-bud harvest, separation from bunches, cleaning, conditional primary drying and grading; never substitute bark-processing data. | `wilson-2016-cassia-buds`; `li-2018-cassia-buds`; `pnp-cassia-buds-route` |\n| `boundary_conditional_drying` | Stabilization | Activate drying inputs and water removal only when a lot is dried before farm gate; otherwise record zero and declare the fresh hand-off. | `sri-lanka-dcd-postharvest`; `eurlex-2020-ceylon-cinnamon` |\n| `boundary_exclusions` | Downstream manufacture | Exclude distillation, grinding, extraction, formulation, retail packing and post-farm transport. | `iso-6539-2014`; `eurlex-2020-ceylon-cinnamon` |\n\n"
@@ -1143,11 +1142,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4231
+              offset: 4217
               line: 56
               column: 1
             end:
-              offset: 4252
+              offset: 4238
               line: 56
               column: 22
           text: "## 5. System Boundary"
@@ -1163,16 +1162,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_38508"
+    - unit_id: "normative_41372"
       family: "allocation"
       span:
         start:
-          offset: 38508
-          line: 762
+          offset: 41372
+          line: 763
           column: 1
         end:
-          offset: 40087
-          line: 773
+          offset: 42951
+          line: 774
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide_routes` | Bark and flower routes | Subdivide direct route records first. Routes may coexist on a farm, but harvest and conditioning burdens are mutually exclusive for one lot. | `suriyagoda-2021-ceylon-cinnamon`; `wilson-2016-cassia-buds` |\n| `allocation_perennial_establishment` | Establishment and stand inputs | Attribute establishment and replacement across evidenced productive stand years and measured outputs; identify establishment, immature, productive and termination phases. | `suriyagoda-2021-ceylon-cinnamon` |\n| `allocation_coppice_cycles` | Repeated bark cycles | Link inputs, maintenance and output to stand year and coppice/selective-harvest cycle; prevent one event entering two cycles. | `sri-lanka-dcd-postharvest`; `suriyagoda-2021-ceylon-cinnamon` |\n| `allocation_intended_coproducts` | Bark, flowers, wood, leaves, twigs and downgraded product | Prefer subdivision. For inseparable burdens use documented dry-mass allocation; if the study requires economic allocation, report prices, period and sensitivity. Residues without a product destination receive no credit. |  |\n| `allocation_rework` | Rework and rejects | Retain burdens on reworked material, link the loop once, and exclude rejects from accepted output. |  |\n| `allocation_batch_period` | Lots and reporting years | Assign cleaning, shared handling and changeover to the causative lot or period and allocate any remainder once across measured outputs. |  |\n\n"
       headings:
@@ -1191,12 +1190,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 38508
-              line: 762
+              offset: 41372
+              line: 763
               column: 1
             end:
-              offset: 38548
-              line: 762
+              offset: 41412
+              line: 763
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1211,18 +1210,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48493"
+    - unit_id: "normative_53536"
       family: "validation"
       span:
         start:
-          offset: 48493
-          line: 814
+          offset: 53536
+          line: 816
           column: 1
         end:
-          offset: 50548
-          line: 829
+          offset: 56180
+          line: 831
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | Reject missing species/type, plant part, form, moisture status, grade/destination, harvest year, cycle position or farm-gate declaration. |  |\n| `validate_route_exclusivity` | Process map | Exactly one harvest-conditioning route supplies a reference lot; shared cultivation may be allocated, but direct route burdens cannot appear in both. |  |\n| `validate_nutrient_binding` | `nutrient_supply` | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_conditional_drying` | Drying | If inactive, drying energy and removed water are zero. If active, require paired mass, moisture, duration and energy and dry-matter closure. | `sri-lanka-dcd-postharvest` |\n| `validate_mass_balance` | Harvest, conditioning and grading | Require lot closure within 5 percent or a documented correction; accepted, downgraded, co-product and waste states are mutually exclusive. |  |\n| `validate_moisture` | Farm-dried bark | Ceylon-type bark claiming the cited specification shall not exceed 15 percent moisture; other species and flowers require the declared applicable specification. | `eurlex-2020-ceylon-cinnamon`; `iso-6539-2014` |\n| `validate_period_attribution` | Perennial stand and cycles | Identify establishment, immature, productive and termination phases; reject double attribution across stand years or cycles. |  |\n| `validate_multioutput` | Intended outputs | Require measured hand-off and allocation decision for every intended output; residues or discards receive no product credit. |  |\n| `validate_rework` | Rejects | Require one rework, downgrade, recovery or disposal path; exclude unresolved rejects and count a rework loop once. |  |\n| `validate_exclusions` | Boundary | Reject results containing distillation, grinding, extraction or manufactured-spice formulation. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match. |  |\n| `validate_route_exclusivity` | Process map | Exactly one harvest-conditioning route supplies a reference lot; shared cultivation may be allocated, but direct route burdens cannot appear in both. |  |\n| `validate_nutrient_binding` | `nutrient_supply` | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_conditional_drying` | Drying | If inactive, drying energy and removed water are zero. If active, require paired mass, moisture, duration and energy and dry-matter closure. | `sri-lanka-dcd-postharvest` |\n| `validate_mass_balance` | Harvest, conditioning and grading | Require lot closure within 5 percent or a documented correction; accepted, downgraded, co-product and waste states are mutually exclusive. |  |\n| `validate_moisture` | Farm-dried bark | Ceylon-type bark claiming the cited specification shall not exceed 15 percent moisture; other species and flowers require the declared applicable specification. | `eurlex-2020-ceylon-cinnamon`; `iso-6539-2014` |\n| `validate_period_attribution` | Perennial stand and cycles | Identify establishment, immature, productive and termination phases; reject double attribution across stand years or cycles. |  |\n| `validate_multioutput` | Intended outputs | Require measured hand-off and allocation decision for every intended output; residues or discards receive no product credit. |  |\n| `validate_rework` | Rejects | Require one rework, downgrade, recovery or disposal path; exclude unresolved rejects and count a rework loop once. |  |\n| `validate_exclusions` | Boundary | Reject results containing distillation, grinding, extraction or manufactured-spice formulation. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1239,12 +1238,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48493
-              line: 814
+              offset: 53536
+              line: 816
               column: 1
             end:
-              offset: 48515
-              line: 814
+              offset: 53558
+              line: 816
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1263,324 +1262,324 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_perennial_stand"
       identity_kind: "explicit"
-      unit_id: "normative_4231"
+      unit_id: "normative_4217"
       source_span:
         start:
-          offset: 5354
+          offset: 5340
           line: 73
           column: 1
         end:
-          offset: 5665
+          offset: 5651
           line: 73
           column: 312
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_bark_route"
       identity_kind: "explicit"
-      unit_id: "normative_4231"
+      unit_id: "normative_4217"
       source_span:
         start:
-          offset: 5666
+          offset: 5652
           line: 74
           column: 1
         end:
-          offset: 5926
+          offset: 5912
           line: 74
           column: 261
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_flower_route"
       identity_kind: "explicit"
-      unit_id: "normative_4231"
+      unit_id: "normative_4217"
       source_span:
         start:
-          offset: 5927
+          offset: 5913
           line: 75
           column: 1
         end:
-          offset: 6205
+          offset: 6191
           line: 75
           column: 279
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_conditional_drying"
       identity_kind: "explicit"
-      unit_id: "normative_4231"
+      unit_id: "normative_4217"
       source_span:
         start:
-          offset: 6206
+          offset: 6192
           line: 76
           column: 1
         end:
-          offset: 6456
+          offset: 6442
           line: 76
           column: 251
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_4231"
+      unit_id: "normative_4217"
       source_span:
         start:
-          offset: 6457
+          offset: 6443
           line: 77
           column: 1
         end:
-          offset: 6655
+          offset: 6641
           line: 77
           column: 199
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide_routes"
       identity_kind: "explicit"
-      unit_id: "normative_38508"
+      unit_id: "normative_41372"
       source_span:
         start:
-          offset: 38621
-          line: 766
+          offset: 41485
+          line: 767
           column: 1
         end:
-          offset: 38885
-          line: 766
+          offset: 41749
+          line: 767
           column: 265
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_perennial_establishment"
       identity_kind: "explicit"
-      unit_id: "normative_38508"
+      unit_id: "normative_41372"
       source_span:
         start:
-          offset: 38886
-          line: 767
+          offset: 41750
+          line: 768
           column: 1
         end:
-          offset: 39168
-          line: 767
+          offset: 42032
+          line: 768
           column: 283
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_coppice_cycles"
       identity_kind: "explicit"
-      unit_id: "normative_38508"
+      unit_id: "normative_41372"
       source_span:
         start:
-          offset: 39169
-          line: 768
+          offset: 42033
+          line: 769
           column: 1
         end:
-          offset: 39416
-          line: 768
+          offset: 42280
+          line: 769
           column: 248
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_intended_coproducts"
       identity_kind: "explicit"
-      unit_id: "normative_38508"
+      unit_id: "normative_41372"
       source_span:
         start:
-          offset: 39417
-          line: 769
+          offset: 42281
+          line: 770
           column: 1
         end:
-          offset: 39738
-          line: 769
+          offset: 42602
+          line: 770
           column: 322
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_38508"
+      unit_id: "normative_41372"
       source_span:
         start:
-          offset: 39739
-          line: 770
+          offset: 42603
+          line: 771
           column: 1
         end:
-          offset: 39887
-          line: 770
+          offset: 42751
+          line: 771
           column: 149
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_batch_period"
       identity_kind: "explicit"
-      unit_id: "normative_38508"
+      unit_id: "normative_41372"
       source_span:
         start:
-          offset: 39888
-          line: 771
+          offset: 42752
+          line: 772
           column: 1
         end:
-          offset: 40085
-          line: 771
+          offset: 42949
+          line: 772
           column: 198
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 48588
-          line: 818
+          offset: 53631
+          line: 820
           column: 1
         end:
-          offset: 48781
-          line: 818
-          column: 194
+          offset: 54413
+          line: 820
+          column: 783
     - pointer: "/validation_rules/1"
       rule_id: "validate_route_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 48782
-          line: 819
+          offset: 54414
+          line: 821
           column: 1
         end:
-          offset: 48983
-          line: 819
+          offset: 54615
+          line: 821
           column: 202
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_binding"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 48984
-          line: 820
+          offset: 54616
+          line: 822
           column: 1
         end:
-          offset: 49209
-          line: 820
+          offset: 54841
+          line: 822
           column: 226
     - pointer: "/validation_rules/3"
       rule_id: "validate_conditional_drying"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 49210
-          line: 821
+          offset: 54842
+          line: 823
           column: 1
         end:
-          offset: 49425
-          line: 821
+          offset: 55057
+          line: 823
           column: 216
     - pointer: "/validation_rules/4"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 49426
-          line: 822
+          offset: 55058
+          line: 824
           column: 1
         end:
-          offset: 49633
-          line: 822
+          offset: 55265
+          line: 824
           column: 208
     - pointer: "/validation_rules/5"
       rule_id: "validate_moisture"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 49634
-          line: 823
+          offset: 55266
+          line: 825
           column: 1
         end:
-          offset: 49887
-          line: 823
+          offset: 55519
+          line: 825
           column: 254
     - pointer: "/validation_rules/6"
       rule_id: "validate_period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 49888
-          line: 824
+          offset: 55520
+          line: 826
           column: 1
         end:
-          offset: 50080
-          line: 824
+          offset: 55712
+          line: 826
           column: 193
     - pointer: "/validation_rules/7"
       rule_id: "validate_multioutput"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 50081
-          line: 825
+          offset: 55713
+          line: 827
           column: 1
         end:
-          offset: 50256
-          line: 825
+          offset: 55888
+          line: 827
           column: 176
     - pointer: "/validation_rules/8"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 50257
-          line: 826
+          offset: 55889
+          line: 828
           column: 1
         end:
-          offset: 50408
-          line: 826
+          offset: 56040
+          line: 828
           column: 152
     - pointer: "/validation_rules/9"
       rule_id: "validate_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 50409
-          line: 827
+          offset: 56041
+          line: 829
           column: 1
         end:
-          offset: 50546
-          line: 827
+          offset: 56178
+          line: 829
           column: 138
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4231"
+      unit_id: "normative_4217"
       source_span:
         start:
-          offset: 4231
+          offset: 4217
           line: 56
           column: 1
         end:
-          offset: 4252
+          offset: 4238
           line: 56
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4231"
+      unit_id: "normative_4217"
       source_span:
         start:
-          offset: 4280
+          offset: 4266
           line: 60
           column: 1
         end:
-          offset: 5261
+          offset: 5247
           line: 67
           column: 197
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_38508"
+      unit_id: "normative_41372"
       source_span:
         start:
-          offset: 38508
-          line: 762
+          offset: 41372
+          line: 763
           column: 1
         end:
-          offset: 38548
-          line: 762
+          offset: 41412
+          line: 763
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48493"
+      unit_id: "normative_53536"
       source_span:
         start:
-          offset: 48493
-          line: 814
+          offset: 53536
+          line: 816
           column: 1
         end:
-          offset: 48515
-          line: 814
+          offset: 53558
+          line: 816
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1589,5 +1588,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:8dfe5a13689fce4311660376937cab2270dcf96d9a62e7fff51ebcb61cdc48ab"
-  generated_content_sha256: "sha256:ae6e90b0adfc77769614b4a41bb418bc61a8a5219f1163b78def234c9b72d1eb"
+    sha256: "sha256:fd3af0616e523f0e6dad03f231d6c91f579c8dbcb2525fea1422efed94028f6b"
+  generated_content_sha256: "sha256:31ff58f92bc67de174e1df611a728ecbcd32421eff646e32a13499be19430190"

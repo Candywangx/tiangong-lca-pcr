@@ -401,10 +401,10 @@ process_inventory:
       elementary:
         - row_id: direct_n2o_n
           role: "Direct nitrous oxide nitrogen from managed soil"
-          name: "Dinitrogen monoxide nitrogen, to air"
+          name: "Nitrous oxide to air; kg molecular N2O, identity unresolved"
           flow_type: "elementary"
-          property_unit: "Mass / kg N2O-N"
-          description: "Record this flow at the stated process boundary and reconcile it to the linked cycle or batch and destination. Raw activity or stage basis: per 1 kg nitrogen input."
+          property_unit: "Mass / kg N2O"
+          description: "Record this flow at the stated process boundary and reconcile it to the linked cycle or batch and destination. Raw activity or stage basis: per 1 kg nitrogen input. The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero."
           amount:
             expression: "Multiply applicable nitrogen input by the selected direct-soil factor"
             value_mode: "calculated_value"
@@ -856,6 +856,11 @@ allocation_rules:
     rule: "Re-washed material retains prior burdens and gains only incremental burdens; accepted output excludes unresolved rejects and final treatment follows the declared route."
     source_ids:
       - mass-balance-identity
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_field_cycle_inputs
@@ -1036,6 +1041,16 @@ dataset_production:
       output: "allocated burdens"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_nutrient_products
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference product"
@@ -1178,9 +1193,13 @@ data_sources:
     type: "method_factor"
     reference: "Conservation-of-mass identity for linked foreground records"
     used_for: "hand-offs, reconciliation, reference output and routing"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:40be2f028bfbc06daecf5584748ecd3f2f7bda11ca9a3fd5ee0daec7e716a9af"
+  source_sha256: "sha256:9e0cd4363e27779d4b525fc3a00c0beef373a4d41d9cbd2bc437f5ef45be0b0f"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3941"
@@ -1231,18 +1250,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40881"
+    - unit_id: "normative_41382"
       family: "allocation"
       span:
         start:
-          offset: 40881
-          line: 732
+          offset: 41382
+          line: 734
           column: 1
         end:
-          offset: 42191
-          line: 743
+          offset: 44676
+          line: 749
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | foreground system | Prefer subdivision and direct measurement by field, crop cycle, harvest lot and handling batch. | `mass-balance-identity` |\n| `allocation_cycle` | field inputs | Attribute all inputs to the represented crop cycle before normalization; allocate shared records by measured area-time or another causal driver. | `mass-balance-identity` |\n| `allocation_run` | runs and changeovers | Link inputs, outputs, cleaning and changeover to one run or period; allocate each shared event once and prevent duplicate downstream charging. | `mass-balance-identity` |\n| `allocation_routes` | alternatives | Apply route deltas only to lots using them; do not combine mutually exclusive route burdens. | `mass-balance-identity` |\n| `allocation_downgrade` | downgraded product | Keep marketable downgrade as a separate product; after subdivision, declare physical or economic allocation and sensitivity. | `mass-balance-identity` |\n| `allocation_reject` | rejects and rework | Re-washed material retains prior burdens and gains only incremental burdens; accepted output excludes unresolved rejects and final treatment follows the declared route. | `mass-balance-identity` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | foreground system | Prefer subdivision and direct measurement by field, crop cycle, harvest lot and handling batch. | `mass-balance-identity` |\n| `allocation_cycle` | field inputs | Attribute all inputs to the represented crop cycle before normalization; allocate shared records by measured area-time or another causal driver. | `mass-balance-identity` |\n| `allocation_run` | runs and changeovers | Link inputs, outputs, cleaning and changeover to one run or period; allocate each shared event once and prevent duplicate downstream charging. | `mass-balance-identity` |\n| `allocation_routes` | alternatives | Apply route deltas only to lots using them; do not combine mutually exclusive route burdens. | `mass-balance-identity` |\n| `allocation_downgrade` | downgraded product | Keep marketable downgrade as a separate product; after subdivision, declare physical or economic allocation and sensitivity. | `mass-balance-identity` |\n| `allocation_reject` | rejects and rework | Re-washed material retains prior burdens and gains only incremental burdens; accepted output excludes unresolved rejects and final treatment follows the declared route. | `mass-balance-identity` |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1259,12 +1278,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40881
-              line: 732
+              offset: 41382
+              line: 734
               column: 1
             end:
-              offset: 40921
-              line: 732
+              offset: 41422
+              line: 734
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1279,16 +1298,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50212"
+    - unit_id: "normative_54126"
       family: "validation"
       span:
         start:
-          offset: 50212
-          line: 792
+          offset: 54126
+          line: 799
           column: 1
         end:
-          offset: 52513
-          line: 809
+          offset: 56427
+          line: 816
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference flow | Require exactly 1 kg accepted fresh raw ginger with specified identities and qualifiers. | `mass-balance-identity` |\n| `validate_raw_state` | scope | Fail if accepted output is peeled, cured, dried, sliced, powdered, preserved or extracted. | `codex-cxs-218-1999`; `fao-ginger-postharvest-compendium` |\n| `validate_parent_delta` | routes | Require the field parent and changed inventory categories for irrigation, lifting and washing alternatives. | `aicrps-ginger-package`; `icar-ccari-ginger` |\n| `validate_route_exclusion` | alternatives | Require one actual route per lot and prevent mutually exclusive burden double counting. | `mass-balance-identity` |\n| `validate_nutrient_card` | field | Require one separate Product-input card for each actual fertilizer or amendment; preserve measured product mass and composition, and reject a generic nutrient-supply exchange. | `mass-balance-identity` |\n| `validate_process_links` | graph | Require cycle, harvest-lot, conditioning-batch and grading-batch links and matching hand-offs. | `mass-balance-identity` |\n| `validate_batch_attribution` | runs | Index inputs, outputs, cleaning and changeover to a run/period and prevent duplicate shared burdens. | `mass-balance-identity` |\n| `validate_washing` | conditioning | Washed lots require water, prepared mass and effluent; unwashed lots require zero washing inputs and declared dry handling. | `icar-ccari-ginger`; `mass-balance-identity` |\n| `validate_grades` | grading | Require accepted plus downgraded or rejected state, and a hand-off for each state. | `codex-cxs-218-1999` |\n| `validate_rework` | rework | Identify producing and receiving nodes for each return; exclude unresolved rejects from accepted output. | `mass-balance-identity` |\n| `validate_mass_balance` | each node | Explain residuals including soil, surface water, moisture and losses. | `mass-balance-identity` |\n| `validate_ranges` | flow cards with ranges | For each supplied Range, verify complete bounds, basis and EN/ZH/structured alignment; flag missing important-flow ranges as candidate evidence gaps. Investigate outliers without replacing measured values. | `mass-balance-identity` |\n\n"
       headings:
@@ -1307,12 +1326,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50212
-              line: 792
+              offset: 54126
+              line: 799
               column: 1
             end:
-              offset: 50234
-              line: 792
+              offset: 54148
+              line: 799
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1448,236 +1467,249 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid"
       identity_kind: "explicit"
-      unit_id: "normative_40881"
+      unit_id: "normative_41382"
       source_span:
         start:
-          offset: 40994
-          line: 736
+          offset: 41495
+          line: 738
           column: 1
         end:
-          offset: 41160
-          line: 736
+          offset: 41661
+          line: 738
           column: 167
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_cycle"
       identity_kind: "explicit"
-      unit_id: "normative_40881"
+      unit_id: "normative_41382"
       source_span:
         start:
-          offset: 41161
-          line: 737
+          offset: 41662
+          line: 739
           column: 1
         end:
-          offset: 41371
-          line: 737
+          offset: 41872
+          line: 739
           column: 211
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_run"
       identity_kind: "explicit"
-      unit_id: "normative_40881"
+      unit_id: "normative_41382"
       source_span:
         start:
-          offset: 41372
-          line: 738
+          offset: 41873
+          line: 740
           column: 1
         end:
-          offset: 41586
-          line: 738
+          offset: 42087
+          line: 740
           column: 215
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_routes"
       identity_kind: "explicit"
-      unit_id: "normative_40881"
+      unit_id: "normative_41382"
       source_span:
         start:
-          offset: 41587
-          line: 739
+          offset: 42088
+          line: 741
           column: 1
         end:
-          offset: 41746
-          line: 739
+          offset: 42247
+          line: 741
           column: 160
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_downgrade"
       identity_kind: "explicit"
-      unit_id: "normative_40881"
+      unit_id: "normative_41382"
       source_span:
         start:
-          offset: 41747
-          line: 740
+          offset: 42248
+          line: 742
           column: 1
         end:
-          offset: 41947
-          line: 740
+          offset: 42448
+          line: 742
           column: 201
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_reject"
       identity_kind: "explicit"
-      unit_id: "normative_40881"
+      unit_id: "normative_41382"
       source_span:
         start:
-          offset: 41948
-          line: 741
+          offset: 42449
+          line: 743
           column: 1
         end:
-          offset: 42189
-          line: 741
+          offset: 42690
+          line: 743
           column: 242
+    - pointer: "/allocation_rules/6"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_41382"
+      source_span:
+        start:
+          offset: 42763
+          line: 747
+          column: 1
+        end:
+          offset: 44674
+          line: 747
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 50307
-          line: 796
+          offset: 54221
+          line: 803
           column: 1
         end:
-          offset: 50465
-          line: 796
+          offset: 54379
+          line: 803
           column: 159
     - pointer: "/validation_rules/1"
       rule_id: "validate_raw_state"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 50466
-          line: 797
+          offset: 54380
+          line: 804
           column: 1
         end:
-          offset: 50651
-          line: 797
+          offset: 54565
+          line: 804
           column: 186
     - pointer: "/validation_rules/2"
       rule_id: "validate_parent_delta"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 50652
-          line: 798
+          offset: 54566
+          line: 805
           column: 1
         end:
-          offset: 50845
-          line: 798
+          offset: 54759
+          line: 805
           column: 194
     - pointer: "/validation_rules/3"
       rule_id: "validate_route_exclusion"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 50846
-          line: 799
+          offset: 54760
+          line: 806
           column: 1
         end:
-          offset: 51007
-          line: 799
+          offset: 54921
+          line: 806
           column: 162
     - pointer: "/validation_rules/4"
       rule_id: "validate_nutrient_card"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 51008
-          line: 800
+          offset: 54922
+          line: 807
           column: 1
         end:
-          offset: 51248
-          line: 800
+          offset: 55162
+          line: 807
           column: 241
     - pointer: "/validation_rules/5"
       rule_id: "validate_process_links"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 51249
-          line: 801
+          offset: 55163
+          line: 808
           column: 1
         end:
-          offset: 51408
-          line: 801
+          offset: 55322
+          line: 808
           column: 160
     - pointer: "/validation_rules/6"
       rule_id: "validate_batch_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 51409
-          line: 802
+          offset: 55323
+          line: 809
           column: 1
         end:
-          offset: 51577
-          line: 802
+          offset: 55491
+          line: 809
           column: 169
     - pointer: "/validation_rules/7"
       rule_id: "validate_washing"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 51578
-          line: 803
+          offset: 55492
+          line: 810
           column: 1
         end:
-          offset: 51788
-          line: 803
+          offset: 55702
+          line: 810
           column: 211
     - pointer: "/validation_rules/8"
       rule_id: "validate_grades"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 51789
-          line: 804
+          offset: 55703
+          line: 811
           column: 1
         end:
-          offset: 51928
-          line: 804
+          offset: 55842
+          line: 811
           column: 140
     - pointer: "/validation_rules/9"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 51929
-          line: 805
+          offset: 55843
+          line: 812
           column: 1
         end:
-          offset: 52092
-          line: 805
+          offset: 56006
+          line: 812
           column: 164
     - pointer: "/validation_rules/10"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 52093
-          line: 806
+          offset: 56007
+          line: 813
           column: 1
         end:
-          offset: 52230
-          line: 806
+          offset: 56144
+          line: 813
           column: 138
     - pointer: "/validation_rules/11"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 52231
-          line: 807
+          offset: 56145
+          line: 814
           column: 1
         end:
-          offset: 52511
-          line: 807
+          offset: 56425
+          line: 814
           column: 281
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1706,27 +1738,27 @@ normative_context:
           column: 174
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40881"
+      unit_id: "normative_41382"
       source_span:
         start:
-          offset: 40881
-          line: 732
+          offset: 41382
+          line: 734
           column: 1
         end:
-          offset: 40921
-          line: 732
+          offset: 41422
+          line: 734
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50212"
+      unit_id: "normative_54126"
       source_span:
         start:
-          offset: 50212
-          line: 792
+          offset: 54126
+          line: 799
           column: 1
         end:
-          offset: 50234
-          line: 792
+          offset: 54148
+          line: 799
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1735,5 +1767,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:40be2f028bfbc06daecf5584748ecd3f2f7bda11ca9a3fd5ee0daec7e716a9af"
-  generated_content_sha256: "sha256:cfca2e98dcebaa3e134f9b698cc0e1afabb97c4852468f5099bb8a316b4a6f0a"
+    sha256: "sha256:9e0cd4363e27779d4b525fc3a00c0beef373a4d41d9cbd2bc437f5ef45be0b0f"
+  generated_content_sha256: "sha256:bffcc2e1460b6187fda16403ddc84875734c46150e22fde31907fe686dbae719"

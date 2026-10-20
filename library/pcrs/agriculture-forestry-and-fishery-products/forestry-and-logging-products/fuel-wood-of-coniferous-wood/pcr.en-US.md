@@ -148,8 +148,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_operation_at_stand_management`
 - Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`; `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Purchased heat at the process inlet (`stand_management_energy_heat`)
 
 Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
@@ -329,8 +327,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_operation_at_wood_collection`
 - Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`; `fao-agricultural-energy`
-
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`wood_collection_energy_heat`)
 
@@ -565,8 +561,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_operation_at_primary_extraction`
 - Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`; `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Purchased heat at the process inlet (`primary_extraction_energy_heat`)
 
 Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
@@ -751,8 +745,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_operation_at_wood_preparation`
 - Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`; `fao-agricultural-energy`
-
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`wood_preparation_energy_heat`)
 
@@ -964,8 +956,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_operation_at_handover_sorting`
 - Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`; `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Purchased heat at the process inlet (`handover_sorting_energy_heat`)
 
 Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
@@ -1115,6 +1105,7 @@ All protocols retain original lot, source-area/time and campaign totals with the
 | carbon_uptake_reconciliation | Actual biogenic CO2 uptake | Record CO2 uptake only when the declared inventory method requires it and independent evidence supports it. Net carbon-stock change is not uptake: reconcile the same dry-carbon pools and period as C_open + C_atmosphere + C_nonair_in = C_close + C_harvest_out + C_other_out. Independently record non-atmospheric inputs, harvest/transfers out and evidenced respiration/other releases; cancel internal pool transfers once. Missing terms cannot be replaced by closing minus opening stock. Convert only method-verified atmospheric carbon corresponding to CO2 using 44/12, accounting for other carbon gases separately. Do not duplicate upstream uptake or assign an automatic negative credit. | cp_carbon; independent pool/transfer/release records; declared inventory method | evidenced CO2 uptake and unresolved gaps | |
 | `site_weighting` | contributing sites | Sum attributable exchange totals and qualified handover kg over traced comparable lots; compute their quotient, not an average of site ratios. Preserve excluded/nonrepresentative site disclosures. | site records; cp_handover | representative per-reference exchanges | `fao-fuelwood-harvesting`; `fao-forest-product-definitions` |
 | `calculate_direct_release_ledger` | `stand_management`; `wood_collection`; `primary_extraction`; `wood_preparation`; `handover_sorting` | For each unique event, substance and medium, obtain raw release E from measurement or the cited applicable method using activity A and a compatible factor EF; use E = A * EF only for a genuinely simple-factor method, after checking units and abatement scope. Do not add different substances/media; retain an unallocated raw-release ledger. Divide attributed burden totals once by matched positive final reference quantity R; do not renormalize final-reference intensities or allocate a shared event twice. Unexplained material residuals are not automatically emissions and missing factors are not zero. | cp_direct_release_stand_management; cp_direct_release_wood_collection; cp_direct_release_primary_extraction; cp_direct_release_wood_preparation; cp_direct_release_handover_sorting; existing emission cards; supplier coverage; reference quantity | Node/substance/medium-specific raw and attributed amounts and unresolved gaps |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_emissions_at_wood_collection`; `cp_emissions_at_primary_extraction`; `cp_emissions_at_wood_preparation`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

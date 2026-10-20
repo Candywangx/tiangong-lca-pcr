@@ -404,7 +404,7 @@ process_inventory:
           name: "Coffee field residue or loss [unmapped]"
           flow_type: "waste"
           property_unit: "Mass / kg fresh or dry matter"
-          description: "Record fallen, damaged, unharvested or otherwise incidental coffee material and its fate. Do not treat a destination label as a co-product claim. Raw activity or stage basis: per 1 kg green coffee at gate."
+          description: "Record fallen, damaged, unharvested or otherwise incidental coffee material and its fate. Do not treat a destination label as a co-product claim. Raw activity or stage basis: per 1 kg green coffee at gate. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "weighed or calculated difference between crop output, harvested lots and documented field fate"
             value_mode: "calculated_value"
@@ -416,44 +416,9 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_coffee_harvest_lot_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg residue or loss/kg crop output"
-                basis: "crop-output mass balance"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
+            ranges: []
       elementary:
-        - row_id: coffee_field_emissions
-          role: "Managed-soil and crop-residue emissions"
-          name: "Managed-soil and crop-residue elementary flows [unmapped]"
-          flow_type: "elementary"
-          property_unit: "Mass / kg substance"
-          description: "Record calculated or measured emissions by substance, receiving medium, nutrient or residue source and crop year. Do not duplicate an emission pathway across two methods. Raw activity or stage basis: per 1 kg green coffee at gate."
-          amount:
-            expression: "selected method applied to collected nutrient, residue, soil and climate records"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_coffee_emission_records
-              source_ids:
-                - ipcc-2019-refinement-afolu
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "1"
-                unit: "kg substance/kg green coffee at gate"
-                basis: "broad first-pass aggregate elementary-flow interval; replace with substance-specific calculation"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
   - id: coffee_harvest_and_collection
     label: "Coffee cherry harvest and collection"
     inputs:
@@ -719,34 +684,6 @@ process_inventory:
                 upper: "6"
                 unit: "kg dry intermediate/kg green coffee at gate"
                 basis: "broad first-pass parchment or dry-cherry conversion interval; replace with route-specific batch mass balance"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: coffee_processing_coproduct
-          role: "Declared coffee co-product or recovered material"
-          name: "Coffee processing co-product or recovered material [unmapped]"
-          flow_type: "product"
-          property_unit: "Mass / kg wet or dry matter"
-          description: "Record pulp, mucilage, compost feedstock, animal-feed material or another intended output only when it has a defined function, recipient, quantity, quality, destination and hand-off. Otherwise record it as residue or waste. Raw activity or stage basis: per 1 kg green coffee at gate."
-          amount:
-            expression: "weighed transferred output by recipient, destination and batch"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_coffee_residue_destination_records
-              source_ids:
-                - iso-14044-2006
-                - mass-balance-identity
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "20"
-                unit: "kg co-product/kg green coffee at gate"
-                basis: "broad as-received wet or dry co-product interval; replace with destination-specific weighing"
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
@@ -1146,10 +1083,10 @@ process_inventory:
 allocation_rules:
   - rule_id: allocation_01
     applies_to: "perennial coffee production"
-    rule: "Allocate establishment, replacement, shade or support systems and shared production phases by documented area-time, plant-year, crop-year, throughput or another justified physical basis. Disclose the represented phases and prevent double attribution across crop years."
+    rule: "Apply calc_01 to block/cohort lifecycle quantities before allocating common burdens to actual intended products under allocation_03. Site productive-life/output evidence determines temporal shares; annual operating records stay in their own crop year. Area*time is only the stated common-stand-service driver, never an alternative final-product denominator."
     source_ids:
       - iso-14044-2006
-      - fao-good-farming-practices
+      - mass-balance-identity
   - rule_id: allocation_02
     applies_to: "shared farm, wet mill and dry mill resources"
     rule: "Attribute shared meters, machinery, water, storage, operators, cleaning and changeover burdens once using measured activity, run time, batch throughput, lot mass or documented service."
@@ -1158,9 +1095,9 @@ allocation_rules:
       - mass-balance-identity
   - rule_id: allocation_03
     applies_to: "green coffee and intended co-products"
-    rule: "Treat accepted green coffee as the reference output. Apply one documented PCR-specific allocation decision at each genuine multi-output boundary; use physical properties, economic allocation or another justified method consistently and disclose sensitivity when material."
+    rule: "For grading/handling of comparable green-coffee grades under the same operation, use measured dry-coffee throughput; separately metered grade-specific work is direct-assigned. For drying service, use attributable measured water removal when shared heat duty is evidenced, keeping start/end moisture and heat losses; otherwise directly meter runs before allocation. Cultivation or processing jointly yielding coffee and a separately intended pulp/husk product does not justify wet-mass shares merely from its mass balance. After directly assigning separable activities, allocate only residual common burden B among the complete intended-product set. Use a physical driver only when records establish how it represents consumption of that shared operation; being weighable is insufficient. Share a_i=d_i/sum(d_j), B_i=B*a_i; record native units and reconcile sum(a_i)=1. If no applicable causal driver exists, use first-separation economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with representative same-period quantities, consistent currency, comparable gates and prices before output-specific downstream work. An unavailable price is not zero; unreliable or missing denominator data make allocation incomplete. Test the material alternative as sensitivity, not an interchangeable primary method. Waste and internal transfers are excluded from the product denominator; their attributable handling remains included. No substitution credit follows from this rule."
     source_ids:
-      - iso-14044-2006
+      - ghg-protocol-product-standard-2011
   - rule_id: allocation_04
     applies_to: "pulp, mucilage, parchment, husk, residues and rejects"
     rule: "Treat a stream as a co-product or recovered material only when function, recipient, quantity, quality, destination and hand-off are documented. Otherwise retain its burden as residue or waste through treatment or disposal."
@@ -1174,7 +1111,7 @@ allocation_rules:
       - mass-balance-identity
   - rule_id: allocation_rule_6
     applies_to: "foreground_burden_allocation"
-    rule: "The PCR does not force one universal allocation method. The dataset must select and justify one method for each genuine multi-output boundary and apply it consistently. Avoided-production credit is not allowed from a destination label alone; it requires a documented recipient, function, comparable product, quantity, quality and attribution decision."
+    rule: "The applicable primary allocation branch is fixed by allocation_03. Retain the decision evidence, drivers and fractions for each actual joint-output node; do not substitute another primary method merely because it produces a preferred result. Sequential cherry, parchment and green-coffee states are not co-products, and internal transfers carry inherited burden once. Avoided-production credit is not implied by a recovered-material destination."
     source_ids: []
 dataset_production:
   collection_protocols:
@@ -1182,8 +1119,8 @@ dataset_production:
       process_id: "coffee_plantation_production"
       flow_role: "block, establishment, replacement, productive phase and termination"
       record_type: "block register and farm log"
-      raw_fields: "block; area; species; cultivar; planting; replacement; shade; phase; dates; crop year"
-      collection_method: "register review and phase reconciliation; Raw aggregation and attribution: allocate phase records once to represented crop years and output"
+      raw_fields: "block; cohort; phase; event dates; area*time; attributable establishment/immature/replacement/termination quantities E; productive-year operations separately; annual accepted green-coffee Q_y by grade; moisture; cherry-to-green lot link; completed/projected Q_L; yield trajectory and lifetime evidence; failed areas and zero-yield years; sensitivity"
+      collection_method: "Reconcile complete cohort inputs and all productive years; calculate E_y=E*Q_y/Q_L under calc_01; keep annual operations separate and retain the raw ledger before final normalization."
       unit: "ha; plant; date; year"
       frequency: "annual and event-based"
       temporal_coverage: "complete declared perennial phase"
@@ -1242,8 +1179,8 @@ dataset_production:
       process_id: "coffee_plantation_production"
       flow_role: "managed-soil, residue and combustion emissions"
       record_type: "nutrient, residue, fuel and calculation record"
-      raw_fields: "nutrient; residue; climate; soil; pathway; medium; fuel; factor; method"
-      collection_method: "method calculation and evidence review; Raw aggregation and attribution: apply one selected method and de-duplicate pathways"
+      raw_fields: "field/cohort/year; FSN/FON/FCR/FSOM; applicable grazing/organic-soil inputs; residue dry mass and N; climate and N form; Tier 1 table/row/factors/fractions; Tier 2/3 qualification if used; pathway N2O-N; 44/28 conversion; emitted species/compartment; sampling/time coverage and flux records for other measured species; method version and uncertainty"
+      collection_method: "Follow calc_04 and retain equation inputs, source rows and one owner per pathway; do not turn total leached/volatilised N into an invented substance exchange. Keep raw field-year results before attribution and normalization."
       unit: "kg input; kg substance"
       frequency: "event and crop-year close"
       temporal_coverage: "complete crop year"
@@ -1337,12 +1274,13 @@ dataset_production:
   calculation_rules:
     - id: calc_01
       applies_to: "perennial production"
-      rule: "annualized phase burden = attributable establishment, replacement or termination burden × represented phase share / declared allocation basis"
+      rule: "Keep one block/cohort lifecycle ledger. For each activity identity and native unit (or each burden component) separately, pool establishment, immature/pre-bearing operations, attributable replacement, termination and zero-output-year operating quantities as E, excluding operating quantities of positive-output productive years already recorded annually. Do not add unlike materials/units into one scalar E; link each replacement to the cohort/stand it benefits. Define Q_y as all accepted green-coffee grades from that cohort/year at the same reference moisture and gate, and Q_L=sum(Q_y) over its productive life. Assign E_y=E*Q_y/Q_L; Q_L is a measured completed-cohort total, or for a still productive cohort an evidenced site yield trajectory with stated start/end, past measurements and future-yield/lifetime uncertainty. This is the PCR temporal attribution convention, not a universal lifetime or equal annual yield assumption. Map establishment crop output to green coffee using linked lot records. Assign shared estate quantities to cohorts first using separately measured use, or planted area*time for genuinely common stand services; do not switch between area, plant count and final kg as interchangeable denominators. Include attributable failed-establishment costs in the benefiting cohort/service scope; put operating quantities from a year with Q_y=0 into E once for lifetime-output attribution, rather than dropping them or charging them again as another year's annual operation. For year y, add E_y to its directly attributable productive-year quantities, apply allocation_03 to joint products, then divide once by the matched accepted reference-grade mass under calc_02. Do not also include the full E as a current-year input, allocate E_y by lifetime yield again or assign 1/N years without output evidence. If Q_L or the final reference denominator is unknown/nonpositive, a per-kg result is incomplete."
       inputs:
-        - "phase records"
-        - "area-time or plant-year"
-        - "crop-year output"
-      output: "annualized production input"
+        - "cohort and phase ledger E"
+        - "measured/projected lifecycle Q_y"
+        - "moisture and lot conversions"
+        - "shared-service drivers"
+      output: "year-attributed raw quantities E_y before co-product allocation and one final normalization"
       source_ids:
         - iso-14044-2006
         - mass-balance-identity
@@ -1370,13 +1308,16 @@ dataset_production:
         - fao-green-coffee-processing-africa
     - id: calc_04
       applies_to: "nutrient and soil emissions"
-      rule: "apply one selected factor or method to documented nutrient, residue, soil, climate, pathway and receiving-medium records; do not duplicate the same pathway"
+      rule: "For managed-soil N2O use IPCC 2019 Refinement, Vol.4 Ch.11 with its mapped 2006 provisions. Primary fallback is Tier 1: direct N2O-N follows Eq.11.1; volatilisation/deposition N2O-N follows Eq.11.9; leaching/runoff N2O-N follows Eq.11.10 only where that pathway meets the chapter applicability conditions. Treat direct and both indirect terms separately, then kg N2O=(direct N2O-N + deposition N2O-N + leaching N2O-N)*44/28. Collect FSN, FON, FCR, FSOM and, only where actually applicable, grazing/organic-soil terms; derive activity terms under sections 11.2.1.3/11.2.2.3. Choose factors and fractions from Tables 11.1 and 11.3 matching the documented climate, N form and land/management category; retain the exact row, version, units and uncertainty. A country/region Tier 2 factor replaces the corresponding default only when its scope and activity definitions match this coffee field; Tier 3/model or measured flux replaces only the demonstrated covered pathway with independent validation and complete event/season coverage. Never stack the replacement onto the fallback. Annual N input and modelled N2O are raw period quantities: apply temporal/product attribution and calc_02 once afterwards. Leached N and volatilised NH3+NOx-N used by the indirect method are pathway activity ledgers, not automatically nitrate or ammonia final exchanges. Separate measured species may be quantified as time-integrated mass flux across the actual field boundary with concentration/flow or validated gas-flux measurements, species basis, sampling coverage and incoming/background treatment recorded; do not infer an unmeasured species split. Other emissions, fuel combustion and residue treatment require their own applicable source-located method and actual process boundary; this N2O rule is not their emission factor. Missing activity/factor/pathway evidence remains incomplete, not zero."
       inputs:
-        - "nutrient and residue records"
-        - "method and factor"
-      output: "elementary-flow amount"
+        - "field-year activity terms"
+        - "climate/N-form/soil classification"
+        - "source table rows"
+        - "tier qualification"
+        - "pathway and species ledger"
+      output: "separate direct/indirect kg N2O and any separately evidenced species exchanges"
       source_ids:
-        - ipcc-2019-refinement-afolu
+        - ipcc-2019-managed-soils-method
     - id: calc_05
       applies_to: "shared batch or campaign resources"
       rule: "allocate shared energy, water, labor, storage and changeover records once by measured run, lot mass, throughput or documented service"
@@ -1401,6 +1342,23 @@ dataset_production:
         - moisture
       output: "storage loss"
       source_ids:
+        - mass-balance-identity
+    - id: coffee_field_emissions_identity_and_fate
+      applies_to: "coffee_plantation_production"
+      rule: "Identify every actual emitted substance and receiving compartment separately. Quantify each supported pathway with its own activity, method, chemical-species basis and native unit; distinguish elemental N/P ledgers from final compounds. Soil nutrient retention or a mass-balance residual is not automatically an emission. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_coffee_emission_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - ipcc-2019-refinement-afolu
+    - id: coffee_processing_coproduct_identity_and_fate
+      applies_to: "coffee_primary_processing_and_drying"
+      rule: "Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_coffee_residue_destination_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - iso-14044-2006
         - mass-balance-identity
   data_quality_requirements:
     - id: quality_01
@@ -1459,16 +1417,15 @@ validation_rules:
       - fao-green-coffee-processing-africa
   - rule_id: validation_06
     applies_to: "periods, storage and campaigns"
-    rule: "Link establishment, replacement, termination, crop year, harvest lot, processing batch, changeover, storage duration and dispatch to one period or phase; prevent double attribution."
+    rule: "For every cohort, verify E composition, historical/projected Q_y, consistent green-coffee state and Q_L coverage; over the represented full-life projection sum(E_y)=E. Include immature/failed and zero-yield records, keep productive-year operations separate, and prevent both full-event and annualized charging. Then verify allocation_03 and one calc_02 normalization to the actual reference grade."
     source_ids:
       - iso-14044-2006
       - mass-balance-identity
   - rule_id: validation_07
     applies_to: "nutrient, water and elementary flows"
-    rule: "Verify product versus nutrient basis, irrigation versus withdrawal, process water versus wastewater, receiving medium and one selected emissions method; prevent duplicate nitrogen or water pathways."
+    rule: "For soil N2O verify calc_04 equation/pathway selection, factor table row and climate/N-form applicability, complete activity inputs, 44/28 conversion exactly once and non-overlapping Tier replacements. Verify indirect-method N ledgers are not relabelled as NH3 or nitrate; other quantified species require their own supported flux/speciation record. Check product versus nutrient basis, irrigation versus withdrawal and process-water versus wastewater without duplicate paths."
     source_ids:
-      - ipcc-2019-refinement-afolu
-      - fao-good-farming-practices
+      - ipcc-2019-managed-soils-method
   - rule_id: validation_08
     applies_to: "rejects and residues"
     rule: "Require a declared fate for pulp, mucilage, parchment, husk, defects, broken beans, foreign matter, wastewater solids, storage loss and rejected lots; a destination label alone is insufficient."
@@ -1516,9 +1473,17 @@ data_sources:
     type: "method_factor"
     reference: "This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing."
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD (2011), Product Life Cycle Accounting and Reporting Standard, Chapter 9, sections 9.3.3–9.3.4; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Allocation hierarchy, causal relationships and economic shares at the common-process exit; PCR-specific drivers and restrictions are stated in section 7"
+  - id: "ipcc-2019-managed-soils-method"
+    type: "method_factor"
+    reference: "IPCC (2019), 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, sections 11.2.1–11.2.3, equations 11.1/11.9/11.10, Tables 11.1/11.3; https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct and indirect N2O method selection, activity data and factor applicability; not a species split for all nutrient losses"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f1e37f727b40665e3a0d7952b0f8ee800d189c706222a59db4f5129132286cc4"
+  source_sha256: "sha256:deda7d77dd073a7e5edc9aafd4fbfeed1e1950906c6d43fbe71899c3c30a5986"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7061"
@@ -1569,18 +1534,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_58687"
+    - unit_id: "normative_56087"
       family: "allocation"
       span:
         start:
-          offset: 58687
-          line: 987
+          offset: 56087
+          line: 930
           column: 1
         end:
-          offset: 60790
-          line: 999
+          offset: 59574
+          line: 942
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | perennial coffee production | Allocate establishment, replacement, shade or support systems and shared production phases by documented area-time, plant-year, crop-year, throughput or another justified physical basis. Disclose the represented phases and prevent double attribution across crop years. | `iso-14044-2006`; `fao-good-farming-practices` |\n| `allocation_02` | shared farm, wet mill and dry mill resources | Attribute shared meters, machinery, water, storage, operators, cleaning and changeover burdens once using measured activity, run time, batch throughput, lot mass or documented service. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_03` | green coffee and intended co-products | Treat accepted green coffee as the reference output. Apply one documented PCR-specific allocation decision at each genuine multi-output boundary; use physical properties, economic allocation or another justified method consistently and disclose sensitivity when material. | `iso-14044-2006` |\n| `allocation_04` | pulp, mucilage, parchment, husk, residues and rejects | Treat a stream as a co-product or recovered material only when function, recipient, quantity, quality, destination and hand-off are documented. Otherwise retain its burden as residue or waste through treatment or disposal. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_05` | rework, downgrade and storage loss | Keep burden on off-spec, reworked, downgraded or storage-loss material until its next declared hand-off; never count a lot as both accepted green coffee and reject, co-product or loss. | `mass-balance-identity` |\n\nThe PCR does not force one universal allocation method. The dataset must select and justify one method for each genuine multi-output boundary and apply it consistently. Avoided-production credit is not allowed from a destination label alone; it requires a documented recipient, function, comparable product, quantity, quality and attribution decision.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | perennial coffee production | Apply calc_01 to block/cohort lifecycle quantities before allocating common burdens to actual intended products under allocation_03. Site productive-life/output evidence determines temporal shares; annual operating records stay in their own crop year. Area*time is only the stated common-stand-service driver, never an alternative final-product denominator. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_02` | shared farm, wet mill and dry mill resources | Attribute shared meters, machinery, water, storage, operators, cleaning and changeover burdens once using measured activity, run time, batch throughput, lot mass or documented service. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_03` | green coffee and intended co-products | For grading/handling of comparable green-coffee grades under the same operation, use measured dry-coffee throughput; separately metered grade-specific work is direct-assigned. For drying service, use attributable measured water removal when shared heat duty is evidenced, keeping start/end moisture and heat losses; otherwise directly meter runs before allocation. Cultivation or processing jointly yielding coffee and a separately intended pulp/husk product does not justify wet-mass shares merely from its mass balance. After directly assigning separable activities, allocate only residual common burden B among the complete intended-product set. Use a physical driver only when records establish how it represents consumption of that shared operation; being weighable is insufficient. Share a_i=d_i/sum(d_j), B_i=B*a_i; record native units and reconcile sum(a_i)=1. If no applicable causal driver exists, use first-separation economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with representative same-period quantities, consistent currency, comparable gates and prices before output-specific downstream work. An unavailable price is not zero; unreliable or missing denominator data make allocation incomplete. Test the material alternative as sensitivity, not an interchangeable primary method. Waste and internal transfers are excluded from the product denominator; their attributable handling remains included. No substitution credit follows from this rule. | `ghg-protocol-product-standard-2011` |\n| `allocation_04` | pulp, mucilage, parchment, husk, residues and rejects | Treat a stream as a co-product or recovered material only when function, recipient, quantity, quality, destination and hand-off are documented. Otherwise retain its burden as residue or waste through treatment or disposal. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_05` | rework, downgrade and storage loss | Keep burden on off-spec, reworked, downgraded or storage-loss material until its next declared hand-off; never count a lot as both accepted green coffee and reject, co-product or loss. | `mass-balance-identity` |\n\nThe applicable primary allocation branch is fixed by allocation_03. Retain the decision evidence, drivers and fractions for each actual joint-output node; do not substitute another primary method merely because it produces a preferred result. Sequential cherry, parchment and green-coffee states are not co-products, and internal transfers carry inherited burden once. Avoided-production credit is not implied by a recovered-material destination.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1597,12 +1562,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 58687
-              line: 987
+              offset: 56087
+              line: 930
               column: 1
             end:
-              offset: 58727
-              line: 987
+              offset: 56127
+              line: 930
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1617,18 +1582,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_73406"
+    - unit_id: "normative_79039"
       family: "validation"
       span:
         start:
-          offset: 73406
-          line: 1048
+          offset: 79039
+          line: 993
           column: 1
         end:
-          offset: 75793
-          line: 1061
+          offset: 81894
+          line: 1006
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow and metadata | Reject missing species or cultivar group, geography, crop year, processing route, moisture basis, grade, gate or mass property; verify the Coffee, green flow identity before final publication. | `fao-arabica-coffee-manual-lao`; `mass-balance-identity` |\n| `validation_02` | process map and route | Require managed production, harvest hand-off, selected wet/honey/dry route, drying or stabilization state, hulling/grading hand-off and explicit gate. | `fao-arabica-coffee-manual-lao`; `fao-green-coffee-processing-africa` |\n| `validation_03` | batch and mass balance | Reconcile every included lot from raw cherry or intermediate through green coffee, intended co-products, residues, wastewater, rejects and loss; reject mixed moisture bases or double counting. | `fao-green-coffee-processing-africa`; `mass-balance-identity` |\n| `validation_04` | multi-output boundaries | Enumerate every intended output and hand-off; reject co-product or avoided-production credit without function, recipient, quantity, quality, destination and allocation decision. | `iso-14044-2006` |\n| `validation_05` | processing and drying | Check wet, honey or dry route consistency, drying records, moisture measurement, storage condition, re-wetting or mould event and route-specific water use. | `fao-ota-coffee-code`; `fao-green-coffee-processing-africa` |\n| `validation_06` | periods, storage and campaigns | Link establishment, replacement, termination, crop year, harvest lot, processing batch, changeover, storage duration and dispatch to one period or phase; prevent double attribution. | `iso-14044-2006`; `mass-balance-identity` |\n| `validation_07` | nutrient, water and elementary flows | Verify product versus nutrient basis, irrigation versus withdrawal, process water versus wastewater, receiving medium and one selected emissions method; prevent duplicate nitrogen or water pathways. | `ipcc-2019-refinement-afolu`; `fao-good-farming-practices` |\n| `validation_08` | rejects and residues | Require a declared fate for pulp, mucilage, parchment, husk, defects, broken beans, foreign matter, wastewater solids, storage loss and rejected lots; a destination label alone is insufficient. | `fao-green-coffee-processing-africa`; `mass-balance-identity` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow and metadata | Reject missing species or cultivar group, geography, crop year, processing route, moisture basis, grade, gate or mass property; verify the Coffee, green flow identity before final publication. | `fao-arabica-coffee-manual-lao`; `mass-balance-identity` |\n| `validation_02` | process map and route | Require managed production, harvest hand-off, selected wet/honey/dry route, drying or stabilization state, hulling/grading hand-off and explicit gate. | `fao-arabica-coffee-manual-lao`; `fao-green-coffee-processing-africa` |\n| `validation_03` | batch and mass balance | Reconcile every included lot from raw cherry or intermediate through green coffee, intended co-products, residues, wastewater, rejects and loss; reject mixed moisture bases or double counting. | `fao-green-coffee-processing-africa`; `mass-balance-identity` |\n| `validation_04` | multi-output boundaries | Enumerate every intended output and hand-off; reject co-product or avoided-production credit without function, recipient, quantity, quality, destination and allocation decision. | `iso-14044-2006` |\n| `validation_05` | processing and drying | Check wet, honey or dry route consistency, drying records, moisture measurement, storage condition, re-wetting or mould event and route-specific water use. | `fao-ota-coffee-code`; `fao-green-coffee-processing-africa` |\n| `validation_06` | periods, storage and campaigns | For every cohort, verify E composition, historical/projected Q_y, consistent green-coffee state and Q_L coverage; over the represented full-life projection sum(E_y)=E. Include immature/failed and zero-yield records, keep productive-year operations separate, and prevent both full-event and annualized charging. Then verify allocation_03 and one calc_02 normalization to the actual reference grade. | `iso-14044-2006`; `mass-balance-identity` |\n| `validation_07` | nutrient, water and elementary flows | For soil N2O verify calc_04 equation/pathway selection, factor table row and climate/N-form applicability, complete activity inputs, 44/28 conversion exactly once and non-overlapping Tier replacements. Verify indirect-method N ledgers are not relabelled as NH3 or nitrate; other quantified species require their own supported flux/speciation record. Check product versus nutrient basis, irrigation versus withdrawal and process-water versus wastewater without duplicate paths. | `ipcc-2019-managed-soils-method` |\n| `validation_08` | rejects and residues | Require a declared fate for pulp, mucilage, parchment, husk, defects, broken beans, foreign matter, wastewater solids, storage loss and rejected lots; a destination label alone is insufficient. | `fao-green-coffee-processing-africa`; `mass-balance-identity` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1645,12 +1610,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 73406
-              line: 1048
+              offset: 79039
+              line: 993
               column: 1
             end:
-              offset: 73428
-              line: 1048
+              offset: 79061
+              line: 993
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1760,184 +1725,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_58687"
+      unit_id: "normative_56087"
       source_span:
         start:
-          offset: 58800
-          line: 991
+          offset: 56200
+          line: 934
           column: 1
         end:
-          offset: 59169
-          line: 991
-          column: 370
+          offset: 56653
+          line: 934
+          column: 454
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_58687"
+      unit_id: "normative_56087"
       source_span:
         start:
-          offset: 59170
-          line: 992
+          offset: 56654
+          line: 935
           column: 1
         end:
-          offset: 59467
-          line: 992
+          offset: 56951
+          line: 935
           column: 298
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_58687"
+      unit_id: "normative_56087"
       source_span:
         start:
-          offset: 59468
-          line: 993
+          offset: 56952
+          line: 936
           column: 1
         end:
-          offset: 59820
-          line: 993
-          column: 353
+          offset: 58509
+          line: 936
+          column: 1558
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_58687"
+      unit_id: "normative_56087"
       source_span:
         start:
-          offset: 59821
-          line: 994
+          offset: 58510
+          line: 937
           column: 1
         end:
-          offset: 60165
-          line: 994
+          offset: 58854
+          line: 937
           column: 345
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_58687"
+      unit_id: "normative_56087"
       source_span:
         start:
-          offset: 60166
-          line: 995
+          offset: 58855
+          line: 938
           column: 1
         end:
-          offset: 60435
-          line: 995
+          offset: 59124
+          line: 938
           column: 270
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_58687"
+      unit_id: "normative_56087"
       source_span:
         start:
-          offset: 60437
-          line: 997
+          offset: 59126
+          line: 940
           column: 1
         end:
-          offset: 60788
-          line: 997
-          column: 352
+          offset: 59572
+          line: 940
+          column: 447
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 73501
-          line: 1052
+          offset: 79134
+          line: 997
           column: 1
         end:
-          offset: 73804
-          line: 1052
+          offset: 79437
+          line: 997
           column: 304
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 73805
-          line: 1053
+          offset: 79438
+          line: 998
           column: 1
         end:
-          offset: 74073
-          line: 1053
+          offset: 79706
+          line: 998
           column: 269
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 74074
-          line: 1054
+          offset: 79707
+          line: 999
           column: 1
         end:
-          offset: 74377
-          line: 1054
+          offset: 80010
+          line: 999
           column: 304
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 74378
-          line: 1055
+          offset: 80011
+          line: 1000
           column: 1
         end:
-          offset: 74622
-          line: 1055
+          offset: 80255
+          line: 1000
           column: 245
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 74623
-          line: 1056
+          offset: 80256
+          line: 1001
           column: 1
         end:
-          offset: 74886
-          line: 1056
+          offset: 80519
+          line: 1001
           column: 264
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 74887
-          line: 1057
+          offset: 80520
+          line: 1002
           column: 1
         end:
-          offset: 75167
-          line: 1057
-          column: 281
+          offset: 81016
+          line: 1002
+          column: 497
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 75168
-          line: 1058
+          offset: 81017
+          line: 1003
           column: 1
         end:
-          offset: 75488
-          line: 1058
-          column: 321
+          offset: 81589
+          line: 1003
+          column: 573
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 75489
-          line: 1059
+          offset: 81590
+          line: 1004
           column: 1
         end:
-          offset: 75791
-          line: 1059
+          offset: 81892
+          line: 1004
           column: 303
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1966,27 +1931,27 @@ normative_context:
           column: 298
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_58687"
+      unit_id: "normative_56087"
       source_span:
         start:
-          offset: 58687
-          line: 987
+          offset: 56087
+          line: 930
           column: 1
         end:
-          offset: 58727
-          line: 987
+          offset: 56127
+          line: 930
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_73406"
+      unit_id: "normative_79039"
       source_span:
         start:
-          offset: 73406
-          line: 1048
+          offset: 79039
+          line: 993
           column: 1
         end:
-          offset: 73428
-          line: 1048
+          offset: 79061
+          line: 993
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1995,5 +1960,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f1e37f727b40665e3a0d7952b0f8ee800d189c706222a59db4f5129132286cc4"
-  generated_content_sha256: "sha256:a145f0106b5cc044d6a2abd354c9fca0850d6c0d92fdae55b0ad4eb83b978811"
+    sha256: "sha256:deda7d77dd073a7e5edc9aafd4fbfeed1e1950906c6d43fbe71899c3c30a5986"
+  generated_content_sha256: "sha256:fe00d0d338ca9ff88791e430c5cf10e0037957c33d725833c71ba6ea26a5b1c1"

@@ -40,7 +40,7 @@ Nutmeg trees intentionally yield seed and mace at one separation node. Cardamom 
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Nutmeg, mace, cardamoms, raw `6d4837b1-c271-4aac-89f4-f329d3290c47` |
+| Reference product flow | Declared nutmeg seed, mace aril or cardamom capsule in actual fresh/dried state |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -699,7 +699,7 @@ This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Water to air
 - Flow property / unit: Mass / kg
-- Amount rule: wet input = conditioned output + rejects + samples + moisture loss, all on consistent basis
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Product-specific (`product_specific`)
 Raw activity or stage basis: per 1,000 kg raw spice entering conditioning.
@@ -758,7 +758,7 @@ Raw activity or stage basis: per grading lot.
 
 This card records the declared flow and its quantity at this process boundary.
 
-- Selected flow: Nutmeg, mace, cardamoms, raw `6d4837b1-c271-4aac-89f4-f329d3290c47`
+- Selected flow: Declared nutmeg seed, mace aril or cardamom capsule in actual fresh/dried state
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 Raw output measurement and reconciliation: 1,000 kg net accepted product
 
@@ -779,6 +779,8 @@ Raw activity or stage basis: per reference flow.
   - Basis: per 1,000 kg reference flow
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Identity applicability: Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match.
 
 ###### Downgraded raw spice (`downgraded_product`)
 
@@ -855,8 +857,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_establishment` | `stand_establishment` | planting, nutrients, area, survival | invoices and field logs | cohort; crop; material type/count/mass; every nutrient product/composition/mass; area; mortality; replants; dates | reconcile purchases and field records; Raw aggregation and attribution: sum by event; retain product detail | units; kg; ha | every event | full establishment/non-bearing phase | stand/cohort | per declared reference flow | invoices, labels, maps, counts |
 | `cp_management` | `productive_management` | annual inputs and emission drivers | meters, invoices, application logs | stand age/area; every nutrient product and N; water; protection product; fuels; electricity; residues; soil class | direct records or documented runtime factors; Raw aggregation and attribution: aggregate by ha-year; retain detail | kg; m3; L; kWh; ha | every event, annual aggregate | full represented year | stand/route | per declared reference flow | invoices, labels, meter calibration |
 | `cp_harvest` | `harvest_separation` | harvest and separated states | lot tickets and scales | lot; crop; organ; date; area; input; seed; aril; capsules; residues; destination | weigh every lot/state; Raw aggregation and attribution: aggregate after mass balance | kg | every lot | all harvest rounds | stand/lot | per declared reference flow | scale checks, tickets, receipts |
-| `cp_conditioning` | `primary_conditioning` | washing, energy, moisture, yield | batch sheet and meters | lot; method; input mass/moisture; water; energy carrier; time/temperature; output mass/moisture; rejects; re-drying | meter and weigh/test every batch; Raw aggregation and attribution: reconcile input, output, reject and water loss | kg; m3; kWh; MJ; % | every batch | all conditioned lots | farm/unit | per declared reference flow | scale, moisture method, meters, batch log |
+| `cp_conditioning` | `primary_conditioning` | washing, energy, moisture, yield | batch sheet and meters | lot; method; input mass/moisture; water; energy carrier; time/temperature; output mass/moisture; rejects; re-drying ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation| meter and weigh/test every batch; Raw aggregation and attribution: reconcile input, output, reject and water loss | kg; m3; kWh; MJ; % | every batch | all conditioned lots | farm/unit | per declared reference flow | scale, moisture method, meters, batch log |
 | `cp_dispatch` | `grading_dispatch` | accepted/downgraded/reject | grading and sales records | lot; identity; state; moisture; grade; input; outputs; rework destination; price; gate/date | weigh and link each state; Raw aggregation and attribution: reconcile, then normalize accepted output | kg; currency/kg | every lot | all represented production | farm/lot | per declared reference flow | scale, grade spec, invoice |
+| `cp_phase1_environment_coverage` | stand_establishment | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -867,6 +870,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_conditioning_balance` | conditioning | wet input = conditioned output + rejects + samples + moisture loss, all on consistent basis | masses and moisture | reconciled yield/water loss | `iisir-cardamom-2022`; `fao-nutmeg-handling` |
 | `calc_nutmeg_allocation` | seed/mace | share = output mass × matched farm-gate price / total intended-output revenue; repeat by mass | saleable masses and prices | shares summing to one | `iso-14044-2006` |
 | `calc_reference_normalization` | dataset | attributed inventory / accepted mass × 1,000 | attributed inventory; accepted mass | inventory/1,000 kg |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_management`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 
@@ -876,19 +886,19 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `dq_temporal` | perennial phases | Cover the full represented year and retain establishment history or remaining-life model. | cohort history and replacement plan |
 | `dq_mass_balance` | separation/conditioning/grading | Investigate unexplained difference above 5% of input rather than forcing closure. | calibrated weights and reconciliation |
 | `dq_moisture` | fresh/dried conversion | Use one documented moisture method and basis; record sampling time. | test and calibration record |
-| `dq_completeness` | inventory | Include every nutrient product below the one card, energy carrier, co-product, downgrade, reject and field-emission driver. | invoices, logs, meters, receipts |
+| `dq_completeness` | inventory | Reconcile planting material, every actual fertilizer/amendment formulation, protection product, water, energy, output, downgrade/reject, residue and emission driver against primary records. Use a separate atomic Product-input card for each actual fertilizer/amendment, preserving product mass, composition and application records; nutrient equivalents are attributes/calculation inputs, not duplicate product quantities. Missing UUID remains explicit until verified. | invoices, logs, meters, receipts |
 | `dq_representativeness` | aggregation | Disclose geography, system, route, ages, intercropping and drying technology; justify farm aggregation. | sampling frame and weights |
 
 ## 9. Validation Rules
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference flow | Fail if crop/organ, state, moisture basis, grade, period, gate or route is missing, or accepted output is not exactly 1,000 kg. |  |
+| `validate_reference_identity` | reference flow | Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match. |  |
 | `validate_route_exclusivity` | graph | Fail if nutmeg/cardamom or fresh/ambient/heated routes are silently averaged. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |
 | `validate_period_attribution` | establishment | Fail if phase, stand age, replacement or termination treatment is absent or double counted. | `cerutti-perennial-crops-2016` |
 | `validate_output_set` | nutmeg separation | Fail unless seed, mace and pericarp destinations are declared and intended products allocated. | `fao-nutmeg-handling` |
 | `validate_batch_linkage` | harvest through dispatch | Fail if inputs, cleaning, outputs, re-drying or rejects lack a lot/batch/period link or shared burden is duplicated. |  |
-| `validate_nutrient_cardinality` | each process | Fail if a process has more than one nutrient Product-input card, any nutrient group, or lacks individual actual-product collection for UUID resolution. |  |
+| `validate_nutrient_cardinality` | each process | Require one atomic Product-input card for each actual fertilizer/amendment formulation, with product mass, composition, application record and verified or explicit unresolved identity. Reject a group or combined unlike-product exchange, omitted actual products, duplicate product/nutrient quantities or invented UUIDs; there is no one-card maximum for a process. |  |
 | `validate_mass_balance` | separation/conditioning/grading | Fail when output states are not reconciled or rejects are accepted product. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |
 | `validate_boundary` | downstream | Fail if grinding, extraction, commercial-kernel cracking, blending, fumigation or consumer packaging is included. | `fao-nutmeg-handling` |
 

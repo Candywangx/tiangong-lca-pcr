@@ -994,9 +994,9 @@ process_inventory:
           name: "coconut storage loss or damaged product"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record spoilage, drying or freshness loss, pests, breakage, and other storage losses with treatment or disposal fate. Raw activity or stage basis: per 1,000 kg declared gate output."
+          description: "Record only material actually discarded from this storage lot, by measured mass, actual condition and treatment/disposal recipient. Keep mould-damaged nuts or other physically removed product separate from water evaporation, respiratory change, internal rework, transfers and unexplained stock differences under calc_06. Where distinct actual materials have different identities or destinations, create separate concrete cards; do not duplicate a physical mixture and its components. Raw activity or stage basis: retain the original lot mass and storage duration before final-reference normalization. Raw activity or stage basis: per 1,000 kg declared gate output. No generic numerical range is prescribed for this actual discarded-material exchange. Check independently measured discarded mass against the matched available lot of the same material, with moisture, stocks and transfers reconciled. A total storage-decrease screen including evaporation or unexplained difference cannot be applied to this Waste amount; no bound generates a quantity or replaces recipient evidence."
           amount:
-            expression: "stock reconciliation and measured damaged or removed mass"
+            expression: "measured actual discarded material mass by lot, identity and recipient; reconcile under the storage reconciliation in Section 8 without assigning unexplained or evaporative loss to this Waste quantity"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -1006,15 +1006,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_coconut_storage_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg per 1,000 kg declared gate output"
-                basis: "storage spoilage, handling damage, freshness loss, and unexplained residual under investigation"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       elementary:
         []
   - id: declared_reference_handoff
@@ -1240,8 +1232,8 @@ dataset_production:
       process_id: "coconut_storage_and_gate_handoff"
       flow_role: "storage input, loss, packaging, gate output"
       record_type: "stock and dispatch ledger"
-      raw_fields: "opening stock; receipts; lot; product state; moisture or freshness; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate"
-      collection_method: "stock ledger, dispatch ticket, and storage log; Raw aggregation and attribution: opening + receipts = dispatch + closing + loss"
+      raw_fields: "opening stock; receipts; lot; product state; moisture or freshness; storage duration; packaging; energy; damage; closing stock; dispatch mass; gate; external transfers, actual discarded mass by material/recipient, separately evidenced evaporation/respiration and other physical losses, signed unexplained difference, uncertainty, common moisture/component basis"
+      collection_method: "Measure and reconcile the separate stock, waste and physical-loss ledgers under calc_06; aggregate actual discarded material by identity and recipient, not by total stock difference."
       unit: "kg, %, days, kWh, item"
       frequency: "receipt, inspection, and dispatch"
       temporal_coverage: "declared storage period"
@@ -1260,6 +1252,18 @@ dataset_production:
       site_scope: "declared handoff gate"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "calibration or weighing tickets, acceptance and lot traceability"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "coconut_orchard_establishment_and_management"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calc_01
       applies_to: "perennial palm inputs"
@@ -1275,7 +1279,7 @@ dataset_production:
         - iso-14044-2006
     - id: calc_02
       applies_to: "every harvest, conditioning, and storage lot"
-      rule: "opening mass + inputs = accepted outputs + husk co-product + rejects + residues + measured losses; investigate any unexplained residual."
+      rule: "opening mass + inputs = accepted outputs + husk co-product + rejects + residues + measured losses + closing mass; investigate any unexplained residual. Keep terms matched to the same lot, period and moisture basis; closing stock is neither dispatched output nor loss."
       inputs:
         - "lot weights and fates"
       output: "reconciled mass balance"
@@ -1314,15 +1318,42 @@ dataset_production:
         - mass-balance-identity
     - id: calc_06
       applies_to: "storage"
-      rule: "opening stock + receipts − dispatches − closing stock = measured storage loss; storage loss is not accepted gate output."
+      rule: "On one matched lot, period and moisture/component basis, reconcile opening stock + external receipts = accepted dispatch + other documented external transfers + actual discarded removals + independently evidenced physical losses + closing stock + signed unexplained difference. Internal movements cancel once. Measure discarded material by identity and destination; evaporation/respiration or other supported physical losses are separate from Waste. The signed difference is an investigation item, never automatically a measured loss, waste exchange or emission. Keep actual measurements and uncertainty; do not clip or infer zero. Attribute supported external quantities and normalize once to matched accepted final output."
       inputs:
-        - "stock ledger"
-        - dispatches
-        - "closing stock"
-        - "loss records"
-      output: "storage loss per storage duration"
+        - "lot/period stocks"
+        - receipts
+        - dispatch
+        - "other transfers"
+        - "weighed waste"
+        - "supported physical losses and measurement uncertainty"
+      output: "separate material-waste, physical-loss and unexplained-difference ledgers; supported exports per final reference"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_coconut_emission_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
   data_quality_requirements:
     - id: quality_01
       applies_to: "flow identity"
@@ -1439,9 +1470,13 @@ data_sources:
     type: "method_factor"
     reference: "This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing."
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:fb1fce9f0f3e55b2b6d0ff6295cab043e8195018169fd71dbb9ccf7baeb8bbd6"
+  source_sha256: "sha256:cf89e6efa809f776caf352ea34791d4eebfde1444c57d8045c9cb521d4560f8f"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8767"
@@ -1492,16 +1527,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_59724"
+    - unit_id: "normative_60391"
       family: "allocation"
       span:
         start:
-          offset: 59724
-          line: 922
+          offset: 60391
+          line: 915
           column: 1
         end:
-          offset: 62640
-          line: 935
+          offset: 63307
+          line: 928
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | palm management and harvest with an intended husk output | Prefer process subdivision when palm, harvest, dehusking, husk collection, and nut records are independently available. When husk is deliberately collected and transferred as an intended co-product, allocate shared burdens by measured dry-matter mass; if dry-matter data are unavailable, use measured as-received mass and disclose the limitation. | `iso-14044-2006`; `fao-coconut-postharvest-operations` |\n| `allocation_02` | husk retained on site or discarded | If husk remains on the field, is composted without an intended product hand-off, or is discarded as residue, do not assign a co-product credit. Retain its mass and fate as residue or waste and assign shared burden to the intended in-shell coconut output. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_03` | premium, standard, and downgraded in-shell grades | Use physical mass allocation between mutually exclusive accepted grade outputs when common conditioning burdens cannot be subdivided. Grade-specific operations remain with the grade receiving them; do not allocate the same lot to both a grade row and an aggregate output row. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_04` | perennial palm periods and phases | Annualize establishment, immature years, replacement, intercropping attribution, and removal over the declared palm life and accepted output basis. Link every input and output to a crop year or lifecycle phase; do not count a replacement event in both the original and replacement palm phases. | `fao-coconut-postharvest-operations`; `iso-14044-2006` |\n| `allocation_05` | downgraded, reworked, rejected, and recovered lots | Keep rejected and downgraded lots separate from accepted product. Rework retains the producing-node burden and is linked once; recovered or intentionally marketed material requires a declared destination and allocation decision; discarded material receives its declared treatment burden. | `mass-balance-identity`; `iso-14044-2006` |\n| `allocation_06` | batch, campaign, and changeover attribution | Link palm, harvest, conditioning, dehusking, grading, and storage inputs and outputs to the batch or campaign that generated them. Record cleaning and changeover events once and do not allocate shared-run burdens to more than one batch without a documented driver. | `mass-balance-identity`; `iso-14044-2006` |\n\nThe hard shell remains part of the in-shell reference product and is not a separate co-product in this PCR. Kernel, coconut water, copra, oil, milk, coir, and shell-removal outputs belong to downstream coconut-product PCRs and must not be introduced into this inventory. No output may be counted both as a marketed husk co-product and as orchard or conditioning residue.\n\n"
       headings:
@@ -1520,12 +1555,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 59724
-              line: 922
+              offset: 60391
+              line: 915
               column: 1
             end:
-              offset: 59764
-              line: 922
+              offset: 60431
+              line: 915
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1540,16 +1575,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_75116"
+    - unit_id: "normative_83778"
       family: "validation"
       span:
         start:
-          offset: 75116
-          line: 982
+          offset: 83778
+          line: 984
           column: 1
         end:
-          offset: 77637
-          line: 996
+          offset: 86299
+          line: 998
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow | Reference product is the verified `Coconuts, in shell` UUID with Mass and kg. The dataset declares whole-fruit or extended dehusked gate state and does not substitute a shelled or split coconut. | `codex-coconut-hygiene-cxc-4-1971` |\n| `validation_02` | process map | Every required process is present; conditional dehusking, cleaning, grading, and storage processes are present when the declared gate or route requires them. | `fao-coconut-postharvest-operations` |\n| `validation_03` | perennial production | Palm establishment, immature years, productive phase, replacement, intercropping attribution, and removal are linked to declared crop years and are not double-counted. | `fao-coconut-postharvest-operations`; `iso-14044-2006` |\n| `validation_04` | harvest and collection | Harvested, collected, uncollected, damaged, residue, and accepted coconut masses are mutually reconciled; maturity and hand-off state are declared. | `mass-balance-identity` |\n| `validation_05` | dehusking and quality | Whole-fruit input, husk, accepted in-shell product, grade, downgraded/rework, reject, foreign material, water loss, and residuals are mutually exclusive and mass-balanced. | `mass-balance-identity`; `fao-coconut-postharvest-operations` |\n| `validation_06` | storage and gate | Opening stock, receipts, dispatches, closing stock, storage damage, product state, storage duration, and gate output reconcile. Storage losses are excluded from accepted output. | `mass-balance-identity`; `fao-coconut-postharvest-operations` |\n| `validation_07` | allocation and rework | Husk allocation, grade allocation, downgraded routes, rework loops, rejected-material treatment, and any intercropping attribution are explicit and no burden or output is counted twice. | `iso-14044-2006` |\n| `validation_08` | evidence and disclosure | All important quantitative flows have a foreground collection rule and candidate range or method constraint; estimates, unresolved identities, gate state, husk fate, and evidence limitations are disclosed. | `fao-coconut-postharvest-operations`; `mass-balance-identity` |\n| `validation_09` | batch and campaign records | Every harvest round, conditioning batch, grade lot, and storage receipt has a declared boundary, linked inputs and outputs, cleaning or changeover status, and reporting period; shared-run burdens are not counted twice. | `mass-balance-identity` |\n\n"
       headings:
@@ -1568,12 +1603,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 75116
-              line: 982
+              offset: 83778
+              line: 984
               column: 1
             end:
-              offset: 75138
-              line: 982
+              offset: 83800
+              line: 984
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1670,210 +1705,210 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_59724"
+      unit_id: "normative_60391"
       source_span:
         start:
-          offset: 59837
-          line: 926
+          offset: 60504
+          line: 919
           column: 1
         end:
-          offset: 60321
-          line: 926
+          offset: 60988
+          line: 919
           column: 485
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_59724"
+      unit_id: "normative_60391"
       source_span:
         start:
-          offset: 60322
-          line: 927
+          offset: 60989
+          line: 920
           column: 1
         end:
-          offset: 60679
-          line: 927
+          offset: 61346
+          line: 920
           column: 358
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_59724"
+      unit_id: "normative_60391"
       source_span:
         start:
-          offset: 60680
-          line: 928
+          offset: 61347
+          line: 921
           column: 1
         end:
-          offset: 61073
-          line: 928
+          offset: 61740
+          line: 921
           column: 394
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_59724"
+      unit_id: "normative_60391"
       source_span:
         start:
-          offset: 61074
-          line: 929
+          offset: 61741
+          line: 922
           column: 1
         end:
-          offset: 61482
-          line: 929
+          offset: 62149
+          line: 922
           column: 409
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_59724"
+      unit_id: "normative_60391"
       source_span:
         start:
-          offset: 61483
-          line: 930
+          offset: 62150
+          line: 923
           column: 1
         end:
-          offset: 61889
-          line: 930
+          offset: 62556
+          line: 923
           column: 407
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_06"
       identity_kind: "explicit"
-      unit_id: "normative_59724"
+      unit_id: "normative_60391"
       source_span:
         start:
-          offset: 61890
-          line: 931
+          offset: 62557
+          line: 924
           column: 1
         end:
-          offset: 62266
-          line: 931
+          offset: 62933
+          line: 924
           column: 377
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_59724"
+      unit_id: "normative_60391"
       source_span:
         start:
-          offset: 62268
-          line: 933
+          offset: 62935
+          line: 926
           column: 1
         end:
-          offset: 62638
-          line: 933
+          offset: 63305
+          line: 926
           column: 371
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 75211
-          line: 986
+          offset: 83873
+          line: 988
           column: 1
         end:
-          offset: 75481
-          line: 986
+          offset: 84143
+          line: 988
           column: 271
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 75482
-          line: 987
+          offset: 84144
+          line: 989
           column: 1
         end:
-          offset: 75714
-          line: 987
+          offset: 84376
+          line: 989
           column: 233
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 75715
-          line: 988
+          offset: 84377
+          line: 990
           column: 1
         end:
-          offset: 75984
-          line: 988
+          offset: 84646
+          line: 990
           column: 270
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 75985
-          line: 989
+          offset: 84647
+          line: 991
           column: 1
         end:
-          offset: 76205
-          line: 989
+          offset: 84867
+          line: 991
           column: 221
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 76206
-          line: 990
+          offset: 84868
+          line: 992
           column: 1
         end:
-          offset: 76487
-          line: 990
+          offset: 85149
+          line: 992
           column: 282
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 76488
-          line: 991
+          offset: 85150
+          line: 993
           column: 1
         end:
-          offset: 76770
-          line: 991
+          offset: 85432
+          line: 993
           column: 283
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 76771
-          line: 992
+          offset: 85433
+          line: 994
           column: 1
         end:
-          offset: 77021
-          line: 992
+          offset: 85683
+          line: 994
           column: 251
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 77022
-          line: 993
+          offset: 85684
+          line: 995
           column: 1
         end:
-          offset: 77339
-          line: 993
+          offset: 86001
+          line: 995
           column: 318
     - pointer: "/validation_rules/8"
       rule_id: "validation_09"
       identity_kind: "explicit"
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 77340
-          line: 994
+          offset: 86002
+          line: 996
           column: 1
         end:
-          offset: 77635
-          line: 994
+          offset: 86297
+          line: 996
           column: 296
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1902,27 +1937,27 @@ normative_context:
           column: 396
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_59724"
+      unit_id: "normative_60391"
       source_span:
         start:
-          offset: 59724
-          line: 922
+          offset: 60391
+          line: 915
           column: 1
         end:
-          offset: 59764
-          line: 922
+          offset: 60431
+          line: 915
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_75116"
+      unit_id: "normative_83778"
       source_span:
         start:
-          offset: 75116
-          line: 982
+          offset: 83778
+          line: 984
           column: 1
         end:
-          offset: 75138
-          line: 982
+          offset: 83800
+          line: 984
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1931,5 +1966,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:fb1fce9f0f3e55b2b6d0ff6295cab043e8195018169fd71dbb9ccf7baeb8bbd6"
-  generated_content_sha256: "sha256:f92233eeb0a32825a44a8d1b75a8a0acb68f89abb9f1ac3440788e879c6a90c2"
+    sha256: "sha256:cf89e6efa809f776caf352ea34791d4eebfde1444c57d8045c9cb521d4560f8f"
+  generated_content_sha256: "sha256:7fd6c815d1eb5522c8f52c7b5d7485f667c1e5a8e81f424e0d50939f68175fa2"

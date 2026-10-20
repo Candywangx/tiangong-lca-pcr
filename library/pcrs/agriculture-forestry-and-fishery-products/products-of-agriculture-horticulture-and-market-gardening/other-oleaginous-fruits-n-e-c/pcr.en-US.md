@@ -33,7 +33,7 @@ Products with their own named CPC leaf are excluded, as are oil extraction, pres
 | How much | 1,000 kg as-received accepted product |
 | How well | species, cultivar where material, origin, production system, harvest period, maturity, moisture, grade, lot, packaging, and gate declared |
 | How long or cycle | one declared harvest period, including matched establishment and replacement attribution for perennial systems |
-| reference_flow_link | reference_product_output |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | Field | Value |
 | --- | --- |
@@ -43,6 +43,8 @@ Products with their own named CPC leaf are excluded, as are oil extraction, pres
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | species; cultivar where material; annual or perennial system; origin; harvest period; maturity; moisture and basis; grade; lot rule; packaging; gate; included operations |
+
+The sole reference output is `reference_product_at_declared_handoff` at `declared_reference_handoff`, a mandatory measurement of the actual accepted product at the already declared gate. Process `packing_handoff` remains conditional: omission of its physical activities does not remove this reference. Select the actual last included product handoff and record its process/output id; accept only the same species, physical state, grade, moisture basis and gate as Section 3. The prior `reference_product_output` row is the measured output of its actual operation when active, not an additional final sale. No bypass creates processing, a yield assumption, an extra burden or a change of product boundary.
 
 ## 4. Measurement and Unit Rules
 
@@ -86,6 +88,7 @@ Products with their own named CPC leaf are excluded, as are oil extraction, pres
 | `managed_production_harvest` | Managed production and harvest | `required` | always | managed annual or perennial production and harvest | productive area and declared harvest period |
 | `sorting_stabilization` | Sorting and prompt stabilization | `conditional` | sorting, cleaning, cooling, short holding, or stabilization occurs before the gate | separate accepted grade, downgrade, reject, and loss states | matched incoming and outgoing batches |
 | `packing_handoff` | Packing and farm-gate hand-off | `conditional` | packaging or presentation occurs before the declared gate | prepare the declared fresh product for hand-off | matched packed lot and packaging records |
+| `declared_reference_handoff` | Accepted-product measurement at declared handoff | required | Every actual selected route, including bypass of conditional conditioning/packing/storage | Measurement and reconciliation only; no added physical processing | 1000 kg net accepted product at the same declared gate |
 
 ### Process: Managed production and harvest (`managed_production_harvest`)
 
@@ -312,31 +315,6 @@ Raw activity or stage basis: all non-product biomass and rejects; no accepted fr
 
 
 ##### Elementary flows
-
-###### Managed-soil nitrogen emissions (`soil_nitrogen_emissions`)
-
-Record managed-soil nitrogen emissions at this node while preserving traceable species, state, batch, and destination evidence.
-
-- Selected flow: Declared nitrogen species to the receiving air or water compartment
-- Flow property / unit: Mass / kg substance
-- Amount rule: calculate each reported species from the same nutrient and residue records using a declared method
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: broad screen; actual method and receiving compartment govern.
-
-- Normalization basis: per declared reference flow
-- Basis kind: 过程输出 (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_emission_calculation`
-- Range: Foreground QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kg substance/ha·year
-  - Basis: broad screen; actual method and receiving compartment govern
-  - Basis kind: 过程输出 (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 
 ### Process: Sorting and prompt stabilization (`sorting_stabilization`)
 
@@ -587,34 +565,65 @@ Raw activity or stage basis: all one-way packaging plus attributed reusable-pack
 
 ###### Fresh product at declared farm gate (`reference_product_output`)
 
-Record fresh product at declared farm gate at this node while preserving traceable species, state, batch, and destination evidence.
+Record the measured accepted output of `packing_handoff` only when that operation actually occurs. Preserve species, condition, grade, moisture, lot and its real outgoing gate. This stable row id identifies an actual route output; the sole final reference is reference_product_at_declared_handoff. Retain raw output and link the selected final lot without counting it as another final product. Any UUID shown is usable only for its independently confirmed physical state/gate; an incompatible upstream/intermediate state needs a separately verified or explicit unresolved identity. Preserve the original stage measurement and collection records.
 
 - Selected flow: Other oleaginous fruits, n.e.c. `d72a964f-f916-4c72-9f53-6a1126f1ecac`
 - Flow property / unit: Mass / kg
-Raw output measurement and reconciliation: measure accepted packed or bulk mass at hand-off with all required qualifiers
+Raw output measurement and reconciliation: Weigh the accepted net lot output of the actual operation under `cp_packing_lot`, retain gross/tare, rejects, stocks, moisture and matched onward lot records, and reconcile before final normalization.
 
-- Amount rule: 1000 kg
+- Amount rule: measured accepted net output from the actual operation under `cp_packing_lot`; retain raw lot quantity and actual stage throughput, then normalize once under the final-handoff normalization in Section 8; never prescribe a fixed intermediate yield
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: exact reference amount after grade and state acceptance.
+Raw activity or stage basis: measured actual operation/lot output and throughput, retained before one final-reference normalization.
 
 - Normalization basis: per declared reference flow
 - Basis kind: 参考流 (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_packing_lot`
-- Range: Foreground QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1000
-  - Upper: 1000
-  - Unit: kg/reference flow
-  - Basis: exact reference amount after grade and state acceptance
-  - Basis kind: 参考流 (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 
 ##### Waste flows
 
 ##### Elementary flows
+
+### Process: Accepted-product measurement at declared handoff (`declared_reference_handoff`)
+This measurement adds no processing, waste generation or emission. Preserve all real upstream operations and losses; bypass only operations demonstrated absent. Select one actual terminal product lot and cancel its paired internal transfer once when aggregating the system. Do not sum inactive routes, co-products or both source and handoff as accepted final output.
+
+#### Inputs
+##### Product flows
+###### Accepted actual-route product at the same handoff (`actual_route_product_for_handoff`)
+
+Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID.
+- Selected flow: Other oleaginous fruits, n.e.c. `d72a964f-f916-4c72-9f53-6a1126f1ecac`
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net mass at this same handoff, normalized as R/R * 1000 kg; paired input equals accepted output, with raw R retained
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+
+##### Waste flows
+##### Elementary flows
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+
+Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID.
+- Selected flow: Other oleaginous fruits, n.e.c. `d72a964f-f916-4c72-9f53-6a1126f1ecac`
+- Flow property / unit: Mass / kg
+- Amount rule: 1000 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+
+##### Waste flows
+Actual waste remains at the operation that generates it; no duplicate here.
+##### Elementary flows
+Actual releases remain at their responsible physical operation; no duplicate here.
 
 ## 7. Allocation and Co-product Handling
 
@@ -622,9 +631,13 @@ Raw activity or stage basis: exact reference amount after grade and state accept
 | --- | --- | --- | --- |
 | `allocation_period` | perennial production | Attribute establishment, immature years, and replacement burdens across an evidenced productive life to the declared harvest period; do not repeat them in annual records. |  |
 | `allocation_grade` | sorted outputs | Only the accepted declared grade enters the reference quantity. Downgraded material sold for an independently intended use is a separate product output with measured mass, destination and its share of inseparable upstream burdens after subdivision. Rejected material without a product function is waste; keep its physical mass, fate and management burdens. |  |
-| `allocation_residue` | residues and rejects | Waste receives no upstream burden; an output with revenue or substitution function requires declared product identity, destination, and allocation choice. |  |
+| `allocation_residue` | residues and rejects | Waste receives no co-product share. Retain all production burdens associated with generating discarded material and its attributable collection/treatment burdens with the producing saleable route; absence of a product function never erases these burdens. Only an independently intended output with evidenced identity, recipient, function, quantity and hand-off may enter the complete product allocation denominator. Revenue or a possible substitution use alone does not establish avoided-production credit. |  |
 | `allocation_shared_assets` | shared infrastructure | Attribute irrigation, equipment, cooling, and packing assets once using recorded area, machine time, mass, or another causal driver. |  |
 | `allocation_rework` | rework and returns | Attribute the rework loop to its producing node and do not count returned material again as new input. |  |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -642,6 +655,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_emission_calculation` | `managed_production_harvest` | direct emissions | calculation record | N inputs; residues; soil and climate; factor; receiving compartment | apply declared method version to the same input records; Raw aggregation and attribution: calculate each substance and compartment separately | kg substance | each harvest period | same period as production inputs | all included productive area | per declared reference flow | method version, input trace, factor source, reproducible calculation |
 | `cp_conditioning_batch` | `sorting_stabilization` | sorting and stabilization | matched batch record | input and output mass; grade; temperature; moisture; water; energy; rejects; wastewater; time | batch weighing, metering, and mass balance; Raw aggregation and attribution: match incoming and outgoing batch; keep wet and dry routes separate | kg, m3, kWh, MJ | each batch | all included conditioning batches | declared farm or primary site | per declared reference flow | scale and meter calibration, batch sheet, signed mass balance |
 | `cp_packing_lot` | `packing_handoff` | packing and hand-off | packing lot and delivery records | fruit mass; material; accessories; reuse count; scrap; grade; gate | reconcile issues, weights, and delivery ticket by lot; Raw aggregation and attribution: aggregate by material and lot; attribute reusable packaging by actual loss | kg or item | each packing lot | all included hand-off lots | every included packing point | per declared reference flow | bill of materials, weigh ticket, delivery ticket, inventory reconciliation |
+| `cp_phase1_environment_coverage` | managed_production_harvest | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -652,6 +666,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_batch_balance` | sorting and packing | incoming mass = accepted + downgraded + rejected + documented loss | matched inputs and outputs | balance difference and flows |  |
 | `calc_soil_emissions` | soil emissions | declared method applied to source-specific nutrients and residues | nutrients; residues; factors; compartments | mass of each specific emission | `ipcc-2019-managed-soils` |
 | `packing_waste_output_specific_exchanges` | `packing_handoff` | Enumerate rejected fruit and each actual packaging-waste material as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_packing_lot` | Separate atomic exchanges; completeness required |  |
+| `soil_nitrogen_emissions_identity_and_fate` | `managed_production_harvest` | Identify every actual emitted substance and receiving compartment separately. Quantify each supported pathway with its own activity, method, chemical-species basis and native unit; distinguish elemental N/P ledgers from final compounds. Soil nutrient retention or a mass-balance residual is not automatically an emission. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_emission_calculation` | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 
@@ -661,6 +682,18 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `dq_completeness` | all nodes | Mass, energy, water, nutrients, packaging, rejects, and direct emissions cover the declared period and every included site. | completeness reconciliation and mass balance |
 | `dq_temporal` | all nodes | Production inputs, harvest, and conditioning batches come from the same or explicitly aligned harvest period. | dated records and attribution schedule |
 | `dq_route` | conditional nodes | Inactive treatment is evidenced and recorded as zero; oil extraction or manufacture is absent from the fresh-product boundary. | route map, equipment, and batch records |
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | actual accepted terminal product and paired transfer | scale/lot/acceptance records | species; state; grade; moisture/basis; gate; actual_terminal_process_id; actual_terminal_output_row_id; lot/transfer_id; gross/tare/net mass R; raw stage totals/throughputs; stocks, rejects and destinations | Weigh accepted net R at the existing gate; match exactly one actual terminal source of the same lot/state and reconcile all earlier losses and stocks. If conditional preparation is absent use the last actual included eligible product output, without inventing that preparation. Preserve original activity records and all required qualifiers. | kg and native activity units | each accepted lot | matched production and handoff period | existing declared producer/primary gate | per declared reference flow | calibrated weighing, acceptance/grade records, lot chain, activation/bypass evidence and closed balances |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | all foreground quantities and actual route outputs | Let R be positive measured accepted final mass in kg for one matched species/state/grade/gate/period, excluding tare, rejects, co-products and held stock. Physical ledger = raw physical quantity/R * 1000 kg, without burden-allocation scaling. Attributable inventory contribution = attributable raw quantity/R * 1000 kg, preserving native numerator units and the existing output/period attribution. A local intensity q_i=Q_i/O_i first reconstructs Q_i=q_i*actual linked O_i; do not divide by R again after final normalization. Both handoff sides are the same measured event R/R*1000 kg, not another physical yield. Include only actual active operations; record and substantiate bypass. Missing/nonpositive R or an unlinked terminal record blocks a normalized complete result, not zero. Preserve original stage data and cancel paired internal transfers once. | cp_declared_reference_handoff; original linked collection protocols | native quantities per declared final reference | `declared-handoff-measurement-definition` |
 
 ## 9. Validation Rules
 
@@ -674,6 +707,11 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `validate_rework` | rejects and rework | Downgrade, rework, recovery, and disposal destinations are mutually exclusive and not duplicated as accepted output. |  |
 | `validate_flow_binding` | all cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
 | `validate_ranges` | all cards | Every lower bound is no greater than its upper bound; inactive conditional routes equal zero; foreground records supersede provisional screens. |  |
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | selected actual route and all conditional bypass states | Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch. | `declared-handoff-measurement-definition` |
 
 ## 10. Published Dataset Profile
 
@@ -689,7 +727,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 ## 11. Data Sources
 
-| source_id | type | Citation | Use |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `fao-postharvest-horticulture` | official_guidance | FAO, Prevention of post-harvest food losses: fruits, vegetables and root crops, https://www.fao.org/4/t0073e/t0073e00.htm | principles for fresh horticultural handling, grading, packing, and loss control |
 | `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | managed-soil nitrogen-emission method |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | This PCR Sections 3, 6 and 8: matched accepted handoff mass divided by itself times the declared reference amount; physical transfer pairing and dimensional normalization identity, not an empirical yield or new physical operation. | single accepted reference and measured route-throughput linkage |

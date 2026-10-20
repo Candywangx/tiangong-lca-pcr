@@ -238,7 +238,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_management`
 - 来源：`fao-harvesting-code`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -340,7 +340,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_harvest_energy`
 - 来源：`fao-harvesting-code`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -444,7 +444,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_landing_energy`
 - 来源：`fao-harvesting-code`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -661,7 +661,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_chip_energy`
 - 来源：`fao-harvesting-code`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -907,7 +907,7 @@ sync_with: pcr.en-US.md
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_underbark` | 所有木材卡 | 汇总不含树皮的木材实积；含皮读数需扣除实测或有据的树种/批次树皮材积。 | 测尺、扣皮量 | 皮下木材实积m3 | `fao-jfsq-2020` |
 | `calc_chip_equivalent` | 林内直接木片 | 用批次密度、水分及树皮基准将木片质量/堆积体积换算，并与实测原木进料核对；不采用通用系数。 | 木片和进料票据、检测 | 皮下实积当量m3 | `fao-jfsq-2020` |
@@ -919,7 +919,7 @@ sync_with: pcr.en-US.md
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 所有木材状态 | 保留针叶树种、来源、预期用途、形态、交付门与批次关联；拆分混合或用途不明材。 | 林分、等级及发运记录 |
 | `dq_measurement` | 参考数量 | 记录测尺/校准、扣皮及木片水分/密度转换。 | 测尺证书及计算表 |

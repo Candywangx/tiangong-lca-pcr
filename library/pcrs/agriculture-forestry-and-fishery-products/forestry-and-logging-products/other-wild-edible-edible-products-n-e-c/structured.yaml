@@ -7,7 +7,7 @@ product_category_identity:
   covered_products: "This PCR covers otherwise unclassified edible products obtained by gathering from untended sources, not only leafy vegetables. It accommodates eligible leaves, shoots, stems, flowers, roots/tubers, non-berry fruits, seeds and other edible parts or products only after exclusion of more specific classifications. Those examples are not automatic classification decisions or interchangeable foods. Record the actual edible species/part, wild-source status, incoming state, acceptance specification and primary producer/gatherer handover."
   excluded_products: "Exclude deliberately grown or managed edible production, wild nuts/mushrooms/truffles/berries assigned to their own subclasses, animal/fishery products and any other goods assigned elsewhere, and cooked, fermented, extracted or other processed food classified outside this primary category. Do not include a sap, spice, medicinal product or seed simply because it can be eaten; review its specific class first. Commercial preservation that changes classification requires another applicable PCR rather than silently extending this one."
   representative_product: "A specifically eligible gathered leafy/shoot, root/stem, non-berry fruit or other edible-part lot; no fixed species or leafy-food proxy"
-  production_route: "Actual owned source production/collection or compatible purchased receipt; actual primary preparation/grading; actual eligible treatment/holding; eligible composition assembly only if applicable; real final producer handover"
+  production_route: "Untended gathering or compatible purchased gathered-food receipt; actual primary preparation, grading and eligible holding; final primary-food producer handover. Ornamental composition assembly is excluded."
   market_state: "the actual primary producer handover of the declared material/state or eligible composition; Accepted other wild edible product"
 functional_unit:
   what: "Accepted other wild edible product; the actual primary producer handover of the declared material/state or eligible composition"
@@ -34,7 +34,7 @@ system_boundary:
         - unsd-cpc3-2025
     - rule_id: route_ownership
       applies_to: "actual route and ownership"
-      rule: "Select actual source/receipt, preparation, treatment, assembly if eligible, and dispatch states. Owned operations must be included; purchased completed-state feed enters its true receiving node with verified upstream coverage, not a duplicated standing-resource or managed-growth stage. A mixed-origin batch retains separate origin portions and attribution."
+      rule: "Select actual untended source/receipt, eligible primary-food preparation, grading, holding and dispatch states; ornamental assembly is excluded. Include actual owned operations. Compatible purchased gathered food enters its true receiving node with upstream coverage once, not a duplicated standing-resource or managed-growth stage. Keep mixed-origin portions separate."
       source_ids: []
     - rule_id: handoffs_and_bypass
       applies_to: "active nodes and internal transfers"
@@ -54,7 +54,7 @@ system_boundary:
       source_ids: []
     - rule_id: gate_scope
       applies_to: "foreground endpoint and upstream coverage"
-      rule: "End at the documented producer handover of the actual accepted state. Owned movement and handling before that gate are included once; onward distribution, retail, use and end-of-life are downstream unless independently declared. A purchased input retains compatible origin/state, preparation and burden coverage, including treatment/assembly if already completed. A boundary mismatch cannot be repaired by renaming a flow."
+      rule: "End at the documented producer handover of the accepted primary wild-food state. Owned movement and handling before that gate are included once; onward distribution, retail, use and end-of-life are downstream unless independently declared. Purchased inputs retain compatible wild origin, primary-food state and upstream preparation coverage once. Non-food components or completed formulated/assembled goods cannot enter as this reference food."
       source_ids: []
     - rule_id: sites_periods_assets
       applies_to: "campaigns, facilities and shared assets"
@@ -70,7 +70,7 @@ boundary_abstraction:
   product_classification_scope: "Other wild edible products, not elsewhere classified; CPC 3.0 03239; exact"
   recursive_input_rule: "Same-category purchased feed keeps one compatible upstream dataset link and completed-process coverage; do not recurse into or duplicate represented operations. Declare a truncated upstream gap if coverage cannot be evidenced."
   upstream_dataset_requirement: "Match material, source regime, actual state/gate, property/unit and process/burden coverage; do not use a narrower representative as proof for a different category member"
-  disclosure: "actual product family; species/material and marketed part; composition and accepted grade; wild/managed/co-product/purchased origin and upstream coverage (managed production is excluded for wild food); actual incoming and delivered state; moisture basis; retained treatment matter and product components; selected branch and actual node/bypass graph; lot/site/season/period and stocks; net weighing/tare method; intended use and buyer specification; actual producer gate/recipient; native exchange units and evidence gaps"
+  disclosure: "actual product family; species/material and marketed part; composition and accepted grade; wild/managed/co-product/purchased origin and upstream coverage (managed production is excluded for wild food); actual incoming and delivered state; moisture basis; actual cleaning residues and excluded non-food components; selected branch and actual node/bypass graph; lot/site/season/period and stocks; net weighing/tare method; intended use and buyer specification; actual producer gate/recipient; native exchange units and evidence gaps"
 reference_flow_definition:
   reference_amount: "1"
   product_flow_ref:
@@ -88,7 +88,7 @@ reference_flow_definition:
     - "wild/managed/co-product/purchased origin and upstream coverage (managed production is excluded for wild food)"
     - "actual incoming and delivered state"
     - "moisture basis"
-    - "retained treatment matter and product components"
+    - "actual cleaning residues and excluded non-food components"
     - "selected branch and actual node/bypass graph"
     - "lot/site/season/period and stocks"
     - "net weighing/tare method"
@@ -118,7 +118,7 @@ measurement_rules:
       name: "measured substrate mass and water fraction"
       uuid: ""
     required_unit: "kg; kg/kg"
-    rule: "State wet- or dry-basis moisture and method. Apply dry-matter conversion only to the botanical substrate; retained chemicals, foreign matter and structural components have separate ledgers. Do not apply a fresh-rattan, fresh-leaf or assumed density factor to every category member."
+    rule: "Declare wet- or dry-basis moisture for the actual edible botanical material and preserve measured intrinsic food water. Record attached soil, free washwater, packaging, non-food supports and actual cleaning residues separately. No non-food component is an accepted edible output merely because it remains attached. Use the same primary-food acceptance and net mass in all balances."
   - id: native_units_and_formulations
     applies_to: "supplies, services and direct releases"
     required_property_ref:
@@ -512,7 +512,7 @@ allocation_rules:
     source_ids: []
   - rule_id: allocation_shared_services
     applies_to: "shared assets, failed trips and periods"
-    rule: "Identify all consuming nodes/outputs and service periods; shares of a fully assigned record sum to one. Attribute failed-trip, idle/service and changeover burdens to the evidenced campaign/output set, with no-output periods separately disclosed. An inclusive transport, drying or assembly service excludes duplicate embedded energy/material/asset burdens."
+    rule: "Identify all consuming nodes/outputs and service periods; shares of a fully assigned record sum to one. Attribute failed-trip, idle/service and changeover burdens to the evidenced campaign/output set, with no-output periods separately disclosed. An inclusive transport or eligible primary preparation service excludes duplicate embedded energy/material/asset burdens."
     source_ids: []
   - rule_id: allocation_rework_waste
     applies_to: "rework, downgrade and waste"
@@ -528,7 +528,7 @@ dataset_production:
       process_id: "dispatch"
       flow_role: "accepted reference product"
       record_type: "final acceptance and weighing"
-      raw_fields: "lot; material/species/part; category eligibility; intended use; state; moisture method; whole-good and botanical/retained-treatment/structural mass breakdown; edible fraction if relevant; gross; excluded transport tare/soil/free water/rejects; net accepted mass; producer gate; recipient; dates; scale/calibration"
+      raw_fields: "lot; material/species/part; category eligibility; intended use; state; moisture method; accepted primary-food mass and separately weighed non-food/cleaning-residue ledgers; edible fraction if relevant; gross; excluded transport tare/soil/free water/rejects; net accepted mass; producer gate; recipient; dates; scale/calibration"
       collection_method: "Weigh the accepted good on a calibrated scale; reconcile the same configuration/state/composition and acceptance record, tare and all exclusions. Record actual positive net lot mass before normalization."
       unit: "kg"
       frequency: "each final accepted dispatch lot"
@@ -576,7 +576,7 @@ dataset_production:
       process_id: "dispatch"
       flow_role: "all actual node exchange roles"
       record_type: "activity, material and service ledger"
-      raw_fields: "lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; actual acceptance specification and grade; final product state/gate; net product versus detachable package tare; permanent product components; packaging reuse and losses; stock release versus current production; final handling/warehouse service ownership"
+      raw_fields: "lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; actual acceptance specification and grade; final product state/gate; net product versus detachable package tare; non-food components excluded from primary-food reference mass; packaging reuse and losses; stock release versus current production; final handling/warehouse service ownership"
       collection_method: "Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. Route-specific requirements: dispatch_energy_identification: Actual packaging and producer-gate handling. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. dispatch_materials_services_specific_input: Operation dispatch: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. dispatch_packaging_specific_input: Operation dispatch: Identify material, measured tare and single-use or returnable status; retain service-cycle, replacement, cleaning and end-of-use records for reusable items. Product components are not package tare. Include packaging burdens even though packaging is excluded from reference net mass. Original quantity method: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. dispatch_returns_releases_specific_emission: Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit. Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. dispatch_other_goods_specific_output: Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation. Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. dispatch_waste_specific_output: Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero. Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion."
       unit: "kg; actual concrete exchange units"
       frequency: "each lot, activity, stock movement and attributable service period"
@@ -615,15 +615,17 @@ dataset_production:
       output: "mass balance and unexplained difference"
       source_ids: []
     - id: retained_components
-      applies_to: "treated materials and compositions"
-      rule: "accepted_net_kg = accepted_botanical_substrate_kg + retained_treatment_matter_kg + permanent_other_components_kg, using disjoint mass definitions; botanical substrate includes its declared inherent water. Transport packaging and incidental matter are excluded; retained treatment solution water must belong to exactly one mass component."
+      applies_to: "accepted primary wild food, not ornamental composites"
+      rule: "accepted_net_kg is the measured accepted primary-food mass under reference_mass, including only its declared intrinsic water and accepted whole-food parts. Exclude packaging, supports, binding wire, floral foam and other non-food structural matter; never add them or a generic retained-treatment mass to enlarge the food denominator. Keep actual cleaning agents, rinse water and residues in their own input/output ledgers, with food-safety and category eligibility evidenced. A formulated, coated, assembled or preserved product outside the primary-food category requires another applicable PCR. No ornamental assembly route is activated here."
       inputs:
-        - "measured product composition"
-        - "botanical/moisture ledger"
-        - "retained agents"
-        - "permanent components"
+        - cp_reference
+        - "primary-food acceptance"
+        - "separately weighed non-food matter"
+        - "actual cleaning/residue records"
       output: "reconciled whole-product reference mass"
-      source_ids: []
+      source_ids:
+        - unsd-cpc3-2025
+        - unsd-cpc-03239
     - id: shared_attribution
       applies_to: "shared service records and independent outputs"
       rule: "assigned_quantity_k = total_quantity * share_k; sum of shares = 1 for a fully assigned record. Select the driver using allocation precedence and preserve all consumers, periods and exclusions. Rework receives only its incremental share in addition to retained original burdens."
@@ -692,7 +694,7 @@ published_dataset_profile:
   downstream_use: "Supply the explicitly identified material/state/composition at its actual producer gate; match the receiving application independently"
   allowed_use: "Only the measured product and disclosed representative scope, with complete upstream and foreground coverage"
   excluded_use: "Automatic substitution across species, states or uses; universal category average without mixture evidence; safety/sustainability claims; treating an unresolved category identity as a verified concrete exchange"
-  required_metadata: "actual product family; species/material and marketed part; composition and accepted grade; wild/managed/co-product/purchased origin and upstream coverage (managed production is excluded for wild food); actual incoming and delivered state; moisture basis; retained treatment matter and product components; selected branch and actual node/bypass graph; lot/site/season/period and stocks; net weighing/tare method; intended use and buyer specification; actual producer gate/recipient; native exchange units and evidence gaps"
+  required_metadata: "actual product family; species/material and marketed part; composition and accepted grade; wild/managed/co-product/purchased origin and upstream coverage (managed production is excluded for wild food); actual incoming and delivered state; moisture basis; actual cleaning residues and excluded non-food components; selected branch and actual node/bypass graph; lot/site/season/period and stocks; net weighing/tare method; intended use and buyer specification; actual producer gate/recipient; native exchange units and evidence gaps"
   required_quality_disclosure: "actual collection coverage, method/quantity/identity gaps, uncertainty, provisional or unavailable range screening, allocation and aggregation, boundary truncation and source independence"
   update_trigger: "changed product family, parts, source regime, state, treatment/composition, gate, upstream coverage, unit basis, factor evidence or actual route"
 data_sources:
@@ -714,21 +716,21 @@ data_sources:
     used_for: "Distinguish fresh handling from food processing; no historic nutrient-loss or shelf-life defaults"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:4f98d1e7b7528ee8dd8d119aba754e9f41ac75a904940d62661c505ffb09b7f8"
+  source_sha256: "sha256:e46266088f61f3847471eaea2e13dd9061059797307b8ccc4a03ca2addb260ac"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7357"
+    - unit_id: "normative_7448"
       family: "system_boundary"
       span:
         start:
-          offset: 7357
+          offset: 7448
           line: 59
           column: 1
         end:
-          offset: 13681
+          offset: 13814
           line: 93
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual untended source before gathering, or compatible already gathered product at its true receipt gate |\n| starting_condition_role | Natural, owned-production or technosphere-receipt interface, selected from actual ownership and incoming state |\n| product_classification_scope | Other wild edible products, not elsewhere classified; CPC 3.0 03239; `exact` |\n| recursive_input_rule | Same-category purchased feed keeps one compatible upstream dataset link and completed-process coverage; do not recurse into or duplicate represented operations. Declare a truncated upstream gap if coverage cannot be evidenced. |\n| upstream_dataset_requirement | Match material, source regime, actual state/gate, property/unit and process/burden coverage; do not use a narrower representative as proof for a different category member |\n| disclosure | actual product family; species/material and marketed part; composition and accepted grade; wild/managed/co-product/purchased origin and upstream coverage (managed production is excluded for wild food); actual incoming and delivered state; moisture basis; retained treatment matter and product components; selected branch and actual node/bypass graph; lot/site/season/period and stocks; net weighing/tare method; intended use and buyer specification; actual producer gate/recipient; native exchange units and evidence gaps |\n\n### Category Branch and Activation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `wild_aboveground_parts` | Eligible leaves, shoots, stems and flowers | Identify the actually marketed edible part and whether its acceptance includes stalks or other attached parts. Collect seasonal gathering, trimming and actual fresh protection; do not assume every species is ready to eat. | `unsd-cpc3-2025` |\n| `wild_belowground_parts` | Eligible roots, tubers and below-ground parts | Activate digging, soil separation, washing and peeling only when performed. Keep removed edible biomass and incidental soil in separate ledgers; measure wet soil/washwater transfers and dry-matter losses without inventing soil-emission factors. | `unsd-cpc3-2025` |\n| `wild_other_food` | Eligible non-berry fruits, seeds and other residual wild foods | Verify residual-class eligibility and edible fraction. Record actual shell/peel/seed separation, ripeness and grade; specific wild nuts or berries retain their own class. A marketed whole food is weighed whole when its acceptance basis includes the peel/shell; report edible fraction separately, not as an unannounced denominator change. | `unsd-cpc3-2025` |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `route_ownership` | actual route and ownership | Select actual source/receipt, preparation, treatment, assembly if eligible, and dispatch states. Owned operations must be included; purchased completed-state feed enters its true receiving node with verified upstream coverage, not a duplicated standing-resource or managed-growth stage. A mixed-origin batch retains separate origin portions and attribution. |  |\n| `handoffs_and_bypass` | active nodes and internal transfers | Record predecessor, successor, state and lot IDs at every active handoff and explicit bypass. A supplied finished good can enter dispatch directly. Internal transfers cancel only inside the declared aggregate boundary; splitting aggregate nodes later requires paired measured exchanges. No process label creates another market gate. |  |\n| `natural_managed_interfaces` | source responsibility | Keep untended removal, purchased feed and other-product co-product origins distinct. Where the category permits managed production, distinguish owned management from wild gathering and record establishment/growth/maintenance, harvest, relevant land/water/carbon and losses once; harvest is aggregated in source, not repeated as wild biomass removal. Managed food production remains excluded from the wild-food category. Untended collection owns one removal interface and no invented cultivation recipe. |  |\n| `incidental_ledger` | target material and foreign matter | Maintain disjoint target and incidental-matter ledgers by material, true origin, node, moisture, dates, opening/closing stocks and every return/discard destination. A physical environmental return cannot exceed available received/removed material without an explained additional source. Materials left in place are not removed inputs or returned outputs. |  |\n| `supplies_and_emissions` | supporting supplies and releases | Conditional energy, supplies/services, management inputs and emissions are authoring requirements, not final UUID-bound aggregate exchanges. Instantiate only actual concrete materials/carriers/substances, preserve native units and verify each identity/support. Keep emitted substance and compartment distinct from a product waste transfer. Do not claim this candidate provides a universal factor or recipe. |  |\n| `gate_scope` | foreground endpoint and upstream coverage | End at the documented producer handover of the actual accepted state. Owned movement and handling before that gate are included once; onward distribution, retail, use and end-of-life are downstream unless independently declared. A purchased input retains compatible origin/state, preparation and burden coverage, including treatment/assembly if already completed. A boundary mismatch cannot be repaired by renaming a flow. |  |\n| `sites_periods_assets` | campaigns, facilities and shared assets | Enumerate all contributing sites, seasons, runs, stock periods and shared consumers; link successful and unsuccessful collection work, setup/cleaning/changeovers, establishment, service and replacement/termination events to actual outputs and periods. No universal rotation, lifetime or annualization factor is prescribed. |  |\n\nFor this wild-food category, managed biological production is excluded, not an alternative source branch. Digging, washing or supplier receipt does not itself demonstrate deliberate cultivation; establish actual source management independently. Food-use eligibility and later safe-use preparation must be documented without claiming that a raw gathered item is ready to eat.\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual untended source before gathering, or compatible already gathered product at its true receipt gate |\n| starting_condition_role | Natural, owned-production or technosphere-receipt interface, selected from actual ownership and incoming state |\n| product_classification_scope | Other wild edible products, not elsewhere classified; CPC 3.0 03239; `exact` |\n| recursive_input_rule | Same-category purchased feed keeps one compatible upstream dataset link and completed-process coverage; do not recurse into or duplicate represented operations. Declare a truncated upstream gap if coverage cannot be evidenced. |\n| upstream_dataset_requirement | Match material, source regime, actual state/gate, property/unit and process/burden coverage; do not use a narrower representative as proof for a different category member |\n| disclosure | actual product family; species/material and marketed part; composition and accepted grade; wild/managed/co-product/purchased origin and upstream coverage (managed production is excluded for wild food); actual incoming and delivered state; moisture basis; actual cleaning residues and excluded non-food components; selected branch and actual node/bypass graph; lot/site/season/period and stocks; net weighing/tare method; intended use and buyer specification; actual producer gate/recipient; native exchange units and evidence gaps |\n\n### Category Branch and Activation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `wild_aboveground_parts` | Eligible leaves, shoots, stems and flowers | Identify the actually marketed edible part and whether its acceptance includes stalks or other attached parts. Collect seasonal gathering, trimming and actual fresh protection; do not assume every species is ready to eat. | `unsd-cpc3-2025` |\n| `wild_belowground_parts` | Eligible roots, tubers and below-ground parts | Activate digging, soil separation, washing and peeling only when performed. Keep removed edible biomass and incidental soil in separate ledgers; measure wet soil/washwater transfers and dry-matter losses without inventing soil-emission factors. | `unsd-cpc3-2025` |\n| `wild_other_food` | Eligible non-berry fruits, seeds and other residual wild foods | Verify residual-class eligibility and edible fraction. Record actual shell/peel/seed separation, ripeness and grade; specific wild nuts or berries retain their own class. A marketed whole food is weighed whole when its acceptance basis includes the peel/shell; report edible fraction separately, not as an unannounced denominator change. | `unsd-cpc3-2025` |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `route_ownership` | actual route and ownership | Select actual untended source/receipt, eligible primary-food preparation, grading, holding and dispatch states; ornamental assembly is excluded. Include actual owned operations. Compatible purchased gathered food enters its true receiving node with upstream coverage once, not a duplicated standing-resource or managed-growth stage. Keep mixed-origin portions separate. |  |\n| `handoffs_and_bypass` | active nodes and internal transfers | Record predecessor, successor, state and lot IDs at every active handoff and explicit bypass. A supplied finished good can enter dispatch directly. Internal transfers cancel only inside the declared aggregate boundary; splitting aggregate nodes later requires paired measured exchanges. No process label creates another market gate. |  |\n| `natural_managed_interfaces` | source responsibility | Keep untended removal, purchased feed and other-product co-product origins distinct. Where the category permits managed production, distinguish owned management from wild gathering and record establishment/growth/maintenance, harvest, relevant land/water/carbon and losses once; harvest is aggregated in source, not repeated as wild biomass removal. Managed food production remains excluded from the wild-food category. Untended collection owns one removal interface and no invented cultivation recipe. |  |\n| `incidental_ledger` | target material and foreign matter | Maintain disjoint target and incidental-matter ledgers by material, true origin, node, moisture, dates, opening/closing stocks and every return/discard destination. A physical environmental return cannot exceed available received/removed material without an explained additional source. Materials left in place are not removed inputs or returned outputs. |  |\n| `supplies_and_emissions` | supporting supplies and releases | Conditional energy, supplies/services, management inputs and emissions are authoring requirements, not final UUID-bound aggregate exchanges. Instantiate only actual concrete materials/carriers/substances, preserve native units and verify each identity/support. Keep emitted substance and compartment distinct from a product waste transfer. Do not claim this candidate provides a universal factor or recipe. |  |\n| `gate_scope` | foreground endpoint and upstream coverage | End at the documented producer handover of the accepted primary wild-food state. Owned movement and handling before that gate are included once; onward distribution, retail, use and end-of-life are downstream unless independently declared. Purchased inputs retain compatible wild origin, primary-food state and upstream preparation coverage once. Non-food components or completed formulated/assembled goods cannot enter as this reference food. |  |\n| `sites_periods_assets` | campaigns, facilities and shared assets | Enumerate all contributing sites, seasons, runs, stock periods and shared consumers; link successful and unsuccessful collection work, setup/cleaning/changeovers, establishment, service and replacement/termination events to actual outputs and periods. No universal rotation, lifetime or annualization factor is prescribed. |  |\n\nFor this wild-food category, managed biological production is excluded, not an alternative source branch. Digging, washing or supplier receipt does not itself demonstrate deliberate cultivation; establish actual source management independently. Food-use eligibility and later safe-use preparation must be documented without claiming that a raw gathered item is ready to eat.\n"
       headings:
         - kind: "heading"
           span:
@@ -745,11 +747,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7357
+              offset: 7448
               line: 59
               column: 1
             end:
-              offset: 7378
+              offset: 7469
               line: 59
               column: 22
           text: "## 5. System Boundary"
@@ -765,18 +767,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41394"
+    - unit_id: "normative_41532"
       family: "allocation"
       span:
         start:
-          offset: 41394
+          offset: 41532
           line: 461
           column: 1
         end:
-          offset: 43771
+          offset: 43921
           line: 471
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_precedence` | complete intended output set | First subdivide independently measured operations and directly trace burdens. For remaining shared burdens, use a documented causal physical driver; if no defensible physical relation exists, disclose why and apply gate- and period-matched economic allocation with sensitivity. Enumerate all intended outputs and state precedence; no automatic substitution credits or universal mass allocation across unlike products. |  |\n| `allocation_origin_and_stock` | source, crop co-products and inventory carryover | Purchased feed retains supplier burdens once. Crop by-products and recovered material require explicit origin, handoff and inherited-burden/cut-off decisions; secondary or low-priced material is not automatically burden-free. Carry actual stock burdens across periods; closing stock is not dispatched reference output and later release must not repeat original burdens. |  |\n| `allocation_shared_services` | shared assets, failed trips and periods | Identify all consuming nodes/outputs and service periods; shares of a fully assigned record sum to one. Attribute failed-trip, idle/service and changeover burdens to the evidenced campaign/output set, with no-output periods separately disclosed. An inclusive transport, drying or assembly service excludes duplicate embedded energy/material/asset burdens. |  |\n| `allocation_rework_waste` | rework, downgrade and waste | Internal rework retains original burdens and adds measured incremental work only. Sold downgrades are independent intended exits when actually sold; pending rework is not accepted output. Record waste handling/treatment under the declared boundary without relabelling a discarded stream as saleable to avoid burdens; environmental return has no automatic credit. |  |\n| `allocation_aggregation` | multiple sites, grades and materials | For the same declared product/state and boundary, divide summed attributable inventory totals by summed accepted mass; do not take an unweighted average of site intensities. Unlike species/materials, treated states or compositions require separate datasets or an explicitly identified representative mix with measured proportions; one kilogram is not proof of functional equivalence. |  |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_precedence` | complete intended output set | First subdivide independently measured operations and directly trace burdens. For remaining shared burdens, use a documented causal physical driver; if no defensible physical relation exists, disclose why and apply gate- and period-matched economic allocation with sensitivity. Enumerate all intended outputs and state precedence; no automatic substitution credits or universal mass allocation across unlike products. |  |\n| `allocation_origin_and_stock` | source, crop co-products and inventory carryover | Purchased feed retains supplier burdens once. Crop by-products and recovered material require explicit origin, handoff and inherited-burden/cut-off decisions; secondary or low-priced material is not automatically burden-free. Carry actual stock burdens across periods; closing stock is not dispatched reference output and later release must not repeat original burdens. |  |\n| `allocation_shared_services` | shared assets, failed trips and periods | Identify all consuming nodes/outputs and service periods; shares of a fully assigned record sum to one. Attribute failed-trip, idle/service and changeover burdens to the evidenced campaign/output set, with no-output periods separately disclosed. An inclusive transport or eligible primary preparation service excludes duplicate embedded energy/material/asset burdens. |  |\n| `allocation_rework_waste` | rework, downgrade and waste | Internal rework retains original burdens and adds measured incremental work only. Sold downgrades are independent intended exits when actually sold; pending rework is not accepted output. Record waste handling/treatment under the declared boundary without relabelling a discarded stream as saleable to avoid burdens; environmental return has no automatic credit. |  |\n| `allocation_aggregation` | multiple sites, grades and materials | For the same declared product/state and boundary, divide summed attributable inventory totals by summed accepted mass; do not take an unweighted average of site intensities. Unlike species/materials, treated states or compositions require separate datasets or an explicitly identified representative mix with measured proportions; one kilogram is not proof of functional equivalence. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -793,11 +795,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41394
+              offset: 41532
               line: 461
               column: 1
             end:
-              offset: 41434
+              offset: 41572
               line: 461
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -813,15 +815,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_92529"
+    - unit_id: "normative_93097"
       family: "validation"
       span:
         start:
-          offset: 92529
+          offset: 93097
           line: 530
           column: 1
         end:
-          offset: 95124
+          offset: 95692
           line: 541
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_class_scope` | category and route branches | Check actual category eligibility against specific exclusions and the product/part/state/use evidence. Activate every applicable branch and record explicit absence/bypass. A broad category title does not certify every species, composition or treatment; uncertain classification blocks the corresponding dataset applicability claim. |  |\n| `validate_reference` | final output and denominator | Check dispatch_accepted_product is the real output, normalized to 1 kg, with measured positive accepted lot mass, complete gate/composition/state qualifiers and consistent EN/ZH definitions. Packaging, incidental matter, rejected goods and closing stock must not enter the denominator. Retained product components cannot be removed as package tare. |  |\n| `validate_balances` | each node, lot and period | Reconcile measured inputs/opening stock against outputs/closing stock and independently evidenced water/substance changes. Check paired internal transfers and disjoint incidental/target ledgers. Investigate residuals and uncertainty; never manufacture evaporation, pollutant emissions, yield or carbon uptake to force closure. |  |\n| `validate_quantities_units` | all concrete exchanges and calculations | Use each exchange native unit and the common accepted-mass denominator. Moisture conversion applies only to the measured botanical substrate, not an entire treated/composite product. Preserve formulation versus active-ingredient basis, bath stocks, count/volume conversions and direction of losses. Every missing quantity/factor remains a gap, not zero. |  |\n| `validate_output_attribution` | output sets, sites, periods and services | Verify complete intended output handoffs, causal/economic precedence, campaign failed work, site totals, stock carryover and complete shared-consumer shares. Do not double-count source production, treatment, component or packaging supply already represented in upstream/inclusive records. |  |\n| `validate_uuid_and_ranges` | identities and evidence | Before final exchange use, verify concrete UUID, flow type, source/state/gate/provider, property and unit-group support for each actual exchange. No broad-category UUID is inferred from one representative. Every card has an explicit range-evidence requirement; where no compatible numerical evidence exists, disclose unavailable screening and do not claim a default, validation completeness or publication readiness. Do not introduce Flow Sets. |  |\n\n"
@@ -841,11 +843,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 92529
+              offset: 93097
               line: 530
               column: 1
             end:
-              offset: 92551
+              offset: 93119
               line: 530
               column: 23
           text: "## 9. Validation Rules"
@@ -865,336 +867,336 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "wild_aboveground_parts"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 8943
+          offset: 9043
           line: 76
           column: 1
         end:
-          offset: 9259
+          offset: 9359
           line: 76
           column: 317
     - pointer: "/system_boundary/rules/1"
       rule_id: "wild_belowground_parts"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 9260
+          offset: 9360
           line: 77
           column: 1
         end:
-          offset: 9602
+          offset: 9702
           line: 77
           column: 343
     - pointer: "/system_boundary/rules/2"
       rule_id: "wild_other_food"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 9603
+          offset: 9703
           line: 78
           column: 1
         end:
-          offset: 10048
+          offset: 10148
           line: 78
           column: 446
     - pointer: "/system_boundary/rules/3"
       rule_id: "route_ownership"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 10141
+          offset: 10241
           line: 84
           column: 1
         end:
-          offset: 10554
+          offset: 10666
           line: 84
-          column: 414
+          column: 426
     - pointer: "/system_boundary/rules/4"
       rule_id: "handoffs_and_bypass"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 10555
+          offset: 10667
           line: 85
           column: 1
         end:
-          offset: 10956
+          offset: 11068
           line: 85
           column: 402
     - pointer: "/system_boundary/rules/5"
       rule_id: "natural_managed_interfaces"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 10957
+          offset: 11069
           line: 86
           column: 1
         end:
-          offset: 11521
+          offset: 11633
           line: 86
           column: 565
     - pointer: "/system_boundary/rules/6"
       rule_id: "incidental_ledger"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 11522
+          offset: 11634
           line: 87
           column: 1
         end:
-          offset: 11942
+          offset: 12054
           line: 87
           column: 421
     - pointer: "/system_boundary/rules/7"
       rule_id: "supplies_and_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 11943
+          offset: 12055
           line: 88
           column: 1
         end:
-          offset: 12418
+          offset: 12530
           line: 88
           column: 476
     - pointer: "/system_boundary/rules/8"
       rule_id: "gate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 12419
+          offset: 12531
           line: 89
           column: 1
         end:
-          offset: 12907
+          offset: 13040
           line: 89
-          column: 489
+          column: 510
     - pointer: "/system_boundary/rules/9"
       rule_id: "sites_periods_assets"
       identity_kind: "explicit"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 12908
+          offset: 13041
           line: 90
           column: 1
         end:
-          offset: 13304
+          offset: 13437
           line: 90
           column: 397
     - pointer: "/system_boundary/rules/10"
       rule_id: "system_boundary_rule_11"
       identity_kind: "snapshot_local"
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 13306
+          offset: 13439
           line: 92
           column: 1
         end:
-          offset: 13680
+          offset: 13813
           line: 92
           column: 375
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_41394"
+      unit_id: "normative_41532"
       source_span:
         start:
-          offset: 41507
+          offset: 41645
           line: 465
           column: 1
         end:
-          offset: 41988
+          offset: 42126
           line: 465
           column: 482
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_origin_and_stock"
       identity_kind: "explicit"
-      unit_id: "normative_41394"
+      unit_id: "normative_41532"
       source_span:
         start:
-          offset: 41989
+          offset: 42127
           line: 466
           column: 1
         end:
-          offset: 42448
+          offset: 42586
           line: 466
           column: 460
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_shared_services"
       identity_kind: "explicit"
-      unit_id: "normative_41394"
+      unit_id: "normative_41532"
       source_span:
         start:
-          offset: 42449
+          offset: 42587
           line: 467
           column: 1
         end:
-          offset: 42884
+          offset: 43034
           line: 467
-          column: 436
+          column: 448
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework_waste"
       identity_kind: "explicit"
-      unit_id: "normative_41394"
+      unit_id: "normative_41532"
       source_span:
         start:
-          offset: 42885
+          offset: 43035
           line: 468
           column: 1
         end:
-          offset: 43312
+          offset: 43462
           line: 468
           column: 428
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_aggregation"
       identity_kind: "explicit"
-      unit_id: "normative_41394"
+      unit_id: "normative_41532"
       source_span:
         start:
-          offset: 43313
+          offset: 43463
           line: 469
           column: 1
         end:
-          offset: 43769
+          offset: 43919
           line: 469
           column: 457
     - pointer: "/validation_rules/0"
       rule_id: "validate_class_scope"
       identity_kind: "explicit"
-      unit_id: "normative_92529"
+      unit_id: "normative_93097"
       source_span:
         start:
-          offset: 92624
+          offset: 93192
           line: 534
           column: 1
         end:
-          offset: 93017
+          offset: 93585
           line: 534
           column: 394
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_92529"
+      unit_id: "normative_93097"
       source_span:
         start:
-          offset: 93018
+          offset: 93586
           line: 535
           column: 1
         end:
-          offset: 93427
+          offset: 93995
           line: 535
           column: 410
     - pointer: "/validation_rules/2"
       rule_id: "validate_balances"
       identity_kind: "explicit"
-      unit_id: "normative_92529"
+      unit_id: "normative_93097"
       source_span:
         start:
-          offset: 93428
+          offset: 93996
           line: 536
           column: 1
         end:
-          offset: 93811
+          offset: 94379
           line: 536
           column: 384
     - pointer: "/validation_rules/3"
       rule_id: "validate_quantities_units"
       identity_kind: "explicit"
-      unit_id: "normative_92529"
+      unit_id: "normative_93097"
       source_span:
         start:
-          offset: 93812
+          offset: 94380
           line: 537
           column: 1
         end:
-          offset: 94244
+          offset: 94812
           line: 537
           column: 433
     - pointer: "/validation_rules/4"
       rule_id: "validate_output_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_92529"
+      unit_id: "normative_93097"
       source_span:
         start:
-          offset: 94245
+          offset: 94813
           line: 538
           column: 1
         end:
-          offset: 94615
+          offset: 95183
           line: 538
           column: 371
     - pointer: "/validation_rules/5"
       rule_id: "validate_uuid_and_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_92529"
+      unit_id: "normative_93097"
       source_span:
         start:
-          offset: 94616
+          offset: 95184
           line: 539
           column: 1
         end:
-          offset: 95122
+          offset: 95690
           line: 539
           column: 507
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 7357
+          offset: 7448
           line: 59
           column: 1
         end:
-          offset: 7378
+          offset: 7469
           line: 59
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7357"
+      unit_id: "normative_7448"
       source_span:
         start:
-          offset: 7406
+          offset: 7497
           line: 63
           column: 1
         end:
-          offset: 8828
+          offset: 8928
           line: 70
-          column: 539
+          column: 548
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41394"
+      unit_id: "normative_41532"
       source_span:
         start:
-          offset: 41394
+          offset: 41532
           line: 461
           column: 1
         end:
-          offset: 41434
+          offset: 41572
           line: 461
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_92529"
+      unit_id: "normative_93097"
       source_span:
         start:
-          offset: 92529
+          offset: 93097
           line: 530
           column: 1
         end:
-          offset: 92551
+          offset: 93119
           line: 530
           column: 23
 projection_metadata:
@@ -1204,5 +1206,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:4f98d1e7b7528ee8dd8d119aba754e9f41ac75a904940d62661c505ffb09b7f8"
-  generated_content_sha256: "sha256:b3d5783b071b61008600be4a0a69d1b90339adb72a7dd88b08d176c5ca355342"
+    sha256: "sha256:e46266088f61f3847471eaea2e13dd9061059797307b8ccc4a03ca2addb260ac"
+  generated_content_sha256: "sha256:fd48b330a71f201b31907ca6db1d1cdcb2c5e59448e149d639423bacff0f6f46"

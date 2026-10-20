@@ -11,7 +11,7 @@ sync_with: pcr.zh-CN.md
 
 ## 1. Scope and Applicability
 
-This PCR guides foreground data-package construction for cultivated cocoa beans from managed cacao production through pod harvest and, when declared, pod breaking, wet-bean extraction, fermentation, drying, cleaning, grading and storage. It distinguishes wet cocoa beans in pulp, fermented wet beans, and fermented, dried and graded beans; these states must not be collapsed.
+This PCR guides foreground data-package construction for cultivated cocoa beans from managed cacao production through pod harvest, pod breaking and wet-bean extraction to the fresh wet-bean farm-gate hand-off. Pod breaking and extraction are required for that reference result, including when performed by a contractor. When postharvest_extension is true, the additional route begins after this wet-bean hand-off and includes only the declared fermentation, drying, cleaning, grading and storage operations. Wet beans in pulp, fermented wet beans and dried graded beans remain separate states.
 
 The exact platform reference identity is `Cocoa beans` with `Production mix, at farm gate` and `Fresh, unprocessed produce`. This candidate therefore declares fresh, unprocessed wet cocoa beans at the farm gate as the reference state. Fermented, dried or graded beans are route-specific downstream states and must not reuse the reference UUID as if their boundary metadata were identical. An extended post-harvest result must declare its gate and retain a lot-level mass and moisture conversion from the farm-gate reference state.
 
@@ -76,7 +76,7 @@ The platform metadata is `Production mix, at farm gate` and `Fresh, unprocessed 
 
 ## 5. System Boundary
 
-The default foreground boundary starts with the managed cacao stand and declared crop year or perennial phase. It includes attributable establishment and replacement, soil and nutrient management, crop protection, irrigation, field energy and direct field emissions, mature-pod harvest, and the hand-off of fresh pods or wet beans. When `postharvest_extension` is true, it also includes pod breaking, wet-bean extraction, fermentation, drying, cleaning, grading, storage and the declared post-harvest gate. Upstream production of planting material, fertilizer, crop-protection products, energy, water, treatment services and packaging uses compatible upstream datasets when they cross the foreground boundary.
+The default foreground boundary starts with the managed cacao stand and declared crop year or perennial phase and ends with fresh wet beans in pulp at the farm gate. It includes attributable establishment and replacement, field management, direct field emissions, mature-pod harvest, pod breaking, separation of husk/placenta and wet-bean extraction. A fresh-pod sale or hand-off is an intermediate boundary and cannot be reported as the wet-bean reference result. Off-site or contracted extraction remains a linked operation with its input/output masses, service burdens and residues included once. The postharvest_extension flag controls fermentation and later operations only; turning it off never removes extraction. Purchased inputs use compatible upstream datasets at the actual receiving state, without also charging their included operations again.
 
 The reference gate is the platform's fresh, unprocessed farm-gate state. Fermented, dried and graded beans are downstream route states within the extended process map, not alternative meanings of the same reference UUID. The data package must state whether the farm-gate reference stops at wet-bean hand-off or whether a post-harvest extension is reported. Roasting, grinding, alkalization, pressing, cocoa liquor, cocoa butter, cocoa powder, chocolate, prepared foods, retail and consumer use are downstream and excluded.
 
@@ -95,9 +95,9 @@ The reference gate is the platform's fresh, unprocessed farm-gate state. Ferment
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_01` | managed production | Include the managed cacao stand, crop-year management, actual inputs, field emissions, harvest and production-to-harvest hand-off. Include establishment, replacement and termination only when attributable to represented years. | `fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`; `iso-14044-2006` |
+| `boundary_01` | managed production | Include cultivation, harvest, pod opening and wet-bean extraction through the fresh wet-bean farm-gate hand-off. Attribute establishment, replacement and termination to represented production. A pod-only hand-off cannot satisfy this reference boundary. | `fao-cocoa-production-guide`; `icco-cocoa-harvesting-post-harvest`; `iso-14044-2006` |
 | `boundary_02` | reference gate | Treat `Cocoa beans` with `Production mix, at farm gate` and `Fresh, unprocessed produce` as the declared reference identity. Do not use the UUID for fermented, dried or graded bean states without a separate identity decision. | `iso-14044-2006`; `mass-balance-identity` |
-| `boundary_03` | pod breaking and fermentation | When extended, identify harvested pods, wet beans in pulp, pod husk, pulp/sweatings, batch, by-products, unreacted or spoiled material and drying hand-off. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
+| `boundary_03` | pod breaking and fermentation | Pod breaking and wet-bean extraction are required before the reference hand-off: link harvested pod mass to wet beans in pulp, husk/placenta, rejects and losses. Fermentation is additional and conditional on the declared extension; link its drainage, rejects and output separately. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
 | `boundary_04` | drying, grading and storage | Include drying/stabilization, cleaning, grade separation and pre-gate storage only when they cross the declared extension. Record energy, moisture, storage time, contamination controls and losses. | `icco-cocoa-processing`; `icco-cocoa-quality-requirements` |
 | `boundary_05` | upstream inputs | Treat purchased inputs, utilities, packaging, treatment and transport services as separately identified upstream inputs. Do not recurse into another cocoa PCR or silently use cocoa waste or paste as a bean input. | `iso-14044-2006` |
 | `boundary_06` | losses and rejects | Keep field losses, damaged pods, unextracted beans, spoiled or unfermented beans, drying losses, mouldy beans, dust, shells, storage losses and rejected lots in the foreground until a documented recovery, co-product, treatment or disposal hand-off exists. | `fao-cocoa-ota-code`; `icco-cocoa-quality-requirements`; `mass-balance-identity` |
@@ -110,7 +110,7 @@ The reference gate is the platform's fresh, unprocessed farm-gate state. Ferment
 | --- | --- | --- | --- | --- | --- |
 | `cocoa_managed_production` | Managed cacao production | required | cultivated cacao route | managed biological production | per 1 kg wet cocoa beans at farm-gate reference |
 | `cocoa_pod_harvest` | Mature cocoa-pod harvest and collection | required | pods are removed and transferred to pod opening | harvest and collected-output hand-off | per harvested pod lot and wet reference |
-| `cocoa_pod_breaking_extraction` | Pod breaking and wet-bean extraction | conditional | pod opening and separation are within the declared route | primary conditioning | per pod lot and wet reference |
+| `cocoa_pod_breaking_extraction` | Pod breaking and wet-bean extraction | required | required to obtain the wet-bean reference, including contracted extraction | primary conditioning | per pod lot and wet reference |
 | `cocoa_fermentation` | Cocoa-bean fermentation | conditional | fermentation precedes drying or declared dry-bean hand-off | biochemical reaction and treatment | per fermentation batch |
 | `cocoa_drying_stabilization` | Fermented-bean drying and stabilization | conditional | sun or artificial drying precedes post-harvest gate | preservation and stabilization | per drying batch |
 | `cocoa_cleaning_grading` | Cleaning, grading and reject routing | conditional | cleaning or grade separation precedes post-harvest gate | grading, sorting and conditioning | per grading lot |
@@ -296,7 +296,7 @@ Record block area, production phase, shade/intercrop condition and crop year. La
 
 - Selected flow: Agricultural land occupation for cacao [unmapped]
 - Flow property / unit: Area-time / ha·year
-- Amount rule: measured block area and annualized phase divided by wet reference output
+- Amount rule: Raw occupation = actual managed area multiplied by the dated attributable occupation duration in years, partitioned across non-overlapping phases and all co-users once. Convert ha to m2 by 10,000 only if the selected area-time identity requires m2*year. Area divided by product mass alone is not area-time. Attribute the area-time numerator using the original allocation rules, then normalize once to matched accepted final-reference mass, including actual wet-to-dry stage-throughput linkage where relevant; do not divide an already final intensity again.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
@@ -318,31 +318,6 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 #### Outputs
 
 ##### Elementary flows
-
-###### Managed-soil and crop-residue emissions (`cocoa_field_emissions`)
-
-Record calculated or measured emissions by substance, receiving medium, nutrient/residue source and crop year; one method owns each pathway.
-
-- Selected flow: Managed-soil and crop-residue elementary flows [unmapped]
-- Flow property / unit: Mass / kg substance
-- Amount rule: selected method applied to nutrient, residue, soil and climate records
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_cocoa_emission_records`
-- Sources: `ipcc-2019-refinement-afolu`
-- Range: Provisional managed-emission screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg substance/kg wet reference
-  - Basis: broad aggregate interval; replace with substance-specific calculations
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ### Process: Mature cocoa-pod harvest and collection (`cocoa_pod_harvest`)
 
@@ -634,31 +609,6 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 
 ##### Waste flows
 
-###### Fermentation pulp, sweatings and drainage (`cocoa_fermentation_sweatings`)
-
-Record drained pulp and liquid separately when measured. If recovered as a deliberate product or feed input, document intended hand-off; otherwise route to treatment, composting, soil return or disposal.
-
-- Selected flow: Cocoa pulp, sweatings or fermentation drainage [unmapped]
-- Flow property / unit: Mass or volume / kg or m3
-- Amount rule: measured drainage or mass-balance estimate by batch and destination
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Route-specific (`route_specific`)
-Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_cocoa_residue_destination_records`
-- Sources: `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code`
-- Range: Pulp and sweatings screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.05
-  - Upper: 0.6
-  - Unit: kg drainage/kg wet-bean input
-  - Basis: broad drainage interval; replace with batch and destination records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Spoiled, unfermented or off-spec fermentation rejects (`cocoa_fermentation_rejects`)
 
 Identify mouldy, germinated, black, contaminated, insufficiently fermented or otherwise off-spec material and declare recovery, downgrade, rework, disposal or soil-return routing.
@@ -817,15 +767,6 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference and
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cocoa_drying_batch_records`
 - Sources: `icco-cocoa-processing`; `icco-cocoa-quality-requirements`
-- Range: Dried-output yield screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.35
-  - Upper: 0.55
-  - Unit: kg dried beans/kg fermented wet beans
-  - Basis: dry-matter and moisture conversion screen; replace with lot balance
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `icco-cocoa-processing`
 - Range: Final moisture screening range
   - Range role: Typical range (`typical_range`)
   - Lower: 6
@@ -836,33 +777,9 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference and
   - Evidence kind: External source (`external_source`)
   - Sources: `icco-cocoa-processing`; `icco-cocoa-quality-requirements`
 
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
+
 ##### Waste flows
-
-###### Drying water loss (`cocoa_drying_water_loss`)
-
-Calculate water removed from wet beans; it is not dried-bean product.
-
-- Selected flow: Water loss to air or drying loss [unmapped]
-- Flow property / unit: Mass / kg water
-- Amount rule: wet-input/dry-matter balance using measured input and output moisture
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_cocoa_drying_batch_records`
-- Sources: `mass-balance-identity`; `icco-cocoa-processing`
-- Range: Drying-water-loss screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.35
-  - Upper: 0.65
-  - Unit: kg water/kg fermented wet beans
-  - Basis: broad conversion from approximately 55–60% to 6–8% moisture; replace with measured balance
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `icco-cocoa-processing`
 
 ###### Mouldy, contaminated or over-dried bean rejects (`cocoa_drying_rejects`)
 
@@ -970,6 +887,31 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_cocoa_emission_records`
 - Sources: `icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
+
+#### Outputs
+
+##### Elementary flows
+
+###### Drying water loss (`cocoa_drying_water_loss`)
+
+Calculate water removed from wet beans; it is not dried-bean product.
+
+- Selected flow: Water vapour emitted to air during cocoa drying (UUID unresolved)
+- Flow property / unit: Mass / kg water
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_cocoa_drying_batch_records`
+- Sources: `mass-balance-identity`; `icco-cocoa-processing`
+
+This is an elementary output to air, not a waste sent to treatment. Account for rejected bean solids separately; do not include solids or drainage in the evaporated-water mass.
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ### Process: Cleaning, grading and reject routing (`cocoa_cleaning_grading`)
 
@@ -1254,15 +1196,8 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at platform farm-gate refe
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cocoa_storage_records`
 - Sources: `icco-cocoa-processing`; `icco-cocoa-quality-requirements`
-- Range: Post-harvest gate-output screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.3
-  - Upper: 0.55
-  - Unit: kg dried gate output/kg wet reference
-  - Basis: measured wet-to-dry balance; replace with lot records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`; `icco-cocoa-processing`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ##### Waste flows
 
@@ -1272,7 +1207,7 @@ Record mould, pests, moisture change, foreign-material removal and other storage
 
 - Selected flow: Cocoa storage loss or rejected storage material [unmapped]
 - Flow property / unit: Mass / kg
-- Amount rule: opening mass plus receipts and removed lots minus closing mass, reconciled to inspection and destination records
+- Amount rule: Measure the actual damaged/rejected/lost stream by lot and destination, with mutually exclusive material quantities. Reconcile opening stock + receipts = accepted dispatch + other external transfers + rejected removals + independently evidenced physical loss + closing stock on matched moisture/component bases. Rework returned across this node is one paired transfer, or retained in closing stock if still held; it is not another final output. An unexplained balance difference is an investigation item, not automatically a physical waste or emission. Do not add removed lots to receipts, omit closing stock, or subtract a loss again when it is already part of this reported stream. Attribute and normalize each supported exported quantity once to accepted final output.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per 1 kg dried cocoa bean storage input.
@@ -1323,10 +1258,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_cocoa_harvest_lot_records` | `cocoa_pod_harvest` | mature pod harvest, field loss and hand-off | harvest lot ticket and field record | block_id; crop_year; maturity; pod_mass; harvest_date; field_loss; receiver; lot_id | reconcile harvested pods, field losses and receiver hand-off for each lot; Raw aggregation and attribution: sum harvested pods, field losses and hand-offs by block, crop year and lot | kg pods; kg loss; date; lot | each harvest lot | complete harvest season | all included cocoa blocks and receivers | per declared reference flow | lot ticket; field log; scale record; receiver evidence |
 | `cp_cocoa_pod_extraction_records` | `cocoa_pod_breaking_extraction` | pod input, wet beans, husk, placenta and rejects | pod-opening run sheet and scale record | run_id; pod_input; wet_bean_output; husk; placenta; reject_mass; equipment; operator; date | close the pod-input mass balance and record every destination per opening run; Raw aggregation and attribution: reconcile pod input to wet beans, husk, placenta, rejects and unexplained difference | kg as received; kg wet beans; date; run | each pod-opening run | all included pod-breaking operations | included farm or post-harvest facility | per declared reference flow | calibrated scale; run sheet; destination ticket; mass-balance review |
 | `cp_cocoa_fermentation_batch_records` | `cocoa_fermentation` | wet-bean input, fermentation operation, drainage and fermented output | fermentation batch log | batch_id; input_mass; method; container; start_date; end_date; turns; temperature; drainage; output_mass; reject_mass | link wet-bean input, batch conditions, drainage, fermented output and rejects; Raw aggregation and attribution: aggregate by batch and link each output to its input lot without double counting | kg wet beans; kg drainage; °C; days; date | each fermentation batch and turn | complete included fermentation route | all included fermentation containers | per declared reference flow | batch log; temperature record; turning record; drainage ticket; quality check |
-| `cp_cocoa_drying_batch_records` | `cocoa_drying_stabilization` | fermented wet input, drying energy, dried output and water loss | drying log and moisture sample record | batch_id; wet_input; method; platform_or_dryer; weather_or_fuel; start_time; end_time; temperature; moisture; output_mass; reject_mass | reconcile wet input, dry output and loss using documented moisture samples; Raw aggregation and attribution: calculate wet-to-dry balance per batch and preserve measured moisture basis | kg wet input; kg dry beans; percent moisture; °C; days; MJ | each drying batch and moisture sample | complete included drying route | all included drying platforms and dryers | per declared reference flow | drying log; moisture test; fuel or weather record; smoke-control record |
+| `cp_cocoa_drying_batch_records` | `cocoa_drying_stabilization` | fermented wet input, drying energy, dried output and water loss | drying log and moisture sample record | batch_id; wet_input; method; platform_or_dryer; weather_or_fuel; start_time; end_time; temperature; moisture; output_mass; reject_mass ; all inlet/outlet material water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; wet-basis moisture/density; supported evaporation and uncertainty| reconcile wet input, dry output and loss using documented moisture samples; Raw aggregation and attribution: calculate wet-to-dry balance per batch and preserve measured moisture basis | kg wet input; kg dry beans; percent moisture; °C; days; MJ | each drying batch and moisture sample | complete included drying route | all included drying platforms and dryers | per declared reference flow | drying log; moisture test; fuel or weather record; smoke-control record |
 | `cp_cocoa_grade_lot_records` | `cocoa_cleaning_grading` | dried input, accepted grades, downgraded product, shell, dust and rejects | inspection, grading and scale record | lot_id; input_mass; grade; moisture; defects; accepted_mass; downgrade_mass; shell_mass; dust_mass; reject_mass; destination | enumerate every grade and material destination and reconcile the lot mass balance; Raw aggregation and attribution: sum accepted grades, intended downgrade, residues and rejects separately by lot | kg; percent moisture; grade code; date | each grading lot | complete included cleaning and grading route | all included grading equipment and lots | per declared reference flow | inspection sheet; calibrated scale; moisture and defect record; destination evidence |
 | `cp_cocoa_quality_records` | `cocoa_fermentation` and `cocoa_cleaning_grading` | moisture, fermentation, mould, insects, foreign matter and grade decision | laboratory or documented lot inspection record | sample_id; lot_id; moisture; fermentation_index; mould; insects; foreign_matter; defect_class; grade_decision; method; coverage | retain sampling plan, analytical method, result and decision for each lot; Raw aggregation and attribution: link quality decisions to lot and route state; do not convert rejected material to accepted output | percent; score; kg sample; date | each lot and quality decision | complete included fermentation, drying and grading route | all lots used for declared outputs | per declared reference flow | lab report; sampling plan; method version; inspector sign-off |
-| `cp_cocoa_storage_records` | `cocoa_storage_gate` | accepted dried beans, packaging, storage service, output and loss | warehouse record and storage-period balance | lot_id; opening_mass; packaging; warehouse; start_date; end_date; conditions; receipts; outputs; losses; closing_mass | reconcile opening stock, receipts, declared output and losses for each storage period; Raw aggregation and attribution: close the storage balance and assign shared handling once to the documented lot driver | kg dried beans; kg loss; storage days; packaging unit | each storage period and lot | complete pre-gate storage period | all included warehouses and lots | per declared reference flow | warehouse log; scale record; condition log; packaging record |
+| `cp_cocoa_storage_records` | `cocoa_storage_gate` | accepted dried beans, packaging, storage service, output and loss | warehouse record and storage-period balance | lot_id; opening_mass; packaging; warehouse; start_date; end_date; conditions; receipts; outputs; losses; closing_mass ; opening and closing stock; receipts; dispatch; other external transfers; measured rejects; independently evidenced losses; paired rework; moisture/component basis; unexplained balance| Measure each actual stream and reconcile opening stock + receipts = accepted dispatch + other external transfers + rejected removals + independently evidenced physical losses + closing stock on matching moisture/component bases. Pair rework/returns and keep retained material in stocks. Unexplained residual is an evidence gap, not an automatic waste or release. Preserve attribution and normalize once to matched accepted final output. | kg dried beans; kg loss; storage days; packaging unit | each storage period and lot | complete pre-gate storage period | all included warehouses and lots | per declared reference flow | warehouse log; scale record; condition log; packaging record |
 | `cp_cocoa_residue_destination_records` | route-wide cocoa processes | shell, pulp, sweatings, dust, rejects and other residues | destination ticket, recovery record or treatment/disposal record | residue_type; quantity; destination; receiver; intended_function; treatment; disposal; date; lot_id | document whether each material is a named co-product, recovery, retained residue or waste and record hand-off; Raw aggregation and attribution: classify and aggregate each destination separately; keep undocumented destinations as unresolved | kg material; destination code; date | each residue event | complete included route and storage period | all included field, processing and storage sites | per declared reference flow | destination ticket; receiver evidence; treatment record; waste manifest |
 
 ### Calculation rules
@@ -1335,10 +1270,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- |
 | `calc_01` | cocoa_stand_management | Annualize establishment, replacement and termination only across represented years and allocate to same-block wet reference output. | perennial phase, area, crop years and reference output | annualized phase burdens linked to same-block wet output |  |
 | `calc_02` | route-wide processes | Reconcile each node independently and retain moisture basis for every conversion. Do not use generic cocoa yield when lot data exist. | pod, wet, fermented, dried and graded masses | reconciled node mass balances with moisture basis |  |
-| `calc_03` | route-wide processes | Normalize to 1 kg wet farm-gate reference. For the extended route also report per 1 kg dried output and retain the conversion denominator. | process totals and reference output | inventory per 1 kg wet reference and separate extended-route dry-output result |  |
+| `calc_03` | route-wide processes | Base result: sum burdens only through wet-bean hand-off and divide by net accepted wet-bean mass. Extended result: add only linked downstream burdens and divide the combined attributable total by the matched final extended-state output. Retain both denominators and the measured lot conversion; an extended inventory per kg wet input is labelled an extension intensity, never the base farm-gate inventory. | process totals and reference output | inventory per 1 kg wet reference and separate extended-route dry-output result |  |
 | `calc_04` | cocoa_stand_management and included processing | Apply one declared geographically and temporally appropriate method per pathway; retain factor, unit, activity basis and uncertainty. | nutrient, residue, fuel and water records | pathway-specific method results with factors and uncertainty |  |
 | `calc_05` | route-wide intended outputs | Subdivide first, then allocate shared burdens once by the declared mass or economic method; residue and waste treatment remain separate unless product hand-off exists. | intended outputs and allocation denominator | shared burdens attributed once with declared allocation denominator |  |
-| `calc_06` | cocoa_storage_gate | Calculate storage loss as the reconciled difference and investigate negative or unexplained balances. | storage opening, receipts, outputs and closing | reconciled storage loss and unexplained balance differences |  |
+| `calc_06` | cocoa_storage_gate | Measure the actual damaged/rejected/lost stream by lot and destination, with mutually exclusive material quantities. Reconcile opening stock + receipts = accepted dispatch + other external transfers + rejected removals + independently evidenced physical loss + closing stock on matched moisture/component bases. Rework returned across this node is one paired transfer, or retained in closing stock if still held; it is not another final output. An unexplained balance difference is an investigation item, not automatically a physical waste or emission. Do not add removed lots to receipts, omit closing stock, or subtract a loss again when it is already part of this reported stream. Attribute and normalize each supported exported quantity once to accepted final output. | storage opening, receipts, outputs and closing | reconciled storage loss and unexplained balance differences |  |
+| `cocoa_field_emissions_identity_and_fate` | `cocoa_managed_production` | Identify every actual emitted substance and receiving compartment separately. Quantify each supported pathway with its own activity, method, chemical-species basis and native unit; distinguish elemental N/P ledgers from final compounds. Soil nutrient retention or a mass-balance residual is not automatically an emission. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_cocoa_emission_records` | Identity-specific exchanges and reconciled activity records | `ipcc-2019-refinement-afolu` |
+| `cocoa_fermentation_sweatings_identity_and_fate` | `cocoa_fermentation` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_cocoa_residue_destination_records` | Identity-specific exchanges and reconciled activity records | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_cocoa_emission_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data quality rules
 
@@ -1358,14 +1296,14 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- |
 | `validation_01` | reference flow | Confirm UUID `3c54da37-f1ab-4b4c-8363-5c32b638005c`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66` and Units of mass group `93a60a57-a4c8-11da-a746-0800200c9a66`; retain farm-gate fresh/unprocessed metadata. | `mass-balance-identity` |
 | `validation_02` | state identity | Reject use of the reference UUID for fermented, dried, graded, cocoa waste or cocoa paste material without a reviewed identity decision. | `mass-balance-identity`; `iso-14044-2006` |
-| `validation_03` | process graph | Confirm declared hand-offs: production to harvest, pods to wet beans, wet beans to fermentation, fermentation to drying, drying to grading and grading to declared gate when those nodes are included. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
+| `validation_03` | process graph | Require production-to-harvest-to-pod-opening-to-wet-bean hand-offs for every wet-reference result, even with postharvest_extension=false. Check pod, wet-bean, husk/placenta and loss records and contracted-service scope. Reject a pod-only result labelled as wet beans. For an extension, additionally validate each included fermentation, drying, grading and storage hand-off. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |
 | `validation_04` | mass balance | Reconcile each lot's inputs, accepted outputs, intended co-products, residues, rejects, storage losses and moisture-related water loss within measurement uncertainty. | `mass-balance-identity` |
 | `validation_05` | fermentation | Require batch id, dates, method, drainage, output hand-off and inspection evidence; unresolved off-spec routing blocks the extended route. | `fao-cocoa-ota-code`; `icco-cocoa-harvesting-post-harvest` |
 | `validation_06` | drying | Require method, input/output, final moisture and smoke or contamination control. Use 6–8% only as screening; measured lot moisture governs. | `icco-cocoa-processing`; `icco-cocoa-quality-requirements` |
 | `validation_07` | grades and rejects | Every accepted grade and intended downgrade has a hand-off; mouldy, broken, contaminated or off-spec material cannot be counted as accepted beans. | `fao-cocoa-production-guide`; `icco-cocoa-quality-requirements` |
 | `validation_08` | allocation | Confirm every intended output, residue destination and allocation denominator. Sequential states are not allocated against each other and shared burdens are not double-counted. | `iso-14044-2006`; `mass-balance-identity` |
 | `validation_09` | data quality | Check crop-year coverage, lot completeness, moisture basis, protocol linkage, sources, method version and units for every important quantitative flow. | `iso-14044-2006`; `ipcc-2019-refinement-afolu` |
-| `validation_10` | boundary disclosure | Confirm the platform farm-gate reference, post-harvest extension flag, final gate, storage duration and excluded downstream cocoa products are declared. | `iso-14044-2006` |
+| `validation_10` | boundary disclosure | Require a fresh wet-bean base result with extraction included. Report any downstream extension as a separate boundary/result with its own state, gate and measured conversion; extension operations must not be folded into the base wet farm-gate inventory. State storage and downstream exclusions. | `iso-14044-2006` |
 
 ## 10. Published Dataset Profile
 
@@ -1381,7 +1319,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 ## 11. Data Sources
 
-| source_id | type | Source | Use in this PCR |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `icco-cocoa-harvesting-post-harvest` | official_guidance | ICCO, Harvesting & Post-harvest, https://www.icco.org/harvesting-post-harvest-new/ | pod opening, wet-bean extraction, fermentation, drying and moisture context |
 | `icco-cocoa-processing` | official_guidance | ICCO, Processing Cocoa, https://www.icco.org/processing-cocoa/ | post-fermentation drying and storage moisture context |

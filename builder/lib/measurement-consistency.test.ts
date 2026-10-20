@@ -125,6 +125,21 @@ function codes(result: MeasurementReport): string[] {
   return result.findings.map((finding) => finding.code);
 }
 
+test("native Item(s) reference output is recognized while quantity and unit mismatches fail", () => {
+  const input = pair({ referenceAmount: "1", referenceUnit: "Item(s)", outputExpression: "1 Item(s)",
+    basis: "per declared reference flow", outputBasis: "per declared reference flow",
+    expression: "Metered energy per declared reference flow", collectionBasis: "per declared reference flow" });
+  const result = checkMeasurementConsistency(input);
+  assert.equal(result.status, "pass", JSON.stringify(result.findings));
+  for (const replacement of ["2 Item(s)", "1 kg", "1 Item(s) or 1 kg"]) {
+    const changed = Object.fromEntries(Object.entries(input).map(([language, source]) =>
+      [language, source.replace("- Amount rule: 1 Item(s)", `- Amount rule: ${replacement}`)]));
+    const failed = checkMeasurementConsistency(changed);
+    assert.notEqual(failed.status, "pass", replacement);
+    assert.ok(codes(failed).some((code) => code.startsWith("MEASUREMENT_REFERENCE_OUTPUT_")), replacement);
+  }
+});
+
 function sharedProductIdentity(referenceLink: string | null = "finished_baler", duplicateLink = false) {
   const input = pair({ referenceAmount: "1", basis: "per reference flow", outputBasis: "per reference flow", expression: "Metered energy per reference flow", collectionBasis: "per reference flow" });
   const uuid = "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98";

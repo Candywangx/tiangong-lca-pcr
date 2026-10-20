@@ -178,7 +178,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Record the declared source lot that establishes the oats seed route. Keep lot identity, class, treatment, moisture, and source location separate from current-cycle accepted output. Raw activity or stage basis: per 1,000 kg harvested oats seed crop."
           amount:
-            expression: ""
+            expression: "measured source-lot mass by field or production unit"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -369,7 +369,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_field_energy_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -496,8 +496,8 @@ process_inventory:
           role: "Direct soil nitrous oxide emission"
           name: "nitrous oxide emission to air"
           flow_type: "elementary"
-          property_unit: "Mass / kg N2O or kg N2O-N"
-          description: "Calculate direct soil emissions from declared nutrient inputs using the selected method tier and disclose species conversion. Raw activity or stage basis: per kg N input and per 1 kg accepted oats seed output."
+          property_unit: "Mass / kg N2O"
+          description: "Calculate direct soil emissions from declared nutrient inputs using the selected method tier and disclose species conversion. Raw activity or stage basis: per kg N input and per 1 kg accepted oats seed output. The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero."
           amount:
             expression: "selected method tier applied to collected nitrogen input and management context"
             value_mode: "calculated_value"
@@ -551,9 +551,9 @@ process_inventory:
           name: "fossil carbon dioxide emission to air"
           flow_type: "elementary"
           property_unit: "Mass / kg CO2"
-          description: "Calculate fossil carbon dioxide from collected field fuel and energy records with a declared factor source. Raw activity or stage basis: per fuel inventory and per 1 kg accepted oats seed output."
+          description: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero. Raw activity or stage basis: per fuel inventory and per 1 kg accepted oats seed output."
           amount:
-            expression: "collected fuel or energy quantity multiplied by the declared emission factor"
+            expression: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -562,7 +562,8 @@ process_inventory:
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_field_energy_records
-              source_ids: []
+              source_ids:
+                - ipcc-2006-energy-combustion-boundary
             ranges: []
   - id: oats_seed_conditioning_and_treatment
     label: "Oats Seed Conditioning and Treatment"
@@ -739,35 +740,15 @@ process_inventory:
                 - usda-seed-cleaning-handling
                 - mass-balance-identity
             ranges: []
-        - row_id: conditioning_dust_and_sweepings
-          role: "Conditioning dust and sweepings"
-          name: "conditioning dust, chaff, or sweepings"
-          flow_type: "waste"
-          property_unit: "Mass / kg"
-          description: "Record dust, chaff, and sweepings that leave the facility as waste or a separately declared material stream. Raw activity or stage basis: per accepted cleaned oats seed output."
-          amount:
-            expression: "measured collection mass or documented mass-balance residual and declared fate"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_reject_and_screening_records
-              source_ids:
-                - usda-seed-cleaning-handling
-                - mass-balance-identity
-            ranges: []
       elementary:
         - row_id: fossil_carbon_dioxide_from_conditioning
           role: "Fossil carbon dioxide from conditioning"
           name: "fossil carbon dioxide emission to air"
           flow_type: "elementary"
           property_unit: "Mass / kg CO2"
-          description: "Calculate fossil carbon dioxide from conditioning fuel or energy records using a declared factor source. Raw activity or stage basis: per accepted cleaned oats seed output."
+          description: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero. Raw activity or stage basis: per accepted cleaned oats seed output."
           amount:
-            expression: "collected conditioning fuel or energy multiplied by the declared emission factor"
+            expression: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
             value_mode: "calculated_value"
             specificity: "technology_specific"
             basis:
@@ -776,7 +757,8 @@ process_inventory:
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_conditioning_energy_records
-              source_ids: []
+              source_ids:
+                - ipcc-2006-energy-combustion-boundary
             ranges: []
   - id: oats_seed_storage_and_delivery
     label: "Oats Seed Storage and Delivery"
@@ -867,9 +849,9 @@ process_inventory:
           name: "fossil carbon dioxide emission to air"
           flow_type: "elementary"
           property_unit: "Mass / kg CO2"
-          description: "Calculate fossil carbon dioxide from storage and delivery energy only when this conditional process is included. Raw activity or stage basis: per kg delivered oats seed."
+          description: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero. Raw activity or stage basis: per kg delivered oats seed."
           amount:
-            expression: "storage and delivery energy multiplied by declared emission factors"
+            expression: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
             value_mode: "calculated_value"
             specificity: "route_specific"
             basis:
@@ -878,7 +860,8 @@ process_inventory:
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_delivery_transport_records
-              source_ids: []
+              source_ids:
+                - ipcc-2006-energy-combustion-boundary
             ranges: []
   - id: declared_reference_handoff
     label: "Product Measurement at Declared Handoff"
@@ -979,6 +962,11 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness."
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_source_seed_lot_records
@@ -1021,8 +1009,8 @@ dataset_production:
       process_id: "oats_seed_multiplication"
       flow_role: "field fuel and electricity"
       record_type: "fuel or utility record"
-      raw_fields: "operation; carrier; quantity; machine; date; field"
-      collection_method: "fuel log, meter, invoice, telematics; Raw aggregation and attribution: attribute energy without double counting"
+      raw_fields: "operation; carrier; quantity; machine; date; field ; actual locally burned fuel, fuel quantity/unit, density and net calorific value, fossil/biogenic fraction, combustion-only factor and unit, supplier/service boundary, existing combustion coverage"
+      collection_method: "fuel log, meter, invoice, telematics; Raw aggregation and attribution: attribute energy without double counting ; Apply the combustion-only boundary in the energy-emission calculation rule; purchased power or inclusive services remain separate upstream burdens."
       unit: "L, kg, MJ, kWh"
       frequency: "operation or billing interval"
       temporal_coverage: "crop cycle"
@@ -1093,8 +1081,8 @@ dataset_production:
       process_id: "oats_seed_conditioning_and_treatment"
       flow_role: "conditioning energy"
       record_type: "meter or equipment record"
-      raw_fields: "campaign; energy; quantity; operation; period"
-      collection_method: "meter, utility bill, equipment log; Raw aggregation and attribution: sum by operation and normalize Route-specific requirements: conditioning_energy_identification: Actual electric motors for seed cleaning, grading, testing, treatment and packing, plus drying fans if installed. Identify the drying heat source separately; do not infer a burner fuel from moisture removal. Raw activity or stage basis: per accepted cleaned oats seed output. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
+      raw_fields: "campaign; energy; quantity; operation; period ; actual locally burned fuel, fuel quantity/unit, density and net calorific value, fossil/biogenic fraction, combustion-only factor and unit, supplier/service boundary, existing combustion coverage"
+      collection_method: "meter, utility bill, equipment log; Raw aggregation and attribution: sum by operation and normalize Route-specific requirements: conditioning_energy_identification: Actual electric motors for seed cleaning, grading, testing, treatment and packing, plus drying fans if installed. Identify the drying heat source separately; do not infer a burner fuel from moisture removal. Raw activity or stage basis: per accepted cleaned oats seed output. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. ; Apply the combustion-only boundary in the energy-emission calculation rule; purchased power or inclusive services remain separate upstream burdens."
       unit: "kWh, MJ, kg, L"
       frequency: "campaign or interval"
       temporal_coverage: "conditioning campaign"
@@ -1189,9 +1177,9 @@ dataset_production:
       process_id: "oats_seed_storage_and_delivery"
       flow_role: "storage electricity"
       record_type: "utility or inventory record"
-      raw_fields: "lot; meter; quantity; period; stored mass"
+      raw_fields: "lot; meter; quantity; period; stored mass ; actual storage burner/generator fuel if operated; quantity and native unit; density/NCV; fossil/biogenic split; combustion-only factors; supplier coverage"
       collection_method: "meter or utility bill; Raw aggregation and attribution: allocate by mass and duration"
-      unit: "kWh or MJ"
+      unit: "kWh or MJ ; L or kg fuel where applicable"
       frequency: "period"
       temporal_coverage: "storage duration"
       site_scope: "storage site"
@@ -1201,8 +1189,8 @@ dataset_production:
       process_id: "oats_seed_storage_and_delivery"
       flow_role: "delivery transport"
       record_type: "transport record"
-      raw_fields: "route; distance; vehicle; fuel or tonne-km; mass"
-      collection_method: "carrier invoice, dispatch record, fuel log; Raw aggregation and attribution: sum service and normalize"
+      raw_fields: "route; distance; vehicle; fuel or tonne-km; mass ; actual locally burned fuel, fuel quantity/unit, density and net calorific value, fossil/biogenic fraction, combustion-only factor and unit, supplier/service boundary, existing combustion coverage"
+      collection_method: "carrier invoice, dispatch record, fuel log; Raw aggregation and attribution: sum service and normalize ; Apply the combustion-only boundary in the energy-emission calculation rule; purchased power or inclusive services remain separate upstream burdens."
       unit: "kg fuel or tonne-km"
       frequency: "per shipment"
       temporal_coverage: "delivery period"
@@ -1306,32 +1294,32 @@ dataset_production:
         - ipcc-2019-managed-soils-n2o
     - id: calculate_field_energy_emissions
       applies_to: "field energy"
-      rule: "Multiply recorded fuel or energy by the declared factor and normalize to accepted seed."
+      rule: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
       inputs:
         - "field energy"
         - factor
       output: "field-energy emissions"
       source_ids:
-        - ipcc-2019-cropland
+        - ipcc-2006-energy-combustion-boundary
     - id: calculate_conditioning_energy_emissions
       applies_to: "conditioning energy"
-      rule: "Multiply recorded conditioning fuel or energy by the declared factor and normalize."
+      rule: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
       inputs:
         - "conditioning energy"
         - factor
       output: "conditioning emissions"
       source_ids:
-        - usda-seed-cleaning-handling
+        - ipcc-2006-energy-combustion-boundary
     - id: calculate_storage_delivery_emissions
       applies_to: "storage and delivery"
-      rule: "Apply declared factors to included storage and delivery energy and normalize to the declared gate."
+      rule: "Calculate only the fossil CO2 physically released by fuel combustion inside this foreground operation. For each actually burned fuel, use measured fuel mass or volume converted by documented density and net calorific value to the activity unit of its compatible combustion-only kg CO2 factor; sum fuel-specific releases, attribute once and normalize once to matched accepted final output. Preserve fossil versus biogenic carbon. Purchased electricity, purchased heat and inclusive transport or machinery-service life-cycle factors are upstream burdens, not local elementary CO2 releases. Link those supply/service datasets once; if combustion is explicitly disaggregated, exclude that same combustion from the linked dataset boundary. Do not add supply-chain CO2 or CO2-equivalent totals to this substance-mass card. Demonstrated absence of local fossil combustion makes this card inapplicable; missing records do not establish zero."
       inputs:
         - "storage energy"
         - "transport records"
         - factors
       output: "storage and delivery emissions"
       source_ids:
-        - mass-balance-identity
+        - ipcc-2006-energy-combustion-boundary
     - id: reconcile_field_outputs
       applies_to: "field production"
       rule: "Reconcile harvested seed crop, residue, field waste, and documented loss to field records on a declared moisture basis."
@@ -1362,6 +1350,25 @@ dataset_production:
         - "loss records"
       output: "storage balance"
       source_ids:
+        - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_nutrient_input_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: conditioning_dust_and_sweepings_identity_and_fate
+      applies_to: "oats_seed_conditioning_and_treatment"
+      rule: "The conditioning_dust_and_sweepings collection role is mandatory when the original operation generates these materials. Record the actual material, composition, state, measured mass and destination separately for each physically distinct stream. Dust, chaff, grain, packaging and product rejects must not share one exchange merely because they arise at the same operation. A physically mixed stream may have one card only with its composition and treatment boundary documented. For downgraded produce, distinguish intended saleable co-products supported by recipient and use evidence from actual waste sent to treatment; a lower grade alone does not determine waste status or allocation. Keep on-site rework/internal returns and in-field retained biomass in reconciled internal ledgers instead of exporting them as waste. Create concrete product or waste cards as appropriate before completeness, with a compatible verified UUID or explicit unresolved identity; keep every attributable burden, do not credit unsubstantiated substitution, and do not count any stream twice. Normalize measured quantities once to the original accepted reference output. A missing identity, amount or destination blocks completeness; no aggregate default or numeric bound is inferred."
+      inputs:
+        - cp_reject_and_screening_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - usda-seed-cleaning-handling
         - mass-balance-identity
   data_quality_requirements:
     - id: dq_seed_identity
@@ -1451,6 +1458,11 @@ validation_rules:
     rule: "Confirm any intentional co-product is separately identified, destination is evidenced, and allocation or substitution treatment is disclosed."
     source_ids:
       - iso-14044-2006
+  - rule_id: validation_local_combustion_boundary
+    applies_to: "energy and fossil CO2"
+    rule: "Verify every local CO2 amount against actual in-boundary fuel combustion and compatible combustion-only factors; reconcile upstream electricity, heat, fuel-supply and inclusive-service coverage so the same release is counted once."
+    source_ids:
+      - ipcc-2006-energy-combustion-boundary
 published_dataset_profile:
   dataset_role: "unit_process"
   downstream_use: "secondary_dataset; background_dataset"
@@ -1516,9 +1528,17 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ipcc-2006-energy-combustion-boundary"
+    type: "method_factor"
+    reference: "IPCC 2006 Guidelines, Volume 2 Energy, Chapters 2 and 3 (stationary and mobile combustion), https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html"
+    used_for: "Combustion activity, compatible fuel-specific factors and fossil/biogenic distinction; no universal site factor adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:98778596ef7646381f8990f57cf3e99f98fa5a930f523661693d7d5e5b2f384c"
+  source_sha256: "sha256:6639c7b458c38d80015d0b3674c70defe8d2a7725c4f05c4537b34973f049901"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6417"
@@ -1569,18 +1589,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49926"
+    - unit_id: "normative_54553"
       family: "allocation"
       span:
         start:
-          offset: 49926
-          line: 798
+          offset: 54553
+          line: 783
           column: 1
         end:
-          offset: 51857
-          line: 810
+          offset: 58468
+          line: 799
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_subdivision` | field, conditioning, storage, and delivery processes | Avoid allocation by separately recording production, conditioning, treatment, packaging, storage, rejects, and fate-specific handling whenever the route can be subdivided. | `iso-14044-2006` |\n| `allocation_intended_outputs` | intentional product outputs | If residue, downgraded seed, or another stream is intentionally sold or transferred as a product, identify its destination and apply a declared attribution method only after product status is evidenced. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_seed_quality` | accepted seed and downgraded lots | Do not allocate seed-quality burdens to commodity Oats or a downgraded stream unless the alternate output is intentionally produced, separately identified, and included in the declared gate. | `iso-14044-2006` |\n| `allocation_fallback` | multiple intended outputs | If subdivision is not possible, use a declared mass, physical-property, economic, or other defensible method, disclose the rationale, and test a materially different method as sensitivity. | `iso-14044-2006` |\n| `allocation_reject_fate` | rejects, residues, waste, and storage losses | Keep field residue, conditioning rejects, packaging waste, storage losses, recovery, and disposal distinct; do not credit displaced product without destination and substitution evidence. | `mass-balance-identity` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_subdivision` | field, conditioning, storage, and delivery processes | Avoid allocation by separately recording production, conditioning, treatment, packaging, storage, rejects, and fate-specific handling whenever the route can be subdivided. | `iso-14044-2006` |\n| `allocation_intended_outputs` | intentional product outputs | If residue, downgraded seed, or another stream is intentionally sold or transferred as a product, identify its destination and apply a declared attribution method only after product status is evidenced. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_seed_quality` | accepted seed and downgraded lots | Do not allocate seed-quality burdens to commodity Oats or a downgraded stream unless the alternate output is intentionally produced, separately identified, and included in the declared gate. | `iso-14044-2006` |\n| `allocation_fallback` | multiple intended outputs | If subdivision is not possible, use a declared mass, physical-property, economic, or other defensible method, disclose the rationale, and test a materially different method as sensitivity. | `iso-14044-2006` |\n| `allocation_reject_fate` | rejects, residues, waste, and storage losses | Keep field residue, conditioning rejects, packaging waste, storage losses, recovery, and disposal distinct; do not credit displaced product without destination and substitution evidence. | `mass-balance-identity` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1597,12 +1617,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49926
-              line: 798
+              offset: 54553
+              line: 783
               column: 1
             end:
-              offset: 49966
-              line: 798
+              offset: 54593
+              line: 783
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1617,18 +1637,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_75338"
+    - unit_id: "normative_88706"
       family: "validation"
       span:
         start:
-          offset: 75338
-          line: 892
+          offset: 88706
+          line: 883
           column: 1
         end:
-          offset: 77786
-          line: 907
+          offset: 91496
+          line: 900
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_flow` | reference product | Confirm the verified Oats sowing-seed UUID, all qualifiers, moisture basis, and declared gate; the final exchange must retain that UUID. | `fao-seed-systems`; `mass-balance-identity` |\n| `validation_scope` | boundary | Confirm the dataset is oats seed for sowing and does not silently include non-seed Oats, malting, food, feed, ethanol, or downstream cultivation. | `fao-seed-systems` |\n| `validation_process_map` | process inventory | Confirm multiplication, conditioning and quality release, and included storage or delivery are separate nodes with explicit hand-offs. | `fao-seed-systems`; `usda-seed-cleaning-handling` |\n| `validation_flow_coordinates` | inventory rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `mass-balance-identity` |\n| `validation_nutrients_and_emissions` | nutrients and soil emissions | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `ipcc-2019-managed-soils-n2o` |\n| `validation_water_and_land` | irrigation, withdrawal, land | Keep delivered irrigation product input, natural water withdrawal, and land occupation distinct and prevent double counting. | `ipcc-2019-cropland` |\n| `validation_quality_release` | accepted seed | Confirm Oats identity, seed class, quality attributes, treatment status, lot release, packaging state, moisture basis, and gate. | `fao-seed-systems`; `usda-seed-cleaning-handling` |\n| `validation_reject_fate` | rejects and waste | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `usda-seed-cleaning-handling`; `mass-balance-identity` |\n| `validation_mass_balance` | all outputs | Confirm field, conditioning, and storage balances reconcile on a declared moisture basis and accepted seed is not counted at two hand-offs. | `mass-balance-identity` |\n| `validation_allocation` | intentional co-products | Confirm any intentional co-product is separately identified, destination is evidenced, and allocation or substitution treatment is disclosed. | `iso-14044-2006` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_flow` | reference product | Confirm the verified Oats sowing-seed UUID, all qualifiers, moisture basis, and declared gate; the final exchange must retain that UUID. | `fao-seed-systems`; `mass-balance-identity` |\n| `validation_scope` | boundary | Confirm the dataset is oats seed for sowing and does not silently include non-seed Oats, malting, food, feed, ethanol, or downstream cultivation. | `fao-seed-systems` |\n| `validation_process_map` | process inventory | Confirm multiplication, conditioning and quality release, and included storage or delivery are separate nodes with explicit hand-offs. | `fao-seed-systems`; `usda-seed-cleaning-handling` |\n| `validation_flow_coordinates` | inventory rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `mass-balance-identity` |\n| `validation_nutrients_and_emissions` | nutrients and soil emissions | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `ipcc-2019-managed-soils-n2o` |\n| `validation_water_and_land` | irrigation, withdrawal, land | Keep delivered irrigation product input, natural water withdrawal, and land occupation distinct and prevent double counting. | `ipcc-2019-cropland` |\n| `validation_quality_release` | accepted seed | Confirm Oats identity, seed class, quality attributes, treatment status, lot release, packaging state, moisture basis, and gate. | `fao-seed-systems`; `usda-seed-cleaning-handling` |\n| `validation_reject_fate` | rejects and waste | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `usda-seed-cleaning-handling`; `mass-balance-identity` |\n| `validation_mass_balance` | all outputs | Confirm field, conditioning, and storage balances reconcile on a declared moisture basis and accepted seed is not counted at two hand-offs. | `mass-balance-identity` |\n| `validation_allocation` | intentional co-products | Confirm any intentional co-product is separately identified, destination is evidenced, and allocation or substitution treatment is disclosed. | `iso-14044-2006` |\n| `validation_local_combustion_boundary` | energy and fossil CO2 | Verify every local CO2 amount against actual in-boundary fuel combustion and compatible combustion-only factors; reconcile upstream electricity, heat, fuel-supply and inclusive-service coverage so the same release is counted once. | `ipcc-2006-energy-combustion-boundary` |\n\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1645,12 +1665,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 75338
-              line: 892
+              offset: 88706
+              line: 883
               column: 1
             end:
-              offset: 75360
-              line: 892
+              offset: 88728
+              line: 883
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1734,211 +1754,237 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_49926"
+      unit_id: "normative_54553"
       source_span:
         start:
-          offset: 50039
-          line: 802
+          offset: 54666
+          line: 787
           column: 1
         end:
-          offset: 50321
-          line: 802
+          offset: 54948
+          line: 787
           column: 283
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_intended_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_49926"
+      unit_id: "normative_54553"
       source_span:
         start:
-          offset: 50322
-          line: 803
+          offset: 54949
+          line: 788
           column: 1
         end:
-          offset: 50634
-          line: 803
+          offset: 55261
+          line: 788
           column: 313
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_seed_quality"
       identity_kind: "explicit"
-      unit_id: "normative_49926"
+      unit_id: "normative_54553"
       source_span:
         start:
-          offset: 50635
-          line: 804
+          offset: 55262
+          line: 789
           column: 1
         end:
-          offset: 50912
-          line: 804
+          offset: 55539
+          line: 789
           column: 278
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_fallback"
       identity_kind: "explicit"
-      unit_id: "normative_49926"
+      unit_id: "normative_54553"
       source_span:
         start:
-          offset: 50913
-          line: 805
+          offset: 55540
+          line: 790
           column: 1
         end:
-          offset: 51176
-          line: 805
+          offset: 55803
+          line: 790
           column: 264
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_reject_fate"
       identity_kind: "explicit"
-      unit_id: "normative_49926"
+      unit_id: "normative_54553"
       source_span:
         start:
-          offset: 51177
-          line: 806
+          offset: 55804
+          line: 791
           column: 1
         end:
-          offset: 51467
-          line: 806
+          offset: 56094
+          line: 791
           column: 291
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49926"
+      unit_id: "normative_54553"
       source_span:
         start:
-          offset: 51469
-          line: 808
+          offset: 56096
+          line: 793
           column: 1
         end:
-          offset: 51855
-          line: 808
+          offset: 56482
+          line: 793
           column: 387
+    - pointer: "/allocation_rules/6"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_54553"
+      source_span:
+        start:
+          offset: 56555
+          line: 797
+          column: 1
+        end:
+          offset: 58466
+          line: 797
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_flow"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 75433
-          line: 896
+          offset: 88801
+          line: 887
           column: 1
         end:
-          offset: 75669
-          line: 896
+          offset: 89037
+          line: 887
           column: 237
     - pointer: "/validation_rules/1"
       rule_id: "validation_scope"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 75670
-          line: 897
+          offset: 89038
+          line: 888
           column: 1
         end:
-          offset: 75872
-          line: 897
+          offset: 89240
+          line: 888
           column: 203
     - pointer: "/validation_rules/2"
       rule_id: "validation_process_map"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 75873
-          line: 898
+          offset: 89241
+          line: 889
           column: 1
         end:
-          offset: 76110
-          line: 898
+          offset: 89478
+          line: 889
           column: 238
     - pointer: "/validation_rules/3"
       rule_id: "validation_flow_coordinates"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 76111
-          line: 899
+          offset: 89479
+          line: 890
           column: 1
         end:
-          offset: 76358
-          line: 899
+          offset: 89726
+          line: 890
           column: 248
     - pointer: "/validation_rules/4"
       rule_id: "validation_nutrients_and_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 76359
-          line: 900
+          offset: 89727
+          line: 891
           column: 1
         end:
-          offset: 76633
-          line: 900
+          offset: 90001
+          line: 891
           column: 275
     - pointer: "/validation_rules/5"
       rule_id: "validation_water_and_land"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 76634
-          line: 901
+          offset: 90002
+          line: 892
           column: 1
         end:
-          offset: 76846
-          line: 901
+          offset: 90214
+          line: 892
           column: 213
     - pointer: "/validation_rules/6"
       rule_id: "validation_quality_release"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 76847
-          line: 902
+          offset: 90215
+          line: 893
           column: 1
         end:
-          offset: 77078
-          line: 902
+          offset: 90446
+          line: 893
           column: 232
     - pointer: "/validation_rules/7"
       rule_id: "validation_reject_fate"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 77079
-          line: 903
+          offset: 90447
+          line: 894
           column: 1
         end:
-          offset: 77355
-          line: 903
+          offset: 90723
+          line: 894
           column: 277
     - pointer: "/validation_rules/8"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 77356
-          line: 904
+          offset: 90724
+          line: 895
           column: 1
         end:
-          offset: 77567
-          line: 904
+          offset: 90935
+          line: 895
           column: 212
     - pointer: "/validation_rules/9"
       rule_id: "validation_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_75338"
+      unit_id: "normative_88706"
       source_span:
         start:
-          offset: 77568
-          line: 905
+          offset: 90936
+          line: 896
           column: 1
         end:
-          offset: 77784
-          line: 905
+          offset: 91152
+          line: 896
           column: 217
+    - pointer: "/validation_rules/10"
+      rule_id: "validation_local_combustion_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_88706"
+      source_span:
+        start:
+          offset: 91153
+          line: 897
+          column: 1
+        end:
+          offset: 91493
+          line: 897
+          column: 341
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1966,27 +2012,51 @@ normative_context:
           column: 253
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49926"
+      unit_id: "normative_54553"
       source_span:
         start:
-          offset: 49926
-          line: 798
+          offset: 54553
+          line: 783
           column: 1
         end:
-          offset: 49966
-          line: 798
+          offset: 54593
+          line: 783
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_75338"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_54553"
       source_span:
         start:
-          offset: 75338
-          line: 892
+          offset: 56096
+          line: 793
           column: 1
         end:
-          offset: 75360
-          line: 892
+          offset: 56482
+          line: 793
+          column: 387
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_54553"
+      source_span:
+        start:
+          offset: 56555
+          line: 797
+          column: 1
+        end:
+          offset: 58466
+          line: 797
+          column: 1912
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_88706"
+      source_span:
+        start:
+          offset: 88706
+          line: 883
+          column: 1
+        end:
+          offset: 88728
+          line: 883
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1995,5 +2065,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:98778596ef7646381f8990f57cf3e99f98fa5a930f523661693d7d5e5b2f384c"
-  generated_content_sha256: "sha256:511697cc30b42dd67eb8632d20b3b35a313ec477ae8ef59b4014534dfeec9a93"
+    sha256: "sha256:6639c7b458c38d80015d0b3674c70defe8d2a7725c4f05c4537b34973f049901"
+  generated_content_sha256: "sha256:a4880691f74f38bfff1ab0b2b63fee02ec8367c1897cbb5526f7f58b353e97a9"

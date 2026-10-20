@@ -324,8 +324,8 @@ Raw activity or stage basis: per 1 kg accepted fresh raw ginger.
 
 Record this flow at the stated process boundary and reconcile it to the linked cycle or batch and destination.
 
-- Selected flow: Dinitrogen monoxide nitrogen, to air
-- Flow property / unit: Mass / kg N2O-N
+- Selected flow: Nitrous oxide to air; kg molecular N2O, identity unresolved
+- Flow property / unit: Mass / kg N2O
 - Amount rule: Multiply applicable nitrogen input by the selected direct-soil factor
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -345,6 +345,8 @@ Raw activity or stage basis: per 1 kg nitrogen input.
   - Basis kind: Nitrogen input (`n_input`)
   - Evidence kind: External source (`external_source`)
   - Sources: `ipcc-2019-managed-soils`
+
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
 
 ### Process: Harvest and lifting (`harvest_lifting`)
 
@@ -740,6 +742,10 @@ Raw activity or stage basis: per 1 kg accepted fresh raw ginger.
 | `allocation_downgrade` | downgraded product | Keep marketable downgrade as a separate product; after subdivision, declare physical or economic allocation and sensitivity. | `mass-balance-identity` |
 | `allocation_reject` | rejects and rework | Re-washed material retains prior burdens and gains only incremental burdens; accepted output excludes unresolved rejects and final treatment follows the declared route. | `mass-balance-identity` |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
@@ -773,6 +779,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_mass_reconciliation` | each node | input = products + wastes + stock change + documented soil/water/moisture difference | all linked states | residual | `mass-balance-identity` |
 | `calc_shared_run` | shared equipment | allocate once by throughput or runtime | shared input; driver | attributed input | `mass-balance-identity` |
 | `calc_downgrade_allocation` | downgrade | apply declared allocation after subdivision and report sensitivity | masses and values | allocated burdens | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_products`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -829,3 +836,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-ginger-postharvest-compendium` | handbook | FAO INPhO, *Ginger: Post-harvest Operations*, https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_Ginger.pdf | separating fresh handling from downstream processing |
 | `ipcc-2019-managed-soils` | method_factor | IPCC 2019 Refinement, Vol. 4 Ch. 11 Table 11.1, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | direct N2O method and EF1 uncertainty |
 | `mass-balance-identity` | method_factor | Conservation-of-mass identity for linked foreground records | hand-offs, reconciliation, reference output and routing |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

@@ -871,7 +871,7 @@ dataset_production:
       flow_role: "soil and crop emissions"
       record_type: "nutrient, soil, weather, residue, drainage, and emission-model records"
       raw_fields: "fertilizer_N; organic_N; residue_N; application_method; soil; climate; drainage; factor_set; model_version"
-      collection_method: "calculate each pathway with one declared geographically applicable method; Raw aggregation and attribution: calculate per field, area-weight, then normalize by same-cycle yield"
+      collection_method: "Within each compatible route/product/state, calculate attributable raw totals by field first. Aggregate final intensity = sum(attributable raw quantities) * declared reference quantity / sum(matched accepted final outputs). When source quantities are per-ha rates e_h and y_h, first recover raw totals as e_h*area and y_h*area; do not area-weight field totals again. A per-product intensity is weighted by its matched output, not area or an unweighted mean. Apply existing allocation once, preserve period/throughput and all source-unit conversions, and keep incompatible routes separate."
       unit: "kg N; kg emission; ha"
       frequency: "each event and crop-cycle calculation"
       temporal_coverage: "complete crop cycle"
@@ -962,6 +962,16 @@ dataset_production:
       output: "as-received and dry-matter values"
       source_ids:
         - fao-quinoa-cultivation-guide
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_quinoa_emission_activity
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_product_identity
       applies_to: "reference product"
@@ -1069,7 +1079,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3f6977c642cb89fa76daa0805fa60a027e1d23a59ab56daa9bdd3c1edb23537c"
+  source_sha256: "sha256:c4b0e5be87182c3c90bc63559a911c29251777a6bb63cf305dbe1cc7a1d235cf"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4669"
@@ -1168,16 +1178,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_56054"
+    - unit_id: "normative_57902"
       family: "validation"
       span:
         start:
-          offset: 56054
-          line: 774
+          offset: 57902
+          line: 775
           column: 1
         end:
-          offset: 57390
-          line: 785
+          offset: 59238
+          line: 786
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_output` | terminal output | Exactly one terminal quinoa grain output equals 1,000 kg after scaling, uses the fixed reference UUID, and declares moisture and quality qualifiers. |  |\n| `validation_process_route` | process map | Include field production once; include conditioning only before farm-gate hand-off and avoid double counting embedded energy, water, or rejects. |  |\n| `validation_crop_cycle_reconciliation` | field inventory | Area, inputs, harvest outputs, residue fates, losses, and emissions refer to the same crop cycle and represented fields. |  |\n| `validation_nitrogen_balance` | nitrogen inventory | Reconcile nutrient content, returned and removed residue nitrogen, and emission pathways with the selected methods and factors disclosed. | `ipcc-2019-managed-soils` |\n| `validation_conditioning_balance` | conditioning | Reconcile incoming wet grain with accepted grain, screenings, rejects, moisture loss, and other measured loss within uncertainty. | `mass-balance-identity` |\n| `validation_flow_identity` | every flow | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
       headings:
@@ -1196,12 +1206,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 56054
-              line: 774
+              offset: 57902
+              line: 775
               column: 1
             end:
-              offset: 56076
-              line: 774
+              offset: 57924
+              line: 775
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1337,80 +1347,80 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_output"
       identity_kind: "explicit"
-      unit_id: "normative_56054"
+      unit_id: "normative_57902"
       source_span:
         start:
-          offset: 56149
-          line: 778
+          offset: 57997
+          line: 779
           column: 1
         end:
-          offset: 56354
-          line: 778
+          offset: 58202
+          line: 779
           column: 206
     - pointer: "/validation_rules/1"
       rule_id: "validation_process_route"
       identity_kind: "explicit"
-      unit_id: "normative_56054"
+      unit_id: "normative_57902"
       source_span:
         start:
-          offset: 56355
-          line: 779
+          offset: 58203
+          line: 780
           column: 1
         end:
-          offset: 56549
-          line: 779
+          offset: 58397
+          line: 780
           column: 195
     - pointer: "/validation_rules/2"
       rule_id: "validation_crop_cycle_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_56054"
+      unit_id: "normative_57902"
       source_span:
         start:
-          offset: 56550
-          line: 780
+          offset: 58398
+          line: 781
           column: 1
         end:
-          offset: 56736
-          line: 780
+          offset: 58584
+          line: 781
           column: 187
     - pointer: "/validation_rules/3"
       rule_id: "validation_nitrogen_balance"
       identity_kind: "explicit"
-      unit_id: "normative_56054"
+      unit_id: "normative_57902"
       source_span:
         start:
-          offset: 56737
-          line: 781
+          offset: 58585
+          line: 782
           column: 1
         end:
-          offset: 56959
-          line: 781
+          offset: 58807
+          line: 782
           column: 223
     - pointer: "/validation_rules/4"
       rule_id: "validation_conditioning_balance"
       identity_kind: "explicit"
-      unit_id: "normative_56054"
+      unit_id: "normative_57902"
       source_span:
         start:
-          offset: 56960
-          line: 782
+          offset: 58808
+          line: 783
           column: 1
         end:
-          offset: 57170
-          line: 782
+          offset: 59018
+          line: 783
           column: 211
     - pointer: "/validation_rules/5"
       rule_id: "validation_flow_identity"
       identity_kind: "explicit"
-      unit_id: "normative_56054"
+      unit_id: "normative_57902"
       source_span:
         start:
-          offset: 57171
-          line: 783
+          offset: 59019
+          line: 784
           column: 1
         end:
-          offset: 57388
-          line: 783
+          offset: 59236
+          line: 784
           column: 218
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1451,15 +1461,15 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_56054"
+      unit_id: "normative_57902"
       source_span:
         start:
-          offset: 56054
-          line: 774
+          offset: 57902
+          line: 775
           column: 1
         end:
-          offset: 56076
-          line: 774
+          offset: 57924
+          line: 775
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1468,5 +1478,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3f6977c642cb89fa76daa0805fa60a027e1d23a59ab56daa9bdd3c1edb23537c"
-  generated_content_sha256: "sha256:0040d63bda1a7f74643ddfb2b7b4d01626d4c8569ada09250311d0c6838053c9"
+    sha256: "sha256:c4b0e5be87182c3c90bc63559a911c29251777a6bb63cf305dbe1cc7a1d235cf"
+  generated_content_sha256: "sha256:32b002852bc04444c8627bfab0c450099dfe2f5a4763066b3fa5068214135b89"

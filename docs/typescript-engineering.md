@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: "2026-10-18"
-lastReviewedCommit: "92e53b455840908bc77c4d660de2367ae783a0e7"
-lastReviewedNote: "Reviewed the same-source CI web-build handoff and separate product sealing: complete source/run/attempt/plan/archive/tree and build/SEO evidence bindings, mandatory full/data jobs, unchanged resource budgets and fresh complete qualification. No methodology, dependency, version, publication or provider authority changes."
+lastReviewedAt: "2026-10-20"
+lastReviewedCommit: "623239f3b89f335ee5461b422378cf709a8228f3"
+lastReviewedNote: "Reconciled Candy main PCR additions and same-source web-build handoff with the CPC 01/02/03 content repairs and 120-minute job limits. Preserved both sides of the methodology and CI contracts; regenerated combined catalog/coverage artifacts. Local PCR and focused checks pass; full hosted Linux qualification remains required."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -247,6 +247,10 @@ succeed and rejects unexpected skips, missing jobs and failed jobs. This include
 both `web-build` and `documentation` in full and data lanes; transfer or sealing
 failure cannot be hidden behind a successful web render. Local
 `npm run validate`, `npm test` and `all`/`root` remain complete entrypoints.
+
+The full test-shard jobs, web build and documentation sealing each have a
+120-minute GitHub Actions job timeout. This limit applies independently to each job; dependency
+waiting time and the complete workflow duration are separate.
 
 Full qualification partitions the entire discovered test inventory into eight
 fixed shards: `harness`, `core`, `builder`, `consumer`, `docs`, `engineering`,

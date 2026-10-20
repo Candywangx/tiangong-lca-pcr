@@ -138,8 +138,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_collection`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Paper collection bag (`collection_materials_paper_bag`)
 
 Only where an actual paper bag is used for the represented mushroom collection route; document paper grade, coating and food-contact suitability. Do not substitute a preharvest fruit-protection bag or paper stock for the finished collection bag.
@@ -322,8 +320,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning`
 - Sources: `fao-agricultural-energy`
-
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Supplied primary conditioning water (`conditioning_water`)
 
@@ -535,7 +531,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_preservation`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 ##### Waste flows
 
@@ -682,8 +678,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_handover`
 - Sources: `fao-agricultural-energy`
-
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Wooden crate (`handover_packaging_wood_crate`)
 

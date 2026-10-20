@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | 杜松子的种子 `d6490f83-abd7-47ff-990f-3cd7ae018dfa` |
+| Reference product flow | 商品芥菜籽，实际物种和状态 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -95,7 +95,7 @@ sync_with: pcr.en-US.md
 
 同类上游种子投入；保留供应方和播种用途限定。
 
-- 选定流：杜松子的种子 `d6490f83-abd7-47ff-990f-3cd7ae018dfa`
+- 选定流：播种用芥菜种子，实际物种和种用等级
 - 流属性/单位: Mass / kg
 - 数量规则: 计量的田间领用种子
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -116,6 +116,8 @@ sync_with: pcr.en-US.md
   - 基准类型: Crop cycle (`crop_cycle`)
   - 证据类型: External source (`external_source`)
   - 来源: `nfsm-oilseeds-practices-2018`
+
+身份适用性：按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。
 
 ###### 尿素肥料（`nutrient_supply_urea`）
 
@@ -222,7 +224,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：灌溉供水
 - 流属性/单位: Volume / m3
-- 数量规则: 按事件计量取水或供水；经核实的雨养路线为零
+- 数量规则：按事件/用途和匹配期间，计量实际跨此产品供水边界的供水量并保留声明原生单位。水源取水表不能自动当交付产品量，须核对两测点间输配损失、外部回水和存水变化。前景负责直接天然取水时，另设分水源基本流输入及本地供水作业，内部交付在聚合边界抵销，不能另加一笔外购水。外购水承接兼容供应商取水及供水负担一次。雨养/无供水须有据，缺少交付量或责任证据属于不完整而非零；归属后按合格最终产出归一化一次。
 - 数值来源模式: Foreground record (`foreground_record`)
 - 适用范围: Site-specific (`site_specific`)
 原始活动或阶段基准：每公顷栽培面积，再按每 kg 合格种子归一.
@@ -251,7 +253,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_cultivation_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -413,7 +415,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_harvest_mass_balance`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -525,7 +527,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_conditioning_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -662,7 +664,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_grading_handoff`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -682,7 +684,7 @@ sync_with: pcr.en-US.md
 
 生产者或初级处理方交接处的参考产品；不含降级和拒收物料。
 
-- 选定流：杜松子的种子 `d6490f83-abd7-47ff-990f-3cd7ae018dfa`
+- 选定流：商品芥菜籽，实际物种和状态
 - 流属性/单位: Mass / kg
 原始产出计量与核对要求：在声明水分和等级下计量合格质量
 
@@ -705,6 +707,8 @@ sync_with: pcr.en-US.md
   - 基准类型: Reference flow (`reference_flow`)
   - 证据类型: Method formula (`method_formula`)
   - 来源: `iso-14044-2006`
+
+身份适用性：按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。
 
 ###### 降级芥菜籽 (`downgraded_seed`)
 
@@ -769,6 +773,10 @@ sync_with: pcr.en-US.md
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -801,10 +809,11 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_cultivation_records` | `managed_cultivation` | seed; nutrients; water; crop protection; energy; residues | field and purchase records | field_id; cycle; area; species; product; mass; composition; water; carrier; energy; destination | 核对田间日志、发票、计量表和施用记录；原始汇总与分配：按田块和路线汇总并除以关联合格种子 按路线确认要求：`cultivation_energy_identification`: 芥菜籽种植实际柴油机械；泵送供能单独确认。 原始活动或阶段基准：每公顷栽培面积，再按每 kg 合格种子归一. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `crop_protection_products_specific_input`: 作业 managed_cultivation：按记录展开各有效成分或制剂。初检未得到适用于所有场址的唯一身份，因此本卡保持未解析。 原数量方法：计量领用质量并与施用记录核对 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; m3; MJ; kWh; ha | 每次作业 | 完整作物周期 | 全部田块和供应方 | 每声明的参考流 | 发票、校准、施用日志、田块图和完整性核对 |
+| `cp_cultivation_records` | `managed_cultivation` | seed; nutrients; water; crop protection; energy; residues | field and purchase records | field_id; cycle; area; species; product; mass; composition; water; carrier; energy; destination ；实际供水边界及测点；产品交付量；直接取水责任方；水源至交付的损失回水及存水；供应商覆盖| 核对田间日志、发票、计量表和施用记录；原始汇总与分配：按田块和路线汇总并除以关联合格种子 按路线确认要求：`cultivation_energy_identification`: 芥菜籽种植实际柴油机械；泵送供能单独确认。 原始活动或阶段基准：每公顷栽培面积，再按每 kg 合格种子归一. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `crop_protection_products_specific_input`: 作业 managed_cultivation：按记录展开各有效成分或制剂。初检未得到适用于所有场址的唯一身份，因此本卡保持未解析。 原数量方法：计量领用质量并与施用记录核对 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; m3; MJ; kWh; ha | 每次作业 | 完整作物周期 | 全部田块和供应方 | 每声明的参考流 | 发票、校准、施用日志、田块图和完整性核对 |
 | `cp_harvest_mass_balance` | `harvest_capture` | crop; energy; raw seed; residues; loss | harvest lot records | field_id; lot_id; method; energy; seed_mass; moisture; residue; loss; destination | 地磅/秤、燃料日志和田间损失抽样；原始汇总与分配：核对原籽、残余物和损失 按路线确认要求：`harvest_energy_identification`: 所选芥菜籽路线实际柴油割收、联合收获或脱粒机械。 原始活动或阶段基准：每 kg 已收集原籽. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg; percent; MJ; kWh | 每收获批次 | 周期内全部收获 | 全部田块和承包方 | 每声明的参考流 | 校准、抽样、发票和批次关联 |
 | `cp_conditioning_records` | `clean_dry_stabilize` | raw seed; energy; water; stabilized seed; rejects | lot/run records | lot_id; route; input/output mass; moisture; energy; water; foreign_matter; reject; destination | 秤、水分测试、计量表和运行日志；原始汇总与分配：按批次核对干物质和湿质量 按路线确认要求：`conditioning_energy_identification`: 实际电动清选设备及干燥风机；有证据的环境干燥不假定外购热，任何加热器须单独确认。 原始活动或阶段基准：每 kg 稳定化种子. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg; percent; MJ; kWh; m3 | 每批次或期间 | 全部关联批次 | 每处理场址 | 每声明的参考流 | 校准、水分方法、计量日志和签署平衡 |
 | `cp_grading_handoff` | `grade_handoff` | stabilized input; energy; accepted; downgrade; reject | grading/dispatch records | lot_id; run_id; input; moisture; grade; accepted; downgrade; reject; destination; energy | 秤、分级记录、质量测试和发运文件；原始汇总与分配：核对全部状态；仅合格质量为分母 按路线确认要求：`grading_energy_identification`: 实际电动筛分、输送及换批清洁设备。 原始活动或阶段基准：每 kg 合格种子. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg; percent; MJ; kWh | 每运行和交接 | 全部纳入批次 | 每分级场址 | 每声明的参考流 | 校准、等级证书、发运单和去向记录 |
+| `cp_phase1_environment_coverage` | managed_cultivation | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -815,6 +824,13 @@ sync_with: pcr.en-US.md
 | `calc_nutrient_inputs` | nutrient card | 按产品质量×供应方养分分数分别求 N、P、K | mass; composition | nutrient/field and /kg seed | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | harvest; conditioning; grading | 按实测水分变化调整投入 = 各产出+损失；调查残差 | masses; moisture; destinations | node balance | `iso-14044-2006` |
 | `calc_managed_soil_emissions` | cultivation | 用声明方法和优先国家因子计算合成/有机 N、残余物、尿素和石灰排放 | N; residues; urea; lime; factors | species/compartment flows | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_cultivation_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
@@ -830,7 +846,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference flow | 要求固定 UUID、Mass 属性/单位组、1 kg、CPC 语境及所有限定；基名不足以完成身份。 |  |
+| `validate_reference_identity` | reference flow | 按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。 |  |
 | `validate_route_boundary` | process map | 要求四个父节点及路线差异；拒绝纳入榨油、饼粕、制粉或调味品制造。 | `niphm-mustard-ipm`; `agmarknet-mustard-postharvest` |
 | `validate_nutrient_card` | cultivation | 每种实际肥料或改良剂产品单独列卡，保留实物质量、配方、养分组成和施用记录；养分量不是同一产品的另一次投入，不使用集合或分组标识代替具体流身份。 |  |
 | `validate_mass_balance` | harvest; conditioning; grading | 每批次/运行核对投入、内部/合格产出、降级、返工、拒收、残余、水分变化和损失。 | `iso-14044-2006` |
@@ -864,3 +880,4 @@ sync_with: pcr.en-US.md
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `ipcc-soils-n2o-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

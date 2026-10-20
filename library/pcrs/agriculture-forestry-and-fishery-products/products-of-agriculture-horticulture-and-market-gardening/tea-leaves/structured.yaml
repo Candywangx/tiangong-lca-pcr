@@ -36,7 +36,7 @@ system_boundary:
       rule: "Select one named tea route per lot and include only the route states that occur; do not count withering, oxidation, rolling, or yellowing when the selected route does not use that state."
       source_ids:
         - iso-20715-2023-tea-classification
-        - fao-tea-processing-manual
+        - fao-jmpr-tea-processing-2016
     - rule_id: boundary_03
       applies_to: "gate_definition"
       rule: "The declared gate is after primary processing, drying, grading, and included storage, and before packaging presentation, retail, downstream distribution, consumer brewing, or beverage preparation."
@@ -51,7 +51,7 @@ system_boundary:
       applies_to: "direct_emissions_and_residues"
       rule: "Record direct field and processing emissions, wastewater, dust, residues, rejects, and their destinations when they cross the foreground boundary or are required for mass reconciliation."
       source_ids:
-        - fao-tea-processing-manual
+        - fao-jmpr-tea-processing-2016
         - ipcc-2019-refinement-afolu
 boundary_abstraction:
   declared_starting_condition: "Managed *Camellia sinensis* plantation and the reported reporting-period inputs, land occupation, harvest records, or a documented upstream plantation dataset"
@@ -492,7 +492,7 @@ process_inventory:
           name: "Fresh tea leaves collected (route-specific UUID unresolved)"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "The collected output is fresh *Camellia sinensis* leaf, bud, and shoot material transferred to green-leaf handling. It is not the finished Tea reference flow. Raw activity or stage basis: per 1 kg dry tea."
+          description: "The collected output is fresh *Camellia sinensis* leaf, bud, and shoot material transferred to green-leaf handling. It is not the finished Tea reference flow. Raw activity or stage basis: per 1 kg dry tea. The cited guidance does not establish this broad numerical interval for all represented routes. Use matched lot measurements and moisture/loss balances; report quantitative screening unavailable until route-specific evidence supports bounds. Do not substitute the deleted range for a measured yield or loss."
           amount:
             expression: "weighed fresh leaf at the receiving or collection hand-off"
             value_mode: "foreground_record"
@@ -504,17 +504,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest_output_records
               source_ids: []
-            ranges:
-              - role: typical_range
-                lower: "3.0"
-                upper: "8.0"
-                unit: "kg fresh leaf/kg dry tea"
-                basis: "fresh leaf moisture and route yield; replace with lot mass balance"
-                basis_kind: "reference_flow"
-                evidence_kind: "external_source"
-                source_ids:
-                  - fao-tea-processing-manual
-                  - mass-balance-identity
+            ranges: []
       waste:
         - row_id: tea_plucking_loss
           role: "Plucking loss and non-tea material"
@@ -784,7 +774,7 @@ process_inventory:
           flow_ref:
             uuid: "d16090ca-ddbe-4fd4-a498-fe4cab8bb525"
           property_unit: "Mass / kg"
-          description: "The drying output is the stabilized usable state handed to grading. The fixed platform Tea identity is applied only to this dry product state and later gate output. Raw activity or stage basis: per 1 kg dry tea."
+          description: "The drying output is the stabilized usable state handed to grading. The fixed platform Tea identity is applied only to this dry product state and later gate output. Raw activity or stage basis: per 1 kg dry tea. The cited guidance does not establish this broad numerical interval for all represented routes. Use matched lot measurements and moisture/loss balances; report quantitative screening unavailable until route-specific evidence supports bounds. Do not substitute the deleted range for a measured yield or loss."
           amount:
             expression: "weighed dry made tea after the final drying step"
             value_mode: "foreground_record"
@@ -797,16 +787,7 @@ process_inventory:
               collection_protocol_id: cp_processing_batch_records
               source_ids:
                 - iso-20715-2023-tea-classification
-            ranges:
-              - role: typical_range
-                lower: "0.15"
-                upper: "0.40"
-                unit: "kg dry made tea/kg fresh leaf"
-                basis: "lot-level dry output yield; moisture recorded separately"
-                basis_kind: "reference_flow"
-                evidence_kind: "external_source"
-                source_ids:
-                  - fao-tea-processing-manual
+            ranges: []
       waste:
         - row_id: tea_processing_residue
           role: "Route-specific tea processing residue and dust"
@@ -841,7 +822,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Record mass lost through handling, dust, trim, evaporation beyond the measured moisture change, or rejected material, and link each fraction to rework, recovery, composting, energy recovery, or disposal. Raw activity or stage basis: per 1 kg dry tea. No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value."
           amount:
-            expression: "mass balance difference after accounting for intermediates, product outputs, and residues"
+            expression: "Measure or use representative sampling for the actual identified rejected/spilled/otherwise lost material and its evidenced destination. A component mass balance may estimate that stream only when all other product, residue, water, stock and transfer terms are supported, compatible and mutually exclusive, with uncertainty disclosed. Keep unexplained balance residual as an investigation/evidence gap, never automatically a waste output, dry-matter loss, vapour or emission. Separate every actual material/state/destination and preserve retained/reworked material as paired transfer or stock; normalize supported exported quantities once to accepted final output."
             value_mode: "calculated_value"
             specificity: "route_specific"
             basis:
@@ -1299,7 +1280,7 @@ dataset_production:
       process_id: "tea_green_leaf_handling_tea_route_processing"
       flow_role: "green leaf; route intermediates; dry made tea; processing residues; utility inputs"
       record_type: "batch sheet, scale, moisture test, process log, utility meter, and fuel record"
-      raw_fields: "route; batch_id; input_state; intermediate_state; process_step; moisture; output; loss; fuel; electricity; water; operating_condition"
+      raw_fields: "route; batch_id; input_state; intermediate_state; process_step; moisture; output; loss; fuel; electricity; water; operating_condition ; actual material/state/destination; representative stream measurement; all other component/stock terms; unexplained residual and uncertainty"
       collection_method: "reconcile each batch, route state, utility reading, moisture result, and mass balance; Raw aggregation and attribution: aggregate only after route, batch, utility, and mass reconciliation"
       unit: "kg; %; h; °C; L; MJ; kWh"
       frequency: "every batch or campaign"
@@ -1355,6 +1336,18 @@ dataset_production:
       site_scope: "declared handoff gate"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "calibration or weighing tickets, acceptance and lot traceability"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "tea_plantation_management"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calc_01
       applies_to: "tea_route_processing"
@@ -1411,6 +1404,24 @@ dataset_production:
         - "storage period"
       output: "shared-service burdens attributed once by route, batch and period"
       source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_emission_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
   data_quality_requirements:
     []
 validation_rules:
@@ -1487,10 +1498,10 @@ data_sources:
     type: "standard"
     reference: "https://www.iso.org/standard/51541.html"
     used_for: "black-tea route and product identity"
-  - id: "fao-tea-processing-manual"
-    type: "handbook"
-    reference: "https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/JMPR/Manual/FAO_manual_3rd_edition_Final.pdf"
-    used_for: "fresh-leaf moisture, dry-tea state, and processing sequence evidence"
+  - id: "fao-jmpr-tea-processing-2016"
+    type: "official_guidance"
+    reference: "FAO (2016), Submission and evaluation of pesticide residues data for the estimation of maximum residue levels in food and feed, 3rd edition, Appendix X, printed pp. 256–259; https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/JMPR/Manual/FAO_manual_3rd_edition_Final.pdf"
+    used_for: "Specific tea sample-processing route and moisture context only; no universal commercial tea-yield interval"
   - id: "fao-tea-chain-processing"
     type: "official_guidance"
     reference: "https://www.fao.org/fileadmin/templates/est/meetings/IGGtea21/Presentation-MarketReportArgentina.pdf"
@@ -1515,9 +1526,13 @@ data_sources:
     type: "method_factor"
     reference: "This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing."
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:69de3bf77f72e0f1958548d50150f4e204510e2d8fc442e6f5736182e3f8598d"
+  source_sha256: "sha256:4c83a4256aac208683d86e77444150364a2146427ba6a386e6811deb96e85fd1"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6484"
@@ -1528,10 +1543,10 @@ normative_context:
           line: 73
           column: 1
         end:
-          offset: 10021
+          offset: 10027
           line: 100
           column: 1
-      markdown: "## 5. System Boundary\n\nThe foreground boundary starts with the managed tea plantation and its establishment or replacement records for the reporting period. It includes field inputs, land occupation, plantation maintenance, plucking, collection, green-leaf handling, selected primary-processing route, drying, grading, storage to the declared gate, process rejects, residues, direct emissions, wastewater where generated, and all allocation decisions required to reconcile the lot.\n\nThe boundary ends when dry, graded tea crosses the declared primary-processing gate before packaging presentation, retail, downstream distribution, consumer brewing, or beverage preparation. Background datasets for electricity, fuels, fertilizer products, crop-protection products, water supply, and treatment services are outside the foreground PCR boundary but are required when the foreground package uses them.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Managed *Camellia sinensis* plantation and the reported reporting-period inputs, land occupation, harvest records, or a documented upstream plantation dataset |\n| starting_condition_role | The production context that supplies fresh tea shoots and leaves to the independent plucking and collection node |\n| product_classification_scope | CPC 3.0: 01620 Tea leaves; named tea products from *Camellia sinensis* only |\n| recursive_input_rule | If a same-category tea product is supplied as an input to a later tea route, record it as an upstream tea dataset with its gate and quality state; do not recursively include its plantation or primary-processing burdens inside the receiving lot |\n| upstream_dataset_requirement | Use an upstream dataset when plantation, fresh-leaf supply, or a pre-processed tea intermediate is outside the foreground operator's reporting boundary; disclose UUID, route, gate, geography, period, and quality state |\n| disclosure | Declare tea type, route, plantation phase, fresh-leaf or dry-tea basis, grade, moisture, rejected fraction, residue destination, storage duration, and whether packaging is excluded |\n\n### Boundary Rules\n\n| rule_id | applies_to | source_ids | rule |\n| --- | --- | --- | --- |\n| `boundary_01` | plantation_to_gate | `iso-20715-2023-tea-classification`; `iso-14044-2006` | Include the managed plantation, plucking, selected primary-processing route, drying, grading, and gate storage needed to produce the declared dry tea reference flow. |\n| `boundary_02` | route_selection | `iso-20715-2023-tea-classification`; `fao-tea-processing-manual` | Select one named tea route per lot and include only the route states that occur; do not count withering, oxidation, rolling, or yellowing when the selected route does not use that state. |\n| `boundary_03` | gate_definition | `iso-14044-2006` | The declared gate is after primary processing, drying, grading, and included storage, and before packaging presentation, retail, downstream distribution, consumer brewing, or beverage preparation. |\n| `boundary_04` | recursive_same_category_input | `mass-balance-identity` | Same-category upstream tea input is a declared dataset input and must not be expanded recursively inside the receiving tea process. |\n| `boundary_05` | direct_emissions_and_residues | `fao-tea-processing-manual`; `ipcc-2019-refinement-afolu` | Record direct field and processing emissions, wastewater, dust, residues, rejects, and their destinations when they cross the foreground boundary or are required for mass reconciliation. |\n\n"
+      markdown: "## 5. System Boundary\n\nThe foreground boundary starts with the managed tea plantation and its establishment or replacement records for the reporting period. It includes field inputs, land occupation, plantation maintenance, plucking, collection, green-leaf handling, selected primary-processing route, drying, grading, storage to the declared gate, process rejects, residues, direct emissions, wastewater where generated, and all allocation decisions required to reconcile the lot.\n\nThe boundary ends when dry, graded tea crosses the declared primary-processing gate before packaging presentation, retail, downstream distribution, consumer brewing, or beverage preparation. Background datasets for electricity, fuels, fertilizer products, crop-protection products, water supply, and treatment services are outside the foreground PCR boundary but are required when the foreground package uses them.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Managed *Camellia sinensis* plantation and the reported reporting-period inputs, land occupation, harvest records, or a documented upstream plantation dataset |\n| starting_condition_role | The production context that supplies fresh tea shoots and leaves to the independent plucking and collection node |\n| product_classification_scope | CPC 3.0: 01620 Tea leaves; named tea products from *Camellia sinensis* only |\n| recursive_input_rule | If a same-category tea product is supplied as an input to a later tea route, record it as an upstream tea dataset with its gate and quality state; do not recursively include its plantation or primary-processing burdens inside the receiving lot |\n| upstream_dataset_requirement | Use an upstream dataset when plantation, fresh-leaf supply, or a pre-processed tea intermediate is outside the foreground operator's reporting boundary; disclose UUID, route, gate, geography, period, and quality state |\n| disclosure | Declare tea type, route, plantation phase, fresh-leaf or dry-tea basis, grade, moisture, rejected fraction, residue destination, storage duration, and whether packaging is excluded |\n\n### Boundary Rules\n\n| rule_id | applies_to | source_ids | rule |\n| --- | --- | --- | --- |\n| `boundary_01` | plantation_to_gate | `iso-20715-2023-tea-classification`; `iso-14044-2006` | Include the managed plantation, plucking, selected primary-processing route, drying, grading, and gate storage needed to produce the declared dry tea reference flow. |\n| `boundary_02` | route_selection | `iso-20715-2023-tea-classification`; `fao-jmpr-tea-processing-2016` | Select one named tea route per lot and include only the route states that occur; do not count withering, oxidation, rolling, or yellowing when the selected route does not use that state. |\n| `boundary_03` | gate_definition | `iso-14044-2006` | The declared gate is after primary processing, drying, grading, and included storage, and before packaging presentation, retail, downstream distribution, consumer brewing, or beverage preparation. |\n| `boundary_04` | recursive_same_category_input | `mass-balance-identity` | Same-category upstream tea input is a declared dataset input and must not be expanded recursively inside the receiving tea process. |\n| `boundary_05` | direct_emissions_and_residues | `fao-jmpr-tea-processing-2016`; `ipcc-2019-refinement-afolu` | Record direct field and processing emissions, wastewater, dust, residues, rejects, and their destinations when they cross the foreground boundary or are required for mass reconciliation. |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1568,16 +1583,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_66235"
+    - unit_id: "normative_66643"
       family: "allocation"
       span:
         start:
-          offset: 66235
-          line: 1110
+          offset: 66643
+          line: 1096
           column: 1
         end:
-          offset: 68557
-          line: 1122
+          offset: 68965
+          line: 1108
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | source_ids | rule |\n| --- | --- | --- | --- |\n| `allocation_01` | plantation_phase | `iso-14044-2006`; `ipcc-2019-refinement-afolu` | Attribute perennial establishment, replacement, land occupation, and plantation management to the reporting-period tea output using the declared period and output basis; do not allocate the same phase burden again at processing. |\n| `allocation_02` | route_batch | `iso-14044-2006`; `mass-balance-identity` | Index inputs, outputs, cleaning, drying, changeover, and rejects by route, batch, campaign, or reporting period so shared runs cannot be counted twice. |\n| `allocation_03` | marketable_tea_outputs | `iso-14044-2006` | Enumerate the accepted primary grade, marketable secondary grade, and recovered tea fraction when each is an intended tea output. Decision: use subdivision and direct measurement first; when outputs are physically inseparable, use allocation by measured dry tea mass as the default fallback, and disclose any economic allocation only as a documented sensitivity. Apply one method consistently to the affected process. |\n| `allocation_04` | residues_and_rejects | `iso-14044-2006`; `mass-balance-identity` | A residue is not a co-product merely because it has a possible use. Treat it as an intended output only when there is a declared hand-off, destination, and product-quality record; otherwise retain the producing process burden and route it as residue or waste. |\n| `allocation_05` | route_alternatives | `iso-20715-2023-tea-classification` | Green, black, oolong, white, yellow, and dark routes are mutually exclusive per lot. Do not combine route burdens or assign oxidation, rolling, withering, fixation, or piling to a lot without route evidence. |\n| `allocation_06` | multi_period_attribution | `iso-14044-2006`; `ipcc-2019-refinement-afolu` | Link establishment, replacement, pruning, termination, inputs, outputs, and storage events to a reporting period or phase and prevent double attribution across periods. |\n| `allocation_07` | rework_and_rejects | `mass-balance-identity` | Rework loops, downgrades, recovery, and boundary exits must link back to the producing node; accepted tea output excludes unresolved rejects and rejected material cannot be counted at two hand-offs. |\n\n"
       headings:
@@ -1596,12 +1611,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 66235
-              line: 1110
+              offset: 66643
+              line: 1096
               column: 1
             end:
-              offset: 66275
-              line: 1110
+              offset: 66683
+              line: 1096
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1616,16 +1631,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_79481"
+    - unit_id: "normative_84980"
       family: "validation"
       span:
         start:
-          offset: 79481
-          line: 1163
+          offset: 84980
+          line: 1157
           column: 1
         end:
-          offset: 82074
-          line: 1178
+          offset: 87573
+          line: 1172
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | source_ids | rule |\n| --- | --- | --- | --- |\n| `validation_01` | identity | `iso-20715-2023-tea-classification` | The dataset must identify *Camellia sinensis*, one named tea type, one route, the dry-tea state, and the declared primary-processing gate. |\n| `validation_02` | reference_flow | `mass-balance-identity` | The reference output must use `Tea` `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`, Mass `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`, and 1 kg unless a reviewed identity correction is issued. |\n| `validation_03` | route_completeness | `iso-20715-2023-tea-classification`; `fao-tea-chain-processing` | Exactly one named route must be selected. Every included route state must have a preceding input, a following hand-off, and a recorded output or loss; inapplicable states must not be counted. |\n| `validation_04` | plantation_and_harvest | `ipcc-2019-refinement-afolu` | Plantation phase, management inputs, plucking source, fresh-leaf output, and harvest loss must be linked to the same reporting period and lot or an identified upstream dataset. |\n| `validation_05` | batch_and_changeover | `mass-balance-identity` | Batch, campaign, or continuous-run boundaries must link inputs, outputs, cleaning, changeover, yield, and shared services; no shared-run burden may be counted twice. |\n| `validation_06` | outputs_and_allocation | `iso-14044-2006` | Every intended output and hand-off must be enumerated. Marketable secondary tea is separated from residue; one output cannot be counted at two hand-offs. |\n| `validation_07` | rejects_and_rework | `mass-balance-identity` | Every rejected or off-spec state must have a rework, downgrade, recovery, disposal, or boundary-exit path. Accepted output excludes unresolved rejects. |\n| `validation_08` | mass_balance | `mass-balance-identity` | Fresh leaf, route intermediates, dry tea, grade outputs, residues, rejects, storage losses, and declared evaporation or moisture changes must reconcile within the documented tolerance. |\n| `validation_09` | data_quality | `iso-14044-2006` | Missing material records, unresolved route selection, missing gate qualifiers, unsupported range substitutions, and unexplained mass-balance differences are findings that block reviewed or published use. |\n| `validation_10` | period_attribution | `ipcc-2019-refinement-afolu`; `iso-14044-2006` | Establishment, replacement, productive phase, termination, inputs, outputs, and storage events must be linked to periods and must not be attributed twice. |\n\n"
       headings:
@@ -1644,12 +1659,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 79481
-              line: 1163
+              offset: 84980
+              line: 1157
               column: 1
             end:
-              offset: 79503
-              line: 1163
+              offset: 85002
+              line: 1157
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1714,20 +1729,20 @@ normative_context:
           line: 95
           column: 1
         end:
-          offset: 9256
+          offset: 9259
           line: 95
-          column: 292
+          column: 295
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_03"
       identity_kind: "explicit"
       unit_id: "normative_6484"
       source_span:
         start:
-          offset: 9257
+          offset: 9260
           line: 96
           column: 1
         end:
-          offset: 9510
+          offset: 9513
           line: 96
           column: 254
     - pointer: "/system_boundary/rules/5"
@@ -1736,11 +1751,11 @@ normative_context:
       unit_id: "normative_6484"
       source_span:
         start:
-          offset: 9511
+          offset: 9514
           line: 97
           column: 1
         end:
-          offset: 9720
+          offset: 9723
           line: 97
           column: 210
     - pointer: "/system_boundary/rules/6"
@@ -1749,233 +1764,233 @@ normative_context:
       unit_id: "normative_6484"
       source_span:
         start:
-          offset: 9721
+          offset: 9724
           line: 98
           column: 1
         end:
-          offset: 10019
+          offset: 10025
           line: 98
-          column: 299
+          column: 302
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_66235"
+      unit_id: "normative_66643"
       source_span:
         start:
-          offset: 66348
-          line: 1114
+          offset: 66756
+          line: 1100
           column: 1
         end:
-          offset: 66666
-          line: 1114
+          offset: 67074
+          line: 1100
           column: 319
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_66235"
+      unit_id: "normative_66643"
       source_span:
         start:
-          offset: 66667
-          line: 1115
+          offset: 67075
+          line: 1101
           column: 1
         end:
-          offset: 66898
-          line: 1115
+          offset: 67306
+          line: 1101
           column: 232
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_66235"
+      unit_id: "normative_66643"
       source_span:
         start:
-          offset: 66899
-          line: 1116
+          offset: 67307
+          line: 1102
           column: 1
         end:
-          offset: 67382
-          line: 1116
+          offset: 67790
+          line: 1102
           column: 484
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_66235"
+      unit_id: "normative_66643"
       source_span:
         start:
-          offset: 67383
-          line: 1117
+          offset: 67791
+          line: 1103
           column: 1
         end:
-          offset: 67731
-          line: 1117
+          offset: 68139
+          line: 1103
           column: 349
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_66235"
+      unit_id: "normative_66643"
       source_span:
         start:
-          offset: 67732
-          line: 1118
+          offset: 68140
+          line: 1104
           column: 1
         end:
-          offset: 68020
-          line: 1118
+          offset: 68428
+          line: 1104
           column: 289
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_06"
       identity_kind: "explicit"
-      unit_id: "normative_66235"
+      unit_id: "normative_66643"
       source_span:
         start:
-          offset: 68021
-          line: 1119
+          offset: 68429
+          line: 1105
           column: 1
         end:
-          offset: 68287
-          line: 1119
+          offset: 68695
+          line: 1105
           column: 267
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_07"
       identity_kind: "explicit"
-      unit_id: "normative_66235"
+      unit_id: "normative_66643"
       source_span:
         start:
-          offset: 68288
-          line: 1120
+          offset: 68696
+          line: 1106
           column: 1
         end:
-          offset: 68555
-          line: 1120
+          offset: 68963
+          line: 1106
           column: 268
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 79576
-          line: 1167
+          offset: 85075
+          line: 1161
           column: 1
         end:
-          offset: 79785
-          line: 1167
+          offset: 85284
+          line: 1161
           column: 210
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 79786
-          line: 1168
+          offset: 85285
+          line: 1162
           column: 1
         end:
-          offset: 80083
-          line: 1168
+          offset: 85582
+          line: 1162
           column: 298
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 80084
-          line: 1169
+          offset: 85583
+          line: 1163
           column: 1
         end:
-          offset: 80384
-          line: 1169
+          offset: 85883
+          line: 1163
           column: 301
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 80385
-          line: 1170
+          offset: 85884
+          line: 1164
           column: 1
         end:
-          offset: 80639
-          line: 1170
+          offset: 86138
+          line: 1164
           column: 255
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 80640
-          line: 1171
+          offset: 86139
+          line: 1165
           column: 1
         end:
-          offset: 80876
-          line: 1171
+          offset: 86375
+          line: 1165
           column: 237
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 80877
-          line: 1172
+          offset: 86376
+          line: 1166
           column: 1
         end:
-          offset: 81096
-          line: 1172
+          offset: 86595
+          line: 1166
           column: 220
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 81097
-          line: 1173
+          offset: 86596
+          line: 1167
           column: 1
         end:
-          offset: 81317
-          line: 1173
+          offset: 86816
+          line: 1167
           column: 221
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 81318
-          line: 1174
+          offset: 86817
+          line: 1168
           column: 1
         end:
-          offset: 81565
-          line: 1174
+          offset: 87064
+          line: 1168
           column: 248
     - pointer: "/validation_rules/8"
       rule_id: "validation_09"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 81566
-          line: 1175
+          offset: 87065
+          line: 1169
           column: 1
         end:
-          offset: 81825
-          line: 1175
+          offset: 87324
+          line: 1169
           column: 260
     - pointer: "/validation_rules/9"
       rule_id: "validation_10"
       identity_kind: "explicit"
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 81826
-          line: 1176
+          offset: 87325
+          line: 1170
           column: 1
         end:
-          offset: 82072
-          line: 1176
+          offset: 87571
+          line: 1170
           column: 247
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2004,27 +2019,27 @@ normative_context:
           column: 198
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_66235"
+      unit_id: "normative_66643"
       source_span:
         start:
-          offset: 66235
-          line: 1110
+          offset: 66643
+          line: 1096
           column: 1
         end:
-          offset: 66275
-          line: 1110
+          offset: 66683
+          line: 1096
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_79481"
+      unit_id: "normative_84980"
       source_span:
         start:
-          offset: 79481
-          line: 1163
+          offset: 84980
+          line: 1157
           column: 1
         end:
-          offset: 79503
-          line: 1163
+          offset: 85002
+          line: 1157
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2033,5 +2048,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:69de3bf77f72e0f1958548d50150f4e204510e2d8fc442e6f5736182e3f8598d"
-  generated_content_sha256: "sha256:b0da41f66ece695648d2ff7086c7763cd757f2df3ac7a5fd39bfed56311bd4c2"
+    sha256: "sha256:4c83a4256aac208683d86e77444150364a2146427ba6a386e6811deb96e85fd1"
+  generated_content_sha256: "sha256:a928a1ba5371ca05cb2e5a70e7ebf1c69120aac036192b23a9b72adb8e782010"

@@ -229,32 +229,6 @@ Raw quantity and calculation requirements: Match death event, mass and lawful re
 
 ##### Product flows
 
-###### Actual non-hide terminal products (`other_terminal_products`)
-
-Actual carcass, meat or other independently sold output.
-
-Denominator and scope requirements：per recorded lot or reference product
-
-Raw quantity and calculation requirements: Record only real saleable outputs and handovers; do not invent meat for fallen animals. Original collection denominator kind: process_output.
-
-- Selected flow: Actual carcass, meat or other independently sold output (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_removal`
-- Range: Provisional completeness screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: kg per event
-  - Basis: measured relevant lot flow; not a default factor
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Collected wet raw equine skin (`collected_skin`)
 
 Wet ungraded equine skin before first conditioning.
@@ -616,32 +590,6 @@ Denominator and scope requirements：per reference flow
 
 ##### Waste flows
 
-###### Packaging rejects at gate (`packaging_rejects`)
-
-Damaged or retired packaging to actual treatment.
-
-Denominator and scope requirements：per recorded lot or reference product
-
-Raw quantity and calculation requirements: Record only when end-of-use occurs before handover. Original collection denominator kind: process_output.
-
-- Selected flow: Damaged or retired packaging to actual treatment (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_handover`
-- Range: Provisional completeness screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: kg per lot
-  - Basis: measured relevant lot flow; not a default factor
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -687,6 +635,8 @@ Identify the actual input for this operation from supplier specifications, equip
 | `allocation_sum` | shared outputs | Shares sum to one per node; animal and shared-asset periods not counted twice | actual outputs, drivers, periods | attributable burdens | `fao-hides-statistics` |
 | `conditioning_residues_specific_exchanges` | `conditioning` | Enumerate equine-hide trimming residues and spent wash water as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_conditioning` | Separate atomic exchanges; completeness required |  |
 | `preservation_residues_specific_exchanges` | `preservation` | Enumerate spent salt, spent brine and spoiled equine raw hides as separate actual streams. Measure each physical stream with its own composition, state, native unit, lot/period and destination; instantiate one atomic card per specific stream and boundary role. Distinguish waste transfer, purchased treatment and substance-specific discharge; do not treat a disposal service as the wastewater itself or duplicate treatment burdens. Keep stock, rework, marketed downgrade and discarded waste separate, and count physical mixtures once without also counting their components as additional exits. Retain the linked protocol and actual process attribution. Reconstruct each attributable raw numerator on its recorded stage basis, then normalize once to the matched accepted reference output. Missing identity, quantity, unit or destination blocks dataset completeness; absence requires evidence, not an assumed zero. | `cp_preservation` | Separate atomic exchanges; completeness required |  |
+| `other_terminal_products_identity_and_fate` | `removal` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_removal` | Identity-specific exchanges and reconciled activity records |  |
+| `packaging_rejects_identity_and_fate` | `handover` | Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_handover` | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

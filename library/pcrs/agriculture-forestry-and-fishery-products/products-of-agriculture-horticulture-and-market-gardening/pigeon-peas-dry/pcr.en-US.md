@@ -278,31 +278,6 @@ Required operating-service records: identify each actually purchased non-energy 
 
 ##### Elementary flows
 
-###### Managed-soil nitrous oxide (`managed_soil_n2o`)
-
-Calculate direct and relevant indirect N2O from recorded synthetic N, organic N, returned residue N and other applicable sources.
-
-- Selected flow: Nitrous oxide to air from managed soil
-- Flow property / unit: Mass / kg N2O
-- Amount rule: calculated from foreground N activity and declared factors
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per hectare and crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_cultivation`
-- Sources: `ipcc-managed-soils-2019`
-- Range: Provisional managed-soil N2O screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg N2O/ha per crop cycle
-  - Basis: included direct and indirect pathways for one hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 #### Outputs
 
 ##### Product flows
@@ -360,6 +335,35 @@ Raw activity or stage basis: per hectare and crop cycle.
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Elementary flows
+
+#### Outputs
+
+##### Elementary flows
+
+###### Managed-soil nitrous oxide (`managed_soil_n2o`)
+
+Calculate direct and relevant indirect N2O from recorded synthetic N, organic N, returned residue N and other applicable sources.
+
+- Selected flow: Nitrous oxide to air from managed soil
+- Flow property / unit: Mass / kg N2O
+- Amount rule: calculated from foreground N activity and declared factors
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare and crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_cultivation`
+- Sources: `ipcc-managed-soils-2019`
+- Range: Provisional managed-soil N2O screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: kg N2O/ha per crop cycle
+  - Basis: included direct and indirect pathways for one hectare
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ### Process: Whole-plant cutting or mature-pod picking (`harvest_capture`)
 
@@ -468,7 +472,7 @@ Record shattered pods, spilled grain and cut material without intended use; excl
 
 - Selected flow: Harvest loss and incidental material
 - Flow property / unit: Mass / kg
-- Amount rule: field estimate or lot mass-balance difference
+- Amount rule: Measure or use representative sampling for the actual identified rejected/spilled/otherwise lost material and its evidenced destination. A component mass balance may estimate that stream only when all other product, residue, water, stock and transfer terms are supported, compatible and mutually exclusive, with uncertainty disclosed. Keep unexplained balance residual as an investigation/evidence gap, never automatically a waste output, dry-matter loss, vapour or emission. Separate every actual material/state/destination and preserve retained/reworked material as paired transfer or stock; normalize supported exported quantities once to accepted final output.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per harvest lot.
@@ -565,7 +569,7 @@ Record damaged, contaminated or spilled material separately from calculated wate
 
 - Selected flow: Pre-threshing drying loss
 - Flow property / unit: Mass / kg
-- Amount rule: reject and spill mass plus unexplained physical loss, excluding water removed
+- Amount rule: Measure or use representative sampling for the actual identified rejected/spilled/otherwise lost material and its evidenced destination. A component mass balance may estimate that stream only when all other product, residue, water, stock and transfer terms are supported, compatible and mutually exclusive, with uncertainty disclosed. Keep unexplained balance residual as an investigation/evidence gap, never automatically a waste output, dry-matter loss, vapour or emission. Separate every actual material/state/destination and preserve retained/reworked material as paired transfer or stock; normalize supported exported quantities once to accepted final output.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per drying lot.
@@ -749,7 +753,7 @@ Record damaged or contaminated grain, foreign matter, dust and physical loss. As
 
 - Selected flow: Conditioning rejects and cleaning loss
 - Flow property / unit: Mass / kg
-- Amount rule: weighed rejects plus physical balance difference, excluding removed water
+- Amount rule: Measure or use representative sampling for the actual identified rejected/spilled/otherwise lost material and its evidenced destination. A component mass balance may estimate that stream only when all other product, residue, water, stock and transfer terms are supported, compatible and mutually exclusive, with uncertainty disclosed. Keep unexplained balance residual as an investigation/evidence gap, never automatically a waste output, dry-matter loss, vapour or emission. Separate every actual material/state/destination and preserve retained/reworked material as paired transfer or stock; normalize supported exported quantities once to accepted final output.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per conditioning batch.
@@ -921,7 +925,7 @@ Record heat or mould damage, contamination and physical loss; calculated water r
 
 - Selected flow: Final-drying damage and unrecovered reject
 - Flow property / unit: Mass / kg
-- Amount rule: weighed reject plus physical balance difference, excluding water removed
+- Amount rule: Measure or use representative sampling for the actual identified rejected/spilled/otherwise lost material and its evidenced destination. A component mass balance may estimate that stream only when all other product, residue, water, stock and transfer terms are supported, compatible and mutually exclusive, with uncertainty disclosed. Keep unexplained balance residual as an investigation/evidence gap, never automatically a waste output, dry-matter loss, vapour or emission. Separate every actual material/state/destination and preserve retained/reworked material as paired transfer or stock; normalize supported exported quantities once to accepted final output.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per final-drying or rework batch.
@@ -1011,6 +1015,10 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `allocation_rework` | Re-drying and re-cleaning | Returned material retains prior burdens; add incremental burdens once and do not count returned mass as new input or accepted output before release. |  |
 | `allocation_reject_exit` | Downgrade and waste | Downgraded outputs follow the complete-output attribution rule; treatment of waste remains with the producing node unless a disclosed downstream waste convention applies. |  |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
@@ -1023,20 +1031,28 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_cultivation` | `managed_cultivation` | inputs, mature crop, loss, soil-emission activity | field-cycle record | field; area; dates; variety; crop system; seed; actual nutrient products/composition; irrigation; protection; energy; residue management; yield/loss | invoices, logs, meters, sampling and reconciliation; Raw aggregation and attribution: aggregate by field/cycle then normalize by accepted grain | native units, ha, kg | each event; crop-cycle summary | full crop cycle | every field | per declared reference flow | dates, calibration, labels, reconciliation |
-| `cp_harvest` | `harvest_capture` | crop input, services, collected state, loss | harvest-lot/flush record | field; cycle; route; flush; maturity; date; crop estimate; service; collected mass; retained crop; loss | scale, sampling and operation log; Raw aggregation and attribution: keep routes/flushes separate and reconcile states | kg and service units | every lot/flush | all contributing flushes | every field/route | per declared reference flow | lot id, scale check, maturity evidence |
-| `cp_predrying` | `field_floor_drying` | wet input, dry output, moisture and loss | drying-lot record | lot; location; time; protection; input/output mass and moisture; damage; spill | scale, moisture meter and lot log; Raw aggregation and attribution: report water removal separately from physical loss | kg, %, day | every lot | full interval | every drying place | per declared reference flow | calibration, traceability, inspection |
-| `cp_conditioning` | `thresh_clean_grade` | batch input, services, grades, co-product and reject | batch record | batch; source lot; technology; input; moisture; energy; cleaning/changeover; outputs; grade; damage; destination | scale, meter, service and grade records; Raw aggregation and attribution: reconcile before grade/destination aggregation | kg, %, energy/service | each batch/changeover | all contributing batches | every route/site | per declared reference flow | calibration, lineage, destination receipt |
-| `cp_final_drying` | `final_drying_rework` | input, energy, moisture, release, downgrade and reject | drying/rework batch | batch; origin; reason; input/output mass/moisture; route; temperature; duration; energy; grade; destination | scale, moisture/temperature/time/energy records; Raw aggregation and attribution: retain prior burdens, add incremental burdens once, reconcile outputs | kg, %, °C, hour, energy | every pass | full intervention | every route/site | per declared reference flow | calibration, lineage, release record |
+| `cp_harvest` | `harvest_capture` | crop input, services, collected state, loss | harvest-lot/flush record | field; cycle; route; flush; maturity; date; crop estimate; service; collected mass; retained crop; loss ; actual material/state/destination; representative stream measurement; all other component/stock terms; unexplained residual and uncertainty| scale, sampling and operation log; Raw aggregation and attribution: keep routes/flushes separate and reconcile states | kg and service units | every lot/flush | all contributing flushes | every field/route | per declared reference flow | lot id, scale check, maturity evidence |
+| `cp_predrying` | `field_floor_drying` | wet input, dry output, moisture and loss | drying-lot record | lot; location; time; protection; input/output mass and moisture; damage; spill ; actual material/state/destination; representative stream measurement; all other component/stock terms; unexplained residual and uncertainty| scale, moisture meter and lot log; Raw aggregation and attribution: report water removal separately from physical loss | kg, %, day | every lot | full interval | every drying place | per declared reference flow | calibration, traceability, inspection |
+| `cp_conditioning` | `thresh_clean_grade` | batch input, services, grades, co-product and reject | batch record | batch; source lot; technology; input; moisture; energy; cleaning/changeover; outputs; grade; damage; destination ; actual material/state/destination; representative stream measurement; all other component/stock terms; unexplained residual and uncertainty| scale, meter, service and grade records; Raw aggregation and attribution: reconcile before grade/destination aggregation | kg, %, energy/service | each batch/changeover | all contributing batches | every route/site | per declared reference flow | calibration, lineage, destination receipt |
+| `cp_final_drying` | `final_drying_rework` | input, energy, moisture, release, downgrade and reject | drying/rework batch | batch; origin; reason; input/output mass/moisture; route; temperature; duration; energy; grade; destination ; actual material/state/destination; representative stream measurement; all other component/stock terms; unexplained residual and uncertainty| scale, moisture/temperature/time/energy records; Raw aggregation and attribution: retain prior burdens, add incremental burdens once, reconcile outputs | kg, %, °C, hour, energy | every pass | full intervention | every route/site | per declared reference flow | calibration, lineage, release record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | managed_cultivation | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_moisture` | Wet/dry mass | `dry matter = wet mass × (1 - wet-basis moisture fraction)`; water removed preserves dry matter. | mass and moisture | dry matter and water removed | `mass-balance-identity` |
+| `calc_moisture` | Wet/dry mass | Water removed to air = incoming material water + actual external water addition + opening water stock - water in every outgoing accepted/downgraded/reject/residue stream - separately exported liquid water - closing water stock, using matched measured wet masses and moisture fractions or compatible densities. Internal recirculation cancels. Include actual rain uptake/rewetting; separate dry-matter and non-water losses. Establish actual evaporation and receiving air boundary from measurement or a supported closed balance; missing components or unexplained difference do not prove vapour or zero. Normalize once to matched accepted final output. | mass and moisture | dry matter and water removed | `mass-balance-identity` |
 | `calc_normalization` | All activities | Sum only linked records, divide by accepted as-delivered grain and multiply by 1,000 kg. | linked quantities and accepted grain | quantity per reference flow | `mass-balance-identity` |
 | `calc_soil_n2o` | N additions and residues | Apply the declared applicable IPCC or reviewed national Tier method, including relevant direct, volatilization/deposition and leaching/runoff pathways. | N composition, residue N, factors | kg N2O by pathway | `ipcc-managed-soils-2019` |
 | `calc_reconciliation` | Every lot/batch | Input dry mass equals accepted, intended co-product, downgrade, reject and physical-loss dry mass; rework return is a transfer. | linked input/output mass and moisture | variance and completeness flag | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_cultivation`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 
@@ -1086,3 +1102,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

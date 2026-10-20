@@ -38,7 +38,7 @@ The parent route is physical collection and preparation after grain separation. 
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Straw `b1dd1313-1bc0-4baf-8cfb-50e8ea2a307c` |
+| Reference product flow | Feed-grade cereal straw or husk at the declared plant gate |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -412,7 +412,7 @@ Use the verified water-vapour elementary flow in the unspecified-air compartment
 
 - Selected flow: water vapour `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - Flow property / unit: Mass / kg
-- Amount rule: Inlet moisture minus outlet moisture, net of supplied water and discharge
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
 - Value mode: `calculated_value`
 - Specificity: `site_specific`
 Raw activity or stage basis: per kg accepted output.
@@ -850,7 +850,7 @@ Raw activity or stage basis: per 1,000 kg reference product.
 
 Issue only product matching the declared cereal, material state, moisture and feed-grade route.
 
-- Selected flow: Straw `b1dd1313-1bc0-4baf-8cfb-50e8ea2a307c`
+- Selected flow: Feed-grade cereal straw or husk at the declared plant gate
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 Raw output measurement and reconciliation: Fixed reference amount of accepted product
 
@@ -872,6 +872,8 @@ Raw activity or stage basis: per 1,000 kg reference product.
   - Basis kind: `reference_flow`
   - Evidence kind: `method_formula`
   - Sources: `mass-balance-identity`
+
+The product card and reference retain the 1,000 kg accepted output, actual cereal, straw/husk, preparation form, moisture basis and plant-gate feed grade. Select the actual material-specific identity only after compatible source verification; do not inherit a straw UUID for husk.
 
 ###### Downgraded stored material (`storage_downgrade`)
 
@@ -956,6 +958,10 @@ Raw activity or stage basis: per kg reference product.
 
 Enumerate grain, straw, husks and every other intended product at the upstream separation point. Use the upstream cereal PCR or supplier allocation when available. Otherwise test subdivision first; if shared cultivation burdens remain, apply and disclose one consistent physical or economic allocation in accordance with ISO 14044. Zero-burden cut-off is allowed only when an applicable study rule explicitly requires it. Within the foreground route, use measured lot balances for accepted, downgraded and waste states. Rework stays inside its producing node. Each reject has exactly one rework, downgrade, recovery or disposal path. Reconcile source, transfers and final hand-offs on a common dry-matter basis to prevent double counting.
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
@@ -970,7 +976,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_source_lot` | `source_collection` | source and received mass | weighbridge and source record | cereal; straw/husk; mass; moisture; dates | calibrated weighing and paired sampling; Raw aggregation and attribution: sum after moisture reconciliation | kg; fraction | each load | full period | all sources | per declared reference flow | calibration and sample chain |
 | `cp_transport` | `source_collection` | inbound transport | dispatch record | mass; origin; destination; distance; vehicle | invoice and route log; Raw aggregation and attribution: sum loaded t*km | t; km; t*km | each load | full period | all routes | per declared reference flow | dispatch record |
 | `cp_energy` | all applicable nodes | energy inputs | meter, invoice and equipment log | carrier; quantity; node; run; allocation key | direct metering preferred; Raw aggregation and attribution: convert and assign once | carrier unit; MJ | each run or monthly | representative year | all nodes | per declared reference flow | meter or invoice |
-| `cp_water_moisture` | grading and forming | water and moisture | meter and laboratory record | water; inlet/outlet mass; moisture method; time | meter and paired samples; Raw aggregation and attribution: water addition and removal separately | m3; kg; fraction | each lot/run | full period | applicable nodes | per declared reference flow | meter and test record |
+| `cp_water_moisture` | grading and forming | water and moisture | meter and laboratory record | water; inlet/outlet mass; moisture method; time ; all inlet/outlet material water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; wet-basis moisture/density; supported evaporation and uncertainty| meter and paired samples; Raw aggregation and attribution: water addition and removal separately | m3; kg; fraction | each lot/run | full period | applicable nodes | per declared reference flow | meter and test record |
 | `cp_grading` | `grading_stabilization` | grade destinations | grade and dispatch record | criterion; mass; grade; destination; moisture | lot grading and weighing; Raw aggregation and attribution: sum mutually exclusive states | kg | each lot | full period | receiving site | per declared reference flow | signed grade record |
 | `cp_run_balance` | size reduction and forming | run balance | production log | run; input; output; fines; reject; dust; moisture | linked reconciliation; Raw aggregation and attribution: cancel internal rework once | kg | each run/period | full period | each line | per declared reference flow | production log |
 | `cp_rework` | size reduction and forming | rework and reject | movement ticket | producing run; receiving run; mass; state; route | tagged movement record; Raw aggregation and attribution: count return and exit once | kg | each movement | full period | each line | per declared reference flow | movement ticket |
@@ -998,7 +1004,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 ## 9. Validation Rules
 
 1. Require cereal, straw/husk, form, moisture fraction and basis, grade, route and plant gate.
-2. Use the fixed feed-grade Straw flow only for the declared at-plant product, never chemical treatment, complete feed or fuel-only dry matter.
+2. Verify a distinct product identity against the actual cereal, straw versus husk, preparation state, feed grade and plant-gate hand-off before UUID binding. The cached Straw definition describes dry cereal stalk after grain and chaff removal and does not establish a husk identity; it is not a universal binding for this PCR. Keep identity explicitly unresolved until supported. Exclude chemical treatment, complete feed and fuel-only products.
 3. Unprepared bypasses size reduction and forming; ground uses size reduction; pressed or pelletized uses forming; inactive nodes carry zero.
 4. Every node declares before/after states, service roles, loss, reject and hand-off; every intended output has one destination.
 5. Secondary origin requires evidence and an explicit inherited, allocated or cut-off burden decision with no duplication.
@@ -1007,7 +1013,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 8. Wet-mass and dry-matter balances separate water change from dry-matter loss.
 9. Parameterized Product inputs resolve to verified UUIDs during foreground generation.
 10. The recovered-material set is inapplicable because its current groups cover recycled metal and paper fibre, not cereal residues. Nutrient, construction and waste-treatment sets are also inapplicable to this physical route.
-11. Every quantitative card has exactly one Range and EN, ZH and structured fields agree.
+11. For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening.
 
 ## 10. Published Dataset Profile
 
@@ -1030,3 +1036,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-feed-good-practices-2010` | official_guidance | FAO and IFIF, Manual of Good Practices for the Feed Industry, 2010, https://www.fao.org/4/i1379e/i1379e04.pdf | Moisture, handling and storage controls |
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines | Co-product attribution and disclosure |
 | `mass-balance-identity` | method_factor | Conservation of mass applied to paired mass and moisture records | Conversion and balance calculations |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

@@ -100,32 +100,6 @@ Rearing and collection are separate because spinning ends before physical remova
 
 ##### Product flows
 
-###### Silkworm seed or larvae (`seed_larvae`)
-
-Purchased eggs or larvae enter one identified cohort; opening stock is not a second purchased exchange.
-
-Denominator and scope requirements：per kg spun cocoons from identified cohort
-
-Raw quantity and calculation requirements: Record purchased count, stage, measured lot mass when available and stock changes. Original collection denominator kind: process_output.
-
-- Selected flow: Silkworm seed or larvae, stage-specific (UUID unresolved)
-- Flow property / unit: Mass or count / kg or item
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_cohort_inputs`
-- Range: Provisional completeness screen, not a default conversion
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: item/kg
-  - Basis: per kg spun cocoons; investigate outliers
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Rearing and cleaning water (`rear_water`)
 
 Meter supplied water crossing the foreground boundary for rearing, humidity control and cleaning.
@@ -189,8 +163,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_utilities`
 - Sources: `fao-agricultural-energy`
-
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`rear_energy_heat`)
 
@@ -558,8 +530,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_utilities`
 - Sources: `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Purchased heat at the process inlet (`dry_energy_heat`)
 
 Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
@@ -863,6 +833,7 @@ Identify the actual input for this operation from supplier specifications, equip
 | c_grade | sorting | Accepted + separately marketed downgraded + waste + samples reconcile to graded input, allowing documented moisture timing difference. | input and output masses | lot balance and defect fractions | fao-cocoon-quality |
 | c_intensity | every node | Divide attributed process quantities by its declared output mass, then normalize final dataset to one kg at one state-specific gate. | attributed inputs, output mass, state | per-kg inventory | fao-cocoon-characteristics |
 | `calc_feed_supply_and_intake` | `host_leaves` | Feed supply used by the represented operation = opening feed stock + receipts + on-site feed entering the operation - closing feed stock - documented unused returns or transfers out. Retain in-boundary spoilage, refusals and discarded leftovers in that supply. Actual intake = that supply - measured uneaten/discarded losses, after matching moisture/DM and period; use intake only for nutrition/metabolism. Opening stock retains its prior burden and is not another purchase. Trace any unused return or transfer and its burden destination; no automatic substitution credit. Attribute production once, through either the purchased-feed dataset or the represented on-site crop/collection node, never both for the same feed. Include actual waste treatment and manure contributions once, not as a second feed-production burden. | `cp_feed_supply_and_intake` | separate feed supply, intake and loss quantities, in matched as-fed/DM units | `fao-feed-loss-accounting-2018` |
+| `seed_larvae_identity_and_fate` | `rear` | For the original seed_larvae collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_cohort_inputs` | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

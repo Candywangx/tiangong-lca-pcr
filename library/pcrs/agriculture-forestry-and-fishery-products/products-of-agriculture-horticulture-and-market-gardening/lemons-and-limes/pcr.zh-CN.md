@@ -275,7 +275,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_and_fuel_records`采集`managed_citrus_orchard_cycle`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -441,7 +441,7 @@ sync_with: pcr.en-US.md
 仅在选定氮平衡或浸出方法支持时记录硝酸盐损失。
 
 - 选定流：硝酸盐进入土壤或水体；目的地身份 证据缺口
-- 流属性/单位：质量 / kg N 或 kg nitrate
+- 流属性/单位: Mass / kg NO3-
 - 数量规则：根据有记录的氮平衡计算，不重复另一条路径。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -452,6 +452,8 @@ sync_with: pcr.en-US.md
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_nutrient_and_amendment_records`
 - 来源：`ipcc-2019-refinement-afolu`
+
+最终交换为 kg NO3-。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 62/14，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
 
 ### 过程：柑橘采收和交付门处理（`citrus_harvest_and_gate_handling`）
 
@@ -475,6 +477,25 @@ sync_with: pcr.en-US.md
 - 来源：`fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6`
 
 ##### 废物流
+
+###### 处理废水（`conditioning_wastewater`）
+清洗或处理废水离开门处理过程时记录。
+
+- 选定流：处理废水
+- 流属性/单位：体积 / m3
+- 数量规则：计量或由有记录的水量平衡计算。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 可销售门输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_and_packaging_records`
+- 来源：`fao-postharvest-handling-ae075e`
+
+此卡仅用于向实际处理/排污接收方转移的废水，按匹配水平衡记录路线及体积/质量，不是基本污染物。实际边界内处理或直接环境排放，另须按适用出水数据实测或核算每一有据物质和接收环境，以及方法支持的水返回。采用兼容已核实UUID或明确未决身份；废水体积不是污染物质量，缺少出水组成属于完整性缺口。包含处理服务时承接一次，不将同一下游处理负担重复计入。
+
 ##### 基本流
 
 #### 输出
@@ -517,22 +538,6 @@ sync_with: pcr.en-US.md
 - 来源：`fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6`
 
 ##### 基本流
-
-###### 处理废水（`conditioning_wastewater`）
-清洗或处理废水离开门处理过程时记录。
-
-- 选定流：处理废水
-- 流属性/单位：体积 / m3
-- 数量规则：计量或由有记录的水量平衡计算。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售门输出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_conditioning_and_packaging_records`
-- 来源：`fao-postharvest-handling-ae075e`
 
 ### 过程：柑橘残体和次品去向（`citrus_residue_and_reject_routing`）
 
@@ -607,6 +612,10 @@ sync_with: pcr.en-US.md
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -644,6 +653,7 @@ sync_with: pcr.en-US.md
 | `calc_nutrient_basis` | 肥料和改良剂行 | 分开保存产品质量及 N、P2O5、K2O；仅依据声明证据计算。 | 产品质量；养分比例或结果 | 产品和养分数量 | `globalgap-ifa-fruit-vegetables-v6` |
 | `calc_soil_emissions` | 土壤排放行 | 对有记录投入采用一个 IPCC 兼容氮方法，并披露因子和换算。 | 氮投入；因子；限定信息 | 基本流数量 | `ipcc-2019-refinement-afolu` |
 | `calc_mass_reconciliation` | 采收和门处理 | 核对采收、可销售产出、次品、残体、废水和有记录损失。 | 批次记录；称重；水量平衡 | 质量平衡 | `fao-postharvest-handling-ae075e` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_and_amendment_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -688,3 +698,4 @@ sync_with: pcr.en-US.md
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

@@ -50,7 +50,7 @@ sync_with: pcr.en-US.md
 
 参考流是声明门的净绿咖啡。皮重、异物、包装、羊皮纸、外壳和其他非绿咖啡材料不计入参考数量，必须单独记录。构建前景数据包时，`Required qualifiers` 中的限定信息必须写入数据集元数据、过程说明、参考流备注、产品说明或等效字段。
 
-| 属性 | 筛选参考 | 证据 |
+| 属性 | 筛选参考 | Evidence |
 | --- | --- | --- |
 | 绿豆含水率 | 8–13% 湿基；应以批次测量替代 | `fao-green-coffee-processing-africa` |
 | 处理路线 | 湿法/水洗、蜜处理/半水洗或干法/自然处理；每个批次或明确分开的批次使用一条路线 | `fao-arabica-coffee-manual-lao`; `fao-green-coffee-processing-africa` |
@@ -215,6 +215,8 @@ sync_with: pcr.en-US.md
 
 ###### 供给咖啡园的灌溉水（`coffee_irrigation_water`）
 
+将输送灌溉水与自然资源取水和降雨分开记录。经核实的雨养路线须凭水源和区块证据记录有依据的零值。
+
 - 选定流：灌溉水供应 [parameterized]
 - 流属性/单位：体积 / m3
 - 数量规则：按水源、区块和作物年度记录计量或有证据的供水量
@@ -226,7 +228,14 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_coffee_water_records`
-- 数量范围：暂定灌溉筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：20；单位：m3/t green coffee；基准：宽泛首轮供水区间，须以计量记录替换；基准类型：参考流（`reference_flow`）；证据类型：推理估算（`reasoned_estimate`）
+- 数量范围：暂定灌溉筛选估计
+  - 范围角色：默认估计（`default_estimate`）
+  - 下限：0
+  - 上限：20
+  - 单位：m3/t green coffee
+  - 基准：宽泛首轮供水区间，须以计量记录替换
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
@@ -266,6 +275,8 @@ sync_with: pcr.en-US.md
 
 ###### 咖啡园土地占用（`coffee_land_occupation`）
 
+记录占用面积、作物阶段、遮荫或间作状态及作物年度。土地转化须单独记录，不得由土地占用推定。
+
 - 选定流：咖啡农业土地占用 [unmapped]
 - 流属性/单位：面积-时间 / ha·year
 - 数量规则：按区块面积及生产阶段记录，并按生产年度分配
@@ -284,6 +295,8 @@ sync_with: pcr.en-US.md
 
 ###### 可供采收的咖啡樱桃（`coffee_cherry_crop_output`）
 
+按区块、品种组、作物年度及含水率基准，记录采收损失和加工发生之前的咖啡樱桃产量。这是中间产出，不是 PCR 参考流。
+
 - 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries
 - 数量规则：按区块和作物年度称量或透明估算
@@ -295,11 +308,20 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_coffee_harvest_lot_records`
-- 数量范围：暂定樱桃至绿豆筛选区间；范围角色：默认估计（`default_estimate`）；下限：0.05；上限：0.35；单位：kg green coffee/kg fresh cherry；基准：首轮工艺产率区间，须以批次质量平衡替换；基准类型：过程输出（`process_output`）；证据类型：推理估算（`reasoned_estimate`）
+- 数量范围：暂定樱桃至绿豆筛选区间
+  - 范围角色：默认估计（`default_estimate`）
+  - 下限：0.05
+  - 上限：0.35
+  - 单位：kg green coffee/kg fresh cherry
+  - 基准：首轮工艺产率区间，须以批次质量平衡替换
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 废物流
 
 ###### 田间残余和未采收樱桃（`coffee_field_residues`）
+
+记录落果、受损、未采收或其他非主要咖啡材料及去向。不得仅凭去向名称将其认定为共产品。
 
 - 选定流：咖啡田间残余或损失 [unmapped]
 - 流属性/单位：质量 / kg fresh or dry matter
@@ -312,32 +334,10 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_coffee_harvest_lot_records`
-- 数量范围：质量平衡 QA 范围；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：1；单位：kg residue or loss/kg crop output；基准类型：过程输出（`process_output`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
 
 ##### 基本流
-
-###### 受管理土壤和作物残余排放（`coffee_field_emissions`）
-
-- 选定流：受管理土壤和作物残余基本流 [unmapped]
-- 流属性/单位：质量 / kg substance
-- 数量规则：根据养分、残余、土壤、气候和作物年度记录选择方法计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1 kg green coffee at gate.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_coffee_emission_records`
-- 来源：`ipcc-2019-refinement-afolu`
-- 数量范围：暂定受管理排放筛选估计
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg substance/kg green coffee at gate
-  - 依据：基本流合计的首轮宽范围估计；应以按物质分类的计算替换
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：理由估计（`reasoned_estimate`）
 
 ### 过程：咖啡樱桃采收和收集（`coffee_harvest_and_collection`）
 
@@ -345,6 +345,8 @@ sync_with: pcr.en-US.md
 ##### 产品流
 
 ###### 可收集咖啡樱桃（`coffee_cherry_harvest_input`）
+
+记录从声明咖啡林分接收的樱桃批次，保留区块、作物年度、成熟度和含水率信息。
 
 - 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries
@@ -401,6 +403,8 @@ sync_with: pcr.en-US.md
 
 ###### 交接处理的咖啡樱桃（`coffee_harvested_cherry_output`）
 
+记录交给湿法或干法加工的采收批次，包括接收方、交接时间及路线状态。
+
 - 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries
 - 数量规则：磅单或批次质量平衡
@@ -425,6 +429,8 @@ sync_with: pcr.en-US.md
 
 ###### 采收损失和偶然材料（`coffee_harvest_losses`）
 
+将未收集樱桃、受损材料、异物及采收损失与加工残余物分开记录。
+
 - 选定流：采收损失或偶然材料 [unmapped]
 - 流属性/单位：质量 / kg fresh matter
 - 数量规则：测量或有去向记录的质量平衡差额
@@ -436,7 +442,14 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_coffee_harvest_lot_records`
-- 数量范围：采收损失 QA 范围；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：1；单位：kg loss/kg harvested-cherry availability；基准类型：过程输出（`process_output`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
+- 数量范围：采收损失 QA 范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg loss/kg harvested-cherry availability
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
 
 ### 过程：咖啡初级处理和干燥（`coffee_primary_processing_and_drying`）
 
@@ -446,6 +459,8 @@ sync_with: pcr.en-US.md
 ##### 产品流
 
 ###### 接收的生咖啡批次（`coffee_raw_lot_input`）
+
+记录声明的初级调理运行起点处的新鲜樱桃、湿带羊皮纸咖啡豆（wet parchment）或其他原始批次状态。一次运行内不得混合路线或含水率基准。
 
 - 选定流：生咖啡批次 [unmapped]
 - 流属性/单位：质量 / kg as received
@@ -461,6 +476,8 @@ sync_with: pcr.en-US.md
 
 ###### 处理用水（`coffee_process_water`）
 
+将去果肉、清洗、发酵、卫生清洁及其他工艺用水与灌溉和源头取水分开记录。无水干法加工仅在有路线证据时才记为零。
+
 - 选定流：处理用水 [parameterized]
 - 流属性/单位：体积 / m3
 - 数量规则：按处理阶段记录水表、批次记录或供应方记录
@@ -472,7 +489,13 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_coffee_processing_batch_records`
-- 数量范围：暂定处理用水筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：20；单位：m3/t green coffee；基准类型：参考流（`reference_flow`）；证据类型：推理估算（`reasoned_estimate`）
+- 数量范围：暂定处理用水筛选估计
+  - 范围角色：默认估计（`default_estimate`）
+  - 下限：0
+  - 上限：20
+  - 单位：m3/t green coffee
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 中压电力（`coffee_processing_energy`）
 
@@ -547,34 +570,11 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：理由估计（`reasoned_estimate`）
 
-###### 声明的咖啡共产品或回收材料（`coffee_processing_coproduct`）
-
-只有在具有明确功能、接收方、数量、质量、去向和交接时，才将果肉、黏液、堆肥原料、饲料材料或其他预期输出记录为共产品或回收材料；否则应记录为残余物或废物。
-
-- 选定流：咖啡处理共产品或回收材料 [unmapped]
-- 流属性/单位：质量 / kg wet or dry matter
-- 数量规则：按接收方、去向和批次称量转移输出
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1 kg green coffee at gate.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_coffee_residue_destination_records`
-- 来源：`iso-14044-2006`; `mass-balance-identity`
-- 数量范围：暂定声明共产品筛选区间
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：20
-  - 单位：kg co-product/kg green coffee at gate
-  - 依据：按接收状态计的湿或干共产品首轮宽范围；应以目的地特定称重替换
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：理由估计（`reasoned_estimate`）
-
 ##### 废物流
 
 ###### 果肉、黏液、羊皮纸、外壳和干法残余（`coffee_processing_residues`）
+
+按残余物状态和路线分别记录。湿果浆、黏液、羊皮纸层（parchment）和干果壳的含水率、处理或去向不同时，不得合并。
 
 - 选定流：咖啡处理残余物 [unmapped]
 - 流属性/单位：质量 / kg wet or dry matter
@@ -587,7 +587,14 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_coffee_residue_destination_records`
-- 数量范围：残余质量平衡 QA 范围；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：1；单位：kg residue/kg raw coffee input；基准类型：过程输出（`process_output`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
+- 数量范围：残余质量平衡 QA 范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg residue/kg raw coffee input
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
 
 ###### 咖啡加工废水，送往处理（`coffee_processing_wastewater`）
 
@@ -613,6 +620,8 @@ sync_with: pcr.en-US.md
 ##### 产品流
 
 ###### 干燥咖啡中间状态（`coffee_dry_mill_input`）
+
+记录干磨环节接收的干带羊皮纸咖啡豆（dry parchment）、干咖啡樱桃或其他已声明中间物，并关联前一加工批次。
 
 - 选定流：干羊皮纸或干咖啡樱桃 [unmapped]
 - 流属性/单位：质量 / kg at declared moisture basis
@@ -676,7 +685,14 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_coffee_grade_lot_records`
-- 数量范围：绿豆含水率 QA 区间；范围角色：QA 校验（`qa_guardrail`）；下限：8；上限：13；单位：percent wet basis；基准类型：参考流（`reference_flow`）；证据类型：外部来源（`external_source`）；来源：`fao-green-coffee-processing-africa`
+- 数量范围：绿豆含水率 QA 区间
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：8
+  - 上限：13
+  - 单位：percent wet basis
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：外部来源（`external_source`）
+  - 来源：`fao-green-coffee-processing-africa`
 
 ###### 降级或单独销售的咖啡输出（`coffee_downgraded_coproduct`）
 
@@ -707,6 +723,8 @@ sync_with: pcr.en-US.md
 
 ###### 缺陷豆、异物和脱壳废物（`coffee_dry_mill_rejects`）
 
+记录缺陷豆、碎豆、羊皮纸层（parchment）、果壳、石块、粉尘及其他拒收状态，并声明实际去向或处理方式。
+
 - 选定流：干磨拒收物和废物 [unmapped]
 - 流属性/单位：质量 / kg wet or dry matter
 - 数量规则：按批次称量拒收流或质量平衡差额
@@ -718,7 +736,14 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_coffee_residue_destination_records`
-- 数量范围：干磨拒收筛选范围；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：1；单位：kg rejects/kg dried intermediate input；基准类型：过程输出（`process_output`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
+- 数量范围：干磨拒收筛选范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg rejects/kg dried intermediate input
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
 
 ### 过程：绿咖啡储存和门交接（`coffee_storage_and_gate_handoff`）
 
@@ -728,6 +753,8 @@ sync_with: pcr.en-US.md
 ##### 产品流
 
 ###### 进入储存的绿咖啡（`coffee_storage_input`）
+
+记录入库合格生咖啡批次，包括含水率基准、批次身份及声明的储存开始时间。
 
 - 选定流：Coffee, green `b8869823-9c26-4580-9c45-95a626e0ca2a`
 - 流属性/单位：质量 / kg
@@ -786,6 +813,8 @@ sync_with: pcr.en-US.md
 
 ###### 声明门发出的绿咖啡（`coffee_gate_output`）
 
+记录储存对账后在声明交付门发运的生咖啡净批次。
+
 - 选定流：Coffee, green `b8869823-9c26-4580-9c45-95a626e0ca2a`
 - 流属性/单位：质量 / kg
 原始产出计量与核对要求：声明门发出的称重批次，扣除皮重和记录的储存损失
@@ -804,6 +833,8 @@ sync_with: pcr.en-US.md
 
 ###### 储存损失、霉变或拒收绿咖啡（`coffee_storage_losses`）
 
+记录霉变、拒收或其他损失的生咖啡，以及有证据的去向。
+
 - 选定流：储存损失、霉变或拒收绿咖啡 [unmapped]
 - 流属性/单位：质量 / kg
 - 数量规则：按含水率和去向称量或核对损失
@@ -815,7 +846,14 @@ sync_with: pcr.en-US.md
 - 基准类型：储存时长（`storage_duration`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_coffee_storage_records`
-- 数量范围：储存损失 QA 范围；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：1；单位：kg loss/kg green coffee entering storage；基准类型：储存时长（`storage_duration`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
+- 数量范围：储存损失 QA 范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg loss/kg green coffee entering storage
+  - 基准类型：储存时长（`storage_duration`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
 
 
 ### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
@@ -827,8 +865,8 @@ sync_with: pcr.en-US.md
 - 选定流：Coffee, green
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -853,8 +891,8 @@ sync_with: pcr.en-US.md
 - 选定流：Coffee, green
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -879,13 +917,13 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_01` | 多年生咖啡生产 | 按有记录的面积-时间、株年、作物年度、吞吐量或其他有依据的物理基础分配建植、替换、遮荫/支撑系统和共享生产阶段；披露所代表阶段并防止跨年度重复归属。 | `iso-14044-2006`; `fao-good-farming-practices` |
+| `allocation_01` | 多年生咖啡生产 | 区块／种植批次生命周期数量先按 calc_01 归属，再按 allocation_03 对实际预期产品分配共同负荷。时间份额由场址生产寿命／产量证据确定，年度运行记录保留在其作物年度。面积*时间仅用于所声明共同树园服务，不能替代最终产品分母。 | `iso-14044-2006`; `mass-balance-identity` |
 | `allocation_02` | 共享农场、湿磨和干磨资源 | 使用实测活动量、运行时间、批次吞吐量、批次质量或有记录的服务，将共享电表、机械、水、储存、人员、清洗和换线负荷分配一次。 | `iso-14044-2006`; `mass-balance-identity` |
-| `allocation_03` | 绿咖啡和预期共产品 | 将合格绿咖啡作为参考输出；在真实多输出边界选择一个有记录的 PCR 特定分配决定，并保持一致，重要时披露敏感性。 | `iso-14044-2006` |
+| `allocation_03` | 绿咖啡和预期共产品 | 同一作业对可比生咖啡等级的分级／搬运，使用实测干咖啡吞吐量；单独计量的等级特定作业直接归属。共享干燥热负荷有据时，按可归属实测去水量分配干燥服务，保留起止水分和热损失；否则先分运行直接计量。咖啡与独立预期果肉／果壳产品的联合栽培或加工，不能仅凭质量平衡使用湿质量份额。直接归属可分作业后，仅对完整预期产品集合的剩余共同负荷 B 分配。只有记录证明某物理驱动能代表该共享作业消耗时才使用，物料可称重本身不足以证明因果关系。份额 a_i=d_i/sum(d_j)，负荷 B_i=B*a_i；保留原生单位并核对 sum(a_i)=1。无适用因果驱动时，以首次分离点经济份额 a_i=(q_i*p_i)/sum(q_j*p_j) 分配，使用同期代表性数量、统一币种、相容门点及产品特定后续作业之前的价格。缺失价格不是零，分母数据缺失或失真时分配不完整。重要替代方法用于敏感性分析，不能随意互换主方法。废物和内部转移不进入产品分母，其可归属处理负荷仍保留；本规则不产生替代抵扣。 | `ghg-protocol-product-standard-2011` |
 | `allocation_04` | 果肉、黏液、羊皮纸、外壳、残余和拒收物 | 只有在功能、接收方、数量、质量、去向和交接有记录时，才将流视为共产品或回收材料；否则直到处理或处置前保留为残余或废物。 | `iso-14044-2006`; `mass-balance-identity` |
 | `allocation_05` | 返工、降级和储存损失 | 不合格、返工、降级或储存损失材料在下一次声明交接前继续承担负荷；不得同时将同一批次计为合格绿咖啡和拒收物、共产品或损失。 | `mass-balance-identity` |
 
-本 PCR 不强制一种普适分配方法。数据集必须为每个真实多输出边界选择并论证一种方法，并保持一致。仅凭目的地标签不得取得避免生产抵扣；必须有接收方、功能、可比产品、数量、质量和分配决定。
+主分配分支由 allocation_03 的条件确定。对实际联合产出节点保留决策证据、驱动及份额，不得因另一方法结果更有利而替换主方法。咖啡果、羊皮纸咖啡及生咖啡是连续状态，不是联产品；内部转移只承接一次已有负荷。回收物去向不自动产生避免生产抵扣。
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -900,12 +938,12 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_coffee_perennial_phase_records` | `coffee_plantation_production` | 区块、建植、替换、生产阶段和终止 | 区块登记和农场日志 | block; area; species; cultivar; planting; replacement; shade; phase; dates; crop year | 登记审核和阶段核对；原始汇总与分配：将阶段记录一次分配给所代表作物年度和输出 | ha; plant; date; year | 年度和事件 | 完整声明多年生阶段 | 每个区块 | 每声明的参考流 | 区块图、种植记录和农场登记 |
+| `cp_coffee_perennial_phase_records` | `coffee_plantation_production` | 区块、建植、替换、生产阶段和终止 | 区块登记和农场日志 | 区块；种植批次；阶段；事件日期；面积*时间；可归属建植／幼龄／替换／终止数量 E；分列生产年作业；逐年分等级合格生咖啡 Q_y；水分；果到生咖啡批次链接；已完成／预测 Q_L；得率轨迹和寿命证据；失败面积及零产年份；敏感性 | 对账完整种植批次投入及全部生产年份，按 calc_01 计算 E_y=E*Q_y/Q_L；年度运行量分列，最终归一化之前保留原始台账。 | ha; plant; date; year | 年度和事件 | 完整声明多年生阶段 | 每个区块 | 每声明的参考流 | 区块图、种植记录和农场登记 |
 | `cp_coffee_nutrient_records` | `coffee_plantation_production` | 肥料和改良剂 | 采购、标签、施用日志和土壤记录 | product; quantity; nutrient; date; block; area; purpose | 发票、标签和施用核对；原始汇总与分配：汇总实际产品并只计算一次养分 | kg; L; date | 每次施用 | 完整作物年度 | 区块 | 每声明的参考流 | 发票、标签和田间日志 |
 | `cp_coffee_crop_protection_records` | `coffee_plantation_production` | 作物保护 | 采购和施用记录 | product; active; formulation; quantity; date; block; area | 记录核对；原始汇总与分配：按具名产品和活性物质汇总 | kg; L; date | 每次施用 | 完整作物年度 | 区块 | 每声明的参考流 | 标签、发票和施用日志 |
 | `cp_coffee_water_records` | `coffee_plantation_production`, `coffee_primary_processing_and_drying` | 灌溉、处理水、取水和排放 | 水表、水泵、许可、批次和排放记录 | source; meter; stage; block; batch; delivered; withdrawn; return; discharge; date | 计量审核和水平衡；原始汇总与分配：只核对一次供水、使用、循环和排放 | m3; date | 事件或月度 | 完整作物年度及所有批次 | 水源、区块和加工厂 | 每声明的参考流 | 校准水表和水平衡表 |
 | `cp_coffee_energy_records` | 所有纳入过程 | 燃料、电力、干燥和搬运能源 | 发票、水表、燃料收据、机器日志或服务记录 | carrier; equipment; process; batch; operation; quantity; date | 发票、水表和运行日志审核；原始汇总与分配：按运行、批次质量或服务记录分配共享能源 | L; kg; MJ; kWh; h | 月度和批次 | 完整作物年度及所有纳入运行 | 农场、加工厂、仓库和设备 | 每声明的参考流 | 发票、水表和分配表 |
-| `cp_coffee_emission_records` | `coffee_plantation_production` | 土壤、残余和燃烧排放 | 养分、残余、燃料和计算记录 | nutrient; residue; climate; soil; pathway; medium; fuel; factor; method | 方法计算和证据审核；原始汇总与分配：采用一种方法并去重 | kg input; kg substance | 事件和年度结算 | 完整作物年度 | 区块和接收介质 | 每声明的参考流 | 计算表和因子来源 |
+| `cp_coffee_emission_records` | `coffee_plantation_production` | 土壤、残余和燃烧排放 | 养分、残余、燃料和计算记录 | 地块／批次／年度；FSN/FON/FCR/FSOM；适用放牧／有机土壤投入；残余物干质量及氮；气候和氮形态；Tier 1 表／行／因子／比例；使用 Tier 2/3 时的适用证据；分路径 N2O-N；44/28 换算；排放物种／环境；其他实测物种采样／时间覆盖和通量记录；方法版本及不确定性 | 按 calc_04 保留公式输入、来源表行和每路径唯一核算责任，不将总淋失／挥发氮编为物种交换。先保留地块年度原始结果，再归属和归一化。 | kg input; kg substance | 事件和年度结算 | 完整作物年度 | 区块和接收介质 | 每声明的参考流 | 计算表和因子来源 |
 | `cp_coffee_harvest_lot_records` | `coffee_harvest_and_collection` | 采收樱桃和田间损失 | 采收票、磅单和批次登记 | lot; block; date; maturity; harvested; loss; moisture; recipient; route | 磅单核对和批次审核；原始汇总与分配：核对可用、采收、损失和转移质量 | kg; percent; date; lot | 每个批次 | 作物年度全部采收 | 区块和采收活动 | 每声明的参考流 | 校准秤和批次追溯 |
 | `cp_coffee_processing_batch_records` | `coffee_primary_processing_and_drying`, `coffee_hulling_and_grading` | 路线、批次、中间状态和输出 | 批次表、磅单和加工日志 | batch; route; input; stage; water; energy; moisture; output; reject; date | 批次质量平衡和路线审核；原始汇总与分配：将每个投入关联到一个批次并核对所有输出状态 | kg; m3; kWh; percent; date | 批次或班次 | 所有纳入处理运行 | 湿磨、干磨和批次 | 每声明的参考流 | 批次表、磅单和含水率记录 |
 | `cp_coffee_grade_lot_records` | `coffee_hulling_and_grading` | 合格、降级、返工和拒收状态 | 分级表、磅单和接收方记录 | lot; grade; moisture; defect; accepted; downgraded; rework; reject; recipient; date | 称重分级核对；原始汇总与分配：列举每个去向并防止重复计算 | kg; percent; date | 批次或运行 | 所有纳入分级 | 干磨和接收方 | 每声明的参考流 | 分级表、磅单和去向收据 |
@@ -918,12 +956,14 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_01` | 多年生生产 | 年度化阶段负荷 = 可归属建植、替换或终止负荷 × 所代表阶段份额 ÷ 声明分配基准 | 阶段记录；面积-时间或株年；作物年度输出 | 年度化生产投入 | `iso-14044-2006`; `mass-balance-identity` |
+| `calc_01` | 多年生生产 | 为同一区块／种植批次保留完整生命周期台账。对每种活动身份及原生单位（或每个负荷分量）分别将建植、幼龄／投产前作业、可归属替换、终止及零产年份运行数量汇入 E，不含已经逐年记录的正产量生产年运行数量。不同材料／单位不能加成单一标量 E，每次替换须关联实际受益种植批次／树园。Q_y 为该区块／批次该年全部合格生咖啡等级在相同参考水分和门点下的产量，Q_L=sum(Q_y) 为生产寿命合计。按 E_y=E*Q_y/Q_L 归属：已结束批次采用实测全周期总产量，仍在生产的批次采用有据的场址得率轨迹，披露起止、历史实测及未来得率／寿命不确定性。这是 PCR 的时间归属约定，不预设通用寿命或各年等产。栽培端产出须经关联批次记录换算到生咖啡。庄园共享量先按单独实测使用归属各批次；真正共同树园服务才按种植面积*时间归属，面积、植株数和最终 kg 不能任意互换为分母。可归属失败建植成本保留在实际受益批次／服务范围；Q_y=0 年份的运行数量只汇入 E 一次，按寿命产量归属，不得丢弃，也不得再计为其他年份的年度运行量。年份 y 的可归属生产年数量加 E_y 后，按 allocation_03 对联合产品分配，再依 calc_02 仅除以匹配的合格参考等级质量一次。不得同时把完整 E 计入当年、再次按寿命产量分配 E_y，或无产量证据按 1/N 年均摊。Q_L 或最终参考分母未知／非正时，每 kg 结果不完整。 | 批次与阶段台账 E；实测／预测全周期 Q_y；水分和批次换算；共享服务驱动 | 联产品分配及一次最终归一化之前的逐年可归属原始数量 E_y | `iso-14044-2006`; `mass-balance-identity` |
 | `calc_02` | 生产和处理归一化 | 归一化数量 = 采集数量 ÷ 同一含水率和交接基准下的净合格绿咖啡 | 采集数量；合格绿咖啡；含水率基准；交接门 | 每 kg 参考流数量 | `mass-balance-identity` |
 | `calc_03` | 咖啡路线质量平衡 | 原料咖啡投入 = 合格绿咖啡 + 有记录的共产品 + 残余 + 拒收物 + 废水固体 + 损失，并先协调含水率基准 | 批次投入；所有输出状态；含水率和干物质记录 | 核对后的批次输出 | `mass-balance-identity`; `fao-green-coffee-processing-africa` |
-| `calc_04` | 养分和土壤排放 | 对有文件的养分、残余、土壤、气候、路径和接收介质记录采用一种因子或方法；不得重复同一路径 | 养分和残余记录；方法和因子 | 基本流数量 | `ipcc-2019-refinement-afolu` |
+| `calc_04` | 养分和土壤排放 | 管理土壤 N2O 采用 IPCC 2019 Refinement 第4卷第11章及其映射的2006条款。基础回退为 Tier 1：直接 N2O-N 按式11.1，挥发／沉降间接 N2O-N 按式11.9，淋溶／径流间接 N2O-N 仅在符合该章路径条件时按式11.10。分列直接及两项间接量，再算 kg N2O=(直接N2O-N+沉降N2O-N+淋溶N2O-N)*44/28。采集 FSN、FON、FCR、FSOM，仅在实际适用时纳入放牧／有机土壤项，按11.2.1.3及11.2.2.3推导活动量。根据有记录的气候、氮形态和土地／管理类别，从表11.1及11.3选择因子和比例，保留确切表行、版本、单位和不确定性。国家／地区 Tier 2 因子只有在范围及活动量定义匹配本咖啡地块时才替代对应默认值；Tier 3／模型或实测通量只有在独立验证并完整覆盖事件／季节时才替代已证明覆盖的路径，不得与回退结果叠加。年度氮投入和模型 N2O 均为原始期间量，之后按时间／产品归属并执行 calc_02 一次。间接方法使用的淋失氮和挥发 NH3+NOx-N 是路径活动台账，不自动作为最终硝酸盐或氨交换。其他有实测依据的单独物种，可按实际田间边界的时间积分质量通量核算，采用浓度／流量或经验证气体通量测量，保留物种口径、采样覆盖及流入／背景处理，不得推定未测物种拆分。其他排放、燃烧和残余物处理须各有适用且定位明确的方法及实际过程边界，本 N2O 规则不是它们的排放因子。活动量、因子或路径证据缺失时仍不完整，不记零。 | 地块年度活动项；气候／氮形态／土壤类别；来源表行；层级适用证据；路径与物种台账 | 分列直接／间接 kg N2O 及具有独立证据的其他物种交换 | `ipcc-2019-managed-soils-method` |
 | `calc_05` | 共享批次或活动资源 | 按实测运行、批次质量、吞吐量或有记录服务，将共享能源、水、劳务、储存和换线记录分配一次 | 共享记录；运行；批次；批次；分配基准 | 过程和批次数量 | `iso-14044-2006`; `mass-balance-identity` |
 | `calc_06` | 储存 | 储存损失 = 期初批次质量 − 发运质量 − 有记录的留存或转移材料，并协调皮重和含水率基准 | 期初；发运；转移；损失；含水率 | 储存损失 | `mass-balance-identity` |
+| `coffee_field_emissions_identity_and_fate` | `coffee_plantation_production` | 逐项识别每种实际排放物质及接收环境，以独立活动量、方法、化学物种口径和原生单位量化各有据路径，区分元素 N/P 台账和最终化合物。土壤养分留存或质量平衡残差不得自动当作排放。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_coffee_emission_records` | 按身份区分的交换和对账活动记录 | `ipcc-2019-refinement-afolu` |
+| `coffee_processing_coproduct_identity_and_fate` | `coffee_primary_processing_and_drying` | 识别每项实际独立材料物流、组成、状态和接收者。废保藏剂、盐水、动植物材料、包装、排液和有意共产品在独立处理时分别记录，仅建立本作业有证据的物流。物理混合物流只有在组成和相容处理有据时才可采用一个身份，不得再把组分作为额外输出重复计量。区分销售产出、内部返工、废物转移、外购处理和基本排放，不重复处理负荷。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_coffee_residue_destination_records` | 按身份区分的交换和对账活动记录 | `iso-14044-2006`; `mass-balance-identity` |
 
 ### 数据质量要求
 
@@ -945,8 +985,8 @@ sync_with: pcr.en-US.md
 | `validation_03` | 批次和质量平衡 | 从生樱桃或中间状态到绿咖啡、预期共产品、残余、废水、拒收物和损失，核对所有纳入批次；拒绝混用含水率基准或重复计算。 | `fao-green-coffee-processing-africa`; `mass-balance-identity` |
 | `validation_04` | 多输出边界 | 列举所有预期输出和交接；没有功能、接收方、数量、质量、去向和分配决定时，拒绝共产品或避免生产抵扣。 | `iso-14044-2006` |
 | `validation_05` | 处理和干燥 | 检查湿法、蜜处理或干法路线一致性，干燥记录、含水率测量、储存条件、返潮或霉变事件以及路线特定用水。 | `fao-ota-coffee-code`; `fao-green-coffee-processing-africa` |
-| `validation_06` | 期间、储存和活动批次 | 将建植、替换、终止、作物年度、采收批次、处理批次、换线、储存时长和发运关联到一个期间或阶段；防止重复归属。 | `iso-14044-2006`; `mass-balance-identity` |
-| `validation_07` | 养分、水和基本流 | 核查实际产品和养分基准、灌溉与取水、处理水与废水、接收介质以及一种排放方法；防止氮或水路径重复。 | `ipcc-2019-refinement-afolu`; `fao-good-farming-practices` |
+| `validation_06` | 期间、储存和活动批次 | 逐批次核对 E 构成、历史／预测 Q_y、一致生咖啡状态及 Q_L 覆盖；完整寿命预测期内 sum(E_y)=E。纳入幼龄／失败及零产记录，生产年运行量分列，禁止同时计完整事件量和年度归属量，再核对 allocation_03 及按实际参考等级执行一次 calc_02 归一化。 | `iso-14044-2006`; `mass-balance-identity` |
+| `validation_07` | 养分、水和基本流 | 土壤 N2O 须核对 calc_04 公式／路径选择、因子表行及气候／氮形态适用性、完整活动量、仅一次44/28换算及互不重叠的层级替代。间接方法氮台账不得改名为氨或硝酸盐；其他定量物种须有自身受支持的通量／物种记录。核对产品／养分、灌溉／取水和工艺水／废水口径，不双计路径。 | `ipcc-2019-managed-soils-method` |
 | `validation_08` | 拒收物和残余 | 为果肉、黏液、羊皮纸、外壳、缺陷豆、碎豆、异物、废水固体、储存损失和拒收批次提供去向；仅有目的地标签不足以构成共产品。 | `fao-green-coffee-processing-africa`; `mass-balance-identity` |
 
 ## 10. 发布数据集画像
@@ -976,3 +1016,5 @@ sync_with: pcr.en-US.md
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD (2011), Product Life Cycle Accounting and Reporting Standard, Chapter 9, sections 9.3.3–9.3.4; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 分配层级、因果关系及共同过程出口经济份额；本 PCR 的具体驱动和限制见第7节 |
+| `ipcc-2019-managed-soils-method` | method_factor | IPCC (2019), 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, sections 11.2.1–11.2.3, equations 11.1/11.9/11.10, Tables 11.1/11.3; https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接／间接 N2O 方法、活动量及因子适用性，不提供全部养分损失的物种拆分 |

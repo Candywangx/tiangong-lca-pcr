@@ -96,31 +96,6 @@ translation_status: aligned
 
 ##### 产品流
 
-###### 流：洋蓟种子、根冠、分株或移栽材料（`planting_material_input`）
-
-记录进入声明田块或设施单元的种植材料，识别其为种子、移栽苗、根冠或分株材料。
-
-- 选定流：洋蓟种子、根冠、分株或移栽材料
-- 流属性/单位：有活力单位数量或质量 / seed、plant、crown、division 或 kg
-- 数量规则：记录购买批次数量，以及各田块、种植畦、设施单元或多年生植株群体中种植的有活力数量。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 归属于同一作物周期或生产年度的可销售鲜洋蓟。
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_establishment_records`
-- 来源：`ucanr-artichoke-cultural-tips-2026`
-- 数量范围：种植材料数量筛选
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1,500
-  - 上限：3,000
-  - 单位：有活力植株、根冠或分株数量/ha
-  - 基准：待场址记录替换的一年生或多年生建植宽泛筛选
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
 ###### 尿素肥料（`crop_establishment_agricultural_nutrient_inputs_urea`）
 
 **crop_establishment_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -253,7 +228,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_field_energy_records`采集`crop_establishment`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -486,7 +461,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_field_energy_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -880,7 +855,7 @@ translation_status: aligned
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_nutrient_mass` | 肥料、粪肥、堆肥和改良剂行 | 产品质量乘以有记录的养分分数；保留原产品质量及养分基准。 | 产品发票；养分浓度；施用记录 | 按周期或年度记录的 kg N、kg P2O5 或 kg K2O | `ucanr-artichoke-cultural-tips-2026` |
 | `calc_crop_cycle_normalization` | 全部作物周期和生产年度投入 | 作物周期或生产年度数量除以可销售鲜洋蓟质量，再乘以 1,000 kg。 | 投入记录；可销售交接输出 | 每 1,000 kg 产出的归一化数量 |  |
@@ -889,10 +864,12 @@ translation_status: aligned
 | `calc_nitrogen_emission` | 土壤直接氧化亚氮和氨排放 | 对适用养分投入和声明土壤或气候方法应用选定 IPCC 兼容因子，并在数据集中记录因子。 | 养分记录；方法选择；土壤或气候参数 | 排放的 kg N2O 或 kg NH3 | `ipcc-2019-refinement-nitrogen` |
 | `calc_nitrate_loss` | 硝酸盐进入淡水 | 根据适用氮盈余及选定场址或方法因子计算；不得仅依据购买量推断损失。 | 养分记录；盈余计算；因子 | 排放的 kg NO3- | `ipcc-2019-refinement-nitrogen` |
 | `calc_gate_mass_balance` | 采收和交接准备 | 在测量不确定度内，接收花蕾质量等于可销售交接输出加田间或调理拒收物、残余物、废水相关固体及有记录的搬运损失。 | 采收单；调理记录；发货及拒收记录 | 核对后的质量平衡 | `ucanr-artichoke-cultural-tips-2026` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | 对于本作业原有 planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_establishment_records` | 按身份区分的交换和对账活动记录 | `ucanr-artichoke-cultural-tips-2026` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `quality_identity` | 全部流和产品记录 | 声明洋蓟形态、品种组、一年生或多年生路线、适用时的植株群体年龄、交接节点、花蕾成熟度和等级、清洗或冷却状态及包装状态；需要时，在构建前景数据集时解析平台身份。 | 批次记录、产品描述及参考流限定信息 |
 | `quality_measurement` | 投入和输出 | 优先使用校准计量表、秤、供应商发票、养分计划及施用日志；无法直接测量时，记录估计和分配方法。 | 计量校准、称量记录、发票或计算表 |

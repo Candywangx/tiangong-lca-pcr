@@ -218,19 +218,12 @@ Raw activity or stage basis: per hectare in crop cycle.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_irrigation`
 - Sources: `fao-crop-yield-water-2012`
-- Range: Rainfed-to-800 mm water screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 8000000
-  - Unit: kg/ha
-  - Basis: per hectare in crop cycle
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-crop-yield-water-2012`
 
 Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 Retain metered m3 and water density; convert to kg once under cr_02 before final normalization.
+
+For irrigation, distinguish crop evapotranspiration from net irrigation and gross delivered/withdrawn water. Reconcile effective rainfall, soil-water stock change, capillary supply, application efficiency and the actual delivery boundary; use metered site records or a documented water balance. A general crop-water-demand table does not establish a universal irrigation upper bound.
 
 ###### Electricity, medium voltage input (`field_energy`)
 
@@ -576,7 +569,7 @@ This independent product is an intended output quantified at the declared proces
 
 - Selected flow: Farm-conditioned roots ready for grading
 - Flow property / unit: Mass / kg
-- Amount rule: Input minus separated tops/trash, rejected roots and measured loss
+- Amount rule: Measure the accepted conditioned root component on the same net-root basis as lifted_raw_roots. Reconcile incoming root component + opening root stock + evidenced root-water uptake = accepted conditioned roots + rejected root component + independently evidenced root loss + root-water removal + closing root stock. Do not subtract soil, tops or foreign matter again if already excluded from the incoming root quantity. Track actual carried soil/tops/foreign components separately from gross load receipt to their own removals; they are not root yield loss. Pair retained/rework transfers and investigate unexplained residuals rather than treating them as waste. Normalize matched totals once to final accepted roots.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per 1000 kg lifted roots.
@@ -785,10 +778,11 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | cp_energy | all operating nodes | energy | meter/fuel/machine log | carrier; quantity; period; field/load | direct meter or documented allocation; Raw aggregation and attribution: assign once | L; kWh; MJ | period | full cycle | machine/site | per declared reference flow | meter and invoice reconciliation |
 | cp_field_yield | field_production | roots | load and survey | lifted mass; loss sample; area | calibrated loads plus sampling; Raw aggregation and attribution: lifted + scaled loss | kg; ha | field | harvest | field | per declared reference flow | scale and sampling plan |
 | cp_harvest_loss | field_production; harvest_lifting | loss | survey/balance | mass; area; damage; destination | pre/post harvest sampling; Raw aggregation and attribution: scale and reconcile | kg; ha | field | harvest | field | per declared reference flow | sample evidence |
-| cp_harvest_loads | harvest_lifting | lifted roots | load tickets | gross; tare; field; date; soil correction | calibrated weighing; Raw aggregation and attribution: corrected sum | kg | load | campaign | field/load | per declared reference flow | scale certificate |
+| cp_harvest_loads | harvest_lifting | lifted roots | load tickets | gross; tare; field; date; soil correction ; gross load and tare; incoming net root component; separate carried soil/top/foreign components; each root and non-root removal; water/moisture; opening/closing stocks; paired rework; accepted final root quantity; residual uncertainty| calibrated weighing; Raw aggregation and attribution: corrected sum | kg | load | campaign | field/load | per declared reference flow | scale certificate |
 | cp_residues | harvest_lifting | tops | load/destination | mass; basis; destination | calibrated weighing; Raw aggregation and attribution: sum hand-offs | kg | load | campaign | field/destination | per declared reference flow | ticket/receiver |
-| cp_conditioning_balance | farm_conditioning | roots/rejects | batch record | input; output; rejects; destination | calibrated mass balance; Raw aggregation and attribution: reconcile states | kg | batch | campaign | site/field | per declared reference flow | scales and batch sheet |
+| cp_conditioning_balance | farm_conditioning | roots/rejects | batch record | input; output; rejects; destination ; gross load and tare; incoming net root component; separate carried soil/top/foreign components; each root and non-root removal; water/moisture; opening/closing stocks; paired rework; accepted final root quantity; residual uncertainty| calibrated mass balance; Raw aggregation and attribution: reconcile states | kg | batch | campaign | site/field | per declared reference flow | scales and batch sheet |
 | cp_grading | grading_handoff | grades | delivery record | input; accepted; downgraded; reject; sugar; tare | scale and receiving test; Raw aggregation and attribution: reconcile grades | kg; % | batch | delivery | batch | per declared reference flow | scale, lab, receiver |
+| `cp_phase1_environment_coverage` | field_production | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -796,9 +790,16 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- |
 | CR-01 | normalization | field amount / same-field accepted mass × 1000 kg | input/emission; accepted mass | per reference flow | `mass-balance-identity` |
 | CR-02 | water | metered m3 × density; rainfall excluded | meter/flow; density | kg irrigation | `fao-crop-yield-water-2012` |
-| CR-03 | root balance | standing = lifted + field loss; input = accepted + downgraded + rejected + measured loss | linked mass records | reconciled states | `mass-balance-identity` |
+| CR-03 | root balance | Standing net root component = lifted net root component + independently evidenced field root loss; reconcile each later node on that same root-component basis, with opening/closing stocks, actual root-water change and mutually exclusive root destinations. Separately balance gross-load soil, tops and foreign components and never deduct them again from net root mass. Investigate residuals; apply matched final normalization once. | linked mass records | reconciled states | `mass-balance-identity` |
 | CR-04 | N2O | declared IPCC tier applied to collected N inputs | N records; factors | kg N2O | `ipcc-2019-managed-soils` |
 | CR-05 | route aggregation | area-weight area intensities and accepted-mass-weight reference intensities | stratum records | production mix | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_inputs`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 

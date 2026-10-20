@@ -52,10 +52,10 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_fresh_mass` | accepted reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Measure or calculate fresh mass at farm-gate hand-off; do not substitute hay-equivalent or dry-matter mass. |
-| `dry_matter_disclosure` | every accepted cut | mass fraction | kg dry matter/kg fresh matter | Determine from a representative sample or a documented laboratory result and retain the sampling basis. |
-| `area_time_basis` | stand establishment and annual production | area and time | ha, stand-year | Record establishment area, production area, stand age, productive stand life and reporting-year fraction separately. |
-| `cut_indexing` | harvest and regrowth periods | count and date | cut, date | Assign every accepted output, field operation and loss to a cut or to the whole stand-year. |
+| `reference_fresh_mass` | accepted reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 在农场门交接计量或计算鲜质量，不得替换为干草等效质量或干物质质量。 |
+| `dry_matter_disclosure` | every accepted cut | mass fraction | kg dry matter/kg fresh matter | 采用代表样品或有记录实验室结果确定，并保留取样基准。 |
+| `area_time_basis` | stand establishment and annual production | area and time | ha, stand-year | 建植面积、生产面积、群落年龄、生产寿命及报告年度份额分开记录。 |
+| `cut_indexing` | harvest and regrowth periods | count and date | cut, date | 每项合格产出、田间作业及损失归属某一割次或整个群落年度。 |
 
 ## 5. 系统边界
 
@@ -102,7 +102,7 @@ sync_with: pcr.en-US.md
 - 选定流： Alfalfa seed for sowing
 - 流属性/单位： Mass / kg
 - 身份解析：一次初搜和一次精炼搜索后仍未解析；返回候选为饲草苜蓿、加工苜蓿或其他饲草物种，不是播种用苜蓿种子。
-- 数量规则： measured purchased and used mass, corrected to pure live seed for the seeded area
+- 数量规则：记录实际使用的实体种子产品质量，扣除有据未用退回，保留供应商/批次、处理、纯度及发芽/活力属性。纯活种子当量=实体种子质量×纯度比例×活力比例，仅为独立质量/播量属性，不是外购产品交换质量，也不是另一笔购买。只有纯活种子播量时，须用有据非零批次比例反推实体数量，否则实体种子用量仍不完整；保留原库存、期间和参考产出归属。
 - 数值来源模式： Foreground record (`foreground_record`)
 - 适用范围： Site-specific (`site_specific`)
 原始活动或阶段基准：per hectare newly established stand before stand-life annualization.
@@ -478,15 +478,8 @@ sync_with: pcr.en-US.md
 - 证据类型： Collected record (`collected_record`)
 - 采集协议： `cp_stand_year_records`
 - 来源： `umn-alfalfa-drought-2024`; `usda-ars-alfalfa-irrigation`
-- 数量范围： Source-supported seasonal crop-water screen
-  - 范围角色： Typical range (`typical_range`)
-  - 下限： 4000
-  - 上限： 8000
-  - 单位： m3/ha*a
-  - 基准： seasonal precipitation plus irrigation-equivalent water use per productive hectare-year; report supplied irrigation separately
-  - 基准类型： Crop cycle (`crop_cycle`)
-  - 证据类型： External source (`external_source`)
-  - 来源： `umn-alfalfa-drought-2024`; `usda-ars-alfalfa-irrigation`
+
+所引作物需水量或降水加灌溉背景不是实际灌溉供水量，也不是其有效性上下限。采集声明测点/边界的实际供水；采用计算时须给出完整场址水量平衡，区分有效降雨、土壤蓄水、输配/施用效率及回水。本处不规定供水数值范围；雨养零值须有据，实测量不得被裁剪到文献需水背景内。
 
 ###### 中压电力投入（`annual_field_energy`）
 
@@ -822,11 +815,11 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_establishment_life` | establishment burdens | Attribute establishment inputs, emissions and losses to all accepted fresh output produced over the actual stand life. Use realized stand termination and output where known; disclose any prospective lifetime used for an incomplete stand. Do not allocate the same establishment burden again in later stand-years. | `umn-alfalfa-establishment`; `usda-ars-alfalfa-management-2024` |
-| `allocation_stand_year` | annual management burdens | Assign stand-year inputs first to the reporting hectare-year, then divide by accepted fresh output from that year. Do not spread annual inputs across other production years. | `area-time-identity` |
-| `allocation_cut` | cut-specific operations | Assign harvest energy, cut-specific irrigation and losses to the identified cut; shared annual operations use a documented physical basis such as area or accepted fresh mass across cuts. | `usda-ars-alfalfa-management-2024` |
-| `allocation_rejects` | rejected or downgraded biomass | Keep burdens with the producing stand-year and cut unless an evidenced recovered-product allocation is declared. Exclude rejected biomass from accepted reference output. |  |
-| `allocation_no_double_count` | all periods | Establishment, stand-year and cut records carry unique phase and period identifiers; each input, output, loss and field event may enter the normalized result once only. |  |
+| `allocation_establishment_life` | establishment burdens | 建植投入、排放及损失归属实际群落寿命内全部合格鲜产出；已知时采用实际终止及产出，未完成群落须披露预测寿命；同一建植负担不得在后续群落年度重分配。 | `umn-alfalfa-establishment`; `usda-ars-alfalfa-management-2024` |
+| `allocation_stand_year` | annual management burdens | 先将群落年度投入归属报告公顷年，再除以该年度合格鲜产出；不得跨其他生产年度摊分年度投入。 | `area-time-identity` |
+| `allocation_cut` | cut-specific operations | 采收能源、割次特定灌溉及损失归属对应割次；共享年度作业采用有据面积或各割次合格鲜质量等物理基准。 | `usda-ars-alfalfa-management-2024` |
+| `allocation_rejects` | rejected or downgraded biomass | 除声明有据回收产品分配外，负担保留于产生的群落年度及割次；拒收生物量不计合格参考产出。 |  |
+| `allocation_no_double_count` | all periods | 建植、群落年度及割次记录须有唯一阶段和期间标识，每项投入、产出、损失及田间事件仅进入归一化结果一次。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -847,35 +840,36 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_establishment_attribution` | establishment cards | establishment quantity × reporting-year accepted output / accepted output over actual stand life; for a completed stand use realized lifetime output | establishment quantity, stand-year outputs, termination date | establishment burden assigned to reporting output | `area-time-identity` |
+| `calc_establishment_attribution` | establishment cards | 建植数量×报告年度合格产出÷实际群落寿命合格产出；已终止群落采用已实现寿命期产出。 | establishment quantity, stand-year outputs, termination date | establishment burden assigned to reporting output | `area-time-identity` |
 | `calc_fresh_normalization` | all cards | attributed row quantity ÷ accepted fresh mass × 1,000 kg | attributed row quantity, accepted fresh mass | row quantity per reference flow | `reference-flow-identity` |
-| `calc_energy` | energy cards | sum carrier quantity × declared net-energy conversion; retain carrier identity and do not add service and fuel representations of the same operation | carrier quantities, electricity, conversion factors, operation ids | MJ by process and period |  |
-| `calc_cut_mass_balance` | each cut | harvest-ready input = accepted fresh output + rejected/lost biomass + separately traced destinations, within stated measurement uncertainty | incoming biomass, accepted mass, rejected mass, other destinations | reconciled cut mass balance | `mass-balance-identity` |
-| `calc_managed_soil_emissions` | nitrogen and amendment emissions | apply the declared inventory-method equations and factors to actual relevant N, urea, lime, residue and renewal activity data; separate species and compartments | recorded activity data, method version and factors | species-specific elementary exchanges | `ipcc-2019-managed-soils` |
+| `calc_energy` | energy cards | 汇总各载能体数量×声明净能量换算因子；保留载能体身份，不将同一作业的服务及燃料表示相加。 | carrier quantities, electricity, conversion factors, operation ids | MJ by process and period |  |
+| `calc_cut_mass_balance` | each cut | 在声明计量不确定性内：待采收进料＝合格鲜产出＋拒收/损失生物量＋独立追踪去向。 | incoming biomass, accepted mass, rejected mass, other destinations | reconciled cut mass balance | `mass-balance-identity` |
+| `calc_managed_soil_emissions` | nitrogen and amendment emissions | 将声明清单方法的方程和因子用于实际相关氮、尿素、石灰、残体及更新活动数据，物质及区室分开。 | recorded activity data, method version and factors | species-specific elementary exchanges | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_stand_year_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | reference product | Confirm fresh, unprocessed, unensiled, undried and unbaled state at farm-gate hand-off. | product description, harvest and dispatch records |
-| `dq_period_completeness` | multi-period attribution | Identify establishment phase, every productive stand-year, every included cut, stand termination and any missing records; document prospective lifetime assumptions. | period index and stand history |
-| `dq_mass_and_moisture` | accepted output | Use calibrated fresh-mass measurement or a documented field estimate and a representative dry-matter sample for each cut. | calibration, sample and laboratory records |
-| `dq_input_completeness` | all processes | Reconcile seed, nutrient products, water, energy and crop-protection records to field area, operation and reporting period. | invoice-to-field reconciliation |
-| `dq_route_separation` | alternative routes | Keep rainfed/irrigated, management-system and harvest-technology strata separate unless production-weighted aggregation is demonstrated. | stratum records and weighting calculation |
+| `dq_identity` | reference product | 确认农场门交接为鲜态、未加工、未青贮、未干燥及未打捆状态。 | product description, harvest and dispatch records |
+| `dq_period_completeness` | multi-period attribution | 识别建植阶段、每个生产群落年度、全部纳入割次、群落终止及缺失记录，并记录预测寿命假设。 | period index and stand history |
+| `dq_mass_and_moisture` | accepted output | 每割次采用校准鲜质量测量或有记录田间估算，并有代表性干物质样品。 | calibration, sample and laboratory records |
+| `dq_input_completeness` | all processes | 将种子、养分产品、水、能源及植保记录与田间面积、作业及报告期核对。 | invoice-to-field reconciliation |
+| `dq_route_separation` | alternative routes | 雨养/灌溉、管理系统和采收技术分层保持分开，除非证明按产出加权汇总。 | stratum records and weighting calculation |
 | `dq_flow_resolution` | parameterized cards | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | 具体流身份核验证据 |
 
 ## 9. 校验规则
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_gate` | reference product | Reject a package that includes ensiling, fermentation, drying, baling or feed manufacture in the reference-product process. |  |
-| `validate_stand_periods` | all processes | Require establishment year, stand age, reporting stand-year, cut identifiers, actual or prospective stand life, and termination treatment; reject double attribution across periods. |  |
+| `validate_reference_gate` | reference product | 参考产品过程纳入青贮、发酵、干燥、打捆或饲料制造时不通过。 |  |
+| `validate_stand_periods` | all processes | 要求建植年份、群落年龄、报告群落年度、割次标识、实际或预测群落寿命及终止处理，跨期间双重归属不通过。 |  |
 | `validate_nutrient_consolidation` | 每个适用过程 | 每种实际肥料或改良剂须有单独原子卡，保留实测产品量和组成；不得将笼统养分组绑定为一项交换。 |  |
-| `validate_n_fixing_crop` | annual nutrient records | Do not accept routine mineral-N input without evidence of the route-specific need; require nodulation or soil/plant evidence when mineral N is reported. | `umn-alfalfa-fertilizer` |
-| `validate_cut_balance` | each cut | Require accepted output plus rejects and other destinations to reconcile with harvest-ready input within disclosed measurement uncertainty. | `mass-balance-identity` |
-| `validate_irrigation_route` | water card | Require zero supplied irrigation water for rainfed strata and event-linked measured or calculated delivery for irrigated strata. |  |
-| `validate_reject_path` | rejected biomass | Require each rejected state to be left in field, recovered, downgraded or discarded with a declared destination; it shall not enter accepted output. |  |
-| `validate_route_delta` | alternative routes | Require evidence for any claimed change in topology, inventory, calculation or validation and prevent averaging mutually exclusive post-harvest product states. |  |
+| `validate_n_fixing_crop` | annual nutrient records | 没有路线特定需求证据时不接受常规矿质氮投入；报告矿质氮时须有根瘤或土壤/植物证据。 | `umn-alfalfa-fertilizer` |
+| `validate_cut_balance` | each cut | 要求合格产出、拒收物及其他去向与待采收进料在披露计量不确定性内闭合。 | `mass-balance-identity` |
+| `validate_irrigation_route` | water card | 雨养分层要求供应灌溉水为零；灌溉分层要求关联事件的实测或计算供水量。 |  |
+| `validate_reject_path` | rejected biomass | 每种拒收状态须有声明去向，区分留田、回收、降级或废弃，不计入合格产出。 |  |
+| `validate_route_delta` | alternative routes | 声称拓扑、清单、计算或验证发生变化时要求证据，禁止将互斥采后产品状态直接平均。 |  |
 | `validate_range_shape` | 带数量范围的卡片 | 已提供的范围须包含角色、上下限、单位、基准、基准类型、证据类型及适用来源 id；重要流缺少范围须作为候选证据缺口披露。 |  |
 
 ## 10. 发布数据集画像
@@ -892,7 +886,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `umn-alfalfa-establishment` | extension_guidance | University of Minnesota Extension, “Alfalfa establishment: Management strategies”, https://extension.umn.edu/agriculture/crop-production/forages/alfalfa-establishment-management-strategies | pure-live-seed basis, seed rate, coating/inoculation, establishment nutrients and perennial establishment records |
 | `umn-alfalfa-fertilizer` | extension_guidance | University of Minnesota Extension, “Alfalfa fertilizer recommendations”, https://extension.umn.edu/agriculture/crop-production/nutrient-management-for-minnesota-crops/fertilizing-alfalfa | soil-test and yield-goal nutrient decisions, lime timing and limits on routine N fertilizer |

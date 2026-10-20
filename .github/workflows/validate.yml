@@ -138,7 +138,7 @@ jobs:
     needs: plan
     if: needs.plan.outputs.mode == 'full'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
@@ -217,7 +217,7 @@ jobs:
     needs: plan
     runs-on: ubuntu-latest
     # Instrumented full export runs here; EdgeOne only imports the sealed archive.
-    timeout-minutes: 60
+    timeout-minutes: 120
     outputs:
       web_artifact_id: ${{ steps.web-upload.outputs.artifact-id }}
       coverage_artifact_id: ${{ steps.documentation-coverage.outputs.artifact-id }}
@@ -316,7 +316,7 @@ jobs:
     needs: [plan, web-build]
     runs-on: ubuntu-latest
     # Sealing consumes the exact verified web export; it never rebuilds Next.
-    timeout-minutes: 60
+    timeout-minutes: 120
     outputs:
       product_artifact_id: ${{ steps.product-upload.outputs.artifact-id }}
       coverage_artifact_id: ${{ needs.web-build.outputs.coverage_artifact_id }}

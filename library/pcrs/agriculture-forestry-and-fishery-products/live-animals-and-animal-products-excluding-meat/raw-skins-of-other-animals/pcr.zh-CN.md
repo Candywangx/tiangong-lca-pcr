@@ -528,7 +528,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_preserve`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 

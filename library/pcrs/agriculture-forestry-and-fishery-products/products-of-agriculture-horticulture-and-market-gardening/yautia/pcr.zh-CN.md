@@ -41,7 +41,7 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | 参考数量 | 1000 |
 | 参考产品流 | Yautia `72013e1f-538d-4031-b97a-03bfaa42b37d` |
-| 参考流 property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
 | 必需限定信息 | *Xanthosoma* 物种/品种；地理范围；作物年度；生产系统；收获部位；等级；湿基；水洗/修整状态；门点；纳入的整理操作 |
@@ -53,7 +53,7 @@ sync_with: pcr.en-US.md
 | `reference_mass` | accepted fresh yautia | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Weigh accepted cormels on the fresh wet basis after included trimming and cleaning. |
 | `field_area_cycle` | cultivation inputs and emissions | Area; crop cycle | ha; cycle | Record actual area and dates; normalize only after linked mass balances close. |
 | `nutrient_content` | fertilizers | Product mass and nutrient content | kg product; kg N; kg P2O5 or P; kg K2O or K | Retain product mass and assay separately and state oxide-to-element conversions. |
-| `water_energy` | irrigation and utilities | Volume or energy | m3; kWh; L; MJ | Record each utility separately and disclose source, pumping boundary and upstream coverage. |
+| `water_energy` | irrigation and utilities | Volume or energy | m3; kWh; L; MJ | 各项公用工程分别记录，披露来源、泵送边界及上游覆盖。 |
 
 ## 5. 系统边界
 
@@ -336,6 +336,8 @@ sync_with: pcr.en-US.md
 
 ###### 进入起收的可收获作物（`crop_entering_lifting`）
 
+该卡片将种植环节同一待采收批次链接至起收边界。
+
 - 选定流： Harvest-ready yautia corms and cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `harvest_ready_crop` for the represented field
@@ -405,6 +407,8 @@ sync_with: pcr.en-US.md
 
 ###### 起收原始牙芋（`raw_lifted_yautia`）
 
+已收集的原始起收状态含附着土壤，位于修整或清洗之前。
+
 - 选定流： Raw lifted yautia corms and cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed collected mass before conditioning
@@ -428,6 +432,8 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ###### 起收损失与损伤物料（`lifting_loss`）
+
+记录留在田间或已受损而未进入原始收集状态的作物，并声明去向。
 
 - 选定流： Yautia lifting loss and damaged material
 - 流属性/单位： Mass / kg fresh mass
@@ -460,6 +466,8 @@ sync_with: pcr.en-US.md
 
 ###### 进入整理的原始物料（`raw_material_conditioning_input`）
 
+该卡片将同一原始起收批次链接至初级调理边界。
+
 - 选定流： Raw lifted yautia corms and cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `raw_lifted_yautia` for the represented lot
@@ -483,6 +491,8 @@ sync_with: pcr.en-US.md
 
 ###### 整理用水（`conditioning_water`）
 
+仅在实际湿法清洗时记录供水；干法调理记为零。
+
 - 选定流： Process water
 - 流属性/单位： Volume / m3
 - 数量规则： Metered water supplied; dry-cleaned lots report zero
@@ -504,6 +514,8 @@ sync_with: pcr.en-US.md
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
 ###### 整理用电（`conditioning_electricity`）
+
+仅在实际使用泵、清洗机或输送机时记录其用电。
 
 - 选定流： Electricity
 - 流属性/单位： Energy / kWh
@@ -534,6 +546,8 @@ sync_with: pcr.en-US.md
 
 ###### 进入分级的已整理牙芋（`prepared_yautia`）
 
+准备好的状态为已经修整和清洁、即将按去向分级的材料。
+
 - 选定流： Prepared fresh yautia cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed prepared mass after included trimming/cleaning
@@ -558,6 +572,8 @@ sync_with: pcr.en-US.md
 
 ###### 整理剔除物与移除物料（`conditioning_rejects`）
 
+记录允许时，将移除土壤与作物修整物分开，并声明各自去向。
+
 - 选定流： Removed soil, trimmings and conditioning rejects
 - 流属性/单位： Mass / kg
 - 数量规则： Weighed outputs or mass-balance difference, distinguishing soil and crop material
@@ -579,6 +595,8 @@ sync_with: pcr.en-US.md
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
 ###### 整理废水（`conditioning_wastewater`）
+
+仅在湿法清洗时记录排水，并与供水和回用水核对。
 
 - 选定流： Wastewater from yautia washing
 - 流属性/单位： Volume / m3
@@ -611,6 +629,8 @@ sync_with: pcr.en-US.md
 
 ###### 进入分级的已整理物料（`prepared_material_grading_input`）
 
+该卡片将同一准备好的批次链接至按去向分级环节。
+
 - 选定流： Prepared fresh yautia cormels
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `prepared_yautia` for the represented lot
@@ -641,6 +661,8 @@ sync_with: pcr.en-US.md
 
 ###### 合格鲜牙芋（`accepted_fresh_yautia`）
 
+这是完好合格的等级，也是农场门唯一的参考产品交接点。
+
 - 选定流： Yautia `72013e1f-538d-4031-b97a-03bfaa42b37d`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：Weighed accepted mass; normalize final dataset to exactly 1,000 kg
@@ -666,6 +688,8 @@ sync_with: pcr.en-US.md
 
 ###### 降级食用牙芋（`downgraded_edible_yautia`）
 
+仅在有食用用途及交接证据时记录为产品产出。
+
 - 选定流： Downgraded fresh yautia
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed downgraded mass by buyer or use
@@ -687,6 +711,8 @@ sync_with: pcr.en-US.md
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
 ###### 留用或出售的种植材料（`planting_material_output`）
+
+将有意留作或出售用于繁殖的球茎或小球茎记为独立的预期产出。
 
 - 选定流： Yautia planting material
 - 流属性/单位： Mass and number / kg and item
@@ -712,6 +738,8 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ###### 分级剔除物与残余物（`grading_rejects`）
+
+按饲料、堆肥、还田、处理或处置去向记录拒收材料。
 
 - 选定流： Yautia grading rejects and residues
 - 流属性/单位： Mass / kg fresh mass
@@ -740,10 +768,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_output_classification` | all outputs | Classify each output once as reference product, downgraded product, propagation material, residue, waste, or loss; record one hand-off and prohibit double counting. | `mass-balance-identity` |
-| `allocation_planting_material` | propagation output | Treat internally retained material as an internal transfer. For independently sold intended products, prefer subdivision; otherwise allocate remaining shared burdens by fresh mass and disclose an economic sensitivity when values differ materially. |  |
-| `allocation_residue` | residues and rejects | Give no co-product allocation to material returned to soil or discarded without a documented product function; include its treatment burden. |  |
-| `allocation_shared_operations` | shared operations | Assign separable inputs directly before allocating remaining shared burdens; disclose output quantities, prices where used, method and precedence. |  |
+| `allocation_output_classification` | all outputs | 各产出仅归类一次为参考产品、降级产品、繁殖材料、残体、废物或损失，记录一处交接并禁止双计。 | `mass-balance-identity` |
+| `allocation_planting_material` | propagation output | 内部留用物料视为内部转移；独立销售的预期产品优先细分，否则按鲜质量分配剩余共享负担，价值显著不同时披露经济分配敏感性。 |  |
+| `allocation_residue` | residues and rejects | 没有有据产品功能的还田或废弃物料不作共产品分配；纳入其处理负担。 |  |
+| `allocation_shared_operations` | shared operations | 先直接归属可分离投入，再分配剩余共享负担；披露产出数量、使用时的价格、方法及优先级。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -762,6 +790,7 @@ sync_with: pcr.en-US.md
 | `cp_residue_destinations` | `field_cultivation` | residues and loss | sampling, load weights, destination logs | material; mass; moisture; fate; recipient | representative sampling or weighed loads；原始汇总与分配：sum by material and fate | kg fresh/dry mass | each event | complete cycle | each field | 每声明的参考流 | sample, scale and destination evidence |
 | `cp_conditioning_records` | `farm_gate_conditioning` | material, utilities and rejects | lot weights, meters, batch and discharge logs | raw mass; operation; water; electricity; prepared mass; rejects; wastewater | weigh before/after and meter utilities；原始汇总与分配：close mass and water balances | kg; m3; kWh | each lot | all conditioning | each conditioning line or station | 每声明的参考流 | calibrated scale/meter and destination log |
 | `cp_grade_destinations` | `farm_gate_grading` | all grade states | grade sheets, scale tickets, invoices | input; specification; output masses; count; use; price | weigh each state and link to same lot；原始汇总与分配：sum by state/destination | kg; item; currency/kg | each lot | all grading | each grading line or station | 每声明的参考流 | scale, grade and destination evidence |
+| `cp_phase1_environment_coverage` | field_cultivation | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -772,31 +801,38 @@ sync_with: pcr.en-US.md
 | `calc_direct_n2o` | soil N | selected factor × applicable N; multiply N2O-N by 44/28 to report N2O | kg N; factor | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_conditioning_balance` | conditioning | raw input = prepared output + removed soil/trimmings/rejects + unexplained difference | lot masses | closed balance | `mass-balance-identity` |
 | `calc_grade_balance` | grading | prepared input = accepted + downgraded + propagation material + rejects | state masses | closed output balance | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_inputs`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | reference product | Verify *Xanthosoma* identity and prohibit silent *Colocasia* substitution. | planting-material, crop inspection or agronomist record |
 | `dq_temporal` | foreground | Cover one complete cycle and all contributing lots. | dated field and lot records |
 | `dq_mass_balance` | harvest through grading | Reconcile each hand-off and explain differences exceeding 2% of the relevant input. | calibrated weights and worksheet |
 | `dq_range_review` | every inventory card | Use ranges as QA context, retain foreground values, and explain outliers. | range review and linked evidence |
 | `dq_co_products` | multiple outputs | Enumerate every intended output/destination and prevent double counting. | transfers, invoices and destination receipts |
-| `dq_completeness` | inventory | Account for at least 95% by mass of external non-water materials and disclose missing water, energy, pesticide, nutrient, emission, reject or destination records. | completeness and missing-data logs |
+| `dq_completeness` | inventory | 覆盖至少 95% 的外部非水物料质量，并披露缺少的水、能源、农药、养分、排放、拒收或去向记录。 | completeness and missing-data logs |
 
 ## 9. 校验规则
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference flow | Exactly one 1,000 kg output uses Yautia flow `72013e1f-538d-4031-b97a-03bfaa42b37d`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66` and all qualifiers. |  |
-| `validate_species_boundary` | identity | Reject an ambiguous “cocoyam” identity or *Colocasia* substitution without reviewed proxy disclosure. | `fao-aroids-postharvest`; `codex-tannia-224-2001` |
-| `validate_node_handoffs` | process map | Require exact cultivation→lifting, lifting→conditioning and conditioning→grading lot links. | `mass-balance-identity` |
-| `validate_destinations` | grading | Require explicit zero or measured accepted, downgraded, propagation and reject states, each with one hand-off. | `codex-tannia-224-2001` |
-| `validate_conditional_routes` | conditioning | Unused washing/powered routes have zero flows; used routes report utilities and wastes. Storage/packaging requires a boundary extension. |  |
-| `validate_ranges` | all cards | Require ordered nonnegative bounds, unit, denominator, basis kind and evidence kind; external ranges require source ids and regional examples are not limits. |  |
-| `validate_multi_output` | intended outputs | Require a complete output set and explicit attribution; prohibit crediting internally transferred planting material as a sale. |  |
+| `validate_reference_identity` | reference flow | 恰好一个 1,000 kg 产出采用 Yautia 流 72013e1f-538d-4031-b97a-03bfaa42b37d、质量属性 93a60a56-a3c8-11da-a746-0800200b9a66 及全部限定项。 |  |
+| `validate_species_boundary` | identity | 没有经审查的代理披露时，拒绝含混“cocoyam”身份或以 Colocasia 替代。 | `fao-aroids-postharvest`; `codex-tannia-224-2001` |
+| `validate_node_handoffs` | process map | 要求栽培→挖收、挖收→处理及处理→分级的批次精确关联。 | `mass-balance-identity` |
+| `validate_destinations` | grading | 合格、降级、繁殖及拒收状态均须有明确零值或实测值，且各有一次交接。 | `codex-tannia-224-2001` |
+| `validate_conditional_routes` | conditioning | 未使用的清洗/动力路线流量为零，使用路线报告公用工程和废物；储存/包装须扩展边界。 |  |
+| `validate_ranges` | all cards | 要求有序非负界限、单位、分母、基准类型及证据类型；外部范围须有来源 id，区域示例不是通用限值。 |  |
+| `validate_multi_output` | intended outputs | 要求完整产出集合及明确归属；不得将内部转移种植材料作为销售给予抵扣。 |  |
 | `validate_flow_identity_bindings` | 参数化身份的产品输入 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validate_direct_emissions` | field emissions | Require selected soil-emission method, 氮投入, factors, conversions and flow assignments; never infer emissions from fertilizer product mass alone. | `ipcc-2019-managed-soils` |
+| `validate_direct_emissions` | field emissions | 要求所选土壤排放方法、氮投入、因子、换算及流归属；不得仅由肥料产品质量推算排放。 | `ipcc-2019-managed-soils` |
 
 ## 10. 发布数据集画像
 
@@ -812,7 +848,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 引用 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `fao-qds-2010` | official_guidance | FAO, *Quality Declared Planting Material: Protocols and Standards for Vegetatively Propagated Crops*, 2010, https://www.fao.org/4/i1195e/i1195e00.pdf | *Xanthosoma* identity, synonyms and propagation material |
 | `sri-lanka-doa-kiri-ala` | extension_guidance | Sri Lanka Department of Agriculture, “Kiri Ala – Xanthosoma sagittifolium,” https://doa.gov.lk/hordi-crop-kiri-ala/ | route, planting density, fertilizer schedule, harvest and regional yield |

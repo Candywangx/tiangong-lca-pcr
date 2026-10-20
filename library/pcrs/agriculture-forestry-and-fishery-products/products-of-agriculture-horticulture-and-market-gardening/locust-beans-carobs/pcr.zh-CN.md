@@ -251,7 +251,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_carob_orchard_lifecycle_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -389,7 +389,7 @@ sync_with: pcr.en-US.md
 仅当有测量结果或选定的区域方法支持时，记录或计算硝酸盐释放。前景数据包必须在解析基本流身份前申报受纳介质是土壤还是水体。
 
 - 选定流：排放到申报受纳介质的硝酸盐污染物（UUID 未解析；必须申报受纳介质）
-- 流属性/单位：质量 / kg nitrate 或方法定义的氮基准
+- 流属性/单位: Mass / kg NO3-
 - 数量规则：根据申报作物年度养分和水量平衡记录测量或按方法计算硝酸盐释放
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -400,6 +400,8 @@ sync_with: pcr.en-US.md
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_carob_orchard_lifecycle_records`
 - 来源：`ipcc-2019-refinement-vol-4`
+
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ### 过程：角豆采收与收集（`carob_harvest_and_collection`）
 
@@ -516,7 +518,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_carob_conditioning_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -618,7 +620,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：排放到申报受纳介质的水蒸气（UUID 未解析；必须申报受纳介质）
 - 流属性/单位：质量 / kg water
-- 数量规则：水蒸气 = 输入批次水质量 - 可接受及降级输出水质量 - 申报拒收物中保留的水质量 + 测得的过程加水量；负值必须调查，不得截断
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
 原始活动或阶段基准：每个调理活动、每 1,000 kg 可接受整荚角豆.
@@ -675,7 +677,7 @@ sync_with: pcr.en-US.md
 | `cp_carob_orchard_lifecycle_records` | `carob_orchard_production` | 种植材料、树体更新、园地面积、养分、土壤改良剂、作物保护、燃料、电力、残余物和园地活动 | 园地登记、地块图、种植或更新发票、施用日志、供应商记录、设备日志和残余物去向记录 | block_id；species；cultivar_or_type；tree_age；bearing_area_ha；establishment_year；replacement_event；planting_material_quantity；product_name；product_mass；nutrient_basis；application_date；target；fuel；electricity；residue_mass；residue_destination；crop_year | 按地块采集活动记录，并与供应商、操作员和设备记录核对；原始汇总与分配：按地块和作物年度汇总；归一化前保留产品和养分字段；将年度化活动关联到申报输出基准 按路线确认要求：`carob_orchard_energy_inputs_identification`: 实际柴油果园机械割草、修剪辅助、施肥及作业通行；灌溉泵按其设备单独确认供能。 原始活动或阶段基准：每个作物年度、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `carob_orchard_crop_protection_input_specific_input`: 作业 carob_orchard_production：记录每种实际制剂、可获得时的有效成分或制剂身份、施用活动、施用质量、地块和目标。不得用通用农药默认值替代缺失的制剂身份。 原数量方法：按产品、活动、地块和作物年度汇总测量的制剂质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | 活动特定混合单位 | 每次种植、更新、施用、能量和残余物活动；每个作物年度核对 | 一个申报作物年度以及用于年度化的生产期记录 | 每个受管理园地或栽培型角豆林地块 | 每声明的参考流 | 发票、田间日志、园地登记、操作员确认和完整性核对 |
 | `cp_carob_irrigation_records` | `carob_orchard_production` | 灌溉水、直接取水和抽水能量 | 计量记录、泵记录、电费单、水费单、许可证、水源记录和有文件依据的水量平衡 | block_id；source_type；rainfed_flag；meter_start；meter_end；irrigation_date；delivered_volume_m3；withdrawal_volume_m3；pump_kwh；source_quality；crop_year | 读取计量表，或将发票和水源记录与灌溉活动及地块面积核对；原始汇总与分配：按水源、地块和作物年度汇总；防止供应水与直接取水重复计算 | m3 和 kWh | 每次灌溉活动或账单期；每个作物年度核对 | 一个申报作物年度和灌溉季 | 每个水源和园地地块 | 每声明的参考流 | 计量表或发票证据、许可证或水源核查以及水量平衡核对 |
 | `cp_carob_harvest_lot_records` | `carob_harvest_and_collection` | 可采收豆荚、收集原始豆荚、采收能量、田间损失和采收拒收物 | 采收日志、称重单、地块记录、承包商声明、批次记录和去向记录 | block_id；harvest_date；lot_id；harvest_method；harvestable_mass_kg；collected_mass_kg；field_loss_mass_kg；damaged_mass_kg；destination；fuel_quantity；electricity；crop_year | 对每个采收批次称量或核对，并记录移除和收集方法；原始汇总与分配：在归一化前按地块和批次汇总可采收、收集、损失和拒收质量 按路线确认要求：`carob_harvest_energy_input_identification`: 实际人工敲落及收集，或动力摇树及输送。有证据的全手工路线可无外购作业能源，缺少记录不能证明此条件。 原始活动或阶段基准：每个采收活动、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg 豆荚及活动特定能量单位 | 每个采收批次；每个活动核对 | 一个采收活动和作物年度 | 每个受管理地块和接收批次 | 每声明的参考流 | 校准称重或经验证的称重单、批次可追溯性、承包商证据、去向证据和质量平衡核对 |
-| `cp_carob_conditioning_records` | `carob_primary_conditioning` | 原始豆荚输入、干燥、清洁、分拣、分级、过程水、可接受豆荚、降级豆荚、拒收物和水分损失 | 接收单、调理批次记录、水分测试、能量计量、水表、等级记录、拒收记录和去向记录 | campaign_id；lot_id；input_mass_kg；input_moisture；drying_method；drying_start；drying_end；fuel；electricity；process_water_m3；cleaning_method；grade；accepted_mass_kg；downgraded_mass_kg；reject_mass_kg；reject_class；reject_destination；output_moisture；container_tare；gate | 记录每个调理批次，并核对水分、质量、等级、能量、用水和去向记录；原始汇总与分配：按批次和等级汇总；保留输入、输出水分和皮重；只有在质量和水分核对后计算水分损失 按路线确认要求：`carob_conditioning_energy_input_identification`: 实际电动风机、输送、清洁及分级设备；对有证据的自然干燥路线不强制加装动力干燥，任何加热器另行确认。 原始活动或阶段基准：每个调理活动、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg、percent、m3、kWh、L 或 MJ | 每个调理批次；每个活动核对 | 一个申报调理活动和交接点 | 每个批次、批号和申报接收设施 | 每声明的参考流 | 校准称重、水分方法、计量记录、采购方或等级规格、去向证据和批次平衡 |
+| `cp_carob_conditioning_records` | `carob_primary_conditioning` | 原始豆荚输入、干燥、清洁、分拣、分级、过程水、可接受豆荚、降级豆荚、拒收物和水分损失 | 接收单、调理批次记录、水分测试、能量计量、水表、等级记录、拒收记录和去向记录 | campaign_id；lot_id；input_mass_kg；input_moisture；drying_method；drying_start；drying_end；fuel；electricity；process_water_m3；cleaning_method；grade；accepted_mass_kg；downgraded_mass_kg；reject_mass_kg；reject_class；reject_destination；output_moisture；container_tare；gate ；含拒收物和残体的全部进出材料带水；实际加水/降雨；单独液体转出；期初期末水库存；湿基含水率/密度；有据蒸发及不确定性| 记录每个调理批次，并核对水分、质量、等级、能量、用水和去向记录；原始汇总与分配：按批次和等级汇总；保留输入、输出水分和皮重；只有在质量和水分核对后计算水分损失 按路线确认要求：`carob_conditioning_energy_input_identification`: 实际电动风机、输送、清洁及分级设备；对有证据的自然干燥路线不强制加装动力干燥，任何加热器另行确认。 原始活动或阶段基准：每个调理活动、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg、percent、m3、kWh、L 或 MJ | 每个调理批次；每个活动核对 | 一个申报调理活动和交接点 | 每个批次、批号和申报接收设施 | 每声明的参考流 | 校准称重、水分方法、计量记录、采购方或等级规格、去向证据和批次平衡 |
 
 ### 计算规则
 
@@ -689,7 +691,8 @@ sync_with: pcr.en-US.md
 | `calc_soil_emissions` | 与养分相关的空气、土壤和水体基本流输出 | 对申报的养分、改良剂、残余物、土壤、气候和水活动数据应用适用地理位置的方法层级；披露层级和因子 | nutrient_inputs；amendments；residues；soil_parameters；climate_parameters；water_records | 按方法计算的排放量 | `ipcc-2019-refinement-vol-4` |
 | `calc_conditioning_mass_balance` | 采收和初级调理输出 | 残余质量 = 输入质量 - 可接受质量 - 降级质量 - 申报拒收质量 - 其他有证据的目的地质量；不得将残余物无说明地归入可接受产品 | input_mass；output_masses；reject_masses；destination_masses | 核对后的损失和残余物 | `iso-14044-2006` |
 | `calc_shared_grade_allocation` | 两个或更多有意整荚产品输出共用调理负荷 | 等级 i 的质量分配因子 = 等级 i 可接受质量 / 有意转移的整荚产品输出质量总和，除非适用有文件依据的物理细分或合理的经济方法 | grade_output_masses；method_decision | 等级特定的分配负荷和因子 | `iso-14044-2006` |
-| `calc_drying_water_vapour` | 初级调理中的干燥 | 水蒸气 = 输入水质量 - 可接受输出水质量 - 降级输出水质量 - 拒收物水质量 + 测得的过程加水量；负值必须调查，不得截断 | incoming_mass；incoming_moisture；output_masses；output_moistures；process_water | 向申报受纳介质释放的水蒸气量 | `carob-drying-characteristics-2016` |
+| `calc_drying_water_vapour` | 初级调理中的干燥 | 进入空气的去除水=进入材料水+实际外加水+期初水库存-全部合格/降级/拒收/残余转出物流含水-单独外排液态水-期末水库存；采用匹配实测湿质量和水分比例或相容密度。内部循环相消。纳入实际雨水吸收/返潮，干物质和非水损失分开。实测或有据闭合平衡应确认实际蒸发和接收空气边界；缺少组分或未解释差额不能证明水汽或零。按匹配最终合格产出归一化一次。 | incoming_mass；incoming_moisture；output_masses；output_moistures；process_water | 向申报受纳介质释放的水蒸气量 | `carob-drying-characteristics-2016` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_carob_orchard_lifecycle_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

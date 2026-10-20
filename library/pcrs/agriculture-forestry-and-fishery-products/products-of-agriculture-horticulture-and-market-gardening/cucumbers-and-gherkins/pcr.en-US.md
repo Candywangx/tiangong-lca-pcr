@@ -97,31 +97,6 @@ This reference UUID denotes the fresh, unprocessed farm-gate product. Verify act
 
 ##### Product flows
 
-###### Seed or transplant planting material (`planting_material_input`)
-
-Seed or transplants cross the boundary when accepted for establishment in the declared field, bed, or protected unit. The record identifies crop type and planting material form.
-
-- Selected flow: Cucumber or gherkin seed or transplant material
-- Flow property / unit: Mass or viable count / kg seed or plant
-- Amount rule: Record supplier lot, seed mass or viable plant count, planting date, crop type, and unused or failed planting material by production unit.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh cucumber or gherkin output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_planting_records`
-- Sources: `fao-gap-framework-2003`
-- Range: Planting-material screening interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.1
-  - Upper: 8
-  - Unit: kg seed or 2,500 plants per 1,000 kg output
-  - Basis: declared planted area and crop-cycle output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Urea fertilizer (`crop_establishment_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for crop_establishment_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -815,6 +790,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_water_balance` | irrigation and washing | sum metered deliveries or documented balance components; preserve source withdrawal, delivered water, recirculation, and discharge as distinct quantities | meter readings; rainfall; pumping or batch records | m3 by water role | `fao-crop-evapotranspiration-56` |
 | `calc_gate_mass_balance` | harvest and preparation | received fruit = marketable output + rejects + residue or handling loss within declared measurement uncertainty | harvest tickets; batch records; reject and residue records | reconciled mass balance | `usda-ams-cucumber-standard` |
 | `calc_packaging_attribution` | primary packaging | unit count × unit mass ÷ declared reuse cycles, allocated to packed output | packaging specification; count; reuse declaration; output | kg packaging per 1,000 kg output | `usda-ams-cucumber-standard` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | For the original planting_material_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_planting_records` | Identity-specific exchanges and reconciled activity records | `fao-gap-framework-2003` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

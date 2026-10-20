@@ -35,7 +35,7 @@ The broad category is resolved by the product identity and edible organ, not by 
 | How much | 1 kg as-received marketable fresh product |
 | How well | Product identity, edible organ, cultivar or type, moisture or dry-matter basis, marketable condition, and declared grade are recorded; no unreported processing or quality claim is assumed |
 | How long or cycle | One crop cycle and its associated harvest or conditioning campaign; annual records are preferred, with perennial or multi-cycle production explicitly disclosed |
-| reference_flow_link | gate_product |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | Field | Value |
 | --- | --- |
@@ -45,6 +45,8 @@ The broad category is resolved by the product identity and edible organ, not by 
 | Reference unit group | Mass units (`93a60a57-a4c8-11da-a746-0800200c9a66`) |
 | Reference unit | kg |
 | Required qualifiers | product identity; edible organ; cultivar or variety; fresh-mass basis; marketable condition (unwashed, washed, trimmed, cooled, or packed); geography; production system; crop cycle and harvest date; declared farm gate |
+
+The sole reference output is `reference_product_at_declared_handoff` at `declared_reference_handoff`, a mandatory measurement of the actual accepted product at the already declared gate. Process `farm_gate_storage_and_dispatch` remains conditional: omission of its physical activities does not remove this reference. Select the actual last included product handoff and record its process/output id; accept only the same species, physical state, grade, moisture basis and gate as Section 3. The prior `gate_product` row is the measured output of its actual operation when active, not an additional final sale. No bypass creates processing, a yield assumption, an extra burden or a change of product boundary.
 
 ## 4. Measurement and Unit Rules
 
@@ -89,37 +91,13 @@ The broad category is resolved by the product identity and edible organ, not by 
 | `harvest_and_primary_sorting` | Harvest and primary sorting | required | Always include harvest, removal of field soil or plant material, and the first marketability decision. | harvest and product preparation | per 1 kg marketable fresh reference product |
 | `postharvest_conditioning` | Postharvest conditioning and packing | conditional | Include when washing, trimming, grading, cooling, packing, or wastewater treatment occurs inside the declared farm-gate boundary. | optional conditioning | per 1 kg conditioned marketable product |
 | `farm_gate_storage_and_dispatch` | Farm-gate storage and dispatch | conditional | Include when storage, cooling during storage, or transport to the declared collection or farm gate is within scope. | optional storage and delivery | per 1 kg product at the declared gate and per tonne-kilometre where transport is included |
+| `declared_reference_handoff` | Accepted-product measurement at declared handoff | required | Every actual selected route, including bypass of conditional conditioning/packing/storage | Measurement and reconciliation only; no added physical processing | 1 kg net accepted product at the same declared gate |
 
 ### Process: Crop establishment and field or protected cultivation (`field_cultivation`)
 
 #### Inputs
 
 ##### Product flows
-
-###### Crop-specific planting material (`planting_material`)
-
-Seed, sets, cuttings, crowns, or other planting material crosses the cultivation boundary at planting. Record the actual material identity and lot rather than assuming a universal seeding rate.
-
-- Selected flow: Crop-specific seed, sets, cuttings, or other planting material for the covered crop
-- Flow property / unit: Mass or count / kg or count (flow property; unit group)
-- Amount rule: measured lot quantity, with count-to-mass conversion only when documented
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg marketable fresh reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_planting_material_records`
-- Sources: `fao-ex-act-v9-2022`
-- Range: Provisional planting-material screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.08
-  - Unit: kg planting material/kg marketable product
-  - Basis: per 1 kg marketable fresh reference product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Urea fertilizer (`field_cultivation_agricultural_nutrient_inputs_urea`)
 
@@ -285,6 +263,38 @@ Raw activity or stage basis: per 1 kg marketable fresh reference product.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+##### Waste flows
+
+##### Elementary flows
+
+###### Source-water withdrawal for irrigation (`irrigation_withdrawal`)
+
+Source withdrawal is conditional and is reported only when the water resource abstraction is separately measured or modelled from delivered irrigation water. Do not count the same water volume twice.
+
+- Selected flow: Water withdrawn directly from an identified natural source; exact compartment and UUID unresolved
+- Flow property / unit: Volume / m3 (flow property; unit group)
+- Amount rule: directly metered natural-source abstraction owned by this foreground node, reconciled to the same-period supply ledger
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg marketable fresh reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_irrigation_water_records`
+- Sources: `fao-ex-act-v9-2022`
+- Range: Provisional withdrawal screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 4
+  - Unit: m3/kg marketable product
+  - Basis: per 1 kg marketable fresh reference product, only when withdrawal is separately reported
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Only for direct natural-water abstraction owned by this foreground boundary. Select the actual source/compartment and compatible volume or mass identity. A municipal or other purchased water receipt is a product supply, with its provider withdrawal covered upstream once; it is not this elementary input. Keep the withdrawal-to-field supply ledger, pumping, distribution losses and internal delivered-water transfers explicit. Do not add the same supplier abstraction or internal delivery as another external resource use. Retain missing source identity or quantity as a completeness gap.
+
+
 ###### Land occupation for the declared crop cycle (`land_occupation`)
 
 Land occupation represents the cultivated area and declared duration needed to produce the reference product. Land transformation remains a separate declared study choice.
@@ -310,32 +320,6 @@ Raw activity or stage basis: per 1 kg marketable fresh reference product.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Source-water withdrawal for irrigation (`irrigation_withdrawal`)
-
-Source withdrawal is conditional and is reported only when the water resource abstraction is separately measured or modelled from delivered irrigation water. Do not count the same water volume twice.
-
-- Selected flow: Water resource withdrawal for irrigation
-- Flow property / unit: Volume / m3 (flow property; unit group)
-- Amount rule: measured or supplier-reported source withdrawal, reconciled to delivered irrigation water
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg marketable fresh reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_irrigation_water_records`
-- Sources: `fao-ex-act-v9-2022`
-- Range: Provisional withdrawal screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 4
-  - Unit: m3/kg marketable product
-  - Basis: per 1 kg marketable fresh reference product, only when withdrawal is separately reported
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-##### Waste flows
 
 #### Outputs
 
@@ -1004,7 +988,7 @@ Road freight is conditional and is included only when transport to the declared 
 
 - Selected flow: Road freight transport service for product dispatch
 - Flow property / unit: Transport service / tonne-kilometre (flow property; unit group)
-- Amount rule: product mass multiplied by documented one-way distance and route load factor
+- Amount rule: actual transported mass in tonnes multiplied by loaded distance in km; use capacity × utilisation only to derive missing actual payload once, never multiply an already actual payload by utilisation again
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Route-specific (`route_specific`)
 Raw activity or stage basis: per 1 kg marketable fresh reference product at declared gate.
@@ -1083,33 +1067,25 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 
 ###### Marketable product at the declared farm gate (`gate_product`)
 
-This is the final product output when storage or dispatch is included. It must match the selected reference-flow condition and declared gate.
+Record the measured accepted output of `farm_gate_storage_and_dispatch` only when that operation actually occurs. Preserve species, condition, grade, moisture, lot and its real outgoing gate. This stable row id identifies an actual route output; the sole final reference is reference_product_at_declared_handoff. Retain raw output and link the selected final lot without counting it as another final product. Any UUID shown is usable only for its independently confirmed physical state/gate; an incompatible upstream/intermediate state needs a separately verified or explicit unresolved identity. Preserve the original stage measurement and collection records.
 
 - Selected flow: Marketable fresh other root, bulb, rhizome, corm, or tuber vegetable at the declared farm gate
 - Flow property/unit: Mass / kg
 
 Original reference-state unit annotation: Mass / kg fresh product (flow property; unit group)
 
-Raw output measurement and reconciliation: delivered marketable mass normalized to 1 kg reference product at the declared gate
+Raw output measurement and reconciliation: Weigh the accepted net lot output of the actual operation under `cp_storage_dispatch_records`, retain gross/tare, rejects, stocks, moisture and matched onward lot records, and reconcile before final normalization.
 
-- Amount rule: 1 kg
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg marketable fresh reference product at declared gate.
+- Amount rule: measured accepted net output from the actual operation under `cp_storage_dispatch_records`; retain raw lot quantity and actual stage throughput, then normalize once under the final-handoff normalization in Section 8; never prescribe a fixed intermediate yield
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: measured actual operation/lot output and throughput, retained before one final-reference normalization.
 
 - Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_storage_dispatch_records`
 - Sources: `iso-14044-2006`
-- Range: Farm-gate product-output QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.98
-  - Upper: 1.02
-  - Unit: kg gate product/kg reference product
-  - Basis: per 1 kg marketable fresh reference product at declared gate
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -1162,6 +1138,46 @@ Raw activity or stage basis: per 1 kg marketable fresh reference product at decl
   - Basis: per 1 kg marketable fresh reference product at declared gate
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Accepted-product measurement at declared handoff (`declared_reference_handoff`)
+This measurement adds no processing, waste generation or emission. Preserve all real upstream operations and losses; bypass only operations demonstrated absent. Select one actual terminal product lot and cancel its paired internal transfer once when aggregating the system. Do not sum inactive routes, co-products or both source and handoff as accepted final output.
+
+#### Inputs
+##### Product flows
+###### Accepted actual-route product at the same handoff (`actual_route_product_for_handoff`)
+
+Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID.
+- Selected flow: Marketable fresh other root, bulb, rhizome, corm, or tuber vegetable at the declared farm gate (UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net mass at this same handoff, normalized as R/R * 1 kg; paired input equals accepted output, with raw R retained
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+
+##### Waste flows
+##### Elementary flows
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+
+Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID.
+- Selected flow: Marketable fresh other root, bulb, rhizome, corm, or tuber vegetable at the declared farm gate (UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: 1 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+
+##### Waste flows
+Actual waste remains at the operation that generates it; no duplicate here.
+##### Elementary flows
+Actual releases remain at their responsible physical operation; no duplicate here.
 
 ## 7. Allocation and Co-product Handling
 
@@ -1223,8 +1239,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_energy_normalization` | fuel and electricity | Convert fuel only with a documented fuel identity and lower-heating-value factor; divide fuel or kWh by marketable output and allocate shared equipment by the collected use factor. | field, harvest, conditioning, and storage energy records | L, kg fuel, or kWh per kg reference product | `fao-ex-act-v9-2022` |
 | `calc_land_occupation` | land occupation | `area_time_per_kg = cultivated_area × crop_cycle_duration / marketable_output_kg`; disclose area units, cycle duration, and protected-cover occupancy. | `cp_land_and_cycle_records`; `cp_yield_and_quality_records` | m2*year per kg reference product | `fao-ex-act-v9-2022` |
 | `calc_mass_balance` | product, reject, residue, wastewater, and storage rows | Reconcile each operation as received mass or water plus additions equals product outputs, waste outputs, measured losses, and documented stock change within the declared tolerance. | batch, harvest, waste, water, and dispatch records | mass-balance check and normalized rows | `iso-14044-2006` |
-| `calc_transport_service` | included dispatch transport | `tonne_km = product_mass_t × one_way_distance_km × declared_load_factor`; include only the route to the declared gate and state any return-leg treatment. | `cp_dispatch_transport_records`; weigh and route records | tonne-km per kg gate product | `fao-ex-act-v9-2022` |
+| `calc_transport_service` | included dispatch transport | Transport work in tonne-kilometres = actual transported payload mass in tonnes * loaded route distance in kilometres. The actual payload already reflects loading; do not multiply it by a load factor again. If only rated capacity and utilisation are recorded, derive actual payload once as capacity * evidenced utilisation, then apply the distance. Apply documented empty-return and vehicle-utilisation assumptions in the transport-service dataset/factor boundary once; do not count the same fuel both as a service and a local operation. Retain shipment, route, mass, distance, source units and factor boundary. | `cp_dispatch_transport_records`; weigh and route records | tonne-km per kg gate product | `fao-ex-act-v9-2022` |
 | `calc_reusable_packaging` | packaging input and waste | Allocate reusable packaging burden by documented cycles and product mass served, and reconcile returned, lost, and discarded units. | `cp_packaging_records`; supplier and return records | kg packaging per kg product and packaging fate | `iso-14044-2006` |
+| `planting_material_identity_and_fate` | `field_cultivation` | For the original planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_planting_material_records` | Identity-specific exchanges and reconciled activity records | `fao-ex-act-v9-2022` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_input_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -1241,6 +1259,18 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `dq_uncertainty` | ranges and modelled estimates | Mark provisional reasoned ranges as replaceable authoring estimates and replace them with reviewed evidence before active or published use when they constrain a decision. | range review, site data, source update record |
 | `dq_resolution` | all parameterized and unmapped rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | identity review and final binding audit |
 
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | actual accepted terminal product and paired transfer | scale/lot/acceptance records | species; state; grade; moisture/basis; gate; actual_terminal_process_id; actual_terminal_output_row_id; lot/transfer_id; gross/tare/net mass R; raw stage totals/throughputs; stocks, rejects and destinations | Weigh accepted net R at the existing gate; match exactly one actual terminal source of the same lot/state and reconcile all earlier losses and stocks. If conditional preparation is absent use the last actual included eligible product output, without inventing that preparation. Preserve original activity records and all required qualifiers. | kg and native activity units | each accepted lot | matched production and handoff period | existing declared producer/primary gate | per declared reference flow | calibrated weighing, acceptance/grade records, lot chain, activation/bypass evidence and closed balances |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | all foreground quantities and actual route outputs | Let R be positive measured accepted final mass in kg for one matched species/state/grade/gate/period, excluding tare, rejects, co-products and held stock. Physical ledger = raw physical quantity/R * 1 kg, without burden-allocation scaling. Attributable inventory contribution = attributable raw quantity/R * 1 kg, preserving native numerator units and the existing output/period attribution. A local intensity q_i=Q_i/O_i first reconstructs Q_i=q_i*actual linked O_i; do not divide by R again after final normalization. Both handoff sides are the same measured event R/R*1 kg, not another physical yield. Include only actual active operations; record and substantiate bypass. Missing/nonpositive R or an unlinked terminal record blocks a normalized complete result, not zero. Preserve original stage data and cancel paired internal transfers once. | cp_declared_reference_handoff; original linked collection protocols | native quantities per declared final reference | `declared-handoff-measurement-definition` |
+
 ## 9. Validation Rules
 
 | rule_id | Applies to | Rule | source_ids |
@@ -1253,6 +1283,11 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `validation_flow_identity` | parameterized and unmapped rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
 | `validation_boundary` | published dataset profile and process selection | Reject post-gate transport, retail, consumer use, or processing when they are not declared as a boundary extension. | `unsd-cpc-3-01259` |
 | `validation_bilingual_alignment` | English and Chinese Markdown | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | selected actual route and all conditional bypass states | Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch. | `declared-handoff-measurement-definition` |
 
 ## 10. Published Dataset Profile
 
@@ -1279,3 +1314,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | This PCR Sections 3, 6 and 8: matched accepted handoff mass divided by itself times the declared reference amount; physical transfer pairing and dimensional normalization identity, not an empirical yield or new physical operation. | single accepted reference and measured route-throughput linkage |

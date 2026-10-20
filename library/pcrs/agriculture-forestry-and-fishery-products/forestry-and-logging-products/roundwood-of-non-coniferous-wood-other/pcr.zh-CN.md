@@ -189,7 +189,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_harvest`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -346,7 +346,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_preparation`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -386,7 +386,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录本节点实际消耗的材料质量，扣除退回量及上游服务已含投入；期间及输出归属仅计算一次，再除以匹配的最终合格参考输出质量。保留原始量，不再次归一化已归一化的数量。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -403,7 +403,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录本节点实际消耗的材料质量，扣除退回量及上游服务已含投入；期间及输出归属仅计算一次，再除以匹配的最终合格参考输出质量。保留原始量，不再次归一化已归一化的数量。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -515,7 +515,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_grading`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -771,7 +771,7 @@ sync_with: pcr.en-US.md
 | `period_shared_check` | 输出/期间/资产账本 | 核实全部有意输出、期间事件、使用节点与实际交接；份额合计为一，不重复服务、燃料或设备负担。 |  |
 | `identity_units_check` | 全部最终交换 | 实际交换需已核实具体 UUID 及兼容属性/单位。不得将能源/肥料/服务类别绑定任意单个具体载体，不得混加单位。 |  |
 | `environment_check` | 土地/碳/直接排放 | 保留实际来源、介质/物质记录、排除项及不确定性；无自动碳中和、储量信用、轮伐期、密度或避免产品信用。 |  |
-| `range_check` | 每张卡 | 每卡独立 QA 范围；暂定边界不替代记录。参考质量归一化精确为一；实际类别成员分别筛选。 |  |
+| `range_check` | 每张卡 | 对每个已提供的数量筛查核对具体交换、上下界、相容单位和分母、基准、适用性、证据类型及外部来源，中英文和投影保持等义。临时推理范围仅为非强制复核提示，不是默认数量、允许损失或完整性证据。没有相容数量界限依据时明确报告无法进行范围筛查，复核计量、匹配组分平衡和不确定性；不得为满足检查虚构范围。最终参照归一化保持精确，并非实证产率。实际交换数量、采集协议及相容单位/换算证据独立于范围要求。 |  |
 | `validate_direct_release_coverage` | `stand`; `harvest`; `preparation`; `grading` | 对每个实际启用节点，以活动清单逐项核对 cp_direct_release_stand; cp_direct_release_harvest; cp_direct_release_preparation; cp_direct_release_grading：记录应为有量的具体基本流、证据充分的上游服务覆盖，或有证据的无相关活动。缺失/不明不是零，须作为数据包完整性阻断项。检查每种实际物质及介质的量、方法因子单位、具体 UUID 和既有卡/服务覆盖，防止漏排或重复；空分组、购买电力的上游排放或其他节点的单一 CO2 卡不能代替本节点的现场释放核对。共享资产服务不得产生重复物理排放事件。 |  |
 
 - 按入场状态逐节点核对 required/conditional 激活与上游覆盖；外购已达状态原料不得重复此前生长、采收或整理，分类相同不能替代状态及门点匹配。

@@ -96,31 +96,6 @@ This reference UUID denotes the fresh, unprocessed farm-gate product. Verify act
 
 ##### Product flows
 
-###### Seed or transplant material (`planting_material_input`)
-
-Record the seed, plug, or transplant material that enters the declared field or protected unit and identify the material type, supplier, lot, and planted quantity.
-
-- Selected flow: Green chilli or pepper seed and transplant material
-- Flow property / unit: Number of viable units or mass / seed, plant, or kg
-- Amount rule: Record the purchased lot quantity and viable quantity planted in each field, bed, or protected unit.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh green fruit attributed to the same crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_establishment_records`
-- Sources: `usda-nrcs-nutrient-management-590`
-- Range: Planting-material quantity screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 8,000
-  - Upper: 50,000
-  - Unit: viable plants/ha
-  - Basis: broad open-field and protected-cultivation establishment screen pending site records
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Urea fertilizer (`crop_establishment_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for crop_establishment_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -495,7 +470,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green fruit attribute
 Calculate nitrate leaching or runoff when the selected nutrient and water-balance method requires it and retain the method parameters with the dataset.
 
 - Selected flow: Nitrate to soil or water from managed agricultural soil
-- Flow property / unit: Mass / kg NO3-N
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: Apply one documented leaching or runoff method to recorded nitrogen applications, irrigation, soil, and residue conditions.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -507,12 +482,14 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green fruit attribute
 - Collection protocol: `cp_emission_calculation_records`
 - Sources: `ipcc-2019-refinement-nitrogen`
 
+Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
+
 ###### Ammonia from managed soil (`soil_ammonia_emission`)
 
 Calculate ammonia volatilization when supported by the chosen nitrogen-emission method and the recorded fertilizer and amendment properties.
 
 - Selected flow: Ammonia to air from managed agricultural soil
-- Flow property / unit: Mass / kg NH3-N
+- Flow property / unit: Mass / kg NH3
 - Amount rule: Apply the declared method to documented nitrogen form, application timing, incorporation, and environmental conditions.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -523,6 +500,8 @@ Raw activity or stage basis: per 1,000 kg marketable fresh green fruit attribute
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_emission_calculation_records`
 - Sources: `ipcc-2019-refinement-nitrogen`
+
+Final exchange mass is kg NH3; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 17/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ###### Nitrogen oxides from field machinery (`field_nox_emission`)
 
@@ -759,6 +738,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_soil_nitrogen_emissions` | soil nitrogen elementary flows | Apply one declared IPCC-compatible method to documented nitrogen inputs and residue fate; do not combine alternative methods for one pathway. | nutrient records, residue records, method factors | kg N2O-N, NO3-N, or NH3-N | `ipcc-2019-refinement-nitrogen` |
 | `calc_energy_allocation` | shared electricity and fuel | Allocate shared energy or fuel by meter, operating hours, throughput, or another documented driver and disclose the selected driver. | utility or fuel total, allocation driver | crop-cycle energy or fuel | `fao-56-crop-evapotranspiration-1998` |
 | `calc_mass_balance` | harvest, grading, and gate outputs | Harvested mass equals marketable output plus reject, trimming, residue, and measured loss within the declared tolerance. | harvest mass, marketable mass, reject mass, trim, loss | reconciliation result | `codex-fresh-fruits-vegetables-2003` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | For the original planting_material_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_establishment_records` | Identity-specific exchanges and reconciled activity records | `usda-nrcs-nutrient-management-590` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_emission_calculation_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

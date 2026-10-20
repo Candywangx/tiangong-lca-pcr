@@ -19,7 +19,7 @@ system_boundary:
   rules:
     - rule_id: system_boundary_rule_1
       applies_to: "foreground_system_boundary"
-      rule: "The default foreground boundary starts with the managed cacao stand and declared crop year or perennial phase. It includes attributable establishment and replacement, soil and nutrient management, crop protection, irrigation, field energy and direct field emissions, mature-pod harvest, and the hand-off of fresh pods or wet beans. When postharvest_extension is true, it also includes pod breaking, wet-bean extraction, fermentation, drying, cleaning, grading, storage and the declared post-harvest gate. Upstream production of planting material, fertilizer, crop-protection products, energy, water, treatment services and packaging uses compatible upstream datasets when they cross the foreground boundary."
+      rule: "The default foreground boundary starts with the managed cacao stand and declared crop year or perennial phase and ends with fresh wet beans in pulp at the farm gate. It includes attributable establishment and replacement, field management, direct field emissions, mature-pod harvest, pod breaking, separation of husk/placenta and wet-bean extraction. A fresh-pod sale or hand-off is an intermediate boundary and cannot be reported as the wet-bean reference result. Off-site or contracted extraction remains a linked operation with its input/output masses, service burdens and residues included once. The postharvest_extension flag controls fermentation and later operations only; turning it off never removes extraction. Purchased inputs use compatible upstream datasets at the actual receiving state, without also charging their included operations again."
       source_ids: []
     - rule_id: system_boundary_rule_2
       applies_to: "foreground_system_boundary"
@@ -27,10 +27,10 @@ system_boundary:
       source_ids: []
     - rule_id: boundary_01
       applies_to: "managed production"
-      rule: "Include the managed cacao stand, crop-year management, actual inputs, field emissions, harvest and production-to-harvest hand-off. Include establishment, replacement and termination only when attributable to represented years."
+      rule: "Include cultivation, harvest, pod opening and wet-bean extraction through the fresh wet-bean farm-gate hand-off. Attribute establishment, replacement and termination to represented production. A pod-only hand-off cannot satisfy this reference boundary."
       source_ids:
         - fao-cocoa-production-guide
-        - icco-global-cocoa-farming-systems
+        - icco-cocoa-harvesting-post-harvest
         - iso-14044-2006
     - rule_id: boundary_02
       applies_to: "reference gate"
@@ -40,7 +40,7 @@ system_boundary:
         - mass-balance-identity
     - rule_id: boundary_03
       applies_to: "pod breaking and fermentation"
-      rule: "When extended, identify harvested pods, wet beans in pulp, pod husk, pulp/sweatings, batch, by-products, unreacted or spoiled material and drying hand-off."
+      rule: "Pod breaking and wet-bean extraction are required before the reference hand-off: link harvested pod mass to wet beans in pulp, husk/placenta, rejects and losses. Fermentation is additional and conditional on the declared extension; link its drainage, rejects and output separately."
       source_ids:
         - icco-cocoa-harvesting-post-harvest
         - fao-cocoa-ota-code
@@ -169,8 +169,8 @@ process_map:
     quantitative_reference: "per harvested pod lot and wet reference"
   - id: cocoa_pod_breaking_extraction
     name: "Pod breaking and wet-bean extraction"
-    inclusion: "conditional"
-    inclusion_condition: "pod opening and separation are within the declared route"
+    inclusion: "required"
+    inclusion_condition: "required to obtain the wet-bean reference, including contracted extraction"
     role: "primary conditioning"
     quantitative_reference: "per pod lot and wet reference"
   - id: cocoa_fermentation
@@ -393,7 +393,7 @@ process_inventory:
           property_unit: "Area-time / ha·year"
           description: "Record block area, production phase, shade/intercrop condition and crop year. Land transformation is separate. Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference."
           amount:
-            expression: "measured block area and annualized phase divided by wet reference output"
+            expression: "Raw occupation = actual managed area multiplied by the dated attributable occupation duration in years, partitioned across non-overlapping phases and all co-users once. Convert ha to m2 by 10,000 only if the selected area-time identity requires m2*year. Area divided by product mass alone is not area-time. Attribute the area-time numerator using the original allocation rules, then normalize once to matched accepted final-reference mass, including actual wet-to-dry stage-throughput linkage where relevant; do not divide an already final intensity again."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -420,33 +420,7 @@ process_inventory:
       waste:
         []
       elementary:
-        - row_id: cocoa_field_emissions
-          role: "Managed-soil and crop-residue emissions"
-          name: "Managed-soil and crop-residue elementary flows [unmapped]"
-          flow_type: "elementary"
-          property_unit: "Mass / kg substance"
-          description: "Record calculated or measured emissions by substance, receiving medium, nutrient/residue source and crop year; one method owns each pathway. Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference."
-          amount:
-            expression: "selected method applied to nutrient, residue, soil and climate records"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_cocoa_emission_records
-              source_ids:
-                - ipcc-2019-refinement-afolu
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg substance/kg wet reference"
-                basis: "broad aggregate interval; replace with substance-specific calculations"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
   - id: cocoa_pod_harvest
     label: "Mature cocoa-pod harvest and collection"
     inputs:
@@ -767,34 +741,6 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       waste:
-        - row_id: cocoa_fermentation_sweatings
-          role: "Fermentation pulp, sweatings and drainage"
-          name: "Cocoa pulp, sweatings or fermentation drainage [unmapped]"
-          flow_type: "waste"
-          property_unit: "Mass or volume / kg or m3"
-          description: "Record drained pulp and liquid separately when measured. If recovered as a deliberate product or feed input, document intended hand-off; otherwise route to treatment, composting, soil return or disposal. Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference."
-          amount:
-            expression: "measured drainage or mass-balance estimate by batch and destination"
-            value_mode: "calculated_value"
-            specificity: "route_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_cocoa_residue_destination_records
-              source_ids:
-                - icco-cocoa-harvesting-post-harvest
-                - fao-cocoa-ota-code
-            ranges:
-              - role: qa_guardrail
-                lower: "0.05"
-                upper: "0.6"
-                unit: "kg drainage/kg wet-bean input"
-                basis: "broad drainage interval; replace with batch and destination records"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: cocoa_fermentation_rejects
           role: "Spoiled, unfermented or off-spec fermentation rejects"
           name: "Fermentation reject or off-spec bean material [unmapped]"
@@ -967,7 +913,7 @@ process_inventory:
           name: "Fermented, dried cocoa beans [unmapped]"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This is a distinct route output, not the platform reference flow. Record final moisture, drying technology, temperature/weather and quality status. Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference and per 1 kg dried output."
+          description: "This is a distinct route output, not the platform reference flow. Record final moisture, drying technology, temperature/weather and quality status. Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference and per 1 kg dried output. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "weighed dried output with measured moisture and lot identity"
             value_mode: "foreground_record"
@@ -982,16 +928,6 @@ process_inventory:
                 - icco-cocoa-processing
                 - icco-cocoa-quality-requirements
             ranges:
-              - role: qa_guardrail
-                lower: "0.35"
-                upper: "0.55"
-                unit: "kg dried beans/kg fermented wet beans"
-                basis: "dry-matter and moisture conversion screen; replace with lot balance"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - icco-cocoa-processing
               - role: typical_range
                 lower: "6"
                 upper: "8"
@@ -1003,36 +939,6 @@ process_inventory:
                   - icco-cocoa-processing
                   - icco-cocoa-quality-requirements
       waste:
-        - row_id: cocoa_drying_water_loss
-          role: "Drying water loss"
-          name: "Water loss to air or drying loss [unmapped]"
-          flow_type: "waste"
-          property_unit: "Mass / kg water"
-          description: "Calculate water removed from wet beans; it is not dried-bean product. Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference."
-          amount:
-            expression: "wet-input/dry-matter balance using measured input and output moisture"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_cocoa_drying_batch_records
-              source_ids:
-                - mass-balance-identity
-                - icco-cocoa-processing
-            ranges:
-              - role: qa_guardrail
-                lower: "0.35"
-                upper: "0.65"
-                unit: "kg water/kg fermented wet beans"
-                basis: "broad conversion from approximately 55–60% to 6–8% moisture; replace with measured balance"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - icco-cocoa-processing
         - row_id: cocoa_drying_rejects
           role: "Mouldy, contaminated or over-dried bean rejects"
           name: "Drying reject or contaminated bean material [unmapped]"
@@ -1161,6 +1067,26 @@ process_inventory:
               source_ids:
                 - icco-cocoa-quality-requirements
                 - ipcc-2019-refinement-afolu
+            ranges: []
+        - row_id: cocoa_drying_water_loss
+          role: "Drying water loss"
+          name: "Water vapour emitted to air during cocoa drying (UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg water"
+          description: "Calculate water removed from wet beans; it is not dried-bean product. Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference. This is an elementary output to air, not a waste sent to treatment. Account for rejected bean solids separately; do not include solids or drainage in the evaporated-water mass. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
+          amount:
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cocoa_drying_batch_records
+              source_ids:
+                - mass-balance-identity
+                - icco-cocoa-processing
             ranges: []
   - id: cocoa_cleaning_grading
     label: "Cleaning, grading and reject routing"
@@ -1466,7 +1392,7 @@ process_inventory:
           name: "Fermented, dried and graded cocoa beans at declared post-harvest gate [unmapped]"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Use only when the data package declares the extended post-harvest gate. It is a separate route output and must not be labelled as the platform's fresh farm-gate state. Raw activity or stage basis: per 1 kg wet cocoa beans at platform farm-gate reference and per 1 kg dried gate output."
+          description: "Use only when the data package declares the extended post-harvest gate. It is a separate route output and must not be labelled as the platform's fresh farm-gate state. Raw activity or stage basis: per 1 kg wet cocoa beans at platform farm-gate reference and per 1 kg dried gate output. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "weighed final lot after storage with moisture, grade and loss record"
             value_mode: "foreground_record"
@@ -1480,17 +1406,7 @@ process_inventory:
               source_ids:
                 - icco-cocoa-processing
                 - icco-cocoa-quality-requirements
-            ranges:
-              - role: qa_guardrail
-                lower: "0.3"
-                upper: "0.55"
-                unit: "kg dried gate output/kg wet reference"
-                basis: "measured wet-to-dry balance; replace with lot records"
-                basis_kind: "reference_flow"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - icco-cocoa-processing
+            ranges: []
       waste:
         - row_id: cocoa_storage_losses
           role: "Storage loss and quality downgrade"
@@ -1499,7 +1415,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Record mould, pests, moisture change, foreign-material removal and other storage events. A downgraded saleable lot uses its intended-output card rather than this waste card. Raw activity or stage basis: per 1 kg dried cocoa bean storage input."
           amount:
-            expression: "opening mass plus receipts and removed lots minus closing mass, reconciled to inspection and destination records"
+            expression: "Measure the actual damaged/rejected/lost stream by lot and destination, with mutually exclusive material quantities. Reconcile opening stock + receipts = accepted dispatch + other external transfers + rejected removals + independently evidenced physical loss + closing stock on matched moisture/component bases. Rework returned across this node is one paired transfer, or retained in closing stock if still held; it is not another final output. An unexplained balance difference is an investigation item, not automatically a physical waste or emission. Do not add removed lots to receipts, omit closing stock, or subtract a loss again when it is already part of this reported stream. Attribute and normalize each supported exported quantity once to accepted final output."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -1671,7 +1587,7 @@ dataset_production:
       process_id: "cocoa_drying_stabilization"
       flow_role: "fermented wet input, drying energy, dried output and water loss"
       record_type: "drying log and moisture sample record"
-      raw_fields: "batch_id; wet_input; method; platform_or_dryer; weather_or_fuel; start_time; end_time; temperature; moisture; output_mass; reject_mass"
+      raw_fields: "batch_id; wet_input; method; platform_or_dryer; weather_or_fuel; start_time; end_time; temperature; moisture; output_mass; reject_mass ; all inlet/outlet material water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; wet-basis moisture/density; supported evaporation and uncertainty"
       collection_method: "reconcile wet input, dry output and loss using documented moisture samples; Raw aggregation and attribution: calculate wet-to-dry balance per batch and preserve measured moisture basis"
       unit: "kg wet input; kg dry beans; percent moisture; °C; days; MJ"
       frequency: "each drying batch and moisture sample"
@@ -1707,8 +1623,8 @@ dataset_production:
       process_id: "cocoa_storage_gate"
       flow_role: "accepted dried beans, packaging, storage service, output and loss"
       record_type: "warehouse record and storage-period balance"
-      raw_fields: "lot_id; opening_mass; packaging; warehouse; start_date; end_date; conditions; receipts; outputs; losses; closing_mass"
-      collection_method: "reconcile opening stock, receipts, declared output and losses for each storage period; Raw aggregation and attribution: close the storage balance and assign shared handling once to the documented lot driver"
+      raw_fields: "lot_id; opening_mass; packaging; warehouse; start_date; end_date; conditions; receipts; outputs; losses; closing_mass ; opening and closing stock; receipts; dispatch; other external transfers; measured rejects; independently evidenced losses; paired rework; moisture/component basis; unexplained balance"
+      collection_method: "Measure each actual stream and reconcile opening stock + receipts = accepted dispatch + other external transfers + rejected removals + independently evidenced physical losses + closing stock on matching moisture/component bases. Pair rework/returns and keep retained material in stocks. Unexplained residual is an evidence gap, not an automatic waste or release. Preserve attribution and normalize once to matched accepted final output."
       unit: "kg dried beans; kg loss; storage days; packaging unit"
       frequency: "each storage period and lot"
       temporal_coverage: "complete pre-gate storage period"
@@ -1749,7 +1665,7 @@ dataset_production:
       source_ids: []
     - id: calc_03
       applies_to: "route-wide processes"
-      rule: "Normalize to 1 kg wet farm-gate reference. For the extended route also report per 1 kg dried output and retain the conversion denominator."
+      rule: "Base result: sum burdens only through wet-bean hand-off and divide by net accepted wet-bean mass. Extended result: add only linked downstream burdens and divide the combined attributable total by the matched final extended-state output. Retain both denominators and the measured lot conversion; an extended inventory per kg wet input is labelled an extension intensity, never the base farm-gate inventory."
       inputs:
         - "process totals and reference output"
       output: "inventory per 1 kg wet reference and separate extended-route dry-output result"
@@ -1772,12 +1688,39 @@ dataset_production:
       source_ids: []
     - id: calc_06
       applies_to: "cocoa_storage_gate"
-      rule: "Calculate storage loss as the reconciled difference and investigate negative or unexplained balances."
+      rule: "Measure the actual damaged/rejected/lost stream by lot and destination, with mutually exclusive material quantities. Reconcile opening stock + receipts = accepted dispatch + other external transfers + rejected removals + independently evidenced physical loss + closing stock on matched moisture/component bases. Rework returned across this node is one paired transfer, or retained in closing stock if still held; it is not another final output. An unexplained balance difference is an investigation item, not automatically a physical waste or emission. Do not add removed lots to receipts, omit closing stock, or subtract a loss again when it is already part of this reported stream. Attribute and normalize each supported exported quantity once to accepted final output."
       inputs:
         - "storage opening"
         - receipts
         - "outputs and closing"
       output: "reconciled storage loss and unexplained balance differences"
+      source_ids: []
+    - id: cocoa_field_emissions_identity_and_fate
+      applies_to: "cocoa_managed_production"
+      rule: "Identify every actual emitted substance and receiving compartment separately. Quantify each supported pathway with its own activity, method, chemical-species basis and native unit; distinguish elemental N/P ledgers from final compounds. Soil nutrient retention or a mass-balance residual is not automatically an emission. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_cocoa_emission_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - ipcc-2019-refinement-afolu
+    - id: cocoa_fermentation_sweatings_identity_and_fate
+      applies_to: "cocoa_fermentation"
+      rule: "Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_cocoa_residue_destination_records
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids:
+        - icco-cocoa-harvesting-post-harvest
+        - fao-cocoa-ota-code
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_cocoa_emission_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
       source_ids: []
   data_quality_requirements:
     []
@@ -1795,7 +1738,7 @@ validation_rules:
       - iso-14044-2006
   - rule_id: validation_03
     applies_to: "process graph"
-    rule: "Confirm declared hand-offs: production to harvest, pods to wet beans, wet beans to fermentation, fermentation to drying, drying to grading and grading to declared gate when those nodes are included."
+    rule: "Require production-to-harvest-to-pod-opening-to-wet-bean hand-offs for every wet-reference result, even with postharvest_extension=false. Check pod, wet-bean, husk/placenta and loss records and contracted-service scope. Reject a pod-only result labelled as wet beans. For an extension, additionally validate each included fermentation, drying, grading and storage hand-off."
     source_ids:
       - icco-cocoa-harvesting-post-harvest
       - fao-cocoa-ota-code
@@ -1836,7 +1779,7 @@ validation_rules:
       - ipcc-2019-refinement-afolu
   - rule_id: validation_10
     applies_to: "boundary disclosure"
-    rule: "Confirm the platform farm-gate reference, post-harvest extension flag, final gate, storage duration and excluded downstream cocoa products are declared."
+    rule: "Require a fresh wet-bean base result with extraction included. Report any downstream extension as a separate boundary/result with its own state, gate and measured conversion; extension operations must not be folded into the base wet farm-gate inventory. State storage and downstream exclusions."
     source_ids:
       - iso-14044-2006
 published_dataset_profile:
@@ -1850,57 +1793,57 @@ published_dataset_profile:
 data_sources:
   - id: "icco-cocoa-harvesting-post-harvest"
     type: "official_guidance"
-    reference: ""
-    used_for: ""
+    reference: "ICCO, Harvesting & Post-harvest, https://www.icco.org/harvesting-post-harvest-new/"
+    used_for: "pod opening, wet-bean extraction, fermentation, drying and moisture context"
   - id: "icco-cocoa-processing"
     type: "official_guidance"
-    reference: ""
-    used_for: ""
+    reference: "ICCO, Processing Cocoa, https://www.icco.org/processing-cocoa/"
+    used_for: "post-fermentation drying and storage moisture context"
   - id: "fao-cocoa-production-guide"
     type: "official_guidance"
-    reference: ""
-    used_for: ""
+    reference: "FAO, Cocoa production and post-harvest guidance, https://www.fao.org/4/AD220E/AD220E06.htm"
+    used_for: "cultivation, pod harvest, drying, sorting and storage practices"
   - id: "fao-cocoa-ota-code"
     type: "official_guidance"
-    reference: ""
-    used_for: ""
+    reference: "FAO/WHO Codex, Code of Practice for Ochratoxin A in Cocoa, https://www.fao.org/input/download/standards/13601/CXP_072e.pdf"
+    used_for: "fermentation, turning, drying start and contamination controls"
   - id: "icco-cocoa-quality-requirements"
     type: "handbook"
-    reference: ""
-    used_for: ""
+    reference: "ECA–CAOBISCO–FCC, Cocoa Beans: Quality Requirements, https://www.icco.org/wp-content/uploads/2019/07/06-Michelle-End-v3.pdf"
+    used_for: "defects, drying, storage and rejection context"
   - id: "icco-global-cocoa-farming-systems"
     type: "handbook"
-    reference: ""
-    used_for: ""
+    reference: "ICCO, Global Review of Cocoa Farming Systems, https://www.icco.org/wp-content/uploads/Global-Review-of-Cocoa-Farming-Systems_Final.pdf"
+    used_for: "farming systems, fermentation and drying route evidence"
   - id: "ipcc-2019-refinement-afolu"
     type: "method_factor"
-    reference: ""
-    used_for: ""
+    reference: "IPCC, 2019 Refinement AFOLU, https://efdb.ipcc-nggip.iges.or.jp/public/2019rf/index.html"
+    used_for: "agricultural soil, residue and emission-method context"
   - id: "iso-14044-2006"
     type: "standard"
-    reference: ""
-    used_for: ""
+    reference: "ISO 14044:2006, https://committee.iso.org/standard/38498.html"
+    used_for: "boundary, allocation, data-quality and disclosure principles"
   - id: "mass-balance-identity"
     type: "method_factor"
-    reference: ""
-    used_for: ""
+    reference: "PCR method identity: conservation and declared-state reconciliation"
+    used_for: "mass, moisture, lot, reject and storage balance checks"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:93c7a3f5e7b7c8955bb0fd33ddc8dcf01ee0c190ecdd1c7211fb0592860d6333"
+  source_sha256: "sha256:21c1b00f36807e8e30ccf60654a867553f058d1690571eac2cbe02451873dda6"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8439"
+    - unit_id: "normative_8657"
       family: "system_boundary"
       span:
         start:
-          offset: 8439
+          offset: 8657
           line: 77
           column: 1
         end:
-          offset: 12896
+          offset: 13414
           line: 105
           column: 1
-      markdown: "## 5. System Boundary\n\nThe default foreground boundary starts with the managed cacao stand and declared crop year or perennial phase. It includes attributable establishment and replacement, soil and nutrient management, crop protection, irrigation, field energy and direct field emissions, mature-pod harvest, and the hand-off of fresh pods or wet beans. When `postharvest_extension` is true, it also includes pod breaking, wet-bean extraction, fermentation, drying, cleaning, grading, storage and the declared post-harvest gate. Upstream production of planting material, fertilizer, crop-protection products, energy, water, treatment services and packaging uses compatible upstream datasets when they cross the foreground boundary.\n\nThe reference gate is the platform's fresh, unprocessed farm-gate state. Fermented, dried and graded beans are downstream route states within the extended process map, not alternative meanings of the same reference UUID. The data package must state whether the farm-gate reference stops at wet-bean hand-off or whether a post-harvest extension is reported. Roasting, grinding, alkalization, pressing, cocoa liquor, cocoa butter, cocoa powder, chocolate, prepared foods, retail and consumer use are downstream and excluded.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | managed cacao stand at the declared perennial phase and crop-year start, with planting material and purchased management inputs crossing the foreground boundary |\n| starting_condition_role | perennial managed biological production condition |\n| product_classification_scope | CPC 3.0 `01640`, Cocoa beans; exact platform reference identity is fresh, unprocessed cocoa beans at farm gate |\n| recursive_input_rule | purchased cocoa beans entering post-harvest, blending or storage are separately identified lots and are not recursively traced through this PCR; cocoa paste, cocoa waste and downstream cocoa products are outside this category |\n| upstream_dataset_requirement | reviewed upstream datasets for planting material, fertilizers, crop protection, water, energy, treatment, packaging and transport services when they cross the declared boundary |\n| disclosure | block or supplier scope, crop year, cultivar group, production system, wet reference condition, extension flag, lot moisture, fermentation/drying records, quality grade, gate, storage, intended outputs, residues, rejects, wastewater and allocation decision |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_01` | managed production | Include the managed cacao stand, crop-year management, actual inputs, field emissions, harvest and production-to-harvest hand-off. Include establishment, replacement and termination only when attributable to represented years. | `fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`; `iso-14044-2006` |\n| `boundary_02` | reference gate | Treat `Cocoa beans` with `Production mix, at farm gate` and `Fresh, unprocessed produce` as the declared reference identity. Do not use the UUID for fermented, dried or graded bean states without a separate identity decision. | `iso-14044-2006`; `mass-balance-identity` |\n| `boundary_03` | pod breaking and fermentation | When extended, identify harvested pods, wet beans in pulp, pod husk, pulp/sweatings, batch, by-products, unreacted or spoiled material and drying hand-off. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |\n| `boundary_04` | drying, grading and storage | Include drying/stabilization, cleaning, grade separation and pre-gate storage only when they cross the declared extension. Record energy, moisture, storage time, contamination controls and losses. | `icco-cocoa-processing`; `icco-cocoa-quality-requirements` |\n| `boundary_05` | upstream inputs | Treat purchased inputs, utilities, packaging, treatment and transport services as separately identified upstream inputs. Do not recurse into another cocoa PCR or silently use cocoa waste or paste as a bean input. | `iso-14044-2006` |\n| `boundary_06` | losses and rejects | Keep field losses, damaged pods, unextracted beans, spoiled or unfermented beans, drying losses, mouldy beans, dust, shells, storage losses and rejected lots in the foreground until a documented recovery, co-product, treatment or disposal hand-off exists. | `fao-cocoa-ota-code`; `icco-cocoa-quality-requirements`; `mass-balance-identity` |\n\n"
+      markdown: "## 5. System Boundary\n\nThe default foreground boundary starts with the managed cacao stand and declared crop year or perennial phase and ends with fresh wet beans in pulp at the farm gate. It includes attributable establishment and replacement, field management, direct field emissions, mature-pod harvest, pod breaking, separation of husk/placenta and wet-bean extraction. A fresh-pod sale or hand-off is an intermediate boundary and cannot be reported as the wet-bean reference result. Off-site or contracted extraction remains a linked operation with its input/output masses, service burdens and residues included once. The postharvest_extension flag controls fermentation and later operations only; turning it off never removes extraction. Purchased inputs use compatible upstream datasets at the actual receiving state, without also charging their included operations again.\n\nThe reference gate is the platform's fresh, unprocessed farm-gate state. Fermented, dried and graded beans are downstream route states within the extended process map, not alternative meanings of the same reference UUID. The data package must state whether the farm-gate reference stops at wet-bean hand-off or whether a post-harvest extension is reported. Roasting, grinding, alkalization, pressing, cocoa liquor, cocoa butter, cocoa powder, chocolate, prepared foods, retail and consumer use are downstream and excluded.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | managed cacao stand at the declared perennial phase and crop-year start, with planting material and purchased management inputs crossing the foreground boundary |\n| starting_condition_role | perennial managed biological production condition |\n| product_classification_scope | CPC 3.0 `01640`, Cocoa beans; exact platform reference identity is fresh, unprocessed cocoa beans at farm gate |\n| recursive_input_rule | purchased cocoa beans entering post-harvest, blending or storage are separately identified lots and are not recursively traced through this PCR; cocoa paste, cocoa waste and downstream cocoa products are outside this category |\n| upstream_dataset_requirement | reviewed upstream datasets for planting material, fertilizers, crop protection, water, energy, treatment, packaging and transport services when they cross the declared boundary |\n| disclosure | block or supplier scope, crop year, cultivar group, production system, wet reference condition, extension flag, lot moisture, fermentation/drying records, quality grade, gate, storage, intended outputs, residues, rejects, wastewater and allocation decision |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_01` | managed production | Include cultivation, harvest, pod opening and wet-bean extraction through the fresh wet-bean farm-gate hand-off. Attribute establishment, replacement and termination to represented production. A pod-only hand-off cannot satisfy this reference boundary. | `fao-cocoa-production-guide`; `icco-cocoa-harvesting-post-harvest`; `iso-14044-2006` |\n| `boundary_02` | reference gate | Treat `Cocoa beans` with `Production mix, at farm gate` and `Fresh, unprocessed produce` as the declared reference identity. Do not use the UUID for fermented, dried or graded bean states without a separate identity decision. | `iso-14044-2006`; `mass-balance-identity` |\n| `boundary_03` | pod breaking and fermentation | Pod breaking and wet-bean extraction are required before the reference hand-off: link harvested pod mass to wet beans in pulp, husk/placenta, rejects and losses. Fermentation is additional and conditional on the declared extension; link its drainage, rejects and output separately. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |\n| `boundary_04` | drying, grading and storage | Include drying/stabilization, cleaning, grade separation and pre-gate storage only when they cross the declared extension. Record energy, moisture, storage time, contamination controls and losses. | `icco-cocoa-processing`; `icco-cocoa-quality-requirements` |\n| `boundary_05` | upstream inputs | Treat purchased inputs, utilities, packaging, treatment and transport services as separately identified upstream inputs. Do not recurse into another cocoa PCR or silently use cocoa waste or paste as a bean input. | `iso-14044-2006` |\n| `boundary_06` | losses and rejects | Keep field losses, damaged pods, unextracted beans, spoiled or unfermented beans, drying losses, mouldy beans, dust, shells, storage losses and rejected lots in the foreground until a documented recovery, co-product, treatment or disposal hand-off exists. | `fao-cocoa-ota-code`; `icco-cocoa-quality-requirements`; `mass-balance-identity` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1917,11 +1860,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8439
+              offset: 8657
               line: 77
               column: 1
             end:
-              offset: 8460
+              offset: 8678
               line: 77
               column: 22
           text: "## 5. System Boundary"
@@ -1937,16 +1880,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_76762"
+    - unit_id: "normative_76814"
       family: "allocation"
       span:
         start:
-          offset: 76762
-          line: 1294
+          offset: 76814
+          line: 1229
           column: 1
         end:
-          offset: 78503
-          line: 1306
+          offset: 78555
+          line: 1241
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nSequential wet, fermented, dried and graded bean states are not co-products and receive no allocation between states. First subdivide by pod lot, fermentation batch, drying batch and grading lot. Record every intended output hand-off before applying allocation.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | sequential cocoa states | Do not allocate burdens between wet, fermented wet, dried and graded beans; link them by mass and moisture balances. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_02` | pod breaking and fermentation | Treat pod husk, placenta, pulp and sweatings as residues by default. An intended co-product requires a named destination, quantity, quality specification and hand-off. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |\n| `allocation_03` | intended co-products | Prefer subdivision. If intended outputs remain, use measured mass allocation for comparable material outputs; use an economic sensitivity when functions differ materially and retain price period and denominator. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_04` | rejects and downgrade | Do not allocate rejected beans to accepted cocoa output. A downgraded saleable lot requires its own intended-output hand-off; recovered material retains producing-node burden unless a documented recovery boundary exists. | `icco-cocoa-quality-requirements`; `fao-cocoa-ota-code` |\n| `allocation_05` | batches and perennial phases | Attach shared equipment, cleaning, changeover, drying platforms and plantation phase burdens to the generating run, crop year or phase exactly once. | `iso-14044-2006`; `mass-balance-identity` |\n\n"
       headings:
@@ -1965,12 +1908,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 76762
-              line: 1294
+              offset: 76814
+              line: 1229
               column: 1
             end:
-              offset: 76802
-              line: 1294
+              offset: 76854
+              line: 1229
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1985,18 +1928,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_93436"
+    - unit_id: "normative_98863"
       family: "validation"
       span:
         start:
-          offset: 93436
-          line: 1355
+          offset: 98863
+          line: 1293
           column: 1
         end:
-          offset: 95994
-          line: 1370
+          offset: 101738
+          line: 1308
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow | Confirm UUID `3c54da37-f1ab-4b4c-8363-5c32b638005c`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66` and Units of mass group `93a60a57-a4c8-11da-a746-0800200c9a66`; retain farm-gate fresh/unprocessed metadata. | `mass-balance-identity` |\n| `validation_02` | state identity | Reject use of the reference UUID for fermented, dried, graded, cocoa waste or cocoa paste material without a reviewed identity decision. | `mass-balance-identity`; `iso-14044-2006` |\n| `validation_03` | process graph | Confirm declared hand-offs: production to harvest, pods to wet beans, wet beans to fermentation, fermentation to drying, drying to grading and grading to declared gate when those nodes are included. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |\n| `validation_04` | mass balance | Reconcile each lot's inputs, accepted outputs, intended co-products, residues, rejects, storage losses and moisture-related water loss within measurement uncertainty. | `mass-balance-identity` |\n| `validation_05` | fermentation | Require batch id, dates, method, drainage, output hand-off and inspection evidence; unresolved off-spec routing blocks the extended route. | `fao-cocoa-ota-code`; `icco-cocoa-harvesting-post-harvest` |\n| `validation_06` | drying | Require method, input/output, final moisture and smoke or contamination control. Use 6–8% only as screening; measured lot moisture governs. | `icco-cocoa-processing`; `icco-cocoa-quality-requirements` |\n| `validation_07` | grades and rejects | Every accepted grade and intended downgrade has a hand-off; mouldy, broken, contaminated or off-spec material cannot be counted as accepted beans. | `fao-cocoa-production-guide`; `icco-cocoa-quality-requirements` |\n| `validation_08` | allocation | Confirm every intended output, residue destination and allocation denominator. Sequential states are not allocated against each other and shared burdens are not double-counted. | `iso-14044-2006`; `mass-balance-identity` |\n| `validation_09` | data quality | Check crop-year coverage, lot completeness, moisture basis, protocol linkage, sources, method version and units for every important quantitative flow. | `iso-14044-2006`; `ipcc-2019-refinement-afolu` |\n| `validation_10` | boundary disclosure | Confirm the platform farm-gate reference, post-harvest extension flag, final gate, storage duration and excluded downstream cocoa products are declared. | `iso-14044-2006` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow | Confirm UUID `3c54da37-f1ab-4b4c-8363-5c32b638005c`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66` and Units of mass group `93a60a57-a4c8-11da-a746-0800200c9a66`; retain farm-gate fresh/unprocessed metadata. | `mass-balance-identity` |\n| `validation_02` | state identity | Reject use of the reference UUID for fermented, dried, graded, cocoa waste or cocoa paste material without a reviewed identity decision. | `mass-balance-identity`; `iso-14044-2006` |\n| `validation_03` | process graph | Require production-to-harvest-to-pod-opening-to-wet-bean hand-offs for every wet-reference result, even with postharvest_extension=false. Check pod, wet-bean, husk/placenta and loss records and contracted-service scope. Reject a pod-only result labelled as wet beans. For an extension, additionally validate each included fermentation, drying, grading and storage hand-off. | `icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code` |\n| `validation_04` | mass balance | Reconcile each lot's inputs, accepted outputs, intended co-products, residues, rejects, storage losses and moisture-related water loss within measurement uncertainty. | `mass-balance-identity` |\n| `validation_05` | fermentation | Require batch id, dates, method, drainage, output hand-off and inspection evidence; unresolved off-spec routing blocks the extended route. | `fao-cocoa-ota-code`; `icco-cocoa-harvesting-post-harvest` |\n| `validation_06` | drying | Require method, input/output, final moisture and smoke or contamination control. Use 6–8% only as screening; measured lot moisture governs. | `icco-cocoa-processing`; `icco-cocoa-quality-requirements` |\n| `validation_07` | grades and rejects | Every accepted grade and intended downgrade has a hand-off; mouldy, broken, contaminated or off-spec material cannot be counted as accepted beans. | `fao-cocoa-production-guide`; `icco-cocoa-quality-requirements` |\n| `validation_08` | allocation | Confirm every intended output, residue destination and allocation denominator. Sequential states are not allocated against each other and shared burdens are not double-counted. | `iso-14044-2006`; `mass-balance-identity` |\n| `validation_09` | data quality | Check crop-year coverage, lot completeness, moisture basis, protocol linkage, sources, method version and units for every important quantitative flow. | `iso-14044-2006`; `ipcc-2019-refinement-afolu` |\n| `validation_10` | boundary disclosure | Require a fresh wet-bean base result with extraction included. Report any downstream extension as a separate boundary/result with its own state, gate and measured conversion; extension operations must not be folded into the base wet farm-gate inventory. State storage and downstream exclusions. | `iso-14044-2006` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -2013,12 +1956,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 93436
-              line: 1355
+              offset: 98863
+              line: 1293
               column: 1
             end:
-              offset: 93458
-              line: 1355
+              offset: 98885
+              line: 1293
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -2037,435 +1980,435 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 8462
+          offset: 8680
           line: 79
           column: 1
         end:
-          offset: 9171
+          offset: 9536
           line: 79
-          column: 710
+          column: 857
     - pointer: "/system_boundary/rules/1"
       rule_id: "system_boundary_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 9173
+          offset: 9538
           line: 81
           column: 1
         end:
-          offset: 9695
+          offset: 10060
           line: 81
           column: 523
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_01"
       identity_kind: "explicit"
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 11007
+          offset: 11372
           line: 98
           column: 1
         end:
-          offset: 11360
+          offset: 11752
           line: 98
-          column: 354
+          column: 381
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_02"
       identity_kind: "explicit"
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 11361
+          offset: 11753
           line: 99
           column: 1
         end:
-          offset: 11667
+          offset: 12059
           line: 99
           column: 307
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_03"
       identity_kind: "explicit"
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 11668
+          offset: 12060
           line: 100
           column: 1
         end:
-          offset: 11936
+          offset: 12454
           line: 100
-          column: 269
+          column: 395
     - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_04"
       identity_kind: "explicit"
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 11937
+          offset: 12455
           line: 101
           column: 1
         end:
-          offset: 12244
+          offset: 12762
           line: 101
           column: 308
     - pointer: "/system_boundary/rules/6"
       rule_id: "boundary_05"
       identity_kind: "explicit"
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 12245
+          offset: 12763
           line: 102
           column: 1
         end:
-          offset: 12514
+          offset: 13032
           line: 102
           column: 270
     - pointer: "/system_boundary/rules/7"
       rule_id: "boundary_06"
       identity_kind: "explicit"
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 12515
+          offset: 13033
           line: 103
           column: 1
         end:
-          offset: 12894
+          offset: 13412
           line: 103
           column: 380
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 76804
-          line: 1296
+          offset: 76856
+          line: 1231
           column: 1
         end:
-          offset: 77065
-          line: 1296
+          offset: 77117
+          line: 1231
           column: 262
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 77138
-          line: 1300
+          offset: 77190
+          line: 1235
           column: 1
         end:
-          offset: 77346
-          line: 1300
+          offset: 77398
+          line: 1235
           column: 209
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 77347
-          line: 1301
+          offset: 77399
+          line: 1236
           column: 1
         end:
-          offset: 77629
-          line: 1301
+          offset: 77681
+          line: 1236
           column: 283
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 77630
-          line: 1302
+          offset: 77682
+          line: 1237
           column: 1
         end:
-          offset: 77930
-          line: 1302
+          offset: 77982
+          line: 1237
           column: 301
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 77931
-          line: 1303
+          offset: 77983
+          line: 1238
           column: 1
         end:
-          offset: 78255
-          line: 1303
+          offset: 78307
+          line: 1238
           column: 325
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 78256
-          line: 1304
+          offset: 78308
+          line: 1239
           column: 1
         end:
-          offset: 78501
-          line: 1304
+          offset: 78553
+          line: 1239
           column: 246
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 93531
-          line: 1359
+          offset: 98958
+          line: 1297
           column: 1
         end:
-          offset: 93810
-          line: 1359
+          offset: 99237
+          line: 1297
           column: 280
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 93811
-          line: 1360
+          offset: 99238
+          line: 1298
           column: 1
         end:
-          offset: 94030
-          line: 1360
+          offset: 99457
+          line: 1298
           column: 220
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 94031
-          line: 1361
+          offset: 99458
+          line: 1299
           column: 1
         end:
-          offset: 94328
-          line: 1361
-          column: 298
+          offset: 99930
+          line: 1299
+          column: 473
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 94329
-          line: 1362
+          offset: 99931
+          line: 1300
           column: 1
         end:
-          offset: 94558
-          line: 1362
+          offset: 100160
+          line: 1300
           column: 230
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 94559
-          line: 1363
+          offset: 100161
+          line: 1301
           column: 1
         end:
-          offset: 94795
-          line: 1363
+          offset: 100397
+          line: 1301
           column: 237
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 94796
-          line: 1364
+          offset: 100398
+          line: 1302
           column: 1
         end:
-          offset: 95027
-          line: 1364
+          offset: 100629
+          line: 1302
           column: 232
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 95028
-          line: 1365
+          offset: 100630
+          line: 1303
           column: 1
         end:
-          offset: 95283
-          line: 1365
+          offset: 100885
+          line: 1303
           column: 256
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 95284
-          line: 1366
+          offset: 100886
+          line: 1304
           column: 1
         end:
-          offset: 95539
-          line: 1366
+          offset: 101141
+          line: 1304
           column: 256
     - pointer: "/validation_rules/8"
       rule_id: "validation_09"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 95540
-          line: 1367
+          offset: 101142
+          line: 1305
           column: 1
         end:
-          offset: 95776
-          line: 1367
+          offset: 101378
+          line: 1305
           column: 237
     - pointer: "/validation_rules/9"
       rule_id: "validation_10"
       identity_kind: "explicit"
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 95777
-          line: 1368
+          offset: 101379
+          line: 1306
           column: 1
         end:
-          offset: 95992
-          line: 1368
-          column: 216
+          offset: 101736
+          line: 1306
+          column: 358
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 8439
+          offset: 8657
           line: 77
           column: 1
         end:
-          offset: 8460
+          offset: 8678
           line: 77
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8439"
+      unit_id: "normative_8657"
       source_span:
         start:
-          offset: 9723
+          offset: 10088
           line: 85
           column: 1
         end:
-          offset: 10914
+          offset: 11279
           line: 92
           column: 274
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 76762
-          line: 1294
+          offset: 76814
+          line: 1229
           column: 1
         end:
-          offset: 76802
-          line: 1294
+          offset: 76854
+          line: 1229
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 76804
-          line: 1296
+          offset: 76856
+          line: 1231
           column: 1
         end:
-          offset: 77065
-          line: 1296
+          offset: 77117
+          line: 1231
           column: 262
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 77138
-          line: 1300
+          offset: 77190
+          line: 1235
           column: 1
         end:
-          offset: 77346
-          line: 1300
+          offset: 77398
+          line: 1235
           column: 209
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 77347
-          line: 1301
+          offset: 77399
+          line: 1236
           column: 1
         end:
-          offset: 77629
-          line: 1301
+          offset: 77681
+          line: 1236
           column: 283
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 77630
-          line: 1302
+          offset: 77682
+          line: 1237
           column: 1
         end:
-          offset: 77930
-          line: 1302
+          offset: 77982
+          line: 1237
           column: 301
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 77931
-          line: 1303
+          offset: 77983
+          line: 1238
           column: 1
         end:
-          offset: 78255
-          line: 1303
+          offset: 78307
+          line: 1238
           column: 325
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_76762"
+      unit_id: "normative_76814"
       source_span:
         start:
-          offset: 78256
-          line: 1304
+          offset: 78308
+          line: 1239
           column: 1
         end:
-          offset: 78501
-          line: 1304
+          offset: 78553
+          line: 1239
           column: 246
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_93436"
+      unit_id: "normative_98863"
       source_span:
         start:
-          offset: 93436
-          line: 1355
+          offset: 98863
+          line: 1293
           column: 1
         end:
-          offset: 93458
-          line: 1355
+          offset: 98885
+          line: 1293
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2474,5 +2417,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:93c7a3f5e7b7c8955bb0fd33ddc8dcf01ee0c190ecdd1c7211fb0592860d6333"
-  generated_content_sha256: "sha256:a94c9f06483f738dec4aca25d8f3f8774ee617136a365ca5e058ef06a06c5dd2"
+    sha256: "sha256:21c1b00f36807e8e30ccf60654a867553f058d1690571eac2cbe02451873dda6"
+  generated_content_sha256: "sha256:986cda922bdfe3b66c406acf4eb4968012408d6f63446dc2ff196c8d1b1b5170"

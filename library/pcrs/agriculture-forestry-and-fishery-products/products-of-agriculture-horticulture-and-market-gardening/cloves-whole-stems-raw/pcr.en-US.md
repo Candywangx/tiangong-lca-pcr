@@ -686,7 +686,7 @@ Raw activity or stage basis: per 1 kg accepted dried output.
 
 This flow crosses the stated process boundary and is quantified using the amount rule below.
 
-- Selected flow: Cloves (whole stems), raw `53a5a137-db87-42e1-a85d-4b187eb5281a`
+- Selected flow: Dried whole unopened clove buds
 - Flow property / unit: Mass / kg
 Raw output measurement and reconciliation: Net accepted dried output equals 1 kg when dried hand-off is selected; record final moisture and method
 
@@ -709,6 +709,8 @@ Raw activity or stage basis: per 1 kg accepted farm-gate product.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `iso-14044-2006`
+
+Identity applicability: Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match.
 
 ##### Waste flows
 
@@ -746,7 +748,7 @@ This flow crosses the stated process boundary and is quantified using the amount
 
 - Selected flow: Water to air
 - Flow property / unit: Mass / kg
-- Amount rule: Fresh input minus dried output, rejects, and other measured outputs, cross-checked against input/output moisture
+- Amount rule: Calculate actual water vapour from water in the matched incoming buds plus actual added water and opening water stock, less water in every accepted/downgraded/rejected solid, liquid exit and closing stock. Use measured wet-basis moisture and compatible mass records; attribute and normalize once. Reconcile dry solids separately. Total fresh-to-dry mass reduction, detached solids and other volatiles are not all water; no numeric water-emission range follows from the published fresh/dried product ratio. Missing moisture or destinations leave water release unresolved, never a balancing emission.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Route-specific (`route_specific`)
 Raw activity or stage basis: per 1 kg accepted dried output.
@@ -756,16 +758,6 @@ Raw activity or stage basis: per 1 kg accepted dried output.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_drying_records`
 - Sources: `kau-clove-harvesting`; `unido-spice-postharvest-2015`
-- Range: Source-supported drying water-loss screen
-  - Range role: Typical range (`typical_range`)
-  - Lower: 1.5
-  - Upper: 2.5
-  - Unit: kg/kg accepted dried output
-  - Basis: water and associated mass loss per 1 kg accepted dried output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `kau-clove-harvesting`; `unido-spice-postharvest-2015`
-
 
 ### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
 This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
@@ -846,7 +838,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_establishment_assets` | `stand_establishment` | planting, immature management, replacement, termination, shared assets | invoice, stand log, asset register | dates; planting identity/mass/count; density; site inputs; replacements; removals; materials; service life; consuming crops/nodes/periods; driver | Reconcile invoices, field logs, and asset register to cohorts; Raw aggregation and attribution: Divide causal share by accepted output over same service period | kg, count, ha, year | each event and annual review | establishment through termination/cut-off | each cohort and asset | per declared reference flow | invoices, georeferenced register, dated logs, maintenance record |
-| `cp_nutrient_ledger` | `stand_establishment`; `annual_tree_management` | all mineral/organic fertilizers and nutrient amendments | invoice, application log, certificate | product; mass; N/P2O5/K2O/other nutrients; form; moisture; date; area/trees; phase | Collect components separately; aggregate only to one process card; Raw aggregation and attribution: Sum product mass; calculate nutrient mass by component; resolve actual products to UUIDs | kg product, kg nutrient, fraction | each application | every establishment and productive year | each stand/block | per declared reference flow | invoice, label, lab result, scale, application log |
+| `cp_nutrient_ledger` | `stand_establishment`; `annual_tree_management` | all mineral/organic fertilizers and nutrient amendments | invoice, application log, certificate | product; mass; N/P2O5/K2O/other nutrients; form; moisture; date; area/trees; phase | Collect each actual product/formulation separately, retain its own atomic input card, physical product mass, composition, supplier, application event and native unit. Reconcile stocks and actual applications, derive nutrients analytically without duplicate product exchange, and attribute/normalize each supported quantity once through matched accepted final output. | kg product, kg nutrient, fraction | each application | every establishment and productive year | each stand/block | per declared reference flow | invoice, label, lab result, scale, application log |
 | `cp_water_records` | `stand_establishment` | supplemental water | meter/runtime log | source; volume; reading; runtime; pump; stand; date | Meter or validated discharge × runtime; Raw aggregation and attribution: Sum by phase and normalize after lifetime attribution | m3 | each event | establishment and immature years | each source/stand | per declared reference flow | calibration, pump curve, dated log |
 | `cp_annual_management_inputs` | `annual_tree_management` | water and crop protection | meter, invoice, stock/application log | water volume; product and active ingredient; quantity; treated area; date; leftovers | Collect water and each product independently; Raw aggregation and attribution: Retain concrete exchanges; normalize to harvested clusters | m3, kg, L | each event | full year | each block | per declared reference flow | calibration, invoices, labels, stock reconciliation |
 | `cp_energy_records` | `annual_tree_management`; `harvest_grade` | field and harvest energy | receipt, meter, runtime, contractor log | carrier; original quantity; conversion; equipment; runtime; node; batch/period; shared driver | Meter or reconcile purchases and stock; Raw aggregation and attribution: Convert while preserving carrier identity; allocate shared use once | MJ, kWh, kg, L, h | each operation/month | full year and all harvests | each carrier/node | per declared reference flow | calibration, receipts, machine logs |
@@ -864,6 +856,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_soil_n2o` | managed-soil N2O | Apply selected IPCC tier to synthetic/organic/residue N, volatilization, and leaching; convert N2O-N × 44/28 | nutrient ledger; residue N; selected factors | kg N2O per kg clusters | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | harvest/grading/drying | Same-batch input = product outputs + wastes + elementary loss ± documented difference; accepted output excludes unresolved material | masses and moisture | reconciliation and normalized flows | `mass-balance-identity` |
 | `calc_route_weighting` | route strata | Sum(route amount × accepted route output) / total accepted output after calculating each route separately | route inventories and outputs | weighted inventory | `iso-14044-2006` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_ledger`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -880,14 +873,14 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference flow | Require exact flow/property/unit-group UUIDs, 1 kg, and every qualifier; fresh and dried states cannot be silently combined. | `icar-iisr-clove`; `kau-clove-harvesting` |
+| `validate_reference_identity` | reference flow | Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match. | `icar-iisr-clove`; `kau-clove-harvesting` |
 | `validate_period_attribution` | perennial life/shared assets | Require phase, period, replacement, termination, consuming-node, and attribution records; reject double attribution across establishment, annual management, mixed crops, and assets. | `fao-ecocrop-clove`; `iso-14044-2006` |
 | `validate_route_delta` | production/drying alternatives | Require parent activity, changed topology/inventory/calculation/data/validation fields, mutually exclusive lot route, and evidence for each stratum. | `kau-clove-practices-2016`; `unido-spice-postharvest-2015` |
 | `validate_batch_reconciliation` | harvest through drying | Require batch/period identifiers, input-output and cleaning/changeover linkage when present, mass reconciliation, and no duplicate shared-run burden. | `mass-balance-identity` |
 | `validate_reject_routes` | grading/drying | Every accepted, downgraded, rejected, residue, recovery, and disposal state requires mass and hand-off; reject unresolved material in accepted output or undocumented rework. | `kau-clove-harvesting`; `unido-spice-postharvest-2015` |
 | `validate_nutrient_cardinality` | nutrient inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `kau-clove-practices-2016` |
 | `validate_drying_condition` | drying | If inactive, drying inputs and dried reference output are absent/zero. If active, require method, energy, fresh/dried mass, moisture, rejects, duration, and stabilized hand-off; count output once. | `kau-clove-harvesting`; `unido-spice-postharvest-2015` |
-| `validate_ranges` | all quantitative cards | Require exactly one Range per quantitative card; lower ≤ upper, basis/unit/evidence complete, external bounds source-supported, and EN/ZH/structured aligned. | `iso-14044-2006` |
+| `validate_ranges` | all quantitative cards | For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening. | `iso-14044-2006` |
 
 ## 10. Published Dataset Profile
 

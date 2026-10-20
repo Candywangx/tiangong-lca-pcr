@@ -362,12 +362,10 @@ process_inventory:
             ranges: []
         - row_id: water_withdrawal
           role: "Irrigation water withdrawal"
-          name: "water"
+          name: "Source-specific natural water withdrawal, with water type and receiving resource compartment declared"
           flow_type: "elementary"
-          flow_ref:
-            uuid: "419682fe-60fb-4b43-be89-bf2824b51104"
-          property_unit: "Mass / kg"
-          description: "Water withdrawal is recorded as an elementary flow only for the source-specific withdrawal that supports the delivered irrigation-water record. Raw activity or stage basis: per 1,000 kg harvested oats grain at the selected gate."
+          property_unit: "Volume / m3"
+          description: "Water withdrawal is recorded as an elementary flow only for the source-specific withdrawal that supports the delivered irrigation-water record. Raw activity or stage basis: per 1,000 kg harvested oats grain at the selected gate. Measure withdrawal at the actual source boundary in m3, separately from supplied/delivered water. Record freshwater or seawater, surface water or groundwater, location, resource compartment, meter dates/readings and transfers; use closing minus opening cumulative readings with documented meter corrections. Sum source volumes for the matched period and normalize once to accepted reference output. Keep any mass observation separate and convert by V = m/rho only with a documented compatible water density and units; no implicit kg-to-m3 equality. A broad unspecified-water identity cannot substitute for the actual source. Missing source/type or conversion evidence is an explicit gap and blocks a fully identified or complete water inventory claim."
           amount:
             expression: "calculated from source-specific metered withdrawal records"
             value_mode: "calculated_value"
@@ -544,7 +542,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_harvest_energy_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -648,26 +646,7 @@ process_inventory:
                 - fao-agricultural-energy
             ranges: []
       waste:
-        - row_id: conditioning_screenings_and_rejects
-          role: "Conditioning screenings and rejected grain (conditioning_screenings_and_rejects)**"
-          name: "Oat grain waste from conditioning rejection"
-          flow_type: "waste"
-          property_unit: "Mass / kg"
-          description: "Screenings, foreign material, rejected grain, and off-grade material are recorded by stream and fate; do not count them as accepted reference product. Raw activity or stage basis: per kg grain entering primary conditioning. This specific card represents rejected grain only. Identify physically separate foreign matter, chaff, packaging and other residues individually in the collection record and create their own exchanges before dataset completeness; do not omit them or add them to the grain quantity. Keep the waste UUID explicitly unresolved until composition, state and receiving route match a public identity."
-          amount:
-            expression: "measured batch mass and declared fate"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_conditioning_reject_records
-              source_ids:
-                - fao-wheat-postharvest-operations-1999
-                - usda-oats-standards-2020
-            ranges: []
+        []
       elementary:
         []
     outputs:
@@ -702,7 +681,26 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
       waste:
-        []
+        - row_id: conditioning_screenings_and_rejects
+          role: "Conditioning screenings and rejected grain (conditioning_screenings_and_rejects)**"
+          name: "Oat grain waste from conditioning rejection"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Screenings, foreign material, rejected grain, and off-grade material are recorded by stream and fate; do not count them as accepted reference product. Raw activity or stage basis: per kg grain entering primary conditioning. This specific card represents rejected grain only. Identify physically separate foreign matter, chaff, packaging and other residues individually in the collection record and create their own exchanges before dataset completeness; do not omit them or add them to the grain quantity. Keep the waste UUID explicitly unresolved until composition, state and receiving route match a public identity."
+          amount:
+            expression: "measured batch mass and declared fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_reject_records
+              source_ids:
+                - fao-wheat-postharvest-operations-1999
+                - usda-oats-standards-2020
+            ranges: []
       elementary:
         - row_id: conditioning_dust_to_air
           role: "Conditioning dust to air"
@@ -824,24 +822,7 @@ process_inventory:
                 - fao-package-identities
             ranges: []
       waste:
-        - row_id: storage_loss_or_damaged_grain
-          role: "Storage loss or damaged grain"
-          name: "Oat grain waste from storage rejection"
-          flow_type: "waste"
-          property_unit: "Mass / kg"
-          description: "Storage loss is recorded by lot, period, mass, damage category, and fate whenever storage is included. Raw activity or stage basis: per kg grain entering storage. This specific card represents rejected grain only. Identify physically separate foreign matter, chaff, packaging and other residues individually in the collection record and create their own exchanges before dataset completeness; do not omit them or add them to the grain quantity. Keep the waste UUID explicitly unresolved until composition, state and receiving route match a public identity."
-          amount:
-            expression: "measured inventory reconciliation or disposal mass"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "storage_duration"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_storage_and_handoff_records
-              source_ids: []
-            ranges: []
+        []
       elementary:
         []
     outputs:
@@ -865,7 +846,24 @@ process_inventory:
               source_ids: []
             ranges: []
       waste:
-        []
+        - row_id: storage_loss_or_damaged_grain
+          role: "Storage loss or damaged grain"
+          name: "Oat grain waste from storage rejection"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Storage loss is recorded by lot, period, mass, damage category, and fate whenever storage is included. Raw activity or stage basis: per kg grain entering storage. This specific card represents rejected grain only. Identify physically separate foreign matter, chaff, packaging and other residues individually in the collection record and create their own exchanges before dataset completeness; do not omit them or add them to the grain quantity. Keep the waste UUID explicitly unresolved until composition, state and receiving route match a public identity."
+          amount:
+            expression: "measured inventory reconciliation or disposal mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_and_handoff_records
+              source_ids: []
+            ranges: []
       elementary:
         []
   - id: declared_reference_handoff
@@ -959,6 +957,11 @@ allocation_rules:
     rule: "Use substitution only when the displaced product, route, market, and evidence are declared; do not infer a displacement credit from a product label or generic residue name."
     source_ids:
       - iso-14044-2006
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_seed_input_records
@@ -1227,6 +1230,16 @@ dataset_production:
       output: "separate actual release and captured-solid ledgers"
       source_ids:
         - epa-fabric-filter-monitoring-2026
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_fertilizer_input_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_non_seed_identity
       applies_to: "reference product"
@@ -1360,9 +1373,13 @@ data_sources:
     type: "official_guidance"
     reference: "US EPA, Monitoring by Control Technique - Fabric Filters, updated 2026-04-06. https://www.epa.gov/air-emissions-monitoring-knowledge-base/monitoring-control-technique-fabric-filters"
     used_for: "Distinction between collected solids and outlet particulate release; monitoring basis only, no universal efficiency or emission factor adopted"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3afa5433d3e86835461950bfc1a9dbcd7427731984ee1cfea1ade70ae718b489"
+  source_sha256: "sha256:e83f525c39c751cbe0f1e6abf33a5996593c248e66729faab17f1e1f23317b9c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6497"
@@ -1413,18 +1430,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_56689"
+    - unit_id: "normative_57280"
       family: "allocation"
       span:
         start:
-          offset: 56689
-          line: 729
+          offset: 57280
+          line: 741
           column: 1
         end:
-          offset: 58454
-          line: 738
+          offset: 61029
+          line: 754
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoidance` | crop, harvest, and conditioning processes | First avoid allocation by subdividing crop operations, harvest, drying, cleaning, grading, storage, and waste-handling responsibilities wherever records support separate process nodes. | `iso-14044-2006` |\n| `allocation_grain_and_residue` | oats grain and removed straw or residue | Treat residue left in the field according to its declared fate. When straw or another residue is removed or sold and subdivision is not possible, use an explicitly declared physical or economic allocation method and disclose sensitivity. | `iso-14044-2006`; `fao-wheat-postharvest-operations-1999` |\n| `allocation_screenings_and_rejects` | screenings, damaged grain, and off-grade material | Record accepted grain, screenings, rejects, and losses as separate outputs with fates. Do not assign rejected material to the reference product without an explicit rework or allocation decision. | `fao-wheat-postharvest-operations-1999`; `usda-oats-standards-2020` |\n| `allocation_substitution` | residue or by-product use | Use substitution only when the displaced product, route, market, and evidence are declared; do not infer a displacement credit from a product label or generic residue name. | `iso-14044-2006` |\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoidance` | crop, harvest, and conditioning processes | First avoid allocation by subdividing crop operations, harvest, drying, cleaning, grading, storage, and waste-handling responsibilities wherever records support separate process nodes. | `iso-14044-2006` |\n| `allocation_grain_and_residue` | oats grain and removed straw or residue | Treat residue left in the field according to its declared fate. When straw or another residue is removed or sold and subdivision is not possible, use an explicitly declared physical or economic allocation method and disclose sensitivity. | `iso-14044-2006`; `fao-wheat-postharvest-operations-1999` |\n| `allocation_screenings_and_rejects` | screenings, damaged grain, and off-grade material | Record accepted grain, screenings, rejects, and losses as separate outputs with fates. Do not assign rejected material to the reference product without an explicit rework or allocation decision. | `fao-wheat-postharvest-operations-1999`; `usda-oats-standards-2020` |\n| `allocation_substitution` | residue or by-product use | Use substitution only when the displaced product, route, market, and evidence are declared; do not infer a displacement credit from a product label or generic residue name. | `iso-14044-2006` |\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1441,12 +1458,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 56689
-              line: 729
+              offset: 57280
+              line: 741
               column: 1
             end:
-              offset: 56729
-              line: 729
+              offset: 57320
+              line: 741
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1461,16 +1478,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_76815"
+    - unit_id: "normative_80826"
       family: "validation"
       span:
         start:
-          offset: 76815
-          line: 792
+          offset: 80826
+          line: 809
           column: 1
         end:
-          offset: 79159
-          line: 803
+          offset: 83170
+          line: 820
           column: 1
       markdown: "## 9. Validation Rules\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_non_seed_boundary` | product identity | Confirm that the reference product is non-seed oats grain and that seed for sowing, flour, malt, starch, ethanol, and downstream products are excluded or separately modelled. | `usda-oats-standards-2020`; `fao-wheat-postharvest-operations-1999` |\n| `validation_reference_flow` | reference flow | Confirm exactly one selected output provides 1 kg of non-seed oats grain at the actual declared gate, using the mass property and kg unit. Record end use, moisture, quality, geography and crop year. Verify its UUID against that physical state before finalization; an unresolved identity is not a verified product, and tempering is not required unless actually performed. | `usda-oats-standards-2020` |\n| `validation_process_completeness` | process map and inventory | Confirm crop production, harvest, and the applicable primary-conditioning or storage processes are present or explicitly excluded by the declared gate. | `fao-grain-postharvest-systems-1998`; `fao-wheat-postharvest-operations-1999` |\n| `validation_nitrogen` | fertilizer and emissions | Confirm product mass differs from kg N, factor selection is declared, N2O-N conversion is transparent, and other nitrogen pathways are addressed or justified. | `ipcc-2019-managed-soils-n2o` |\n| `validation_water` | irrigation | Confirm withdrawal, delivered irrigation, consumption, and water-footprint results are distinguished and not double counted. | `fao-crop-evapotranspiration-56` |\n| `validation_moisture_and_mass_balance` | harvest and conditioning | Confirm mass reconciliation uses a common moisture basis and that accepted grain, residues, screenings, rejects, and losses have declared fates. | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |\n| `validation_allocation` | co-products and residues | Confirm subdivision was considered first, any allocation method is declared, substitution has an evidenced displaced product, and sensitivity is reported when material. | `iso-14044-2006` |\n| `validation_uuid_review` | identity references | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n"
       headings:
@@ -1489,12 +1506,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 76815
-              line: 792
+              offset: 80826
+              line: 809
               column: 1
             end:
-              offset: 76837
-              line: 792
+              offset: 80848
+              line: 809
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1578,158 +1595,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoidance"
       identity_kind: "explicit"
-      unit_id: "normative_56689"
+      unit_id: "normative_57280"
       source_span:
         start:
-          offset: 56801
-          line: 732
+          offset: 57392
+          line: 744
           column: 1
         end:
-          offset: 57077
-          line: 732
+          offset: 57668
+          line: 744
           column: 277
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_grain_and_residue"
       identity_kind: "explicit"
-      unit_id: "normative_56689"
+      unit_id: "normative_57280"
       source_span:
         start:
-          offset: 57078
-          line: 733
+          offset: 57669
+          line: 745
           column: 1
         end:
-          offset: 57454
-          line: 733
+          offset: 58045
+          line: 745
           column: 377
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_screenings_and_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_56689"
+      unit_id: "normative_57280"
       source_span:
         start:
-          offset: 57455
-          line: 734
+          offset: 58046
+          line: 746
           column: 1
         end:
-          offset: 57813
-          line: 734
+          offset: 58404
+          line: 746
           column: 359
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_substitution"
       identity_kind: "explicit"
-      unit_id: "normative_56689"
+      unit_id: "normative_57280"
       source_span:
         start:
-          offset: 57814
-          line: 735
+          offset: 58405
+          line: 747
           column: 1
         end:
-          offset: 58065
-          line: 735
+          offset: 58656
+          line: 747
           column: 252
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_57280"
+      source_span:
+        start:
+          offset: 59116
+          line: 752
+          column: 1
+        end:
+          offset: 61027
+          line: 752
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_non_seed_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 76909
-          line: 795
+          offset: 80920
+          line: 812
           column: 1
         end:
-          offset: 77209
-          line: 795
+          offset: 81220
+          line: 812
           column: 301
     - pointer: "/validation_rules/1"
       rule_id: "validation_reference_flow"
       identity_kind: "explicit"
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 77210
-          line: 796
+          offset: 81221
+          line: 813
           column: 1
         end:
-          offset: 77660
-          line: 796
+          offset: 81671
+          line: 813
           column: 451
     - pointer: "/validation_rules/2"
       rule_id: "validation_process_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 77661
-          line: 797
+          offset: 81672
+          line: 814
           column: 1
         end:
-          offset: 77960
-          line: 797
+          offset: 81971
+          line: 814
           column: 300
     - pointer: "/validation_rules/3"
       rule_id: "validation_nitrogen"
       identity_kind: "explicit"
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 77961
-          line: 798
+          offset: 81972
+          line: 815
           column: 1
         end:
-          offset: 78206
-          line: 798
+          offset: 82217
+          line: 815
           column: 246
     - pointer: "/validation_rules/4"
       rule_id: "validation_water"
       identity_kind: "explicit"
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 78207
-          line: 799
+          offset: 82218
+          line: 816
           column: 1
         end:
-          offset: 78404
-          line: 799
+          offset: 82415
+          line: 816
           column: 198
     - pointer: "/validation_rules/5"
       rule_id: "validation_moisture_and_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 78405
-          line: 800
+          offset: 82416
+          line: 817
           column: 1
         end:
-          offset: 78688
-          line: 800
+          offset: 82699
+          line: 817
           column: 284
     - pointer: "/validation_rules/6"
       rule_id: "validation_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 78689
-          line: 801
+          offset: 82700
+          line: 818
           column: 1
         end:
-          offset: 78933
-          line: 801
+          offset: 82944
+          line: 818
           column: 245
     - pointer: "/validation_rules/7"
       rule_id: "validation_uuid_review"
       identity_kind: "explicit"
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 78934
-          line: 802
+          offset: 82945
+          line: 819
           column: 1
         end:
-          offset: 79158
-          line: 802
+          offset: 83169
+          line: 819
           column: 225
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1758,39 +1788,39 @@ normative_context:
           column: 260
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_56689"
+      unit_id: "normative_57280"
       source_span:
         start:
-          offset: 56689
-          line: 729
+          offset: 57280
+          line: 741
           column: 1
         end:
-          offset: 56729
-          line: 729
+          offset: 57320
+          line: 741
           column: 41
     - code: "UNSUPPORTED_NORMATIVE_BLOCK"
       message: "Empty normative rule cell is retained in complete H2 source without creating a flat rule."
-      unit_id: "normative_56689"
+      unit_id: "normative_57280"
       source_span:
         start:
-          offset: 58066
-          line: 736
+          offset: 58657
+          line: 748
           column: 1
         end:
-          offset: 58452
-          line: 736
+          offset: 59043
+          line: 748
           column: 387
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_76815"
+      unit_id: "normative_80826"
       source_span:
         start:
-          offset: 76815
-          line: 792
+          offset: 80826
+          line: 809
           column: 1
         end:
-          offset: 76837
-          line: 792
+          offset: 80848
+          line: 809
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1799,5 +1829,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3afa5433d3e86835461950bfc1a9dbcd7427731984ee1cfea1ade70ae718b489"
-  generated_content_sha256: "sha256:acab5e3696b63fc14defe3426b8c636d124e91f5d0ed299d607bde97984450a0"
+    sha256: "sha256:e83f525c39c751cbe0f1e6abf33a5996593c248e66729faab17f1e1f23317b9c"
+  generated_content_sha256: "sha256:8ef7cd48905d2ed0420b1d649fb25cdd78bb9fa7788109bcbd62dc1b219b9b92"

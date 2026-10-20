@@ -569,8 +569,8 @@ process_inventory:
           role: "Soil nitrate loss"
           name: "Nitrate to soil or water; destination"
           flow_type: "elementary"
-          property_unit: "Mass / kg N or kg nitrate"
-          description: "Record nitrate loss only when supported by the selected nitrogen balance or leaching method. Raw activity or stage basis: per 1,000 kg marketable gate output."
+          property_unit: "Mass / kg NO3-"
+          description: "Record nitrate loss only when supported by the selected nitrogen balance or leaching method. Raw activity or stage basis: per 1,000 kg marketable gate output. The final exchange is kg NO3-. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 62/14 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero."
           amount:
             expression: "Calculate from documented nitrogen balance without duplicating another pathway."
             value_mode: "calculated_value"
@@ -609,7 +609,25 @@ process_inventory:
                 - globalgap-ifa-fruit-vegetables-v6
             ranges: []
       waste:
-        []
+        - row_id: conditioning_wastewater
+          role: "Conditioning wastewater"
+          name: "Conditioning wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record washing or conditioning wastewater when it leaves the gate-handling process. Raw activity or stage basis: per 1,000 kg marketable gate output. This card is only the wastewater transfer to an actual treatment/sewer recipient. Record route and volume/mass with the matching water balance; it is not an elementary pollutant. For actual in-boundary treatment or direct environmental discharge, separately require each supported substance and receiving compartment plus any method-supported water return, measured or calculated from applicable effluent data. Use a compatible verified UUID or explicit unresolved identity; wastewater volume is not pollutant mass and missing effluent composition is a completeness gap. Link inclusive treatment services once, with no duplicate outgoing transfer and same downstream treatment burden."
+          amount:
+            expression: "Meter wastewater or calculate from a documented water balance."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_and_packaging_records
+              source_ids:
+                - fao-postharvest-handling-ae075e
+            ranges: []
       elementary:
         []
     outputs:
@@ -655,25 +673,7 @@ process_inventory:
                 - globalgap-ifa-fruit-vegetables-v6
             ranges: []
       elementary:
-        - row_id: conditioning_wastewater
-          role: "Conditioning wastewater"
-          name: "Conditioning wastewater"
-          flow_type: "elementary"
-          property_unit: "Volume / m3"
-          description: "Record washing or conditioning wastewater when it leaves the gate-handling process. Raw activity or stage basis: per 1,000 kg marketable gate output."
-          amount:
-            expression: "Meter wastewater or calculate from a documented water balance."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_conditioning_and_packaging_records
-              source_ids:
-                - fao-postharvest-handling-ae075e
-            ranges: []
+        []
   - id: citrus_residue_and_reject_routing
     label: "Citrus residue and reject routing"
     inputs:
@@ -767,6 +767,11 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness."
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_orchard_establishment_records
@@ -905,6 +910,16 @@ dataset_production:
       output: "mass balance"
       source_ids:
         - fao-postharvest-handling-ae075e
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_nutrient_and_amendment_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: quality_identity_and_scope
       applies_to: "all datasets"
@@ -981,9 +996,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:4f98c35c62d010c9b51845d2e0536de21c89f27e8c572bfdc9950f0c39694deb"
+  source_sha256: "sha256:0cd066684cc37545537fd92282727c5ea27e97413bbb91fd54de79b6b91fd59c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4409"
@@ -1034,18 +1053,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_39277"
+    - unit_id: "normative_40434"
       family: "allocation"
       span:
         start:
-          offset: 39277
-          line: 613
+          offset: 40434
+          line: 618
           column: 1
         end:
-          offset: 40546
-          line: 623
+          offset: 43687
+          line: 632
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_shared_orchard_cycles` | establishment and multiple cycles | Allocate shared orchard burdens by documented area-time, tree-year or another justified physical basis and disclose the basis. | `fao-gap-framework-2003` |\n| `allocation_marketable_and_reject_outputs` | harvest and gate handling | Treat marketable fruit as reference output; record downgraded fruit, culls, trim and recovered material separately, and allocate only where a genuine co-product function exists. | `fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6` |\n| `allocation_recovered_residue_claim` | recovered residues | Do not claim avoided production unless destination, function, quantity and receiving-system evidence are documented. | `fao-gap-framework-2003` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_shared_orchard_cycles` | establishment and multiple cycles | Allocate shared orchard burdens by documented area-time, tree-year or another justified physical basis and disclose the basis. | `fao-gap-framework-2003` |\n| `allocation_marketable_and_reject_outputs` | harvest and gate handling | Treat marketable fruit as reference output; record downgraded fruit, culls, trim and recovered material separately, and allocate only where a genuine co-product function exists. | `fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6` |\n| `allocation_recovered_residue_claim` | recovered residues | Do not claim avoided production unless destination, function, quantity and receiving-system evidence are documented. | `fao-gap-framework-2003` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1062,12 +1081,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 39277
-              line: 613
+              offset: 40434
+              line: 618
               column: 1
             end:
-              offset: 39317
-              line: 613
+              offset: 40474
+              line: 618
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1082,16 +1101,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52272"
+    - unit_id: "normative_56855"
       family: "validation"
       span:
         start:
-          offset: 52272
-          line: 670
+          offset: 56855
+          line: 680
           column: 1
         end:
-          offset: 53257
-          line: 679
+          offset: 57840
+          line: 689
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_qualifiers` | reference flow and dataset | Reject when required species, geography, route, cycle, gate, maturity, grade or handling qualifiers are absent. | `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6` |\n| `validate_cycle_and_output_reconciliation` | cycle and gate output | Check that inputs belong to the declared block and period and that output plus rejects, residues and loss reconcile to harvest. | `fao-postharvest-handling-ae075e` |\n| `validate_nutrient_and_emission_basis` | nutrient and emission rows | Check product mass, nutrient basis, factor method and qualifiers; prevent duplicate nitrogen pathways. | `ipcc-2019-refinement-afolu` |\n| `validate_gate_and_downstream_exclusion` | boundary and use | Check an explicit gate and exclude retail, consumers, downstream transport and processed citrus. | `globalgap-ifa-fruit-vegetables-v6` |\n\n"
       headings:
@@ -1110,12 +1129,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52272
-              line: 670
+              offset: 56855
+              line: 680
               column: 1
             end:
-              offset: 52294
-              line: 670
+              offset: 56877
+              line: 680
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1173,106 +1192,119 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_shared_orchard_cycles"
       identity_kind: "explicit"
-      unit_id: "normative_39277"
+      unit_id: "normative_40434"
       source_span:
         start:
-          offset: 39390
-          line: 617
+          offset: 40547
+          line: 622
           column: 1
         end:
-          offset: 39620
-          line: 617
+          offset: 40777
+          line: 622
           column: 231
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_marketable_and_reject_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_39277"
+      unit_id: "normative_40434"
       source_span:
         start:
-          offset: 39621
-          line: 618
+          offset: 40778
+          line: 623
           column: 1
         end:
-          offset: 39948
-          line: 618
+          offset: 41105
+          line: 623
           column: 328
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_recovered_residue_claim"
       identity_kind: "explicit"
-      unit_id: "normative_39277"
+      unit_id: "normative_40434"
       source_span:
         start:
-          offset: 39949
-          line: 619
+          offset: 41106
+          line: 624
           column: 1
         end:
-          offset: 40156
-          line: 619
+          offset: 41313
+          line: 624
           column: 208
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_39277"
+      unit_id: "normative_40434"
       source_span:
         start:
-          offset: 40158
-          line: 621
+          offset: 41315
+          line: 626
           column: 1
         end:
-          offset: 40544
-          line: 621
+          offset: 41701
+          line: 626
           column: 387
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_40434"
+      source_span:
+        start:
+          offset: 41774
+          line: 630
+          column: 1
+        end:
+          offset: 43685
+          line: 630
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_52272"
+      unit_id: "normative_56855"
       source_span:
         start:
-          offset: 52367
-          line: 674
+          offset: 56950
+          line: 684
           column: 1
         end:
-          offset: 52609
-          line: 674
+          offset: 57192
+          line: 684
           column: 243
     - pointer: "/validation_rules/1"
       rule_id: "validate_cycle_and_output_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_52272"
+      unit_id: "normative_56855"
       source_span:
         start:
-          offset: 52610
-          line: 675
+          offset: 57193
+          line: 685
           column: 1
         end:
-          offset: 52846
-          line: 675
+          offset: 57429
+          line: 685
           column: 237
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_and_emission_basis"
       identity_kind: "explicit"
-      unit_id: "normative_52272"
+      unit_id: "normative_56855"
       source_span:
         start:
-          offset: 52847
-          line: 676
+          offset: 57430
+          line: 686
           column: 1
         end:
-          offset: 53054
-          line: 676
+          offset: 57637
+          line: 686
           column: 208
     - pointer: "/validation_rules/3"
       rule_id: "validate_gate_and_downstream_exclusion"
       identity_kind: "explicit"
-      unit_id: "normative_52272"
+      unit_id: "normative_56855"
       source_span:
         start:
-          offset: 53055
-          line: 677
+          offset: 57638
+          line: 687
           column: 1
         end:
-          offset: 53255
-          line: 677
+          offset: 57838
+          line: 687
           column: 201
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1301,27 +1333,51 @@ normative_context:
           column: 216
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_39277"
+      unit_id: "normative_40434"
       source_span:
         start:
-          offset: 39277
-          line: 613
+          offset: 40434
+          line: 618
           column: 1
         end:
-          offset: 39317
-          line: 613
+          offset: 40474
+          line: 618
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52272"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_40434"
       source_span:
         start:
-          offset: 52272
-          line: 670
+          offset: 41315
+          line: 626
           column: 1
         end:
-          offset: 52294
-          line: 670
+          offset: 41701
+          line: 626
+          column: 387
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_40434"
+      source_span:
+        start:
+          offset: 41774
+          line: 630
+          column: 1
+        end:
+          offset: 43685
+          line: 630
+          column: 1912
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_56855"
+      source_span:
+        start:
+          offset: 56855
+          line: 680
+          column: 1
+        end:
+          offset: 56877
+          line: 680
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1330,5 +1386,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:4f98c35c62d010c9b51845d2e0536de21c89f27e8c572bfdc9950f0c39694deb"
-  generated_content_sha256: "sha256:8719ae1ec9e82ececef07c86de3509122ab1eaee87847114d7815c2a72c75f59"
+    sha256: "sha256:0cd066684cc37545537fd92282727c5ea27e97413bbb91fd54de79b6b91fd59c"
+  generated_content_sha256: "sha256:a45ddcd1846ebf6af6ab5308b2c2d599fb86bc0cdfd7e6b34ffb689e8c578326"

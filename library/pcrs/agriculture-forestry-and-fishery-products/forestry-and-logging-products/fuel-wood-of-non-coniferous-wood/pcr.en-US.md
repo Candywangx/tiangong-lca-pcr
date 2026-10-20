@@ -166,8 +166,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_management`
 - Sources: `fao-woodfuel-planting`; `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Irrigation water supplied to the managed stand (`irrigation_water`)
 
 Include only water crossing as an actual supplied product, identified by supplier and supply gate. Direct abstraction from nature belongs to direct_water_abstraction, not this product card; rainfall is excluded.
@@ -341,7 +339,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_harvest`
 - Sources: `fao-fuelwood-harvesting`; `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 ##### Waste flows
 

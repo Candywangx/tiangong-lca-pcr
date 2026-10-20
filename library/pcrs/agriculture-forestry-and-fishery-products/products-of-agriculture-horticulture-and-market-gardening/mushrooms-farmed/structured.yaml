@@ -1191,6 +1191,11 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness."
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_substrate_batch_records
@@ -1458,6 +1463,16 @@ dataset_production:
         - "carrier record"
       output: "t*km and delivered mass"
       source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_substrate_batch_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity_and_route
       applies_to: "product, species, substrate, spawn, and gate"
@@ -1590,9 +1605,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:5ada1b3a8f83904b2f37b9f2b2643b942fe7f319aad5d4eca88267ab824d174e"
+  source_sha256: "sha256:763bf5c8690d127b240f408e761e5cbfc10c02e3ada4c3fdee640493464704f0"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8058"
@@ -1651,10 +1670,10 @@ normative_context:
           line: 1042
           column: 1
         end:
-          offset: 62298
-          line: 1055
+          offset: 64282
+          line: 1059
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_process_subdivision_first` | shared substrate, rooms, utilities, and packing | Subdivide activities and collect separate batch records wherever practical; allocate only genuinely shared activities after physical separation is no longer feasible. | `iso-14044-2006` |\n| `allocation_mushroom_and_spent_substrate` | marketable mushrooms and spent substrate | Treat marketable mushrooms as the reference product. Treat spent substrate as waste unless intentionally transferred to a documented recipient as a product or co-product. A saleable secondary product requires a declared physical or economic basis, sensitivity, and recipient evidence. | `robinson-2018-mushroom-lca`; `iso-14044-2006` |\n| `allocation_multiple_flushes` | successive flushes from one campaign | Attribute shared substrate, incubation, and room burdens to all flushes from the same campaign and aggregate by accepted output. | `robinson-2018-mushroom-lca` |\n| `allocation_downgraded_mushrooms` | downgraded mushrooms and grading rejects | Classify downgraded mushrooms as a co-product only with a documented recipient and intended use. Material without a recipient or with disposal treatment remains waste and receives no avoided-product credit. | `iso-14044-2006`; `usda-ams-mushroom-grade-standard` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_process_subdivision_first` | shared substrate, rooms, utilities, and packing | Subdivide activities and collect separate batch records wherever practical; allocate only genuinely shared activities after physical separation is no longer feasible. | `iso-14044-2006` |\n| `allocation_mushroom_and_spent_substrate` | marketable mushrooms and spent substrate | Treat marketable mushrooms as the reference product. Treat spent substrate as waste unless intentionally transferred to a documented recipient as a product or co-product. A saleable secondary product requires a declared physical or economic basis, sensitivity, and recipient evidence. | `robinson-2018-mushroom-lca`; `iso-14044-2006` |\n| `allocation_multiple_flushes` | successive flushes from one campaign | Attribute shared substrate, incubation, and room burdens to all flushes from the same campaign and aggregate by accepted output. | `robinson-2018-mushroom-lca` |\n| `allocation_downgraded_mushrooms` | downgraded mushrooms and grading rejects | Classify downgraded mushrooms as a co-product only with a documented recipient and intended use. Material without a recipient or with disposal treatment remains waste and receives no avoided-product credit. | `iso-14044-2006`; `usda-ams-mushroom-grade-standard` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1691,16 +1710,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_90088"
+    - unit_id: "normative_93507"
       family: "validation"
       span:
         start:
-          offset: 90088
-          line: 1133
+          offset: 93507
+          line: 1138
           column: 1
         end:
-          offset: 92699
-          line: 1150
+          offset: 96118
+          line: 1155
           column: 1
       markdown: "## 9. Validation Rules\n\n### Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_identity` | reference flow | Require declared species, route, gate, qualifiers, and compatible concrete product, mass property, and mass unit-group identity before final publication; this draft requires foreground identity binding. |  |\n| `validation_campaign_reconciliation` | all campaigns | Check substrate, spawn, room, flush, accepted, downgraded, reject, spent-substrate, and transport records share identifiers and reconcile to reference mass. | `robinson-2018-mushroom-lca` |\n| `validation_moisture_basis` | fresh mushrooms, substrate, casing, and spent substrate | Reject mixed wet and dry amounts without documented measured conversion and moisture basis. | `robinson-2018-mushroom-lca` |\n| `validation_route_conditionals` | casing, fertilizer or soil amendment, washing, packaging, and transport | Include each conditional exchange only when its route condition is true and retain omission evidence when unused. | `fao-make-money-growing-mushrooms-2010`; `usda-ams-mushroom-grade-standard` |\n| `validation_parameterized_flows` | parameterized rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_unmapped_flows` | unmapped rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_emission_reporting` | ammonia and carbon-dioxide rows | Require receiving medium, reported substance, method, amount basis, and duplicate-pathway check for every elementary emission. | `robinson-2018-mushroom-lca` |\n| `validation_spent_substrate_destination` | spent and contaminated substrate | Require destination, recipient or treatment, mass, moisture basis, and transport evidence; apply credit only under the allocation or substitution rule. | `robinson-2018-mushroom-lca`; `iso-14044-2006` |\n| `validation_allocation_disclosure` | shared activities and secondary outputs | Require process subdivision evidence or allocation basis, shared-utility allocation, sensitivity, and recipient evidence for any co-product claim. | `iso-14044-2006` |\n| `validation_grade_and_gate` | accepted output and primary packaging | Confirm species, freshness, maturity, size or grade, trim, cleanliness, wash and cooling state, packaging, and gate for each accepted lot. | `usda-ams-mushroom-grade-standard` |\n\n"
       headings:
@@ -1719,12 +1738,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 90088
-              line: 1133
+              offset: 93507
+              line: 1138
               column: 1
             end:
-              offset: 90110
-              line: 1133
+              offset: 93529
+              line: 1138
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1870,135 +1889,148 @@ normative_context:
           offset: 62296
           line: 1053
           column: 387
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_60488"
+      source_span:
+        start:
+          offset: 62369
+          line: 1057
+          column: 1
+        end:
+          offset: 64280
+          line: 1057
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 90205
-          line: 1139
+          offset: 93624
+          line: 1144
           column: 1
         end:
-          offset: 90465
-          line: 1139
+          offset: 93884
+          line: 1144
           column: 261
     - pointer: "/validation_rules/1"
       rule_id: "validation_campaign_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 90466
-          line: 1140
+          offset: 93885
+          line: 1145
           column: 1
         end:
-          offset: 90712
-          line: 1140
+          offset: 94131
+          line: 1145
           column: 247
     - pointer: "/validation_rules/2"
       rule_id: "validation_moisture_basis"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 90713
-          line: 1141
+          offset: 94132
+          line: 1146
           column: 1
         end:
-          offset: 90927
-          line: 1141
+          offset: 94346
+          line: 1146
           column: 215
     - pointer: "/validation_rules/3"
       rule_id: "validation_route_conditionals"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 90928
-          line: 1142
+          offset: 94347
+          line: 1147
           column: 1
         end:
-          offset: 91231
-          line: 1142
+          offset: 94650
+          line: 1147
           column: 304
     - pointer: "/validation_rules/4"
       rule_id: "validation_parameterized_flows"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 91232
-          line: 1143
+          offset: 94651
+          line: 1148
           column: 1
         end:
-          offset: 91463
-          line: 1143
+          offset: 94882
+          line: 1148
           column: 232
     - pointer: "/validation_rules/5"
       rule_id: "validation_unmapped_flows"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 91464
-          line: 1144
+          offset: 94883
+          line: 1149
           column: 1
         end:
-          offset: 91685
-          line: 1144
+          offset: 95104
+          line: 1149
           column: 222
     - pointer: "/validation_rules/6"
       rule_id: "validation_emission_reporting"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 91686
-          line: 1145
+          offset: 95105
+          line: 1150
           column: 1
         end:
-          offset: 91915
-          line: 1145
+          offset: 95334
+          line: 1150
           column: 230
     - pointer: "/validation_rules/7"
       rule_id: "validation_spent_substrate_destination"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 91916
-          line: 1146
+          offset: 95335
+          line: 1151
           column: 1
         end:
-          offset: 92198
-          line: 1146
+          offset: 95617
+          line: 1151
           column: 283
     - pointer: "/validation_rules/8"
       rule_id: "validation_allocation_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 92199
-          line: 1147
+          offset: 95618
+          line: 1152
           column: 1
         end:
-          offset: 92447
-          line: 1147
+          offset: 95866
+          line: 1152
           column: 249
     - pointer: "/validation_rules/9"
       rule_id: "validation_grade_and_gate"
       identity_kind: "explicit"
-      unit_id: "normative_90088"
+      unit_id: "normative_93507"
       source_span:
         start:
-          offset: 92448
-          line: 1148
+          offset: 95867
+          line: 1153
           column: 1
         end:
-          offset: 92697
-          line: 1148
+          offset: 96116
+          line: 1153
           column: 250
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2038,16 +2070,40 @@ normative_context:
           line: 1042
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_90088"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_60488"
       source_span:
         start:
-          offset: 90088
-          line: 1133
+          offset: 61910
+          line: 1053
           column: 1
         end:
-          offset: 90110
-          line: 1133
+          offset: 62296
+          line: 1053
+          column: 387
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_60488"
+      source_span:
+        start:
+          offset: 62369
+          line: 1057
+          column: 1
+        end:
+          offset: 64280
+          line: 1057
+          column: 1912
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_93507"
+      source_span:
+        start:
+          offset: 93507
+          line: 1138
+          column: 1
+        end:
+          offset: 93529
+          line: 1138
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2056,5 +2112,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:5ada1b3a8f83904b2f37b9f2b2643b942fe7f319aad5d4eca88267ab824d174e"
-  generated_content_sha256: "sha256:b61f1f9834b0b52226cc10e2c65e9406c4b0ac81a5c7d889d6ccbc36c105e72f"
+    sha256: "sha256:763bf5c8690d127b240f408e761e5cbfc10c02e3ada4c3fdee640493464704f0"
+  generated_content_sha256: "sha256:797bf8d3e6649c2891b371b63fb2011015e17196047eeb9d5f4ef9de5a78e8e1"

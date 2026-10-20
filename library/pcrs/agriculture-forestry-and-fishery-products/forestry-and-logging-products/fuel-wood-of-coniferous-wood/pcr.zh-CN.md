@@ -148,8 +148,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_operation_at_stand_management`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 过程入口的外购热量（`stand_management_energy_heat`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
@@ -329,8 +327,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_operation_at_wood_collection`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 过程入口的外购热量（`wood_collection_energy_heat`）
 
@@ -565,8 +561,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_operation_at_primary_extraction`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 过程入口的外购热量（`primary_extraction_energy_heat`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
@@ -751,8 +745,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_operation_at_wood_preparation`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 过程入口的外购热量（`wood_preparation_energy_heat`）
 
@@ -964,8 +956,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_operation_at_handover_sorting`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 过程入口的外购热量（`handover_sorting_energy_heat`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
@@ -1108,17 +1098,18 @@ sync_with: pcr.en-US.md
 
 ### 计算规则
 
-| rule_id | 适用于 | 公式或规则 | Inputs | Output | source_ids |
+| rule_id | 适用于 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `reference_normalization` | all inventory rows | 保留原始总量及单位换算；每份来源或产出或期间份额归属一次；每 1 kg 参考流清单量 = 可归属交换总量 / 匹配净验收交接 kg。仅参考卡报告 1 千克。 | source totals; allocation; cp_handover | per-reference exchange | `fao-fuelwood-harvesting`; `fao-forest-product-definitions` |
 | `paired_wood_balance` | wood transfers and losses | 采用配对记录核对干木、水、树皮、异物、库存及去向。湿净质量变化不自动等于干物质损失或排放。 | cp_source_at_wood_collection; cp_source_at_stand_management; cp_preparation; cp_handover | reconciled mass/water ledger | `fao-fuelwood-harvesting`; `fao-forest-product-definitions` |
 | carbon_uptake_reconciliation | 实际生物源 CO2 吸收 | 仅在声明的清单方法要求且有独立证据支持时记录 CO2 吸收。净碳库存变化不等于吸收量；按相同干碳池/期间核对 C_open + C_atmosphere + C_nonair_in = C_close + C_harvest_out + C_other_out。非大气输入、采出/转出及有证据呼吸或其他释放均须独立记录，池间内部转移只抵消一次；缺项不得仅凭期末减期初推定 C_atmosphere。仅将经该方法核实的 CO2 对应大气碳按 44/12 换算，其他含碳气体单独核对。上游已承接吸收不重复计入，不赋予自动负信用。 | cp_carbon；独立碳池/转移/释放记录；声明清单方法 | 有据 CO2 吸收及未解决缺口 | |
 | `site_weighting` | contributing sites | 对可追溯且可比批次的可归属交换总量及合格交接 kg 分别求和再求商，不平均场址比率。保留排除或不具代表性场址披露。 | site records; cp_handover | representative per-reference exchanges | `fao-fuelwood-harvesting`; `fao-forest-product-definitions` |
 | `calculate_direct_release_ledger` | `stand_management`; `wood_collection`; `primary_extraction`; `wood_preparation`; `handover_sorting` | 每一唯一事件、物质和介质的原始释放量 E 取实测值，或按已引用适用方法从活动量 A 与同口径因子 EF 计算；只有方法确实为简单因子模型时才用 E = A * EF，先验证单位及治理边界。不同物质或介质不相加；原始释放台账保持未分配。对归属后的负荷总量仅除以匹配的正值最终参考数量 R 一次；已有最终参考强度不再归一化，共用事件仅分配一次。未解释物料差不自动转成排放，缺因子不等于零。 | cp_direct_release_stand_management; cp_direct_release_wood_collection; cp_direct_release_primary_extraction; cp_direct_release_wood_preparation; cp_direct_release_handover_sorting；现有排放卡；供应商覆盖；参考数量 | 按节点/物质/介质分列的原始与归属量及未解决缺口 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emissions_at_wood_collection`; `cp_emissions_at_primary_extraction`; `cp_emissions_at_wood_preparation`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用于 | 要求 | 证据 |
+| requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `traceability` | all lots | 记录树种、形态、来源、场址、日期、边界及上游范围；未识别混合料不是针叶参考 | cp_source_at_wood_collection; cp_source_at_stand_management; cp_handover |
 | `measurement_coverage` | mass/water/energy | 校准净质量与匹配水分；缺失换算或零值证据或身份详情是须披露缺口，不是假设值 | cp_preparation; cp_operation_at_stand_management; cp_operation_at_wood_collection; cp_operation_at_primary_extraction; cp_operation_at_wood_preparation; cp_operation_at_handover_sorting |

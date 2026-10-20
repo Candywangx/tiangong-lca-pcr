@@ -254,7 +254,7 @@ sync_with: pcr.en-US.md
 记录自有或受控机械消耗的柴油。若单独建模外包服务，承包商燃料应归入上游服务数据集。
 
 - 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
-- 流属性/单位：体积 / L
+- 流属性/单位: 质量 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：按作业分配的实测或发票柴油量，并换算到参考流
 - 数值来源模式：`calculated_value`
 - 适用范围：场址特定（`site_specific`）
@@ -265,7 +265,7 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_activity_records`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 此卡仅表示实际柴油；其他燃料或包含用油的外包服务须各用独立身份，不在此卡重复计入。链接数量为柴油kg：保留油罐或票据原始单位；kg = L × 记录温度下有依据的密度(kg/L)，或kg = MJ / 相同能量基准下有依据的柴油低位热值(MJ/kg)。直接质量记录不需载能体换算。缺失密度或热值须补证，不得假定。完成载能体换算后，按实测面积、期间及合格产出仅归一化一次，保留原最终参考数量；不设置通用单位面积燃料筛查限值。
 
@@ -651,7 +651,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -677,7 +677,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -729,7 +729,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_field_activity_records` | `canary_seed_field_production` | seed, nutrients, irrigation, fuel, crop protection, land | 田间日志、发票、施用记录、计量表或承包商记录 | field_id; area; cultivar; input_product; amount; nutrient_content; date; operation; contractor_scope | 将物理投入和作业核对至每一代表田块和作物周期；原始汇总与分配：按物理身份汇总；不合并产品而计算养分；按同周期面积和产量换算 `crop_protection_input_specific_input`: 作业 canary_seed_field_production：按产品身份和施用事件记录每一种除草剂、杀菌剂、杀虫剂、脱叶剂或其他制剂，在合并前保留有效成分和产品身份。 原数量方法：按制剂记录实测或发票质量，按田块汇总并换算到参考流 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; kg nutrient; L; m3; ha | 每个事件 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 发票；标签；计量表校准；田间日志 |
 | `cp_harvest_output_records` | `canary_seed_field_production` | grain and removed residue | 地磅、产量监测、含水率检测、打捆记录 | field_id; harvest_date; grain_mass; grain_moisture; impurity; residue_mass; residue_moisture; residue_fate; destination | 将合格籽粒和每一残余物去向核对至田块面积和作物周期；原始汇总与分配：分别汇总合格籽粒和各残余物去向 | kg; percent; ha | 每次收获 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 计量或产量监测校准；水分检测；去向证据 |
-| `cp_field_emission_activity` | `canary_seed_field_production` | emissions to air and water | 养分、土壤、天气、残余物、排水和排放模型记录 | fertilizer_N; organic_N; residue_N; application_method; soil; climate; drainage; factor_set; model_version | 使用一个声明的地域适用方法计算每种排放；原始汇总与分配：按田块计算、按面积加权，再按同周期产量换算 | kg N; kg emission; ha | 每个事件及作物周期计算 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 来源记录；因子来源；模型文件；氮平衡审查 |
+| `cp_field_emission_activity` | `canary_seed_field_production` | emissions to air and water | 养分、土壤、天气、残余物、排水和排放模型记录 | fertilizer_N; organic_N; residue_N; application_method; soil; climate; drainage; factor_set; model_version | 在同一兼容路线/产品/状态内，先逐田块核算应归属原始总量。汇总最终强度=应归属原始数量之和×声明参考量/匹配最终合格产出之和。来源为每公顷率 e_h、y_h 时，先以 e_h×面积、y_h×面积还原原始总量，不能再对田块总量作面积加权。每产品强度按匹配产出加权，不能按面积或不加权平均。原分配仅执行一次，保留期间/吞吐和全部来源单位换算，不兼容路线分开。 | kg N; kg emission; ha | 每个事件及作物周期计算 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 来源记录；因子来源；模型文件；氮平衡审查 |
 | `cp_residue_and_waste_fate` | `canary_seed_field_production` | retained and removed residues | 田间残余物日志、打捆票据、焚烧或还田记录 | field_id; residue_mass; dry_matter; fate; destination; date | 将残余物去向连接到产量所用的同一收获和田块记录；原始汇总与分配：按去向汇总；从副产品输出排除保留残余物 | kg; percent; ha | 每田块每次收获 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 田间记录；去向收据；残余物计算证据 |
 | `cp_conditioning_records` | `canary_seed_grain_conditioning` | incoming grain, energy, accepted grain, screenings, rejects | 批次单、地磅、水分检测、电力或热量计、去向记录 | batch_id; incoming_mass; incoming_moisture; electricity; heat; accepted_mass; accepted_moisture; screenings; rejects | 将匹配整理批次和计量表核对至合格输出；原始汇总与分配：汇总匹配批次；按时间或处理质量分配共用计量；闭合湿质量平衡 | kg; percent; kWh; MJ | 每批或计量周期 | 所有交付前整理 | 所有纳入设备和批次 | 每声明的参考流 | 校准地磅和水分仪；计量表核对 |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
@@ -745,6 +745,7 @@ sync_with: pcr.en-US.md
 | `calc_nitrate_loss` | nitrate to water | 将选定区域排水或淋失方法应用于氮活动和水文记录 | 氮活动；土壤；排水；气候；因子 | kg NO3- | `ipcc-2019-managed-soils` |
 | `calc_conditioning_mass_balance` | grain conditioning | 湿籽粒进料 = 合格籽粒 + 有用筛下物 + 废弃物 + 水分及其他实测损失，并在不确定性内闭合 | 质量；水分；损失记录 | 按合格籽粒核算的整理输出 | `mass-balance-identity` |
 | `calc_moisture_adjustment` | grain and residue mass | 使用实测水分在收货基和声明干物质基准之间换算，并保留原始及换算值 | 质量；水分；目标基准 | 调整质量 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emission_activity`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

@@ -128,7 +128,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Record species, cultivar, germination basis and seed actually sown. Raw activity or stage basis: per cultivated hectare-cycle."
           amount:
-            expression: "measured seed mass corrected to the declared viable-seed basis"
+            expression: "Record actual physical seed-product mass used, net of documented unused returns, with its supplier/lot, treatment, purity and germination/viability attributes. Pure-live-seed equivalent = physical seed mass × purity fraction × viability fraction is a separate quality/rate attribute, never the purchased-product exchange mass or another purchase. If only pure-live-seed rate is known, recover physical quantity using evidenced nonzero lot fractions; otherwise leave physical seed use incomplete. Retain the original stock, period and reference-output attribution."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -310,7 +310,7 @@ process_inventory:
           flow_ref:
             uuid: "e1d56d4e-afe3-4b92-bd51-0a21f75e50a8"
           property_unit: "Area*time 93a60a56-a3c8-21da-a746-0800200c9a66 / ha*a"
-          description: "Record occupied agricultural land for the crop cycle. Raw activity or stage basis: per cultivated hectare-cycle."
+          description: "Record occupied agricultural land for the crop cycle. Raw activity or stage basis: per cultivated hectare-cycle. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "cultivated area multiplied by occupied-year fraction"
             value_mode: "calculated_value"
@@ -323,16 +323,7 @@ process_inventory:
               collection_protocol_id: cp_crop_cycle
               source_ids:
                 - area-time-identity
-            ranges:
-              - role: allowed_range
-                lower: "0"
-                upper: "2"
-                unit: "ha*a/ha crop"
-                basis: "per cultivated hectare-cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - area-time-identity
+            ranges: []
     outputs:
       product:
         - row_id: harvested_stems
@@ -745,9 +736,9 @@ process_inventory:
           name: "Retting wastewater"
           flow_type: "waste"
           property_unit: "Volume / m3"
-          description: "Record wastewater volume and destination; characterize relevant oxygen demand, solids, nutrients and treatment. Raw activity or stage basis: per retting or extraction batch."
+          description: "Record wastewater volume and destination; characterize relevant oxygen demand, solids, nutrients and treatment. Raw activity or stage basis: per retting or extraction batch. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
-            expression: "measured discharge less documented reuse and evaporation"
+            expression: "Use measured wastewater actually crossing the defined retting/extraction boundary to its recorded external destination. Do not deduct internal reuse, recirculation or evaporation from an already measured external discharge. When discharge is estimated, use the complete process-water equation in Calculation Rules with every incoming/outgoing water component and stock term, documenting uncertainty; keep liquid volume and its water/solid/pollutant components distinct. Normalize once through matched accepted fibre output."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -758,16 +749,7 @@ process_inventory:
               collection_protocol_id: cp_retting_batch
               source_ids:
                 - water-balance-identity
-            ranges:
-              - role: allowed_range
-                lower: "0"
-                upper: "100"
-                unit: "m3/t feed"
-                basis: "per retting or extraction batch"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - water-balance-identity
+            ranges: []
         - row_id: retting_residues
           role: "Woody core, bark and extraction residues"
           name: "Jute or kenaf extraction residues"
@@ -1002,6 +984,11 @@ allocation_rules:
     rule: "Return reworked material and its additional burdens to the producing batch; exclude downgraded and rejected mass from accepted reference output and prevent double counting."
     source_ids:
       - mass-balance-identity
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_crop_cycle
@@ -1020,7 +1007,7 @@ dataset_production:
       process_id: "retting_extraction"
       flow_role: "retting/extraction batch inputs and outputs"
       record_type: "batch sheet, meter, weigh ticket, laboratory result"
-      raw_fields: "feed mass/moisture, route, time, water, energy, aids, fibre, wastewater, residues and destinations"
+      raw_fields: "feed mass/moisture, route, time, water, energy, aids, fibre, wastewater, residues and destinations ; process-water control volume, external supply/returns, internal recirculation separately, opening/closing water stocks, product/residue water, measured discharge, evaporation evidence and residual uncertainty"
       collection_method: "batch-level readings and mass/water reconciliation; Raw aggregation and attribution: sum compatible route batches; production-weight aggregation only"
       unit: "kg, m3, MJ, t*km"
       frequency: "each batch"
@@ -1032,7 +1019,7 @@ dataset_production:
       process_id: "washing_drying_grading"
       flow_role: "washing, drying, grade and hand-off"
       record_type: "lot sheet, meter, weigh ticket, grade test"
-      raw_fields: "incoming mass/moisture, water, energy, drying route, accepted grade, downgraded grade, rejects and destination"
+      raw_fields: "incoming mass/moisture, water, energy, drying route, accepted grade, downgraded grade, rejects and destination ; process-water control volume, external supply/returns, internal recirculation separately, opening/closing water stocks, product/residue water, measured discharge, evaporation evidence and residual uncertainty"
       collection_method: "lot-level measurement and reconciliation; Raw aggregation and attribution: normalize accepted output to 1,000 kg at declared moisture"
       unit: "kg, m3, MJ"
       frequency: "each lot"
@@ -1063,7 +1050,7 @@ dataset_production:
         - mass-balance-identity
     - id: calc_water_balance
       applies_to: "retting and washing"
-      rule: "discharge = withdrawal + incoming-water − evaporation − retained-water − reuse ending inventory"
+      rule: "Use one defined process control volume and matched period in water-mass units. Discharged water = external supplied water + water in incoming product/material + other actual external water inflows + opening water stock - water in all outgoing products/residues - actual evaporation - water in separately exported streams - closing water stock. Convert measured volumes only with a compatible documented density. Internal recirculation remains within that boundary and cancels; do not subtract it again from fresh-water inflow. A genuinely external reclaimed-water receipt is an external inflow. Retain liquid discharge separately from its dry solids/pollutant masses. Prefer measured discharge and use the balance as reconciliation; missing components or unexplained residuals are gaps, not automatic wastewater, evaporation or zero."
       inputs:
         - "water and moisture records"
       output: "wastewater volume"
@@ -1079,6 +1066,16 @@ dataset_production:
       output: "separate nitrogen exchanges"
       source_ids:
         - ipcc-2019-managed-soils
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_crop_cycle
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference lot"
@@ -1107,7 +1104,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_ranges
     applies_to: "all cards"
-    rule: "Every English, Chinese and structured card shall contain exactly one complete range with matching role, bounds, unit, basis, basis kind and evidence kind."
+    rule: "Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values."
     source_ids: []
   - rule_id: validate_route_balance
     applies_to: "every route and batch"
@@ -1150,9 +1147,13 @@ data_sources:
     type: "method_factor"
     reference: "occupied area multiplied by time"
     used_for: "land-occupation calculation"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:76189e5d1452d5e875ff76330414c524749d15c6fc2317024b847c56d4e67d1d"
+  source_sha256: "sha256:98cd76619e3b81d97665f7cd21f0a49500b0fc97fe338f100e594500e241d9e6"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4356"
@@ -1203,18 +1204,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47574"
+    - unit_id: "normative_48695"
       family: "allocation"
       span:
         start:
-          offset: 47574
-          line: 921
+          offset: 48695
+          line: 906
           column: 1
         end:
-          offset: 48546
-          line: 929
+          offset: 51651
+          line: 918
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_mass_first` | fibre and intended co-products | First preserve physical mass and moisture balances by batch. Where fibre, sticks, seeds or other outputs are intended products, avoid allocation by subdivision when separately metered; otherwise report and justify the selected physical or economic relation. | `mass-balance-identity` |\n| `allocation_residue_destination` | sticks, bark, fines and crop residues | Do not assign avoided burdens without a declared substitution model. Returned biomass, sold co-product and waste treatment are distinct destinations. | `mass-balance-identity` |\n| `allocation_rework` | rework and rejected material | Return reworked material and its additional burdens to the producing batch; exclude downgraded and rejected mass from accepted reference output and prevent double counting. | `mass-balance-identity` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_mass_first` | fibre and intended co-products | First preserve physical mass and moisture balances by batch. Where fibre, sticks, seeds or other outputs are intended products, avoid allocation by subdivision when separately metered; otherwise report and justify the selected physical or economic relation. | `mass-balance-identity` |\n| `allocation_residue_destination` | sticks, bark, fines and crop residues | Do not assign avoided burdens without a declared substitution model. Returned biomass, sold co-product and waste treatment are distinct destinations. | `mass-balance-identity` |\n| `allocation_rework` | rework and rejected material | Return reworked material and its additional burdens to the producing batch; exclude downgraded and rejected mass from accepted reference output and prevent double counting. | `mass-balance-identity` |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1231,12 +1232,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47574
-              line: 921
+              offset: 48695
+              line: 906
               column: 1
             end:
-              offset: 47614
-              line: 921
+              offset: 48735
+              line: 906
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1251,18 +1252,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54145"
+    - unit_id: "normative_59832"
       family: "validation"
       span:
         start:
-          offset: 54145
-          line: 962
+          offset: 59832
+          line: 952
           column: 1
         end:
-          offset: 55188
-          line: 972
+          offset: 61097
+          line: 962
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | severity |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | UUID, Mass property, mass unit group, product state and required qualifiers shall match the declared accepted fibre. | error |\n| `validate_flow_bindings` | all cards | Resolve every parameterized card to a concrete compatible UUID from actual foreground identity, and retain unresolved or internal status exactly as audited. | error |\n| `validate_ranges` | all cards | Every English, Chinese and structured card shall contain exactly one complete range with matching role, bounds, unit, basis, basis kind and evidence kind. | error |\n| `validate_route_balance` | every route and batch | Input mass shall reconcile with accepted, downgraded, co-product, residue, reject and measured loss outputs after moisture conversion. | error |\n| `validate_rework` | rejects and rework | Rework shall remain linked to its producing node and shall not be counted both as new input and accepted output. | error |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | severity |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | UUID, Mass property, mass unit group, product state and required qualifiers shall match the declared accepted fibre. | error |\n| `validate_flow_bindings` | all cards | Resolve every parameterized card to a concrete compatible UUID from actual foreground identity, and retain unresolved or internal status exactly as audited. | error |\n| `validate_ranges` | all cards | Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values. | |\n| `validate_route_balance` | every route and batch | Input mass shall reconcile with accepted, downgraded, co-product, residue, reject and measured loss outputs after moisture conversion. | error |\n| `validate_rework` | rejects and rework | Rework shall remain linked to its producing node and shall not be counted both as new input and accepted output. | error |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1279,12 +1280,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54145
-              line: 962
+              offset: 59832
+              line: 952
               column: 1
             end:
-              offset: 54167
-              line: 962
+              offset: 59854
+              line: 952
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1355,106 +1356,119 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_mass_first"
       identity_kind: "explicit"
-      unit_id: "normative_47574"
+      unit_id: "normative_48695"
       source_span:
         start:
-          offset: 47687
-          line: 925
+          offset: 48808
+          line: 910
           column: 1
         end:
-          offset: 48033
-          line: 925
+          offset: 49154
+          line: 910
           column: 347
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_residue_destination"
       identity_kind: "explicit"
-      unit_id: "normative_47574"
+      unit_id: "normative_48695"
       source_span:
         start:
-          offset: 48034
-          line: 926
+          offset: 49155
+          line: 911
           column: 1
         end:
-          offset: 48288
-          line: 926
+          offset: 49409
+          line: 911
           column: 255
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_47574"
+      unit_id: "normative_48695"
       source_span:
         start:
-          offset: 48289
-          line: 927
+          offset: 49410
+          line: 912
           column: 1
         end:
-          offset: 48544
-          line: 927
+          offset: 49665
+          line: 912
           column: 256
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_48695"
+      source_span:
+        start:
+          offset: 49738
+          line: 916
+          column: 1
+        end:
+          offset: 51649
+          line: 916
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54145"
+      unit_id: "normative_59832"
       source_span:
         start:
-          offset: 54238
-          line: 966
+          offset: 59925
+          line: 956
           column: 1
         end:
-          offset: 54415
-          line: 966
+          offset: 60102
+          line: 956
           column: 178
     - pointer: "/validation_rules/1"
       rule_id: "validate_flow_bindings"
       identity_kind: "explicit"
-      unit_id: "normative_54145"
+      unit_id: "normative_59832"
       source_span:
         start:
-          offset: 54416
-          line: 967
+          offset: 60103
+          line: 957
           column: 1
         end:
-          offset: 54623
-          line: 967
+          offset: 60310
+          line: 957
           column: 208
     - pointer: "/validation_rules/2"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_54145"
+      unit_id: "normative_59832"
       source_span:
         start:
-          offset: 54624
-          line: 968
+          offset: 60311
+          line: 958
           column: 1
         end:
-          offset: 54822
-          line: 968
-          column: 199
+          offset: 60731
+          line: 958
+          column: 421
     - pointer: "/validation_rules/3"
       rule_id: "validate_route_balance"
       identity_kind: "explicit"
-      unit_id: "normative_54145"
+      unit_id: "normative_59832"
       source_span:
         start:
-          offset: 54823
-          line: 969
+          offset: 60732
+          line: 959
           column: 1
         end:
-          offset: 55020
-          line: 969
+          offset: 60929
+          line: 959
           column: 198
     - pointer: "/validation_rules/4"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_54145"
+      unit_id: "normative_59832"
       source_span:
         start:
-          offset: 55021
-          line: 970
+          offset: 60930
+          line: 960
           column: 1
         end:
-          offset: 55186
-          line: 970
+          offset: 61095
+          line: 960
           column: 166
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1483,27 +1497,27 @@ normative_context:
           column: 246
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47574"
+      unit_id: "normative_48695"
       source_span:
         start:
-          offset: 47574
-          line: 921
+          offset: 48695
+          line: 906
           column: 1
         end:
-          offset: 47614
-          line: 921
+          offset: 48735
+          line: 906
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54145"
+      unit_id: "normative_59832"
       source_span:
         start:
-          offset: 54145
-          line: 962
+          offset: 59832
+          line: 952
           column: 1
         end:
-          offset: 54167
-          line: 962
+          offset: 59854
+          line: 952
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1512,5 +1526,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:76189e5d1452d5e875ff76330414c524749d15c6fc2317024b847c56d4e67d1d"
-  generated_content_sha256: "sha256:9a0b9901a593b2f39582448549b111a8421cf547bcc917334e90c68983543b84"
+    sha256: "sha256:98cd76619e3b81d97665f7cd21f0a49500b0fc97fe338f100e594500e241d9e6"
+  generated_content_sha256: "sha256:7665edd2d7162d3d01a6c89150eac36b0488ca4812f49278bd968f96e82d70b0"

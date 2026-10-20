@@ -14,12 +14,12 @@ functional_unit:
   how_much: "1 kg net product output, excluding culls, field losses, process rejects, and packaging"
   how_well: "Declared species, cultivar, fresh state, harvest maturity, quality/market grade, production system, and product condition"
   how_long_or_cycle: "One declared crop cycle and harvest season; disclose reporting period, orchard age, and annualisation convention"
-  reference_flow_link: "marketable_fresh_fruit"
+  reference_flow_link: "reference_product_at_declared_handoff"
 system_boundary:
   rules:
     - rule_id: boundary_starting_condition
       applies_to: "orchard production"
-      rule: "Start at the bearing-orchard crop cycle; exclude establishment and nursery inputs unless annualized and disclosed."
+      rule: "Include the attributable orchard establishment, nursery-stock supply, immature years, replacement and termination contribution as well as the bearing-year crop cycle. Use the documented benefiting productive-life output basis: for each native activity pool E, year y receives E*Q_y/sum(Q_y) over the evidenced completed cohort life or site-specific actual-plus-forecast trajectory; do not pool unlike numerator units. Add directly measured bearing-year operations once, then apply Section 7 and final normalization. Missing history or a nonpositive/unknown lifetime output denominator blocks completeness, not permission to exclude establishment. Supplier-covered nursery production is linked once; no invented universal lifetime."
       source_ids:
         - source_ucanr_peach_nectarine_cultural
         - source_iso_14044
@@ -106,6 +106,12 @@ process_map:
     inclusion_condition: "When before hand-off"
     role: "Condition and present market fruit"
     quantitative_reference: "Per facility run/per 1 kg net output"
+  - id: declared_reference_handoff
+    name: "Accepted-product measurement at declared handoff"
+    inclusion: "required"
+    inclusion_condition: "Every actual selected route, including bypass of conditional conditioning/packing/storage"
+    role: "Measurement and reconciliation only; no added physical processing"
+    quantitative_reference: "1 kg net accepted product at the same declared gate"
 process_inventory:
   - id: orchard_management
     label: "Bearing orchard management"
@@ -512,9 +518,9 @@ process_inventory:
           name: "Marketable fresh peaches or nectarines at declared first market hand-off (semantic candidate)"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Fruit passing the declared maturity and market-quality screen leaves as the PCR reference product; packaging and rejects are excluded. Raw output measurement and reconciliation: Net weighed product mass after included sorting and conditioning Raw activity or stage basis: per 1 kg net marketable fruit output."
+          description: "Record the measured accepted output of onsite_sort_cool_pack only when that operation actually occurs. Preserve species, condition, grade, moisture, lot and its real outgoing gate. This stable row id identifies an actual route output; the sole final reference is reference_product_at_declared_handoff. Retain raw output and link the selected final lot without counting it as another final product. Any UUID shown is usable only for its independently confirmed physical state/gate; an incompatible upstream/intermediate state needs a separately verified or explicit unresolved identity. Preserve the original stage measurement and collection records. Raw output measurement and reconciliation: Weigh the accepted net lot output of the actual operation under cp_packhouse_records, retain gross/tare, rejects, stocks, moisture and matched onward lot records, and reconcile before final normalization. Raw activity or stage basis: measured actual operation/lot output and throughput, retained before one final-reference normalization."
           amount:
-            expression: "1 kg"
+            expression: "measured accepted net output from the actual operation under cp_packhouse_records; retain raw lot quantity and actual stage throughput, then normalize once under the final-handoff normalization in Section 8; never prescribe a fixed intermediate yield"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -549,6 +555,56 @@ process_inventory:
             ranges: []
       elementary:
         []
+  - id: declared_reference_handoff
+    label: "Accepted-product measurement at declared handoff"
+    inputs:
+      product:
+        - row_id: actual_route_product_for_handoff
+          role: "Accepted actual-route product at the same handoff"
+          name: "Marketable fresh peaches or nectarines at declared first market hand-off (semantic candidate) (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID."
+          amount:
+            expression: "measured accepted net mass at this same handoff, normalized as R/R * 1 kg; paired input equals accepted output, with raw R retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_declared_reference_handoff
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_at_declared_handoff
+          role: "Reference product at declared handoff"
+          name: "Marketable fresh peaches or nectarines at declared first market hand-off (semantic candidate) (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_declared_reference_handoff
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
 allocation_rules:
   - rule_id: allocation_subdivision
     applies_to: "separable blocks, species, cultivars, or runs"
@@ -575,7 +631,7 @@ dataset_production:
       process_id: "orchard_management"
       flow_role: "orchard inputs, land, water, residues"
       record_type: "invoices, meters, spray logs, field records"
-      raw_fields: "block_id; species; cultivar; area; irrigation; electricity; fuel; fertilizer and nutrient basis; crop protection; residues"
+      raw_fields: "block_id; species; cultivar; area; irrigation; electricity; fuel; fertilizer and nutrient basis; crop protection; residues ; cohort; establishment/immature/replacement/termination events with native units; annual accepted outputs including zero years; completed-life or evidenced remaining-output trajectory; supplier coverage"
       collection_method: "Collect primary records and reconcile to block and cycle; Raw aggregation and attribution: Sum by block and cycle; disclose shared-record allocation orchard_machinery_fuel_specific_input: Operation orchard_management: Fuel consumed by tractors, sprayers, mowers, or other mobile orchard machinery is recorded when consumed on site. Original quantity method: Fuel issue records or equipment logs assigned to the crop cycle Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg; L; m3; kWh; MJ; m2"
       frequency: "Each application or meter period"
@@ -607,6 +663,30 @@ dataset_production:
       site_scope: "Included facility or line"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "meters; QA records; waste receipts"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "orchard_management"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
+    - protocol_id: cp_declared_reference_handoff
+      process_id: "declared_reference_handoff"
+      flow_role: "actual accepted terminal product and paired transfer"
+      record_type: "scale/lot/acceptance records"
+      raw_fields: "species; state; grade; moisture/basis; gate; actual_terminal_process_id; actual_terminal_output_row_id; lot/transfer_id; gross/tare/net mass R; raw stage totals/throughputs; stocks, rejects and destinations"
+      collection_method: "Weigh accepted net R at the existing gate; match exactly one actual terminal source of the same lot/state and reconcile all earlier losses and stocks. If conditional preparation is absent use the last actual included eligible product output, without inventing that preparation. Preserve original activity records and all required qualifiers."
+      unit: "kg and native activity units"
+      frequency: "each accepted lot"
+      temporal_coverage: "matched production and handoff period"
+      site_scope: "existing declared producer/primary gate"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibrated weighing, acceptance/grade records, lot chain, activation/bypass evidence and closed balances"
   calculation_rules:
     - id: calc_net_marketable_output
       applies_to: "harvest and packing"
@@ -637,6 +717,23 @@ dataset_production:
       output: "kg product and kg N/P/K"
       source_ids:
         - source_ucanr_peach_fertilizer
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_final_handoff_normalization
+      applies_to: "all foreground quantities and actual route outputs"
+      rule: "Let R be positive measured accepted final mass in kg for one matched species/state/grade/gate/period, excluding tare, rejects, co-products and held stock. Physical ledger = raw physical quantity/R * 1 kg, without burden-allocation scaling. Attributable inventory contribution = attributable raw quantity/R * 1 kg, preserving native numerator units and the existing output/period attribution. A local intensity q_i=Q_i/O_i first reconstructs Q_i=q_i*actual linked O_i; do not divide by R again after final normalization. Both handoff sides are the same measured event R/R*1 kg, not another physical yield. Include only actual active operations; record and substantiate bypass. Missing/nonpositive R or an unlinked terminal record blocks a normalized complete result, not zero. Preserve original stage data and cancel paired internal transfers once."
+      inputs:
+        - cp_declared_reference_handoff
+        - "original linked collection protocols"
+      output: "native quantities per declared final reference"
+      source_ids:
+        - declared-handoff-measurement-definition
   data_quality_requirements:
     - id: dq_identity_and_qualifiers
       applies_to: "reference product and cycle records"
@@ -672,6 +769,11 @@ validation_rules:
     rule: "Require a balance from gross fruit to net marketable output, losses, and rejects."
     source_ids:
       - source_iso_14044
+  - rule_id: validate_final_handoff_bypass
+    applies_to: "selected actual route and all conditional bypass states"
+    rule: "Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch."
+    source_ids:
+      - declared-handoff-measurement-definition
 published_dataset_profile:
   dataset_role: "Primary foreground crop-production dataset; may be released as a secondary dataset after review"
   downstream_use: "Support process and lifecyclemodel construction for fresh peaches and nectarines at hand-off"
@@ -713,23 +815,31 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
+  - id: "declared-handoff-measurement-definition"
+    type: "method_factor"
+    reference: "This PCR Sections 3, 6 and 8: matched accepted handoff mass divided by itself times the declared reference amount; physical transfer pairing and dimensional normalization identity, not an empirical yield or new physical operation."
+    used_for: "single accepted reference and measured route-throughput linkage"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:2889d3052746a1fdf6785085e24160918c7c0fd445bbf26610feda1b8ab9f012"
+  source_sha256: "sha256:f80e4963cc05dc3707f8a0acdb2f7f976f72f59ae9d680efdad73d4a096e9cc1"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_3853"
+    - unit_id: "normative_4580"
       family: "system_boundary"
       span:
         start:
-          offset: 3853
-          line: 59
+          offset: 4580
+          line: 61
           column: 1
         end:
-          offset: 5527
-          line: 80
+          offset: 6870
+          line: 82
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Bearing orchard block ready for the declared crop cycle |\n| starting_condition_role | Fixes the annual foreground boundary; existing orchard capital and prior establishment are excluded unless annualized |\n| product_classification_scope | Cultivated fresh peaches and nectarines from orchard production through the declared hand-off |\n| recursive_input_rule | Do not recursively model same-category harvested fruit; a separate packing route records the upstream fruit dataset |\n| upstream_dataset_requirement | Use linked background or secondary datasets for purchased inputs and resolve identity and geography |\n| disclosure | Declare orchard age, productive area, species/cultivar, irrigation source, production system, crop cycle, yield, loss routes, and on-site conditioning |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_starting_condition` | orchard production | Start at the bearing-orchard crop cycle; exclude establishment and nursery inputs unless annualized and disclosed. | `source_ucanr_peach_nectarine_cultural`; `source_iso_14044` |\n| `boundary_management_and_harvest` | orchard and harvest | Include crop management, irrigation, nutrient and crop protection, pruning/thinning, harvest, and field handling. | `source_ucanr_peach_nectarine_cultural`; `source_ucanr_peach_fertilizer` |\n| `boundary_optional_packhouse` | on-site conditioning | Include on-site sorting, cooling, and packing only when before hand-off; otherwise disclose downstream. | `source_usda_ams_fresh_fruit_grades` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Bearing orchard block ready for the declared crop cycle |\n| starting_condition_role | Fixes the annual foreground boundary; existing orchard capital and prior establishment are excluded unless annualized |\n| product_classification_scope | Cultivated fresh peaches and nectarines from orchard production through the declared hand-off |\n| recursive_input_rule | Do not recursively model same-category harvested fruit; a separate packing route records the upstream fruit dataset |\n| upstream_dataset_requirement | Use linked background or secondary datasets for purchased inputs and resolve identity and geography |\n| disclosure | Declare orchard age, productive area, species/cultivar, irrigation source, production system, crop cycle, yield, loss routes, and on-site conditioning |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_starting_condition` | orchard production | Include the attributable orchard establishment, nursery-stock supply, immature years, replacement and termination contribution as well as the bearing-year crop cycle. Use the documented benefiting productive-life output basis: for each native activity pool E, year y receives E*Q_y/sum(Q_y) over the evidenced completed cohort life or site-specific actual-plus-forecast trajectory; do not pool unlike numerator units. Add directly measured bearing-year operations once, then apply Section 7 and final normalization. Missing history or a nonpositive/unknown lifetime output denominator blocks completeness, not permission to exclude establishment. Supplier-covered nursery production is linked once; no invented universal lifetime. | `source_ucanr_peach_nectarine_cultural`; `source_iso_14044` |\n| `boundary_management_and_harvest` | orchard and harvest | Include crop management, irrigation, nutrient and crop protection, pruning/thinning, harvest, and field handling. | `source_ucanr_peach_nectarine_cultural`; `source_ucanr_peach_fertilizer` |\n| `boundary_optional_packhouse` | on-site conditioning | Include on-site sorting, cooling, and packing only when before hand-off; otherwise disclose downstream. | `source_usda_ams_fresh_fruit_grades` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -746,12 +856,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 3853
-              line: 59
+              offset: 4580
+              line: 61
               column: 1
             end:
-              offset: 3874
-              line: 59
+              offset: 4601
+              line: 61
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -766,16 +876,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_28120"
+    - unit_id: "normative_33761"
       family: "allocation"
       span:
         start:
-          offset: 28120
-          line: 490
+          offset: 33761
+          line: 533
           column: 1
         end:
-          offset: 29244
-          line: 500
+          offset: 34885
+          line: 543
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision` | separable blocks, species, cultivars, or runs | Avoid allocation by separately measuring peach and nectarine activities whenever records permit. | `source_iso_14044` |\n| `allocation_shared_crop_output` | jointly managed outputs | If subdivision is impossible, allocate by documented net marketable mass and disclose mix, basis, and sensitivity. | `source_iso_14044` |\n| `allocation_residue_route` | culls, residues, and diverted fruit | Treat culls and residues as waste unless a separate product hand-off is documented; do not apply an automatic avoided-burden credit. | `source_iso_14044` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -794,12 +904,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 28120
-              line: 490
+              offset: 33761
+              line: 533
               column: 1
             end:
-              offset: 28160
-              line: 490
+              offset: 33801
+              line: 533
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -814,18 +924,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_38803"
+    - unit_id: "normative_50663"
       family: "validation"
       span:
         start:
-          offset: 38803
-          line: 540
+          offset: 50663
+          line: 602
           column: 1
         end:
-          offset: 39646
-          line: 549
+          offset: 52187
+          line: 616
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_qualifiers` | reference flow and metadata | Reject a dataset missing required qualifiers, hand-off, or net product-mass basis. | `source_usda_ams_fresh_fruit_grades` |\n| `validation_crop_cycle_completeness` | orchard and harvest | Check inputs, harvest lots, marketable output, and known losses share the same time and site scope. | `source_ucanr_peach_nectarine_cultural`; `source_iso_14044` |\n| `validation_water_exclusivity` | irrigation water | Do not count the same volume as supplied irrigation water and direct withdrawal. | `source_iso_14044` |\n| `validation_product_mass_balance` | harvest and conditioning | Require a balance from gross fruit to net marketable output, losses, and rejects. | `source_iso_14044` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_qualifiers` | reference flow and metadata | Reject a dataset missing required qualifiers, hand-off, or net product-mass basis. | `source_usda_ams_fresh_fruit_grades` |\n| `validation_crop_cycle_completeness` | orchard and harvest | Check inputs, harvest lots, marketable output, and known losses share the same time and site scope. | `source_ucanr_peach_nectarine_cultural`; `source_iso_14044` |\n| `validation_water_exclusivity` | irrigation water | Do not count the same volume as supplied irrigation water and direct withdrawal. | `source_iso_14044` |\n| `validation_product_mass_balance` | harvest and conditioning | Require a balance from gross fruit to net marketable output, losses, and rejects. | `source_iso_14044` |\n\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_final_handoff_bypass` | selected actual route and all conditional bypass states | Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch. | `declared-handoff-measurement-definition` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -842,12 +952,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 38803
-              line: 540
+              offset: 50663
+              line: 602
               column: 1
             end:
-              offset: 38825
-              line: 540
+              offset: 50685
+              line: 602
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -866,194 +976,207 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_starting_condition"
       identity_kind: "explicit"
-      unit_id: "normative_3853"
+      unit_id: "normative_4580"
       source_span:
         start:
-          offset: 4839
-          line: 76
+          offset: 5566
+          line: 78
           column: 1
         end:
-          offset: 5072
-          line: 76
-          column: 234
+          offset: 6415
+          line: 78
+          column: 850
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_management_and_harvest"
       identity_kind: "explicit"
-      unit_id: "normative_3853"
+      unit_id: "normative_4580"
       source_span:
         start:
-          offset: 5073
-          line: 77
+          offset: 6416
+          line: 79
           column: 1
         end:
-          offset: 5323
-          line: 77
+          offset: 6666
+          line: 79
           column: 251
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_optional_packhouse"
       identity_kind: "explicit"
-      unit_id: "normative_3853"
+      unit_id: "normative_4580"
       source_span:
         start:
-          offset: 5324
-          line: 78
+          offset: 6667
+          line: 80
           column: 1
         end:
-          offset: 5525
-          line: 78
+          offset: 6868
+          line: 80
           column: 202
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_28120"
+      unit_id: "normative_33761"
       source_span:
         start:
-          offset: 28233
-          line: 494
+          offset: 33874
+          line: 537
           column: 1
         end:
-          offset: 28429
-          line: 494
+          offset: 34070
+          line: 537
           column: 197
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_shared_crop_output"
       identity_kind: "explicit"
-      unit_id: "normative_28120"
+      unit_id: "normative_33761"
       source_span:
         start:
-          offset: 28430
-          line: 495
+          offset: 34071
+          line: 538
           column: 1
         end:
-          offset: 28629
-          line: 495
+          offset: 34270
+          line: 538
           column: 200
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_route"
       identity_kind: "explicit"
-      unit_id: "normative_28120"
+      unit_id: "normative_33761"
       source_span:
         start:
-          offset: 28630
-          line: 496
+          offset: 34271
+          line: 539
           column: 1
         end:
-          offset: 28854
-          line: 496
+          offset: 34495
+          line: 539
           column: 225
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_28120"
+      unit_id: "normative_33761"
       source_span:
         start:
-          offset: 28856
-          line: 498
+          offset: 34497
+          line: 541
           column: 1
         end:
-          offset: 29242
-          line: 498
+          offset: 34883
+          line: 541
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_38803"
+      unit_id: "normative_50663"
       source_span:
         start:
-          offset: 38898
-          line: 544
+          offset: 50758
+          line: 606
           column: 1
         end:
-          offset: 39089
-          line: 544
+          offset: 50949
+          line: 606
           column: 192
     - pointer: "/validation_rules/1"
       rule_id: "validation_crop_cycle_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_38803"
+      unit_id: "normative_50663"
       source_span:
         start:
-          offset: 39090
-          line: 545
+          offset: 50950
+          line: 607
           column: 1
         end:
-          offset: 39316
-          line: 545
+          offset: 51176
+          line: 607
           column: 227
     - pointer: "/validation_rules/2"
       rule_id: "validation_water_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_38803"
+      unit_id: "normative_50663"
       source_span:
         start:
-          offset: 39317
-          line: 546
+          offset: 51177
+          line: 608
           column: 1
         end:
-          offset: 39474
-          line: 546
+          offset: 51334
+          line: 608
           column: 158
     - pointer: "/validation_rules/3"
       rule_id: "validation_product_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_38803"
+      unit_id: "normative_50663"
       source_span:
         start:
-          offset: 39475
-          line: 547
+          offset: 51335
+          line: 609
           column: 1
         end:
-          offset: 39644
-          line: 547
+          offset: 51504
+          line: 609
           column: 170
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_final_handoff_bypass"
+      identity_kind: "explicit"
+      unit_id: "normative_50663"
+      source_span:
+        start:
+          offset: 51578
+          line: 614
+          column: 1
+        end:
+          offset: 52185
+          line: 614
+          column: 608
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_3853"
+      unit_id: "normative_4580"
       source_span:
         start:
-          offset: 3853
-          line: 59
+          offset: 4580
+          line: 61
           column: 1
         end:
-          offset: 3874
-          line: 59
+          offset: 4601
+          line: 61
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_3853"
+      unit_id: "normative_4580"
       source_span:
         start:
-          offset: 3902
-          line: 63
+          offset: 4629
+          line: 65
           column: 1
         end:
-          offset: 4746
-          line: 70
+          offset: 5473
+          line: 72
           column: 168
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_28120"
+      unit_id: "normative_33761"
       source_span:
         start:
-          offset: 28120
-          line: 490
+          offset: 33761
+          line: 533
           column: 1
         end:
-          offset: 28160
-          line: 490
+          offset: 33801
+          line: 533
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_38803"
+      unit_id: "normative_50663"
       source_span:
         start:
-          offset: 38803
-          line: 540
+          offset: 50663
+          line: 602
           column: 1
         end:
-          offset: 38825
-          line: 540
+          offset: 50685
+          line: 602
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1062,5 +1185,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:2889d3052746a1fdf6785085e24160918c7c0fd445bbf26610feda1b8ab9f012"
-  generated_content_sha256: "sha256:1ebec9ff1840812712984534f87ee965acbeebfc2d71d6a1aa566ab0262ba04b"
+    sha256: "sha256:f80e4963cc05dc3707f8a0acdb2f7f976f72f59ae9d680efdad73d4a096e9cc1"
+  generated_content_sha256: "sha256:851d31becbb3858a5df65cb968ab483741c2c089f09b673fe3bc43a98f5b5797"

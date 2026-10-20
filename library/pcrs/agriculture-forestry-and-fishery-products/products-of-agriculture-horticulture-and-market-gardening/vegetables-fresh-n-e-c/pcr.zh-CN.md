@@ -97,23 +97,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 种子或种植材料（`crop_seed_or_propagule`）
-
-当种子、移栽苗或其他种植材料为建立声明作物周期而供应时，其跨越作物生产边界。
-
-- 选定流：声明的种子或种植材料；
-- 流属性/单位：Mass / kg
-- 数量规则：实际质量，或依据声明材料基准将数量换算为质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考新鲜蔬菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_crop_inputs`
-- 来源：`fao-crop-production-guidance-2016`
-
 ###### 灌溉水（`crop_irrigation_water`）
 
 当灌溉水被取用或供应到作物生产单元用于声明周期时，记录灌溉水。
@@ -315,7 +298,7 @@ sync_with: pcr.en-US.md
 当选定方法识别出作物养分管理的损失途径时，记录释放到土壤的磷。
 
 - 选定流：土壤磷排放
-- 流属性/单位：Mass / kg P
+- 流属性/单位: Mass / kg PO4
 - 数量规则：将采集的 P 投入和保留记录代入声明的养分损失方法
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -326,6 +309,8 @@ sync_with: pcr.en-US.md
 - 证据类型：根据采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_crop_inputs`
 - 来源：`ipcc-2019-refinement-agriculture`
+
+最终交换质量为 kg PO4；按 P 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 P 质量乘 95/31，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ###### 直接土壤氧化亚氮（`crop_direct_n2o`）
 
@@ -375,7 +360,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_harvest_operations`采集`p_harvest_capture`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -754,6 +739,10 @@ sync_with: pcr.en-US.md
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -785,14 +774,16 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `rule_normalize_to_reference_flow` | all inventory rows | `normalized_amount = recorded_or_calculated_amount / net_marketable_reference_mass` | row amount; net marketable reference mass | amount per 1 kg reference fresh vegetable | `iso-14044-2006` |
 | `rule_calculate_crop_yield_reconciliation` | crop production and harvest | `standing_crop = harvested_output + field_loss + residue + other_declared_destinations` | field output; harvested mass; losses; residues; destinations | reconciled crop-cycle output set | `fao-crop-production-guidance-2016`; `fao-food-loss-waste-2019` |
-| `rule_calculate_nutrient_basis` | fertilizer or soil amendment input | `nutrient_basis = product_mass * declared_nutrient_fraction` for each declared nutrient basis | product mass; supplier or laboratory nutrient fraction | kg N, P, K, or organic nutrient | `fao-fertilizer-code-of-conduct-2019` |
-| `rule_calculate_crop_emissions` | crop elementary outputs | Apply the selected IPCC-compatible factor or measured value to the declared nutrient input, soil, climate, and management records; document factor hierarchy and units. | nutrient input; management records; selected factor; measured emissions where available | normalized substance-specific elementary flows | `ipcc-2019-refinement-agriculture` |
-| `rule_reconcile_grade_outputs` | grading and sorting | `grading_input = marketable_grade + secondary_grade + reject + unaccounted_loss`; unaccounted loss must be investigated or disclosed | grading input; all declared outputs; reject; loss | complete grade-output reconciliation | `fao-food-loss-waste-2019` |
-| `rule_reconcile_packaged_output` | packaging and presentation | `product_input = net_reference_output + packaging-process_product_loss + other_declared_product_destinations` and packaging mass is reported separately | product input; net output; losses; package material | net reference flow and package inventory | `iso-14044-2006` |
+| `rule_calculate_nutrient_basis` | fertilizer or soil amendment input | 对各声明养分基准：养分量＝产品质量×声明养分分数。 | product mass; supplier or laboratory nutrient fraction | kg N, P, K, or organic nutrient | `fao-fertilizer-code-of-conduct-2019` |
+| `rule_calculate_crop_emissions` | crop elementary outputs | 将所选 IPCC 兼容因子或实测值用于声明养分投入、土壤、气候及管理记录，记录因子优先级及单位。 | nutrient input; management records; selected factor; measured emissions where available | normalized substance-specific elementary flows | `ipcc-2019-refinement-agriculture` |
+| `rule_reconcile_grade_outputs` | grading and sorting | 分级进料＝商品等级＋次级等级＋拒收物＋未核算损失；未核算损失须调查或披露。 | grading input; all declared outputs; reject; loss | complete grade-output reconciliation | `fao-food-loss-waste-2019` |
+| `rule_reconcile_packaged_output` | packaging and presentation | 产品进料＝净参考产出＋包装过程产品损失＋其他声明产品去向；包装质量另行报告。 | product input; net output; losses; package material | net reference flow and package inventory | `iso-14044-2006` |
 | `crop_soil_nitrogen_loss_specific_emission` | `p_crop_production` | 对实际蔬菜作物核对作物周期养分投入、作物带走、土壤留存及方法支持的氮损失路径。氮平衡残差或土壤留存 N 不自动构成向土壤排放的基本流。创建排放前明确实际物质与接收介质，保留原作物归属及最终鲜蔬菜归一化。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_crop_inputs` | 逐物质和介质的排放交换及独立元素台账 | `ipcc-2019-refinement-agriculture` |
 | `packaging_rejects_specific_output` | `p_packaging_presentation` | 对每个蔬菜包装批次，按实际材料称量或核对废弃包装，并与被拒收蔬菜的净质量分开。保留物种、产品状态、组成、包装皮重、实际去向及复用状态。包装内产品拒收物只有在实际作为一股有记录的复合物流交付，且产品与包装比例有依据时，才可保留为一项交换；不得再将这些组分重复计为独立外运废物。按相同批次范围核对投入、合格净产品、拒收物及库存。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | `cp_packaging_records` | 逐实际物流的交换、去向及无重复质量平衡 | `fao-food-loss-waste-2019` |
 | `crop_reactive_n_emissions_specific_exchanges` | `p_crop_production` | 按接收环境分别识别和计算实际氨及各氮氧化物，在数据集完成前为每种物质和接收环境建立一张基本流卡。保留方法报告的 NOx 口径，不得把混合 NOx 或总氮数量改名为单一物种。仅在适用化学计量关系明确时，将该物种的元素氮质量转为化合物质量；已经是化合物质量时不再转换。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_crop_inputs` | 逐项独立交换；完成前必须补齐 | `ipcc-2019-refinement-agriculture` |
 | `conditioning_wastewater_specific_exchanges` | `p_primary_conditioning` | 将蔬菜处理废水、其处理服务及实际环境释放分别枚举为实际物流。逐流计量，保留各自组成、状态、原生单位、批次／期间及去向；每个具体物流和边界角色建立一张独立卡。区分废物转移、外购处理服务及具体物质排放，不得把处理服务作为废水本身，也不得重复处理负荷。分别保留库存、返工、销售降级品及弃置废物；物理混合物流只计一次，不得再将其组分作为额外输出重复计入。 保留相连采集协议和实际过程归属，按原始阶段基准恢复各自可归属的原始分子量，再按匹配的合格参考产出归一化一次。缺少身份、数量、单位或去向会阻止数据集完整性通过；确认不存在必须有依据，不得默认零值。 | `cp_conditioning_records` | 逐项独立交换；完成前必须补齐 | `fao-fresh-produce-hygiene-2003` |
+| `crop_seed_or_propagule_identity_and_fate` | `p_crop_production` | 对于本作业原有 crop_seed_or_propagule 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_crop_inputs` | 按身份区分的交换和对账活动记录 | `fao-crop-production-guidance-2016` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_crop_inputs`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -847,3 +838,4 @@ sync_with: pcr.en-US.md
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

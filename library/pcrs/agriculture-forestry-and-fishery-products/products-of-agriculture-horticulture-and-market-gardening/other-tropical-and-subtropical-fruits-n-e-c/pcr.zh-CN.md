@@ -431,8 +431,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_01319_cultivation_records`
 - 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 供应设备的汽油（`cultivation_energy_input_gasoline`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
@@ -548,11 +546,12 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_01319_harvest_records`
 - 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
 ##### 基本流
+
 #### 输出
 ##### 产品流
 
@@ -599,7 +598,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_accepted_rejected` | 采收、接收和淘汰水果 | 按实测质量区分接收产品、淘汰物和共产品；除非明确为接收共产品，否则不得将淘汰水果分配到参考产品。 | `iso-14044-allocation`, `codex-fresh-fruits-vegetables-cxc-53` |
+| `allocation_accepted_rejected` | 采收、接收和淘汰水果 | 按实测质量区分合格产品、弃置果实和真正有意共产品。弃置果实不计入合格参考数量或共产品分配分母，但其生产与处理负荷仍归属产生它的可销售路线。只有具有有据功能与交接的独立有意产品才可取得共产品份额。 | `iso-14044-allocation`, `codex-fresh-fruits-vegetables-cxc-53` |
 | `allocation_perennial_establishment` | 多年生建立期和结果年 | 按披露的结果年限、树龄和接收产量分配共用建立投入。 | `iso-14044-allocation`, `fao-gap-framework-2003` |
 | `allocation_multiple_fruit_products` | 共用田间、果园、灌溉和机械记录 | 默认按实测接收质量分配；采用其他物理因果规则时必须说明。 | `iso-14044-allocation` |
 
@@ -652,7 +651,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validation_01319_reference_qualifiers` | 参考产品 | 缺少实际水果、路线、农场交付状态、成熟度/等级或接收产品基准时拒绝数据包；平台是后续身份事项，不得改变产品语义。 | `codex-fresh-fruits-vegetables-cxc-53` |
-| `validation_01319_cycle_completeness` | 过程图和协议 | 检查建立、栽培和采收是否纳入或有理由排除，并检查一年生/多年生时间基准一致。 | `fao-gap-framework-2003` |
+| `validation_01319_cycle_completeness` | 过程图和协议 | 核对实际一年生/多年生起始状态及归属于合格产出的全部适用建园、育苗/幼龄、更新替换和终止历史。本年无事件或历史记录缺失不能排除应归属负荷。按已有方法核对声明的生产期/产出归属、上游覆盖和当年作业，只计一次；缺少适用证据阻断完整性，确有依据的不适用须记录。 | `fao-gap-framework-2003` |
 | `validation_01319_mass_balance` | 采收和废物行 | 归一化到 1 kg 接收水果前，检查采收、接收、淘汰和其他去向。 | `codex-fresh-fruits-vegetables-cxc-53` |
 | `validation_01319_allocation_disclosure` | 共用投入和共产品 | 检查共用记录、建立期分配、共产品和淘汰去向是否声明分配基准。 | `iso-14044-allocation` |
 

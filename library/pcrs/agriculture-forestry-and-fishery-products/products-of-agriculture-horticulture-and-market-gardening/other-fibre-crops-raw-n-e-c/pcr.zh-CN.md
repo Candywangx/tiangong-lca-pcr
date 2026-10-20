@@ -33,7 +33,7 @@ sync_with: pcr.en-US.md
 | How much | 1 kg 净产品 |
 | How well | 声明物种、品种（如已知）、纤维部位、原状/沤制状态、制备路线、等级、杂质和含水率 |
 | How long or cycle | 一个已识别批次及其作物周期；多年生路线包括或归属建植期 |
-| reference_flow_link | reference_raw_fibre |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | Field | Value |
 | --- | --- |
@@ -43,6 +43,8 @@ sync_with: pcr.en-US.md
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | 植物物种；纤维部位；原状或沤制状态；制备路线；含水率；等级；杂质；地理位置；作物周期；农场或首次制备交接点 |
+
+唯一参考产出为 `declared_reference_handoff` 的 `reference_product_at_declared_handoff`，它仅对既有声明交接点的实际合格产品作必需计量。`primary_fibre_preparation` 的实体活动仍为条件性活动；省略该活动不取消参考产出。选择实际最后纳入的产品交接并记录过程/产出 id，物种、物理状态、等级、含水率基准及交接点必须与第3节一致。原 `reference_raw_fibre` 行仅在其作业实际发生时记录该作业实测产出，不是另一笔最终销售。旁路不新增加工、得率假设或负担，也不改变产品边界。
 
 ## 4. 计量与单位规则
 | rule_id | Applies to | Required property | Required unit | Rule |
@@ -84,6 +86,7 @@ sync_with: pcr.en-US.md
 | `crop_production` | 受控纤维作物生产 | required | 声明一年生或多年生生产路线及生产期 | managed biological production | crop area, period and harvest-ready biomass |
 | `harvest_extraction` | 收获与初步提取 | required | 按作物部位声明割取、拔取、剥离或回收路线 | harvest/capture | collected raw-material lot |
 | `primary_fibre_preparation` | 首次纤维制备与分级 | conditional | 选择首次沤制、剥麻、清洗、干燥、打麻、清理或分级交接时纳入 | treatment, stabilization and grading | accepted prepared raw fibre |
+| `declared_reference_handoff` | 声明交接点合格产品计量 | required | 每条实际选定路线，包括条件处理/包装/储存的旁路 | 仅计量及核对，不新增实体加工 | 1 kg 同一声明交接点净合格产品 |
 
 ### 过程：受控纤维作物生产 (`crop_production`)
 
@@ -202,7 +205,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 实际供应的灌溉水
 - 流属性/单位: Volume / m3
-- 数量规则: 按田块和期间计量或有凭据的取水量
+- 数量规则：按事件/用途和匹配期间，计量实际跨此产品供水边界的供水量并保留声明原生单位。水源取水表不能自动当交付产品量，须核对两测点间输配损失、外部回水和存水变化。前景负责直接天然取水时，另设分水源基本流输入及本地供水作业，内部交付在聚合边界抵销，不能另加一笔外购水。外购水承接兼容供应商取水及供水负担一次。雨养/无供水须有据，缺少交付量或责任证据属于不完整而非零；归属后按合格最终产出归一化一次。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
 原始活动或阶段基准：每公顷作物周期，随后归一化至参考产品.
@@ -653,29 +656,21 @@ sync_with: pcr.en-US.md
 
 ###### 制备原纤维参考产品 (`reference_raw_fibre`)
 
-该预期产出是首次制备交接点的单一物种原纤维或沤制纤维，不包括纱线、织物及纤维制成品。
+仅在 `primary_fibre_preparation` 作业实际发生时记录该作业实测合格产出，保留物种、状态、等级、含水率、批次和真实移出交接点。此稳定行 id 表示实际路线产出；唯一最终参考产出为 reference_product_at_declared_handoff。保留原始产出并关联选定最终批次，不作为另一份最终产品重复计数。所列 UUID 仅适用于已独立确认的物理状态/交接点；不相容的上游/中间状态须另行核实或明确保持身份未解析。保留原阶段计量及采集记录。
 
 - 选定流: 其他未列明原纤维作物 `99b99c66-1c44-40db-bb8e-2d5ec022aa28`
 - 流属性/单位: Mass / kg
-原始产出计量与核对要求：在声明含水率、制备状态和等级下恰为 1 kg 净合格产品
+原始产出计量及核对：按 `cp_conditioning_mass` 称量实际作业净合格批次产出，保留毛重/皮重、拒收、库存、含水率及匹配后续批次记录，在最终归一化前核对。
 
-- 数量规则：1 千克
-- 数值来源模式: 固定值 (`fixed_value`)
-- 适用范围: 产品特定 (`product_specific`)
-原始活动或阶段基准：PCR 参考流.
+- 数量规则：按 `cp_conditioning_mass` 实测实际作业净合格产出；保留原始批次数量及实际阶段处理量，依第8节最终交接归一化规则换算一次，不规定固定中间得率
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：实测实际作业/批次产出及处理量，在一次最终参考归一化前保留。
 
 - 归一化基准：每声明的参考流
 - 基准类型: 参考流 (`reference_flow`)
-- 证据类型: 身份引用 (`identity_reference`)
-- 采集协议: `cp_conditioning_mass`
-- 数量范围: 用于首轮筛查的宽泛 QA 范围；须由实际前景记录替换
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 1
-  - 上限: 1
-  - 单位: kg/reference flow
-  - 基准: PCR 参考流; conditional routes impose zero only when inactive
-  - 基准类型: 参考流 (`reference_flow`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_mass`
 
 ###### 其他预期制备共产品 (`fibre_coproducts`)
 
@@ -755,6 +750,46 @@ sync_with: pcr.en-US.md
 本类别无预设流；仅在前景记录证明发生时增加。
 
 
+### 过程：声明交接点合格产品计量（`declared_reference_handoff`）
+本计量不新增加工、废物产生或排放。保留全部真实上游作业和损失，仅旁路有据未发生的活动。选择一个实际终端产品批次，系统汇总时将其成对内部转移抵销一次；不得把未启用路线、共产品或来源产出与交接产出相加为合格最终产出。
+
+#### 输入
+##### 产品流
+###### 同一交接点实际路线合格产品 (`actual_route_product_for_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：其他纤维作物，未加工，未另分类 `99b99c66-1c44-40db-bb8e-2d5ec022aa28`
+- 流属性/单位：质量 / kg
+- 数量规则：本同一交接点实测净合格质量，按 R/R × 1 kg 归一化；成对投入与合格产出相等，保留原始 R
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+##### 基本流
+#### 输出
+##### 产品流
+###### 声明交接点参考产品 (`reference_product_at_declared_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：其他纤维作物，未加工，未另分类 `99b99c66-1c44-40db-bb8e-2d5ec022aa28`
+- 流属性/单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+实际废物保留在其产生作业，不在此重复。
+##### 基本流
+实际释放保留在其负责的实体作业，不在此重复。
+
 ## 7. 分配与共产品处理
 
 ### 分配规则
@@ -766,6 +801,10 @@ sync_with: pcr.en-US.md
 | `residue_classification` | residues and rejects | 仅有预期用途和有凭据交接的材料是共产品；废物、还田和无主损失不得获得产品产出量 |  |
 | `multi_period_attribution` | perennial establishment and shared assets | 以有证据的生产年、服务量或寿命产出归属，记录更换与终止；同一负担不得在多个期间重复 |  |
 | `shared_asset_attribution` | assets serving multiple nodes | 列出所有消费节点和期间，按记录的机器小时、质量处理量或其他因果服务量归属一次 |  |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -781,7 +820,7 @@ sync_with: pcr.en-US.md
 | `cp_propagation` | `crop_production` | propagation material | records | supplier invoices; lot and planting logs | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg or count | each planting event | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_nutrients` | `crop_production` | fertilizer and nutrients | records | product invoices; nutrient analysis; field application log | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg product and kg nutrient | each application | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_crop_protection` | `crop_production` | crop protection | records | application log; formulation and active ingredient | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg or L | each application | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
-| `cp_irrigation` | `crop_production` | irrigation water | records | meter reading or documented withdrawal | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | m3 | each irrigation period | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
+| `cp_irrigation` | `crop_production` | irrigation water | records | meter reading or documented withdrawal ；实际供水边界及测点；产品交付量；直接取水责任方；水源至交付的损失回水及存水；供应商覆盖| direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | m3 | each irrigation period | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_energy` | `all processes` | energy carriers | records | meters; invoices; equipment and fuel logs | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | native carrier unit | monthly and by operation | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_area_period` | `crop_production` | area and period | records | georeferenced field register; establishment and productive dates | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | ha and days | each crop period | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_harvest_mass` | `harvest_extraction` | harvest mass | records | calibrated scale; lot moisture sample | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg and % wet basis | each harvest lot | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
@@ -801,6 +840,7 @@ sync_with: pcr.en-US.md
 | `transport_work` | freight | t·km = 净装载吨数 × 载货路线公里数 | dispatch mass; route distance | transport service |  |
 | `soil_n2o` | managed soil | 采用声明 IPCC 层级由氮投入计算 N2O-N，并按 44/28 转为 N2O | N inputs; emission factors | kg N2O | `ipcc-2019-refinement-v4-ch11` |
 | `lot_mass_balance` | harvest and preparation | 输入 = 合格产品 + 共产品 + 残余/废物 + 库存变化 + 经测量含水变化 | lot masses; moisture; stock | reconciliation result |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrients`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -810,6 +850,18 @@ sync_with: pcr.en-US.md
 | `coverage_quality` | foreground inventory | 覆盖所声明期间所有场址、田块、批次和实际工序；缺失须量化 | completeness ledger |
 | `measurement_quality` | mass, moisture, water and energy | 记录仪表、校准、抽样方法、单位换算和异常值处理 | calibration and sampling records |
 | `temporal_quality` | annual/perennial route | 数据期匹配作物周期，并明确建植、生产、更新和终止期 | dated crop and asset records |
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | 实际合格终端产品及成对转移 | 称量/批次/验收记录 | 物种；状态；等级；含水率/基准；交接点；actual_terminal_process_id；actual_terminal_output_row_id；lot/transfer_id；毛/皮/净质量 R；阶段原始总量/吞吐量；库存、拒收及去向 | 在既有交接点称量净合格 R，匹配唯一实际同批次/同状态终端来源，并核对前序损失及库存。若未发生条件性准备，采用最后实际纳入的适格产品产出，不虚构该准备作业。保留原活动记录及全部必需限定项。 | kg 及原生活动单位 | 每个合格批次 | 匹配生产及交接期间 | 既有声明生产者/初级交接点 | 每声明的参考流 | 校准称量、验收/等级记录、批次链、启用/旁路证据及闭合平衡 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | 全部前景数量及实际路线产出 | R 为匹配单一物种/状态/等级/交接点/期间且实测为正的合格最终质量 kg，剔除皮重、拒收、共产品及留存库存。物理台账＝原始物理数量/R×1 kg，不乘负荷分配份额；归属清单贡献＝可归属原始数量/R×1 kg，保留分子原生单位及原有产品/期间归属。阶段强度 q_i＝Q_i/O_i 须先按实际关联 O_i 还原 Q_i＝q_i×O_i；已最终归一化后不得再次除以 R。交接两侧均为同一实测事件 R/R×1 kg，不是另一实体得率。仅纳入实际启用作业，旁路须记录并有据。R 缺失/非正或终端记录未关联会阻断完整归一化结果，不能记零。保留原始阶段数据，成对内部转移抵销一次。 | cp_declared_reference_handoff; original linked collection protocols | 按声明最终参考报告的原生数量 | `declared-handoff-measurement-definition` |
 
 ## 9. 验证规则
 
@@ -823,6 +875,11 @@ sync_with: pcr.en-US.md
 | `validate_outputs` | intended outputs and rejects | 所有预期产出有交接；降级、不合格、回收或废物状态有明确去向且不重复 | error |
 | `validate_period_assets` | perennial and shared infrastructure | 期间和消费节点完整，建植与共享资产负担仅归属一次 | error |
 | `validate_route_delta` | alternative routes | 每个替代路线声明父活动及其对拓扑、清单、计算或验证的实际差异；互斥路线不得平均 | error |
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | 实际选定路线及全部条件旁路状态 | 按实际记录检查可选处理/包装/储存启用及省略两种状态：始终保留唯一必需交接参考；来源产品/状态/交接点与第3节一致；启用的实体行保留实测吞吐量，未启用实体活动不新增交换。要求原始合格质量、上游闭合、唯一转移配对及一次最终归一化；未知状态或缺少身份不得当作已成立分支。 | `declared-handoff-measurement-definition` |
 
 ## 10. 发布数据集概况
 
@@ -844,3 +901,8 @@ sync_with: pcr.en-US.md
 | `fao-natural-fibres-2009` | official_guidance | FAO and Common Fund for Commodities, Proceedings of the Symposium on Natural Fibres, 2009 | natural-fibre crop routes, primary preparation and market states |
 | `ipcc-2019-refinement-v4-ch11` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils | managed-soil N2O calculation |
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines | allocation hierarchy and transparency |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | 本 PCR 第3、6及8节：同一合格交接质量除以自身再乘声明参考数量；属于物理转移配对及量纲归一化恒等式，不是经验得率或新增实体操作。 | 唯一合格参考及实测路线吞吐关联 |

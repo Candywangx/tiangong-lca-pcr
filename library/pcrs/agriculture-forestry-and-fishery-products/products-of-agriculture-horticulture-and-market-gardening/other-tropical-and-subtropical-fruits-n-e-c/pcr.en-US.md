@@ -436,8 +436,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_01319_cultivation_records`
 - Sources: `fao-gap-framework-2003`; `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
-
 ###### Gasoline supplied to equipment (`cultivation_energy_input_gasoline`)
 
 Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
@@ -555,11 +553,12 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_01319_harvest_records`
 - Sources: `fao-gap-framework-2003`; `fao-agricultural-energy`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 ##### Waste flows
 
 ##### Elementary flows
+
 #### Outputs
 
 ##### Product flows
@@ -607,7 +606,7 @@ Raw activity or stage basis: per harvested lot and 1 kg accepted fruit.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_accepted_rejected` | harvested, accepted, and rejected fruit | Separate accepted product, rejected fruit, and co-products by measured mass; do not allocate rejected fruit to the reference product unless explicitly defined as an accepted co-product. | `iso-14044-allocation`, `codex-fresh-fruits-vegetables-cxc-53` |
+| `allocation_accepted_rejected` | harvested, accepted, and rejected fruit | Separate accepted product, discarded fruit and genuinely intended co-products by measured mass. Exclude discarded fruit from accepted reference quantity and co-product allocation denominators, but retain its production and treatment burdens with the producing saleable route. Only an independently intended product with evidenced function and handoff may receive a co-product share. | `iso-14044-allocation`, `codex-fresh-fruits-vegetables-cxc-53` |
 | `allocation_perennial_establishment` | perennial establishment and productive years | Allocate shared establishment inputs over disclosed productive years and accepted output using stand age and productive-year evidence. | `iso-14044-allocation`, `fao-gap-framework-2003` |
 | `allocation_multiple_fruit_products` | shared field, orchard, irrigation, and machinery records | Allocate by measured accepted mass unless a documented physical-causality rule is more appropriate; report the selected basis. | `iso-14044-allocation` |
 
@@ -660,7 +659,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validation_01319_reference_qualifiers` | reference product | Reject a data package lacking actual fruit identity, route, farm-gate condition, maturity/grade, and accepted-product basis; evidence gap platform UUID is a follow-up identity item, not a reason to change product meaning. | `codex-fresh-fruits-vegetables-cxc-53` |
-| `validation_01319_cycle_completeness` | process map and protocols | Check that establishment, cultivation, and harvest are included or explicitly excluded, and that annual/perennial time basis is consistent. | `fao-gap-framework-2003` |
+| `validation_01319_cycle_completeness` | process map and protocols | Verify the actual annual/perennial starting state and all applicable establishment, nursery/juvenile, renewal/replacement and termination history attributable to the accepted output. No event in the current year or missing historical records does not exclude an attributable burden. Reconcile the declared productive-horizon/output attribution with the existing method, upstream coverage and crop-year operations once; missing applicable evidence blocks completeness, and supported inapplicability is recorded. | `fao-gap-framework-2003` |
 | `validation_01319_mass_balance` | harvest and waste rows | Check harvested, accepted, rejected, and other destinations before normalizing to 1 kg accepted fruit. | `codex-fresh-fruits-vegetables-cxc-53` |
 | `validation_01319_allocation_disclosure` | shared inputs and co-products | Check that shared records, establishment allocation, co-products, and rejected-fruit destinations state a documented allocation basis. | `iso-14044-allocation` |
 

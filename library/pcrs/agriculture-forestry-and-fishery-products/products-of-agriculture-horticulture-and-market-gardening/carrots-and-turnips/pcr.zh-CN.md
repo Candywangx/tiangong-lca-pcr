@@ -82,11 +82,11 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_declared_crop_cycle` | 从田间或设施场地准备、播种、作物管理、采收到交付门前处理，均纳入声明的胡萝卜或芜菁作物周期。 | undefined | `fao-gap-framework-2003` |
-| `boundary_farm_gate` | 默认前景边界在声明的农场门或包装场交接点结束。仅在清洗、分级、冷却、一次包装和交付门前运输发生在交接点之前时纳入。 | undefined | `fao-postharvest-handling-vegetables`; `codex-cxc-53-2003-fresh-produce` |
-| `boundary_route_and_infrastructure` | 披露露地或设施路线；当路线特定的能源、水、消耗品和共享基础设施服务分配给声明周期时纳入。 | undefined | `fao-gap-framework-2003` |
-| `boundary_managed_soils` | 依据一个声明的方法纳入养分和还田残体造成的直接和间接管理土壤排放。不得重复计算上游数据集已包含的负荷。 | undefined | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |
-| `boundary_residue_and_reject_fate` | 记录每个非商品流的第一去向：还田、堆肥、饲料、处理、处置或其他文件化用途。未报告去向属于数据质量缺口。 | undefined | `fao-gap-framework-2003`; `mass-balance-identity` |
+| `boundary_declared_crop_cycle` | 建植至最后采收 | 从田间或设施场地准备、播种、作物管理、采收到交付门前处理，均纳入声明的胡萝卜或芜菁作物周期。 | `fao-gap-framework-2003` |
+| `boundary_farm_gate` | 处理及交接 | 默认前景边界在声明的农场门或包装场交接点结束。仅在清洗、分级、冷却、一次包装和交付门前运输发生在交接点之前时纳入。 | `fao-postharvest-handling-vegetables`; `codex-cxc-53-2003-fresh-produce` |
+| `boundary_route_and_infrastructure` | 露地或设施路线 | 披露露地或设施路线；当路线特定的能源、水、消耗品和共享基础设施服务分配给声明周期时纳入。 | `fao-gap-framework-2003` |
+| `boundary_managed_soils` | 养分、改良剂、残体及土壤流 | 依据一个声明的方法纳入养分和还田残体造成的直接和间接管理土壤排放。不得重复计算上游数据集已包含的负荷。 | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |
+| `boundary_residue_and_reject_fate` | 次品、残体、废水及包装废物 | 记录每个非商品流的第一去向：还田、堆肥、饲料、处理、处置或其他文件化用途。未报告去向属于数据质量缺口。 | `fao-gap-framework-2003`; `mass-balance-identity` |
 
 ## 6. 过程清单结构
 
@@ -380,11 +380,13 @@ translation_status: aligned
 - 采集协议：`cp_nutrient_input_records`
 - 来源：`fao-gap-framework-2003`；`fao-organic-nutrients`
 
+##### 基本流
+
 ###### 作物管理用水资源取用（`management_water_withdrawal`）
 
 将水源取用与实际输送至作物的水量分开记录，并识别输送、回用和回流。
 
-- 选定流：作物管理用自然水资源取用
+- 选定流：从明确天然水源直接取用的水；具体来源环境和UUID未决
 - 流属性/单位：体积 / m3
 - 数量规则：使用管理期的水源计量读数或声明的水量平衡计算。
 - 数值来源模式：前景记录 (`foreground_record`)
@@ -404,6 +406,9 @@ translation_status: aligned
   - 基准：声明水源取用和灌溉输送记录
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：推理估算（`reasoned_estimate`）
+
+仅用于本前景边界负责的直接天然水源取水。选择实际水源/环境及兼容体积或质量身份。市政或其他外购供水属于产品投入，供应商取水由上游覆盖一次，不能作为此基本流输入。保留水源至田间供应台账、泵能耗、输配损失及内部供水转移；不将同一供应商取水或内部交付再计为外部资源取用。缺少水源身份或数量属于完整性缺口。
+
 
 #### 输出
 ##### 废物流
@@ -795,11 +800,11 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_same_crop_and_route` | 多个田块、品种、场址或路线时，在归一化前保持记录分开；需要汇总时，按文件化的面积-时间、运行时间、输送水量、吞吐量或质量分配共享投入。 | undefined | `iso-14044-2006` |
-| `allocation_marketable_and_off_grade` | 当次品或降级根菜有文件化产品接收方和功能时使用质量分配；若被丢弃、还田或处理，则建模其去向，不分配共产品收益。 | undefined | `iso-14044-2006`; `mass-balance-identity` |
-| `allocation_shared_water_and_energy` | 按实测水量、产品质量、批次时间或运行时间分配共享公用工程，并说明选用的基准。 | undefined | `fao-crop-evapotranspiration-56`; `fao-postharvest-handling-vegetables` |
-| `allocation_reusable_packaging` | 将包装生产和补充分配到已核实的使用周期，并将损失归属于发生路线；不得把一次性物品分摊到未文件化周期。 | undefined | `fao-postharvest-handling-vegetables` |
-| `allocation_residue_destination` | 保留按去向区分的行。还田、堆肥、饲料、处理和处置是不同路径，不可互换为共产品。 | undefined | `fao-gap-framework-2003`; `iso-14044-2006` |
+| `allocation_same_crop_and_route` | 同作物及路线的共享投入 | 多个田块、品种、场址或路线时，在归一化前保持记录分开；需要汇总时，按文件化的面积-时间、运行时间、输送水量、吞吐量或质量分配共享投入。 | `iso-14044-2006` |
+| `allocation_marketable_and_off_grade` | 商品根菜与有用途次品 | 当次品或降级根菜有文件化产品接收方和功能时使用质量分配；若被丢弃、还田或处理，则建模其去向，不分配共产品收益。 | `iso-14044-2006`; `mass-balance-identity` |
+| `allocation_shared_water_and_energy` | 共享水及能源 | 按实测水量、产品质量、批次时间或运行时间分配共享公用工程，并说明选用的基准。 | `fao-crop-evapotranspiration-56`; `fao-postharvest-handling-vegetables` |
+| `allocation_reusable_packaging` | 可重复使用包装 | 将包装生产和补充分配到已核实的使用周期，并将损失归属于发生路线；不得把一次性物品分摊到未文件化周期。 | `fao-postharvest-handling-vegetables` |
+| `allocation_residue_destination` | 残体及次品去向 | 保留按去向区分的行。还田、堆肥、饲料、处理和处置是不同路径，不可互换为共产品。 | `fao-gap-framework-2003`; `iso-14044-2006` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
@@ -835,27 +840,28 @@ translation_status: aligned
 | `cp_managed_soil_emission_records` | `root_crop_management` | 土壤排放和养分损失 | 养分和残体平衡 | 养分投入；残体质量；水分；去向；土壤或排水证据 | 平衡表和测量或模型；原始汇总与分配：核对投入、吸收、损失和残体去向 | kg 鲜/干物质和 kg 排放 | 每周期及事件 | 完整作物周期 | 田块或场址 | 每声明的参考流 | 方法版本、实测数据和审核签字 |
 | `cp_harvest_energy_records` | `harvest_and_gate_preparation` | 采收能耗 | 采收和装载记录 | 采收日期；设备；载能体；数量；运行时间；采收质量 | 票据、计量读数和采收日志；原始汇总与分配：按采收质量分配到各去向 `harvest_energy_specific_input`: 记录声明交付门之前用于起挖、去缨、集条、装载和田间转运的燃料或外购机械服务。 按采收事件使用采收日志、票据、计量读数或供应商服务记录。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、L、kWh 或服务单位 | 每次采收 | 采收窗口 | 田块和事件 | 每声明的参考流 | 采收日志和能耗记录 |
 | `cp_conditioning_energy_records` | `harvest_and_gate_preparation` | 处理能耗 | 处理能耗记录 | 批次质量；设备；电力；持续时间；温度；交付门 | 计量器、电费单和批次日志；原始汇总与分配：按批次质量或运行时间分配共享能耗 | kWh 和日期 | 每批次 | 处理期 | 生产线或场址 | 每声明的参考流 | 计量和批次核对 |
-| `cp_conditioning_records` | `harvest_and_gate_preparation` | 清洗水和去除固体 | 批次处理记录 | 批次质量；水；回用；排放；固体；设备；持续时间 | 计量器、批次日志和水量平衡；原始汇总与分配：按批次质量或时间分配公用工程；固体单列 | m3、kg 和日期 | 每批次 | 处理期 | 生产线或场址 | 每声明的参考流 | 计量记录和批次核对 |
+| `cp_conditioning_records` | `harvest_and_gate_preparation` | 清洗水和去除固体 | 批次处理记录 | 批次质量；水；回用；排放；固体；设备；持续时间 ；过程水控制体、外部供水/回水、单列内部循环、期初/期末存水、产品/残余物含水、实测排水、蒸发依据及差额不确定性 | 计量器、批次日志和水量平衡；原始汇总与分配：按批次质量或时间分配公用工程；固体单列 | m3、kg 和日期 | 每批次 | 处理期 | 生产线或场址 | 每声明的参考流 | 计量记录和批次核对 |
 | `cp_packaging_records` | `harvest_and_gate_preparation` | 包装和包装废物 | 包装领用和损失记录 | 材料；质量；容器数量；回用周期；批次；损失；去向 | 票据、材料领用记录和回用日志；原始汇总与分配：将可重复使用包装分配到已核实周期 `primary_flexible_packaging_specific_input`: 作业 harvest_and_gate_preparation：记录声明交付门之前使用的袋、薄膜或其他柔性一次包装。包装为条件性投入，仅在使用时记录。 原数量方法：按材料、批次和声明的回用或处置状态使用包装领用记录。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `reusable_crate_packaging_specific_input`: 作业 harvest_and_gate_preparation：记录声明交付门之前使用的可重复使用周转箱、料箱或托盘，包括材料、质量、已核实使用次数和损失。 原数量方法：使用领用记录和已核实使用次数；将补充包装分摊到文件化使用周期，并单独记录损失。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `packaging_waste_specific_output`: 记录声明交付门之前产生的损坏、废弃或丢失的一次包装和可重复使用包装，包括材料和去向。 按材料和批次使用包装领用、损失和废物处理记录。 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。 `fao-postharvest-handling-vegetables`; `mass-balance-identity` | kg 和单位 | 每个包装批次 | 交付门前准备期 | 场址和生产线 | 每声明的参考流 | 票据、回用日志和损失记录 |
 | `cp_pregate_transport_records` | `harvest_and_gate_preparation` | 交付门前运输服务 | 移动或服务记录 | 装载质量；距离；车辆；日期；起点；终点 | 运输日志或供应商记录；原始汇总与分配：仅汇总声明边界内运输 | 吨公里 | 每次移动 | 交付门前期间 | 场址至声明交付门 | 每声明的参考流 | 行程日志或供应商票据 |
 | `cp_wastewater_records` | `harvest_and_gate_preparation` | 废水处理和排放 | 处理记录 | 批次；进水；处理技术；回用；排放；固体 | 处理日志、票据和水量平衡；原始汇总与分配：核对进水、回用、处理和排放 | m3 和日期 | 每批次 | 交付门前处理期 | 场址或处理厂 | 每声明的参考流 | 处理记录和平衡审核 |
 | `cp_harvest_and_grade_records` | `harvest_and_gate_preparation` | 商品输出和次品 | 地磅、秤或等级记录 | 采收质量；商品质量；等级；次品；去向；水分；交接日期 | 校准秤和等级登记；原始汇总与分配：核对采收质量与等级、损失和去向行 | kg | 每次采收和交接 | 采收窗口 | 场址和去向 | 每声明的参考流 | 秤检查、等级登记和交付记录 |
-| `cp_residue_and_loss_records` | `root_crop_management; harvest_and_gate_preparation` | 残体、间苗和田间损失 | 残体和损失记录 | 残体类型；质量；水分；事件；去向；方法 | 田间观察、称量和去向记录；原始汇总与分配：称量、水分检查和去向记录 | kg 鲜/干物质 | 每个事件和周期 | 完整作物周期 | 保留按去向区分的行并与采收平衡核对 | 每声明的参考流 | undefined |
+| `cp_residue_and_loss_records` | `root_crop_management; harvest_and_gate_preparation` | 残体、间苗和田间损失 | 残体和损失记录 | 残体类型；质量；水分；事件；去向；方法 | 田间观察、称量和去向记录；原始汇总与分配：保留按去向区分的行，并与采收平衡核对 | kg 鲜/干物质 | 每个事件和周期 | 完整作物周期 | 生产田块、采收及交付门前处理场址 | 每声明的参考流 | 称量、水分检查及去向记录 |
 
 ### 计算规则
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_reference_normalization` | `mass-balance-identity` | 所有清单行 | 记录数量；农场门商品质量 | 归一化行值 | normalized row value |
-| `calc_area_occupation` | `fao-gap-framework-2003` | 土地占用 | 面积；日期；路线 | ha*a 或声明面积-时间 | ha*a or declared area-time |
-| `calc_nutrient_content` | `fao-gap-framework-2003` | N、P、K 和有机养分卡片 | 产品质量；标签、计划或分析 | kg N、kg P2O5、kg K2O 或有机产品质量 | kg N, kg P2O5, kg K2O, or organic product mass |
-| `calc_irrigation_withdrawal` | `fao-crop-evapotranspiration-56` | 灌溉和取水 | 水源计量；输送水量；回流 | 水源取用量和输送水量 | source withdrawal and delivered water |
-| `calc_managed_soil_emissions` | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` | N2O、NH3、硝酸盐和磷酸盐行 | 养分和残体记录；方法因子 | 声明的基本流排放 | declared elementary emissions |
-| `calc_harvest_mass_balance` | `mass-balance-identity` | 商品输出、次品、残体、损失和废物 | 采收、等级、残体和废物记录 | 平衡的输出集合 | balanced output set |
-| `calc_conditioning_water_balance` | `fao-postharvest-handling-vegetables`; `mass-balance-identity` | 清洗水和废水 | 进水；回用；排放；平衡项 | 废水体积 | wastewater volume |
-| `calc_reusable_packaging` | `fao-postharvest-handling-vegetables` | 可重复使用包装 | 包装质量；使用周期；损失记录 | 每周期包装投入和废物 | per-cycle packaging input and waste |
-| `calc_pregate_transport` | `fao-gap-framework-2003` | 交付门前运输服务 | 质量；距离；路线；载荷 | t*km | t*km |
-| `calc_reference_mass_reconciliation` | `mass-balance-identity` | 采收和交付门准备 | 采收重量；等级；残体；损失 | 核对后的作物周期质量平衡 | reconciled crop-cycle mass balance |
+| `calc_reference_normalization` | all inventory rows | 归一化数量=记录数量÷同边界农场门合格商品根质量×1000 kg；按相容单位和匹配期间归一化一次。 | recorded amount; marketable farm-gate mass | normalized row value | `mass-balance-identity` |
+| `calc_area_occupation` | land occupation | 面积时间=声明占用面积×实际作物占用期间；保留面积和起止时间。 | area; dates; route | ha*a or declared area-time | `fao-gap-framework-2003` |
+| `calc_nutrient_content` | N, P, K, and organic nutrient cards | 养分质量=实际产品质量×有据养分含量；产品基准和养分当量分别保留，不重复产品交换。 | product mass; label; plan; or analysis | kg N, kg P2O5, kg K2O, or organic product mass | `fao-gap-framework-2003` |
+| `calc_irrigation_withdrawal` | irrigation and withdrawal | 优先保留实测水源取水及交付量；从交付量推算水源取水时采用声明且有据的输水损失、回流和库存方法，水源供水网与田间边界分开，内部循环不重复扣减。 | source meter; delivered water; return flow | source withdrawal and delivered water | `fao-crop-evapotranspiration-56` |
+| `calc_managed_soil_emissions` | N2O, NH3, nitrate, and phosphate rows | 对有据养分、改良剂、残余、土壤和排水记录采用一个声明适用的方法；直接与间接路径分别记录且不重复计入。 | nutrient and residue records; method factors | declared elementary emissions | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |
+| `calc_harvest_mass_balance` | marketable output, culls, residues, losses, and waste | 按匹配材料/水分基准将收获质量与合格根、淘汰品、田间残余、移除固体、水、包装废物及计量不确定性核对；各材料独立记账，不把包装质量当作根产量。 | harvest; grade; residue; waste records | balanced output set | `mass-balance-identity` |
+| `calc_conditioning_water_balance` | washing water and wastewater | 在一个定义明确的过程控制体及匹配期间内按水质量核对：外排水=外部供水+进入产品/材料水+其他实际外部进水+期初水库存−全部产品/残余转出含水−实际蒸发−其他单独转出水−期末水库存。体积仅用相容有据密度换算。内部循环在控制体内相消，不从新鲜水进量重复扣减；真正外部再生水接收属于外部进水。液体排放与其干固体/污染物质量分开。优先实测外排并用平衡核对，缺组分或未解释差额为证据缺口，不自动成为废水、蒸发或零。 | water input; reuse; discharge; balance terms | wastewater volume | `fao-postharvest-handling-vegetables`; `mass-balance-identity` |
+| `calc_reusable_packaging` | reusable packaging | 将包装实物质量及替换负荷按核实的服务周转次数归属，损失归属于实际发生的路线。 | packaging mass; cycles; loss record | per-cycle packaging input and waste | `fao-postharvest-handling-vegetables` |
+| `calc_pregate_transport` | pre-gate transport service | 运输服务=实际运输净质量（t）×有据已载距离（km）；声明回程或空驶负荷处理，实际载重已知时不再次乘装载率。 | mass; distance; route; load | t*km | `fao-gap-framework-2003` |
+| `calc_reference_mass_reconciliation` | harvest and gate preparation | 收获质量=合格商品产出+淘汰/拒收+残余+有据田间和处理损失；披露水分、皮重和库存处理，未解释差额须调查而非虚构损失。 | harvest weights; grade; residues; losses | reconciled crop-cycle mass balance | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_managed_soil_emission_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -901,7 +907,7 @@ translation_status: aligned
 
 ## 11. 数据源
 
-| source_id | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO 灌溉与排水论文 56《作物蒸散》，https://www.fao.org/4/X0490E/X0490E00.htm | 灌溉计划、水量平衡和取水记录 |
 | `fao-postharvest-handling-vegetables` | handbook | FAO，《水果和蔬菜的准备与销售手册》，https://www.fao.org/4/y4893e/y4893e00.htm | 采收、清洗、分级、冷却、包装和交付门边界 |

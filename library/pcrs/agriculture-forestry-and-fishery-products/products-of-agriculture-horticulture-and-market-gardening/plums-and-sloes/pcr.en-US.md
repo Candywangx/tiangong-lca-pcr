@@ -343,7 +343,7 @@ Raw activity or stage basis: per 1 kg reference product.
 Direct managed-soil nitrous oxide is calculated when the declared method represents emissions from nitrogen inputs.
 
 - Selected flow: nitrous oxide emission to air from managed orchard soil
-- Flow property / unit: Mass / kg N2O or kg N2O-N
+- Flow property / unit: Mass / kg N2O
 - Amount rule: calculate from declared nitrogen inputs and selected emission method, retaining N2O-N and conversion basis
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -355,12 +355,14 @@ Raw activity or stage basis: per 1 kg reference product.
 - Collection protocol: `cp_orchard_input_records`
 - Sources: `ipcc-2019-soils-n2o`; `source_foreground_records`
 
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
+
 ###### Ammonia to air (`ammonia_air`)
 
 Ammonia volatilization is recorded when relevant nutrient inputs and the receiving medium are represented.
 
 - Selected flow: ammonia emission to air from soil or applied nutrient products
-- Flow property / unit: Mass / kg NH3-N or kg NH3
+- Flow property / unit: Mass / kg NH3
 - Amount rule: calculate from nitrogen input and application method using the selected emission method
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -372,22 +374,7 @@ Raw activity or stage basis: per 1 kg reference product.
 - Collection protocol: `cp_orchard_input_records`
 - Sources: `ipcc-2019-soils-n2o`; `source_foreground_records`
 
-###### Nitrate and phosphate losses (`nutrient_losses_to_water_or_soil`)
-
-Nitrate and phosphate losses are recorded as separate substances and receiving media when runoff, drainage, or leaching is included; a generic nutrient label cannot determine the medium.
-
-- Selected flow: one reported nitrate or phosphate species to one evidenced receiving medium; create separate foreground exchanges by substance and compartment
-- Flow property / unit: Mass / kg released substance; retain kg N or kg P as a separate calculation basis
-- Amount rule: measured or calculated nutrient loss using the declared soil, drainage, runoff, and nutrient-management method
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: N input (`n_input`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_orchard_input_records`
-- Sources: `ipcc-2019-soils-n2o`; `source_foreground_records`
+Final exchange mass is kg NH3; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 17/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ### Process: Harvest and field collection (`harvest_and_field_collection`)
 
@@ -771,6 +758,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_shared_energy_allocation` | purchased_electricity; mobile_machinery_fuel; harvest_fuel | assign shared records using measured operation use or documented machine-hours; do not use output price without a justified decision | shared record; operation use; allocation basis | process-level energy amount | `source_foreground_records` |
 | `establishment_removal_waste_specific_output` | `orchard_establishment_and_removal` | At attributable orchard establishment, replacement or removal, identify discarded biological material separately from each actual support, guard and infrastructure material. Retain measured mass, material composition, treatment/contamination state and actual destination. Preserve productive-life, juvenile-period and lifetime-accepted-fruit annualization; a total removed-material mass is not the quantity of each component. This is a mandatory collection and calculation requirement, not an inventory exchange. Before dataset completeness, create one physically specific card for each actual exported stream, including composition, state, native quantity/property, destination and evidenced product/waste role. Use only a compatible verified UUID, or explicitly register the concrete unresolved identity. Do not invent a packaging recipe, assume segregation, infer zero from missing evidence or omit a required stream. A real single mixed stream may remain one composition-defined identity only with collection/transfer evidence and compatible treatment; never duplicate it with its component exports. Keep separately handled liquid and solid streams distinct. Preserve original attribution, period, mass/water balances, reference denominator and treatment/service boundaries; link existing matching exchanges rather than count duplicates. Former aggregate ranges are not individual-stream defaults or limits. | `cp_establishment_lifecycle_records` | actual stream-specific exchanges, destinations and nonduplicated mass balance | `source_foreground_records` |
 | `conditioning_rejects_and_wastewater_specific_output` | `primary_conditioning_and_gate_handoff` | For conditioning actually included before the declared gate, identify rejected fruit, captured washing solids and wastewater transfers separately. Record liquid quantity in its measured native unit; any volume-to-mass conversion requires density appropriate to the actual wastewater state. Distinguish wastewater transferred to a treatment provider from individual pollutant releases after treatment, and reconcile their boundary without duplication. Preserve original conditioning-lot throughput, water/solids balance and final accepted-fruit normalization. This is a mandatory collection and calculation requirement, not an inventory exchange. Before dataset completeness, create one physically specific card for each actual exported stream, including composition, state, native quantity/property, destination and evidenced product/waste role. Use only a compatible verified UUID, or explicitly register the concrete unresolved identity. Do not invent a packaging recipe, assume segregation, infer zero from missing evidence or omit a required stream. A real single mixed stream may remain one composition-defined identity only with collection/transfer evidence and compatible treatment; never duplicate it with its component exports. Keep separately handled liquid and solid streams distinct. Preserve original attribution, period, mass/water balances, reference denominator and treatment/service boundaries; link existing matching exchanges rather than count duplicates. Former aggregate ranges are not individual-stream defaults or limits. | `cp_conditioning_and_packaging_records` | actual stream-specific exchanges, destinations and nonduplicated mass balance | `source_foreground_records` |
+| `nutrient_losses_to_water_or_soil_identity_and_fate` | `orchard_cultivation_and_protection` | Identify every actual emitted substance and receiving compartment separately. Quantify each supported pathway with its own activity, method, chemical-species basis and native unit; distinguish elemental N/P ledgers from final compounds. Soil nutrient retention or a mass-balance residual is not automatically an emission. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_orchard_input_records` | Identity-specific exchanges and reconciled activity records | `ipcc-2019-soils-n2o`; `source_foreground_records` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_orchard_input_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

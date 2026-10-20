@@ -138,8 +138,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_collection`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 采集用纸袋 (`collection_materials_paper_bag`)
 
 仅在所代表蘑菇采集路线实际使用纸袋时启用；记录纸张等级、涂层及食品接触适用性。不得用采前果实套袋或纸张原料替代成品采集袋。
@@ -148,7 +146,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录本节点实际消耗的材料质量，扣除退回量及上游服务已含投入；期间及输出归属仅计算一次，再除以匹配的最终合格参考输出质量。保留原始量，不再次归一化已归一化的数量。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -322,8 +320,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning`
 - 来源：`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 初级处理外供水（`conditioning_water`）
 
@@ -535,7 +531,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_preservation`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -682,8 +678,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_handover`
 - 来源：`fao-agricultural-energy`
-
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 木制板条箱（`handover_packaging_wood_crate`）
 
@@ -840,7 +834,7 @@ sync_with: pcr.en-US.md
 
 ### 计算规则
 
-| rule_id | 适用于 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | 适用于 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `reference_normalization` | 所有清单行 | 将每个实际可归属交换总数除以匹配的验收发运净千克，保留分子单位。所连接最终产品为 1 kg，不是采集产率。 | 可归属交换；验收发运净质量；cp_handover | 每 1 kg 参考流的交换 | |
 | `lot_mass_reconcile` | 材料及库存台账 | 用期初库存加实际输入核对期末库存、全部预期输出、跨界废物、来源处保留残留及有依据环境损失。附带土壤另计。报告不闭合、计量不确定性和未知损失；绝不把不明鲜质量损失视作水蒸发。 | 匹配来源/批次/期间称重；水和土壤记录；全部去向 | 闭合批次台账或明确缺口 | |
@@ -849,7 +843,7 @@ sync_with: pcr.en-US.md
 
 ### 数据质量要求
 
-| requirement_id | 适用于 | 要求 | 证据 |
+| requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `identity_quality` | 参考及输入批次 | 保留实际物种、食用合格身份记录、无管护来源证明和状态；拒绝培育或有意增产批次。本方法不提供辨菇或食用建议。 | 来源及合格验收记录 |
 | `physical_quality` | 材料/库存/水平衡 | 按共同边界记录原始鲜输入、矿物、修剪物、验收等级、腐败、吸水/失水和库存。不移植干重贸易数据或历史物种产率。 | 匹配校准批次台账及不确定性 |

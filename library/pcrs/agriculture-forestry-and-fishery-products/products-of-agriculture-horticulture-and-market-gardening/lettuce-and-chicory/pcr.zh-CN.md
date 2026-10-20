@@ -90,30 +90,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 种子或移栽材料（`planting_material_input`）
-
-记录进入指定田块或保护地单元的种子、穴盘苗或移栽苗。识别材料类型，避免将种植材料当作可销售莴苣或菊苣产出。
-
-- 选定流：莴苣或菊苣种子、穴盘苗或移栽材料
-- 流属性/单位：Number of items or mass / seed, plant, or kg
-- 数量规则：按作物类型和田块或保护地单元计数或称量种植材料。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每个已建立公顷或保护地单元，再按每 1,000 kg 可销售产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_establishment_records`
-- 数量范围：暂定种植材料筛选范围
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0.001
-  - 上限：50
-  - 单位：kg 种子或移栽材料/1,000 kg 可销售产出
-  - 基准：待供应商和种植记录确认的首轮宽范围种植材料数量
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 尿素肥料（`crop_establishment_agricultural_nutrient_inputs_urea`）
 
 **crop_establishment_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -731,6 +707,10 @@ sync_with: pcr.en-US.md
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -764,10 +744,12 @@ sync_with: pcr.en-US.md
 | `calc_water_and_withdrawal` | 灌溉 | 将灌溉供水和水源取水分开保留；有计量时进行核对，并披露未计量损失。 | delivery meter; source meter; return or loss record | irrigation input and withdrawal | `fao-gap-framework-2003` |
 | `calc_harvest_mass_balance` | 收获和交接点处理 | 总收获量加测量质量变化等于可销售产出、拒收物、修剪物、随废水损失和其他声明产出之和。 | gross mass; marketable mass; rejects; trims; water; mass change | reconciled output quantities | `usda-leafy-greens-guidance` |
 | `calc_managed_soil_emissions` | 氮排放 | 对氮活动量应用声明的 IPCC 或可接受区域方程，保留 N2O-N 到 N2O 的换算且不重复计算。 | nitrogen activity; factors; soil or growing-medium qualifiers | direct and indirect nitrogen emissions | `ipcc-2019-managed-soils` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | 对于本作业原有 planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_establishment_records` | 按身份区分的交换和对账活动记录 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_crop_management_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_product_identity` | 参考产品 | 保留莴苣或菊苣身份、品种或市场类型、头或叶状态、等级、修整、清洗状态、包装、地理范围、周期和交接点。 | 产品规格、批次记录和交接声明 |
 | `dq_cycle_linkage` | 建立和管理 | 将每项活动关联到一个田块或保护地单元及周期，并披露补播、失败面积、多次收获和路线变化。 | 田块图、周期登记和生产历史 |
@@ -809,3 +791,4 @@ sync_with: pcr.en-US.md
 | `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

@@ -108,31 +108,6 @@ translation_status: aligned
 
 ##### 产品流
 
-###### 种子或种植材料（`planting_material_input`）
-
-记录进入各声明田畦或设施单元的种子、移栽苗或其他种植材料，识别物种或品种组、供应商批次、种植日期和种植面积。
-
-- 选定流：绿色豆科蔬菜生产所用种子、移栽苗或其他种植材料
-- 流属性/单位：质量或有活力数量 / kg、seed、plant 或声明数量单位
-- 数量规则：按田块、种植畦或设施单元记录供应商批次数量及种植的有活力种子或种植材料数量。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售鲜产出。
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_establishment_records`
-- 来源：`fao-good-agricultural-practices`
-- 数量范围：种植材料筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.1
-  - 上限：25
-  - 单位：kg 种子或声明种植材料，每 1,000 kg 产出
-  - 基准：声明种植面积及作物周期产出
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
 ###### 建植灌溉水（`establishment_irrigation_water`）
 
 按水源和生产单元记录整畦、出苗或移栽建植用水；除非水量平衡方法明确纳入，否则不记录降雨。
@@ -333,7 +308,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -543,7 +518,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_records`采集`harvest_and_field_sorting`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -553,31 +528,6 @@ translation_status: aligned
 ##### 废物流
 
 ##### 基本流
-
-###### 采收田间损失（`harvest_field_loss`）
-
-记录未纳入降级产品的未采收可食产品，或采摘和初次搬运中损失的产品，并说明方法及去向。
-
-- 选定流：田间或初次搬运中损失的采收绿色豆科蔬菜产品
-- 流属性/单位：质量 / kg 鲜产品
-- 数量规则：根据田间计数、抽样或质量平衡估计，并与可销售产出及收集次品分开。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售鲜产出。
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_harvest_grade_records`
-- 来源：`iso-14044-2006`
-- 数量范围：田间损失筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1,500
-  - 单位：kg 鲜产品，每 1,000 kg 可销售产出
-  - 基准：完整采收生产周期
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估计（`reasoned_estimate`）
 
 #### 输出
 
@@ -614,32 +564,6 @@ translation_status: aligned
   - 证据类型：推理估计（`reasoned_estimate`）
 
 ##### 废物流
-
-
-###### 降级或拒收采收产品（`downgraded_product_output`）
-
-记录未达到声明可销售等级的采收豆荚或青嫩种子，包括原因及去向；不得不加说明地将降级材料纳入参考输出。
-
-- 选定流：降级或拒收绿色豆科蔬菜产品
-- 流属性/单位：质量 / kg 鲜产品
-- 数量规则：按采摘轮次称量总采收、合格、降级及拒收产品，记录饲料、堆肥、处置或其他去向。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售鲜产出。
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_harvest_grade_records`
-- 来源：`codex-fresh-produce-hygiene`; `iso-14044-2006`
-- 数量范围：降级产品筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：2,000
-  - 单位：kg 降级产品，每 1,000 kg 可销售产出
-  - 基准：完整采收生产周期
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估计（`reasoned_estimate`）
 
 
 ###### 离开田间分选的作物残余物（`crop_residue_output`）
@@ -844,58 +768,6 @@ translation_status: aligned
 
 
 
-###### 调理降级产品（`conditioning_reject_output`）
-
-记录田间分选后在清洗、冷却、分级或包装中移除的产品及其声明去向。
-
-- 选定流：降级或拒收鲜绿色豆科蔬菜产品
-- 流属性/单位：质量 / kg 鲜产品
-- 数量规则：按批次称量或估计调理拒收物，并与采收分级记录和最终可销售产出核对。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售鲜产出。
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_postharvest_grade_records`
-- 来源：`codex-fresh-produce-hygiene`; `iso-14044-2006`
-- 数量范围：调理拒收筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1,000
-  - 单位：kg 产品，每 1,000 kg 可销售产出
-  - 基准：声明清洗、冷却、分级和包装路线
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
-
-###### 包装和搬运废物（`packaging_waste_output`）
-
-记录声明交接节点前产生的受损、废弃或未回收包装和搬运材料，按材料及去向分开。
-
-- 选定流：包装或搬运废物
-- 流属性/单位：质量 / kg 废物
-- 数量规则：核对包装领用、随产品保留、返回重复使用、回收、处理和处置数量。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 可销售鲜产出。
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_packaging_records`
-- 来源：`codex-fresh-produce-hygiene`; `iso-14044-2006`
-- 数量范围：包装废物筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：15
-  - 单位：kg 废物，每 1,000 kg 产出
-  - 基准：交接节点前包装作业
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
-
 ###### 清洗水和调理废水（`conditioning_wastewater_output`）
 
 记录离开交接节点前过程的清洗水及调理废水，包括处理、排放去向及任何循环回路。
@@ -935,7 +807,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -961,7 +833,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -1030,7 +902,7 @@ translation_status: aligned
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | 全部清单行 | 每 1,000 kg 数量 = 记录数量 * 1,000 / 最终可销售交接总质量 kg | 记录数量；最终可销售交接质量 | 归一化行数量 | `mass-balance-identity` |
 | `calc_nutrient_equivalent` | 肥料和土壤改良剂投入 | 养分质量 = 产品质量 * 有记录的养分分数；分别保留产品质量及各声明养分基准 | 产品质量；供应商规格、计划或实验室结果 | 按实际产品角色记录的养分质量 | `fao-good-agricultural-practices` |
@@ -1040,10 +912,16 @@ translation_status: aligned
 | `calc_transport_work` | 交接节点前公路货运 | 运输功 tkm = 载荷（吨） * 声明路线 km；按有记录的质量基准分配共用运输 | 载荷；距离；服务记录；分配基准 | tkm | `fao-fresh-produce-handling` |
 | `calc_reusable_container_service` | 可重复使用的采收和包装材料 | 按有记录的周转次数或服务质量分配制造和更换，再加上清洗及损失记录 | 容器质量；周转次数；服务质量；清洗和损失 | 分配后的包装投入和废物 | `iso-14044-2006` |
 | `calc_mass_reconciliation` | 采收、调理和交接输出 | 在测量不确定度内，总采收 = 可销售 + 降级 + 拒收 + 田间损失 + 过程损失 + 留存或移除残余物；调查未解释差额 | 采摘；等级；损失；残余物记录 | 核对后的作物周期质量平衡 | `mass-balance-identity`; `iso-14044-2006` |
+| `harvest_field_loss_identity_and_fate` | `harvest_and_field_sorting` | 按实测干湿基和实际去向核对作物残余物、收获损失和生物量。留田或还田生物量是支持分解与养分路径计算的内部残余物台账，不是外购资源或虚构的生物量基本交换。单独收集的材料须有实际产品／废物身份及去向；环境释放须识别物质与接收环境。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_harvest_grade_records` | 按身份区分的交换和对账活动记录 | `iso-14044-2006` |
+| `packaging_waste_output_identity_and_fate` | `conditioning_and_dispatch` | 识别每项实际独立材料物流、组成、状态和接收者。废保藏剂、盐水、动植物材料、包装、排液和有意共产品在独立处理时分别记录，仅建立本作业有证据的物流。物理混合物流只有在组成和相容处理有据时才可采用一个身份，不得再把组分作为额外输出重复计量。区分销售产出、内部返工、废物转移、外购处理和基本排放，不重复处理负荷。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_packaging_records` | 按身份区分的交换和对账活动记录 | `codex-fresh-produce-hygiene`; `iso-14044-2006` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | 对于本作业原有 planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_establishment_records` | 按身份区分的交换和对账活动记录 | `fao-good-agricultural-practices` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+| `downgraded_product_output_identity_and_fate` | `harvest_and_field_sorting` | 原作业产生相关物料时，downgraded_product_output 的采集职责必须履行。每种物理上独立的物流须分别记录实际材料、组成、状态、实测质量与去向。粉尘、糠壳、籽粒、包装及产品拒收物不能仅因在同一作业产生而共用交换；真实混合物流仅在组成和处理边界有据时可单列一张卡。降级农产品须区分具有接收者和用途证据的预期可销售联产品与实际送处理的废物；等级较低本身不决定废物属性或分配。场内返工／回用和留田生物量保留在对账的内部台账，不作为外运废物。完整性通过前须按实际属性建立具体产品或废物卡，使用相容的已核验 UUID 或明确未解析身份；保留可归属负荷，不作无据替代抵扣，各物流不得双计。实测量仅按原有合格参考产出归一化一次。身份、数量或去向缺失时不得宣称完整，不推定聚合默认量或数值界限。 | `cp_harvest_grade_records` | 按身份区分的交换和对账活动记录 | `codex-fresh-produce-hygiene`; `iso-14044-2006` |
+| `conditioning_reject_output_identity_and_fate` | `conditioning_and_dispatch` | 原作业产生相关物料时，conditioning_reject_output 的采集职责必须履行。每种物理上独立的物流须分别记录实际材料、组成、状态、实测质量与去向。粉尘、糠壳、籽粒、包装及产品拒收物不能仅因在同一作业产生而共用交换；真实混合物流仅在组成和处理边界有据时可单列一张卡。降级农产品须区分具有接收者和用途证据的预期可销售联产品与实际送处理的废物；等级较低本身不决定废物属性或分配。场内返工／回用和留田生物量保留在对账的内部台账，不作为外运废物。完整性通过前须按实际属性建立具体产品或废物卡，使用相容的已核验 UUID 或明确未解析身份；保留可归属负荷，不作无据替代抵扣，各物流不得双计。实测量仅按原有合格参考产出归一化一次。身份、数量或去向缺失时不得宣称完整，不推定聚合默认量或数值界限。 | `cp_postharvest_grade_records` | 按身份区分的交换和对账活动记录 | `codex-fresh-produce-hygiene`; `iso-14044-2006` |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `quality_product_identity` | 参考产品及全部产品流 | 核实物种或品种组、CPC 01249 归属、成熟度、产品状态及对 CPC 01241 和 01242 的排除核查。 | 产品规格、分类审查及批次记录 |
 | `quality_scale_and_meter` | 质量、水、能源和包装行 | 使用受控秤和计量表，记录读数日期；无法直接测量时保留估计基准。 | 校准或控制记录、计量日志、发票或有记录的估计 |

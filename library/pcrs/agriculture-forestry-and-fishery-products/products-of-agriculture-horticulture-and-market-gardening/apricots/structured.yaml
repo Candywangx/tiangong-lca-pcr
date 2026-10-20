@@ -24,7 +24,7 @@ system_boundary:
         - fao-gap-framework-2003
     - rule_id: boundary_perennial_orchard_disclosure
       applies_to: "establishment and replacement trees"
-      rule: "Include establishment and replacement-tree inputs only after assigning them to the declared orchard life or accepted fruit output basis; disclose the allocation horizon and non-bearing years."
+      rule: "Include establishment and replacement-tree inputs only after assigning them to the declared orchard life or accepted fruit output basis; disclose the allocation horizon and non-bearing years.  Include the attributable historical establishment, immature-phase and renewal contribution for the represented stand even when no new event occurs this year. The stated attribution records are required evidence, not a condition allowing omission: missing amounts, age/lifetime or output history remain an explicit completeness gap, never zero or an automatic exclusion. Retain the original events and apply the declared period/output method once; preserve any separately justified study exclusion."
       source_ids:
         - fao-gap-framework-2003
         - iso-14067
@@ -525,7 +525,7 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
           amount:
             expression: "Collect raw quantities for this identity under cp_apricot_handling_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -741,6 +741,11 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness."
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_apricot_establishment_records
@@ -1018,9 +1023,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:7e9bb3fbb1f174867ec73397a57a3159390726e844b3a8cac082ac719811f5f7"
+  source_sha256: "sha256:13ce24d54e1c8d5bd5cf492857534ae4551b3b03257fd965ee69ffc92a82c035"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5508"
@@ -1031,10 +1040,10 @@ normative_context:
           line: 60
           column: 1
         end:
-          offset: 8290
+          offset: 8789
           line: 83
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | orchard site before or at establishment, with planting material and purchased management inputs crossing the foreground boundary; prior land condition and existing orchard history are disclosed |\n| starting_condition_role | start of managed perennial apricot production and orchard asset accounting |\n| product_classification_scope | fresh apricot fruit corresponding to CPC 3.0 code 01343 |\n| recursive_input_rule | apricot planting material and retained fruit are upstream inputs only when crossing the boundary; they must not be recursively represented as the same farm-gate apricot output |\n| upstream_dataset_requirement | compatible upstream datasets for planting material, nutrient and soil-amendment products, crop protection, energy, irrigation supply, machinery services, packaging used before hand-off, and applicable waste treatment |\n| disclosure | cultivar, orchard age, establishment year, productive life, replacement trees, orchard area, previous land use, soil and climate context, irrigation, nutrient basis, crop protection, yield, harvest losses, handling, co-products, and residue or waste destination |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_establishment_to_farm_gate` | all conforming datasets | Include site preparation, planting, orchard establishment, immature years, productive orchard management, harvest, and primary handling performed before the declared farm-gate hand-off. | `fao-gap-framework-2003` |\n| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | Include establishment and replacement-tree inputs only after assigning them to the declared orchard life or accepted fruit output basis; disclose the allocation horizon and non-bearing years. | `fao-gap-framework-2003`; `iso-14067` |\n| `boundary_direct_field_emissions` | managed soil, crop residues, and nutrient application | Include direct and indirect nutrient- and residue-related emissions using a geographically applicable method and the same activity data used for nutrient and residue accounting. | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |\n| `boundary_farm_gate_handling` | optional primary handling | Include washing, sorting, grading, packing, or short holding only when performed before hand-off and not already embedded in the harvest record; identify rejected fruit and its destination. | `fao-gap-framework-2003` |\n| `boundary_post_farm_gate_exclusion` | downstream activities | Exclude off-farm transport, storage, distribution, retail, consumer use, processing, and packaging end-of-life unless the study explicitly extends beyond this PCR. | `iso-14044` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | orchard site before or at establishment, with planting material and purchased management inputs crossing the foreground boundary; prior land condition and existing orchard history are disclosed |\n| starting_condition_role | start of managed perennial apricot production and orchard asset accounting |\n| product_classification_scope | fresh apricot fruit corresponding to CPC 3.0 code 01343 |\n| recursive_input_rule | apricot planting material and retained fruit are upstream inputs only when crossing the boundary; they must not be recursively represented as the same farm-gate apricot output |\n| upstream_dataset_requirement | compatible upstream datasets for planting material, nutrient and soil-amendment products, crop protection, energy, irrigation supply, machinery services, packaging used before hand-off, and applicable waste treatment |\n| disclosure | cultivar, orchard age, establishment year, productive life, replacement trees, orchard area, previous land use, soil and climate context, irrigation, nutrient basis, crop protection, yield, harvest losses, handling, co-products, and residue or waste destination |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_establishment_to_farm_gate` | all conforming datasets | Include site preparation, planting, orchard establishment, immature years, productive orchard management, harvest, and primary handling performed before the declared farm-gate hand-off. | `fao-gap-framework-2003` |\n| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | Include establishment and replacement-tree inputs only after assigning them to the declared orchard life or accepted fruit output basis; disclose the allocation horizon and non-bearing years.  Include the attributable historical establishment, immature-phase and renewal contribution for the represented stand even when no new event occurs this year. The stated attribution records are required evidence, not a condition allowing omission: missing amounts, age/lifetime or output history remain an explicit completeness gap, never zero or an automatic exclusion. Retain the original events and apply the declared period/output method once; preserve any separately justified study exclusion. | `fao-gap-framework-2003`; `iso-14067` |\n| `boundary_direct_field_emissions` | managed soil, crop residues, and nutrient application | Include direct and indirect nutrient- and residue-related emissions using a geographically applicable method and the same activity data used for nutrient and residue accounting. | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |\n| `boundary_farm_gate_handling` | optional primary handling | Include washing, sorting, grading, packing, or short holding only when performed before hand-off and not already embedded in the harvest record; identify rejected fruit and its destination. | `fao-gap-framework-2003` |\n| `boundary_post_farm_gate_exclusion` | downstream activities | Exclude off-farm transport, storage, distribution, retail, consumer use, processing, and packaging end-of-life unless the study explicitly extends beyond this PCR. | `iso-14044` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1071,18 +1080,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41887"
+    - unit_id: "normative_42095"
       family: "allocation"
       span:
         start:
-          offset: 41887
-          line: 612
+          offset: 42095
+          line: 610
           column: 1
         end:
-          offset: 44192
-          line: 626
+          offset: 46384
+          line: 628
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\nAllocate orchard establishment, replacement trees, shared machinery, irrigation infrastructure, and other multi-period inputs across the declared orchard life and reporting periods using orchard area, productive years, and accepted fruit output. Do not silently annualize non-bearing years; disclose the selected productive-life horizon and replacement events. Where apricot fruit is split among fresh, processing, feed, compost, or disposal destinations, retain separate masses. Use physical mass allocation when products have comparable moisture and function; otherwise use a documented economic or quality-based allocation and report the selected basis. Avoid allocation by treating rejected fruit as a co-product unless it has a declared market or service; otherwise record it as a waste or residue flow with its destination. Do not double count orchard inputs embedded in an upstream planting-material dataset.\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_orchard_life_and_period` | establishment, replacement, and shared orchard assets | Allocate multi-period inputs to the declared orchard-year and accepted fruit output using the declared orchard life, productive years, area, and yield records. | `fao-gap-framework-2003`; `iso-14067` |\n| `allocation_apricot_destinations` | fresh, processing, feed, compost, and disposal destinations | Keep destination masses separate; use documented physical or economic allocation only when more than one declared product or service shares a process. | `iso-14044` |\n| `allocation_rejects_and_residues` | rejected fruit and orchard residues | Treat material without a declared product or service as waste or residue and model its destination; do not grant a co-product credit solely because it has a possible downstream use. | `iso-14044`; `ipcc-2019-refinement` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\nAllocate orchard establishment, replacement trees, shared machinery, irrigation infrastructure, and other multi-period inputs across the declared orchard life and reporting periods using orchard area, productive years, and accepted fruit output. Do not silently annualize non-bearing years; disclose the selected productive-life horizon and replacement events. Where apricot fruit is split among fresh, processing, feed, compost, or disposal destinations, retain separate masses. Use physical mass allocation when products have comparable moisture and function; otherwise use a documented economic or quality-based allocation and report the selected basis. Avoid allocation by treating rejected fruit as a co-product unless it has a declared market or service; otherwise record it as a waste or residue flow with its destination. Do not double count orchard inputs embedded in an upstream planting-material dataset.\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_orchard_life_and_period` | establishment, replacement, and shared orchard assets | Allocate multi-period inputs to the declared orchard-year and accepted fruit output using the declared orchard life, productive years, area, and yield records. | `fao-gap-framework-2003`; `iso-14067` |\n| `allocation_apricot_destinations` | fresh, processing, feed, compost, and disposal destinations | Keep destination masses separate; use documented physical or economic allocation only when more than one declared product or service shares a process. | `iso-14044` |\n| `allocation_rejects_and_residues` | rejected fruit and orchard residues | Treat material without a declared product or service as waste or residue and model its destination; do not grant a co-product credit solely because it has a possible downstream use. | `iso-14044`; `ipcc-2019-refinement` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1099,12 +1108,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41887
-              line: 612
+              offset: 42095
+              line: 610
               column: 1
             end:
-              offset: 41927
-              line: 612
+              offset: 42135
+              line: 610
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1119,16 +1128,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_59057"
+    - unit_id: "normative_61249"
       family: "validation"
       span:
         start:
-          offset: 59057
-          line: 676
+          offset: 61249
+          line: 678
           column: 1
         end:
-          offset: 60369
-          line: 686
+          offset: 62561
+          line: 688
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_apricot_reference_definition` | reference flow | Require 1,000 kg accepted fresh apricot fruit, declared hand-off condition, required qualifiers, and later-resolved reference identity before publication. | `iso-14067` |\n| `validation_apricot_orchard_periods` | establishment and management | Check that orchard establishment, non-bearing periods, replacement events, productive years, and annualization basis are declared and not double counted. | `fao-gap-framework-2003`; `iso-14067` |\n| `validation_apricot_mass_balance` | harvest and primary handling | Check incoming fruit = accepted fruit + rejects + measured losses within the declared tolerance and trace every rejected destination. | `fao-gap-framework-2003` |\n| `validation_apricot_flow_bindings` | all flow cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `iso-14044` |\n| `validation_apricot_evidence` | all constrained ranges and factors | Require source-backed evidence or a declared foreground collection protocol for constrained values; mark provisional guardrails as replaceable estimates. | `iso-14044` |\n\n"
       headings:
@@ -1147,12 +1156,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 59057
-              line: 676
+              offset: 61249
+              line: 678
               column: 1
             end:
-              offset: 59079
-              line: 676
+              offset: 61271
+              line: 678
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1191,20 +1200,20 @@ normative_context:
           line: 78
           column: 1
         end:
-          offset: 7437
+          offset: 7936
           line: 78
-          column: 316
+          column: 815
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_direct_field_emissions"
       identity_kind: "explicit"
       unit_id: "normative_5508"
       source_span:
         start:
-          offset: 7438
+          offset: 7937
           line: 79
           column: 1
         end:
-          offset: 7763
+          offset: 8262
           line: 79
           column: 326
     - pointer: "/system_boundary/rules/3"
@@ -1213,11 +1222,11 @@ normative_context:
       unit_id: "normative_5508"
       source_span:
         start:
-          offset: 7764
+          offset: 8263
           line: 80
           column: 1
         end:
-          offset: 8044
+          offset: 8543
           line: 80
           column: 281
     - pointer: "/system_boundary/rules/4"
@@ -1226,142 +1235,155 @@ normative_context:
       unit_id: "normative_5508"
       source_span:
         start:
-          offset: 8045
+          offset: 8544
           line: 81
           column: 1
         end:
-          offset: 8288
+          offset: 8787
           line: 81
           column: 244
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_41887"
+      unit_id: "normative_42095"
       source_span:
         start:
-          offset: 41929
-          line: 614
+          offset: 42137
+          line: 612
           column: 1
         end:
-          offset: 42844
-          line: 614
+          offset: 43052
+          line: 612
           column: 916
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_orchard_life_and_period"
       identity_kind: "explicit"
-      unit_id: "normative_41887"
+      unit_id: "normative_42095"
       source_span:
         start:
-          offset: 42939
-          line: 620
+          offset: 43147
+          line: 618
           column: 1
         end:
-          offset: 43237
-          line: 620
+          offset: 43445
+          line: 618
           column: 299
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_apricot_destinations"
       identity_kind: "explicit"
-      unit_id: "normative_41887"
+      unit_id: "normative_42095"
       source_span:
         start:
-          offset: 43238
-          line: 621
+          offset: 43446
+          line: 619
           column: 1
         end:
-          offset: 43504
-          line: 621
+          offset: 43712
+          line: 619
           column: 267
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rejects_and_residues"
       identity_kind: "explicit"
-      unit_id: "normative_41887"
+      unit_id: "normative_42095"
       source_span:
         start:
-          offset: 43505
-          line: 622
+          offset: 43713
+          line: 620
           column: 1
         end:
-          offset: 43802
-          line: 622
+          offset: 44010
+          line: 620
           column: 298
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_41887"
+      unit_id: "normative_42095"
       source_span:
         start:
-          offset: 43804
-          line: 624
+          offset: 44012
+          line: 622
           column: 1
         end:
-          offset: 44190
-          line: 624
+          offset: 44398
+          line: 622
           column: 387
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_42095"
+      source_span:
+        start:
+          offset: 44471
+          line: 626
+          column: 1
+        end:
+          offset: 46382
+          line: 626
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_apricot_reference_definition"
       identity_kind: "explicit"
-      unit_id: "normative_59057"
+      unit_id: "normative_61249"
       source_span:
         start:
-          offset: 59152
-          line: 680
+          offset: 61344
+          line: 682
           column: 1
         end:
-          offset: 59385
-          line: 680
+          offset: 61577
+          line: 682
           column: 234
     - pointer: "/validation_rules/1"
       rule_id: "validation_apricot_orchard_periods"
       identity_kind: "explicit"
-      unit_id: "normative_59057"
+      unit_id: "normative_61249"
       source_span:
         start:
-          offset: 59386
-          line: 681
+          offset: 61578
+          line: 683
           column: 1
         end:
-          offset: 59653
-          line: 681
+          offset: 61845
+          line: 683
           column: 268
     - pointer: "/validation_rules/2"
       rule_id: "validation_apricot_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_59057"
+      unit_id: "normative_61249"
       source_span:
         start:
-          offset: 59654
-          line: 682
+          offset: 61846
+          line: 684
           column: 1
         end:
-          offset: 59885
-          line: 682
+          offset: 62077
+          line: 684
           column: 232
     - pointer: "/validation_rules/3"
       rule_id: "validation_apricot_flow_bindings"
       identity_kind: "explicit"
-      unit_id: "normative_59057"
+      unit_id: "normative_61249"
       source_span:
         start:
-          offset: 59886
-          line: 683
+          offset: 62078
+          line: 685
           column: 1
         end:
-          offset: 60126
-          line: 683
+          offset: 62318
+          line: 685
           column: 241
     - pointer: "/validation_rules/4"
       rule_id: "validation_apricot_evidence"
       identity_kind: "explicit"
-      unit_id: "normative_59057"
+      unit_id: "normative_61249"
       source_span:
         start:
-          offset: 60127
-          line: 684
+          offset: 62319
+          line: 686
           column: 1
         end:
-          offset: 60367
-          line: 684
+          offset: 62559
+          line: 686
           column: 241
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1390,27 +1412,51 @@ normative_context:
           column: 279
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41887"
+      unit_id: "normative_42095"
       source_span:
         start:
-          offset: 41887
-          line: 612
+          offset: 42095
+          line: 610
           column: 1
         end:
-          offset: 41927
-          line: 612
+          offset: 42135
+          line: 610
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_59057"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_42095"
       source_span:
         start:
-          offset: 59057
-          line: 676
+          offset: 44012
+          line: 622
           column: 1
         end:
-          offset: 59079
-          line: 676
+          offset: 44398
+          line: 622
+          column: 387
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_42095"
+      source_span:
+        start:
+          offset: 44471
+          line: 626
+          column: 1
+        end:
+          offset: 46382
+          line: 626
+          column: 1912
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_61249"
+      source_span:
+        start:
+          offset: 61249
+          line: 678
+          column: 1
+        end:
+          offset: 61271
+          line: 678
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1419,5 +1465,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:7e9bb3fbb1f174867ec73397a57a3159390726e844b3a8cac082ac719811f5f7"
-  generated_content_sha256: "sha256:38eb2b8c15eb39b7082ee9b5c2a25da88e237bb0cdef2aa25f9966dd131562a3"
+    sha256: "sha256:13ce24d54e1c8d5bd5cf492857534ae4551b3b03257fd965ee69ffc92a82c035"
+  generated_content_sha256: "sha256:10402ec8b0719ec8645bb77b5ab7b2268db5d41464cc343da176db27724f63f9"

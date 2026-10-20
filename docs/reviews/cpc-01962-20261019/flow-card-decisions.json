@@ -1,0 +1,1373 @@
+{
+  "date_utc": "2026-10-19T06:17:56.454Z",
+  "target": "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/cut-flowers-and-flower-buds",
+  "original_cards": 50,
+  "retained_cards": 50,
+  "removed_cards": 0,
+  "merged_cards": 0,
+  "judgment": "No card lacks an independent measurement/accounting/boundary/validation function. Do not reduce count by merging genuine exchanges. Simplify repeated narrative and the common normalization expression.",
+  "stats": {
+    "en-US": {
+      "cards_reviewed": 50,
+      "common_amount_text_shortened": 45,
+      "before_bytes": 114326,
+      "after_bytes": 105746,
+      "saved_bytes": 8580
+    },
+    "zh-CN": {
+      "cards_reviewed": 50,
+      "common_amount_text_shortened": 45,
+      "before_bytes": 98142,
+      "after_bytes": 90623,
+      "saved_bytes": 7519
+    }
+  },
+  "decisions": [
+    {
+      "row_id": "cultivation_water",
+      "process": "cultivation",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "按交付仪表记录栽培供水；按boundary_water_ownership区分外购供水与自有取水后的内部供水。",
+      "why_not_merge": "供水、资源取水及废水对应不同所有权、阶段、计量点或接收边界；内部循环不能当作新增外部输入。",
+      "basis": {
+        "collection_protocol": "cp_water_records",
+        "rule_refs": [
+          "boundary_water_ownership",
+          "calc_water_components"
+        ],
+        "property_unit": "Volume / m3",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_electricity",
+      "process": "cultivation",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算"
+      ],
+      "role": "按cp_energy_fuel_records记录栽培设备用电及共享公用工程的归属份额。",
+      "why_not_merge": "各阶段仪表、期间及共享分配驱动量不同；同一UUID不能替代独立活动量。",
+      "basis": {
+        "collection_protocol": "cp_energy_fuel_records",
+        "rule_refs": [
+          "allocation_avoid_first"
+        ],
+        "property_unit": "Energy / kWh",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_heat_fuel_natural_gas",
+      "process": "cultivation",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界"
+      ],
+      "role": "记录现场燃烧前实际供应的天然气，保留体积计量条件；燃料供应与直接燃烧排放分开核算。",
+      "why_not_merge": "产品/服务或计量属性独立，相关采集与边界规则不能由另一张卡代替。",
+      "basis": {
+        "collection_protocol": "cp_energy_fuel_records",
+        "rule_refs": [
+          "boundary_cultivation_inputs"
+        ],
+        "property_unit": "Volume / m3",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_purchased_heat",
+      "process": "cultivation",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界"
+      ],
+      "role": "记录温室连接点的外购热量，区分供热方已覆盖负荷与现场燃料使用。",
+      "why_not_merge": "产品/服务或计量属性独立，相关采集与边界规则不能由另一张卡代替。",
+      "basis": {
+        "collection_protocol": "cp_energy_fuel_records",
+        "rule_refs": [
+          "allocation_chp_boundary"
+        ],
+        "property_unit": "Energy / MJ",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_enrichment_co2",
+      "process": "cultivation",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界"
+      ],
+      "role": "记录交付的施肥用CO2质量与来源，核对供应、留存及释放台账。",
+      "why_not_merge": "产品/服务或计量属性独立，相关采集与边界规则不能由另一张卡代替。",
+      "basis": {
+        "collection_protocol": "cp_cultivation_materials",
+        "rule_refs": [
+          "cp_cultivation_materials"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_water_withdrawal",
+      "process": "cultivation",
+      "direction": "inputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "仅记录前景自有取水边界内、实际自然水源的取水量，按boundary_water_ownership与供水及储存对账。",
+      "why_not_merge": "供水、资源取水及废水对应不同所有权、阶段、计量点或接收边界；内部循环不能当作新增外部输入。",
+      "basis": {
+        "collection_protocol": "cp_water_records",
+        "rule_refs": [
+          "boundary_water_ownership",
+          "calc_water_components"
+        ],
+        "property_unit": "Volume / m3",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_luc_co2_uptake",
+      "process": "cultivation",
+      "direction": "inputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "仅按calc_luc_attribution记录有据、合格的土地碳库增加对应大气吸收，排除输入碳和已覆盖转移。",
+      "why_not_merge": "物种、化合物计量基准、方向、接收区室或碳来源不同；合并会失去排放/资源流验证。",
+      "basis": {
+        "collection_protocol": "cp_luc_history",
+        "rule_refs": [
+          "calc_luc_attribution",
+          "validate_luc_attribution"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "ghg-product-standard-2011",
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "b3d7c693-6465-4aec-86cb-68b4e457fc98",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_land_occupation",
+      "process": "cultivation",
+      "direction": "inputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界"
+      ],
+      "role": "记录实际种植用地类型及占用面积乘归属时间，将占用与基础设施、土地转化分开。",
+      "why_not_merge": "物种、化合物计量基准、方向、接收区室或碳来源不同；合并会失去排放/资源流验证。",
+      "basis": {
+        "collection_protocol": "cp_cultivation_materials",
+        "rule_refs": [
+          "boundary_luc_method",
+          "validate_luc_attribution"
+        ],
+        "property_unit": "Area-time / m2*a",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "harvested_stems",
+      "process": "cultivation",
+      "direction": "outputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "按批次及库存台账记录采收花枝发出量，与post_harvest_stem_input核对同一交接。",
+      "why_not_merge": "相邻输出与输入使用同一交接记录，但分别承担发送/接收节点库存和损失核对；不能重复增加上游产品负荷。",
+      "basis": {
+        "collection_protocol": "cp_output_loss_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "validate_count_balance"
+        ],
+        "property_unit": "Number of items / Item(s)",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_biomass_waste",
+      "process": "cultivation",
+      "direction": "outputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "记录栽培移除生物质的质量、水分及实际去向，区分有据废物移除和无法解释的库存残差。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_output_loss_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "validate_end_of_life_materials"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_nitrous_oxide",
+      "process": "cultivation",
+      "direction": "outputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "验证"
+      ],
+      "role": "按声明的养分排放方法及calc_species_mass，以N2O化合物质量计量并保留实际接收空气分区。",
+      "why_not_merge": "物种、化合物计量基准、方向、接收区室或碳来源不同；合并会失去排放/资源流验证。",
+      "basis": {
+        "collection_protocol": "cp_cultivation_emissions",
+        "rule_refs": [
+          "calc_species_mass",
+          "cp_cultivation_emissions"
+        ],
+        "property_unit": "Mass / kg N2O",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_ammonia",
+      "process": "cultivation",
+      "direction": "outputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "验证"
+      ],
+      "role": "按声明的养分排放方法及calc_species_mass，以NH3化合物质量计量并保留实际接收空气分区。",
+      "why_not_merge": "物种、化合物计量基准、方向、接收区室或碳来源不同；合并会失去排放/资源流验证。",
+      "basis": {
+        "collection_protocol": "cp_cultivation_emissions",
+        "rule_refs": [
+          "calc_species_mass",
+          "cp_cultivation_emissions"
+        ],
+        "property_unit": "Mass / kg NH3",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_nitrate",
+      "process": "cultivation",
+      "direction": "outputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "验证"
+      ],
+      "role": "按NO3-质量记录向实际接收水体的硝酸根释放，按cp_cultivation_emissions保留排放路径归属。",
+      "why_not_merge": "物种、化合物计量基准、方向、接收区室或碳来源不同；合并会失去排放/资源流验证。",
+      "basis": {
+        "collection_protocol": "cp_cultivation_emissions",
+        "rule_refs": [
+          "calc_species_mass",
+          "cp_cultivation_emissions"
+        ],
+        "property_unit": "Mass / kg NO3-",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_fossil_co2",
+      "process": "cultivation",
+      "direction": "outputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "记录直接化石源CO2及其空气分区，与外购能源CO2e及土地利用变化CO2分开。",
+      "why_not_merge": "物种、化合物计量基准、方向、接收区室或碳来源不同；合并会失去排放/资源流验证。",
+      "basis": {
+        "collection_protocol": "cp_cultivation_emissions",
+        "rule_refs": [
+          "cp_cultivation_emissions",
+          "calc_luc_attribution"
+        ],
+        "property_unit": "Mass / kg CO2",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "cultivation_luc_co2_release",
+      "process": "cultivation",
+      "direction": "outputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "按calc_luc_attribution记录有据的正向碳库释放并保留事件/期间归属，不将其表述为实测年度排气。",
+      "why_not_merge": "物种、化合物计量基准、方向、接收区室或碳来源不同；合并会失去排放/资源流验证。",
+      "basis": {
+        "collection_protocol": "cp_luc_history",
+        "rule_refs": [
+          "calc_luc_attribution",
+          "validate_luc_attribution"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "ghg-product-standard-2011",
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "post_harvest_stem_input",
+      "process": "post_harvest",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "接收harvested_stems记录的同一批次，先核对接收枝数及库存，再核算处理损失。",
+      "why_not_merge": "相邻输出与输入使用同一交接记录，但分别承担发送/接收节点库存和损失核对；不能重复增加上游产品负荷。",
+      "basis": {
+        "collection_protocol": "cp_output_loss_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "validate_count_balance"
+        ],
+        "property_unit": "Number of items / Item(s)",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "post_harvest_water",
+      "process": "post_harvest",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "验证"
+      ],
+      "role": "记录本节点补水、清洗或调理供水，按calc_water_components核对物料携带水及废水。",
+      "why_not_merge": "供水、资源取水及废水对应不同所有权、阶段、计量点或接收边界；内部循环不能当作新增外部输入。",
+      "basis": {
+        "collection_protocol": "cp_post_harvest_records",
+        "rule_refs": [
+          "calc_water_components",
+          "validate_water_balance"
+        ],
+        "property_unit": "Volume / m3",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "post_harvest_electricity",
+      "process": "post_harvest",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算"
+      ],
+      "role": "按cp_post_harvest_records记录归属于采后处理、冷却及储存的用电。",
+      "why_not_merge": "各阶段仪表、期间及共享分配驱动量不同；同一UUID不能替代独立活动量。",
+      "basis": {
+        "collection_protocol": "cp_post_harvest_records",
+        "rule_refs": [
+          "allocation_storage_volume_time"
+        ],
+        "property_unit": "Energy / kWh",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "post_harvest_r134a",
+      "process": "post_harvest",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "对实际使用R134a的设备，按calc_refrigerant_balance记录充注及补充产品质量；其他制冷剂另行记录。",
+      "why_not_merge": "按实际设备和阶段区分充注产品与空气释放；输入质量不等于排放，两个阶段有各自库存/维护记录。",
+      "basis": {
+        "collection_protocol": "cp_post_harvest_records",
+        "rule_refs": [
+          "calc_refrigerant_balance"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "210b4222-adda-4097-9e79-f2c9a6c172e4",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "saleable_conditioned_stems",
+      "process": "post_harvest",
+      "direction": "outputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "扣除拒收并核对库存变化后记录合格调理花枝发出量，与packaging_stem_input匹配同一交接。",
+      "why_not_merge": "相邻输出与输入使用同一交接记录，但分别承担发送/接收节点库存和损失核对；不能重复增加上游产品负荷。",
+      "basis": {
+        "collection_protocol": "cp_output_loss_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "validate_count_balance"
+        ],
+        "property_unit": "Number of items / Item(s)",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "post_harvest_biomass_waste",
+      "process": "post_harvest",
+      "direction": "outputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "记录采后移除的修剪残余物及拒收花材质量、水分和去向。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_output_loss_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "validate_end_of_life_materials"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "post_harvest_wastewater",
+      "process": "post_harvest",
+      "direction": "outputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "记录转交接收处理系统的采后未处理废水，与直接环境排放区分。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_post_harvest_records",
+        "rule_refs": [
+          "calc_water_components",
+          "validate_water_balance"
+        ],
+        "property_unit": "Volume / m3",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "post_harvest_refrigerant_emission",
+      "process": "post_harvest",
+      "direction": "outputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "对实际使用R134a的设备，按calc_refrigerant_balance核算未回收的空气释放量；充注质量不等于排放质量。",
+      "why_not_merge": "按实际设备和阶段区分充注产品与空气释放；输入质量不等于排放，两个阶段有各自库存/维护记录。",
+      "basis": {
+        "collection_protocol": "cp_post_harvest_records",
+        "rule_refs": [
+          "calc_refrigerant_balance"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "packaging_stem_input",
+      "process": "packaging_dispatch",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "接收saleable_conditioned_stems记录的调理花枝批次，保留枝数及制品组装台账。",
+      "why_not_merge": "相邻输出与输入使用同一交接记录，但分别承担发送/接收节点库存和损失核对；不能重复增加上游产品负荷。",
+      "basis": {
+        "collection_protocol": "cp_packaging_dispatch_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "calc_article_to_stems"
+        ],
+        "property_unit": "Number of items / Item(s)",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "packaging_corrugated_box",
+      "process": "packaging_dispatch",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "验证"
+      ],
+      "role": "记录实际瓦楞纸箱质量、组成及归属使用次数，复用时执行calc_reusable_packaging。",
+      "why_not_merge": "产品/服务或计量属性独立，相关采集与边界规则不能由另一张卡代替。",
+      "basis": {
+        "collection_protocol": "cp_packaging_dispatch_records",
+        "rule_refs": [
+          "calc_reusable_packaging",
+          "allocation_article_components"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "packaging_ldpe_film",
+      "process": "packaging_dispatch",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "验证"
+      ],
+      "role": "单独记录实际LDPE包装膜质量，与其他聚合物及制品附件分开。",
+      "why_not_merge": "产品/服务或计量属性独立，相关采集与边界规则不能由另一张卡代替。",
+      "basis": {
+        "collection_protocol": "cp_packaging_dispatch_records",
+        "rule_refs": [
+          "allocation_article_components"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "2cecd3a7-d90e-44b4-aec5-1d9dfb907477",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "packaging_dispatch_electricity",
+      "process": "packaging_dispatch",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算"
+      ],
+      "role": "记录归属于声明批次的包装、组装及发运用电。",
+      "why_not_merge": "各阶段仪表、期间及共享分配驱动量不同；同一UUID不能替代独立活动量。",
+      "basis": {
+        "collection_protocol": "cp_packaging_dispatch_records",
+        "rule_refs": [
+          "allocation_avoid_first"
+        ],
+        "property_unit": "Energy / kWh",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "consumer_ready_stem",
+      "process": "packaging_dispatch",
+      "direction": "outputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "记录首次发运的包装花枝、制品配置及库存核对结果，与distribution_stem_input匹配。",
+      "why_not_merge": "相邻输出与输入使用同一交接记录，但分别承担发送/接收节点库存和损失核对；不能重复增加上游产品负荷。",
+      "basis": {
+        "collection_protocol": "cp_output_loss_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "validate_count_balance"
+        ],
+        "property_unit": "Number of items / Item(s)",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "packaging_corrugated_waste",
+      "process": "packaging_dispatch",
+      "direction": "outputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "按质量及实际去向记录包装环节移除的瓦楞废纸板，与随产品保留的包装分开。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_packaging_dispatch_records",
+        "rule_refs": [
+          "validate_end_of_life_materials"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "packaging_ldpe_waste",
+      "process": "packaging_dispatch",
+      "direction": "outputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "按质量及实际去向记录包装环节移除的废LDPE膜，与随产品保留的膜分开。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_packaging_dispatch_records",
+        "rule_refs": [
+          "validate_end_of_life_materials"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "distribution_stem_input",
+      "process": "distribution_retail",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "接收consumer_ready_stem记录的包装批次，保留储存库存及后续零售损失。",
+      "why_not_merge": "相邻输出与输入使用同一交接记录，但分别承担发送/接收节点库存和损失核对；不能重复增加上游产品负荷。",
+      "basis": {
+        "collection_protocol": "cp_distribution_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "validate_count_balance"
+        ],
+        "property_unit": "Number of items / Item(s)",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "distribution_road_transport",
+      "process": "distribution_retail",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "对实际公路段执行calc_transport_work及allocation_transport_physical，分别保留实际货批物理工作量与相容的分配服务量。",
+      "why_not_merge": "各运输方式有独立实际路线及供应数据边界；相同tkm公式不代表同一运输服务，未发生的方式须有据判定不适用。",
+      "basis": {
+        "collection_protocol": "cp_distribution_records",
+        "rule_refs": [
+          "calc_transport_work",
+          "allocation_transport_physical",
+          "validate_transport_service"
+        ],
+        "property_unit": "Transport work / tkm",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "d55f1329-cd61-44c0-8000-9367d38d5634",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "distribution_air_transport",
+      "process": "distribution_retail",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "对实际航空段执行calc_transport_work及allocation_transport_physical，采用边界、载荷及利用率相容的空运货运供应数据。",
+      "why_not_merge": "各运输方式有独立实际路线及供应数据边界；相同tkm公式不代表同一运输服务，未发生的方式须有据判定不适用。",
+      "basis": {
+        "collection_protocol": "cp_distribution_records",
+        "rule_refs": [
+          "calc_transport_work",
+          "allocation_transport_physical",
+          "validate_transport_service"
+        ],
+        "property_unit": "Transport work / tkm",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "distribution_sea_transport",
+      "process": "distribution_retail",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "对实际海运段执行calc_transport_work及allocation_transport_physical，保留相容的船舶/服务类型及覆盖范围。",
+      "why_not_merge": "各运输方式有独立实际路线及供应数据边界；相同tkm公式不代表同一运输服务，未发生的方式须有据判定不适用。",
+      "basis": {
+        "collection_protocol": "cp_distribution_records",
+        "rule_refs": [
+          "calc_transport_work",
+          "allocation_transport_physical",
+          "validate_transport_service"
+        ],
+        "property_unit": "Transport work / tkm",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "distribution_electricity",
+      "process": "distribution_retail",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算"
+      ],
+      "role": "按声明的储存分配驱动量，记录归属于批次的配送、储存及零售用电。",
+      "why_not_merge": "各阶段仪表、期间及共享分配驱动量不同；同一UUID不能替代独立活动量。",
+      "basis": {
+        "collection_protocol": "cp_distribution_records",
+        "rule_refs": [
+          "allocation_storage_volume_time"
+        ],
+        "property_unit": "Energy / kWh",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "distribution_r134a",
+      "process": "distribution_retail",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "对配送/零售实际使用R134a的设备，按calc_refrigerant_balance记录充注及补充；其他制冷剂另行记录。",
+      "why_not_merge": "按实际设备和阶段区分充注产品与空气释放；输入质量不等于排放，两个阶段有各自库存/维护记录。",
+      "basis": {
+        "collection_protocol": "cp_distribution_records",
+        "rule_refs": [
+          "calc_refrigerant_balance"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "210b4222-adda-4097-9e79-f2c9a6c172e4",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "delivered_stem",
+      "process": "distribution_retail",
+      "direction": "outputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "本卡是唯一的消费者购买参考产出：一枝，即1 Item(s)；与consumer_purchased_stem核对同一购买批次。",
+      "why_not_merge": "相邻输出与输入使用同一交接记录，但分别承担发送/接收节点库存和损失核对；不能重复增加上游产品负荷。",
+      "basis": {
+        "collection_protocol": null,
+        "rule_refs": [
+          "validate_reference_flow",
+          "validate_count_balance"
+        ],
+        "property_unit": "Number of items / Item(s)",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "distribution_retail_losses",
+      "process": "distribution_retail",
+      "direction": "outputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "记录移除的未售出或损坏花材质量、水分及去向，在零售库存台账中保留损失枝数。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_distribution_records",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "validate_end_of_life_materials"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "distribution_refrigerant_emission",
+      "process": "distribution_retail",
+      "direction": "outputs",
+      "flow_type": "elementary",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "对配送/零售实际使用R134a的设备，按calc_refrigerant_balance核算未回收释放，与充注及供应方已计泄漏分开。",
+      "why_not_merge": "按实际设备和阶段区分充注产品与空气释放；输入质量不等于排放，两个阶段有各自库存/维护记录。",
+      "basis": {
+        "collection_protocol": "cp_distribution_records",
+        "rule_refs": [
+          "calc_refrigerant_balance"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "consumer_purchased_stem",
+      "process": "consumer_use",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "接收delivered_stem对应的同一购买批次，保留实际枝数、质量、水分及库存，不重复增加上游产品负荷。",
+      "why_not_merge": "相邻输出与输入使用同一交接记录，但分别承担发送/接收节点库存和损失核对；不能重复增加上游产品负荷。",
+      "basis": {
+        "collection_protocol": "cp_consumer_use",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "calc_water_components",
+          "validate_count_balance"
+        ],
+        "property_unit": "Number of items / Item(s)",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "consumer_vase_water",
+      "process": "consumer_use",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "验证"
+      ],
+      "role": "按声明的观赏寿命情景记录花瓶及养护供水，保留换水记录和水平衡归属。",
+      "why_not_merge": "供水、资源取水及废水对应不同所有权、阶段、计量点或接收边界；内部循环不能当作新增外部输入。",
+      "basis": {
+        "collection_protocol": "cp_consumer_use",
+        "rule_refs": [
+          "calc_water_components",
+          "validate_water_balance"
+        ],
+        "property_unit": "Volume / m3",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "consumer_electricity",
+      "process": "consumer_use",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算"
+      ],
+      "role": "按cp_consumer_use仅记录归属于实际声明花卉养护的用电；判定不适用须有依据。",
+      "why_not_merge": "各阶段仪表、期间及共享分配驱动量不同；同一UUID不能替代独立活动量。",
+      "basis": {
+        "collection_protocol": "cp_consumer_use",
+        "rule_refs": [
+          "cp_consumer_use",
+          "validate_process_coverage"
+        ],
+        "property_unit": "Energy / kWh",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca",
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "consumer_discarded_flower",
+      "process": "consumer_use",
+      "direction": "outputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "按实际枝数、质量、水分及去向记录使用后花材移除，核对同一批次及废弃处理接收。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_consumer_use",
+        "rule_refs": [
+          "calc_stage_stock_loss",
+          "calc_water_components",
+          "validate_count_balance"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "consumer_wastewater",
+      "process": "consumer_use",
+      "direction": "outputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "记录向实际处理系统转交的花瓶及清洗废水，不重复扣减物料携带水。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_consumer_use",
+        "rule_refs": [
+          "calc_water_components",
+          "validate_water_balance"
+        ],
+        "property_unit": "Volume / m3",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "flower_composting_service",
+      "process": "end_of_life",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "使用有据的花材堆肥比例；处理服务覆盖及回收产品数量执行validate_end_of_life_materials。",
+      "why_not_merge": "堆肥、填埋和焚烧的实际份额、供应方及回收/排放覆盖不同；废物流交接不等于处理服务购买。",
+      "basis": {
+        "collection_protocol": "cp_end_of_life_scenario",
+        "rule_refs": [
+          "validate_end_of_life_materials"
+        ],
+        "property_unit": "Mass of waste treated / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "flower_landfill_service",
+      "process": "end_of_life",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "使用有据的花材填埋比例，与堆肥、焚烧及废物交接分开记录。",
+      "why_not_merge": "堆肥、填埋和焚烧的实际份额、供应方及回收/排放覆盖不同；废物流交接不等于处理服务购买。",
+      "basis": {
+        "collection_protocol": "cp_end_of_life_scenario",
+        "rule_refs": [
+          "validate_end_of_life_materials"
+        ],
+        "property_unit": "Mass of waste treated / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "flower_incineration_service",
+      "process": "end_of_life",
+      "direction": "inputs",
+      "flow_type": "product",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "核算",
+        "边界",
+        "验证"
+      ],
+      "role": "使用有据的花材焚烧比例，保留处理方边界及另有证据的回收功能。",
+      "why_not_merge": "堆肥、填埋和焚烧的实际份额、供应方及回收/排放覆盖不同；废物流交接不等于处理服务购买。",
+      "basis": {
+        "collection_protocol": "cp_end_of_life_scenario",
+        "rule_refs": [
+          "validate_end_of_life_materials"
+        ],
+        "property_unit": "Mass of waste treated / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "discarded_flower_biomass",
+      "process": "end_of_life",
+      "direction": "inputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "分来源、状态、质量及水分核对接收花材与各移除节点，再分配处理比例。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_end_of_life_scenario",
+        "rule_refs": [
+          "validate_end_of_life_materials",
+          "cp_end_of_life_scenario"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "discarded_corrugated_board",
+      "process": "end_of_life",
+      "direction": "inputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "按来源及质量核对接收瓦楞纸板与包装废物、产品废弃包装，保留本材料自身去向。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_end_of_life_scenario",
+        "rule_refs": [
+          "validate_end_of_life_materials",
+          "cp_end_of_life_scenario"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    },
+    {
+      "row_id": "discarded_ldpe_film",
+      "process": "end_of_life",
+      "direction": "inputs",
+      "flow_type": "waste",
+      "action": "retain_and_concise",
+      "independent_functions": [
+        "计量",
+        "边界",
+        "验证"
+      ],
+      "role": "按来源及质量核对接收LDPE膜与包装废物、产品废弃包装，保留本聚合物自身去向。",
+      "why_not_merge": "来源阶段、状态或材料不同；需核对发生量与接收去向，并按材料分别约束处理比例。",
+      "basis": {
+        "collection_protocol": "cp_end_of_life_scenario",
+        "rule_refs": [
+          "validate_end_of_life_materials",
+          "cp_end_of_life_scenario"
+        ],
+        "property_unit": "Mass / kg",
+        "source_ids": [
+          "count-mass-water-balance"
+        ]
+      },
+      "uuid": null,
+      "changes": "保留交换位置与全部结构字段；将通用身份、归一化等重复文字归入validate_inventory_card_controls，卡内仅留具体要求。"
+    }
+  ]
+}

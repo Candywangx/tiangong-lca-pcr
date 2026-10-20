@@ -664,34 +664,7 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       elementary:
-        - row_id: preharvest_burn_emissions
-          role: "Pre-harvest burn emissions"
-          name: "Declared pollutant species to air from pre-harvest burning"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Record this flow for the linked field, crop period, harvest event or lot and retain its state and destination. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
-          amount:
-            expression: "zero for green-cane harvest; otherwise calculate each reported species from burned dry matter and the declared method"
-            value_mode: "calculated_value"
-            specificity: "route_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_residue_routes
-              source_ids:
-                - ipcc-managed-soils-2019
-                - fao-cane-environment-1997
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.1"
-                unit: "kg"
-                basis: "all-species screening amount per kg accepted cane; each exchange remains species-specific"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
   - id: field_conditioning
     label: "Primary field conditioning and agricultural-field hand-off"
     inputs:
@@ -1051,6 +1024,16 @@ dataset_production:
       output: "species-specific emissions"
       source_ids:
         - ipcc-managed-soils-2019
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_field_emissions
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference product"
@@ -1144,7 +1127,7 @@ data_sources:
     used_for: "process linkage, closure, co-product, period and rework checks"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:2251fee7eb083af2559d55257dba94a733015068db74ce50b1c5bb409316176c"
+  source_sha256: "sha256:08ef1752be116608929c11a818584400c4f55031e1ef5fa2ca0b02aaec681927"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4702"
@@ -1195,16 +1178,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44308"
+    - unit_id: "normative_43045"
       family: "allocation"
       span:
         start:
-          offset: 44308
-          line: 850
+          offset: 43045
+          line: 823
           column: 1
         end:
-          offset: 45675
-          line: 859
+          offset: 44412
+          line: 832
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_period_series` | plant cane and ratoons | Assign period-specific inputs directly. Amortize establishment, long-lived field preparation and termination across actual accepted output of the declared crop series; do not apply a universal ratoon count and do not allocate shared burdens again within each period. | `fao-sugarcane-water-2012` |\n| `allocation_outputs` | stalks and intended residue outputs | Enumerate every independently intended output and its hand-off. Use a documented physical relation when causal; otherwise use disclosed economic allocation. Residues without intended product status remain residue or waste and receive no avoided-burden credit by default. | `mass-balance-identity` |\n| `allocation_routes` | field-lots and harvest events | Link inputs, outputs, cleaning, changeover and shared machine operation to one field-lot event and allocate shared burdens once by measured operating time, area or throughput. | `mass-balance-identity` |\n| `allocation_rework_reject` | off-spec cane and returned material | Retain prior burdens on reworked or downgraded cane, add only incremental operations, and count it once at its final exclusive destination; rejects cannot also be accepted output. | `mass-balance-identity` |\n\n"
       headings:
@@ -1223,12 +1206,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44308
-              line: 850
+              offset: 43045
+              line: 823
               column: 1
             end:
-              offset: 44348
-              line: 850
+              offset: 43085
+              line: 823
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1243,16 +1226,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54016"
+    - unit_id: "normative_55618"
       family: "validation"
       span:
         start:
-          offset: 54016
-          line: 897
+          offset: 55618
+          line: 877
           column: 1
         end:
-          offset: 56220
-          line: 910
+          offset: 57822
+          line: 890
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Require the stated product, Mass-property and Mass-unit-group UUIDs, 1 kg amount and all required qualifiers; reject a sucrose or processed-sugar interpretation. |  |\n| `validate_period_series` | plant and ratoon periods | Require crop-series and period ids, establishment and termination boundaries, accepted output by period and one disclosed attribution of every shared burden; block missing or double-attributed periods. | `fao-sugarcane-water-2012` |\n| `validate_route_delta` | harvest alternatives | Require parent harvest activity, manual/mechanical state and exactly one green/pre-burn state for each event, plus current evidence for changed inputs, emissions, loss, residue and stubble requirements. | `sra-harvest-manual-2014`; `fao-cane-environment-1997` |\n| `validate_nutrient_cardinality` | each process | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_output_routes` | stalks, residue, stubble, loss and rejects | Require one exclusive hand-off or destination for every state and an explicit allocation decision for every independently intended output; prevent the same residue or cane from occupying two states. | `ipcc-managed-soils-2019`; `mass-balance-identity` |\n| `validate_rework` | off-spec material | Link every rejected state to rework, downgrade, recovery or disposal; retain prior burdens, add incremental work once and exclude it from accepted output until resolved. | `mass-balance-identity` |\n| `validate_runs` | field-lots, events and passes | Link inputs, outputs, cleaning, changeover and shared operations to one period, event or pass and assign shared burdens once. | `mass-balance-identity` |\n| `validate_ranges` | cards with ranges | For each supplied quantitative Range, verify lower/upper bounds, unit, basis, basis kind, evidence kind and source field in English, Chinese and projection. Flag missing important-flow ranges as candidate evidence gaps. | `mass-balance-identity` |\n\n"
       headings:
@@ -1271,12 +1254,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54016
-              line: 897
+              offset: 55618
+              line: 877
               column: 1
             end:
-              offset: 54038
-              line: 897
+              offset: 55640
+              line: 877
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1360,158 +1343,158 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_period_series"
       identity_kind: "explicit"
-      unit_id: "normative_44308"
+      unit_id: "normative_43045"
       source_span:
         start:
-          offset: 44421
-          line: 854
+          offset: 43158
+          line: 827
           column: 1
         end:
-          offset: 44774
-          line: 854
+          offset: 43511
+          line: 827
           column: 354
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_44308"
+      unit_id: "normative_43045"
       source_span:
         start:
-          offset: 44775
-          line: 855
+          offset: 43512
+          line: 828
           column: 1
         end:
-          offset: 45136
-          line: 855
+          offset: 43873
+          line: 828
           column: 362
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_routes"
       identity_kind: "explicit"
-      unit_id: "normative_44308"
+      unit_id: "normative_43045"
       source_span:
         start:
-          offset: 45137
-          line: 856
+          offset: 43874
+          line: 829
           column: 1
         end:
-          offset: 45396
-          line: 856
+          offset: 44133
+          line: 829
           column: 260
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework_reject"
       identity_kind: "explicit"
-      unit_id: "normative_44308"
+      unit_id: "normative_43045"
       source_span:
         start:
-          offset: 45397
-          line: 857
+          offset: 44134
+          line: 830
           column: 1
         end:
-          offset: 45673
-          line: 857
+          offset: 44410
+          line: 830
           column: 277
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 54111
-          line: 901
+          offset: 55713
+          line: 881
           column: 1
         end:
-          offset: 54328
-          line: 901
+          offset: 55930
+          line: 881
           column: 218
     - pointer: "/validation_rules/1"
       rule_id: "validate_period_series"
       identity_kind: "explicit"
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 54329
-          line: 902
+          offset: 55931
+          line: 882
           column: 1
         end:
-          offset: 54617
-          line: 902
+          offset: 56219
+          line: 882
           column: 289
     - pointer: "/validation_rules/2"
       rule_id: "validate_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 54618
-          line: 903
+          offset: 56220
+          line: 883
           column: 1
         end:
-          offset: 54929
-          line: 903
+          offset: 56531
+          line: 883
           column: 312
     - pointer: "/validation_rules/3"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 54930
-          line: 904
+          offset: 56532
+          line: 884
           column: 1
         end:
-          offset: 55154
-          line: 904
+          offset: 56756
+          line: 884
           column: 225
     - pointer: "/validation_rules/4"
       rule_id: "validate_output_routes"
       identity_kind: "explicit"
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 55155
-          line: 905
+          offset: 56757
+          line: 885
           column: 1
         end:
-          offset: 55482
-          line: 905
+          offset: 57084
+          line: 885
           column: 328
     - pointer: "/validation_rules/5"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 55483
-          line: 906
+          offset: 57085
+          line: 886
           column: 1
         end:
-          offset: 55722
-          line: 906
+          offset: 57324
+          line: 886
           column: 240
     - pointer: "/validation_rules/6"
       rule_id: "validate_runs"
       identity_kind: "explicit"
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 55723
-          line: 907
+          offset: 57325
+          line: 887
           column: 1
         end:
-          offset: 55928
-          line: 907
+          offset: 57530
+          line: 887
           column: 206
     - pointer: "/validation_rules/7"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 55929
-          line: 908
+          offset: 57531
+          line: 888
           column: 1
         end:
-          offset: 56218
-          line: 908
+          offset: 57820
+          line: 888
           column: 290
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1540,27 +1523,27 @@ normative_context:
           column: 266
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44308"
+      unit_id: "normative_43045"
       source_span:
         start:
-          offset: 44308
-          line: 850
+          offset: 43045
+          line: 823
           column: 1
         end:
-          offset: 44348
-          line: 850
+          offset: 43085
+          line: 823
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54016"
+      unit_id: "normative_55618"
       source_span:
         start:
-          offset: 54016
-          line: 897
+          offset: 55618
+          line: 877
           column: 1
         end:
-          offset: 54038
-          line: 897
+          offset: 55640
+          line: 877
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1569,5 +1552,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:2251fee7eb083af2559d55257dba94a733015068db74ce50b1c5bb409316176c"
-  generated_content_sha256: "sha256:c3e010300c6c2b9fe9596e40d42a81d22a02ba79df114c10ffb19766f376203a"
+    sha256: "sha256:08ef1752be116608929c11a818584400c4f55031e1ef5fa2ca0b02aaec681927"
+  generated_content_sha256: "sha256:fe724b5733dae19c27acc07dcaa3d773a0347cc6c357a4635efff111e8bb557d"

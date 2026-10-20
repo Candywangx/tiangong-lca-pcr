@@ -613,33 +613,6 @@ Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agr
 
 ##### Elementary flows
 
-###### Pre-harvest burn emissions (`preharvest_burn_emissions`)
-
-Record this flow for the linked field, crop period, harvest event or lot and retain its state and destination.
-
-- Selected flow: Declared pollutant species to air from pre-harvest burning
-- Flow property / unit: Mass / kg
-- Amount rule: zero for green-cane harvest; otherwise calculate each reported species from burned dry matter and the declared method
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Route-specific (`route_specific`)
-Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_residue_routes`
-- Sources: `ipcc-managed-soils-2019`; `fao-cane-environment-1997`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg
-  - Basis: all-species screening amount per kg accepted cane; each exchange remains species-specific
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
-
-
 ### Process: Primary field conditioning and agricultural-field hand-off (`field_conditioning`)
 
 #### Inputs
@@ -884,6 +857,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_mass_closure` | harvest and conditioning | moisture-aligned inputs = accepted output + intended outputs + retained material + losses + rejects + other exits ± measured stock change | all inlet and outlet masses; moisture | mass-closure residual | `mass-balance-identity` |
 | `calc_residue_exclusivity` | tops, trash and stubble | total sampled residue = retained + intended removal + burned + recovered/disposed + stubble category, with mutually exclusive fractions | residue dry matter; destinations; N content | residue mass and N by route | `ipcc-managed-soils-2019` |
 | `calc_soil_emissions` | managed-soil emissions | apply the declared current IPCC or accepted regional tier to collected nutrient products, crop-residue routes, lime, urea and site conditions; preserve gas and compartment identity | field input and residue records; factors | species-specific emissions | `ipcc-managed-soils-2019` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_emissions`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -893,6 +867,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `dq_periods` | crop series | Cover establishment, every included ratoon, final termination and every accepted harvest; identify missing or partial periods. | field register; crop-series reconciliation |
 | `dq_routes` | harvest and residues | Require mutually exclusive green/pre-burn state and exclusive residue destinations with mass and dry-matter evidence. | harvest log; sampling; destination records |
 | `dq_completeness` | all processes | Report primary-data coverage, missing data, provisional estimates, scale and meter calibration, mass closure and Range exceptions. | coverage table; calibration; QA report |
+
+### Substance-specific Release Requirement
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `preharvest_burn_emissions_specific_emission` | harvest | For the actual harvest activity, preserve the original cp_residue_routes collection role and activity/state/period basis. zero for green-cane harvest; otherwise calculate each reported species from burned dry matter and the declared method. This is a mandatory identification and calculation requirement, not one aggregate elementary exchange. Enumerate each actual emitted substance and receiving compartment using a compatible measured/pathway method and activity-factor units, then create a separate concrete card or reuse the existing matching card once, with verified UUID or explicit unresolved identity. A generic pollutant/volatile/residue label, total mass loss or summed screening interval cannot establish a compound or individual-emission amount. Keep elemental versus molecular/reporting bases explicit, attribute the raw quantities and normalize once to accepted reference output. No supported release only with evidenced inapplicability; missing identity, method or activity blocks completeness. Exclude releases already covered by an inclusive service or upstream dataset. | cp_residue_routes | separate supported substance/compartment exchanges | `ipcc-managed-soils-2019`; `fao-cane-environment-1997` |
 
 ## 9. Validation Rules
 

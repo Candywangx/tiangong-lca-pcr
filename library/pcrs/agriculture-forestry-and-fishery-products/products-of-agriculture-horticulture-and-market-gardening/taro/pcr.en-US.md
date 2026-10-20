@@ -214,15 +214,8 @@ Raw activity or stage basis: per ha managed field in one crop cycle; zero allowe
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_cycle`
 - Sources: `icar-water-2022`; `fao-qdp-taro`
-- Range: Upland water-budget QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 6280
-  - Unit: m3/ha
-  - Basis: managed irrigation per ha crop cycle; the cited upper comparison is total water requirement including effective rainfall
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `icar-water-2022`
+
+The cited crop-water requirement or precipitation-plus-irrigation context is not a supplied-irrigation amount or validity bound. Collect actual delivered irrigation at its stated meter/boundary, or derive it from a fully declared site water balance distinguishing effective rainfall, soil-water storage, conveyance/application efficiency and returns. No numeric delivery range is established here; rainfed zero requires evidence and a measured value outside a literature water-demand context must not be clipped.
 
 ###### Diesel fuel (`field_fuel`)
 
@@ -282,7 +275,7 @@ Raw activity or stage basis: per ha harvested field in one crop cycle.
 Direct managed-soil N2O is calculated from recorded nitrogen inputs and the declared method.
 
 - Selected flow: Nitrous oxide to air
-- Flow property / unit: Mass / kg N2O-N
+- Flow property / unit: Mass / kg N2O
 - Amount rule: Applicable nitrogen input multiplied by selected direct-emission factor
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Route-specific (`route_specific`)
@@ -302,6 +295,8 @@ Raw activity or stage basis: per kg applicable nitrogen input in the field cycle
   - Basis kind: N input (`n_input`)
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `ipcc-2019-soils`
+
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
 
 ### Process: Corm and cormel lifting (`harvest`)
 
@@ -588,6 +583,7 @@ Ranges are source-context examples or broad provisional QA screens; foreground r
 | `cp_field_cycle` | `field` | establishment, nutrients, water, fuel and emissions | field register, invoices, meter, method worksheet | field_id, cycle_id, route, area_ha, propagule_type, propagule_kg, input_kg, nutrient_fraction, water_m3, rainfall_mm, flooding_days, fuel_L, N_input_kg, emission_factor | reconcile dated applications, invoices and meters; retain route and nutrient basis; Raw aggregation and attribution: sum by field-cycle and route; calculate nutrients and emissions once | mixed | each operation | full crop cycle | each field/route | per declared reference flow | invoices, meters, logs, factor citation |
 | `cp_harvest_lot` | `harvest` | standing crop, lifted product, residues and loss | harvest ticket and sample plots | field_id, cycle_id, lot_id, area_ha, lifted_kg, unlifted_kg, damaged_kg, residue_kg | calibrated scales and representative plots; Raw aggregation and attribution: reconcile standing, lifted and loss states before gate linkage | kg, ha | each harvest | all harvests | each field/lot | per declared reference flow | calibration and plot design |
 | `cp_conditioning_lot` | `condition` | received, water, grades and rejects | receiving, water, grade and dispatch ticket | lot_id, harvest_lot, received_kg, water_kg, accepted_kg, downgraded_kg, rejected_kg, wastewater_kg, debris_kg, destination | calibrated scales and water meter; timestamped grade records; Raw aggregation and attribution: reconcile all input/output states; aggregate only like grades/routes | kg | each lot | receipt to dispatch | each gate lot | per declared reference flow | calibration, tickets, reject reason, destination |
+| `cp_phase1_environment_coverage` | field | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -598,6 +594,13 @@ Ranges are source-context examples or broad provisional QA screens; foreground r
 | `direct_n2o` | managed soil | N2O-N = applicable N × selected EF1; N2O = N2O-N × 44/28 when an N2O-mass flow is used. | nitrogen, route and factor | kg N2O-N and N2O | `ipcc-2019-soils` |
 | `harvest_balance` | harvest | Standing corm mass = lifted + sampled unlifted and damaged mass; disclose sampling uncertainty. | field and harvest records | standing crop and loss | `mass-balance-identity` |
 | `gate_reconciliation` | conditioning | discrepancy = received − accepted − downgraded − rejects/debris; reconcile wastewater separately to supplied water. | conditioning records | lot discrepancy | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_cycle`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
 
 ### Data Quality Requirements
 

@@ -38,7 +38,7 @@ The bark and flower/bud routes share perennial cultivation but diverge at harves
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Cinnamon and cinnamon-tree flowers, raw `6e9b5ee6-fbb3-48f8-9b7a-dc50936ee79a` |
+| Reference product flow | Cinnamon bark or flower/bud in declared actual fresh/dried state |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -258,32 +258,6 @@ Required crop-protection records: before completing the foreground package, enum
 
 ##### Elementary flows
 
-###### Direct managed-soil nitrous oxide (`soil_n2o`)
-
-Calculate direct soil N2O from actual nitrogen inputs with the declared inventory method.
-
-- Selected flow: Dinitrogen monoxide to air
-- Flow property / unit: Mass / kg N2O-N
-- Amount rule: Apply the named current managed-soil method to collected nitrogen inputs and site conditions.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per kg nitrogen applied.
-
-- Normalization basis: per declared reference flow
-- Basis kind: N input (`n_input`)
-- Evidence kind: Method formula (`method_formula`)
-- Collection protocol: `cp_stand_management`
-- Sources: `ipcc-2019-managed-soils`
-- Range: Method-result QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg N2O-N/kg N input
-  - Basis: per kg nitrogen input evaluated for direct managed-soil emissions
-  - Basis kind: N input (`n_input`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `ipcc-2019-managed-soils`
-
 #### Outputs
 
 ##### Product flows
@@ -317,6 +291,31 @@ Raw activity or stage basis: per managed hectare and reporting year.
 ##### Waste flows
 
 ##### Elementary flows
+
+#### Outputs
+
+##### Elementary flows
+
+###### Direct managed-soil nitrous oxide (`soil_n2o`)
+
+Calculate direct soil N2O from actual nitrogen inputs with the declared inventory method.
+
+- Selected flow: Dinitrogen monoxide to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Apply the named current managed-soil method to collected nitrogen inputs and site conditions.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg nitrogen applied.
+
+- Normalization basis: per declared reference flow
+- Basis kind: N input (`n_input`)
+- Evidence kind: Method formula (`method_formula`)
+- Collection protocol: `cp_stand_management`
+- Sources: `ipcc-2019-managed-soils`
+
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ### Process: Bark harvest, peeling and primary conditioning (`bark_harvest_conditioning`)
 
@@ -474,7 +473,7 @@ Calculate water removed from paired mass and moisture measurements; record zero 
 
 - Selected flow: Water to air
 - Flow property / unit: Mass / kg
-- Amount rule: Pre-drying water mass minus post-drying water mass.
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per 1 kg farm-dried prepared bark.
@@ -624,7 +623,7 @@ Calculate removed water from paired states; record zero for a fresh hand-off or 
 
 - Selected flow: Water to air
 - Flow property / unit: Mass / kg
-- Amount rule: Pre-drying water mass minus post-drying water mass.
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per 1 kg farm-dried flower/bud.
@@ -685,7 +684,7 @@ Raw activity or stage basis: per grading lot.
 
 This is the reference-flow hand-off and excludes downgraded product and rejects.
 
-- Selected flow: Cinnamon and cinnamon-tree flowers, raw `6e9b5ee6-fbb3-48f8-9b7a-dc50936ee79a`
+- Selected flow: Cinnamon bark or flower/bud in declared actual fresh/dried state
 - Flow property / unit: Mass / kg
 Raw output measurement and reconciliation: Measured accepted intended output mass normalized to 1 kg.
 
@@ -706,6 +705,8 @@ Raw activity or stage basis: per 1 kg reference product at farm gate.
   - Basis: per declared 1 kg accepted reference product
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Calculated from collection (`calculated_from_collection`)
+
+Identity applicability: Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match.
 
 ###### Downgraded saleable product (`downgraded_cinnamon_product`)
 
@@ -785,7 +786,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_energy_records` | all foreground processes | Fuel and electricity | invoice, fuel log, meter | process_id, lot_id, carrier, quantity, unit, date, conversion_factor | Meter or reconcile purchases and stocks; Raw aggregation and attribution: Convert by carrier and assign once to process, lot and period | native unit, MJ, kWh | Each lot or monthly | Complete reporting year and every included lot | Every included site | per declared reference flow | invoices, calibrated meters and conversion reference |
 | `cp_harvest_lot_balance` | `perennial_cinnamon_cultivation`; `bark_harvest_conditioning` | Bark inputs, products, co-products and rejects | harvest mass balance | stand_id, cycle_id, lot_id, stem_mass, bark_mass_before, bark_mass_after, bark_form, wood_mass, leaf_mass, twig_mass, reject_mass, destination, moisture | Weigh every hand-off; Raw aggregation and attribution: Reconcile dry matter and aggregate accepted lots to stand-year | kg, mass fraction | Each bark lot | All bark lots in the reporting year | Every bark stand and peeling site | per declared reference flow | scale checks, moisture test, lot linkage and receipts |
 | `cp_flower_lot_balance` | `perennial_cinnamon_cultivation`; `flower_harvest_conditioning` | Flower inputs, products and rejects | harvest mass balance | stand_id, lot_id, botanical_part, maturity, harvested_mass, prepared_mass, stem_mass, foreign_matter, reject_mass, destination, moisture | Weigh every hand-off and verify plant part; Raw aggregation and attribution: Reconcile product, removed matter and moisture by lot | kg, mass fraction | Each flower lot | All flower lots in the reporting year | Every flower stand and site | per declared reference flow | scale checks, botanical record, moisture test and lot linkage |
-| `cp_moisture_and_drying` | `bark_harvest_conditioning`; `flower_harvest_conditioning` | Conditional drying | drying log and moisture test | lot_id, route_id, drying_active, method, start_mass, end_mass, start_moisture, end_moisture, duration, energy | Paired mass and moisture before and after drying; Raw aggregation and attribution: Calculate dry-matter closure and evaporated water; zero when inactive | kg, mass fraction, hour, kWh | Each drying lot | All drying lots in the reporting year | Every drying site | per declared reference flow | test method, calibrated balance, timestamps and meters |
+| `cp_moisture_and_drying` | `bark_harvest_conditioning`; `flower_harvest_conditioning` | Conditional drying | drying log and moisture test | lot_id, route_id, drying_active, method, start_mass, end_mass, start_moisture, end_moisture, duration, energy ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation| Paired mass and moisture before and after drying; Raw aggregation and attribution: Calculate dry-matter closure and evaporated water; zero when inactive | kg, mass fraction, hour, kWh | Each drying lot | All drying lots in the reporting year | Every drying site | per declared reference flow | test method, calibrated balance, timestamps and meters |
 | `cp_grading_balance` | `farm_gate_grading` | Accepted, downgraded, reworked and rejected states | grading and destination record | lot_id, route_id, incoming_mass, grade, accepted_mass, downgraded_mass, rework_mass, reject_mass, defect, destination, price | Weigh each state and link its hand-off; Raw aggregation and attribution: Incoming = accepted + downgraded + reject + documented loss after one linked rework loop | kg, currency/kg | Each lot | All grading lots in the reporting year | Every grading site | per declared reference flow | scale checks, grade sheet, sales and reject record |
 
 ### Calculation Rules
@@ -793,11 +794,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_moisture_conversion` | Fresh and dried states | dry_mass = wet_mass × (1 − moisture_fraction) | paired mass and moisture | dry mass | `iso-6539-2014` |
-| `calc_drying_water` | Conditional drying | evaporated_water = start_mass × start_moisture − end_mass × end_moisture | paired mass and moisture | kg water to air |  |
+| `calc_drying_water` | Conditional drying | Water removed to air = incoming material water + actual external water addition + opening water stock - water in every outgoing accepted/downgraded/reject/residue stream - separately exported liquid water - closing water stock, using matched measured wet masses and moisture fractions or compatible densities. Internal recirculation cancels. Include actual rain uptake/rewetting; separate dry-matter and non-water losses. Establish actual evaporation and receiving air boundary from measurement or a supported closed balance; missing components or unexplained difference do not prove vapour or zero. Normalize once to matched accepted final output. | paired mass and moisture | kg water to air |  |
 | `calc_perennial_attribution` | Establishment and shared stand burdens | Allocate establishment across evidenced productive years; within each year assign shared burdens to separately measured outputs by the declared allocation rule. | productive years, stand inputs, route outputs | burden per route and reference kg | `suriyagoda-2021-ceylon-cinnamon` |
 | `calc_lot_yield` | Harvest lots | accepted_yield = accepted_mass ÷ incoming_route_mass; report co-product and reject fractions separately | lot mass balance | yield and fractions |  |
 | `calc_grading_balance` | Grading | incoming = accepted + downgraded + reject + documented loss; rework is one internal loop | grading record | reconciled states |  |
 | `calc_managed_soil_emissions` | Nitrogen inputs | Apply the named current method and factors to product-specific nitrogen inputs, climate and management and disclose factor version. | applied N and method parameters | direct and indirect N emissions | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_stand_management`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -815,7 +817,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | Reference flow | Reject missing species/type, plant part, form, moisture status, grade/destination, harvest year, cycle position or farm-gate declaration. |  |
+| `validate_reference_identity` | Reference flow | Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match. |  |
 | `validate_route_exclusivity` | Process map | Exactly one harvest-conditioning route supplies a reference lot; shared cultivation may be allocated, but direct route burdens cannot appear in both. |  |
 | `validate_nutrient_binding` | `nutrient_supply` | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
 | `validate_conditional_drying` | Drying | If inactive, drying energy and removed water are zero. If active, require paired mass, moisture, duration and energy and dry-matter closure. | `sri-lanka-dcd-postharvest` |

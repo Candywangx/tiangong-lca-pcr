@@ -103,7 +103,7 @@ sync_with: pcr.en-US.md
 
 ###### 棉花播种用种 (`cotton_planting_seed_input`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+按品种记录播种用种子；不得使用本 PCR 的非播种用参考产品身份代替。
 
 - 选定流：棉籽种子（用于种植） `5ec327e3-1046-4478-9010-0733b798aa56`
 - 流属性/单位: Mass / kg
@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 ###### 灌溉水 (`field_irrigation_input`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+将实际灌溉水与降雨分开记录；经核实的雨养田块记为零。
 
 - 选定流：灌溉供水
 - 流属性/单位: Volume / m3
@@ -159,7 +159,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_field_activity`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -177,7 +177,7 @@ sync_with: pcr.en-US.md
 
 ###### 已收获籽棉 (`harvested_seed_cotton_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+记录轧花前含纤维和种子的合格籽棉。
 
 - 选定流：轧花前已收获籽棉
 - 流属性/单位: Mass / kg
@@ -203,7 +203,7 @@ sync_with: pcr.en-US.md
 
 ###### 田间残余物和拒收籽棉 (`field_residue_waste_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+按去向记录茎、根、叶、落铃及拒收材料。
 
 - 选定流：棉田残余物及废弃籽棉
 - 流属性/单位: Mass / kg
@@ -229,7 +229,7 @@ sync_with: pcr.en-US.md
 
 ###### 向空气排放的一氧化二氮 (`field_n2o_air_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+用范围匹配的养分和残体记录计算管理土壤氧化亚氮排放。
 
 - 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位: Mass / kg N2O
@@ -254,7 +254,7 @@ sync_with: pcr.en-US.md
 
 ###### 向空气排放的氨 (`field_ammonia_air_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+仅按实际记录的肥料产品及施用事件计算挥发。
 
 - 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位: Mass / kg NH3
@@ -279,7 +279,7 @@ sync_with: pcr.en-US.md
 
 ###### 向水体排放的硝酸盐 (`field_nitrate_water_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+仅在适用方法或田间平衡支持时，计算或监测硝酸盐损失。
 
 - 选定流：硝酸根 `fe0acd60-3ddc-11dd-aa31-0050c2490048`
 - 流属性/单位: Mass / kg nitrate
@@ -309,7 +309,7 @@ sync_with: pcr.en-US.md
 
 ###### 已收获籽棉 (`seed_cotton_input`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+使用与田间产出相同的实测批次身份及状态。
 
 - 选定流：轧花前已收获籽棉
 - 流属性/单位: Mass / kg
@@ -341,7 +341,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_gin_utility`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -352,7 +352,7 @@ sync_with: pcr.en-US.md
 
 ###### 轧花工艺用水 (`gin_process_water_input`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+记录水分调理和清洁用水；未运行该用水路线时记为零。
 
 - 选定流：生产用水供应
 - 流属性/单位: Volume / m3
@@ -410,7 +410,7 @@ sync_with: pcr.en-US.md
 
 ###### 皮棉联产品 (`cotton_lint_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+按打包交付门、等级和含水率记录作为预期共产品的合格皮棉。
 
 - 选定流：轧花皮棉
 - 流属性/单位: Mass / kg
@@ -436,7 +436,7 @@ sync_with: pcr.en-US.md
 
 ###### 轧花杂质和拒收物 (`gin_residual_waste_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+将铃壳、枝条、叶、土壤和拒收种子按去向分别记录。
 
 - 选定流：轧花杂物及废弃材料
 - 流属性/单位: Mass / kg
@@ -462,7 +462,7 @@ sync_with: pcr.en-US.md
 
 ###### 轧花颗粒物排放 (`gin_particulate_air_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+按粒径组分记录实测或依许可方法计算的颗粒物，不得以通用粉尘替代。
 
 - 选定流：记录的轧花颗粒物向空气排放
 - 流属性/单位: Mass / kg
@@ -492,7 +492,7 @@ sync_with: pcr.en-US.md
 
 ###### 轧花毛棉籽转移 (`cottonseed_transfer_input`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+使用与轧花产出相同的批次身份及状态。
 
 - 选定流：其他棉籽 `5ec72013-512e-4bb6-a5e6-648551f35d9d`
 - 流属性/单位: Mass / kg
@@ -524,7 +524,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_storage_lot`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -542,7 +542,7 @@ sync_with: pcr.en-US.md
 
 ###### 验收储存棉籽 (`accepted_cottonseed_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+记录终端交付门处合格的完整带绒棉籽。
 
 - 选定流：其他棉籽 `5ec72013-512e-4bb6-a5e6-648551f35d9d`
 - 流属性/单位: Mass / kg
@@ -572,7 +572,7 @@ sync_with: pcr.en-US.md
 
 ###### 储存损失和拒收棉籽 (`storage_loss_waste_output`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+按去向记录变质、受热、受污染或拒收种子。
 
 - 选定流：储存废弃或损失棉籽
 - 流属性/单位: Mass / kg
@@ -607,7 +607,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -633,7 +633,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -705,6 +705,7 @@ sync_with: pcr.en-US.md
 | `cp_gin_emissions` | `cotton_ginning` | particulate | measured/calculated | source; control; fraction; concentration; flow; runtime; factor | test or approved permit method；原始汇总与分配：calculate by source/fraction without overlap | kg; mg/m3; m3; h | test/period | representative campaign | each source | 每声明的参考流 | report, permit, controls, runtime |
 | `cp_storage_lot` | `cottonseed_handling_storage` | cottonseed/energy/package/loss | collected/calculated | lot; mass; moisture; temperature; foreign matter; duration; runtime; package; reject | scales, probes, meters, logs；原始汇总与分配：reconcile input, accepted, reject, moisture 按路线确认要求：`storage_energy_input_identification`: 所声明储存期内实际电动棉籽输送、通风及温控；无储存路线不虚构储存负荷。 原始活动或阶段基准：per 1,000 kg accepted cottonseed. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `cottonseed_packaging_input_specific_input`: 作业 cottonseed_handling_storage：记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。 原数量方法：measured packaging divided by verified reuse cycles 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; %; C; h; kWh; item | receipt/daily/dispatch | full storage period | each bin/pile/site | 每声明的参考流 | calibration, monitoring, inspection, ticket |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | cotton_field_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -715,28 +716,36 @@ sync_with: pcr.en-US.md
 | `calc_storage_balance` | storage | incoming dry matter = accepted + rejected/lost dry matter ± justified uncertainty | mass and moisture | accepted seed/loss | `cottonseed-storage-2018` |
 | `calc_economic_allocation` | co-products | share_i = quantity_i × price_i / sum(quantity × price) | quantities, grades, prices | burden shares |  |
 | `calc_shared_services` | shared assets | total service × documented causal share, counted once | total and driver | node/lot amount |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | reference | Prove non-planting, whole/fuzzy state, cultivar, crop year, moisture, foreign matter, grade, storage and gate. | specification, lot ticket, inspection |
+| `dq_identity` | reference | 证明非播种用途、完整/带绒状态，并记录品种、作物年度、水分、异物、等级、储存及交接点。 | specification, lot ticket, inspection |
 | `dq_traceability` | chain | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | 具体流身份核验证据 |
 | `dq_mass_balance` | gin/storage | Reconcile wet and dry balances and investigate gaps beyond justified uncertainty. | scales, moisture tests, balance |
 | `dq_allocation` | co-products | Retain quantities, grades, prices, period, currency, shares and mass sensitivity. | sales/market evidence, worksheet |
-| `dq_temporal` | all | Cover a complete crop cycle and gin/storage period; disclose proxies and abnormal events. | dates and exception log |
-| `dq_completeness` | all cards | Report applicable value or documented zero/not-applicable and retain concrete selections for sets. | completeness and binding evidence |
+| `dq_temporal` | all | 覆盖完整作物周期及轧花/储存期间；披露代理数据和异常事件。 | dates and exception log |
+| `dq_completeness` | all cards | 报告适用数值或有据零值/不适用，并保留集合的具体选择记录。 | completeness and binding evidence |
 
 ## 9. 验证规则
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference | Reject planting, delinted or crushed seed and derived products; require whole fuzzy non-planting cottonseed and qualifiers. |  |
-| `validate_process_chain` | map | Require cultivation/harvest and ginning; include storage only when before gate and impose no inactive-route amount. |  |
-| `validate_gin_balance` | ginning | Require matched input and complete lint, cottonseed, useful output, waste and moisture reconciliation. | `cotton-ginners-handbook-2016` |
-| `validate_coproduct_allocation` | crop/gin | Require explicit lint/cottonseed attribution, economic inputs and mass sensitivity; reject double allocation. |  |
+| `validate_reference_identity` | reference | 拒绝播种用、脱绒、压榨棉籽及衍生产品；要求完整带绒非播种棉籽及全部限定项。 |  |
+| `validate_process_chain` | map | 要求栽培/收获和轧花；储存仅在交接前纳入，不对未启用路线规定数量。 |  |
+| `validate_gin_balance` | ginning | 要求匹配进料，以及完整的棉纤维、棉籽、有用产出、废物和水分核对。 | `cotton-ginners-handbook-2016` |
+| `validate_coproduct_allocation` | crop/gin | 要求明确的棉纤维/棉籽归属、经济输入及质量分配敏感性，禁止重复分配。 |  |
 | `validate_flow_identitys` | inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validate_ranges` | cards | Require role, bounds, unit, basis and evidence; lower <= upper and inactive conditional routes impose no amount. |  |
+| `validate_ranges` | cards | 要求角色、界限、单位、基准及证据；下限≤上限，未启用条件路线不产生规定数量。 |  |
 | `validate_reject_routing` | rejects | Route each off-spec stream once and exclude rejected mass from accepted output. |  |
 | `validate_shared_burdens` | shared services | Require a causal driver and prove each shared burden is counted once. |  |
 
@@ -769,3 +778,4 @@ sync_with: pcr.en-US.md
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
 | `cotton-gin-energy` | handbook | Funk and Hardin (2017), Energy Utilization and Conservation in Cotton Gins, Cotton Ginners Handbook. https://www.cotton.org/journal/2017-21/2/156.cfm | 支持电动输送、轧花设备及独立干燥需求，不强制采用每包强度或特定燃料身份。 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

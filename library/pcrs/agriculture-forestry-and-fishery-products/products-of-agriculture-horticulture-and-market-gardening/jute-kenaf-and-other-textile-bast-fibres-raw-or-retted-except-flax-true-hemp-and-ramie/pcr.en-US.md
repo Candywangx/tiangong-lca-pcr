@@ -99,7 +99,7 @@ Record species, cultivar, germination basis and seed actually sown.
 
 - Selected flow: Jute seed, unspecified `d33e2a9b-1868-4489-a4f9-24d6d8cb9052`
 - Flow property / unit: Mass / kg
-- Amount rule: measured seed mass corrected to the declared viable-seed basis
+- Amount rule: Record actual physical seed-product mass used, net of documented unused returns, with its supplier/lot, treatment, purity and germination/viability attributes. Pure-live-seed equivalent = physical seed mass × purity fraction × viability fraction is a separate quality/rate attribute, never the purchased-product exchange mass or another purchase. If only pure-live-seed rate is known, recover physical quantity using evidenced nonzero lot fractions; otherwise leave physical seed use incomplete. Retain the original stock, period and reference-output attribution.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per cultivated hectare-cycle.
@@ -278,16 +278,8 @@ Raw activity or stage basis: per cultivated hectare-cycle.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_crop_cycle`
 - Sources: `area-time-identity`
-- Range: Physical land-time guardrail
-  - Range role: Allowed range (`allowed_range`)
-  - Lower: 0
-  - Upper: 2
-  - Unit: ha*a/ha crop
-  - Basis: per cultivated hectare-cycle
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `area-time-identity`
 
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 #### Outputs
 
@@ -679,7 +671,7 @@ Record wastewater volume and destination; characterize relevant oxygen demand, s
 - Selected flow: Retting wastewater
 - Flow property / unit: Volume / m3
 - Identity resolution: Deferred by wastewater composition, treatment state and destination; the initial search returned route-specific industrial or municipal wastewater rows that do not match jute retting.
-- Amount rule: measured discharge less documented reuse and evaporation
+- Amount rule: Use measured wastewater actually crossing the defined retting/extraction boundary to its recorded external destination. Do not deduct internal reuse, recirculation or evaporation from an already measured external discharge. When discharge is estimated, use the complete process-water equation in Calculation Rules with every incoming/outgoing water component and stock term, documenting uncertainty; keep liquid volume and its water/solid/pollutant components distinct. Normalize once through matched accepted fibre output.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw activity or stage basis: per retting or extraction batch.
@@ -689,15 +681,8 @@ Raw activity or stage basis: per retting or extraction batch.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_retting_batch`
 - Sources: `water-balance-identity`
-- Range: Wastewater balance guardrail
-  - Range role: Allowed range (`allowed_range`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: m3/t feed
-  - Basis: per retting or extraction batch
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `water-balance-identity`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ###### Woody core, bark and extraction residues (`retting_residues`)
 
@@ -926,6 +911,10 @@ Raw activity or stage basis: per conditioning lot.
 | `allocation_residue_destination` | sticks, bark, fines and crop residues | Do not assign avoided burdens without a declared substitution model. Returned biomass, sold co-product and waste treatment are distinct destinations. | `mass-balance-identity` |
 | `allocation_rework` | rework and rejected material | Return reworked material and its additional burdens to the producing batch; exclude downgraded and rejected mass from accepted reference output and prevent double counting. | `mass-balance-identity` |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
@@ -938,8 +927,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_crop_cycle` | `crop_production` | crop inputs, harvested stems, rejects and soil emissions | field log, invoice, meter, harvest record | field, species, cultivar, area, dates, seed, nutrient products and composition, irrigation, energy, crop protection, harvest and residues | reconcile invoices, application logs, meters and harvest weights; Raw aggregation and attribution: sum by field and route, then normalize through accepted fibre yield | native units plus kg, m3, MJ and ha | each operation and harvest lot | complete declared crop cycle | every included field | per declared reference flow | invoices, calibrated scales/meters, application and harvest logs |
-| `cp_retting_batch` | `retting_extraction` | retting/extraction batch inputs and outputs | batch sheet, meter, weigh ticket, laboratory result | feed mass/moisture, route, time, water, energy, aids, fibre, wastewater, residues and destinations | batch-level readings and mass/water reconciliation; Raw aggregation and attribution: sum compatible route batches; production-weight aggregation only | kg, m3, MJ, t*km | each batch | all batches supplying the reference lot | every included retting/extraction site | per declared reference flow | batch identifiers, meter/scale checks, water-quality and destination evidence |
-| `cp_conditioning_lot` | `washing_drying_grading` | washing, drying, grade and hand-off | lot sheet, meter, weigh ticket, grade test | incoming mass/moisture, water, energy, drying route, accepted grade, downgraded grade, rejects and destination | lot-level measurement and reconciliation; Raw aggregation and attribution: normalize accepted output to 1,000 kg at declared moisture | kg, m3, MJ | each lot | all lots in reporting period | every included conditioning site | per declared reference flow | scale/meter calibration, moisture and grade test, dispatch record |
+| `cp_retting_batch` | `retting_extraction` | retting/extraction batch inputs and outputs | batch sheet, meter, weigh ticket, laboratory result | feed mass/moisture, route, time, water, energy, aids, fibre, wastewater, residues and destinations ; process-water control volume, external supply/returns, internal recirculation separately, opening/closing water stocks, product/residue water, measured discharge, evaporation evidence and residual uncertainty | batch-level readings and mass/water reconciliation; Raw aggregation and attribution: sum compatible route batches; production-weight aggregation only | kg, m3, MJ, t*km | each batch | all batches supplying the reference lot | every included retting/extraction site | per declared reference flow | batch identifiers, meter/scale checks, water-quality and destination evidence |
+| `cp_conditioning_lot` | `washing_drying_grading` | washing, drying, grade and hand-off | lot sheet, meter, weigh ticket, grade test | incoming mass/moisture, water, energy, drying route, accepted grade, downgraded grade, rejects and destination ; process-water control volume, external supply/returns, internal recirculation separately, opening/closing water stocks, product/residue water, measured discharge, evaporation evidence and residual uncertainty | lot-level measurement and reconciliation; Raw aggregation and attribution: normalize accepted output to 1,000 kg at declared moisture | kg, m3, MJ | each lot | all lots in reporting period | every included conditioning site | per declared reference flow | scale/meter calibration, moisture and grade test, dispatch record |
 
 ### Calculation Rules
 
@@ -947,8 +936,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- |
 | `calc_moisture_basis` | material transfers | declared-basis mass = wet mass × (1 − measured moisture fraction)/(1 − declared moisture fraction) | wet mass, measured moisture, declared moisture | comparable material mass | `mass-balance-identity` |
 | `calc_route_yield` | crop through accepted fibre | accepted fibre yield = accepted declared-basis fibre mass / cultivated area; retain intermediate stem and extraction yields | accepted fibre, harvested stems, area | kg accepted fibre/ha and process yields | `mass-balance-identity` |
-| `calc_water_balance` | retting and washing | discharge = withdrawal + incoming-water − evaporation − retained-water − reuse ending inventory | water and moisture records | wastewater volume | `water-balance-identity` |
+| `calc_water_balance` | retting and washing | Use one defined process control volume and matched period in water-mass units. Discharged water = external supplied water + water in incoming product/material + other actual external water inflows + opening water stock - water in all outgoing products/residues - actual evaporation - water in separately exported streams - closing water stock. Convert measured volumes only with a compatible documented density. Internal recirculation remains within that boundary and cancels; do not subtract it again from fresh-water inflow. A genuinely external reclaimed-water receipt is an external inflow. Retain liquid discharge separately from its dry solids/pollutant masses. Prefer measured discharge and use the balance as reconciliation; missing components or unexplained residuals are gaps, not automatic wastewater, evaporation or zero. | water and moisture records | wastewater volume | `water-balance-identity` |
 | `calc_n_emissions` | managed soil | calculate species and compartments from recorded nitrogen activity data using the declared inventory method | nitrogen products, residues, method factors | separate nitrogen exchanges | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_crop_cycle`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -965,7 +955,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- |
 | `validate_reference_identity` | reference flow | UUID, Mass property, mass unit group, product state and required qualifiers shall match the declared accepted fibre. | error |
 | `validate_flow_bindings` | all cards | Resolve every parameterized card to a concrete compatible UUID from actual foreground identity, and retain unresolved or internal status exactly as audited. | error |
-| `validate_ranges` | all cards | Every English, Chinese and structured card shall contain exactly one complete range with matching role, bounds, unit, basis, basis kind and evidence kind. | error |
+| `validate_ranges` | all cards | Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values. | |
 | `validate_route_balance` | every route and batch | Input mass shall reconcile with accepted, downgraded, co-product, residue, reject and measured loss outputs after moisture conversion. | error |
 | `validate_rework` | rejects and rework | Rework shall remain linked to its producing node and shall not be counted both as new input and accepted output. | error |
 
@@ -991,3 +981,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `mass-balance-identity` | method_factor | conservation-of-mass identity | mass balance, yield, allocation and reject validation |
 | `water-balance-identity` | method_factor | process water-balance identity | retting and washing water reconciliation |
 | `area-time-identity` | method_factor | occupied area multiplied by time | land-occupation calculation |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

@@ -261,6 +261,8 @@ translation_status: aligned
 ##### 基本流
 ###### 土地占用（`land_occupation`）
 
+记录大麦田的种植面积及作物周期土地占用基准。
+
 - 选定流：农业用地占用
 - Flow property / unit: Area-time / ha a
 - Amount rule: 实测田块面积乘以声明作物持续时间
@@ -274,6 +276,8 @@ translation_status: aligned
 - Collection protocol: `cp_land_and_output_records`
 
 ###### 灌溉水取水（`water_withdrawal`）
+
+按水源分别记录取水量，并与输送的灌溉水分开记录。
 
 - 选定流：来源特定的水取用
 - Flow property / unit: Volume or mass / m3 or kg
@@ -402,7 +406,7 @@ translation_status: aligned
 - 采集协议：`cp_harvest_energy_records`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -470,6 +474,8 @@ translation_status: aligned
 
 ###### 处理工艺热（`conditioning_process_heat`）
 
+纳入调理节点时，按载能体和批次记录干燥或调理所用热量。
+
 - 选定流：干燥或处理用工艺热
 - Flow property / unit: Energy / MJ or kWh
 - Amount rule: 分配到处理批次的计量或供应商记录能量
@@ -483,6 +489,8 @@ translation_status: aligned
 - Collection protocol: `cp_conditioning_energy_records`
 
 ###### 处理机械动力（`conditioning_mechanical_power`）
+
+记录清选、分级和输送使用的电力或其他机械动力。
 
 - 选定流：清理、分级或输送用机械动力
 - Flow property / unit: Energy / MJ or kWh
@@ -639,6 +647,8 @@ translation_status: aligned
 
 ###### 发运运输服务（`dispatch_transport_service`）
 
+记录从储存到所选交付门的已声明运输或内部搬运服务。
+
 - 选定流：从储存点或声明门出发的货运服务
 - Flow property / unit: Mass-distance / kg*km or t*km
 - Amount rule: 运输质量、距离、方式和路线的实测值
@@ -710,7 +720,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -736,7 +746,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -767,6 +777,10 @@ translation_status: aligned
 | `allocation_substitution` | 残余物或副产品利用 | 仅当被替代产品、路线、市场和证据均有声明时使用替代法；不得从产品标签或通用残余物名称推断替代抵扣。 | `iso-14044-2006` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -818,10 +832,11 @@ translation_status: aligned
 | `reconcile_conditioning_outputs` | 初级处理 | 共同含水率基准下，接收谷物 + 筛下物 + 拒收物 + 粉尘或实测损失 = 处理投入；解释余项 | `cp_conditioning_reject_records`; `cp_conditioned_output_records` | 处理收率和损失核对 | `fao-grain-postharvest-systems-1998`; `mass-balance-identity` |
 | `allocate_storage_energy` | 储存 | 按记录的批次质量和声明储存时长分配储存能量；有专用计量时避免分配 | `cp_storage_and_handoff_records` | 每参考输出的储存能量 | `iso-14044-2006` |
 | `conditioning_dust_release_accounting` | 粉尘排放与捕集固体 | 排入空气的粉尘由出口排放和不重叠的无组织排放组成；出口质量由匹配气体状态和时段的浓度与体积计算，或由明确适用的活动量和排放因子计算。捕集固体单独核算回用或处置；不可将其质量直接当作排放，亦不可重复施加已包含的治理效率。保持相同粒径口径和含水率基准，保留原批次质量平衡，并按匹配最终参考产出归一化一次。 | `cp_conditioning_reject_records` | 分别核算的实际排放及捕集固体 | `epa-fabric-filter-monitoring-2026` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_fertilizer_input_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_non_seed_identity` | 参考产品 | 声明产品为非播种用大麦谷物并说明预期用途类别；不得用种子质量声明替代。 | 产品元数据、合同、质量记录或发运记录 |
 | `dq_gate_and_moisture` | 参考流和输出 | 对每个核对输出记录选定门、原样质量、含水率基准以及任何干物质换算。 | 秤、含水率检测、发运和计算记录 |
@@ -878,3 +893,4 @@ translation_status: aligned
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `epa-fabric-filter-monitoring-2026` | official_guidance | US EPA, Monitoring by Control Technique - Fabric Filters, updated 2026-04-06. https://www.epa.gov/air-emissions-monitoring-knowledge-base/monitoring-control-technique-fabric-filters | 捕集固体与出口颗粒物排放的区别及监测依据；不采用通用效率或排放因子 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

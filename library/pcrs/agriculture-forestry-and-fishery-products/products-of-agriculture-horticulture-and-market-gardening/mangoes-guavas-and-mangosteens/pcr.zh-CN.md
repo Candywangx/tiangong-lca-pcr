@@ -75,7 +75,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_starting_condition` | 作物年度前景系统 | 从声明的果园生产状态开始；只有在记录了生产寿命年度化依据时，才纳入按比例计算的建园或补植。 | `iso-14044-2006`; `mass-balance-identity` |
+| `boundary_starting_condition` | 作物年度前景系统 |纳入声明生产年度的果园管理及直接作物排放。  即使本年没有新事件，也应纳入所代表林/果园应归属的历史建园、未结果期和更新贡献。上述归属记录是必需证据，不是允许省略负担的条件：数量、树龄/寿命或产出历史缺失时应明确保留完整性缺口，不能填零或自动排除。保留原事件，声明的期间/产出方法仅应用一次；另有研究排除须单独论证。 | `iso-14044-2006`; `mass-balance-identity` |
 | `boundary_farm_gate` | 农场交付点产品输出 | 在采收和农场内汇集之后的第一次声明农场交付点结束；排除该点之后的所有活动。 | `iso-14044-2006`; `codex-fresh-tropical-fruit-standards` |
 | `boundary_fresh_unprocessed_state` | 产品类别 | 产品保持鲜食、整果和未加工状态。清洗、打蜡、分级、冷却、包装和加工均在本 PCR 之外。 | `codex-fresh-tropical-fruit-standards` |
 | `boundary_upstream_inputs` | 外购投入 | 将外购投入供应表示为上游连接，仅采集建立连接所需的前景数量、依据和身份。 | `iso-14044-2006` |
@@ -255,7 +255,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_fuel_records`采集`orchard_establishment`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -463,7 +463,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_fuel_records`采集`orchard_cultivation`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -677,7 +677,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_fuel_records`采集`harvest_and_farm_gate_aggregation`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -854,6 +854,7 @@ sync_with: pcr.en-US.md
 | `calculation_irrigation_withdrawal_reconciliation` | 灌溉水和水源取水 | 对账关系为：灌溉施用水 = 水源取水 + 再用或蓄水 − 有记录的输配或施用损失，并披露每项和计量依据。 | 施用水；取水量；再用；蓄水；损失 | 对账后的水量投入 | `fao-crop-evapotranspiration-56`; `mass-balance-identity` |
 | `calculation_managed_soil_emissions` | 氨、氧化亚氮、硝酸盐和磷酸盐行 | 使用声明的测量或方法等级、养分依据、接收介质和场址条件。只有方法和记录支持零或不适用时才报告零。 | 养分记录；土壤和排水记录；排放方法；测量值 | 按物质和介质列示的排放 | `ipcc-2019-managed-soils` |
 | `calculation_harvest_mass_reconciliation` | 合格水果、次品、拒收品和残余物 | 采收量 = 合格商品水果 + 次品和拒收品 + 有记录的田间或处理损失，并记录含水率依据和去向。 | 采收票；等级表；次品和损失记录 | 对账后的输出和损失总量 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emission_and_loss_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
@@ -873,7 +874,7 @@ sync_with: pcr.en-US.md
 | `validation_reference_definition` | 参考流 | 在生成前景数据集前，确认 1,000 kg 功能单位、全部必需限定信息以及证据缺口的参考产品限定信息。 | `mass-balance-identity`; `codex-fresh-tropical-fruit-standards` |
 | `validation_flow_identity_binding` | 参数化产品投入和基本流输出 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validation_mass_reconciliation` | 采收和农场交付点汇集 | 根据采收质量检查合格水果、次品、拒收品、残余物、田间损失和处理损失，并明确等级、含水率和去向处理。 | `mass-balance-identity` |
-| `validation_crop_year_completeness` | 所有必需过程 | 验证栽培、采收和交付点记录覆盖声明作物年度，并明确条件性建园是有记录还是明确排除。 | `fao-gap-framework-2003` |
+| `validation_crop_year_completeness` | 所有必需过程 | 核对实际一年生/多年生起始状态及归属于合格产出的全部适用建园、育苗/幼龄、更新替换和终止历史。本年无事件或历史记录缺失不能排除应归属负荷。按已有方法核对声明的生产期/产出归属、上游覆盖和当年作业，只计一次；缺少适用证据阻断完整性，确有依据的不适用须记录。 | `fao-gap-framework-2003` |
 | `validation_boundary_and_state` | 数据集范围 | 拒绝包含交付点后清洗、打蜡、分级、冷却、包装、加工、零售或运输的数据集，也拒绝缺少声明农场交付点的数据集。 | `iso-14044-2006`; `codex-fresh-tropical-fruit-standards` |
 
 ## 10. 发布数据集画像

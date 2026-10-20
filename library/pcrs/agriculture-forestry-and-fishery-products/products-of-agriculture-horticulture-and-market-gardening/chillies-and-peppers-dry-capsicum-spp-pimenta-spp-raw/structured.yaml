@@ -14,7 +14,7 @@ functional_unit:
   how_much: "1 kg net accepted dried fruit"
   how_well: "Declare genus/species, whole form, incoming and outgoing moisture, grade, drying route, geography and gate"
   how_long_or_cycle: "One declared harvest season and associated drying lots"
-  reference_flow_link: "accepted_dried_fruit"
+  reference_flow_link: "reference_product_at_declared_handoff"
 system_boundary:
   rules:
     - rule_id: system_boundary_rule_1
@@ -143,6 +143,12 @@ process_map:
     inclusion_condition: "when cleaning or grading occurs before the declared gate"
     role: "foreground"
     quantitative_reference: "accepted whole dried fruit"
+  - id: declared_reference_handoff
+    name: "Accepted-product measurement at declared handoff"
+    inclusion: "required"
+    inclusion_condition: "Every actual selected route, including bypass of conditional conditioning/packing/storage"
+    role: "Measurement and reconciliation only; no added physical processing"
+    quantitative_reference: "1 kg net accepted product at the same declared gate"
 process_inventory:
   - id: managed_fruit_production
     label: "Managed Fruit Production"
@@ -659,9 +665,9 @@ process_inventory:
           name: "whole raw dried Capsicum or Pimenta fruit; UUID unresolved"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Weigh each accepted grade at declared moisture and sum only grades within the declared reference specification. Raw output measurement and reconciliation: measure by named operation and lot, then normalize to 1 kg net accepted raw dried fruit Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          description: "Record the measured accepted output of first_cleaning_grading only when that operation actually occurs. Preserve species, condition, grade, moisture, lot and its real outgoing gate. This stable row id identifies an actual route output; the sole final reference is reference_product_at_declared_handoff. Retain raw output and link the selected final lot without counting it as another final product. Any UUID shown is usable only for its independently confirmed physical state/gate; an incompatible upstream/intermediate state needs a separately verified or explicit unresolved identity. Preserve the original stage measurement and collection records. Raw output measurement and reconciliation: Weigh the accepted net lot output of the actual operation under cp_grade_records, retain gross/tare, rejects, stocks, moisture and matched onward lot records, and reconcile before final normalization. Raw activity or stage basis: measured actual operation/lot output and throughput, retained before one final-reference normalization."
           amount:
-            expression: "1 kg"
+            expression: "measured accepted net output from the actual operation under cp_grade_records; retain raw lot quantity and actual stage throughput, then normalize once under the final-handoff normalization in Section 8; never prescribe a fixed intermediate yield"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -681,6 +687,56 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: declared_reference_handoff
+    label: "Accepted-product measurement at declared handoff"
+    inputs:
+      product:
+        - row_id: actual_route_product_for_handoff
+          role: "Accepted actual-route product at the same handoff"
+          name: "whole raw dried Capsicum or Pimenta fruit; UUID unresolved (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID."
+          amount:
+            expression: "measured accepted net mass at this same handoff, normalized as R/R * 1 kg; paired input equals accepted output, with raw R retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_declared_reference_handoff
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_at_declared_handoff
+          role: "Reference product at declared handoff"
+          name: "whole raw dried Capsicum or Pimenta fruit; UUID unresolved (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_declared_reference_handoff
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -706,6 +762,11 @@ allocation_rules:
     rule: "Record fate and any recovery credit explicitly; do not assign product burden or avoided burden by default."
     source_ids:
       - mass-balance-identity
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_crop_records
@@ -756,6 +817,30 @@ dataset_production:
       site_scope: "each sorter"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "grade specification and reconciliation"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "managed_fruit_production"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
+    - protocol_id: cp_declared_reference_handoff
+      process_id: "declared_reference_handoff"
+      flow_role: "actual accepted terminal product and paired transfer"
+      record_type: "scale/lot/acceptance records"
+      raw_fields: "species; state; grade; moisture/basis; gate; actual_terminal_process_id; actual_terminal_output_row_id; lot/transfer_id; gross/tare/net mass R; raw stage totals/throughputs; stocks, rejects and destinations"
+      collection_method: "Weigh accepted net R at the existing gate; match exactly one actual terminal source of the same lot/state and reconcile all earlier losses and stocks. If conditional preparation is absent use the last actual included eligible product output, without inventing that preparation. Preserve original activity records and all required qualifiers."
+      unit: "kg and native activity units"
+      frequency: "each accepted lot"
+      temporal_coverage: "matched production and handoff period"
+      site_scope: "existing declared producer/primary gate"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibrated weighing, acceptance/grade records, lot chain, activation/bypass evidence and closed balances"
   calculation_rules:
     - id: calc_dry_matter
       applies_to: "drying lot"
@@ -781,6 +866,23 @@ dataset_production:
       output: "inventory per kg"
       source_ids:
         - mass-balance-identity
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_final_handoff_normalization
+      applies_to: "all foreground quantities and actual route outputs"
+      rule: "Let R be positive measured accepted final mass in kg for one matched species/state/grade/gate/period, excluding tare, rejects, co-products and held stock. Physical ledger = raw physical quantity/R * 1 kg, without burden-allocation scaling. Attributable inventory contribution = attributable raw quantity/R * 1 kg, preserving native numerator units and the existing output/period attribution. A local intensity q_i=Q_i/O_i first reconstructs Q_i=q_i*actual linked O_i; do not divide by R again after final normalization. Both handoff sides are the same measured event R/R*1 kg, not another physical yield. Include only actual active operations; record and substantiate bypass. Missing/nonpositive R or an unlinked terminal record blocks a normalized complete result, not zero. Preserve original stage data and cancel paired internal transfers once."
+      inputs:
+        - cp_declared_reference_handoff
+        - "original linked collection protocols"
+      output: "native quantities per declared final reference"
+      source_ids:
+        - declared-handoff-measurement-definition
   data_quality_requirements:
     - id: dq_identity
       applies_to: "all lots"
@@ -822,6 +924,11 @@ validation_rules:
     rule: "A dataset may not claim a fixed Tiangong reference flow while its UUID remains unresolved."
     source_ids:
       - un-cpc-3-exp-2025
+  - rule_id: validate_final_handoff_bypass
+    applies_to: "selected actual route and all conditional bypass states"
+    rule: "Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch."
+    source_ids:
+      - declared-handoff-measurement-definition
 published_dataset_profile:
   dataset_role: "Foreground raw dried fruit production package"
   downstream_use: "secondary_dataset; background_dataset after route and identity review"
@@ -855,21 +962,33 @@ data_sources:
     type: "method_factor"
     reference: "Conservation of dry matter and water across measured harvest, drying, and sorting stages"
     used_for: "Drying mass balance and reconciliation"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
+  - id: "declared-handoff-measurement-definition"
+    type: "method_factor"
+    reference: "This PCR Sections 3, 6 and 8: matched accepted handoff mass divided by itself times the declared reference amount; physical transfer pairing and dimensional normalization identity, not an empirical yield or new physical operation."
+    used_for: "single accepted reference and measured route-throughput linkage"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:873171fad1f5105ce82e16d3747a202d374af47dd0ff51ecc97c177306dac42a"
+  source_sha256: "sha256:66862a5586141435d5492880e9a2bbdd837cd048d06dab43686716cbec577dad"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5585"
+    - unit_id: "normative_6313"
       family: "system_boundary"
       span:
         start:
-          offset: 5585
-          line: 55
+          offset: 6313
+          line: 57
           column: 1
         end:
-          offset: 8507
-          line: 74
+          offset: 9235
+          line: 76
           column: 1
       markdown: "## 5. System Boundary\nThe managed production node records the crop or fruiting-tree object, geography, planted area or orchard area, seedling or tree stock, irrigation, nutrient and pest-management inputs, field energy, land use and relevant direct emissions. Capsicum and Pimenta routes may have different planting periods, perennial infrastructure and establishment attribution; collect each route rather than applying one crop factor. Harvest is a distinct node because it creates a measured fresh-fruit hand-off with collection loss. Drying stabilizes this moist, perishable input to a measured whole dry state; first cleaning and grading hand off accepted, downgraded, rejected and waste streams separately. | `codex-cxs-353-2022`; `codex-cxs-358-2024`; `ipcc-2019-managed-soils`\n### Boundary Rules\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_raw_dried` | reference product | Include drying and first cleaning needed for whole raw dried fruit; exclude crushing, milling, extraction, blending and later treatment. | `un-cpc-3-exp-2025`; `codex-cxs-353-2022`; `codex-cxs-358-2024` |\n| `boundary_route_identity` | production | Keep Capsicum annual/seasonal and Pimenta perennial inventories separate; declare whether cultivation is collected or supplied as an upstream fruit dataset. | `codex-cxs-353-2022`; `codex-cxs-358-2024` |\n| `boundary_drying_delta` | drying | Declare natural/solar and mechanical steps, their batch or continuous mode, energy and service inputs, moisture change and weather exposure; include all steps before the gate. | `unece-ddp-24-2013`; `mass-balance-identity` |\n| `boundary_output_states` | harvest, drying, sorting | Separate accepted dry fruit, downgraded fruit, rejected fruit, stems/foreign material, other recoverable residues, evaporated water and unexplained loss by fate. | `mass-balance-identity` |\n### Boundary Abstraction\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified managed crop/tree and planted area, or documented purchased fresh-fruit lot at drying intake |\n| starting_condition_role | biological production input or purchased upstream product; never a second reference output |\n| product_classification_scope | CPC 01652 whole raw dried Capsicum/Pimenta fruit; fresh 01231, Piper 01651 and processed 23922 excluded |\n| recursive_input_rule | Same-category dried fruit used for re-drying or blending is separately sourced and measured; do not recursively treat it as this harvest's new output. |\n| upstream_dataset_requirement | Planting stock, fertilizers, water supply, fuels, electricity, equipment, purchased fresh fruit and treatment services need representative background datasets or documented exclusion. |\n| disclosure | genus/species, route, season/site, fruit input source, moisture and grade before/after drying, drying technology, batch yield, rejects/fate, gate and attribution decisions |\n\n"
       headings:
@@ -888,12 +1007,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5585
-              line: 55
+              offset: 6313
+              line: 57
               column: 1
             end:
-              offset: 5606
-              line: 55
+              offset: 6334
+              line: 57
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -908,18 +1027,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35748"
+    - unit_id: "normative_40702"
       family: "allocation"
       span:
         start:
-          offset: 35748
-          line: 571
+          offset: 40702
+          line: 616
           column: 1
         end:
-          offset: 37107
-          line: 580
+          offset: 44045
+          line: 629
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_primary` | crop and drying lots | Attribute measured operations to botanical route, site, season and batch first; normalize all burdens to net accepted whole dried output. | `mass-balance-identity` |\n| `allocation_offgrade` | downgraded fruit | Keep off-grade but marketable fruit distinct. Prefer subdivision by grade; if a genuine co-product cannot be subdivided, document the chosen physical or economic allocation and prices/quantities. | `mass-balance-identity` |\n| `allocation_rework` | re-dried or resorted fruit | Link rework energy and losses to the original batch; count the accepted mass only at final exit and never double count shared-run or changeover burdens. | `mass-balance-identity` |\n| `allocation_residue` | stems, rejects, residues | Record fate and any recovery credit explicitly; do not assign product burden or avoided burden by default. | `mass-balance-identity` |\nAnnual Capsicum and perennial Pimenta output years cannot share an undeclared denominator. For Pimenta, document bearing years and any establishment or shared orchard burden attribution. A batch dryer must record run-level input, output, cleaning and changeover; continuous drying must record period mass balance and stable operating window.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_primary` | crop and drying lots | Attribute measured operations to botanical route, site, season and batch first; normalize all burdens to net accepted whole dried output. | `mass-balance-identity` |\n| `allocation_offgrade` | downgraded fruit | Keep off-grade but marketable fruit distinct. Prefer subdivision by grade; if a genuine co-product cannot be subdivided, document the chosen physical or economic allocation and prices/quantities. | `mass-balance-identity` |\n| `allocation_rework` | re-dried or resorted fruit | Link rework energy and losses to the original batch; count the accepted mass only at final exit and never double count shared-run or changeover burdens. | `mass-balance-identity` |\n| `allocation_residue` | stems, rejects, residues | Record fate and any recovery credit explicitly; do not assign product burden or avoided burden by default. | `mass-balance-identity` |\nAnnual Capsicum and perennial Pimenta output years cannot share an undeclared denominator. For Pimenta, document bearing years and any establishment or shared orchard burden attribution. A batch dryer must record run-level input, output, cleaning and changeover; continuous drying must record period mass balance and stable operating window.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -936,12 +1055,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35748
-              line: 571
+              offset: 40702
+              line: 616
               column: 1
             end:
-              offset: 35788
-              line: 571
+              offset: 40742
+              line: 616
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -956,18 +1075,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41938"
+    - unit_id: "normative_54899"
       family: "validation"
       span:
         start:
-          offset: 41938
-          line: 606
+          offset: 54899
+          line: 675
           column: 1
         end:
-          offset: 43047
-          line: 615
+          offset: 56689
+          line: 689
           column: 1
-      markdown: "## 9. Validation Rules\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_scope` | product identity | Reject green fresh fruit, Piper pepper, and crushed/ground or otherwise processed dried spice as this reference product. | `un-cpc-3-exp-2025` |\n| `validation_route` | process map | Verify Capsicum/Pimenta route, cultivation inclusion, sun/solar or mechanical stages, and batch or continuous attribution against current records. | `codex-cxs-353-2022`; `codex-cxs-358-2024` |\n| `validation_moisture` | drying | Check measured incoming/outgoing moisture and applicable product specification separately by species and market; do not apply one generic threshold. | `codex-cxs-353-2022`; `codex-cxs-358-2024` |\n| `validation_balance` | drying and sorting | Reconcile dry matter and water; accepted output must exclude rejected, downgraded and reworked-in-process mass until final exit. | `mass-balance-identity` |\n| `validation_identity_gap` | reference flow | A dataset may not claim a fixed Tiangong reference flow while its UUID remains unresolved. | `un-cpc-3-exp-2025` |\n\n"
+      markdown: "## 9. Validation Rules\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_scope` | product identity | Reject green fresh fruit, Piper pepper, and crushed/ground or otherwise processed dried spice as this reference product. | `un-cpc-3-exp-2025` |\n| `validation_route` | process map | Verify Capsicum/Pimenta route, cultivation inclusion, sun/solar or mechanical stages, and batch or continuous attribution against current records. | `codex-cxs-353-2022`; `codex-cxs-358-2024` |\n| `validation_moisture` | drying | Check measured incoming/outgoing moisture and applicable product specification separately by species and market; do not apply one generic threshold. | `codex-cxs-353-2022`; `codex-cxs-358-2024` |\n| `validation_balance` | drying and sorting | Reconcile dry matter and water; accepted output must exclude rejected, downgraded and reworked-in-process mass until final exit. | `mass-balance-identity` |\n| `validation_identity_gap` | reference flow | A dataset may not claim a fixed Tiangong reference flow while its UUID remains unresolved. | `un-cpc-3-exp-2025` |\n\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_final_handoff_bypass` | selected actual route and all conditional bypass states | Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch. | `declared-handoff-measurement-definition` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -984,12 +1103,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41938
-              line: 606
+              offset: 54899
+              line: 675
               column: 1
             end:
-              offset: 41960
-              line: 606
+              offset: 54921
+              line: 675
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1008,245 +1127,271 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5585"
+      unit_id: "normative_6313"
       source_span:
         start:
-          offset: 5607
-          line: 56
+          offset: 6335
+          line: 58
           column: 1
         end:
-          offset: 6369
-          line: 56
+          offset: 7097
+          line: 58
           column: 763
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_raw_dried"
       identity_kind: "explicit"
-      unit_id: "normative_5585"
+      unit_id: "normative_6313"
       source_span:
         start:
-          offset: 6460
-          line: 60
+          offset: 7188
+          line: 62
           column: 1
         end:
-          offset: 6709
-          line: 60
+          offset: 7437
+          line: 62
           column: 250
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_route_identity"
       identity_kind: "explicit"
-      unit_id: "normative_5585"
+      unit_id: "normative_6313"
       source_span:
         start:
-          offset: 6710
-          line: 61
+          offset: 7438
+          line: 63
           column: 1
         end:
-          offset: 6956
-          line: 61
+          offset: 7684
+          line: 63
           column: 247
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_drying_delta"
       identity_kind: "explicit"
-      unit_id: "normative_5585"
+      unit_id: "normative_6313"
       source_span:
         start:
-          offset: 6957
-          line: 62
+          offset: 7685
+          line: 64
           column: 1
         end:
-          offset: 7218
-          line: 62
+          offset: 7946
+          line: 64
           column: 262
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_output_states"
       identity_kind: "explicit"
-      unit_id: "normative_5585"
+      unit_id: "normative_6313"
       source_span:
         start:
-          offset: 7219
-          line: 63
+          offset: 7947
+          line: 65
           column: 1
         end:
-          offset: 7464
-          line: 63
+          offset: 8192
+          line: 65
           column: 246
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_primary"
       identity_kind: "explicit"
-      unit_id: "normative_35748"
+      unit_id: "normative_40702"
       source_span:
         start:
-          offset: 35860
-          line: 574
+          offset: 40814
+          line: 619
           column: 1
         end:
-          offset: 36073
-          line: 574
+          offset: 41027
+          line: 619
           column: 214
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_offgrade"
       identity_kind: "explicit"
-      unit_id: "normative_35748"
+      unit_id: "normative_40702"
       source_span:
         start:
-          offset: 36074
-          line: 575
+          offset: 41028
+          line: 620
           column: 1
         end:
-          offset: 36342
-          line: 575
+          offset: 41296
+          line: 620
           column: 269
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_35748"
+      unit_id: "normative_40702"
       source_span:
         start:
-          offset: 36343
-          line: 576
+          offset: 41297
+          line: 621
           column: 1
         end:
-          offset: 36576
-          line: 576
+          offset: 41530
+          line: 621
           column: 234
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_residue"
       identity_kind: "explicit"
-      unit_id: "normative_35748"
+      unit_id: "normative_40702"
       source_span:
         start:
-          offset: 36577
-          line: 577
+          offset: 41531
+          line: 622
           column: 1
         end:
-          offset: 36763
-          line: 577
+          offset: 41717
+          line: 622
           column: 187
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_40702"
+      source_span:
+        start:
+          offset: 42132
+          line: 627
+          column: 1
+        end:
+          offset: 44043
+          line: 627
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_scope"
       identity_kind: "explicit"
-      unit_id: "normative_41938"
+      unit_id: "normative_54899"
       source_span:
         start:
-          offset: 42032
-          line: 609
+          offset: 54993
+          line: 678
           column: 1
         end:
-          offset: 42218
-          line: 609
+          offset: 55179
+          line: 678
           column: 187
     - pointer: "/validation_rules/1"
       rule_id: "validation_route"
       identity_kind: "explicit"
-      unit_id: "normative_41938"
+      unit_id: "normative_54899"
       source_span:
         start:
-          offset: 42219
-          line: 610
+          offset: 55180
+          line: 679
           column: 1
         end:
-          offset: 42449
-          line: 610
+          offset: 55410
+          line: 679
           column: 231
     - pointer: "/validation_rules/2"
       rule_id: "validation_moisture"
       identity_kind: "explicit"
-      unit_id: "normative_41938"
+      unit_id: "normative_54899"
       source_span:
         start:
-          offset: 42450
-          line: 611
+          offset: 55411
+          line: 680
           column: 1
         end:
-          offset: 42680
-          line: 611
+          offset: 55641
+          line: 680
           column: 231
     - pointer: "/validation_rules/3"
       rule_id: "validation_balance"
       identity_kind: "explicit"
-      unit_id: "normative_41938"
+      unit_id: "normative_54899"
       source_span:
         start:
-          offset: 42681
-          line: 612
+          offset: 55642
+          line: 681
           column: 1
         end:
-          offset: 42883
-          line: 612
+          offset: 55844
+          line: 681
           column: 203
     - pointer: "/validation_rules/4"
       rule_id: "validation_identity_gap"
       identity_kind: "explicit"
-      unit_id: "normative_41938"
+      unit_id: "normative_54899"
       source_span:
         start:
-          offset: 42884
-          line: 613
+          offset: 55845
+          line: 682
           column: 1
         end:
-          offset: 43045
-          line: 613
+          offset: 56006
+          line: 682
           column: 162
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_final_handoff_bypass"
+      identity_kind: "explicit"
+      unit_id: "normative_54899"
+      source_span:
+        start:
+          offset: 56080
+          line: 687
+          column: 1
+        end:
+          offset: 56687
+          line: 687
+          column: 608
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5585"
+      unit_id: "normative_6313"
       source_span:
         start:
-          offset: 5585
-          line: 55
+          offset: 6313
+          line: 57
           column: 1
         end:
-          offset: 5606
-          line: 55
+          offset: 6334
+          line: 57
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5585"
+      unit_id: "normative_6313"
       source_span:
         start:
-          offset: 7490
-          line: 65
+          offset: 8218
+          line: 67
           column: 1
         end:
-          offset: 8505
-          line: 72
+          offset: 9233
+          line: 74
           column: 189
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35748"
+      unit_id: "normative_40702"
       source_span:
         start:
-          offset: 35748
-          line: 571
+          offset: 40702
+          line: 616
           column: 1
         end:
-          offset: 35788
-          line: 571
+          offset: 40742
+          line: 616
           column: 41
     - code: "UNSUPPORTED_NORMATIVE_BLOCK"
       message: "Empty normative rule cell is retained in complete H2 source without creating a flat rule."
-      unit_id: "normative_35748"
+      unit_id: "normative_40702"
       source_span:
         start:
-          offset: 36764
-          line: 578
+          offset: 41718
+          line: 623
           column: 1
         end:
-          offset: 37105
-          line: 578
+          offset: 42059
+          line: 623
           column: 342
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41938"
+      unit_id: "normative_54899"
       source_span:
         start:
-          offset: 41938
-          line: 606
+          offset: 54899
+          line: 675
           column: 1
         end:
-          offset: 41960
-          line: 606
+          offset: 54921
+          line: 675
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1255,5 +1400,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:873171fad1f5105ce82e16d3747a202d374af47dd0ff51ecc97c177306dac42a"
-  generated_content_sha256: "sha256:ea0842132258a16a689f0e22cda536f1b71c5a783003a34084169800fa31a3f9"
+    sha256: "sha256:66862a5586141435d5492880e9a2bbdd837cd048d06dab43686716cbec577dad"
+  generated_content_sha256: "sha256:e3f6c867f85b18df044e9abe8237b37c04bd4f2ac89cb91950a2f2a58a8bd965"

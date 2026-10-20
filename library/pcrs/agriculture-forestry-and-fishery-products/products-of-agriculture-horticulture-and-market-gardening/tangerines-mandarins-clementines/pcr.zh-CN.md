@@ -74,7 +74,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `boundary_citrus_orchard_to_farm_gate` | 所有数据集 | 纳入果园建立或更新、未结果期、结果期管理、采收和交接前条件性分选或调理。 | `fao-gap-framework-2003` |
-| `boundary_perennial_orchard_disclosure` | 果园资产和更新 | 按声明果园寿命或合格果实输出分配建立、未结果期和更新投入，并披露期限和特殊事件。 | `fao-gap-framework-2003`; `iso-14067` |
+| `boundary_perennial_orchard_disclosure` | 果园资产和更新 | 按声明果园寿命或合格果实输出分配建立、未结果期和更新投入，并披露期限和特殊事件。  即使本年没有新事件，也应纳入所代表林/果园应归属的历史建园、未结果期和更新贡献。上述归属记录是必需证据，不是允许省略负担的条件：数量、树龄/寿命或产出历史缺失时应明确保留完整性缺口，不能填零或自动排除。保留原事件，声明的期间/产出方法仅应用一次；另有研究排除须单独论证。 | `fao-gap-framework-2003`; `iso-14067` |
 | `boundary_direct_field_exchanges` | 土壤、残余物和植保 | 使用同一活动记录和地理适用方法纳入相关直接及适用间接环境交换。 | `ipcc-2019-refinement-vol-4`; `emep-eea-2023-guidebook` |
 | `boundary_post_farm_gate_exclusion` | 下游活动 | 排除场外运输、储存、配送、零售、消费者使用、果汁生产和包装末端处置，除非声明扩展。 | `iso-14044` |
 
@@ -280,8 +280,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_orchard_management_records`
 - 来源：`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
-
 ###### 供应设备的汽油（`orchard_energy_input_gasoline`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
@@ -464,7 +462,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_sorting_records`采集此投入，保留每1,000 kg合格分选水果的原始基准。共用量仅归属一次，归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；不再次归一化已归一化的数量。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -480,7 +478,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_sorting_records`采集此投入，保留每1,000 kg合格分选水果的原始基准。共用量仅归属一次，归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；不再次归一化已归一化的数量。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -546,7 +544,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -572,7 +570,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -655,7 +653,7 @@ sync_with: pcr.en-US.md
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_citrus_orchard_identity` | 所有过程 | 识别区块、品种、国家地区、作物年度、年龄、结果状态和分选边界。 | 果园登记；农场地图；元数据 |
 | `dq_perennial_citrus_time_basis` | 建立和管理 | 声明建立年度、未结果期、结果寿命、更新事件和资产分配基础。 | 果园历史；分配工作表 |

@@ -95,31 +95,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 种植材料 (`planting_material`)
-
-在所声明过程边界按已索引批次或运行记录此流；按指定协议定量，并明确其物理状态与去向。
-
-- 选定流： 菊苣种子或移栽苗
-- 流属性/单位：质量 / kg
-- 数量规则： 记录实际种子或移栽苗质量及建植路线。
-- 数值来源模式： 前景记录（`foreground_record`）
-- 适用范围： 路线特定（`route_specific`）
-原始活动或阶段基准：每公顷每作物周期.
-
-- 归一化基准：每声明的参考流
-- 基准类型： 作物周期（`crop_cycle`）
-- 证据类型： 采集记录（`collected_record`）
-- 采集协议： `cp_field_inputs`
-- 来源： `umn-forcing-chicories-2023`
-- 数量范围： 暂定种植材料质量筛查范围
-  - 范围角色： QA 校验范围（`qa_guardrail`）
-  - 下限： 0.1
-  - 上限： 2000
-  - 单位： kg/ha
-  - 基准： 每公顷；宽泛覆盖种子与移栽路线
-  - 基准类型： 作物周期（`crop_cycle`）
-  - 证据类型： 推理估算（`reasoned_estimate`）
-
 ###### 尿素肥料投入（`nutrient_supply`）
 
 仅当声明的过程实际使用尿素肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
@@ -818,6 +793,10 @@ sync_with: pcr.en-US.md
 | `allocation_residues` | tops, soil, losses and rejects | 除非有文件证明产品功能和去向可支持分配，否则负荷保留在产生节点。 | `iso-14044-2006` |
 | `allocation_runs_rework` | shared runs and rework | 共享负荷按实测用量、时间、面积或质量仅分配一次；返回材料保留既有负荷且只增加返工负荷。 | `mass-balance-identity` |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
@@ -829,13 +808,14 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_field_inputs` | `field_production` | planting, each nutrient and crop-protection product | invoice/application/field records | lot; route; product; nutrient/active content; wet/dry basis; quantity; area; date | Reconcile stock and applications; generate concrete nutrient exchanges separately under the sole nutrient card；原始汇总与分配：Sum by product and normalize by area then accepted yield | kg, kg active, ha | each operation | full cycle | field lot | 每声明的参考流 | invoice; label; applicator record |
-| `cp_irrigation` | `field_production` | irrigation | meter/pump records | source; readings or flow/runtime; area; reuse | Meter or calibrated flow × runtime；原始汇总与分配：Sum gross delivery; subtract only documented reuse | m3, ha | each event | full cycle | field lot | 每声明的参考流 | calibration; irrigation log |
+| `cp_field_inputs` | `field_production` | planting, each nutrient and crop-protection product | invoice/application/field records | lot; route; product; nutrient/active content; wet/dry basis; quantity; area; date | 每项实际产品/配方分开采集，保留其原子输入卡、实物产品质量、组成、供应方、施用事件和原始单位。核对库存和实际施用，分析计算养分而不重复产品交换，每个有据数量通过匹配最终合格产出归属并归一化一次。 | kg, kg active, ha | each operation | full cycle | field lot | 每声明的参考流 | invoice; label; applicator record |
+| `cp_irrigation` | `field_production` | irrigation | meter/pump records | source; readings or flow/runtime; area; reuse | 在所定义接收边界计量实际外部交付灌溉产品，保留来源、责任方、计量位置、期间和损失。不将取水源表直接等同交付量，也不从已测外部交付量再扣内部循环/回用。水源供水网损失、回流和库存单独核对。实际自有直接取水采用单独相容基本资源流，声明边界内输水为内部转移；外购供水的上游取水只覆盖一次。有据原始数量按匹配合格产出归属并归一化一次。 | m3, ha | each event | full cycle | field lot | 每声明的参考流 | calibration; irrigation log |
 | `cp_energy` | all processes | energy by operation | fuel/meter/machine logs | carrier; quantity; operation; runtime; area/mass; lot/run | Meter or reconcile fuel; assign shared use once；原始汇总与分配：Retain carrier exchange; normalize by causal driver | L, kg, kWh, MJ | each operation | full cycle through hand-off | lot/run | 每声明的参考流 | invoice; meter; equipment log |
 | `cp_mass_balance` | field and lifting | roots, residues, losses, transfers | scale/sampling records | lot; gross/tare/net; moisture; tops; soil; loss; time | Calibrated weighing and representative sampling；原始汇总与分配：Reconcile inputs, outputs, residues and losses | kg, ha | each lot/handoff | harvest through lifting | field lot | 每声明的参考流 | calibration; sampling plan |
 | `cp_field_emissions` | `field_production` | exact emissions | calculation record | nutrient form/N; application; soil/climate; substance; compartment; method | Apply named method to collected records；原始汇总与分配：Sum by substance and compartment | kg substance, kg N | each application/calculation | full cycle | field lot | 每声明的参考流 | inputs; method; audit trail |
 | `cp_conditioning` | `primary_conditioning` | utilities, roots, residues, wastewater | meter/scale/run log | run/lot; roots; water; energy; tops; soil; wastewater; destinations | Meter utilities and weigh material states；原始汇总与分配：Reconcile solids and water separately | kg, L, kWh | each run | all included runs | site/run | 每声明的参考流 | calibration; run sheet; receipt |
 | `cp_grading` | `grading_farm_gate` | accepted, downgraded, rejected, reworked | grade/dispatch log | run/lot; grade; each output mass; destination; rework; date | Calibrated weighing by output state；原始汇总与分配：Reconcile prepared input and outputs; count rework once | kg | each run/dispatch | all included runs | site/run | 每声明的参考流 | calibration; grade; dispatch |
+| `cp_phase1_environment_coverage` | field_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -845,16 +825,24 @@ sync_with: pcr.en-US.md
 | `calc_process_balance` | each hand-off | input mass = products + residues/rejects + measured loss on one mass state | calibrated masses; samples | closure difference | `mass-balance-identity` |
 | `calc_direct_emissions` | field emissions | Apply the declared current method separately by substance and compartment | input and field records | kg substance by compartment | `ipcc-2019-refinement-volume4` |
 | `calc_shared_energy` | shared equipment | consumption × causal share; shares sum to 1 | energy; time/area/mass | assigned energy | `mass-balance-identity` |
+| `planting_material_identity_and_fate` | `field_production` | 对于本作业原有 planting_material 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_field_inputs` | 按身份区分的交换和对账活动记录 | `umn-forcing-chicories-2023` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用于 | 要求 | 证据 |
+| requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | reference product | 将品种/用途、等级、修整、洁净和含水状态关联到每一批质量。 | grade, lot and dispatch records |
 | `dq_coverage` | inventory | 覆盖一个完整作物周期及所有贡献的起挖、整理和分级运行。 | dated field/run logs |
 | `dq_measurement` | mass, water, energy | 使用校准仪器，或记录计算、抽样与不确定性。 | calibration and sampling records |
 | `dq_route` | alternatives | 在完成路线特定投入、产量和损失计算前保持建植与起挖路线分离。 | route-indexed records |
-| `dq_completeness` | nutrients and outputs | 在一张卡下采集实际养分产品，并无重复地核算合格、降级、拒收、残余物和损失状态。 | input ledger; balance report |
+| `dq_completeness` | nutrients and outputs | 将种植材料、每种实际肥料/改良剂配方、植保产品、水、能源、产出、降级/拒收、残余和排放驱动与原始记录核对。每种实际肥料/改良剂采用单独原子产品输入卡，保留产品质量、组成和施用记录；养分当量为属性/计算输入，不是重复产品数量。UUID缺失保留明确待核验状态。 | input ledger; balance report |
 
 ## 9. 验证规则
 
@@ -867,7 +855,7 @@ sync_with: pcr.en-US.md
 | `validate_mass_balance` | hand-offs | 在同一状态核对投入与产品、残余物/拒收物及损失；调查无法解释的平衡差。 | `mass-balance-identity` |
 | `validate_reject_routing` | grade/rework | 为每个降级或拒收状态指定去向；返回材料仅增加增量负荷，并须重新通过等级后方可成为合格产出。 | `mass-balance-identity` |
 | `validate_run_attribution` | shared operations | 验证批次/运行索引且份额之和为 1，确保清洁、能源与返工仅计一次。 | `mass-balance-identity` |
-| `validate_ranges` | inventory | 每张流卡须恰有一个完整数量范围；范围外数值须复核，但不得替代有依据的前景值。 | `mass-balance-identity` |
+| `validate_ranges` | inventory | 逐条检查已提供范围的上下限、单位、基准、证据及双语一致性。任何强制界限均须有相容定量证据；无支持界限时保留实测数量并明确报告范围筛查不可用，不得编造范围或宣称该项检查完整。调查偏离，不以范围覆盖实测值。 | |
 
 ## 10. 发布数据集画像
 
@@ -894,3 +882,4 @@ sync_with: pcr.en-US.md
 | `iso-14044-2006` | standard | ISO 14044:2006 | 分配层级 |
 | `mass-balance-identity` | method_factor | Conservation of mass on declared states | 转移、平衡与共享归属 |
 | `reference-flow-identity` | method_factor | PCR reference-flow normalization identity | 精确参考产出 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

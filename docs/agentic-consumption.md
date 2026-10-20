@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-18"
-lastReviewedCommit: "3faf6707c45abd4dbc6ca4bb72ea4224287dd3ec"
-lastReviewedNote: "Reviewed CPC 01/02/03 candidate repairs: compound-mass units, explicit per-exchange collection obligations, removal of unsupported numeric screens and sugar-beet allocation/source corrections. Candidate and translation states, identity gaps, accepted mapping decisions and lossless documentation contracts are retained. Catalogs are regenerated; complete exact-source hosted qualification remains required."
+lastReviewedAt: "2026-10-19"
+lastReviewedCommit: "abd18053c9ea2860e2c1107ac65ae17730b4f4eb"
+lastReviewedNote: "Reconciled Candy main compound-unit, collection and evidence repairs with the CPC 01/02/03 phase-one corrections, fresh cut-flower methodology, accepted mappings and lossless documentation delivery. Preserved candidate and unresolved-identity qualifications; regenerated projections and indexes. Full hosted qualification remains required."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

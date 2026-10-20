@@ -48,10 +48,10 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_mass` | accepted grain | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Report net grain mass at measured farm-gate moisture; exclude packaging, foreign matter, residues, downgraded grain and rejects. |
-| `moisture_conversion` | grain before/after drying | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg and % wet basis | Preserve dry matter: `dry matter = wet mass × (1 − moisture fraction)`; convert only from paired mass and moisture observations. |
+| `reference_mass` | accepted grain | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 按农场门实测含水率报告净籽粒质量；剔除包装、异物、残体、降级籽粒及拒收物。 |
+| `moisture_conversion` | grain before/after drying | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg and % wet basis | 保全干物质：干物质＝湿质量×（1－含水率分数）；仅用成对质量及含水率观测换算。 |
 | `nutrient_products` | 实际肥料与改良剂投入 | product mass and analysis | kg product and kg nutrient | 每种施用产品及分析数据分别采集；每种物理产品各有一张产品投入卡。养分总量另行计算，不得重复建立交换。 |
-| `area_yield` | field production | area and accepted grain mass | ha and kg | Calculate yield from cultivated area and accepted grain in the same crop cycle; disclose failed area. |
+| `area_yield` | field production | area and accepted grain mass | ha and kg | 用同一作物周期种植面积和合格籽粒核算产量，并披露失败面积。 |
 | `energy_identity` | all energy uses | carrier-specific property | original unit plus MJ or kWh | Preserve carrier, original quantity and conversion basis. |
 
 ## 5. 系统边界
@@ -206,7 +206,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： irrigation water
 - 流属性/单位： Volume / m3
-- 数量规则： measured withdrawal or delivered volume
+- 数量规则：按事件/用途和匹配期间，计量实际跨此产品供水边界的供水量并保留声明原生单位。水源取水表不能自动当交付产品量，须核对两测点间输配损失、外部回水和存水变化。前景负责直接天然取水时，另设分水源基本流输入及本地供水作业，内部交付在聚合边界抵销，不能另加一笔外购水。外购水承接兼容供应商取水及供水负担一次。雨养/无供水须有据，缺少交付量或责任证据属于不完整而非零；归属后按合格最终产出归一化一次。
 - 数值来源模式： 前景记录 (`foreground_record`)
 - 适用范围： 场址特定 (`site_specific`)
 原始活动或阶段基准：每 1,000 kg 合格干籽粒.
@@ -282,15 +282,8 @@ sync_with: pcr.en-US.md
 - 基准类型： 参考流 (`reference_flow`)
 - 证据类型： 依据采集计算 (`calculated_from_collection`)
 - 采集协议： `cp_harvest_lot`
-- 数量范围： 来源支持的 yield plausibility screen
-  - 范围角色： QA 校验 (`qa_guardrail`)
-  - 下限： 111
-  - 上限： 909
-  - 单位： m2 cultivated area
-  - 基准： area implied by 1.1–9 t/ha reported dry-seed yield per 1,000 kg accepted grain, before losses
-  - 基准类型： 参考流 (`reference_flow`)
-  - 证据类型： 外部来源 (`external_source`)
-  - 来源： `feedipedia-faba-bean`
+
+本卡为质量交换，面积区间不能校验其数量。收获植株质量依据实测生物量、水分及损失确定。种植面积另算：匹配的合格籽粒质量（kg）除以实测合格得率（kg/ha），再乘 10,000 m2/ha。收获种子得率须先与干燥、拒收和损失对账，才能作为合格得率；此处不设通用场址面积界限。
 
 ##### 废物流
 
@@ -698,7 +691,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： grain rejected during drying
 - 流属性/单位： Mass / kg
-- 数量规则： measured loss plus reconciled unexplained dry-matter loss
+- 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
 - 适用范围： 场址特定 (`site_specific`)
 原始活动或阶段基准：每 1,000 kg 合格干籽粒.
@@ -724,7 +717,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： water to air from grain drying
 - 流属性/单位： Mass / kg
-- 数量规则： incoming water mass minus outgoing water mass
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
 - 适用范围： 场址特定 (`site_specific`)
 原始活动或阶段基准：每 1,000 kg 合格干籽粒.
@@ -868,11 +861,11 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_output_classification` | all outputs | Assign each quantity once to accepted product, valuable co-product, field-returned residue, rework, downgraded product, waste or loss at one hand-off. | `ipcc-2019-managed-soils` |
-| `allocation_residue_default` | straw/stems/leaves/hulls | Field-returned material has no co-product allocation; removed material is a co-product only with beneficial destination and positive value, otherwise waste. | `vce-faba-bean-2024`; `ipcc-2019-managed-soils` |
-| `allocation_economic_precedence` | independently valuable co-products | Use economic allocation with contemporaneous farm-gate values; otherwise single-output treatment. Report mass-allocation sensitivity when values are unavailable, unstable, or based on fewer than three representative transactions. |  |
-| `allocation_rework` | damaged/off-spec grain | Retain burdens through re-cleaning/re-grading, count loop energy once, and classify material only at final hand-off. |  |
-| `allocation_route_period` | mixed routes/shared runs | Attribute field burdens by crop cycle and post-harvest burdens by metered lot or throughput share; assign shared cleaning/changeover once. |  |
+| `allocation_output_classification` | all outputs | 各数量在一处交接仅归属一次为合格产品、有价值共产品、还田残体、返工、降级品、废物或损失。 | `ipcc-2019-managed-soils` |
+| `allocation_residue_default` | straw/stems/leaves/hulls | 还田物料不作共产品分配；移出物料仅在有益去向及正价值成立时作共产品，否则为废物。 | `vce-faba-bean-2024`; `ipcc-2019-managed-soils` |
+| `allocation_economic_precedence` | independently valuable co-products | 先细分并直接归属可单独记录的作业。存在独立预期产品的剩余共同负担，在首次独立农场交接点按经济价值分配：share_i = (quantity_i * price_i) / sum(quantity_j * price_j)，纳入完整产出集合，并匹配期间、交接点和币种。披露代表性价格来源、交易记录、波动、含水基准及质量分配敏感性。价格缺失、不稳定或无代表性属于分配证据缺口，不得据此忽略实际联产品或声明为单一产出系统。仅在有据确认其他材料没有独立预期产品功能时，才能采用单一产出处理。不得编造价格或把未知价格当零；分配分母未解决时，完整分配结果不成立。 |  |
+| `allocation_rework` | damaged/off-spec grain | 重清理/重分级承接原有负担，循环能耗只计一次，物料仅在最终交接归类。 |  |
+| `allocation_route_period` | mixed routes/shared runs | 田间负担按作物周期归属，采后负担按批次计量或吞吐份额归属；共享清理/换线仅归属一次。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -885,51 +878,59 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_field_cycle` | `managed_field_production` | inputs, area and emission drivers | field log/invoice/meter | crop; field; dates; area; seed; each nutrient product/analysis; treatments; water; carriers; lime/urea; prior crop | reconcile logs, invoices, meters and maps；原始汇总与分配：retain product rows; sum like identities; allocate shared use by documented driver | native units, kg, L, m3, MJ, kWh, ha | each operation | crop cycle | each field/route | 每声明的参考流 | invoices, calibration, map, application/meter log |
+| `cp_field_cycle` | `managed_field_production` | inputs, area and emission drivers | field log/invoice/meter | crop; field; dates; area; seed; each nutrient product/analysis; treatments; water; carriers; lime/urea; prior crop ；实际供水边界及测点；产品交付量；直接取水责任方；水源至交付的损失回水及存水；供应商覆盖| reconcile logs, invoices, meters and maps；原始汇总与分配：retain product rows; sum like identities; allocate shared use by documented driver | native units, kg, L, m3, MJ, kWh, ha | each operation | crop cycle | each field/route | 每声明的参考流 | invoices, calibration, map, application/meter log |
 | `cp_harvest_lot` | `mature_crop_harvest` | crop, collected state, residues and losses | ticket/sample/log | lot; maturity; route; pre-drying; masses; moisture; fractions; shatter; residue dry matter/destination; energy | scales plus representative loss sampling；原始汇总与分配：reconcile standing, collected, residue and loss; weight routes by accepted output | kg, %, kg DM, MJ, kWh | field/lot | harvest period | field/route | 每声明的参考流 | calibration, sample design, log |
 | `cp_conditioning_lot` | `threshing_cleaning` | clean grain, residues, rejects and energy | batch/meter/scale | lot; route; mass/moisture; residue mass/moisture/destination/value; rejects; energy/changeover | calibrated instruments and destination records；原始汇总与分配：close wet/dry mass balance; assign shared burdens once | kg, %, kg DM, MJ, kWh | lot/run | campaign | line/site | 每声明的参考流 | calibration, batch sheet, receipt |
-| `cp_drying_lot` | `moisture_stabilization` | stable grain, energy, water and loss | dryer/meter/moisture log | lot; technology; paired mass/moisture; duration; temperature; airflow; carriers; losses | calibrated mass/moisture and energy records；原始汇总与分配：preserve dry matter; calculate water; assign energy/loss | kg, %, MJ, kWh, h, °C | lot | campaign | drying route | 每声明的参考流 | calibration, dryer/meter/inspection log |
+| `cp_drying_lot` | `moisture_stabilization` | stable grain, energy, water and loss | dryer/meter/moisture log | lot; technology; paired mass/moisture; duration; temperature; airflow; carriers; losses ；含拒收物/残体的全部进出水；实际加水/降雨；单独液体转出；期初期末水库存；含水率及密度；有据蒸发; 实际材料/状态/去向；代表性物流计量；其他全部组分/库存项；未解释差额及不确定性| calibrated mass/moisture and energy records；原始汇总与分配：preserve dry matter; calculate water; assign energy/loss | kg, %, MJ, kWh, h, °C | lot | campaign | drying route | 每声明的参考流 | calibration, dryer/meter/inspection log |
 | `cp_grading_lot` | `farm_gate_grading` | accepted, downgraded, rework and rejects | grading/scale/sales record | lot; incoming mass/moisture; criteria; each output mass/destination/value; rework; energy; date | scale/sorter reconciled to destination；原始汇总与分配：accepted + downgraded + rejects = input − measured loss; rework only at final hand-off | kg, %, currency/kg, MJ, kWh | lot | reporting period | grading site | 每声明的参考流 | calibration, ticket, invoice, receipt |
+| `cp_phase1_environment_coverage` | managed_field_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
 | rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_moisture_dry_matter` | moisture conversion | `dry matter = wet mass × (1 − wet-basis moisture fraction)`; normalized wet mass = dry matter / (1 − target fraction) | paired mass/moisture | dry matter and normalized mass | `fao-grain-drying` |
+| `calc_moisture_dry_matter` | moisture conversion | 干物质＝湿质量×（1－湿基含水率分数）；目标基准湿质量＝干物质÷（1－目标含水率分数）。 | paired mass/moisture | dry matter and normalized mass | `fao-grain-drying` |
 | `calc_removed_water` | drying | incoming water minus outgoing water; do not count as dry-matter loss | paired mass/moisture | kg water | `fao-grain-drying` |
 | `calc_accepted_yield` | field/reference | accepted net grain divided by cultivated area; disclose failed area and moisture | output, area, moisture | kg/ha |  |
-| `calc_residue_n` | returned residue | selected national method or IPCC Equation 11.6, separating above/below ground and removed/burned fractions | yield, residue DM/N, destination fractions | kg residue N returned | `ipcc-2019-managed-soils` |
-| `calc_mass_balance` | post-harvest lots | incoming dry matter = accepted + downgraded + valuable residue + final waste/loss dry matter; investigate residual | all states/moisture | closure error/flag |  |
+| `calc_residue_n` | returned residue | 采用所选国家方法或 IPCC 方程11.6，区分地上/地下及移出/焚烧份额。 | yield, residue DM/N, destination fractions | kg residue N returned | `ipcc-2019-managed-soils` |
+| `calc_mass_balance` | post-harvest lots | 进料干物质＝合格＋降级＋有价值残体＋最终废物/损失的干物质；调查差额。 | all states/moisture | closure error/flag |  |
 | `calc_route_mix` | route alternatives | sum(route result × accepted-output share); enter shared burdens once | route inventories/shares | production mix |  |
-| `calc_economic_allocation` | valuable outputs | output value / sum independently valuable output values on same period/moisture basis | masses/prices/moisture | allocation fractions |  |
+| `calc_economic_allocation` | valuable outputs | 产出价值÷同期间/含水率基准上所有独立有价值产出的总价值。 | masses/prices/moisture | allocation fractions |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_cycle`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | grain | Demonstrate *Vicia faba*, mature dry-grain purpose, market name, grade and non-seed hand-off. | crop/lot/specification/invoice |
-| `dq_temporal` | route | Link one representative crop cycle to its post-harvest lots; justify averaging and retain failed crops. | dated records |
-| `dq_measurement` | mass/moisture/energy/water | Use calibrated instruments or documented invoices/meters; retain basis, uncertainty and substitutions. | calibration and raw records |
-| `dq_completeness` | output states | Reconcile accepted, downgraded, reworked, residue, waste, shattering, handling and removed-water states. | node balances/receipts |
-| `dq_route_specificity` | alternatives | Keep winter/spring, rainfed/irrigated, manual/mechanical and natural/mechanical drying records separate before mixing. | route-coded records |
-| `dq_flow_identity` | parameterized/unmapped rows | Resolve every emitted Product exchange and substance/compartment-specific elementary exchange to verified UUIDs before TIDAS publication. | resolution record |
+| `dq_identity` | grain | 证明为 Vicia faba、成熟干籽粒用途、市场名称、等级及非种子交接。 | crop/lot/specification/invoice |
+| `dq_temporal` | route | 将一个代表作物周期关联采后批次；论证平均处理并保留失败作物。 | dated records |
+| `dq_measurement` | mass/moisture/energy/water | 使用校准仪器或有记录发票/仪表；保留基准、不确定性及替代数据。 | calibration and raw records |
+| `dq_completeness` | output states | 核对合格、降级、返工、残体、废物、落粒、搬运及移出水状态。 | node balances/receipts |
+| `dq_route_specificity` | alternatives | 冬/春作、雨养/灌溉、人工/机械及自然/机械干燥记录在混合汇总前分开。 | route-coded records |
+| `dq_flow_identity` | parameterized/unmapped rows | TIDAS 发布前，将每项输出的 Product 交换及物质/接收区室特定基本交换解析为已核实 UUID。 | resolution record |
 | `dq_range_review` | quantitative rows | Use ranges only as QA screens; investigate exceptions and retain foreground values. | QA note/raw record |
 
 ## 9. 校验规则
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference output | Require the stated product/property/unit-group UUIDs, 1,000 kg, mature dry *Vicia faba*, moisture, grade and farm-gate hand-off. |  |
-| `validate_scope` | package | Reject green beans, planting seed sold as seed, other pulse species, downstream processing or post-gate transport in the reference output. |  |
-| `validate_processes` | graph | Require field production, harvest, threshing/cleaning and grading; require drying when moisture exceeds target or active drying/aeration occurs. | `fao-grain-postharvest`; `fao-predrying` |
-| `validate_route_delta` | alternatives | Name parent and real topology/inventory/calculation/data/validation delta; require shares for coexisting routes and forbid unqualified merging of mutually exclusive routes. |  |
-| `validate_mode_indexing` | cycles/lots/runs | Link inputs, outputs, cleaning and changeover to cycles/lots/periods; prevent duplicate shared-run burdens. |  |
+| `validate_reference_identity` | reference output | 要求声明产品/属性/单位组 UUID、1,000 kg、成熟干 Vicia faba、含水率、等级及农场门交接。 |  |
+| `validate_scope` | package | 参考产出不得包括青豆、作为种子销售的播种种子、其他豆类、下游加工或交接后运输。 |  |
+| `validate_processes` | graph | 要求田间生产、采收、脱粒/清理及分级；含水率超过目标或实际发生干燥/通风时要求干燥。 | `fao-grain-postharvest`; `fao-predrying` |
+| `validate_route_delta` | alternatives | 说明母活动及实际拓扑/清单/计算/数据/验证变化；共存路线须有份额，不合格地合并互斥路线不予通过。 |  |
+| `validate_mode_indexing` | cycles/lots/runs | 将投入、产出、清理及换线关联周期/批次/期间，防止共享运行负担双计。 |  |
 | `validate_nutrient_cardinality` | each process | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validate_output_states` | all output nodes | Give every accepted, downgraded, reworked, valuable residue, returned residue, waste and loss one class and hand-off; rejected material cannot be accepted output. |  |
-| `validate_allocation` | multi-output nodes | Require explicit single-output/economic decision, values and period; require mass sensitivity when values are weak and prevent double hand-offs. |  |
-| `validate_moisture` | drying/final grain | Require paired mass/moisture, dry-matter preservation, separate removed water and investigation of unexplained loss. | `fao-grain-drying` |
-| `validate_rework` | rejects | Point rework to cleaning or grading, retain prior burdens, count loop energy once and record final destination. |  |
-| `validate_ranges` | Flow Cards | Require exactly one complete Range per quantitative card and exact EN/ZH/structured agreement of label, role, bounds, unit, basis, basis kind, evidence kind and source ids. |  |
+| `validate_output_states` | all output nodes | 每种合格、降级、返工、有价值残体、还田残体、废物及损失须有唯一类别和交接；拒收物不计合格产出。 |  |
+| `validate_allocation` | multi-output nodes | 要求明确单产出/经济分配决定、价值及期间；价值证据薄弱时要求质量敏感性，防止重复交接。 |  |
+| `validate_moisture` | drying/final grain | 要求成对质量/水分、干物质保全、独立移出水及未解释损失调查。 | `fao-grain-drying` |
+| `validate_rework` | rejects | 将返工指向清理或分级，承接既有负担，循环能耗只计一次并记录最终去向。 |  |
+| `validate_ranges` | Flow Cards | 逐条检查已提供范围的上下限、单位、基准、证据及双语一致性。任何强制界限均须有相容定量证据；无支持界限时保留实测数量并明确报告范围筛查不可用，不得编造范围或宣称该项检查完整。调查偏离，不以范围覆盖实测值。 | |
 
 ## 10. 发布数据集画像
 
@@ -945,7 +946,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `vce-faba-bean-2024` | `extension_guidance` | Virginia Cooperative Extension, *Faba Bean: A Multipurpose Specialty Crop for the Mid-Atlantic USA*, SPES-590, https://www.pubs.ext.vt.edu/SPES/spes-590/spes-590.html | identity, green/dry distinction, cool-season production, residue return |
 | `fao-grain-postharvest` | `official_guidance` | FAO, *Agricultural engineering in development: Grain and post-harvest systems*, https://www.fao.org/4/T0522E/T0522E03.htm | harvest, pre-drying, threshing, cleaning, drying and about 14% storage moisture |
@@ -953,3 +954,4 @@ sync_with: pcr.en-US.md
 | `fao-grain-drying` | `handbook` | FAO, *Farm structures in tropical climates: Grain drying*, https://www.fao.org/4/s1250e/S1250E0u.htm | wet-basis moisture, dry-matter conversion and drying controls |
 | `feedipedia-faba-bean` | `handbook` | Feedipedia (INRAE, CIRAD, AFZ and FAO), *Faba bean (Vicia faba)*, https://feedipedia.review.fao.org/node/4926 | identity, maturity, 1.1–9 t/ha yield span, shattering/splitting and 12% storage moisture |
 | `ipcc-2019-managed-soils` | `method_factor` | IPCC, *2019 Refinement, Volume 4, Chapter 11*, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | managed-soil emissions, N-fixing pulse residue N and destination double-counting prevention |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

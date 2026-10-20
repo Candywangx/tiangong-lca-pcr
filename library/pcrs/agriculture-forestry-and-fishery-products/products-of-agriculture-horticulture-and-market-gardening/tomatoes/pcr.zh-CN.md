@@ -99,30 +99,6 @@ content_maturity: authored_methodology
 #### 输入
 ##### 产品流
 
-###### 流：番茄种子或移栽苗（`seed_or_transplant_input`）
-
-番茄种子或移栽苗在被声明生产单元接收用于建植时跨越边界。种子和移栽苗应分开记录。
-
-- 选定流：番茄种子或移栽材料
-- 流属性/单位：Mass or viable count / kg seed or plant
-- 数量规则：按生产单元记录供应商批次、种子质量或有效株数、栽植日期、面积、未用材料和补栽材料。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：同一作物周期每 1,000 kg 合格新鲜番茄.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_establishment_records`
-- 数量范围：种植材料筛查区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.01
-  - 上限：12
-  - 单位：kg seed or 2,500 plants per ha
-  - 基准：声明栽植面积和番茄作物周期产出
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 流：建植灌溉水（`establishment_irrigation_water`）
 
 按来源和生产单元记录用于整地、出苗、移栽缓苗或初始施肥灌溉的水。
@@ -323,7 +299,7 @@ content_maturity: authored_methodology
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -416,31 +392,6 @@ content_maturity: authored_methodology
 
 ##### 废物流
 
-###### 流：降级或拒收番茄果实（`rejected_tomato_output`）
-
-不符合声明等级、成熟度、尺寸、外观或完整性标准的果实与合格产品分开记录，并声明去向。
-
-- 选定流：拒收或降级番茄果实
-- 流属性/单位：Mass / kg
-- 数量规则：按采收轮次称量降级和拒收果，并与采收和合格质量核对。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 合格新鲜番茄.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集记录计算（`calculated_from_collection`）
-- 采集协议：`cp_harvest_records`
-- 来源：`codex-cxs-293-2008`; `usda-ams-tomato-grade-standard`
-- 数量范围：拒收果筛查区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：40
-  - 单位：采收番茄质量百分比
-  - 基准：采收期的降级、拒收和不可销售番茄果实
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 流：番茄藤蔓和作物残体（`crop_residue_output`）
 
 按去向记录离开生产单元的藤蔓、叶、根、基质残体和其他作物生物量，包括还田、堆肥、饲料利用、处理或处置。
@@ -522,7 +473,7 @@ content_maturity: authored_methodology
 当声明生产单元的排水、淋失或径流被测量或估算时，记录硝酸盐损失。
 
 - 选定流：番茄生产硝酸根流失
-- 流属性/单位：Mass / kg N as nitrate
+- 流属性/单位: Mass / kg NO3-
 - 数量规则：使用测量排水或声明的氮平衡方法，记录受纳介质、排水比例和养分基准。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -541,6 +492,8 @@ content_maturity: authored_methodology
   - 基准：声明单元排水、淋失或径流中的硝酸盐损失
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：推理估算（`reasoned_estimate`）
+
+最终交换为 kg NO3-。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 62/14，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
 
 ### 过程：番茄采收与门点准备（`harvest_and_gate_preparation`）
 
@@ -709,6 +662,10 @@ content_maturity: authored_methodology
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -730,7 +687,7 @@ content_maturity: authored_methodology
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_establishment_records` | `crop_establishment` | seed, transplants, planting water, planting losses | supplier lot, planting log, establishment log | lot id; material form; mass or viable count; variety; planting date; area; unused and failed material | reconcile supplier records to planting-unit logs and retain lot documents；原始汇总与分配：aggregate by planting campaign and production unit | kg, plant, seed, m3, ha | each lot and planting event | complete crop-cycle establishment period | each field, compartment, hydroponic unit, or substrate unit | 每声明的参考流 | supplier invoice; planting log; lot traceability |
-| `cp_irrigation_records` | `crop_establishment` or `crop_management` | irrigation, fertigation water, source withdrawal, drainage | meter record, water balance, fertigation log | source; meter reading; delivered volume; rainfall; recirculation; drainage; discharge; area; date | read meters or reconstruct a documented water balance and reconcile source and delivered volumes；原始汇总与分配：sum by crop cycle and retain source and receiving-medium split | m3, mm, ha | each irrigation event or daily total | full crop cycle | each irrigation zone and production unit | 每声明的参考流 | meter calibration; water-balance closure; operator log |
+| `cp_irrigation_records` | `crop_establishment` or `crop_management` | irrigation, fertigation water, source withdrawal, drainage | meter record, water balance, fertigation log | source; meter reading; delivered volume; rainfall; recirculation; drainage; discharge; area; date ；期初/期末累计读数、时间、水表位置/单位/回零、外部流入和回水、输配损失、期初/期末蓄水，田间排水单列 | read meters or reconstruct a documented water balance and reconcile source and delivered volumes；原始汇总与分配：sum by crop cycle and retain source and receiving-medium split ；按水量计算规则分别核对供水管网与田间边界。 | m3, mm, ha | each irrigation event or daily total | full crop cycle | each irrigation zone and production unit | 每声明的参考流 | meter calibration; water-balance closure; operator log |
 | `cp_nutrient_records` | `crop_establishment` or `crop_management` | nutrient products and calculated emissions | invoice, label, nutrient plan, application log | product; formulation; mass; nutrient concentration; date; area; application method; soil or drainage condition | reconcile purchase, storage, and application records; calculate nutrient equivalents；原始汇总与分配：aggregate by product, nutrient, and crop cycle | kg product, kg N, kg P2O5, kg K2O | each application | full crop cycle | each production unit and nutrient zone | 每声明的参考流 | label or supplier specification; nutrient-plan review |
 | `cp_crop_protection_records` | `crop_management` | crop-protection products | application log and supplier record | product; active ingredient; concentration; mass or volume; date; treated area; application purpose | reconcile application logs with supplier records and crop-protection plan；原始汇总与分配：aggregate by product and active ingredient per crop cycle `crop_protection_input_specific_input`: 作业 crop_management：购入并施用于声明番茄作物的植保产品跨越边界。活性成分和配方产品信息分开记录。 原数量方法：按产品、活性成分、处理面积和作物周期汇总发票及施用日志，保留浓度和时间。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg, L, ha | each application | full crop cycle | each field, compartment, or crop zone | 每声明的参考流 | operator record; product label; application authorization |
 | `cp_energy_records` | `crop_management` | machinery fuel and production electricity | fuel log, meter, invoice, equipment log | carrier; quantity; meter; operation; equipment; production unit; date; allocation basis | read meters or reconcile delivery and equipment records to included operations；原始汇总与分配：sum by carrier, operation, and crop cycle `mobile_machinery_fuel_specific_input`: 作业 crop_management：按作业和生产单元记录拖拉机、喷雾器、采收辅助设备、叉车和其他移动机械燃料。 原数量方法：按作业汇总交付记录或机械燃料日志，保留燃料类型和换算基准。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | L, kg, kWh, MJ | each delivery, meter period, or operation | full crop cycle | each production unit and included service | 每声明的参考流 | meter record; invoice; conversion record |
@@ -740,6 +697,7 @@ content_maturity: authored_methodology
 | `cp_gate_energy_records` | `harvest_and_gate_preparation` | sorting, cooling, and packing electricity | sub-meter, invoice, equipment log | line; operation; kWh; date; lot throughput; allocation basis | allocate metered energy to included tomato throughput and retain line records；原始汇总与分配：sum by operation and tomato lot | kWh, kg | each shift or meter period | all included pre-gate operations | each pack-house line | 每声明的参考流 | sub-meter or invoice; throughput record |
 | `cp_packaging_records` | `harvest_and_gate_preparation` | rigid packaging, crates, and pallets | packaging specification, issue log, return log | package type; material; tare; capacity; count; reuse cycles; return; loss; lot | reconcile package issue and return records to lot throughput and declared reuse basis；原始汇总与分配：allocate by capacity or documented mass basis `rigid_primary_packaging_specific_input`: 作业 harvest_and_gate_preparation：当可重复使用或一次性周转箱、纸箱、托盘和其他刚性一次包装在门点前供应或消耗时记录。 原数量方法：记录包装类型、质量、容量、重复使用次数、回收率和番茄批次归属。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg, item, cycle | each issue and return event | full included gate period | each pack-house and transport route | 每声明的参考流 | supplier specification; issue and return log |
 | `cp_transport_records` | `purchased_transport_to_gate` | purchased road freight | transport order, bill, route record | material; loaded mass; origin; destination; distance; vehicle or service; return assumption; date | calculate tonne-kilometres from verified route and loaded mass；原始汇总与分配：aggregate by material and tomato lot | tkm, kg, km | each shipment | all included pre-gate shipments | each route and declared gate | 每声明的参考流 | bill of lading; route record; mass record |
+| `cp_phase1_environment_coverage` | crop_establishment | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -748,11 +706,20 @@ content_maturity: authored_methodology
 | `calc_accepted_output` | accepted tomato reference flow | 按采收批次汇总分级及已纳入清洗或冷却后的净合格番茄质量，排除包装皮重。 | harvest tickets; scale records; grade records; package tare | kg accepted tomatoes | `codex-cxs-293-2008` |
 | `calc_mass_reconciliation` | harvest and gate preparation | 总采收质量 = 合格质量 + 降级或拒收果 + 修整物和异物 + 已测工艺损失；调查未解释残差。 | gross mass; accepted mass; reject mass; trim; loss; moisture basis | reconciled tomato mass balance | `mass-balance-identity` |
 | `calc_nutrient_equivalents` | nutrient products | 养分质量 = 配方产品质量 × 文件化养分浓度；分别保留产品和养分基准。 | product mass; label or supplier concentration; application date | kg N, kg P2O5, and kg K2O | `fao-greenhouse-vegetables-2013` |
-| `calc_water_balance` | irrigation and washing water | 源头取水 = 交付水 + 储存变化 + 排放或排水 − 已识别循环回流，并核对单位和时间段。 | meter readings; delivery; rainfall; recirculation; drainage; storage change | m3 source withdrawal and delivered water | `fao-crop-evapotranspiration-56` |
+| `calc_water_balance` | irrigation and washing water | 逐个识别累计水表，期间水量 = 期末读数 - 期初读数，仅按有文件的回零、溢出及水表单位修正；保留两端读数、时间和水表位置。不同测点的源头总取水 W 与供水 D 分开保留。供水管网边界满足 W + 其他外部流入 = D + 向边界外的回水或排放 + 输配损失 + 期末蓄水 - 期初蓄水。边界内循环水相互抵销，不是新增取水，也不直接从总取水扣减。田间排水另属田间水量平衡，不得再次加到已经计量的供水量上。保留实测值并调查差额；缺读数不能推断零用水。 | meter readings; delivery; rainfall; recirculation; drainage; storage change | m3 source withdrawal and delivered water | `fao-crop-evapotranspiration-56` |
 | `calc_crop_cycle_normalization` | all crop-cycle amounts | 归一化数量 = 记录或计算数量 ÷ 合格番茄产出 × 1,000 kg；保留生产单元和作物周期分母。 | recorded amount; accepted output | amount per 1,000 kg accepted tomatoes | `mass-balance-identity` |
 | `calc_nitrogen_emissions` | direct and indirect nitrogen emissions | 对文件化氮投入、土壤或基质条件、排水和残体去向应用一种声明的 IPCC 兼容或辖区方法，不叠加重叠因子。 | kg N applied; method factors; drainage; residue fate | kg N2O, NH3, or nitrate loss by receiving medium | `ipcc-2019-managed-soils` |
 | `calc_reusable_packaging` | reusable crates and pallets | 包装分配负担 = 件负担 ÷ 文件化重复使用次数 × 按容量或声明质量基准确定的番茄批次份额。 | item mass; reuse cycles; lot capacity or mass; return and loss records | kg packaging allocated to tomato lot | `iso-14044-2006` |
 | `calc_transport_service` | purchased road freight | 运输服务 = 吨计装载质量 × 已核实路线公里；另行报告返程或回程假设。 | shipment mass; route distance; service record | tonne-kilometres | `fao-tomato-good-agricultural-practices` |
+| `seed_or_transplant_input_identity_and_fate` | `crop_establishment` | 对于本作业原有 seed_or_transplant_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_establishment_records` | 按身份区分的交换和对账活动记录 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_records`; `cp_irrigation_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+| `rejected_tomato_output_identity_and_fate` | `crop_management` | 原作业产生相关物料时，rejected_tomato_output 的采集职责必须履行。每种物理上独立的物流须分别记录实际材料、组成、状态、实测质量与去向。粉尘、糠壳、籽粒、包装及产品拒收物不能仅因在同一作业产生而共用交换；真实混合物流仅在组成和处理边界有据时可单列一张卡。降级农产品须区分具有接收者和用途证据的预期可销售联产品与实际送处理的废物；等级较低本身不决定废物属性或分配。场内返工／回用和留田生物量保留在对账的内部台账，不作为外运废物。完整性通过前须按实际属性建立具体产品或废物卡，使用相容的已核验 UUID 或明确未解析身份；保留可归属负荷，不作无据替代抵扣，各物流不得双计。实测量仅按原有合格参考产出归一化一次。身份、数量或去向缺失时不得宣称完整，不推定聚合默认量或数值界限。 | `cp_harvest_records` | 按身份区分的交换和对账活动记录 | `codex-cxs-293-2008`; `usda-ams-tomato-grade-standard` |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
@@ -807,3 +774,4 @@ content_maturity: authored_methodology
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

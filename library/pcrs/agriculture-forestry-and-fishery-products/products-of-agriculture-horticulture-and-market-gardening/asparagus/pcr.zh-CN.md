@@ -92,32 +92,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 芦笋根冠或移栽苗（`planting_material_input`）
-
-按类型和田块记录进入农田的成活根冠或移栽苗。
-
-- 选定流：芦笋根冠或移栽苗
-- 流属性/单位：Number of items / plant
-- 数量规则：按类型和田块计数成活种植单元。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每建植公顷；使用同一芦笋园寿命期产量换算为每 1,000 kg 商品芦笋.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_establishment_records`
-- 来源：`osu-asparagus-production`; `penn-state-asparagus-production`
-- 数量范围：有来源的种植密度
-  - 范围角色：典型范围（`typical_range`）
-  - 下限：14800
-  - 上限：34600
-  - 单位：plants/ha
-  - 基准：每建植公顷的成活种植单元
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`osu-asparagus-production`; `penn-state-asparagus-production`
-
 ###### 尿素肥料（`stand_establishment_agricultural_nutrient_inputs_urea`）
 
 **stand_establishment_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -628,6 +602,10 @@ sync_with: pcr.en-US.md
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 完成数据集前确认具体投入身份
@@ -651,6 +629,7 @@ sync_with: pcr.en-US.md
 | `cp_field_year_records` | `annual_field_management` | 养分、水、电力、残体和排放活动 | 田块年度日志、发票、仪表和施用记录 | field_id; year; stand_age; area; product_identity; product_mass; nutrient_concentration; irrigation_volume; electricity; residue_mass; dry_matter; residue_nitrogen; destination | 将全部记录核对至同一田块年；原始汇总与分配：先按田块年汇总再按参考流归一化 | ha; kg; kg nutrient; m3; kWh | 每次事件及年度结束 | 含采后茎叶管理的全年 | 每个代表生产田块 | 每声明的参考流 | 发票、标签、分析、仪表和去向记录 |
 | `cp_harvest_records` | `harvest_and_farm_gate_preparation` | 待采与采收毛重嫩茎 | 采收日志和秤重记录 | field_id; harvest_date; harvest_pass; gross_mass; field_loss; harvest_method; area | 每个采收批次关联田块和日期；原始汇总与分配：按田块年汇总，归一化前不混合园龄 | kg; ha | 每次采收 | 完整采收期 | 每个代表田块 | 每声明的参考流 | 校准秤和采收票据 |
 | `cp_handling_records` | `harvest_and_farm_gate_preparation` | 水、包装、商品输出和拒收物 | 批次、秤重、仪表、包装和废物记录 | lot_id; source_field; gross_input; wash_water; packaging_material; packaging_mass; marketable_mass; grade; colour; trim_state; reject_mass; reject_reason; destination | 保持至交付的批次质量和公用工程核对；原始汇总与分配：聚合前核对投入、产品、拒收和质量变化 `primary_packaging_input_specific_input`: 作业 harvest_and_farm_gate_preparation：按材料记录随产品交付的柔性绑带、套袋和袋；刚性托盘和周转箱单独记录。 原数量方法：计量用于交付产品的包装，并单独识别可回用包装。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `rigid_packaging_input_specific_input`: 作业 harvest_and_farm_gate_preparation：按材料和回用周转次数记录随产品交付的刚性托盘和周转箱。 原数量方法：计量用于交付产品的包装，并单独记录可回用容器的周转次数。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; m3 | 每批或班次 | 完整采收包装期 | 每条代表处理线 | 每声明的参考流 | 校准秤、仪表、等级检验和去向凭证 |
+| `cp_phase1_environment_coverage` | stand_establishment | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -658,9 +637,17 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `calc_establishment_attribution` | 建植 | 建植量除以同一芦笋园归属的寿命期商品产量，并用实际生产年替换预期年。 | 建植量；批次；生产寿命假设；年度产量 | 每 kg 商品芦笋建植负荷 | `osu-asparagus-production`; `uc-asparagus-production` |
 | `calc_nutrient_equivalent` | 肥料投入 | 产品质量乘以有文件证明的养分质量分数，得到 kg N、P2O5 或 K2O。 | 产品质量；养分浓度；面积 | 养分当量投入 | `uc-ipm-asparagus-fertilization`; `osu-asparagus-production` |
-| `calc_field_normalization` | 年度投入 | 完整田块年数量除以对应田块年的商品产量。 | 田块年数量；商品质量 | 每 1,000 kg 参考产品数量 |  |
+| `calc_field_normalization` | 年度投入 | 最终田块年度贡献 = 应归属的完整田块年度数量 / 匹配的适销芦笋产出 kg * 1,000 kg。乘参考量前的商仅为每 kg 强度。已按每 kg 表示的建植贡献乘 1,000 一次后相加；已归一化贡献不得再次除以产出。 | 田块年数量；商品质量 | 每 1,000 kg 参考产品数量 |  |
 | `calc_product_balance` | 采收和处理 | 采收毛重加减实测质量变化等于商品产品加拒收物和修整物。 | 毛重、商品、拒收、修整和质量变化记录 | 核对后的输出量 |  |
 | `calc_managed_soil_emissions` | 受控土壤氮排放 | 对合成氮、有机氮和还田残体氮采用声明适用的 IPCC 或地区公式，保留换算并避免重复计算。 | 氮活动数据；因子；气候和管理限定 | 直接和间接氮排放 | `ipcc-2019-managed-soils` |
+| `planting_material_input_identity_and_fate` | `stand_establishment` | 对于本作业原有 planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 保留的来源特定采集筛查：14800–34600 plants/ha；基准：viable planting units per established hectare。仅适用于相匹配的具体形态、路线与分子单位，不适用于全部备选形态或最终归一化交换。 | `cp_establishment_records` | 按身份区分的交换和对账活动记录 | `osu-asparagus-production`; `penn-state-asparagus-production` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_year_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
@@ -709,3 +696,4 @@ sync_with: pcr.en-US.md
 | `ipcc-2019-managed-soils` | official_guidance | IPCC, 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 受控土壤氮排放和残体氮 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

@@ -231,7 +231,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：内部中间体——成熟整椰子
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -258,7 +258,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：按去向延后确定的残余物流
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -291,7 +291,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：内部中间体——成熟整椰子
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -347,7 +347,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：前景选择的货运服务
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Transport work / t km
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -366,6 +366,7 @@ sync_with: pcr.en-US.md
   - 基准类型：(`transport_service`)
   - 证据类型：推理估算（`reasoned_estimate`）
 
+运输功按实际净运输质量（吨）乘实际载货距离（千米）计算，披露空返和载荷分配；同一承包作业已经包含完整运输负荷时不得再次加入运输服务。
 
 ##### 废物流
 
@@ -381,7 +382,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：内部中间体——已采收整椰子
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -417,7 +418,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：内部中间体——已采收整椰子
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -441,7 +442,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：前景选择的工艺水
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -459,6 +460,8 @@ sync_with: pcr.en-US.md
   - 基准：per 1,000 kg ungraded copra; zero when inactive
   - 基准类型：(`process_output`)
   - 证据类型：推理估算（`reasoned_estimate`）
+
+单独保留计量水体积，按有记录的密度和条件换算为 kg：kg = m3 × 密度（kg/m3）。同一外供水不得再作为第二项资源取水重复计量。
 
 ###### 中压电力投入（`drying_energy`）
 
@@ -506,7 +509,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：内部中间体——未分级椰干
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -525,31 +528,6 @@ sync_with: pcr.en-US.md
   - 基准类型：(`process_output`)
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 分离的椰壳与椰衣（`husk_shell`）
-
-该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
-
-- 选定流：按去向延后确定的椰壳与椰衣流
-- 流属性/单位：质量或适用服务属性 / 声明单位
-- 数量规则：关联批次的实测或核算数量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1,000 kg ungraded copra.
-
-- 归一化基准：每声明的参考流
-- 基准类型：（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_copra_drying`
-- 数量范围：QA 或归一化范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：4000
-  - 单位：kg
-  - 基准：per 1,000 kg ungraded copra
-  - 基准类型：(`process_output`)
-  - 证据类型：推理估算（`reasoned_estimate`）
-
-
 ##### 废物流
 
 ###### 干燥不合格物（`drying_reject`）
@@ -557,7 +535,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：待记录去向和处理后解析
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -590,7 +568,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：内部中间体——未分级椰干
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -684,7 +662,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：按等级与去向延后确定的椰干流
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -711,7 +689,7 @@ sync_with: pcr.en-US.md
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
 - 选定流：待记录返工、回收或处置去向后解析
-- 流属性/单位：质量或适用服务属性 / 声明单位
+- 流属性/单位: Mass / kg
 - 数量规则：关联批次的实测或核算数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
@@ -738,10 +716,10 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `avoid_allocation` | all nodes | Subdivide by site, crop period, route and lot; use direct measurement first. |  |
-| `multi_output` | production and drying | Enumerate accepted, downgraded, husk, shell, residue and waste hand-offs; use dry-matter mass only when physical causality cannot be established. |  |
-| `internal_fuel` | husk or shell fuel | Count internal transfer and combustion once; do not also claim sold co-product output. |  |
-| `rework` | rejects | Record rework, downgrade, recovery or disposal and incremental burdens once; exclude rejected mass from accepted output. |  |
-| `multi_period` | crop and storage periods | Link events to the affected period and prevent double attribution to batch and annual totals. |  |
+| `multi_output` | production and drying | 列举合格、降级、外果皮、硬壳、残体和废物交接；仅在无法建立物理因果关系时使用干物质质量分配。 |  |
+| `internal_fuel` | husk or shell fuel | 内部转移及燃烧各计一次，不得同时声称该物料是出售共产品。 |  |
+| `rework` | rejects | 返工、降级、回收或处置及其增量负担只记录一次；拒收质量排除于合格产出。 |  |
+| `multi_period` | crop and storage periods | 将事件关联受影响期间，防止在批次及年度总量中重复归属。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -756,6 +734,7 @@ sync_with: pcr.en-US.md
 | `cp_coconut_harvest` | `coconut_harvest` | all cards | lot and meter records | identity, mass, moisture, route, energy, destination | linked weighing, meters and logs；原始汇总与分配：sum by identity then normalize | declared | each lot/run | representative period | each site/route | 每声明的参考流 | calibration, invoices, traceability |
 | `cp_copra_drying` | `copra_drying` | all cards | lot and meter records | identity, mass, moisture, route, energy, destination | linked weighing, meters and logs；原始汇总与分配：sum by identity then normalize | declared | each lot/run | representative period | each site/route | 每声明的参考流 | calibration, invoices, traceability |
 | `cp_copra_grading` | `copra_grading` | all cards | lot and meter records | identity, mass, moisture, route, energy, destination | linked weighing, meters and logs；原始汇总与分配：sum by identity then normalize | declared | each lot/run | representative period | each site/route | 每声明的参考流 | calibration, invoices, traceability |
+| `cp_phase1_environment_coverage` | coconut_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -765,6 +744,14 @@ sync_with: pcr.en-US.md
 | `calc_dry_matter` | lots | mass × (1 − moisture/100) | mass and moisture | kg dry matter |  |
 | `calc_transport` | field transfer | tonnes × loaded distance | mass, distance | t·km |  |
 | `calc_route_mix` | route aggregate | output-weighted sum of route inventories | route inventory and output | aggregate |  |
+| `husk_shell_identity_and_fate` | `copra_drying` | 对于本作业原有 husk_shell 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_copra_drying` | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
@@ -779,8 +766,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_identity` | reference | Fail whole fresh coconut, fresh meat, oil, press cake or meal and any fresh/unprocessed description lacking dry-state qualifiers. | `fao-coconut-postharvest-compendium` |
-| `validate_moisture` | copra | Require measured value, basis, method and lot; investigate values outside 5–12% wet-basis screen. | `fao-coconut-postharvest-compendium`; `fao-aflatoxin-copra` |
+| `validate_identity` | reference | 完整鲜椰、鲜椰肉、油、压榨饼或粕，以及缺少干态限定项的鲜态/未加工描述不通过。 | `fao-coconut-postharvest-compendium` |
+| `validate_moisture` | copra | 要求实测值、基准、方法及批次；调查超出湿基 5–12% 筛查范围的数值。 | `fao-coconut-postharvest-compendium`; `fao-aflatoxin-copra` |
 | `validate_route` | drying | Require route, heat source, smoke contact, time and route-specific energy. | `fao-coconut-postharvest-compendium` |
 | `validate_nutrients` | 养分投入 | 每一种实际使用的肥料或改良剂须分别建立原子产品交换，记录数量、组成及经核实或明确待核实的身份。 |  |
 | `validate_bindings` | cards | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
@@ -804,3 +791,4 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `fao-coconut-postharvest-compendium` | official_guidance | FAO, Coconut: Post-harvest Operations, https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_Coconut.pdf | identity, drying route, moisture, process boundary and quality |
 | `fao-aflatoxin-copra` | official_guidance | FAO, HACCP Manual, Example 3: Copra cake and meal, https://www.fao.org/4/y1390e/y1390e0l.htm | route-dependent safe moisture, mould prevention and validation |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

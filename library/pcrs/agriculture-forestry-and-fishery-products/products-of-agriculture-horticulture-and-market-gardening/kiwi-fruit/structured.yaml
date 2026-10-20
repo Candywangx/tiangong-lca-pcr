@@ -19,7 +19,7 @@ system_boundary:
   rules:
     - rule_id: system_boundary_rule_1
       applies_to: "foreground_system_boundary"
-      rule: "The foreground boundary begins with the declared orchard production inputs and ends when market-grade whole fruit is dispatched from the packhouse. Orchard establishment and durable infrastructure are included only when the data provider reports their allocation period and basis. Retail distribution and consumer ripening are excluded."
+      rule: "The foreground boundary begins with the declared orchard production inputs and ends when market-grade whole fruit is dispatched from the packhouse. Include the attributable establishment, immature-year, replacement and termination contributions for the represented orchard, plus attributable durable-infrastructure service. Record their period, beneficiaries and evidence under calc_kiwi_lifecycle. Missing allocation records are an explicit completeness gap, never permission to omit these burdens; disclose any separately justified study exclusion. Retail distribution and consumer ripening are excluded."
       source_ids: []
     - rule_id: system_boundary_rule_2
       applies_to: "foreground_system_boundary"
@@ -332,7 +332,7 @@ process_inventory:
           name: "Actual orchard residue or loss stream"
           flow_type: "waste"
           property_unit: "Mass / kg wet or dry material"
-          description: "Record prunings, dropped fruit, and other residues separately from intended fruit output, with their declared treatment. This card remains unmapped because it combines route-specific residue identities that have no applicable reviewed Dataset production shall split it by actual residue and fate. Raw activity or stage basis: per 1 kg reference product."
+          description: "Record prunings, dropped fruit, and other residues separately from intended fruit output, with their declared treatment. This card remains unmapped because it combines route-specific residue identities. Dataset production shall split it by actual residue and fate. Raw activity or stage basis: per 1 kg reference product."
           amount:
             expression: "measured residue or loss mass"
             value_mode: "foreground_record"
@@ -683,11 +683,17 @@ process_inventory:
       elementary:
         []
 allocation_rules:
-  - rule_id: allocation_rule_1
-    applies_to: "foreground_burden_allocation"
-    rule: "The PCR shall enumerate intended market-grade fruit, culls, downgraded fruit, residues, and waste. Verify the physical identity and destination of each actual output. No output may be counted at more than one hand-off."
-    source_ids: []
-  - rule_id: allocation_rule_2
+  - rule_id: output_set_and_allocation
+    applies_to: "all intended outputs"
+    rule: "Enumerate accepted fresh grades and independently intended downgraded or other products with measured quantity, state, gate and recipient. Culls sent to disposal, retained residues and internal transfers receive no co-product share; retain their production and handling burdens with the producing saleable route. Each actual mass has one final destination."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: kiwi_allocation_precedence
+    applies_to: "shared orchard and packhouse burdens"
+    rule: "Directly assign separable cultivar-, grade-, run-, packaging- and cooling-specific operations first. For comparable fresh kiwifruit grades receiving the same common handling, allocate residual common burden by measured net fruit mass. For another genuine co-product, use a measured causal physical driver only with evidence linking it to that operation; otherwise use same-period first-separation economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete output set, comparable gates/currency and representative prices. Missing prices do not mean zero. Disclose shares summing to one and a material alternative as sensitivity; no automatic substitution credit."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_rule_3
     applies_to: "foreground_burden_allocation"
     rule: "Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness."
     source_ids: []
@@ -765,8 +771,64 @@ dataset_production:
       site_scope: "declared handoff gate"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "calibration or weighing tickets, acceptance and lot traceability"
+    - protocol_id: cp_kiwi_lifecycle
+      process_id: "orchard_production"
+      flow_role: "orchard and asset lifecycle attribution"
+      record_type: "cohort and service ledger"
+      raw_fields: "block/cohort; event identity and native unit; establishment/immature/replacement/termination dates and quantities; actual annual outputs including zero years; evidenced remaining output trajectory; asset consumers and service units; upstream coverage; uncertainty"
+      collection_method: "Link original event records to benefiting cohorts. Use completed-life actual outputs or a site-specific documented forecast with uncertainty; never invent a lifetime, omit failed establishment, or repeat an upstream-covered event. Meter shared services or retain causal use records."
+      unit: "native activity units; kg fruit; service units"
+      frequency: "each event and annual reconciliation"
+      temporal_coverage: "complete benefiting cohort/service horizon"
+      site_scope: "represented orchard blocks and all asset consumers"
+      aggregation_rule: "apply calc_kiwi_lifecycle then calc_kiwi_normalize once"
+      quality_evidence: "event records, output scales, yield forecast basis, service ledger"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "orchard_production"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
-    []
+    - id: calc_kiwi_lifecycle
+      applies_to: "all applicable inventory rows"
+      rule: "For each block/cohort and each activity identity/native unit separately, pool attributable establishment, immature, replacement, termination and zero-output-year operation quantities as E. Exclude positive-output-year operations already collected annually. Q_y is all accepted fresh kiwifruit grades for that cohort/year at a matched gate; Q_L=sum(Q_y) over the completed life, or an evidenced past-plus-future trajectory for an unfinished cohort. Assign E_y=E*Q_y/Q_L; add E_y to the directly attributable positive-year operation quantities, apply kiwi_allocation_precedence, then normalize under calc_kiwi_normalize. Retain failed establishment with its actual benefiting cohort. Unknown/nonpositive Q_L makes lifetime intensity incomplete, not zero. For a common infrastructure service, assign total service burden once by independently measured use or evidenced occupied capacity-time over all consumers/service periods before the product split; no universal asset life."
+      inputs:
+        - cp_kiwi_lifecycle
+        - cp_orchard_output_records
+      output: "cohort/year attributed native quantities"
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - id: calc_kiwi_normalize
+      applies_to: "all applicable inventory rows"
+      rule: "R is positive accepted final dispatch mass in kg for the selected grade/state/gate and matched lot/period. Physical quantities retain the unallocated lot balance; final attributable inventory contribution = attributed raw quantity/R * 1 kg. Sum raw attributable quantities before normalization; a stage intensity q_i=Q/O_i contributes q_i*O_i/R, never q_i/R. Storage/cooling operations apply only to actual served lots; internal transfers cancel once and are not extra final output."
+      inputs:
+        - "all applicable collection protocols"
+        - cp_declared_reference_handoff
+      output: "inventory per 1 kg accepted final product"
+      source_ids:
+        - declared-handoff-measurement-definition
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
   data_quality_requirements:
     []
 validation_rules:
@@ -815,9 +877,17 @@ data_sources:
     type: "official_guidance"
     reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Allocation hierarchy; cohort E/Q attribution is this PCR's declared temporal convention, not a prescribed lifetime or a product-specific measured fact."
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:aabc9fc6a79f4ff9d41b3bbb12281a43a6856c5555f31e389c35e66cd4a00fa1"
+  source_sha256: "sha256:a5ee75fe8b0f316a21028f7d9dc4f8448d0bda0fdb0bb93bfd0f986c4ba7ffbb"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3589"
@@ -828,10 +898,10 @@ normative_context:
           line: 62
           column: 1
         end:
-          offset: 5023
-          line: 84
+          offset: 5293
+          line: 83
           column: 1
-      markdown: "## 5. System Boundary\n\nThe foreground boundary begins with the declared orchard production inputs and ends when market-grade whole fruit is\ndispatched from the packhouse. Orchard establishment and durable infrastructure are included only when the data\nprovider reports their allocation period and basis. Retail distribution and consumer ripening are excluded.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | managed orchard production inputs and established crop system |\n| starting_condition_role | disclosed foreground starting condition |\n| product_classification_scope | fresh whole kiwifruit at packhouse dispatch |\n| recursive_input_rule | same-category kiwifruit inputs remain explicit and require source-lot disclosure; do not recurse into another kiwifruit PCR |\n| upstream_dataset_requirement | disclose purchased planting material, soil amendments, irrigation, crop-protection inputs, energy, and packaging inputs with their source dataset identities |\n| disclosure | orchard location and system, cultivar, maturity criterion, harvest date, packhouse hand-off, grade, and storage route |\n\n### Normative boundary rule (`boundary_start_and_handoff`)\n\nThe data provider shall identify the orchard production starting condition, the independent harvest hand-off, the\nprimary-conditioning/grading hand-off, and the declared packhouse dispatch point. Any deviation shall be disclosed.\n\n"
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins with the declared orchard production inputs and ends when market-grade whole fruit is\ndispatched from the packhouse. Include the attributable establishment, immature-year, replacement and termination contributions for the represented orchard, plus attributable durable-infrastructure service. Record their period, beneficiaries and evidence under calc_kiwi_lifecycle. Missing allocation records are an explicit completeness gap, never permission to omit these burdens; disclose any separately justified study exclusion. Retail distribution and consumer ripening are excluded.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | managed orchard production inputs and established crop system |\n| starting_condition_role | disclosed foreground starting condition |\n| product_classification_scope | fresh whole kiwifruit at packhouse dispatch |\n| recursive_input_rule | same-category kiwifruit inputs remain explicit and require source-lot disclosure; do not recurse into another kiwifruit PCR |\n| upstream_dataset_requirement | disclose purchased planting material, soil amendments, irrigation, crop-protection inputs, energy, and packaging inputs with their source dataset identities |\n| disclosure | orchard location and system, cultivar, maturity criterion, harvest date, packhouse hand-off, grade, and storage route |\n\n### Normative boundary rule (`boundary_start_and_handoff`)\n\nThe data provider shall identify the orchard production starting condition, the independent harvest hand-off, the\nprimary-conditioning/grading hand-off, and the declared packhouse dispatch point. Any deviation shall be disclosed.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -868,18 +938,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_32617"
+    - unit_id: "normative_32855"
       family: "allocation"
       span:
         start:
-          offset: 32617
-          line: 603
+          offset: 32855
+          line: 602
           column: 1
         end:
-          offset: 33328
+          offset: 34588
           line: 611
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n### Normative allocation rule (`output_set_and_allocation`)\n\nThe PCR shall enumerate intended market-grade fruit, culls, downgraded fruit, residues, and waste. Verify the physical identity and destination of each actual output. No output may be counted at more than one hand-off.\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `output_set_and_allocation` | all intended outputs | Enumerate accepted fresh grades and independently intended downgraded or other products with measured quantity, state, gate and recipient. Culls sent to disposal, retained residues and internal transfers receive no co-product share; retain their production and handling burdens with the producing saleable route. Each actual mass has one final destination. | `ghg-protocol-product-standard-2011` |\n| `kiwi_allocation_precedence` | shared orchard and packhouse burdens | Directly assign separable cultivar-, grade-, run-, packaging- and cooling-specific operations first. For comparable fresh kiwifruit grades receiving the same common handling, allocate residual common burden by measured net fruit mass. For another genuine co-product, use a measured causal physical driver only with evidence linking it to that operation; otherwise use same-period first-separation economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete output set, comparable gates/currency and representative prices. Missing prices do not mean zero. Disclose shares summing to one and a material alternative as sensitivity; no automatic substitution credit. | `ghg-protocol-product-standard-2011` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -896,12 +966,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 32617
-              line: 603
+              offset: 32855
+              line: 602
               column: 1
             end:
-              offset: 32657
-              line: 603
+              offset: 32895
+              line: 602
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -916,16 +986,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46125"
+    - unit_id: "normative_55745"
       family: "validation"
       span:
         start:
-          offset: 46125
-          line: 648
+          offset: 55745
+          line: 664
           column: 1
         end:
-          offset: 46547
-          line: 656
+          offset: 56167
+          line: 672
           column: 1
       markdown: "## 9. Validation Rules\n\n### Normative validation rule (`kiwifruit_route_completeness`)\n\nThe dataset is valid only when orchard production, harvest hand-off, primary conditioning/grading, and the declared\ndispatch point are present; intended output, culls, residues, and losses are distinguished; cultivar and maturity or\ndry-matter basis are disclosed; and any storage duration and mode are recorded when storage occurs.\n\n"
       headings:
@@ -944,12 +1014,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46125
-              line: 648
+              offset: 55745
+              line: 664
               column: 1
             end:
-              offset: 46147
-              line: 648
+              offset: 55767
+              line: 664
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -975,60 +1045,73 @@ normative_context:
           line: 64
           column: 1
         end:
-          offset: 3948
-          line: 66
-          column: 108
+          offset: 4218
+          line: 65
+          column: 490
     - pointer: "/system_boundary/rules/1"
       rule_id: "system_boundary_rule_2"
       identity_kind: "snapshot_local"
       unit_id: "normative_3589"
       source_span:
         start:
-          offset: 4792
-          line: 81
+          offset: 5062
+          line: 80
           column: 1
         end:
-          offset: 5021
-          line: 82
+          offset: 5291
+          line: 81
           column: 116
     - pointer: "/allocation_rules/0"
-      rule_id: "allocation_rule_1"
-      identity_kind: "snapshot_local"
-      unit_id: "normative_32617"
+      rule_id: "output_set_and_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_32855"
       source_span:
         start:
-          offset: 32720
+          offset: 32968
+          line: 606
+          column: 1
+        end:
+          offset: 33420
+          line: 606
+          column: 453
+    - pointer: "/allocation_rules/1"
+      rule_id: "kiwi_allocation_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_32855"
+      source_span:
+        start:
+          offset: 33421
           line: 607
           column: 1
         end:
-          offset: 32938
+          offset: 34198
           line: 607
-          column: 219
-    - pointer: "/allocation_rules/1"
-      rule_id: "allocation_rule_2"
+          column: 778
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_32617"
+      unit_id: "normative_32855"
       source_span:
         start:
-          offset: 32940
+          offset: 34200
           line: 609
           column: 1
         end:
-          offset: 33326
+          offset: 34586
           line: 609
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46125"
+      unit_id: "normative_55745"
       source_span:
         start:
-          offset: 46213
-          line: 652
+          offset: 55833
+          line: 668
           column: 1
         end:
-          offset: 46545
-          line: 654
+          offset: 56165
+          line: 670
           column: 100
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1048,36 +1131,36 @@ normative_context:
       unit_id: "normative_3589"
       source_span:
         start:
-          offset: 3976
-          line: 70
+          offset: 4246
+          line: 69
           column: 1
         end:
-          offset: 4730
-          line: 77
+          offset: 5000
+          line: 76
           column: 135
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_32617"
+      unit_id: "normative_32855"
       source_span:
         start:
-          offset: 32617
-          line: 603
+          offset: 32855
+          line: 602
           column: 1
         end:
-          offset: 32657
-          line: 603
+          offset: 32895
+          line: 602
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46125"
+      unit_id: "normative_55745"
       source_span:
         start:
-          offset: 46125
-          line: 648
+          offset: 55745
+          line: 664
           column: 1
         end:
-          offset: 46147
-          line: 648
+          offset: 55767
+          line: 664
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1086,5 +1169,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:aabc9fc6a79f4ff9d41b3bbb12281a43a6856c5555f31e389c35e66cd4a00fa1"
-  generated_content_sha256: "sha256:9dc0f558bde6c364635eaf0c6efd945881c1453ab05163736a7e552e1579a34e"
+    sha256: "sha256:a5ee75fe8b0f316a21028f7d9dc4f8448d0bda0fdb0bb93bfd0f986c4ba7ffbb"
+  generated_content_sha256: "sha256:000f5d15ca535433d423f7fbf7156f46e2b4a31a0ec46bf101839f1895558239"

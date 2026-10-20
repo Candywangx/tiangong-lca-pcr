@@ -216,19 +216,12 @@ sync_with: pcr.en-US.md
 - 证据类型: 由采集计算 (`calculated_from_collection`)
 - 采集协议: `cp_irrigation`
 - 来源: `fao-crop-yield-water-2012`
-- 数量范围: 雨养至800 mm水量筛查
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 8000000
-  - 单位: kg/ha
-  - 基准: 每作物周期每公顷
-  - 基准类型: 作物周期 (`crop_cycle`)
-  - 证据类型: 外部来源 (`external_source`)
-  - 来源: `fao-crop-yield-water-2012`
 
 作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 保留实测 m3 和水密度，按 cr_02 转为 kg 一次后再进行最终归一化。
+
+灌溉须区分作物蒸散需求、净灌溉量与总供水／取水量，核对有效降雨、土壤水库存变化、毛管补给、施用效率及实际供水边界，采用场址计量或有记录的水平衡。通用作物需水表不能确立通用灌溉上限。
 
 ###### 中压电力投入（`field_energy`）
 
@@ -569,7 +562,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 可供分级的农场整备根
 - 流属性/单位：Mass / kg
-- 数量规则: 投入减分离叶冠/杂物、拒收根和计量损失
+- 数量规则：按与lifted_raw_roots相同的净根组分基准计量合格整理根。核对：进入根组分+期初根库存+有据根吸水=合格整理根+拒收根组分+独立有据根损失+根失水+期末根库存。已从进入净根量排除的泥土、茎叶或杂质不得再扣一次。实际随载泥土、茎叶和杂质从毛载接收到各自移出另建组分账，不作为根产量损失。留存/返工转移配对，未解释差额须调查而非直接记为废物。匹配总量按最终合格根归一化一次。
 - 数值来源模式: 计算值 (`calculated_value`)
 - 适用范围: 场址特定 (`site_specific`)
 原始活动或阶段基准：每1000 kg起收根.
@@ -776,10 +769,11 @@ sync_with: pcr.en-US.md
 | cp_energy | all operating nodes | energy | meter/fuel/machine log | carrier; quantity; period; field/load | direct meter or documented allocation；原始汇总与分配：assign once | L; kWh; MJ | period | full cycle | machine/site | 每声明的参考流 | meter and invoice reconciliation |
 | cp_field_yield | field_production | roots | load and survey | lifted mass; loss sample; area | calibrated loads plus sampling；原始汇总与分配：lifted + scaled loss | kg; ha | field | harvest | field | 每声明的参考流 | scale and sampling plan |
 | cp_harvest_loss | field_production; harvest_lifting | loss | survey/balance | mass; area; damage; destination | pre/post harvest sampling；原始汇总与分配：scale and reconcile | kg; ha | field | harvest | field | 每声明的参考流 | sample evidence |
-| cp_harvest_loads | harvest_lifting | lifted roots | load tickets | gross; tare; field; date; soil correction | calibrated weighing；原始汇总与分配：corrected sum | kg | load | campaign | field/load | 每声明的参考流 | scale certificate |
+| cp_harvest_loads | harvest_lifting | lifted roots | load tickets | gross; tare; field; date; soil correction ; 毛载及皮重；进入净根组分；分开的随载土/茎叶/杂质；每项根和非根移出；水分；期初期末库存；配对返工；最终合格根数量；差额不确定性| calibrated weighing；原始汇总与分配：corrected sum | kg | load | campaign | field/load | 每声明的参考流 | scale certificate |
 | cp_residues | harvest_lifting | tops | load/destination | mass; basis; destination | calibrated weighing；原始汇总与分配：sum hand-offs | kg | load | campaign | field/destination | 每声明的参考流 | ticket/receiver |
-| cp_conditioning_balance | farm_conditioning | roots/rejects | batch record | input; output; rejects; destination | calibrated mass balance；原始汇总与分配：reconcile states | kg | batch | campaign | site/field | 每声明的参考流 | scales and batch sheet |
+| cp_conditioning_balance | farm_conditioning | roots/rejects | batch record | input; output; rejects; destination ; 毛载及皮重；进入净根组分；分开的随载土/茎叶/杂质；每项根和非根移出；水分；期初期末库存；配对返工；最终合格根数量；差额不确定性| calibrated mass balance；原始汇总与分配：reconcile states | kg | batch | campaign | site/field | 每声明的参考流 | scales and batch sheet |
 | cp_grading | grading_handoff | grades | delivery record | input; accepted; downgraded; reject; sugar; tare | scale and receiving test；原始汇总与分配：reconcile grades | kg; % | batch | delivery | batch | 每声明的参考流 | scale, lab, receiver |
+| `cp_phase1_environment_coverage` | field_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -787,9 +781,16 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | CR-01 | normalization | field amount / same-field accepted mass × 1000 kg | input/emission; accepted mass | per reference flow | `mass-balance-identity` |
 | CR-02 | water | metered m3 × density; rainfall excluded | meter/flow; density | kg irrigation | `fao-crop-yield-water-2012` |
-| CR-03 | root balance | standing = lifted + field loss; input = accepted + downgraded + rejected + measured loss | linked mass records | reconciled states | `mass-balance-identity` |
+| CR-03 | root balance | 站立净根组分=已起收净根组分+独立有据田间根损失；后续各节点按同一根组分基准核对期初期末库存、实际根水分变化和互斥根去向。毛载泥土、茎叶和杂质单独平衡，不再从净根重复扣减。调查差额，按匹配最终产出归一化一次。 | linked mass records | reconciled states | `mass-balance-identity` |
 | CR-04 | N2O | declared IPCC tier applied to collected N inputs | N records; factors | kg N2O | `ipcc-2019-managed-soils` |
 | CR-05 | route aggregation | area-weight area intensities and accepted-mass-weight reference intensities | stratum records | production mix | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_inputs`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 

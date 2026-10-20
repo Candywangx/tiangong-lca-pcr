@@ -94,31 +94,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 种子或移栽材料（`planting_material_input`）
-
-记录进入声明田块或保护地单元的种子、穴盘苗或移栽苗，并标明材料类型、供应商、批次和种植数量。
-
-- 选定流：绿色辣椒或甜椒种子和移栽材料
-- 流属性/单位：Number of viable units or mass / seed, plant, or kg
-- 数量规则：记录采购批次数量和每个田块、畦或保护地单元实际种植的有效数量。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 归属于同一作物周期的可销售新鲜绿色果实.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_establishment_records`
-- 来源：`usda-nrcs-nutrient-management-590`
-- 数量范围：建植材料数量筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：8,000
-  - 上限：50,000
-  - 单位：有效植株/ha
-  - 基准：等待场址记录替换的露地和保护地建植宽范围初筛
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 尿素肥料（`crop_establishment_agricultural_nutrient_inputs_urea`）
 
 **crop_establishment_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -410,7 +385,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -492,7 +467,7 @@ sync_with: pcr.en-US.md
 当所选养分和水量平衡方法要求时，计算硝酸盐淋失或径流，并将方法参数保留在数据集中。
 
 - 选定流：管理农业土壤向土壤或水体排放的硝酸盐
-- 流属性/单位：Mass / kg NO3-N
+- 流属性/单位: Mass / kg NO3-
 - 数量规则：将一种有文件依据的淋失或径流方法应用于氮肥施用、灌溉、土壤和残余物条件。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -504,12 +479,14 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_emission_calculation_records`
 - 来源：`ipcc-2019-refinement-nitrogen`
 
+最终交换质量为 kg NO3-；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 62/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
+
 ###### 管理土壤产生的氨（`soil_ammonia_emission`）
 
 当选定的氮排放方法和记录的肥料及改良剂属性支持时，计算氨挥发。
 
 - 选定流：管理农业土壤向空气排放的氨
-- 流属性/单位：Mass / kg NH3-N
+- 流属性/单位: Mass / kg NH3
 - 数量规则：将声明方法应用于有文件依据的氮形态、施用时间、混入情况和环境条件。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -520,6 +497,8 @@ sync_with: pcr.en-US.md
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_emission_calculation_records`
 - 来源：`ipcc-2019-refinement-nitrogen`
+
+最终交换质量为 kg NH3；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 17/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ###### 田间机械产生的氮氧化物（`field_nox_emission`）
 
@@ -757,10 +736,12 @@ sync_with: pcr.en-US.md
 | `calc_soil_nitrogen_emissions` | 土壤氮基本流 | 对有文件依据的氮投入和残余物去向应用一种声明的 IPCC 兼容方法；同一路径不得合并替代方法。 | nutrient records, residue records, method factors | kg N2O-N, NO3-N, or NH3-N | `ipcc-2019-refinement-nitrogen` |
 | `calc_energy_allocation` | 共享电力和燃料 | 按计量、运行时间、吞吐量或另一有文件依据的驱动因子分配共享能源或燃料，并披露所选驱动因子。 | utility or fuel total, allocation driver | crop-cycle energy or fuel | `fao-56-crop-evapotranspiration-1998` |
 | `calc_mass_balance` | 采收、分级和大门产出 | 采收质量应等于可销售产出、拒收物、修整物、残余物和实测损失之和，且在声明容差内。 | harvest mass, marketable mass, reject mass, trim, loss | reconciliation result | `codex-fresh-fruits-vegetables-2003` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | 对于本作业原有 planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_establishment_records` | 按身份区分的交换和对账活动记录 | `usda-nrcs-nutrient-management-590` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emission_calculation_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `quality_reference_identity` | 参考流和可销售产出 | 声明物种或品种组、声明的新鲜成熟度和颜色状态和大门及必需限定信息；最终 TIDAS 数据集发布前解析产品 UUID。 | 参考流元数据、批次规格和后续身份核验 |
 | `quality_temporal_coverage` | 所有作物周期记录 | 覆盖完整年度作物周期及参考产出所代表的每一采收轮次。 | 作物日历、田间日志和采收记录 |

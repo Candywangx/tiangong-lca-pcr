@@ -91,31 +91,6 @@ When constructing a foreground data package, the items listed in `Required quali
 
 ##### Product flows
 
-###### Seed or transplant material (`planting_material_input`)
-
-Record the crop-specific seed lot, seedlings, or transplants that enter the declared field or growing area.
-
-- Selected flow: Seed or transplant material
-- Flow property / unit: Mass or number of items / kg or plant
-- Amount rule: Record purchased or produced planting units by crop, lot, field, and viability; retain the basis used for normalization.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per hectare established and per 1,000 kg marketable reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_establishment_records`
-- Sources: `extension-leafy-vegetable-production`
-- Range: Provisional planting-density screen
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 10000
-  - Upper: 2000000
-  - Unit: plants/ha or viable seeds/ha
-  - Basis: broad category range pending crop-specific seed or transplant records
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Urea fertilizer (`crop_establishment_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for crop_establishment_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -391,7 +366,7 @@ Raw activity or stage basis: per managed hectare-cycle and per 1,000 kg marketab
 - Collection protocol: `cp_field_cycle_records`
 - Sources: `fao-good-agricultural-practices`
 
-Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 
 Only actual diesel is represented by this card; other fuels or an inclusive contracted service require their own separate identities and must not also be charged here. The linked quantity is kg of diesel: preserve raw tank/invoice units; calculate kg = L × documented density in kg/L at the recorded temperature, or kg = MJ / documented diesel lower heating value in MJ/kg on the same energy basis. Direct mass records require no carrier conversion. Missing density or heating value must be obtained, never assumed. Apply measured area, period and accepted-output normalization once after carrier conversion, retaining the original final reference amount. No universal per-hectare fuel screen is imposed.
 
@@ -641,6 +616,10 @@ For a perennial route, record establishment and non-bearing years, each producti
 
 Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 ### Specific input identification before dataset completion
@@ -664,6 +643,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_irrigation_records` | `field_crop_management` | irrigation withdrawal and delivered water | meter, pump, source, and irrigation log | field_id; source; date; meter_start; meter_end; delivered_volume; withdrawal_volume; conveyance_loss; method | reconcile source withdrawal to field delivery and retain loss method; Raw aggregation and attribution: sum by field-cycle and separate irrigation from wash water | m3 | each irrigation event | full declared cycle | every represented irrigated field | per declared reference flow | calibrated meters, pump records, and water permits |
 | `cp_harvest_records` | `harvest_and_farm_gate_preparation` | harvest-ready and gross harvested product | harvest log and scale record | field_id; crop_identity; lot_id; harvest_date; harvest_pass; gross_mass; harvest_loss; maturity; grade; trim_state | link each harvest lot to field and date; Raw aggregation and attribution: sum by field-cycle without merging incompatible crop identities | kg; ha | each harvest lot or pass | complete harvest window | every represented field and lot | per declared reference flow | calibrated scales, lot tickets, and grade records |
 | `cp_handling_records` | `harvest_and_farm_gate_preparation` | wash water, packaging, marketable output, rejects, and trim | lot, scale, meter, packaging, and waste records | lot_id; source_field; gross_input; wash_water; cooling_energy; packaging_material; packaging_mass; marketable_mass; grade; trim_state; reject_mass; reject_reason; destination | preserve lot-level mass and utility reconciliation through transfer; Raw aggregation and attribution: reconcile input, product, rejects, trim, and mass change before aggregation | kg; m3; kWh | each lot or shift | complete harvest and packing period | every represented handling line | per declared reference flow | calibrated scales, meters, grade inspection, and destination receipts |
+| `cp_phase1_environment_coverage` | crop_establishment | managed environmental coverage by actual node | site/activity/method ledger | actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 
 ### Calculation Rules
 
@@ -671,9 +651,16 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- |
 | `calc_nutrient_equivalent` | fertilizer inputs | Product mass multiplied by documented nutrient fraction equals kg N, P2O5, or K2O; retain each basis separately. | product mass; nutrient concentration; area | nutrient-equivalent input | `extension-leafy-vegetable-production` |
 | `calc_irrigation_withdrawal` | irrigation | Withdrawal equals metered or documented source volume; delivered irrigation and conveyance loss are reported separately. | source meter; field meter; loss method | source withdrawal and delivered irrigation | `fao-water-efficiency` |
-| `calc_field_cycle_normalization` | cultivation | Divide complete field-cycle quantity by marketable output from the corresponding crop and cycle. | field-cycle quantity; marketable mass | quantity per 1,000 kg reference product |  |
+| `calc_field_cycle_normalization` | cultivation | Final reference contribution = attributable complete field-cycle quantity / matched marketable output in kg * 1,000 kg. Keep crop and cycle matched and original numerator units; quantity/output alone is a per-kg intermediate, not the 1,000 kg result. | field-cycle quantity; marketable mass | quantity per 1,000 kg reference product |  |
 | `calc_product_balance` | harvest and handling | Gross harvested input plus measured mass change equals marketable product plus rejects and trimmings within declared uncertainty. | gross, marketable, reject, trim, and mass-change records | reconciled output quantities | `usda-ams-fresh-produce` |
 | `calc_managed_soil_emissions` | soil nitrogen emissions | Apply the declared applicable IPCC or accepted regional equations to synthetic, organic, and returned-residue nitrogen; preserve factors and prevent double counting. | nitrogen activity data; factors; climate and management qualifiers | direct and indirect nitrogen emissions | `ipcc-2019-managed-soils` |
+| `planting_material_input_identity_and_fate` | `crop_establishment` | For the original planting_material_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_establishment_records` | Identity-specific exchanges and reconciled activity records | `extension-leafy-vegetable-production` |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
 
 ### Data Quality Requirements
 
@@ -722,3 +709,5 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |

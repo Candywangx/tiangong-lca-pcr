@@ -49,7 +49,7 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
-| `reference_mass` | reference and intermediate seed | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Use net seed mass at the moisture value reported for the same lot; exclude packaging mass. |
+| `reference_mass` | reference and intermediate seed | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 采用同批次报告含水率下的净种子质量，剔除包装质量。 |
 | `quality_alignment` | released seed | lot-specific test result | declared test unit | Purity, germination/viability and moisture shall refer to the same sampled lot. |
 
 ## 5. 系统边界
@@ -309,6 +309,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 ###### Harvested material received (`harvested_material_input`)
 
+可追溯采收批次进入分离过程，不得替换为另一作物。
+
 - 选定流： Harvested flower seed-bearing material; UUID unresolved
 - 流属性/单位： Mass / kg
 - 数量规则： linked measured mass from production
@@ -373,6 +375,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 ###### Raw extracted flower seed (`raw_seed`)
 
+分离后尚未调理的种子转入干燥和清选。
+
 - 选定流： Raw extracted flower seed; UUID unresolved
 - 流属性/单位： Mass / kg
 - 数量规则： measured output mass and moisture by lot
@@ -397,6 +401,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 ##### 废物流
 
 ###### Extraction residues (`extraction_residue`)
+
+非种子作物材料及未回收部分按有记录的去向离开。
 
 - 选定流： Flower-seed extraction residue; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -429,6 +435,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 ##### 产品流
 
 ###### Raw flower seed received (`raw_seed_input`)
+
+相连的原始种子批次进入水分稳定和清选。
 
 - 选定流： Raw extracted flower seed; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -494,6 +502,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 ###### Conditioned flower seed (`conditioned_seed`)
 
+含水率稳定且已清选的种子转入放行检验。
+
 - 选定流： Conditioned flower seed for sowing; UUID unresolved
 - 流属性/单位： Mass / kg
 - 数量规则： measured conditioned mass at declared moisture
@@ -518,6 +528,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 ##### 废物流
 
 ###### Cleaning and grading rejects (`cleaning_rejects`)
+
+不合格种子、颖壳及惰性杂质不计入合格种子。
 
 - 选定流： Flower-seed cleaning rejects; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -550,6 +562,8 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 ##### 产品流
 
 ###### Conditioned seed received (`conditioned_seed_input`)
+
+相连的调理后批次进入取样、检验及最终准备。
 
 - 选定流： Conditioned flower seed for sowing; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -598,6 +612,8 @@ Treatment, coating or pelleting material is recorded only when applied before ha
   - 证据类型： `reasoned_estimate`
 
 ###### Seed packaging (`seed_packaging`)
+
+记录放行批次实际使用的包装组件。
 
 - 选定流： Flexible packaging for flower seed
 - 流属性/单位： Mass / kg
@@ -663,6 +679,8 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 
 ###### Released flower seed (`released_flower_seed`)
 
+只有放行决定所覆盖的种子净质量才能成为参考产出。
+
 - 选定流： Flower seed for sowing; UUID unresolved
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：measured net mass covered by the release decision
@@ -689,6 +707,8 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 ##### 废物流
 
 ###### Failed-test or treatment rejects (`release_rejects`)
+
+未通过放行或处理控制的材料不计入参考产出。
 
 - 选定流： Rejected flower seed; UUID unresolved
 - 流属性/单位： Mass / kg
@@ -719,11 +739,15 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_mass_reconciliation` | each process | Reconcile opening stock, inputs, outputs, moisture change, residues, rejects and closing stock on one basis. |  |
-| `allocation_secondary_outputs` | saleable plant material or downgraded seed | Prefer subdivision or direct physical attribution; if allocation remains, disclose outputs, causal basis, formula and sensitivity. |  |
-| `allocation_rejects` | all rejects | Do not include rejected seed in released output or credit a destination before routing is evidenced. |  |
-| `allocation_periods` | perennial crops and shared assets | Attribute establishment and infrastructure over documented productive output using one consistent period rule. |  |
-| `allocation_batches` | shared processing, storage and changeovers | Assign shared burdens by measured time, occupied storage, throughput or another causal driver without double counting. |  |
+| `allocation_mass_reconciliation` | each process | 在同一基准上核对期初库存、投入、产出、水分变化、残体、拒收物及期末库存。 |  |
+| `allocation_secondary_outputs` | saleable plant material or downgraded seed | 优先细分或直接物理归属；仍须分配时，披露产出、因果基准、公式及敏感性。 |  |
+| `allocation_rejects` | all rejects | 拒收种子不计放行产出；没有有据去向前不得给予抵扣。 |  |
+| `allocation_periods` | perennial crops and shared assets | 按有据生产产出归属建植及基础设施，采用一致期间规则。 |  |
+| `allocation_batches` | shared processing, storage and changeovers | 共享负担按实测时间、占用储存量、吞吐量或其他因果驱动分配，禁止双计。 |  |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -744,6 +768,7 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 | `cp_residue_reject` | `harvest_extraction; dry_clean; release_pack` | residues/rejects | disposition record | type, mass, reason, destination, date, lot | scale plus dispatch/receiver record；原始汇总与分配：sum by material and destination | kg | each removal/lot | complete route | node/lot | 每声明的参考流 | scale, dispatch, mass balance |
 | `cp_treatment_packaging` | `release_pack` | treatment/packaging | batch/stock record | formulation, applied mass, package type, component mass, count, returns, lot | equipment record and stock reconciliation；原始汇总与分配：net consumed by component | kg | each lot | final preparation | line/lot | 每声明的参考流 | stock and equipment check |
 | `cp_release_quality` | `release_pack` | released seed | sampling/test/release record | identity, lot, purity, germination/viability, moisture, treatment, certification, mass | representative sampling and recognized test method；原始汇总与分配：include only released mass | kg; % | each lot | hand-off | lot | 每声明的参考流 | test, certificate, chain of custody |
+| `cp_phase1_environment_coverage` | seed_crop_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -755,27 +780,34 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 | `calc_stage_balance` | each process | loss = opening stock + inputs − intended outputs − closing stock, adjusted for moisture | mass, stock, moisture | reconciled loss/residue |  |
 | `calc_multi_period` | perennial/shared production | attributed burden = total burden × lot output / documented productive output | burden; outputs | lot burden |  |
 
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
+
 ### 数据质量要求
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | reference lot | Species, cultivar, lot, sowing use and state shall be explicit; a species UUID represents only that species. | label, release record, binding review |
-| `dq_quality_tests` | released seed | Purity, germination/viability and moisture shall cover the released lot and state method/date. | laboratory record and sample chain |
+| `dq_identity` | reference lot | 明确物种、品种、批次、播种用途及状态；物种 UUID 仅代表该物种。 | label, release record, binding review |
+| `dq_quality_tests` | released seed | 纯度、发芽率/活力及含水率须覆盖放行批次，并说明方法及日期。 | laboratory record and sample chain |
 | `dq_completeness` | foreground route | Include all released/rejected lots and at least 95% of operating days; quantify gaps. | coverage reconciliation |
 | `dq_mass_balance` | each node | Reconcile material on a consistent moisture basis and disclose tolerance. | stage balance and calibration |
-| `dq_binding` | emitted exchanges | Resolve parameterized and unmapped cards to verified UUIDs before final TIDAS publication. | expansion and identity review |
+| `dq_binding` | emitted exchanges | 最终 TIDAS 发布前，将参数化和未绑定卡解析为已核实 UUID。 | expansion and identity review |
 
 ## 9. 验证规则
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_scope` | reference product | Reject non-sowing seed, vegetative propagules, cut flowers and records without species, cultivar and lot. |  |
+| `validate_scope` | reference product | 非播种种子、营养繁殖材料、切花及没有物种、品种或批次的记录不通过。 |  |
 | `validate_reference` | reference flow | Require exactly 1 kg net released seed and the required quality qualifiers. |  |
-| `validate_species_uuid` | reference identity | Keep the category UUID blank unless compatible; use `50835e31-8359-4b7c-a818-81ef48e5ed42` only for explicitly declared H. annuus after detail compatibility is rechecked. |  |
+| `validate_species_uuid` | reference identity | 类别 UUID 在相容性确认前保持空白；仅对明确声明的 H. annuus，在重新核对详情相容性后使用 50835e31-8359-4b7c-a818-81ef48e5ed42。 |  |
 | `validate_nutrient_cardinality` | `seed_crop_production` | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validate_lot_chain` | all processes | Require an unbroken parent-stock, production, extraction, conditioning and release lot chain. |  |
-| `validate_rework_rejects` | rework/rejects | Rework re-enters through a recorded node; rejected mass cannot also be released output. |  |
-| `validate_ranges` | all flow cards | Require ordered bounds, unit, basis, basis kind and evidence kind; foreground records determine amounts. |  |
+| `validate_lot_chain` | all processes | 要求不间断的亲本材料、生产、提取、调理及放行批次链。 |  |
+| `validate_rework_rejects` | rework/rejects | 返工经有记录节点重新进入；拒收质量不能同时作放行产出。 |  |
+| `validate_ranges` | all flow cards | 要求有序界限、单位、基准、基准类型及证据类型；数量取自前景记录。 |  |
 | `validate_binding` | all cards | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 
 ## 10. 发布数据集配置
@@ -796,3 +828,5 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 | --- | --- | --- | --- |
 | `fao-seed-portal` | `official_guidance` | FAO, Seeds portal, https://www.fao.org/seeds/en | conditioning, packaging, storage, sampling and testing stages |
 | `fao-seed-handling` | `handbook` | FAO, *A Guide to Forest Seed Handling*, https://www.fao.org/4/ad232e/ad232e00.htm | collection, extraction, drying, cleaning, storage and seed-quality testing |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

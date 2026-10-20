@@ -469,7 +469,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_conditioning`
 - 来源：`manitoba-canola-lca`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -544,7 +544,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：水向空气排放
 - 流属性/单位：Mass / kg
-- 数量规则：根据批次含水率测量作质量平衡计算
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每 1 kg 声明交付点合格籽粒.
@@ -606,7 +606,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_grading`
 - 来源：`cgc-canola-grading`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -737,9 +737,10 @@ sync_with: pcr.en-US.md
 | `cp_operations` | `crop_management` | 整地、播种及喷施能源 | 计量与机械日志 | field_id, operation, hours, fuel, electricity | 燃料领用及计量记录；原始汇总与分配：汇总并按记录工时分配共用设备 `field_energy_specific_input`: 记录播种、整地、喷施和实际灌溉的燃料及外购电力。  数量规则：作物地块对应的计量或机械日志用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | L; kWh | 每次作业 | 完整作物年度 | 每块地 | 每声明的参考流 | 燃料票据及机械日志 |
 | `cp_harvest` | `harvest` | 路线、原料籽及荚裂损失 | 联合收割机及地磅记录 | field_id, route, run_id, date, raw_mass, moisture, fuel, loss_sample | 区分割晒与直接收割批次；称量籽粒并抽样损失；原始汇总与分配：去重后汇总作业批次 | kg; %; L | 每次作业 | 收获季 | 每块地/作业批次 | 每声明的参考流 | 校准秤及田间损失样本 |
 | `cp_residues` | `harvest` | 秸秆和颖壳去向 | 田间记录及装车票据 | field_id, retained_area, removed_dry_mass, destination, burn_event | 田间检查及装车称重；原始汇总与分配：核对移出与留田份额 | ha; kg dry | 每次收获 | 收获季 | 每块地 | 每声明的参考流 | 装车票据及照片 |
-| `cp_conditioning` | `conditioning` | 清选、干燥、通风及筛下物 | 批次作业记录 | lot_id, before_mass, after_mass, before_moisture, after_moisture, temperature, energy, screenings_mass, destination | 每次处理称重及采样；原始汇总与分配：汇总能源并保留批次质量平衡 | kg; %; °C; kWh; L | 每批次/处理 | 收获至交付 | 每批次 | 每声明的参考流 | 秤、含水率仪及计量日志 |
+| `cp_conditioning` | `conditioning` | 清选、干燥、通风及筛下物 | 批次作业记录 | lot_id, before_mass, after_mass, before_moisture, after_moisture, temperature, energy, screenings_mass, destination ；含拒收物/残体的全部进出水；实际加水/降雨；单独液体转出；期初期末水库存；含水率及密度；有据蒸发| 每次处理称重及采样；原始汇总与分配：汇总能源并保留批次质量平衡 | kg; %; °C; kWh; L | 每批次/处理 | 收获至交付 | 每批次 | 每声明的参考流 | 秤、含水率仪及计量日志 |
 | `cp_grading` | `grading` | 合格、降级及废弃籽粒 | 等级证书及交付票据 | lot_id, grade, green_seed, dockage, accepted_mass, downgraded_mass, reject_mass, destination | 代表性采样及交付称重；原始汇总与分配：按最终去向汇总一次 | kg; % | 每个交付批次 | 交付季 | 每批次 | 每声明的参考流 | 样品报告及称重票据 |
 | `cp_emissions` | `crop_management` | 农田土壤排放 | 计算表 | field_id, N_inputs, returned_residue_N, method_version, factors, climate | 对记录的活动量应用声明的本地因子或 IPCC 方法；原始汇总与分配：汇总直接与间接排放，避免重复氮库 | kg N; kg N2O | 每年 | 完整作物年度 | 每块地 | 每声明的参考流 | 因子引用与计算审计 |
+| `cp_phase1_environment_coverage` | crop_management | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -749,6 +750,13 @@ sync_with: pcr.en-US.md
 | `dry_matter_balance` | 调理 | 守恒籽粒干物质为批次质量 × (1 − 湿基含水率)，扣除实测筛下物及物理损失；标记无法解释的差额，不强行并入合格产出。 | 处理前后质量、含水率、筛下物 | kg 籽粒干物质及 kg 除去的水 | `manitoba-canola-management` |
 | `soil_n2o` | 田间氮 | 使用声明的因子计算直接及间接 N2O，区分肥料氮与还田残体氮；同一排放结果不得在多个节点重复使用。 | 氮投入、残体去向及本地因子 | kg N2O | `ipcc-2019-soils` |
 | `normalized_inventory` | 田间及批次记录 | 将正确归因的作物年度或批次总量除以净合格参考籽粒质量，保留原始总量和面积。 | 已核对记录及合格质量 | 每 kg 清单 | `manitoba-canola-lca` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
@@ -787,7 +795,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源 ID | 类型 | 引用 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `unsd-cpc-01443` | `official_guidance` | https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1074/01443 | 产品类别边界 |
 | `manitoba-canola-management` | `extension_guidance` | https://www.gov.mb.ca/agriculture/crops/crop-management/canola.html | 栽培、割晒、收获、含水率及秸秆管理 |

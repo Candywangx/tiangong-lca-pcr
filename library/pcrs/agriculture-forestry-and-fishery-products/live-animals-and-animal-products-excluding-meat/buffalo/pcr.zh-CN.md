@@ -167,7 +167,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_energy_and_assets`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -186,7 +186,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_energy_and_assets`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -387,7 +387,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_energy_and_assets`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -681,7 +681,7 @@ sync_with: pcr.en-US.md
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `c_reference_normalization` | 所有清单 | 报告量 ×（同一归属系统的 1 kg 接受水牛产出 / 接受产出质量） | 归属清单；接受活重 | 每 kg 参考流的数量 | `fao-leap-large-ruminants-2016` |
 | `c_stock_reconciliation` | 水牛事件 | 按类别和期间满足期初 + 出生 + 购入 + 内部增加 = 接受移交 + 其他销售 + 死亡 + 淘汰 + 期末，并核对质量和头数 | 事件及称重记录 | 完整类别-期间存量平衡 | `fao-leap-large-ruminants-2016` |
@@ -695,10 +695,11 @@ sync_with: pcr.en-US.md
 | `calc_manure_n2o_coverage` | `manure_nitrous_oxide` | 按真实粪污阶段，采用有记录的物种/系统活动量及因子基准，分别计算直接 N2O、挥发/沉降引致间接 N2O，以及适用的淋溶/径流引致间接 N2O。N2O-N 乘 44/28 恰换算一次为分子态 N2O；已为分子质量的不得再次换算。保留分项计算表。现有 N2O 卡同时覆盖直接与间接排放时，填报其不重叠总和；已有直接/间接独立卡时，每个分项只归入对应卡，不再另报总和。放牧沉积及田间施用采用管理土壤方法，不套用粪污贮存因子。明确前景与已链接处理/牧地数据的核算责任；粪污转出不消除此前排放，已覆盖的下游排放不得重复。氮级联核对库存、转移及此前氮损失；间接 N2O 是前体的下游转化，不再次视为源阶段氮损失。可归属分子质量对合格参考产出归一化一次。记录不适用依据；路径数据缺失不等于零。 | `cp_manure_n2o_coverage` | 按路径及现有归属卡分开的 kg 分子态 N2O | `ipcc-2019-livestock-manure`; `ipcc-managed-soils-2019` |
 | `c_gate_reconciliation` | 门口记录及 `gate_rejects` | 在匹配批次和时点内，按互斥的合格、留存/退回、其他活体转移及死亡事件核对头数。活重单独核对，记录实测质量变化、适用的饲料/水、排泄物或碳转移及不确定性；调查残差，不将其作为废物。尸体交换仅用有记录的实际尸体质量及去向，与此前死亡记录核对，再归一化一次。 | `cp_gate_handover`; 匹配的死亡及称重记录 | 头数和活重核对；有独立证据的 kg 尸体 | `mass-balance-identity` |
 | `c_gate_carcass_availability` | `gate_rejects` 范围核对 | Q_carcass_gate 为本门口作业内新产生且逐项去重的实际尸体质量之和，排除前阶段尸体及重复移动或处理单据。Q_accepted 为同一批次及期间实测且严格大于零的合格活体产出质量。依既有非负负担归属及最终参考流归一化后，每 kg 合格产出的尸体交换量应介于 0 与 Q_carcass_gate / Q_accepted。范围仅核对有独立记录的实际数量，不得由上限或活重残差生成交换。尸体/产出记录缺失或范围不匹配时，该 QA 无法评价，不是零值或通过。零尸体量须有实际未发生的记录；合格产出为零的批次不能归一化为 1 kg 产品数据集。调查不一致及称重不确定性，不把记录截断到上限。 | `cp_gate_handover`; 实际尸体事件/质量/去向及合格产出记录 | 场址特定 kg 尸体/kg 合格活体产出的 QA 上限 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emissions_and_manure`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 所有产品和废物交换 | 保留具体产品身份、状态、来源或去向及交接点；发布具体过程数据集前解析所有语义未映射身份。 | 身份确认及供应商或转移记录 |
 | `dq_live_mass` | 参考流和动物事件 | 使用校准称重或有记录的代表性抽样，保留时点、类别、样本、头数和活重换算。 | 校准和称重记录 |

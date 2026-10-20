@@ -92,32 +92,6 @@ When constructing a foreground data package, the items listed in `Required quali
 
 ##### Product flows
 
-###### Flow: Spinach seed or transplant material (`seed_or_transplant_input`)
-
-Record the purchased planting material entering each declared bed or protected unit, distinguishing seed from transplants.
-
-- Selected flow: Spinach seed or transplant material
-- Flow property / unit: Number of viable units or mass / seed, plant, or kg
-- Amount rule: Record purchased lot quantity and viable seeding or transplanting quantity by bed.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh spinach from the same crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_establishment_records`
-- Sources: `govnl-spinach-production-guide-2025`
-- Range: Seeding or transplanting quantity screen
-  - Range role: Typical range (`typical_range`)
-  - Lower: 10
-  - Upper: 17
-  - Unit: kg seed/ha
-  - Basis: direct-seeded fresh-market spinach bed
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `govnl-spinach-production-guide-2025`; `ufifas-leafy-vegetable-guide-2024`
-
 ###### Urea fertilizer (`crop_establishment_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for crop_establishment_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -443,31 +417,6 @@ Only for documented diesel-powered machinery within this operation. Retain fuel 
 ##### Waste flows
 
 ##### Elementary flows
-
-###### Flow: Spinach crop residue returned to soil (`field_residue_output`)
-
-Record unharvested spinach biomass or cut residue returned to the field separately from marketable product and off-field rejects.
-
-- Selected flow: Spinach crop residue
-- Flow property / unit: Mass / kg wet residue
-- Amount rule: Reconcile pre-harvest biomass, harvested mass, and residue mass from field records.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg marketable fresh spinach.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_harvest_reconciliation`
-- Sources: `ucanr-spinach-production-2011`
-- Range: Field-residue screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 4000
-  - Unit: kg wet residue/ha
-  - Basis: unharvested or returned spinach biomass in the crop cycle
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 #### Outputs
 
@@ -830,6 +779,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_area_time` | land occupation | production area × represented crop-cycle duration; disclose whether protected area is included | area register; crop dates | area-time quantity | `govnl-spinach-production-guide-2025` |
 | `calc_nitrogen_emission` | direct soil nitrous oxide | apply the selected IPCC-compatible factor to eligible nitrogen input and declared soil or climate method; document factors in the dataset | nutrient records; method choice; crop-cycle area | kg N2O emitted to air | `ipcc-2019-refinement-nitrogen` |
 | `calc_gate_mass_balance` | harvest and packing | received harvest = marketable output + rejects + residue or loss, with documented measurement uncertainty | harvest tickets; packing records; reject and residue records | reconciled mass balance | `usda-ams-bunched-spinach-standard` |
+| `field_residue_output_identity_and_fate` | `crop_management` | Reconcile crop residue, harvest loss and biomass by measured wet/dry basis and actual fate. Retained or incorporated biomass is an internal residue ledger used to calculate supported decomposition and nutrient pathways, not a purchased resource or an invented elementary biomass exchange. Separately collected material requires its actual product/waste identity and destination; environmental releases require identified substances and receiving compartments. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default. | `cp_harvest_reconciliation` | Identity-specific exchanges and reconciled activity records | `ucanr-spinach-production-2011` |
+| `seed_or_transplant_input_identity_and_fate` | `crop_establishment` | For the original seed_or_transplant_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. Retained source-specific collection screen: 10–17 kg seed/ha; basis: direct-seeded fresh-market spinach bed. Apply only to the matching concrete form, route and numerator unit, not to all alternatives or final normalized exchange. | `cp_establishment_records` | Identity-specific exchanges and reconciled activity records | `govnl-spinach-production-guide-2025` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_nutrient_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

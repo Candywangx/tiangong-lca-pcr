@@ -928,6 +928,18 @@ dataset_production:
       site_scope: "each grading line or station"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "scale, grade and destination evidence"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "field_cultivation"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calc_reference_normalization
       applies_to: "all rows"
@@ -971,6 +983,23 @@ dataset_production:
       output: "closed output balance"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_field_inputs
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference product"
@@ -1077,7 +1106,7 @@ data_sources:
     used_for: "transfer, conditioning and grading balances"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:44d20a176809aaa6c4dc959f10283de927f540469db67fa1cee35122ab504578"
+  source_sha256: "sha256:b3c52750caf54c167eecbe376915d91f66141585ccd1413fddd0a22d51ccf15c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3672"
@@ -1176,16 +1205,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43404"
+    - unit_id: "normative_47603"
       family: "validation"
       span:
         start:
-          offset: 43404
-          line: 823
+          offset: 47603
+          line: 831
           column: 1
         end:
-          offset: 45307
-          line: 837
+          offset: 49506
+          line: 845
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Exactly one 1,000 kg output uses Yautia flow `72013e1f-538d-4031-b97a-03bfaa42b37d`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66` and all qualifiers. |  |\n| `validate_species_boundary` | identity | Reject an ambiguous “cocoyam” identity or *Colocasia* substitution without reviewed proxy disclosure. | `fao-aroids-postharvest`; `codex-tannia-224-2001` |\n| `validate_node_handoffs` | process map | Require exact cultivation→lifting, lifting→conditioning and conditioning→grading lot links. | `mass-balance-identity` |\n| `validate_destinations` | grading | Require explicit zero or measured accepted, downgraded, propagation and reject states, each with one hand-off. | `codex-tannia-224-2001` |\n| `validate_conditional_routes` | conditioning | Unused washing/powered routes have zero flows; used routes report utilities and wastes. Storage/packaging requires a boundary extension. |  |\n| `validate_ranges` | all cards | Require ordered nonnegative bounds, unit, denominator, basis kind and evidence kind; external ranges require source ids and regional examples are not limits. |  |\n| `validate_multi_output` | intended outputs | Require a complete output set and explicit attribution; prohibit crediting internally transferred planting material as a sale. |  |\n| `validate_flow_identity_bindings` | product inputs with parameterized identity | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_direct_emissions` | field emissions | Require selected soil-emission method, N inputs, factors, conversions and flow assignments; never infer emissions from fertilizer product mass alone. | `ipcc-2019-managed-soils` |\n\n"
       headings:
@@ -1204,12 +1233,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43404
-              line: 823
+              offset: 47603
+              line: 831
               column: 1
             end:
-              offset: 43426
-              line: 823
+              offset: 47625
+              line: 831
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1332,119 +1361,119 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 43499
-          line: 827
+          offset: 47698
+          line: 835
           column: 1
         end:
-          offset: 43712
-          line: 827
+          offset: 47911
+          line: 835
           column: 214
     - pointer: "/validation_rules/1"
       rule_id: "validate_species_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 43713
-          line: 828
+          offset: 47912
+          line: 836
           column: 1
         end:
-          offset: 43911
-          line: 828
+          offset: 48110
+          line: 836
           column: 199
     - pointer: "/validation_rules/2"
       rule_id: "validate_node_handoffs"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 43912
-          line: 829
+          offset: 48111
+          line: 837
           column: 1
         end:
-          offset: 44074
-          line: 829
+          offset: 48273
+          line: 837
           column: 163
     - pointer: "/validation_rules/3"
       rule_id: "validate_destinations"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 44075
-          line: 830
+          offset: 48274
+          line: 838
           column: 1
         end:
-          offset: 44251
-          line: 830
+          offset: 48450
+          line: 838
           column: 177
     - pointer: "/validation_rules/4"
       rule_id: "validate_conditional_routes"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 44252
-          line: 831
+          offset: 48451
+          line: 839
           column: 1
         end:
-          offset: 44442
-          line: 831
+          offset: 48641
+          line: 839
           column: 191
     - pointer: "/validation_rules/5"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 44443
-          line: 832
+          offset: 48642
+          line: 840
           column: 1
         end:
-          offset: 44639
-          line: 832
+          offset: 48838
+          line: 840
           column: 197
     - pointer: "/validation_rules/6"
       rule_id: "validate_multi_output"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 44640
-          line: 833
+          offset: 48839
+          line: 841
           column: 1
         end:
-          offset: 44818
-          line: 833
+          offset: 49017
+          line: 841
           column: 179
     - pointer: "/validation_rules/7"
       rule_id: "validate_flow_identity_bindings"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 44819
-          line: 834
+          offset: 49018
+          line: 842
           column: 1
         end:
-          offset: 45075
-          line: 834
+          offset: 49274
+          line: 842
           column: 257
     - pointer: "/validation_rules/8"
       rule_id: "validate_direct_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 45076
-          line: 835
+          offset: 49275
+          line: 843
           column: 1
         end:
-          offset: 45305
-          line: 835
+          offset: 49504
+          line: 843
           column: 230
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1485,15 +1514,15 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43404"
+      unit_id: "normative_47603"
       source_span:
         start:
-          offset: 43404
-          line: 823
+          offset: 47603
+          line: 831
           column: 1
         end:
-          offset: 43426
-          line: 823
+          offset: 47625
+          line: 831
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1502,5 +1531,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:44d20a176809aaa6c4dc959f10283de927f540469db67fa1cee35122ab504578"
-  generated_content_sha256: "sha256:6a1c7156a3a39557ea833697bb0d9564df214899d6145eb6e5d31c316a405b15"
+    sha256: "sha256:b3c52750caf54c167eecbe376915d91f66141585ccd1413fddd0a22d51ccf15c"
+  generated_content_sha256: "sha256:514d0e789376c6143d698c7133ab870de2b4c1a515b29f47b659036020a2bbfc"

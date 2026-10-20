@@ -48,8 +48,8 @@ boundary_abstraction:
 reference_flow_definition:
   reference_amount: "1000"
   product_flow_ref:
-    name: "Straw"
-    uuid: "b1dd1313-1bc0-4baf-8cfb-50e8ea2a307c"
+    name: "Feed-grade cereal straw or husk at the declared plant gate"
+    uuid: ""
   flow_property_ref:
     uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
   unit_group_ref:
@@ -462,7 +462,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Use the verified water-vapour elementary flow in the unspecified-air compartment; do not report dry-matter loss as water. Raw activity or stage basis: per kg accepted output."
           amount:
-            expression: "Inlet moisture minus outlet moisture, net of supplied water and discharge"
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -912,12 +912,10 @@ process_inventory:
       product:
         - row_id: reference_straw_output
           role: "Feed-grade straw at plant gate"
-          name: "Straw"
+          name: "Feed-grade cereal straw or husk at the declared plant gate"
           flow_type: "product"
-          flow_ref:
-            uuid: "b1dd1313-1bc0-4baf-8cfb-50e8ea2a307c"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Issue only product matching the declared cereal, material state, moisture and feed-grade route. Raw output measurement and reconciliation: Fixed reference amount of accepted product Raw activity or stage basis: per 1,000 kg reference product."
+          description: "Issue only product matching the declared cereal, material state, moisture and feed-grade route. Raw output measurement and reconciliation: Fixed reference amount of accepted product Raw activity or stage basis: per 1,000 kg reference product. The product card and reference retain the 1,000 kg accepted output, actual cereal, straw/husk, preparation form, moisture basis and plant-gate feed grade. Select the actual material-specific identity only after compatible source verification; do not inherit a straw UUID for husk."
           amount:
             expression: "1000 kg"
             value_mode: "fixed_value"
@@ -1026,6 +1024,11 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Enumerate grain, straw, husks and every other intended product at the upstream separation point. Use the upstream cereal PCR or supplier allocation when available. Otherwise test subdivision first; if shared cultivation burdens remain, apply and disclose one consistent physical or economic allocation in accordance with ISO 14044. Zero-burden cut-off is allowed only when an applicable study rule explicitly requires it. Within the foreground route, use measured lot balances for accepted, downgraded and waste states. Rework stays inside its producing node. Each reject has exactly one rework, downgrade, recovery or disposal path. Reconcile source, transfers and final hand-offs on a common dry-matter basis to prevent double counting."
     source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
 dataset_production:
   collection_protocols:
     - protocol_id: cp_source_lot
@@ -1068,7 +1071,7 @@ dataset_production:
       process_id: "grading_and_forming"
       flow_role: "water and moisture"
       record_type: "meter and laboratory record"
-      raw_fields: "water; inlet/outlet mass; moisture method; time"
+      raw_fields: "water; inlet/outlet mass; moisture method; time ; all inlet/outlet material water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; wet-basis moisture/density; supported evaporation and uncertainty"
       collection_method: "meter and paired samples; Raw aggregation and attribution: water addition and removal separately"
       unit: "m3; kg; fraction"
       frequency: "each lot/run"
@@ -1181,7 +1184,7 @@ validation_rules:
     source_ids: []
   - rule_id: validation_rule_2
     applies_to: "foreground_dataset_conformance"
-    rule: "Use the fixed feed-grade Straw flow only for the declared at-plant product, never chemical treatment, complete feed or fuel-only dry matter."
+    rule: "Verify a distinct product identity against the actual cereal, straw versus husk, preparation state, feed grade and plant-gate hand-off before UUID binding. The cached Straw definition describes dry cereal stalk after grain and chaff removal and does not establish a husk identity; it is not a universal binding for this PCR. Keep identity explicitly unresolved until supported. Exclude chemical treatment, complete feed and fuel-only products."
     source_ids: []
   - rule_id: validation_rule_3
     applies_to: "foreground_dataset_conformance"
@@ -1217,7 +1220,7 @@ validation_rules:
     source_ids: []
   - rule_id: validation_rule_11
     applies_to: "foreground_dataset_conformance"
-    rule: "Every quantitative card has exactly one Range and EN, ZH and structured fields agree."
+    rule: "For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening."
     source_ids: []
 published_dataset_profile:
   dataset_role: "Foreground cereal-residue collection and physical-preparation dataset"
@@ -1248,20 +1251,24 @@ data_sources:
     type: "method_factor"
     reference: "Conservation of mass applied to paired mass and moisture records"
     used_for: "Conversion and balance calculations"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:07fae5a672abb21e91affdc756878850920a3a12a063f22955f1f931ca069931"
+  source_sha256: "sha256:67550763e4f77538ed03682ff548842b12466c1c7698c5404665fca6e904362c"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_3689"
+    - unit_id: "normative_3703"
       family: "system_boundary"
       span:
         start:
-          offset: 3689
+          offset: 3703
           line: 56
           column: 1
         end:
-          offset: 5290
+          offset: 5304
           line: 78
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Grain and residue are separated and straw or husk is available at a documented source hand-off. |\n| starting_condition_role | Secondary co-product hand-off from cereal production |\n| product_classification_scope | CPC 3.0 `01913` |\n| recursive_input_rule | Record purchased CPC 01913 material once at its incoming state and obtain prior preparation burdens from its upstream dataset. |\n| upstream_dataset_requirement | Cereal, separation hand-off, grain/straw attribution, moisture basis and inherited burdens |\n| disclosure | Burden inheritance or cut-off; origin; route; moisture change; grade; destinations |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `secondary_origin` | Source material | Secondary status requires a documented grain-separation hand-off; it does not by itself authorize zero burden. | `iso-14044-2006` |\n| `physical_route` | Covered product | Include physical collection, drying or ventilation, chopping, grinding, pressing, pelletizing, cooling and storage when performed; exclude chemical upgrading and complete-feed blending. | `fao-crop-residue-machinery-2002`; `fao-crop-residue-upgrading-2002` |\n| `moisture_state` | Every hand-off | Record moisture on the same sampling basis as mass and separate water addition, evaporation and dry-matter loss. | `fao-feed-good-practices-2010` |\n| `destinations` | Outputs | Keep accepted, downgraded, alternate-use, rework and waste states distinct. | `iso-14044-2006` |\n\n"
@@ -1281,11 +1288,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 3689
+              offset: 3703
               line: 56
               column: 1
             end:
-              offset: 3710
+              offset: 3724
               line: 56
               column: 22
           text: "## 5. System Boundary"
@@ -1301,18 +1308,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_39461"
+    - unit_id: "normative_40538"
       family: "allocation"
       span:
         start:
-          offset: 39461
-          line: 955
+          offset: 40538
+          line: 957
           column: 1
         end:
-          offset: 40243
-          line: 959
+          offset: 43304
+          line: 965
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\nEnumerate grain, straw, husks and every other intended product at the upstream separation point. Use the upstream cereal PCR or supplier allocation when available. Otherwise test subdivision first; if shared cultivation burdens remain, apply and disclose one consistent physical or economic allocation in accordance with ISO 14044. Zero-burden cut-off is allowed only when an applicable study rule explicitly requires it. Within the foreground route, use measured lot balances for accepted, downgraded and waste states. Rework stays inside its producing node. Each reject has exactly one rework, downgrade, recovery or disposal path. Reconcile source, transfers and final hand-offs on a common dry-matter basis to prevent double counting.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\nEnumerate grain, straw, husks and every other intended product at the upstream separation point. Use the upstream cereal PCR or supplier allocation when available. Otherwise test subdivision first; if shared cultivation burdens remain, apply and disclose one consistent physical or economic allocation in accordance with ISO 14044. Zero-burden cut-off is allowed only when an applicable study rule explicitly requires it. Within the foreground route, use measured lot balances for accepted, downgraded and waste states. Rework stays inside its producing node. Each reject has exactly one rework, downgrade, recovery or disposal path. Reconcile source, transfers and final hand-offs on a common dry-matter basis to prevent double counting.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1329,12 +1336,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 39461
-              line: 955
+              offset: 40538
+              line: 957
               column: 1
             end:
-              offset: 39501
-              line: 955
+              offset: 40578
+              line: 957
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1349,18 +1356,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46149"
+    - unit_id: "normative_49416"
       family: "validation"
       span:
         start:
-          offset: 46149
-          line: 998
+          offset: 49416
+          line: 1004
           column: 1
         end:
-          offset: 47450
-          line: 1012
+          offset: 51668
+          line: 1018
           column: 1
-      markdown: "## 9. Validation Rules\n\n1. Require cereal, straw/husk, form, moisture fraction and basis, grade, route and plant gate.\n2. Use the fixed feed-grade Straw flow only for the declared at-plant product, never chemical treatment, complete feed or fuel-only dry matter.\n3. Unprepared bypasses size reduction and forming; ground uses size reduction; pressed or pelletized uses forming; inactive nodes carry zero.\n4. Every node declares before/after states, service roles, loss, reject and hand-off; every intended output has one destination.\n5. Secondary origin requires evidence and an explicit inherited, allocated or cut-off burden decision with no duplication.\n6. Rework links producing and receiving runs, and rejected material cannot be accepted output.\n7. Shared batch or continuous-period inputs are assigned once.\n8. Wet-mass and dry-matter balances separate water change from dry-matter loss.\n9. Parameterized Product inputs resolve to verified UUIDs during foreground generation.\n10. The recovered-material set is inapplicable because its current groups cover recycled metal and paper fibre, not cereal residues. Nutrient, construction and waste-treatment sets are also inapplicable to this physical route.\n11. Every quantitative card has exactly one Range and EN, ZH and structured fields agree.\n\n"
+      markdown: "## 9. Validation Rules\n\n1. Require cereal, straw/husk, form, moisture fraction and basis, grade, route and plant gate.\n2. Verify a distinct product identity against the actual cereal, straw versus husk, preparation state, feed grade and plant-gate hand-off before UUID binding. The cached Straw definition describes dry cereal stalk after grain and chaff removal and does not establish a husk identity; it is not a universal binding for this PCR. Keep identity explicitly unresolved until supported. Exclude chemical treatment, complete feed and fuel-only products.\n3. Unprepared bypasses size reduction and forming; ground uses size reduction; pressed or pelletized uses forming; inactive nodes carry zero.\n4. Every node declares before/after states, service roles, loss, reject and hand-off; every intended output has one destination.\n5. Secondary origin requires evidence and an explicit inherited, allocated or cut-off burden decision with no duplication.\n6. Rework links producing and receiving runs, and rejected material cannot be accepted output.\n7. Shared batch or continuous-period inputs are assigned once.\n8. Wet-mass and dry-matter balances separate water change from dry-matter loss.\n9. Parameterized Product inputs resolve to verified UUIDs during foreground generation.\n10. The recovered-material set is inapplicable because its current groups cover recycled metal and paper fibre, not cereal residues. Nutrient, construction and waste-treatment sets are also inapplicable to this physical route.\n11. For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1377,12 +1384,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46149
-              line: 998
+              offset: 49416
+              line: 1004
               column: 1
             end:
-              offset: 46171
-              line: 998
+              offset: 49438
+              line: 1004
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1401,259 +1408,296 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "secondary_origin"
       identity_kind: "explicit"
-      unit_id: "normative_3689"
+      unit_id: "normative_3703"
       source_span:
         start:
-          offset: 4506
+          offset: 4520
           line: 73
           column: 1
         end:
-          offset: 4678
+          offset: 4692
           line: 73
           column: 173
     - pointer: "/system_boundary/rules/1"
       rule_id: "physical_route"
       identity_kind: "explicit"
-      unit_id: "normative_3689"
+      unit_id: "normative_3703"
       source_span:
         start:
-          offset: 4679
+          offset: 4693
           line: 74
           column: 1
         end:
-          offset: 4976
+          offset: 4990
           line: 74
           column: 298
     - pointer: "/system_boundary/rules/2"
       rule_id: "moisture_state"
       identity_kind: "explicit"
-      unit_id: "normative_3689"
+      unit_id: "normative_3703"
       source_span:
         start:
-          offset: 4977
+          offset: 4991
           line: 75
           column: 1
         end:
-          offset: 5162
+          offset: 5176
           line: 75
           column: 186
     - pointer: "/system_boundary/rules/3"
       rule_id: "destinations"
       identity_kind: "explicit"
-      unit_id: "normative_3689"
+      unit_id: "normative_3703"
       source_span:
         start:
-          offset: 5163
+          offset: 5177
           line: 76
           column: 1
         end:
-          offset: 5288
+          offset: 5302
           line: 76
           column: 126
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_39461"
+      unit_id: "normative_40538"
       source_span:
         start:
-          offset: 39503
-          line: 957
+          offset: 40580
+          line: 959
           column: 1
         end:
-          offset: 40241
-          line: 957
+          offset: 41318
+          line: 959
           column: 739
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_40538"
+      source_span:
+        start:
+          offset: 41391
+          line: 963
+          column: 1
+        end:
+          offset: 43302
+          line: 963
+          column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 46173
-          line: 1000
+          offset: 49440
+          line: 1006
           column: 1
         end:
-          offset: 46267
-          line: 1000
+          offset: 49534
+          line: 1006
           column: 95
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 46268
-          line: 1001
+          offset: 49535
+          line: 1007
           column: 1
         end:
-          offset: 46411
-          line: 1001
-          column: 144
+          offset: 49981
+          line: 1007
+          column: 447
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 46412
-          line: 1002
+          offset: 49982
+          line: 1008
           column: 1
         end:
-          offset: 46553
-          line: 1002
+          offset: 50123
+          line: 1008
           column: 142
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 46554
-          line: 1003
+          offset: 50124
+          line: 1009
           column: 1
         end:
-          offset: 46682
-          line: 1003
+          offset: 50252
+          line: 1009
           column: 129
     - pointer: "/validation_rules/4"
       rule_id: "validation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 46683
-          line: 1004
+          offset: 50253
+          line: 1010
           column: 1
         end:
-          offset: 46805
-          line: 1004
+          offset: 50375
+          line: 1010
           column: 123
     - pointer: "/validation_rules/5"
       rule_id: "validation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 46806
-          line: 1005
+          offset: 50376
+          line: 1011
           column: 1
         end:
-          offset: 46900
-          line: 1005
+          offset: 50470
+          line: 1011
           column: 95
     - pointer: "/validation_rules/6"
       rule_id: "validation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 46901
-          line: 1006
+          offset: 50471
+          line: 1012
           column: 1
         end:
-          offset: 46963
-          line: 1006
+          offset: 50533
+          line: 1012
           column: 63
     - pointer: "/validation_rules/7"
       rule_id: "validation_rule_8"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 46964
-          line: 1007
+          offset: 50534
+          line: 1013
           column: 1
         end:
-          offset: 47043
-          line: 1007
+          offset: 50613
+          line: 1013
           column: 80
     - pointer: "/validation_rules/8"
       rule_id: "validation_rule_9"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 47044
-          line: 1008
+          offset: 50614
+          line: 1014
           column: 1
         end:
-          offset: 47131
-          line: 1008
+          offset: 50701
+          line: 1014
           column: 88
     - pointer: "/validation_rules/9"
       rule_id: "validation_rule_10"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 47132
-          line: 1009
+          offset: 50702
+          line: 1015
           column: 1
         end:
-          offset: 47358
-          line: 1009
+          offset: 50928
+          line: 1015
           column: 227
     - pointer: "/validation_rules/10"
       rule_id: "validation_rule_11"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46149"
+      unit_id: "normative_49416"
       source_span:
         start:
-          offset: 47359
-          line: 1010
+          offset: 50929
+          line: 1016
           column: 1
         end:
-          offset: 47448
-          line: 1010
-          column: 90
+          offset: 51666
+          line: 1016
+          column: 738
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_3689"
+      unit_id: "normative_3703"
       source_span:
         start:
-          offset: 3689
+          offset: 3703
           line: 56
           column: 1
         end:
-          offset: 3710
+          offset: 3724
           line: 56
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_3689"
+      unit_id: "normative_3703"
       source_span:
         start:
-          offset: 3738
+          offset: 3752
           line: 60
           column: 1
         end:
-          offset: 4413
+          offset: 4427
           line: 67
           column: 100
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_39461"
+      unit_id: "normative_40538"
       source_span:
         start:
-          offset: 39461
-          line: 955
+          offset: 40538
+          line: 957
           column: 1
         end:
-          offset: 39501
-          line: 955
+          offset: 40578
+          line: 957
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46149"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_40538"
       source_span:
         start:
-          offset: 46149
-          line: 998
+          offset: 40580
+          line: 959
           column: 1
         end:
-          offset: 46171
-          line: 998
+          offset: 41318
+          line: 959
+          column: 739
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_40538"
+      source_span:
+        start:
+          offset: 41391
+          line: 963
+          column: 1
+        end:
+          offset: 43302
+          line: 963
+          column: 1912
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_49416"
+      source_span:
+        start:
+          offset: 49416
+          line: 1004
+          column: 1
+        end:
+          offset: 49438
+          line: 1004
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1662,5 +1706,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:07fae5a672abb21e91affdc756878850920a3a12a063f22955f1f931ca069931"
-  generated_content_sha256: "sha256:6da6fb71784cda23f350fbc01e9f366adf431779d656895e6aa5ce86da736c01"
+    sha256: "sha256:67550763e4f77538ed03682ff548842b12466c1c7698c5404665fca6e904362c"
+  generated_content_sha256: "sha256:e73cf1a6b22eef85c10c0a557c593153463308f3ad49b237469e05449871a428"

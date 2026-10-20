@@ -20,12 +20,14 @@ Conventional, integrated, organic, rain-fed, and irrigated routes are included w
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.apples` |
-| classification_refs | CPC 3.0 `01341`, `Apples`; mapping relation: exact |
+| classification_refs | CPC 3.0 `01341`, `Apples`; mapping relation: narrower |
 | covered_products | fresh harvested apples from commercial cultivars of *Malus domestica* at orchard gate |
 | excluded_products | nursery trees; juice; cider; dried, preserved, or otherwise processed apples; packing-house or cold-store outputs; fruit produced primarily for industrial processing |
 | representative_product | marketable fresh apples, natural cultivar mix, bulk at orchard |
 | production_route | perennial orchard establishment, annual management, harvest, and orchard-gate handling |
 | market_state | fresh, whole, unprocessed bulk fruit at orchard gate, with grade and packaging state declared |
+
+This PCR covers a narrower subset of CPC 3.0 01341. Its existing product, use and gate restrictions remain in force. The accepted classification mapping is narrower, not a declaration that all goods in the CPC leaf are covered.
 
 ## 3. Reference Flow
 
@@ -271,22 +273,15 @@ Raw activity or stage basis: per 1 kg reference product.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_land_and_output_records`
-- Range: Positive-yield guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: ha a/kg reference product
-  - Basis: area-time divided by marketable yield
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ###### Water withdrawal (`water_withdrawal`)
 
 Water withdrawal represents source-specific water removed from the environment for orchard irrigation.
 
-- Selected flow: water `419682fe-60fb-4b43-be89-bf2824b51104`
-- Flow property / unit: Mass / kg
+- Selected flow: Source-specific natural water withdrawal, with water type and receiving resource compartment declared
+- Flow property / unit: Volume / m3
 - Amount rule: calculate from metered irrigation by source without double counting supplied water
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -298,6 +293,8 @@ Raw activity or stage basis: per 1 kg reference product.
 - Collection protocol: `cp_irrigation_records`
 - Sources: `dzikiti-apple-water-footprint-2019`
 Range evidence need: collect delivered irrigation and source withdrawal separately. The cited total water-footprint observations (187–237 m3/t, including green/blue components) are contextual indicators and are not a range for either exchange.
+
+Measure withdrawal at the actual source boundary in m3, separately from supplied/delivered water. Record freshwater or seawater, surface water or groundwater, location, resource compartment, meter dates/readings and transfers; use closing minus opening cumulative readings with documented meter corrections. Sum source volumes for the matched period and normalize once to accepted reference output. Keep any mass observation separate and convert by V = m/rho only with a documented compatible water density and units; no implicit kg-to-m3 equality. A broad unspecified-water identity cannot substitute for the actual source. Missing source/type or conversion evidence is an explicit gap and blocks a fully identified or complete water inventory claim.
 
 #### Outputs
 
@@ -359,31 +356,35 @@ Raw activity or stage basis: per 1 kg reference product.
 
 ##### Waste flows
 
-###### Culled apples and orchard biomass (`culled_apples_and_orchard_biomass`)
+###### Discarded apple fruit (`discarded_apple_fruit`)
 
-Culled apples and orchard biomass record non-product fruit, prunings, and removal material by evidenced fate.
+Use only for this separately identified material actually exported as waste to an evidenced treatment recipient. Measure net as-received mass and moisture for this stream and retain a separate dry-matter ledger where used. Do not include deliberately sold products, on-site retained biomass, or an unexplained balance loss. If the actual disposal stream is a physical mixture, document composition and its one actual treatment boundary in a separate mixture-specific card; do not invent segregation or also count component exports. Account for non-use with evidence; missing amount or fate blocks completeness. Normalize attributable actual mass once to matched accepted apple output; no universal cull/wood ratio is prescribed.
 
-- Selected flow: site-specific biodegradable fruit or woody agricultural waste flow
-- Flow property / unit: Mass / kg, with dry-matter basis for woody biomass
-- Amount rule: measured culls, prunings, and removal biomass by fate
+- Selected flow: Discarded apple fruit sent to treatment
+- Flow property / unit: Mass / kg
+- Amount rule: measured net stream mass, actual moisture and destination; final-reference normalization once
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg reference product.
-
 - Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_land_and_output_records`
 - Sources: `ucdavis-orchard-lca-findings-2020`
-- Range: Output reconciliation guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg/kg reference product
-  - Basis: broad reconciliation interval; fate-specific records are required
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Source rule (`source_rule`)
-  - Sources: `ucdavis-orchard-lca-findings-2020`
+
+###### Discarded apple-tree woody material (`discarded_apple_wood`)
+
+Use only for this separately identified material actually exported as waste to an evidenced treatment recipient. Measure net as-received mass and moisture for this stream and retain a separate dry-matter ledger where used. Do not include deliberately sold products, on-site retained biomass, or an unexplained balance loss. If the actual disposal stream is a physical mixture, document composition and its one actual treatment boundary in a separate mixture-specific card; do not invent segregation or also count component exports. Account for non-use with evidence; missing amount or fate blocks completeness. Normalize attributable actual mass once to matched accepted apple output; no universal cull/wood ratio is prescribed.
+
+- Selected flow: Discarded apple-tree woody material sent to treatment
+- Flow property / unit: Mass / kg
+- Amount rule: measured net stream mass, actual moisture and destination; final-reference normalization once
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_land_and_output_records`
+- Sources: `ucdavis-orchard-lca-findings-2020`
 
 ##### Elementary flows
 
@@ -455,15 +456,8 @@ Raw activity or stage basis: per 1 kg reference product.
 - Basis kind: Fuel inventory (`fuel_inventory`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_energy_records`
-- Range: Fuel-carbon calculation guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg CO2/kg reference product
-  - Basis: calculated from recorded fuel and factor
-  - Basis kind: Fuel inventory (`fuel_inventory`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
 
 ### Process: Orchard-gate Handling (`orchard_gate_handling`)
 
@@ -626,6 +620,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calculate_water_withdrawal` | irrigation | source-specific metered withdrawal / accepted mass; report consumption or water footprint separately | cp_irrigation_records; cp_land_and_output_records | m3 water/kg reference product | `dzikiti-apple-water-footprint-2019` |
 | `calculate_direct_soil_n2o` | fertilizer N | apply selected IPCC tier and convert N2O-N to N2O by 44/28 | cp_orchard_input_records; declared factors | kg N2O/kg reference product | `ipcc-2019-managed-soils-n2o` |
 | `reconcile_apple_outputs` | harvested fruit | accepted + industrial-grade + culled + measured loss = total harvest within declared tolerance | cp_land_and_output_records | mass balance and unexplained loss | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_orchard_input_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

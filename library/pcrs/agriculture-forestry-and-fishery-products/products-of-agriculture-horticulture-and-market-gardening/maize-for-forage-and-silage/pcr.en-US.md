@@ -211,15 +211,8 @@ Raw activity or stage basis: per ha irrigated in one crop cycle.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation`
 - Sources: `fao-crop-water-needs`
-- Range: Conditional irrigation-delivery screen
-  - Range role: Typical range (`typical_range`)
-  - Lower: 0
-  - Upper: 8000
-  - Unit: m3/ha crop cycle
-  - Basis: zero for rainfed strata; upper screen corresponds to 800 mm seasonal maize crop-water need before local rainfall and efficiency adjustment
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-crop-water-needs`
+
+For irrigation, distinguish crop evapotranspiration from net irrigation and gross delivered/withdrawn water. Reconcile effective rainfall, soil-water stock change, capillary supply, application efficiency and the actual delivery boundary; use metered site records or a documented water balance. A general crop-water-demand table does not establish a universal irrigation upper bound.
 
 ###### Electricity, medium voltage input (`field_machinery_energy`)
 
@@ -396,7 +389,7 @@ Raw activity or stage basis: per ha planted in one crop cycle.
 Record or calculate nitrate leaching or runoff by receiving water compartment and retain whether the amount is nitrate or nitrate-nitrogen.
 
 - Selected flow: Nitrate to water
-- Flow property / unit: Mass / kg NO3 or kg NO3-N as reported
+- Flow property / unit: Mass / kg NO3-
 - Amount rule: site model or measurement with receiving compartment and basis retained
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -416,6 +409,8 @@ Raw activity or stage basis: per ha planted in one crop cycle.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
+
+Final exchange mass is kg NO3-; retain N-based activity, factors and screens in a separate ledger. Convert only the mass of N attributed to this chemical species by 62/14 exactly once, then normalize once to the accepted reference output. Do not treat total nutrient balance, soil retention or unexplained deficit as this release. Record each actual receiving compartment separately. Any gas-volume record requires its measured temperature, pressure and a supported mass conversion; it is not interchangeable with compound mass.
 
 ###### Phosphorus releases to water (`phosphorus_to_water`)
 
@@ -608,6 +603,10 @@ Raw activity or stage basis: per ha harvested in one crop cycle.
 | `allocation_run_period` | fields, runs and lots | Use a single-period crop-cycle boundary. Link inputs, outputs, cleaning and changeover events to the field-season or harvest lot; allocate shared machinery burdens once by measured area, runtime or throughput and prevent double counting across strata. | `mass-balance-identity` |
 | `allocation_rejects` | off-spec and rejected biomass | This fresh farm-gate route has no in-boundary rework loop. Route every off-spec mass to accepted after documented reassessment, downgraded alternate use, field retention or disposal; retain prior burdens and count mass only at its final destination. | `mass-balance-identity` |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
@@ -622,7 +621,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_field_inputs` | `field_production` | seed, nutrient and crop-protection inputs | invoice, field log and product analysis | field; date; product; formulation; amount; area; nutrient or active content | reconcile purchase and application records by field; Raw aggregation and attribution: sum each actual product once; retain composition | kg; L; m3; ha | each application | crop cycle | each field | per declared reference flow | invoice, label, analysis and signed log |
 | `cp_irrigation` | `field_production` | delivered irrigation water | meter or pump log | field; event; volume; source; runtime; irrigated area | meter preferred; otherwise documented pump-flow calculation; Raw aggregation and attribution: sum delivered volume; zero for rainfed strata | m3; h; ha | each event | crop cycle | each irrigated field | per declared reference flow | meter calibration or pump curve |
 | `cp_energy_operations` | all | field and harvest energy | fuel ticket, meter and machine log | process; field/lot; carrier; quantity; runtime; area or throughput | reconcile purchases, meters and runtime; Raw aggregation and attribution: convert with documented factor and allocate once | L; kg; kWh; MJ; h | each operation | crop cycle through hand-off | field and harvest lot | per declared reference flow | invoice, meter calibration and machine log |
-| `cp_field_and_lot_trace` | all | area, route and lot linkage | field GIS/record and lot register | field; area; dates; crop; route; harvest lot; destination | trace each harvest lot to field-season strata; Raw aggregation and attribution: area-weight only after route stratification | ha; date; id | field-season and lot | crop cycle through hand-off | all represented fields | per declared reference flow | map, field register and lot ticket |
+| `cp_field_and_lot_trace` | all | area, route and lot linkage | field GIS/record and lot register | field; area; dates; crop; route; harvest lot; destination | Within each compatible route/product/state, calculate attributable raw totals by field first. Aggregate final intensity = sum(attributable raw quantities) * declared reference quantity / sum(matched accepted final outputs). When source quantities are per-ha rates e_h and y_h, first recover raw totals as e_h*area and y_h*area; do not area-weight field totals again. A per-product intensity is weighted by its matched output, not area or an unweighted mean. Apply existing allocation once, preserve period/throughput and all source-unit conversions, and keep incompatible routes separate. | ha; date; id | field-season and lot | crop cycle through hand-off | all represented fields | per declared reference flow | map, field register and lot ticket |
 | `cp_field_emissions` | `field_production` | managed-soil and applied-substance releases | calculation sheet, model or measurement | N by source; residue N; fertilizer form; event; weather; soil; factors; active substance; compartment | apply disclosed IPCC tier and documented site models or measurements; Raw aggregation and attribution: calculate by field and substance before aggregation | kg N; kg substance; ha | each event and crop cycle | crop cycle | each field stratum | per declared reference flow | factor version, model inputs and calculation audit |
 | `cp_harvest_mass_balance` | `harvest_handoff` | standing input, accepted, downgraded and loss outputs | scale, yield monitor, moisture sample and destination ticket | field; lot; technology; inlet estimate; accepted mass; downgrade mass; loss sample; moisture; destination | weigh outputs and sample losses and whole-plant moisture representatively; Raw aggregation and attribution: moisture-align and reconcile exclusive destinations | kg; %; ha | each field and lot | harvest to immediate farm-gate hand-off | each harvest lot | per declared reference flow | scale calibration, sample plan and closure worksheet |
 
@@ -634,6 +633,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_dry_matter` | biomass comparisons | dry matter = fresh mass × (1 − moisture fraction) | fresh mass; wet-basis moisture fraction | dry-matter mass | `mass-balance-identity` |
 | `calc_n2o` | managed soil | Apply the disclosed IPCC tier to collected N inputs and convert N2O-N to N2O by 44/28 when required. | N activity data; emission factors; indirect-loss parameters | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | `harvest_handoff` | standing biomass = accepted + downgraded + discarded/uncollected + measured stock change, on one moisture basis and within declared uncertainty | linked masses, moisture and destinations | mass closure | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_emissions`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 
@@ -655,7 +655,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `validate_batch_period` | fields, operations and harvest lots | Link inputs, outputs, cleaning and changeover to one field-season or harvest lot and assign shared burdens once by measured area, runtime or throughput. | `mass-balance-identity` |
 | `validate_reject_routing` | off-spec biomass | Require one exclusive accepted, downgraded, field-retained or discarded destination; do not count an unresolved reject as accepted output and do not create an unrecorded rework loop. | `mass-balance-identity` |
 | `validate_mass_balance` | `harvest_handoff` | Reconcile standing input, accepted product, downgraded product, waste/loss and stock change on a common moisture basis within declared uncertainty. | `mass-balance-identity` |
-| `validate_ranges` | all flow cards | Require exactly one complete Range per quantitative card, with role, bounds, unit, denominator/basis, basis kind, evidence kind and source ids aligned in English, Chinese and structured output. | `mass-balance-identity` |
+| `validate_ranges` | all flow cards | Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values. | |
 
 ## 10. Published Dataset Profile
 
@@ -677,3 +677,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-crop-water-needs` | official_guidance | FAO, Crop Water Needs, Chapter 3, https://www.fao.org/4/s2022e/s2022e07.htm | maize seasonal crop-water range and local crop-factor context |
 | `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4 Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | managed-soil N2O calculation and nitrogen activity data |
 | `mass-balance-identity` | method_factor | Conservation of mass applied to moisture-aligned standing biomass, accepted product, downgraded biomass, loss and stock change | hand-offs, mass closure, destination exclusivity, allocation and reject routing |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

@@ -94,30 +94,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 香草种植插条或既有藤本结转（`propagation_material`）
-
-该流卡：计量外购种植材料并归属农场自留材料；外购物料在物种、繁殖状态、供应方、地理、属性和单位核实前保持未解析，农场自留材料为承载负荷的内部转移。
-
-- 选定流：香草种植插条或既有藤本
-- 流属性/单位：质量 / kg
-- 数量规则：计量外购种植材料并归属农场自留材料；外购物料在物种、繁殖状态、供应方、地理、属性和单位核实前保持未解析，农场自留材料为承载负荷的内部转移。
-- 数值来源模式：`calculated_value`
-- 适用范围：`site_specific`
-原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚并覆盖声明生产期.
-
-- 归一化基准：每声明的参考流
-- 基准类型：`reference_flow`
-- 证据类型：`calculated_from_collection`
-- 采集协议：`cp_perennial_vine_records`
-- 数量范围：数量 QA 范围
-  - 范围角色：`default_estimate`
-  - 下限：0
-  - 上限：2
-  - 单位：kg/kg reference product
-  - 基准：每 kg 已接收产出的种植材料归属量
-  - 基准类型：`reference_flow`
-  - 证据类型：`reasoned_estimate`
-
 ###### 尿素肥料投入（`nutrient_inputs`）
 
 仅当声明的过程实际使用尿素肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
@@ -659,6 +635,7 @@ sync_with: pcr.en-US.md
 | `cp_selective_harvest_rounds` | `selective_pod_harvest` | harvest, rejects, losses, energy | lot sheet | round/date; plot; species; maturity; masses; retained status; carrier; labour mode | 逐轮计量并关联设备记录；原始汇总与分配：仅汇总已关联轮次并分开拒收 | kg; MJ; date | 每个轮次 | 全部贡献轮次 | 地块、轮次、批次 | 每声明的参考流 | 校准秤、签字批次表、能源日志 |
 | `cp_primary_conditioning` | `on_farm_primary_conditioning` | input, handled pods, removed matter | handling sheet | lot; input/output mass; holding time; operations; rejects/destination; no-curing declaration | 处理前后称量并核证无熟化/刻意干燥；原始汇总与分配：核算输入、产出、拒收和损失 | kg; hour | 每批 | 全部贡献批次 | 处理区和批次 | 每声明的参考流 | 校准秤、时间日志、检查表和照片/等效证据 |
 | `cp_green_pod_grading` | `green_pod_grading_handoff` | accepted grade, off-grade, rework, hand-off | grading/dispatch record | lot; species; maturity; grade; input; accepted; off-grade; rework; destination; date; uncured state | 逐状态称量并关联熟化前发运；原始汇总与分配：核算全部状态并去除返工重复 | kg; date | 每批 | 全部贡献批次 | 分级点和批次 | 每声明的参考流 | 校准秤、等级规范、发运和未熟化声明 |
+| `cp_phase1_environment_coverage` | perennial_vine_management | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -668,10 +645,19 @@ sync_with: pcr.en-US.md
 | `calc_period_attribution` | 定植、替换、共享设施 | attributed burden = recorded burden × documented service share | burden; nodes; period; share basis | period-attributed burden |  |
 | `calc_harvest_round_sum` | 重复选择性采收 | period mass = sum of linked round masses; rejects and retained pods separate | round; harvested; reject; retained status | period harvested/rejected mass |  |
 | `calc_mass_reconciliation` | 处理和分级 | difference = input - accepted - rejects - retained/transferred outputs | input and all state masses | difference and completeness flag | `reference-normalization-definition` |
+| `propagation_material_identity_and_fate` | `perennial_vine_management` | 对于本作业原有 propagation_material 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_perennial_vine_records` | 按身份区分的交换和对账活动记录 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_residue_and_emission_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity_state` | 参考产品与批次 | 物种、成熟度、等级、未熟化/未干燥、水分基准和农场门口交付完整。 | 物种、等级、批次、未熟化及发运记录 |
 | `dq_temporal_completeness` | 多年生路线与采收 | 覆盖全部承载负荷阶段和贡献轮次并披露排除项。 | 地块历史、阶段、轮次和替换记录 |
@@ -710,3 +696,4 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `fao-vanilla-postharvest-compendium` | `official_guidance` | Food and Agriculture Organization of the United Nations, *Vanilla: Post-harvest Operations*, Post-harvest Compendium | 生产/采收顺序；绿色成熟荚果基本无香气；熟化为形成香气的独立下游工序；熟化前边界与排除项 |
 | `reference-normalization-definition` | `method_factor` | 本 PCR 的 1 kg 收货质量参考流归一化和节点质量平衡恒等式 | 精确参考产出、归一化和质量核算 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

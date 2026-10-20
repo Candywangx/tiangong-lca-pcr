@@ -63,8 +63,8 @@ boundary_abstraction:
 reference_flow_definition:
   reference_amount: "1000"
   product_flow_ref:
-    name: "Nutmeg, mace, cardamoms, raw"
-    uuid: "6d4837b1-c271-4aac-89f4-f329d3290c47"
+    name: "Declared nutmeg seed, mace aril or cardamom capsule in actual fresh/dried state"
+    uuid: ""
   flow_property_ref:
     uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
   unit_group_ref:
@@ -815,7 +815,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "This card records the declared flow and its quantity at this process boundary. Raw activity or stage basis: per 1,000 kg raw spice entering conditioning. Calculation method corresponds to Section 8 rules: calc_conditioning_balance."
           amount:
-            expression: "wet input = conditioned output + rejects + samples + moisture loss, all on consistent basis"
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -874,12 +874,10 @@ process_inventory:
       product:
         - row_id: raw_spice_reference_product
           role: "Accepted raw spice reference product"
-          name: "Nutmeg, mace, cardamoms, raw"
+          name: "Declared nutmeg seed, mace aril or cardamom capsule in actual fresh/dried state"
           flow_type: "product"
-          flow_ref:
-            uuid: "6d4837b1-c271-4aac-89f4-f329d3290c47"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "This card records the declared flow and its quantity at this process boundary. Raw output measurement and reconciliation: 1,000 kg net accepted product Raw activity or stage basis: per reference flow."
+          description: "This card records the declared flow and its quantity at this process boundary. Raw output measurement and reconciliation: 1,000 kg net accepted product Raw activity or stage basis: per reference flow. Identity applicability: Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match."
           amount:
             expression: "1000 kg"
             value_mode: "fixed_value"
@@ -1026,7 +1024,7 @@ dataset_production:
       process_id: "primary_conditioning"
       flow_role: "washing, energy, moisture, yield"
       record_type: "batch sheet and meters"
-      raw_fields: "lot; method; input mass/moisture; water; energy carrier; time/temperature; output mass/moisture; rejects; re-drying"
+      raw_fields: "lot; method; input mass/moisture; water; energy carrier; time/temperature; output mass/moisture; rejects; re-drying ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation"
       collection_method: "meter and weigh/test every batch; Raw aggregation and attribution: reconcile input, output, reject and water loss"
       unit: "kg; m3; kWh; MJ; %"
       frequency: "every batch"
@@ -1046,6 +1044,18 @@ dataset_production:
       site_scope: "farm/lot"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "scale, grade spec, invoice"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "stand_establishment"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calc_establishment_attribution
       applies_to: "establishment"
@@ -1093,6 +1103,23 @@ dataset_production:
         - "accepted mass"
       output: "inventory/1,000 kg"
       source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_management
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "all records"
@@ -1112,7 +1139,7 @@ dataset_production:
       evidence: "test and calibration record"
     - id: dq_completeness
       applies_to: "inventory"
-      requirement: "Include every nutrient product below the one card, energy carrier, co-product, downgrade, reject and field-emission driver."
+      requirement: "Reconcile planting material, every actual fertilizer/amendment formulation, protection product, water, energy, output, downgrade/reject, residue and emission driver against primary records. Use a separate atomic Product-input card for each actual fertilizer/amendment, preserving product mass, composition and application records; nutrient equivalents are attributes/calculation inputs, not duplicate product quantities. Missing UUID remains explicit until verified."
       evidence: "invoices, logs, meters, receipts"
     - id: dq_representativeness
       applies_to: "aggregation"
@@ -1121,7 +1148,7 @@ dataset_production:
 validation_rules:
   - rule_id: validate_reference_identity
     applies_to: "reference flow"
-    rule: "Fail if crop/organ, state, moisture basis, grade, period, gate or route is missing, or accepted output is not exactly 1,000 kg."
+    rule: "Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match."
     source_ids: []
   - rule_id: validate_route_exclusivity
     applies_to: "graph"
@@ -1145,7 +1172,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_nutrient_cardinality
     applies_to: "each process"
-    rule: "Fail if a process has more than one nutrient Product-input card, any nutrient group, or lacks individual actual-product collection for UUID resolution."
+    rule: "Require one atomic Product-input card for each actual fertilizer/amendment formulation, with product mass, composition, application record and verified or explicit unresolved identity. Reject a group or combined unlike-product exchange, omitted actual products, duplicate product/nutrient quantities or invented UUIDs; there is no one-card maximum for a process."
     source_ids: []
   - rule_id: validate_mass_balance
     applies_to: "separation/conditioning/grading"
@@ -1201,18 +1228,18 @@ data_sources:
     used_for: "allocation hierarchy and sensitivity"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:edbc0393b051685ae8b740b5801bed9abb703b792fb9bd6e722e4f08314cff9a"
+  source_sha256: "sha256:f0033d12d19720d0d240fc5bc5c2a9ddeed0d445a1674245176430858d90bc42"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4162"
+    - unit_id: "normative_4174"
       family: "system_boundary"
       span:
         start:
-          offset: 4162
+          offset: 4174
           line: 58
           column: 1
         end:
-          offset: 6735
+          offset: 6747
           line: 85
           column: 1
       markdown: "## 5. System Boundary\n\nThe foreground begins with planting material or a documented existing stand and ends at farm-gate dispatch. Include stand establishment/non-bearing phases, productive management, land-use change where applicable, water, energy, crop-protection and nutrient supply, direct field emissions, harvest, separation, pre-gate conditioning, grading, residues, rejects and material capital goods. Nursery and other supplied products remain upstream datasets.\n\nHarvest is a distinct node because it removes a recorded biological output. Nutmeg separation creates seed, mace and pericarp states. Conditioning receives a fresh lot and hands off a declared fresh or stabilized state. Grading creates accepted, downgraded and rejected destinations.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | new establishment or existing stand of known age and establishment history |\n| starting_condition_role | determines direct establishment records or remaining-life attribution |\n| product_classification_scope | one nutmeg-seed, mace-aril, or cardamom-capsule route |\n| recursive_input_rule | a same-category input is an upstream farm-gate product dataset and is not regenerated recursively |\n| upstream_dataset_requirement | representative planting-material, nutrient, crop-protection, water, fuel and electricity datasets |\n| disclosure | stand age, establishment source, crop/species, intercropping, area, harvest period, yield, co-products, conditioning, moisture basis and farm gate |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route_selection` | all datasets | Preserve crop, harvested-organ and lot identity through every process. | `iisir-nutmeg-2005`; `iisir-cardamom-2022` |\n| `boundary_perennial_phases` | establishment | Include establishment, non-bearing and productive phases; link replacement and termination to area and period. | `cerutti-perennial-crops-2016`; `spices-board-cardamom-cost-2021` |\n| `boundary_nutmeg_separation` | nutmeg route | Include fruit collection and seed/aril/pericarp separation before distinct hand-offs. | `fao-nutmeg-handling` |\n| `boundary_conditioning` | conditioning | Include washing, drying energy, moisture loss, rejects and re-drying before farm gate; omit for fresh direct dispatch. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |\n| `boundary_manufacture_exclusion` | downstream | Exclude grinding, extraction, commercial-kernel cracking, blending, fumigation and consumer packaging. | `fao-nutmeg-handling` |\n\n"
@@ -1232,11 +1259,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4162
+              offset: 4174
               line: 58
               column: 1
             end:
-              offset: 4183
+              offset: 4195
               line: 58
               column: 22
           text: "## 5. System Boundary"
@@ -1252,16 +1279,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40899"
+    - unit_id: "normative_42424"
       family: "allocation"
       span:
         start:
-          offset: 40899
-          line: 834
+          offset: 42424
+          line: 836
           column: 1
         end:
-          offset: 42301
-          line: 844
+          offset: 43826
+          line: 846
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_first` | all shared operations | Subdivide route-specific and separately metered operations before allocation. | `iso-14044-2006` |\n| `allocation_nutmeg_outputs` | nutmeg production/separation | Treat seed and mace as intended co-products. Allocate inseparable burdens by matched-period farm-gate economic value and report mass-allocation sensitivity. Pericarp receives burden only when deliberately sold or used. | `iso-14044-2006`; `fao-nutmeg-handling` |\n| `allocation_establishment` | perennial establishment | Across lifecycle phases, divide cohort establishment burden by actual cumulative saleable output; for incomplete lives use a documented forecast and update for mortality, replacement or termination. Never charge one cohort twice. | `cerutti-perennial-crops-2016` |\n| `allocation_batches` | conditioning/grading | Assign measured batch inputs directly; apportion shared run/changeover burden once by mass handled. Re-dried lots retain prior burden and receive additional re-drying burden. | `iso-14044-2006` |\n| `allocation_rejects` | downgrade/rework/waste | Return rework to its producing lot; keep burden with downgraded saleable product under the chosen co-product rule; give waste no avoided credit in an attributional dataset. | `iso-14044-2006` |\n\n"
       headings:
@@ -1280,12 +1307,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40899
-              line: 834
+              offset: 42424
+              line: 836
               column: 1
             end:
-              offset: 40939
-              line: 834
+              offset: 42464
+              line: 836
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1300,18 +1327,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48773"
+    - unit_id: "normative_55015"
       family: "validation"
       span:
         start:
-          offset: 48773
-          line: 882
+          offset: 55015
+          line: 892
           column: 1
         end:
-          offset: 50315
-          line: 895
+          offset: 57367
+          line: 905
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Fail if crop/organ, state, moisture basis, grade, period, gate or route is missing, or accepted output is not exactly 1,000 kg. |  |\n| `validate_route_exclusivity` | graph | Fail if nutmeg/cardamom or fresh/ambient/heated routes are silently averaged. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |\n| `validate_period_attribution` | establishment | Fail if phase, stand age, replacement or termination treatment is absent or double counted. | `cerutti-perennial-crops-2016` |\n| `validate_output_set` | nutmeg separation | Fail unless seed, mace and pericarp destinations are declared and intended products allocated. | `fao-nutmeg-handling` |\n| `validate_batch_linkage` | harvest through dispatch | Fail if inputs, cleaning, outputs, re-drying or rejects lack a lot/batch/period link or shared burden is duplicated. |  |\n| `validate_nutrient_cardinality` | each process | Fail if a process has more than one nutrient Product-input card, any nutrient group, or lacks individual actual-product collection for UUID resolution. |  |\n| `validate_mass_balance` | separation/conditioning/grading | Fail when output states are not reconciled or rejects are accepted product. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |\n| `validate_boundary` | downstream | Fail if grinding, extraction, commercial-kernel cracking, blending, fumigation or consumer packaging is included. | `fao-nutmeg-handling` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match. |  |\n| `validate_route_exclusivity` | graph | Fail if nutmeg/cardamom or fresh/ambient/heated routes are silently averaged. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |\n| `validate_period_attribution` | establishment | Fail if phase, stand age, replacement or termination treatment is absent or double counted. | `cerutti-perennial-crops-2016` |\n| `validate_output_set` | nutmeg separation | Fail unless seed, mace and pericarp destinations are declared and intended products allocated. | `fao-nutmeg-handling` |\n| `validate_batch_linkage` | harvest through dispatch | Fail if inputs, cleaning, outputs, re-drying or rejects lack a lot/batch/period link or shared burden is duplicated. |  |\n| `validate_nutrient_cardinality` | each process | Require one atomic Product-input card for each actual fertilizer/amendment formulation, with product mass, composition, application record and verified or explicit unresolved identity. Reject a group or combined unlike-product exchange, omitted actual products, duplicate product/nutrient quantities or invented UUIDs; there is no one-card maximum for a process. |  |\n| `validate_mass_balance` | separation/conditioning/grading | Fail when output states are not reconciled or rejects are accepted product. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |\n| `validate_boundary` | downstream | Fail if grinding, extraction, commercial-kernel cracking, blending, fumigation or consumer packaging is included. | `fao-nutmeg-handling` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1328,12 +1355,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48773
-              line: 882
+              offset: 55015
+              line: 892
               column: 1
             end:
-              offset: 48795
-              line: 882
+              offset: 55037
+              line: 892
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1352,311 +1379,311 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 4185
+          offset: 4197
           line: 60
           column: 1
         end:
-          offset: 4634
+          offset: 4646
           line: 60
           column: 450
     - pointer: "/system_boundary/rules/1"
       rule_id: "system_boundary_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 4636
+          offset: 4648
           line: 62
           column: 1
         end:
-          offset: 4919
+          offset: 4931
           line: 62
           column: 284
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_route_selection"
       identity_kind: "explicit"
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 5791
+          offset: 5803
           line: 79
           column: 1
         end:
-          offset: 5954
+          offset: 5966
           line: 79
           column: 164
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_perennial_phases"
       identity_kind: "explicit"
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 5955
+          offset: 5967
           line: 80
           column: 1
         end:
-          offset: 6183
+          offset: 6195
           line: 80
           column: 229
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_nutmeg_separation"
       identity_kind: "explicit"
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 6184
+          offset: 6196
           line: 81
           column: 1
         end:
-          offset: 6343
+          offset: 6355
           line: 81
           column: 160
     - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_conditioning"
       identity_kind: "explicit"
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 6344
+          offset: 6356
           line: 82
           column: 1
         end:
-          offset: 6554
+          offset: 6566
           line: 82
           column: 211
     - pointer: "/system_boundary/rules/6"
       rule_id: "boundary_manufacture_exclusion"
       identity_kind: "explicit"
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 6555
+          offset: 6567
           line: 83
           column: 1
         end:
-          offset: 6733
+          offset: 6745
           line: 83
           column: 179
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_first"
       identity_kind: "explicit"
-      unit_id: "normative_40899"
+      unit_id: "normative_42424"
       source_span:
         start:
-          offset: 41012
-          line: 838
+          offset: 42537
+          line: 840
           column: 1
         end:
-          offset: 41163
-          line: 838
+          offset: 42688
+          line: 840
           column: 152
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_nutmeg_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_40899"
+      unit_id: "normative_42424"
       source_span:
         start:
-          offset: 41164
-          line: 839
+          offset: 42689
+          line: 841
           column: 1
         end:
-          offset: 41489
-          line: 839
+          offset: 43014
+          line: 841
           column: 326
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_establishment"
       identity_kind: "explicit"
-      unit_id: "normative_40899"
+      unit_id: "normative_42424"
       source_span:
         start:
-          offset: 41490
-          line: 840
+          offset: 43015
+          line: 842
           column: 1
         end:
-          offset: 41811
-          line: 840
+          offset: 43336
+          line: 842
           column: 322
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_batches"
       identity_kind: "explicit"
-      unit_id: "normative_40899"
+      unit_id: "normative_42424"
       source_span:
         start:
-          offset: 41812
-          line: 841
+          offset: 43337
+          line: 843
           column: 1
         end:
-          offset: 42055
-          line: 841
+          offset: 43580
+          line: 843
           column: 244
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_40899"
+      unit_id: "normative_42424"
       source_span:
         start:
-          offset: 42056
-          line: 842
+          offset: 43581
+          line: 844
           column: 1
         end:
-          offset: 42299
-          line: 842
+          offset: 43824
+          line: 844
           column: 244
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 48868
-          line: 886
+          offset: 55110
+          line: 896
           column: 1
         end:
-          offset: 49051
-          line: 886
-          column: 184
+          offset: 55892
+          line: 896
+          column: 783
     - pointer: "/validation_rules/1"
       rule_id: "validate_route_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 49052
-          line: 887
+          offset: 55893
+          line: 897
           column: 1
         end:
-          offset: 49219
-          line: 887
+          offset: 56060
+          line: 897
           column: 168
     - pointer: "/validation_rules/2"
       rule_id: "validate_period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 49220
-          line: 888
+          offset: 56061
+          line: 898
           column: 1
         end:
-          offset: 49396
-          line: 888
+          offset: 56237
+          line: 898
           column: 177
     - pointer: "/validation_rules/3"
       rule_id: "validate_output_set"
       identity_kind: "explicit"
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 49397
-          line: 889
+          offset: 56238
+          line: 899
           column: 1
         end:
-          offset: 49563
-          line: 889
+          offset: 56404
+          line: 899
           column: 167
     - pointer: "/validation_rules/4"
       rule_id: "validate_batch_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 49564
-          line: 890
+          offset: 56405
+          line: 900
           column: 1
         end:
-          offset: 49741
-          line: 890
+          offset: 56582
+          line: 900
           column: 178
     - pointer: "/validation_rules/5"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 49742
-          line: 891
+          offset: 56583
+          line: 901
           column: 1
         end:
-          offset: 49949
-          line: 891
-          column: 208
+          offset: 57001
+          line: 901
+          column: 419
     - pointer: "/validation_rules/6"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 49950
-          line: 892
+          offset: 57002
+          line: 902
           column: 1
         end:
-          offset: 50136
-          line: 892
+          offset: 57188
+          line: 902
           column: 187
     - pointer: "/validation_rules/7"
       rule_id: "validate_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 50137
-          line: 893
+          offset: 57189
+          line: 903
           column: 1
         end:
-          offset: 50313
-          line: 893
+          offset: 57365
+          line: 903
           column: 177
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 4162
+          offset: 4174
           line: 58
           column: 1
         end:
-          offset: 4183
+          offset: 4195
           line: 58
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4162"
+      unit_id: "normative_4174"
       source_span:
         start:
-          offset: 4947
+          offset: 4959
           line: 66
           column: 1
         end:
-          offset: 5698
+          offset: 5710
           line: 73
           column: 164
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40899"
+      unit_id: "normative_42424"
       source_span:
         start:
-          offset: 40899
-          line: 834
+          offset: 42424
+          line: 836
           column: 1
         end:
-          offset: 40939
-          line: 834
+          offset: 42464
+          line: 836
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48773"
+      unit_id: "normative_55015"
       source_span:
         start:
-          offset: 48773
-          line: 882
+          offset: 55015
+          line: 892
           column: 1
         end:
-          offset: 48795
-          line: 882
+          offset: 55037
+          line: 892
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1665,5 +1692,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:edbc0393b051685ae8b740b5801bed9abb703b792fb9bd6e722e4f08314cff9a"
-  generated_content_sha256: "sha256:cd05529947879605dcffa3e0dd5ddef4937b51086326b50b3c3e94405df3e7d9"
+    sha256: "sha256:f0033d12d19720d0d240fc5bc5c2a9ddeed0d445a1674245176430858d90bc42"
+  generated_content_sha256: "sha256:72994832c2ca906f5a72ba366bfff5e78a25f22868f08e302db5b099f2ce8791"

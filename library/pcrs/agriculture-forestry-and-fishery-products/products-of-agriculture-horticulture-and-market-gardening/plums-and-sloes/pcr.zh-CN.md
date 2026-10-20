@@ -93,7 +93,7 @@ translation_status: aligned
 
 | process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
 | --- | --- | --- | --- | --- | --- |
-| `orchard_establishment_and_removal` | 果园建园、补植和移除 | conditional | 声明期间发生建园、重植、补植或移除时纳入 | foreground | 每 1 kg 合格水果的可归属生命周期投入 |
+| `orchard_establishment_and_removal` | 果园建园、补植和移除 | conditional | 建园、重植、补植或移除的负荷可归属于声明期间时纳入 | foreground | 每 1 kg 合格水果的可归属生命周期投入 |
 | `orchard_cultivation_and_protection` | 果园种植管理和植物保护 | required | 每个受管理果园或黑刺李园地均纳入 | foreground | 一个采收年度或声明平均期，每 1 kg 合格水果 |
 | `harvest_and_field_collection` | 采收和田间收集 | required | 向果园门交接交付水果的每条路线均纳入 | foreground | 每 1 kg 合格水果的采收和分流输出 |
 | `primary_conditioning_and_gate_handoff` | 初步调理和果园门交接 | conditional | 清洗、冷却、分拣、分级、周转箱或其他准备步骤位于声明门点内时纳入 | foreground | 每 1 kg 参考产品的调理后合格水果 |
@@ -340,7 +340,7 @@ translation_status: aligned
 当声明方法根据氮投入表示管理土壤排放时，计算直接氧化亚氮。
 
 - 选定流：受管理果园土壤向空气排放的氧化亚氮
-- 流属性/单位：质量 / kg N2O 或 kg N2O-N
+- 流属性/单位: Mass / kg N2O
 - 数量规则：按声明氮投入和选定排放方法计算，并保留 N2O-N 及换算基准
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -352,12 +352,14 @@ translation_status: aligned
 - 采集协议：`cp_orchard_input_records`
 - 来源：`ipcc-2019-soils-n2o`; `source_foreground_records`
 
+最终交换为 kg N2O。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 44/28，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
+
 ###### 排放到空气的氨（`ammonia_air`）
 
 当相关养分投入及接收介质被方法表示时，记录氨挥发。
 
 - 选定流：土壤或养分产品向空气排放的氨
-- 流属性/单位：质量 / kg NH3-N 或 kg NH3
+- 流属性/单位: Mass / kg NH3
 - 数量规则：根据氮投入和施用方法使用选定排放方法计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -369,22 +371,7 @@ translation_status: aligned
 - 采集协议：`cp_orchard_input_records`
 - 来源：`ipcc-2019-soils-n2o`; `source_foreground_records`
 
-###### 硝酸盐和磷酸盐损失（`nutrient_losses_to_water_or_soil`）
-
-纳入径流、排水或淋失时，按独立物质和接收介质记录硝酸盐和磷酸盐损失；通用养分名称不能决定接收介质。
-
-- 选定流：一种已报告的硝酸盐或磷酸盐物种进入一个有证据的接收介质；按物质和区室分别生成前景交换
-- 流属性/单位：质量 / kg 排放物质；kg N 或 kg P 单独保留为计算基准
-- 数量规则：依据声明的土壤、排水、径流和养分管理方法实测或计算养分损失
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：氮投入（`n_input`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_orchard_input_records`
-- 来源：`ipcc-2019-soils-n2o`; `source_foreground_records`
+最终交换质量为 kg NH3；按 N 计的活动量、因子和筛查保留在独立台账。仅对归属于该化学物种的 N 质量乘 17/14，换算一次后按合格参考产出归一化一次。不得将养分总平衡、土壤留存或不明差额当作该排放。各实际接收环境分别记录；气体体积记录须有实测温压及有据质量换算，不能与化合物质量互换。
 
 ### 过程：采收和田间收集（`harvest_and_field_collection`）
 
@@ -669,7 +656,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -695,7 +682,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -760,12 +747,14 @@ translation_status: aligned
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | all quantitative rows | normalized amount = period amount / net accepted reference fruit mass | period amount; net accepted fruit mass | amount per 1 kg reference product | `source_foreground_records` |
-| `calc_perennial_annualization` | establishment_materials; establishment_removal_waste_specific_output; establishment_land_occupation | annualized amount = attributable lifecycle amount / declared productive-life accepted output | lifecycle amount; productive life; lifetime accepted output | annualized amount per kg accepted fruit | `source_foreground_records` |
-| `calc_nutrient_content` | nutrient_products; direct_n2o_air; ammonia_air; nutrient_losses_to_water_or_soil | nutrient amount = product amount × declared nutrient fraction; preserve product and nutrient bases | product amount; nutrient fraction; application event | kg nutrient and emission inputs | `ipcc-2019-soils-n2o`; `source_foreground_records` |
-| `calc_mass_balance` | fruit outputs and conditioning rejects | harvested input = accepted + downgraded/processing + culls + measured or justified losses after tare and moisture reconciliation | harvested mass; output masses; tare; declared basis | reconciled output set and residual loss | `source_foreground_records` |
-| `calc_shared_energy_allocation` | purchased_electricity; mobile_machinery_fuel; harvest_fuel | assign shared records using measured operation use or documented machine-hours; do not use output price without a justified decision | shared record; operation use; allocation basis | process-level energy amount | `source_foreground_records` |
+| `calc_perennial_annualization` | establishment_materials; establishment_removal_waste_specific_output; establishment_land_occupation | 年化数量＝可归属生命周期数量÷声明生产寿命合格产出。 | lifecycle amount; productive life; lifetime accepted output | annualized amount per kg accepted fruit | `source_foreground_records` |
+| `calc_nutrient_content` | nutrient_products; direct_n2o_air; ammonia_air; nutrient_losses_to_water_or_soil | 养分量＝产品数量×声明养分分数；保留产品及养分基准。 | product amount; nutrient fraction; application event | kg nutrient and emission inputs | `ipcc-2019-soils-n2o`; `source_foreground_records` |
+| `calc_mass_balance` | fruit outputs and conditioning rejects | 皮重及水分核对后：收获进料＝合格＋降级/加工去向＋剔除物＋实测或有据损失。 | harvested mass; output masses; tare; declared basis | reconciled output set and residual loss | `source_foreground_records` |
+| `calc_shared_energy_allocation` | purchased_electricity; mobile_machinery_fuel; harvest_fuel | 按实测作业使用量或有据机器小时归属共享记录；没有有据决定，不得按产出价格分配。 | shared record; operation use; allocation basis | process-level energy amount | `source_foreground_records` |
 | `establishment_removal_waste_specific_output` | `orchard_establishment_and_removal` | 对可归属的建园、更新或移除活动，将废弃生物质与每种实际支撑、防护及设施材料分别识别。保留实测质量、材料组成、处理或污染状态和实际去向。保留生产寿命、幼龄期及生命周期合格鲜果产量的年度化规则；总移除材料质量不能作为每个组分的数量。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | `cp_establishment_lifecycle_records` | 逐实际物流的交换、去向及无重复质量平衡 | `source_foreground_records` |
 | `conditioning_rejects_and_wastewater_specific_output` | `primary_conditioning_and_gate_handoff` | 对实际包含在声明门之前的调理活动，分别识别拒收水果、捕集的清洗固体及废水转移。液体量保留实测原生单位，体积与质量换算需要符合实际废水状态的密度依据。区分送往处理供方的废水与处理后各污染物环境排放，并按边界核对以免重复计量。保留原调理批次吞吐、水与固体平衡及最终合格鲜果归一化。 这是必须完成的采集与计算要求，不是一项库存交换。完成数据集前，应对每股实际外运物流建立物理身份具体的卡片，记录组成、状态、原生数量与流属性、去向以及有依据的产品或废物角色。仅使用兼容且已验证的 UUID，或明确登记具体未解析身份。不得编造包装配方、假定已分选、根据缺证据推断零或省略必需物流。真实的一股混合物流只有在存在收集与交付证据、明确组成且处理路线兼容时，才可保留为一个身份；不得同时重复计入其组分外运量。分别处理的液体与固体物流分开记录。保留原归属、期间、质量与水量平衡、参考分母及处理服务边界；已有匹配交换时建立关联而不重复计数。原集合范围不作为单股物流默认量或限制。 | `cp_conditioning_and_packaging_records` | 逐实际物流的交换、去向及无重复质量平衡 | `source_foreground_records` |
+| `nutrient_losses_to_water_or_soil_identity_and_fate` | `orchard_cultivation_and_protection` | 逐项识别每种实际排放物质及接收环境，以独立活动量、方法、化学物种口径和原生单位量化各有据路径，区分元素 N/P 台账和最终化合物。土壤养分留存或质量平衡残差不得自动当作排放。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_orchard_input_records` | 按身份区分的交换和对账活动记录 | `ipcc-2019-soils-n2o`; `source_foreground_records` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_orchard_input_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 

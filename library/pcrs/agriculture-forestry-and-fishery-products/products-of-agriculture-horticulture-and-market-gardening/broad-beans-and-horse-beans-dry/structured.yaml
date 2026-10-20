@@ -275,7 +275,7 @@ process_inventory:
           property_unit: "Volume / m3"
           description: "Record withdrawal or delivered water only for irrigated lots, preserving source and conveyance boundary. Raw activity or stage basis: per 1,000 kg accepted dry grain. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero. Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing."
           amount:
-            expression: "measured withdrawal or delivered volume"
+            expression: "Measure the actual supplied-water quantity crossing this product-supply boundary by event/use and matched period, in its declared native unit. A source-abstraction meter is not automatically the delivered-product quantity: reconcile distribution losses, external returns and storage change between the two measurement points. Direct natural abstraction owned by the foreground requires a separate source-specific elementary input and local supply operations; the internal delivery then cancels inside the aggregate boundary, rather than adding a second external water purchase. Purchased water inherits its compatible provider abstraction and supply burdens once. Retain rainfed/no-supply absence evidence; missing delivery/ownership evidence is incomplete, not zero. Attribute and normalize once to accepted final output."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -341,7 +341,7 @@ process_inventory:
           name: "standing mature *Vicia faba* crop"
           flow_type: "product"
           property_unit: "Mass / kg above-ground harvested fraction"
-          description: "Hand the mature crop to harvest; it is not accepted dry grain. Raw activity or stage basis: per 1,000 kg accepted dry grain."
+          description: "Hand the mature crop to harvest; it is not accepted dry grain. Raw activity or stage basis: per 1,000 kg accepted dry grain. This is a mass exchange, so an area interval cannot screen its amount. Determine harvested crop mass from measured biomass, moisture and losses. Calculate cultivated area separately as matched accepted grain mass (kg) divided by the measured accepted yield (kg/ha), multiplied by 10,000 m2/ha. Harvested-seed yield must be reconciled with drying, rejects and losses before use as accepted yield; no universal site-area bound is established here."
           amount:
             expression: "harvested material plus measured field/shattering losses, moisture state declared"
             value_mode: "calculated_value"
@@ -353,16 +353,7 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_harvest_lot
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "111"
-                upper: "909"
-                unit: "m2 cultivated area"
-                basis: "area implied by 1.1–9 t/ha reported dry-seed yield per 1,000 kg accepted grain, before losses"
-                basis_kind: "reference_flow"
-                evidence_kind: "external_source"
-                source_ids:
-                  - feedipedia-faba-bean
+            ranges: []
       waste:
         []
       elementary:
@@ -806,7 +797,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Record spilled, mould-, heat- or pest-damaged grain; exclude calculated water removal. Raw activity or stage basis: per 1,000 kg accepted dry grain."
           amount:
-            expression: "measured loss plus reconciled unexplained dry-matter loss"
+            expression: "Measure or use representative sampling for the actual identified rejected/spilled/otherwise lost material and its evidenced destination. A component mass balance may estimate that stream only when all other product, residue, water, stock and transfer terms are supported, compatible and mutually exclusive, with uncertainty disclosed. Keep unexplained balance residual as an investigation/evidence gap, never automatically a waste output, dry-matter loss, vapour or emission. Separate every actual material/state/destination and preserve retained/reworked material as paired transfer or stock; normalize supported exported quantities once to accepted final output."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -833,7 +824,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Calculate water removed from paired mass/moisture and keep it separate from dry-matter loss. Raw activity or stage basis: per 1,000 kg accepted dry grain."
           amount:
-            expression: "incoming water mass minus outgoing water mass"
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -995,7 +986,7 @@ allocation_rules:
       - ipcc-2019-managed-soils
   - rule_id: allocation_economic_precedence
     applies_to: "independently valuable co-products"
-    rule: "Use economic allocation with contemporaneous farm-gate values; otherwise single-output treatment. Report mass-allocation sensitivity when values are unavailable, unstable, or based on fewer than three representative transactions."
+    rule: "Subdivide directly assignable operations first. For remaining common burdens with independently intended products, use economic allocation at the first independent farm-gate hand-off: share_i = (quantity_i * price_i) / sum(quantity_j * price_j), using the complete output set, matched period, compatible gates and currency. Disclose representative price sources, transactions, variability, moisture and sensitivity to mass allocation. Missing, unstable or nonrepresentative prices are an allocation evidence gap; they do not justify ignoring an actual co-product or declaring a single-output system. A single-output treatment applies only when evidence shows that other material has no independently intended product function. Do not invent a price or treat an unavailable price as zero; an unresolved allocation denominator blocks a complete allocated result."
     source_ids: []
   - rule_id: allocation_rework
     applies_to: "damaged/off-spec grain"
@@ -1011,7 +1002,7 @@ dataset_production:
       process_id: "managed_field_production"
       flow_role: "inputs, area and emission drivers"
       record_type: "field log/invoice/meter"
-      raw_fields: "crop; field; dates; area; seed; each nutrient product/analysis; treatments; water; carriers; lime/urea; prior crop"
+      raw_fields: "crop; field; dates; area; seed; each nutrient product/analysis; treatments; water; carriers; lime/urea; prior crop ; actual supply boundary and meter location; product delivery; direct-abstraction owner; source-to-delivery losses, returns and storage; provider coverage"
       collection_method: "reconcile logs, invoices, meters and maps; Raw aggregation and attribution: retain product rows; sum like identities; allocate shared use by documented driver"
       unit: "native units, kg, L, m3, MJ, kWh, ha"
       frequency: "each operation"
@@ -1047,7 +1038,7 @@ dataset_production:
       process_id: "moisture_stabilization"
       flow_role: "stable grain, energy, water and loss"
       record_type: "dryer/meter/moisture log"
-      raw_fields: "lot; technology; paired mass/moisture; duration; temperature; airflow; carriers; losses"
+      raw_fields: "lot; technology; paired mass/moisture; duration; temperature; airflow; carriers; losses ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation; actual material/state/destination; representative stream measurement; all other component/stock terms; unexplained residual and uncertainty"
       collection_method: "calibrated mass/moisture and energy records; Raw aggregation and attribution: preserve dry matter; calculate water; assign energy/loss"
       unit: "kg, %, MJ, kWh, h, °C"
       frequency: "lot"
@@ -1067,6 +1058,18 @@ dataset_production:
       site_scope: "grading site"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "calibration, ticket, invoice, receipt"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "managed_field_production"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calc_moisture_dry_matter
       applies_to: "moisture conversion"
@@ -1124,6 +1127,24 @@ dataset_production:
         - "masses/prices/moisture"
       output: "allocation fractions"
       source_ids: []
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_field_cycle
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
   data_quality_requirements:
     - id: dq_identity
       applies_to: "grain"
@@ -1199,7 +1220,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_ranges
     applies_to: "Flow Cards"
-    rule: "Require exactly one complete Range per quantitative card and exact EN/ZH/structured agreement of label, role, bounds, unit, basis, basis kind, evidence kind and source ids."
+    rule: "Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values."
     source_ids: []
 published_dataset_profile:
   dataset_role: "foreground production dataset for mature dry *Vicia faba* grain at farm gate"
@@ -1234,9 +1255,13 @@ data_sources:
     type: "method_factor"
     reference: "IPCC, *2019 Refinement, Volume 4, Chapter 11*, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
     used_for: "managed-soil emissions, N-fixing pulse residue N and destination double-counting prevention"
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e0aeed25ad023c4ce2a0e85fe0e290d7ccb9bd0d5af775b9ac7d84e1e07fb2a7"
+  source_sha256: "sha256:aaef1a5cede631e9af69783c816a2da9141181aa29e466c558433ece273f132a"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4384"
@@ -1287,18 +1312,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44391"
+    - unit_id: "normative_46620"
       family: "allocation"
       span:
         start:
-          offset: 44391
-          line: 877
+          offset: 46620
+          line: 870
           column: 1
         end:
-          offset: 45689
-          line: 887
+          offset: 48549
+          line: 880
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_output_classification` | all outputs | Assign each quantity once to accepted product, valuable co-product, field-returned residue, rework, downgraded product, waste or loss at one hand-off. | `ipcc-2019-managed-soils` |\n| `allocation_residue_default` | straw/stems/leaves/hulls | Field-returned material has no co-product allocation; removed material is a co-product only with beneficial destination and positive value, otherwise waste. | `vce-faba-bean-2024`; `ipcc-2019-managed-soils` |\n| `allocation_economic_precedence` | independently valuable co-products | Use economic allocation with contemporaneous farm-gate values; otherwise single-output treatment. Report mass-allocation sensitivity when values are unavailable, unstable, or based on fewer than three representative transactions. |  |\n| `allocation_rework` | damaged/off-spec grain | Retain burdens through re-cleaning/re-grading, count loop energy once, and classify material only at final hand-off. |  |\n| `allocation_route_period` | mixed routes/shared runs | Attribute field burdens by crop cycle and post-harvest burdens by metered lot or throughput share; assign shared cleaning/changeover once. |  |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_output_classification` | all outputs | Assign each quantity once to accepted product, valuable co-product, field-returned residue, rework, downgraded product, waste or loss at one hand-off. | `ipcc-2019-managed-soils` |\n| `allocation_residue_default` | straw/stems/leaves/hulls | Field-returned material has no co-product allocation; removed material is a co-product only with beneficial destination and positive value, otherwise waste. | `vce-faba-bean-2024`; `ipcc-2019-managed-soils` |\n| `allocation_economic_precedence` | independently valuable co-products | Subdivide directly assignable operations first. For remaining common burdens with independently intended products, use economic allocation at the first independent farm-gate hand-off: share_i = (quantity_i * price_i) / sum(quantity_j * price_j), using the complete output set, matched period, compatible gates and currency. Disclose representative price sources, transactions, variability, moisture and sensitivity to mass allocation. Missing, unstable or nonrepresentative prices are an allocation evidence gap; they do not justify ignoring an actual co-product or declaring a single-output system. A single-output treatment applies only when evidence shows that other material has no independently intended product function. Do not invent a price or treat an unavailable price as zero; an unresolved allocation denominator blocks a complete allocated result. |  |\n| `allocation_rework` | damaged/off-spec grain | Retain burdens through re-cleaning/re-grading, count loop energy once, and classify material only at final hand-off. |  |\n| `allocation_route_period` | mixed routes/shared runs | Attribute field burdens by crop cycle and post-harvest burdens by metered lot or throughput share; assign shared cleaning/changeover once. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1315,12 +1340,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44391
-              line: 877
+              offset: 46620
+              line: 870
               column: 1
             end:
-              offset: 44431
-              line: 877
+              offset: 46660
+              line: 870
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1335,18 +1360,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52812"
+    - unit_id: "normative_61086"
       family: "validation"
       span:
         start:
-          offset: 52812
-          line: 928
+          offset: 61086
+          line: 929
           column: 1
         end:
-          offset: 55059
-          line: 944
+          offset: 63542
+          line: 945
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference output | Require the stated product/property/unit-group UUIDs, 1,000 kg, mature dry *Vicia faba*, moisture, grade and farm-gate hand-off. |  |\n| `validate_scope` | package | Reject green beans, planting seed sold as seed, other pulse species, downstream processing or post-gate transport in the reference output. |  |\n| `validate_processes` | graph | Require field production, harvest, threshing/cleaning and grading; require drying when moisture exceeds target or active drying/aeration occurs. | `fao-grain-postharvest`; `fao-predrying` |\n| `validate_route_delta` | alternatives | Name parent and real topology/inventory/calculation/data/validation delta; require shares for coexisting routes and forbid unqualified merging of mutually exclusive routes. |  |\n| `validate_mode_indexing` | cycles/lots/runs | Link inputs, outputs, cleaning and changeover to cycles/lots/periods; prevent duplicate shared-run burdens. |  |\n| `validate_nutrient_cardinality` | each process | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_output_states` | all output nodes | Give every accepted, downgraded, reworked, valuable residue, returned residue, waste and loss one class and hand-off; rejected material cannot be accepted output. |  |\n| `validate_allocation` | multi-output nodes | Require explicit single-output/economic decision, values and period; require mass sensitivity when values are weak and prevent double hand-offs. |  |\n| `validate_moisture` | drying/final grain | Require paired mass/moisture, dry-matter preservation, separate removed water and investigation of unexplained loss. | `fao-grain-drying` |\n| `validate_rework` | rejects | Point rework to cleaning or grading, retain prior burdens, count loop energy once and record final destination. |  |\n| `validate_ranges` | Flow Cards | Require exactly one complete Range per quantitative card and exact EN/ZH/structured agreement of label, role, bounds, unit, basis, basis kind, evidence kind and source ids. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference output | Require the stated product/property/unit-group UUIDs, 1,000 kg, mature dry *Vicia faba*, moisture, grade and farm-gate hand-off. |  |\n| `validate_scope` | package | Reject green beans, planting seed sold as seed, other pulse species, downstream processing or post-gate transport in the reference output. |  |\n| `validate_processes` | graph | Require field production, harvest, threshing/cleaning and grading; require drying when moisture exceeds target or active drying/aeration occurs. | `fao-grain-postharvest`; `fao-predrying` |\n| `validate_route_delta` | alternatives | Name parent and real topology/inventory/calculation/data/validation delta; require shares for coexisting routes and forbid unqualified merging of mutually exclusive routes. |  |\n| `validate_mode_indexing` | cycles/lots/runs | Link inputs, outputs, cleaning and changeover to cycles/lots/periods; prevent duplicate shared-run burdens. |  |\n| `validate_nutrient_cardinality` | each process | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_output_states` | all output nodes | Give every accepted, downgraded, reworked, valuable residue, returned residue, waste and loss one class and hand-off; rejected material cannot be accepted output. |  |\n| `validate_allocation` | multi-output nodes | Require explicit single-output/economic decision, values and period; require mass sensitivity when values are weak and prevent double hand-offs. |  |\n| `validate_moisture` | drying/final grain | Require paired mass/moisture, dry-matter preservation, separate removed water and investigation of unexplained loss. | `fao-grain-drying` |\n| `validate_rework` | rejects | Point rework to cleaning or grading, retain prior burdens, count loop energy once and record final destination. |  |\n| `validate_ranges` | Flow Cards | Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values. | |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1363,12 +1388,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52812
-              line: 928
+              offset: 61086
+              line: 929
               column: 1
             end:
-              offset: 52834
-              line: 928
+              offset: 61108
+              line: 929
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1452,211 +1477,211 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_output_classification"
       identity_kind: "explicit"
-      unit_id: "normative_44391"
+      unit_id: "normative_46620"
       source_span:
         start:
-          offset: 44504
-          line: 881
+          offset: 46733
+          line: 874
           column: 1
         end:
-          offset: 44737
-          line: 881
+          offset: 46966
+          line: 874
           column: 234
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_residue_default"
       identity_kind: "explicit"
-      unit_id: "normative_44391"
+      unit_id: "normative_46620"
       source_span:
         start:
-          offset: 44738
-          line: 882
+          offset: 46967
+          line: 875
           column: 1
         end:
-          offset: 45006
-          line: 882
+          offset: 47235
+          line: 875
           column: 269
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_economic_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_44391"
+      unit_id: "normative_46620"
       source_span:
         start:
-          offset: 45007
-          line: 883
+          offset: 47236
+          line: 876
           column: 1
         end:
-          offset: 45315
-          line: 883
-          column: 309
+          offset: 48175
+          line: 876
+          column: 940
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_44391"
+      unit_id: "normative_46620"
       source_span:
         start:
-          offset: 45316
-          line: 884
+          offset: 48176
+          line: 877
           column: 1
         end:
-          offset: 45486
-          line: 884
+          offset: 48346
+          line: 877
           column: 171
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_route_period"
       identity_kind: "explicit"
-      unit_id: "normative_44391"
+      unit_id: "normative_46620"
       source_span:
         start:
-          offset: 45487
-          line: 885
+          offset: 48347
+          line: 878
           column: 1
         end:
-          offset: 45687
-          line: 885
+          offset: 48547
+          line: 878
           column: 201
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 52907
-          line: 932
+          offset: 61181
+          line: 933
           column: 1
         end:
-          offset: 53093
-          line: 932
+          offset: 61367
+          line: 933
           column: 187
     - pointer: "/validation_rules/1"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 53094
-          line: 933
+          offset: 61368
+          line: 934
           column: 1
         end:
-          offset: 53268
-          line: 933
+          offset: 61542
+          line: 934
           column: 175
     - pointer: "/validation_rules/2"
       rule_id: "validate_processes"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 53269
-          line: 934
+          offset: 61543
+          line: 935
           column: 1
         end:
-          offset: 53491
-          line: 934
+          offset: 61765
+          line: 935
           column: 223
     - pointer: "/validation_rules/3"
       rule_id: "validate_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 53492
-          line: 935
+          offset: 61766
+          line: 936
           column: 1
         end:
-          offset: 53711
-          line: 935
+          offset: 61985
+          line: 936
           column: 220
     - pointer: "/validation_rules/4"
       rule_id: "validate_mode_indexing"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 53712
-          line: 936
+          offset: 61986
+          line: 937
           column: 1
         end:
-          offset: 53872
-          line: 936
+          offset: 62146
+          line: 937
           column: 161
     - pointer: "/validation_rules/5"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 53873
-          line: 937
+          offset: 62147
+          line: 938
           column: 1
         end:
-          offset: 54097
-          line: 937
+          offset: 62371
+          line: 938
           column: 225
     - pointer: "/validation_rules/6"
       rule_id: "validate_output_states"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 54098
-          line: 938
+          offset: 62372
+          line: 939
           column: 1
         end:
-          offset: 54313
-          line: 938
+          offset: 62587
+          line: 939
           column: 216
     - pointer: "/validation_rules/7"
       rule_id: "validate_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 54314
-          line: 939
+          offset: 62588
+          line: 940
           column: 1
         end:
-          offset: 54510
-          line: 939
+          offset: 62784
+          line: 940
           column: 197
     - pointer: "/validation_rules/8"
       rule_id: "validate_moisture"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 54511
-          line: 940
+          offset: 62785
+          line: 941
           column: 1
         end:
-          offset: 54695
-          line: 940
+          offset: 62969
+          line: 941
           column: 185
     - pointer: "/validation_rules/9"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 54696
-          line: 941
+          offset: 62970
+          line: 942
           column: 1
         end:
-          offset: 54844
-          line: 941
+          offset: 63118
+          line: 942
           column: 149
     - pointer: "/validation_rules/10"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 54845
-          line: 942
+          offset: 63119
+          line: 943
           column: 1
         end:
-          offset: 55057
-          line: 942
-          column: 213
+          offset: 63540
+          line: 943
+          column: 422
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1684,27 +1709,27 @@ normative_context:
           column: 192
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44391"
+      unit_id: "normative_46620"
       source_span:
         start:
-          offset: 44391
-          line: 877
+          offset: 46620
+          line: 870
           column: 1
         end:
-          offset: 44431
-          line: 877
+          offset: 46660
+          line: 870
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52812"
+      unit_id: "normative_61086"
       source_span:
         start:
-          offset: 52812
-          line: 928
+          offset: 61086
+          line: 929
           column: 1
         end:
-          offset: 52834
-          line: 928
+          offset: 61108
+          line: 929
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1713,5 +1738,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e0aeed25ad023c4ce2a0e85fe0e290d7ccb9bd0d5af775b9ac7d84e1e07fb2a7"
-  generated_content_sha256: "sha256:2796f202c6d0b13ad4003ec42283a351abb0347ac4993d13a47895f4a580e8fe"
+    sha256: "sha256:aaef1a5cede631e9af69783c816a2da9141181aa29e466c558433ece273f132a"
+  generated_content_sha256: "sha256:c080138da52ad35a62b8929b25ee41a16e193b82c1f9c8a5ae70957c6bd48cfb"

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Beet seeds excluding sugar beet seeds and seeds of forage plants |
+| 参考产品流 | Beet seeds (excluding sugar beet seeds) and seeds of forage plants |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -635,7 +635,7 @@ sync_with: pcr.en-US.md
 
 在加工者或生产者交付点放行用于播种的清洁、有活力种子；不得用单一物种流代表整个类别。
 
-- 选定流：Beet seeds excluding sugar beet seeds and seeds of forage plants
+- 选定流：Beet seeds (excluding sugar beet seeds) and seeds of forage plants
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：measured net released mass
 
@@ -699,6 +699,10 @@ sync_with: pcr.en-US.md
 | `allocation_period` | perennial production | 按有记录的生产期种子产量年化建植和终止负担，并保留逐年产量和损失记录。 |  |
 | `allocation_batches` | shared runs and storage | 采用实测运行时间、质量吞吐量或其他有记录的因果驱动因素分配清洗、换批、检验和储存负担，且不得重复计算。 |  |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
@@ -720,6 +724,7 @@ sync_with: pcr.en-US.md
 | `cp_release_tests` | `grade_pack` | `accepted seed` | release and laboratory record | species, cultivar, class, purity, germination or viability, moisture, treatment, certification, net mass | lot sampling and recognized seed test method；原始汇总与分配：accept only mass covered by release decision | kg; % | each released lot | release date | each processing lot | 每声明的参考流 | certificate, laboratory result, sample chain |
 | `cp_residue_route` | `harvest_thresh` | `residues` | destination record | type, mass, destination, date, lot | scale or documented mass balance；原始汇总与分配：sum by destination | kg | each removal | complete harvest lot | each field/facility | 每声明的参考流 | ticket, receiver record or mass balance |
 | `cp_reject_route` | `grade_pack` | `rejects and downgraded material` | sorting and destination record | reason, grade, mass, destination, lot | scale and dispatch record；原始汇总与分配：sum by reason and destination | kg | each lot | complete grading lot | each line and lot | 每声明的参考流 | grading report and destination evidence |
+| `cp_phase1_environment_coverage` | field_multiplication | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -727,18 +732,25 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `calc_normalize` | all inventory rows | amount per reference kg = lot amount / net accepted seed mass | lot amount; accepted net mass | normalized amount per kg |  |
 | `calc_water` | irrigation | delivered water = metered volume, or pump rate × verified runtime when no meter exists | meter or pump rate and runtime | m3 delivered water |  |
-| `calc_energy` | energy inputs | convert each recorded carrier to declared energy unit, then allocate by causal lot driver | carrier quantity; conversion; lot driver | MJ or kWh per kg |  |
-| `calc_loss` | each process | loss or residue = opening input + additions − intended output − closing stock, reconciled for moisture | mass and moisture records | loss/residue mass |  |
-| `calc_period` | perennial field | annualized establishment burden = total establishment input × current-year seed yield / documented productive-period seed yield | establishment inputs; annual yields | current-year attributed burden |  |
+| `calc_energy` | energy inputs | 将各实测载能体换算为声明能源单位，再按因果批次驱动分配。 | carrier quantity; conversion; lot driver | MJ or kWh per kg |  |
+| `calc_loss` | each process | 损失或残体＝期初进料＋添加量－预期产出－期末库存，并按含水率核对。 | mass and moisture records | loss/residue mass |  |
+| `calc_period` | perennial field | 年化建植负担＝建植投入总量×本年度种子产量÷有据生产期间种子产量。 | establishment inputs; annual yields | current-year attributed burden |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用于 | 要求 | 证据 |
+| requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | reference lot | Species, cultivar, seed class and CPC scope must be explicit; a species-specific UUID cannot represent another species or the complete category. | lot label and identity review |
+| `dq_identity` | reference lot | 明确物种、品种、种子等级及 CPC 范围；物种特定 UUID 不代表其他物种或完整类别。 | lot label and identity review |
 | `dq_mass_balance` | each process | Mass balance shall reconcile within a disclosed tolerance and moisture basis. | weighing and moisture records |
-| `dq_completeness` | foreground route | Collect at least 95% of recorded operating days and all released/rejected lots; disclose estimated gaps. | coverage calculation |
-| `dq_temporal` | crop and processing cycle | Use data covering one complete multiplication and processing cycle; perennial stands retain age and yearly yield. | field and batch dates |
+| `dq_completeness` | foreground route | 采集至少95%的记录运营日及全部放行/拒收批次，披露估算缺口。 | coverage calculation |
+| `dq_temporal` | crop and processing cycle | 采用覆盖完整繁种及加工周期的数据，多年生群落保留年龄及逐年产量。 | field and batch dates |
 | `dq_flow_binding` | all cards | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | binding review record |
 
 ## 9. 验证规则
@@ -752,7 +764,7 @@ sync_with: pcr.en-US.md
 | `validate_period` | perennial route | 要求生产期证据，并防止建植负担被重复计入。 |  |
 | `validate_coproduct` | secondary outputs | 在抵扣或分配前要求明确目标产出状态和归属方法。 |  |
 | `validate_nutrients` | field_multiplication | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validate_ranges` | all flow cards | 每张流卡要求一个具有物理界限、单位、基准、基准类型和证据类型的范围；获得经审查路线证据后替换推理估算。 |  |
+| `validate_ranges` | all flow cards | 对每个已提供的数量筛查核对具体交换、上下界、相容单位和分母、基准、适用性、证据类型及外部来源，中英文和投影保持等义。临时推理范围仅为非强制复核提示，不是默认数量、允许损失或完整性证据。没有相容数量界限依据时明确报告无法进行范围筛查，复核计量、匹配组分平衡和不确定性；不得为满足检查虚构范围。最终参照归一化保持精确，并非实证产率。实际交换数量、采集协议及相容单位/换算证据独立于范围要求。 |  |
 | `validate_binding` | all flows | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 
 ## 10. 发布数据集档案
@@ -773,3 +785,5 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `fao-seed-production-1993` | `official_guidance` | FAO, Quality Declared Seed / seed production guidance, AGRIS record https://agris.fao.org/search/zh/records/672364348aa2fad1ce470e8a | 田间繁殖、收获、调理和质量控制路线 |
 | `fao-ilri-forage-seed-1996` | `handbook` | FAO/ILRI, *Forage Seed Production*, https://www.fao.org/4/x3996e/x3996e41.htm | 收获、脱粒、干燥、清选、储存、不合格物和批次质量控制 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

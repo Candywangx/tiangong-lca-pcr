@@ -762,12 +762,14 @@ Raw activity or stage basis: per 1,000 kg stabilized dry chickpeas output.
 - Range: Moisture-correction input screen
   - Range role: `qa_guardrail`
   - Lower: 1000
-  - Upper: 1054
+  - Upper: 1048.781
   - Unit: kg incoming grain/1,000 kg stabilized output
   - Basis: incoming grain at up to 18% moisture corrected to 14% moisture, before dry-matter rejects
   - Basis kind: `process_output`
   - Evidence kind: `method_formula`
   - Sources: `saskatchewan-chickpea-harvest`; `mass-balance-identity`
+
+For the stated no-dry-matter-loss case, incoming mass = 1000 × (1 − 0.14)/(1 − w_in), with w_in between 0.14 and 0.18; water removed = incoming mass − 1000. Upper bounds are rounded upward to 0.001 kg. Actual dry-matter rejects, added water or other inlet moisture require a new lot balance, not these limits.
 
 ###### Electricity, medium voltage input (`drying_energy`)
 
@@ -868,7 +870,7 @@ Calculate water removed from measured inlet and outlet masses and moisture fract
 
 - Selected flow: Water to air
 - Flow property / unit: Mass / kg
-- Amount rule: inlet water mass minus outlet water mass after dry-matter reconciliation
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
 - Value mode: `calculated_value`
 - Specificity: `site_specific`
 Raw activity or stage basis: per 1,000 kg stabilized dry chickpeas output.
@@ -881,14 +883,14 @@ Raw activity or stage basis: per 1,000 kg stabilized dry chickpeas output.
 - Range: Moisture-removal physical screen
   - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 54
+  - Upper: 48.781
   - Unit: kg water/1,000 kg stabilized output
   - Basis: water removed when grain enters at 14% to 18% moisture and leaves at 14% moisture, before dry-matter rejects
   - Basis kind: `process_output`
   - Evidence kind: `method_formula`
   - Sources: `saskatchewan-chickpea-harvest`; `mass-balance-identity`
 
-
+For the stated no-dry-matter-loss case, incoming mass = 1000 × (1 − 0.14)/(1 − w_in), with w_in between 0.14 and 0.18; water removed = incoming mass − 1000. Upper bounds are rounded upward to 0.001 kg. Actual dry-matter rejects, added water or other inlet moisture require a new lot balance, not these limits.
 
 ### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
 This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
@@ -978,7 +980,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_conditioning_energy` | `cleaning_grading` | cleaning and grading energy | meter, runtime and fuel records | carrier; meter values; runtime; lot; shared period | meter preferred; allocate shared period by documented driver; Raw aggregation and attribution: assign shared energy once across lots | carrier native unit | each lot or operating period | conditioning period | every included facility | per declared reference flow | meter and allocation record |
 | `cp_grade_mass_balance` | `cleaning_grading` | incoming, accepted, downgraded, rework and rejects | lot weights and representative grade samples | lot; inlet mass; moisture; class; damage; green; foreign material; size; each output mass and destination | calibrated weighing and representative sampling; Raw aggregation and attribution: inlet equals accepted, downgraded, rejects and reconciled loss; rework counted once per pass | kg and % by mass | each lot and rework pass | conditioning period | every included facility | per declared reference flow | scale calibration, sample chain and balance closure |
 | `cp_drying_energy` | `drying_stabilization` | aeration and drying energy | meter, fuel and dryer logs | carrier; quantity; inlet and outlet time; temperature; airflow; lot | meter or reconciled fuel delivery; Raw aggregation and attribution: assign energy to lot or documented shared period | carrier native unit | each lot or drying period | stabilization period | every active facility | per declared reference flow | meter, fuel and dryer log |
-| `cp_drying_mass_balance` | `drying_stabilization` | moist inlet, stabilized output, removed water and downgrade | lot weights and moisture tests | inlet and outlet mass; inlet and outlet moisture; temperature; downgrade mass; destination | calibrated scales and representative moisture tests; Raw aggregation and attribution: conserve dry matter and calculate removed water | kg and % wet basis | each lot | stabilization period | every active facility | per declared reference flow | scale and moisture-meter calibration plus reconciliation |
+| `cp_drying_mass_balance` | `drying_stabilization` | moist inlet, stabilized output, removed water and downgrade | lot weights and moisture tests | inlet and outlet mass; inlet and outlet moisture; temperature; downgrade mass; destination ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation| calibrated scales and representative moisture tests; Raw aggregation and attribution: conserve dry matter and calculate removed water | kg and % wet basis | each lot | stabilization period | every active facility | per declared reference flow | scale and moisture-meter calibration plus reconciliation |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
 
 ### Calculation Rules
@@ -990,6 +992,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_grade_balance` | conditioning node | incoming mass = accepted + downgraded + non-recoverable rejects + unresolved measurement difference; rework is an internal loop and is not added as a second final output | lot input and all output-state weights | closed lot balance and unexplained difference | `mass-balance-identity` |
 | `calc_managed_soil_emissions` | field emissions | calculate direct and relevant indirect managed-soil emissions from collected nutrient and residue activity data using the declared IPCC tier or justified regional method | applied N; residue N; volatilization or leaching activity data; factors | substance-specific elementary emissions | `ipcc-2019-managed-soils` |
 | `calc_allocation` | intended multi-output nodes | allocate only residual shared burdens after subdivision using the declared method and one complete output set | output quantities; prices or physical driver; shared burden | attributed burden by intended output | `iso-14044-allocation` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_emissions`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

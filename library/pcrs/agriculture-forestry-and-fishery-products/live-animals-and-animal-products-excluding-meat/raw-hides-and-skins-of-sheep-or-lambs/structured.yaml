@@ -629,32 +629,7 @@ process_inventory:
                 evidence_kind: "collected_record"
                 source_ids: []
       waste:
-        - row_id: preserve_residue
-          role: "Spent curing media and rejected skin"
-          name: "Spent salt/brine and rejected skin by destination (UUID unresolved)"
-          flow_type: "waste"
-          property_unit: "Mass / kg"
-          description: "Distinguish waste from evaporated water and incorporated salt. Denominator and scope requirements：per kg node output Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_residues
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "kg/kg"
-                basis: "per kg node output"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
       elementary:
         []
   - id: handover
@@ -891,6 +866,13 @@ dataset_production:
         - cp_residues
       output: "actual stream-specific exchanges, destinations and nonduplicated mass balance"
       source_ids: []
+    - id: preserve_residue_identity_and_fate
+      applies_to: "preserve"
+      rule: "Identify each actually separate material stream, composition, state and recipient. Keep spent preservation agents, brine, animal/plant material, packaging, drainage and intended co-products separate when separately handled; instantiate only streams actually evidenced at this operation. A physically mixed stream may have one composition-defined identity only with compatible treatment evidence, without also counting its components as additional exports. Distinguish marketed outputs, internal rework, waste transfer, purchased treatment and elementary discharge; do not duplicate treatment burdens. This replaces an ambiguous aggregate exchange, not the collection obligation. Before dataset completeness, create one concrete card per actual exchange, verify a compatible UUID or retain an explicit unresolved identity, and record quantity, unit, stage/period, destination and evidence. Reconstruct the raw attributable numerator from the linked protocol and normalize once to the matched accepted reference output. Missing data is not zero; no range of the former aggregate is an individual-stream default."
+      inputs:
+        - cp_residues
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: q_identity
       applies_to: "relevant lots"
@@ -973,7 +955,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:68198662b239e2a87f04e680bc01f1d415dff2f49be2299383c0f9e10b41b766"
+  source_sha256: "sha256:30450961fcca1f6738dff5c3a1b7414986b7003c95bfa0a228a68c536af9aced"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6016"
@@ -1024,16 +1006,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35755"
+    - unit_id: "normative_34527"
       family: "allocation"
       span:
         start:
-          offset: 35755
-          line: 693
+          offset: 34527
+          line: 667
           column: 1
         end:
-          offset: 37395
-          line: 704
+          offset: 36167
+          line: 678
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_slaughter | slaughter route | Enumerate each genuinely marketable meat, skin, detached wool, milk or other output at its real phase and gate. Use documented causal physical attribution if defensible; otherwise document economic allocation with period-specific prices and sensitivity. Never assign all animal burden to the skin or automatic zero burden. | fao-hides-skins |\n| a_fallen | fallen route | Document pre-existing animal burden, lawful recovery and terminal-treatment counterfactual; justify burden attribution and any separately reported avoided-treatment credit without invented meat. | fao-hides-statistics |\n| a_grade | grades and cure | Count every saleable grade at one handover only; separately sold trim requires its own product decision. Moisture/salt mass changes do not create extra skin. | fao-hides-skins |\n| a_period | phases and shared assets | Index breeding, lactation, shearing, finishing, slaughter/recovery and replacement across actual periods. Charge shared slaughter floor, cleaning, cold room and curing assets once using evidenced service time, throughput or other causal driver. | fao-hides-skins |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1052,12 +1034,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35755
-              line: 693
+              offset: 34527
+              line: 667
               column: 1
             end:
-              offset: 35795
-              line: 693
+              offset: 34567
+              line: 667
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1072,16 +1054,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_53510"
+    - unit_id: "normative_53529"
       family: "validation"
       span:
         start:
-          offset: 53510
-          line: 748
+          offset: 53529
+          line: 723
           column: 1
         end:
-          offset: 55204
-          line: 759
+          offset: 55223
+          line: 734
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | reference lot | Reject non-sheep/lamb, tanned or further prepared goods or missing age, fleece, state, gate or net mass. | un-cpc-3-notes |\n| v_route | source and removal | Require an independent skin-removal handoff; slaughter route lists real co-products; fallen route has lawful recovery and no invented meat. | fao-hides-statistics;fao-small-ruminant-slaughter |\n| v_balance | each batch | Reconcile accepted, downgraded and rejected skin, residue, stock and moisture/salt change, investigating residual against site measurement uncertainty. | fao-hides-skins |\n| v_attribution | products, phases and shared services | Reject unsupported zero-burden skin, duplicated attached fleece/detached wool, repeated animal phase or shared plant burden, or absent allocation evidence. | fao-hides-skins |\n| v_uuid | concrete dataset exchanges | Unresolved cards cannot become final exchanges; CPC label alone cannot make tanned sheepskin or manufactured leather an exact raw Mass flow. |  |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n\n"
       headings:
@@ -1100,12 +1082,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 53510
-              line: 748
+              offset: 53529
+              line: 723
               column: 1
             end:
-              offset: 53532
-              line: 748
+              offset: 53551
+              line: 723
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1189,145 +1171,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_slaughter"
       identity_kind: "explicit"
-      unit_id: "normative_35755"
+      unit_id: "normative_34527"
       source_span:
         start:
-          offset: 35868
-          line: 697
+          offset: 34640
+          line: 671
           column: 1
         end:
-          offset: 36244
-          line: 697
+          offset: 35016
+          line: 671
           column: 377
     - pointer: "/allocation_rules/1"
       rule_id: "a_fallen"
       identity_kind: "explicit"
-      unit_id: "normative_35755"
+      unit_id: "normative_34527"
       source_span:
         start:
-          offset: 36245
-          line: 698
+          offset: 35017
+          line: 672
           column: 1
         end:
-          offset: 36492
-          line: 698
+          offset: 35264
+          line: 672
           column: 248
     - pointer: "/allocation_rules/2"
       rule_id: "a_grade"
       identity_kind: "explicit"
-      unit_id: "normative_35755"
+      unit_id: "normative_34527"
       source_span:
         start:
-          offset: 36493
-          line: 699
+          offset: 35265
+          line: 673
           column: 1
         end:
-          offset: 36700
-          line: 699
+          offset: 35472
+          line: 673
           column: 208
     - pointer: "/allocation_rules/3"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_35755"
+      unit_id: "normative_34527"
       source_span:
         start:
-          offset: 36701
-          line: 700
+          offset: 35473
+          line: 674
           column: 1
         end:
-          offset: 37005
-          line: 700
+          offset: 35777
+          line: 674
           column: 305
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_35755"
+      unit_id: "normative_34527"
       source_span:
         start:
-          offset: 37007
-          line: 702
+          offset: 35779
+          line: 676
           column: 1
         end:
-          offset: 37393
-          line: 702
+          offset: 36165
+          line: 676
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_53510"
+      unit_id: "normative_53529"
       source_span:
         start:
-          offset: 53605
-          line: 752
+          offset: 53624
+          line: 727
           column: 1
         end:
-          offset: 53756
-          line: 752
+          offset: 53775
+          line: 727
           column: 152
     - pointer: "/validation_rules/1"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_53510"
+      unit_id: "normative_53529"
       source_span:
         start:
-          offset: 53757
-          line: 753
+          offset: 53776
+          line: 728
           column: 1
         end:
-          offset: 53983
-          line: 753
+          offset: 54002
+          line: 728
           column: 227
     - pointer: "/validation_rules/2"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_53510"
+      unit_id: "normative_53529"
       source_span:
         start:
-          offset: 53984
-          line: 754
+          offset: 54003
+          line: 729
           column: 1
         end:
-          offset: 54182
-          line: 754
+          offset: 54201
+          line: 729
           column: 199
     - pointer: "/validation_rules/3"
       rule_id: "v_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_53510"
+      unit_id: "normative_53529"
       source_span:
         start:
-          offset: 54183
-          line: 755
+          offset: 54202
+          line: 730
           column: 1
         end:
-          offset: 54415
-          line: 755
+          offset: 54434
+          line: 730
           column: 233
     - pointer: "/validation_rules/4"
       rule_id: "v_uuid"
       identity_kind: "explicit"
-      unit_id: "normative_53510"
+      unit_id: "normative_53529"
       source_span:
         start:
-          offset: 54416
-          line: 756
+          offset: 54435
+          line: 731
           column: 1
         end:
-          offset: 54601
-          line: 756
+          offset: 54620
+          line: 731
           column: 186
     - pointer: "/validation_rules/5"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_53510"
+      unit_id: "normative_53529"
       source_span:
         start:
-          offset: 54602
-          line: 757
+          offset: 54621
+          line: 732
           column: 1
         end:
-          offset: 55202
-          line: 757
+          offset: 55221
+          line: 732
           column: 601
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1356,27 +1338,27 @@ normative_context:
           column: 108
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35755"
+      unit_id: "normative_34527"
       source_span:
         start:
-          offset: 35755
-          line: 693
+          offset: 34527
+          line: 667
           column: 1
         end:
-          offset: 35795
-          line: 693
+          offset: 34567
+          line: 667
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_53510"
+      unit_id: "normative_53529"
       source_span:
         start:
-          offset: 53510
-          line: 748
+          offset: 53529
+          line: 723
           column: 1
         end:
-          offset: 53532
-          line: 748
+          offset: 53551
+          line: 723
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1385,5 +1367,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:68198662b239e2a87f04e680bc01f1d415dff2f49be2299383c0f9e10b41b766"
-  generated_content_sha256: "sha256:6a231f8f3f19b460acd8d1463e920eb2e12c4313a22574b85347ab63641b68a4"
+    sha256: "sha256:30450961fcca1f6738dff5c3a1b7414986b7003c95bfa0a228a68c536af9aced"
+  generated_content_sha256: "sha256:cee03d40ae3a9df7ae3a6f8d995d9322a519b807531819d502910a490c8ea1cb"

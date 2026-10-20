@@ -445,7 +445,7 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_fungal_recovery`
 
-- 范围：同阶段产出计量对账
+- 数量范围：同阶段产出计量对账
   - 范围角色：质量检查边界（`qa_guardrail`）
   - 下限: 1
   - 上限: 1
@@ -655,7 +655,7 @@ sync_with: pcr.en-US.md
 
 - 选定流: 供应至魔芋田的灌溉水
 - 流属性/单位: m3
-- 数量规则: 按水源、田块和作物期计量取水量
+- 数量规则：按事件/用途和匹配期间，计量实际跨此产品供水边界的供水量并保留声明原生单位。水源取水表不能自动当交付产品量，须核对两测点间输配损失、外部回水和存水变化。前景负责直接天然取水时，另设分水源基本流输入及本地供水作业，内部交付在聚合边界抵销，不能另加一笔外购水。外购水承接兼容供应商取水及供水负担一次。雨养/无供水须有据，缺少交付量或责任证据属于不完整而非零；归属后按合格最终产出归一化一次。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
 原始活动或阶段基准：先按每公顷和作物周期，再归一到每 1 kg 块茎.
@@ -915,7 +915,7 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_konjac_harvest`
 
-- 范围：同阶段产出计量对账
+- 数量范围：同阶段产出计量对账
   - 范围角色：质量检查边界（`qa_guardrail`）
   - 下限: 1
   - 上限: 1
@@ -1339,7 +1339,7 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_tree_seed_conditioning`
 
-- 范围：同阶段产出计量对账
+- 数量范围：同阶段产出计量对账
   - 范围角色：质量检查边界（`qa_guardrail`）
   - 下限: 1
   - 上限: 1
@@ -1417,8 +1417,8 @@ sync_with: pcr.en-US.md
 - 选定流：选定交付点的具名原始植物材料（UUID 未解析）
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -1443,8 +1443,8 @@ sync_with: pcr.en-US.md
 - 选定流：选定交付点的具名原始植物材料（UUID 未解析）
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -1474,6 +1474,10 @@ sync_with: pcr.en-US.md
 | run_period_attribution | 发酵批次、作物周期和结实年份 | 批次清洗和转换损耗归入相关批次；魔芋多年繁殖材料和林木种源/共享设施按记录的服务期和产出归属，禁止跨期重复。 |  |
 | rework_burden | 返工和降级产品 | 返工保留已发生负担，只增加实际返工投入；降级产品仅在离开系统且具独立功能时作为预期产出处理。 |  |
 
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
 ## 8. 前景数据采集、计算与质量规则
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
@@ -1485,13 +1489,13 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_fermentation_run | fungal_fermentation | fermentation_feedstock; fermentation_medium; fermentation_water; fermentation_energy; wet_fungal_biomass; spent_fermentation_broth; fermentation_biogenic_co2 | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | cp_fungal_recovery | fungal_recovery | wet_biomass_input; recovery_water; recovery_energy; wastewater_treatment_fungal; mycoprotein_product; fungal_coproduct; fungal_rejects; fungal_wastewater | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
-| cp_konjac_field | konjac_cultivation | konjac_propagules; konjac_nutrients; konjac_irrigation; konjac_energy; harvest_ready_konjac; konjac_field_residue; konjac_soil_n2o | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
+| cp_konjac_field | konjac_cultivation | konjac_propagules; konjac_nutrients; konjac_irrigation; konjac_energy; harvest_ready_konjac; konjac_field_residue; konjac_soil_n2o | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 ；实际供水边界及测点；产品交付量；直接取水责任方；水源至交付的损失回水及存水；供应商覆盖| 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | cp_konjac_harvest | konjac_harvest_conditioning | konjac_field_batch; konjac_conditioning_water; konjac_conditioning_energy; konjac_tuber_product; konjac_lower_grade; konjac_rejects | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | cp_tree_seed_source | tree_seed_source_management | seed_source_energy; collectable_seed_crop | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | cp_tree_seed_collection | tree_seed_collection | collectable_seed_input; seed_collection_energy; collected_seed_material; collection_incidental_biomass | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | cp_tree_seed_conditioning | tree_seed_conditioning | raw_seed_material; seed_conditioning_water; seed_conditioning_energy; seed_transport_service; forest_tree_seed_product; tree_seed_lower_grade; seed_conditioning_rejects | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
-
+| `cp_phase1_environment_coverage` | fungal_fermentation | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -1502,6 +1506,13 @@ sync_with: pcr.en-US.md
 | soil_n2o | 魔芋栽培 | 依据所选 IPCC 层级，将矿质氮、有机氮和适用残余氮分别乘相应直接排放因子，并进行 N2O-N 到 N2O 换算 | 氮投入、残余物处理、场址因子 | 直接土壤 N2O | ipcc-2019-managed-soils |
 | transport_tkm | 场址间运输 | 净运输质量(t) × 载货距离(km) | 质量、距离、路线 | t·km |  |
 | tree_seed_yield | 林木种子整理 | 净合格种子质量 ÷ 原始采集物料质量；按树种、种源和结实年份分别计算 | 原始物料、合格种子和各废弃类别质量 | 脱取/整理产率和质量平衡 | fao-forest-seed-handling-1985 |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_konjac_field`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
@@ -1517,7 +1528,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | one_route_one_product | 产品标识和过程图 | 恰好选择一项具名产品和一条路线；不得出现另一互斥路线的过程卡。 | unsd-cpc-3-0-01990 |
-| range_review | 所有流卡 | 每张卡必须有范围；候选阶段的 reasoned_estimate 仅作筛选，成为 reviewed/active 前须由产品、场址、技术和交付点证据替换或确认。 |  |
+| range_review | 所有流卡 | 对每个已提供的数量筛查核对具体交换、上下界、相容单位和分母、基准、适用性、证据类型及外部来源，中英文和投影保持等义。临时推理范围仅为非强制复核提示，不是默认数量、允许损失或完整性证据。没有相容数量界限依据时明确报告无法进行范围筛查，复核计量、匹配组分平衡和不确定性；不得为满足检查虚构范围。最终参照归一化保持精确，并非实证产率。实际交换数量、采集协议及相容单位/换算证据独立于范围要求。 |  |
 | mass_reconciliation | 各过程节点 | 按批次、田块或采集批次核对投入、中间体、合格品、共产品、残次品、废物和水分变化；未解释差额必须披露。 |  |
 | parameterized_binding | 具体流身份核验| 根据前景记录将参数化卡展开为已核实具体流，并保留 具体流身份核验。 |  |
 | nutrient_consolidation | 魔芋栽培 | 每种实际养分产品只记录一次，保留其配方和养分基准；不得将非肥料原料误作农业肥料。 |  |
@@ -1549,3 +1560,4 @@ sync_with: pcr.en-US.md
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

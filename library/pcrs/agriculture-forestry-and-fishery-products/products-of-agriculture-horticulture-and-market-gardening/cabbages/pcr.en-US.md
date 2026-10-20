@@ -54,7 +54,7 @@ When constructing a foreground data package, the items listed in `Required quali
 | `nutrient_mass_basis` | Nitrogen, phosphorus, and potassium nutrient inputs | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg nutrient | Convert formulated fertilizer quantities to kg N, kg P2O5, and kg K2O using documented composition; retain formulated-product quantities separately. |
 | `water_volume_basis` | Irrigation water supplied to cultivation | Volume | m3 | Record water delivered to the field and distinguish supplied water from natural precipitation. |
 | `land_occupation_basis` | Occupied agricultural land | Area-time | m2*a | Calculate occupied area multiplied by occupation duration and normalize it to the declared crop cycle. |
-| `nitrous_oxide_basis` | Managed-soil nitrous oxide emission | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg N2O-N | Calculate and report N2O on an N-mass basis; provide a transparent conversion when a downstream dataset requires kg N2O. |
+| `nitrous_oxide_basis` | Managed-soil nitrous oxide emission | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg N2O | Final elementary exchange is kg molecular N2O. Retain any model result in kg N2O-N as a separate intermediate and multiply by 44/28 exactly once before final normalization; already molecular mass is not reconverted. Use the same direct/indirect pathway ledger as cp_soil_emissions; downstream preference cannot change the substance basis of this card. |
 
 ## 5. System Boundary
 
@@ -92,31 +92,6 @@ When constructing a foreground data package, the items listed in `Required quali
 #### Inputs
 
 ##### Product flows
-
-###### Cabbage planting material (`cabbage_planting_material`)
-
-Cabbage seed or transplant material crosses the cultivation boundary when the crop is established. The foreground record must identify the actual physical planting product rather than treating all seed and transplants as interchangeable.
-
-- Selected flow: Cabbage seed or transplant planting material
-- Flow property / unit: Number of items / item, or Mass / kg when seed is recorded by mass
-- Amount rule: Record purchased and internally supplied planting material by type and convert to established plants or seed mass without combining unlike units.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cultivation_inputs`
-- Sources:
-- Range: Provisional planting-density screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 10000
-  - Upper: 120000
-  - Unit: established plants/ha
-  - Basis: broad screening interval per planted hectare; replace with variety- and system-specific foreground evidence
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Urea fertilizer (`field_cultivation_agricultural_nutrient_inputs_urea`)
 
@@ -320,7 +295,7 @@ Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
 Direct and applicable indirect managed-soil nitrous oxide is calculated from collected nitrogen inputs, crop-residue nitrogen, and the selected IPCC or justified higher-tier method.
 
 - Selected flow: Nitrous oxide emission to ambient air
-- Flow property / unit: Mass / kg N2O-N
+- Flow property / unit: Mass / kg N2O
 - Amount rule: Calculate direct and applicable indirect N2O-N from collected nitrogen pathways without double counting residue nitrogen.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -339,6 +314,8 @@ Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
   - Basis: broad first-pass interval per crop cycle; replace with calculated method output
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
 
 ### Process: Harvest, trimming, and field sorting (`harvest_field_preparation`)
 
@@ -494,7 +471,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_field_energy` | `field_cultivation` | field-operation energy | fuel, electricity, and equipment-hour records | carrier identity; quantity; unit; equipment; operation; meter or invoice period | Reconcile carrier purchases and meters to equipment and field-operation logs; Raw aggregation and attribution: Convert each carrier to energy with documented factors and prevent double counting purchased energy and equipment estimates Route-specific requirements: `field_operation_energy_identification`: Actual diesel tractor operations for tillage, planting, nutrient application, crop protection and field movement. Irrigation pumping is separately assessed from its actual prime mover and must not be silently assigned to diesel. Raw activity or stage basis: per ha planted cabbage crop per crop cycle. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | L; kg; kWh; MJ; h | Each operation or billing period | Complete crop cycle | Each field and equipment set | per declared reference flow | invoices; meters; equipment logs; conversion-factor source |
 | `cp_crop_area_cycle` | `field_cultivation` | agricultural land occupation | cadastral, GIS, and crop-calendar records | planted area; establishment date; harvest-completion date; shared-area fraction | Measure or verify field area and crop occupation dates; Raw aggregation and attribution: Area multiplied by occupation duration; allocate shared field area by documented occupied fraction | ha; date | Once per field and crop cycle | Establishment through harvest completion | Each field | per declared reference flow | GIS or cadastral record; crop calendar |
 | `cp_crop_output` | `field_cultivation` | mature cabbage crop hand-off | harvest and sample-mass records | harvested area; head count; sampled head mass; gross harvested mass; field identifier | Weigh harvest lots or calculate from stratified head-count and mass samples; Raw aggregation and attribution: Sum gross mature crop and reconcile with saleable and residue outputs | kg wet crop | Each harvest event | Full harvest window | Each field and crop cycle | per declared reference flow | calibrated scale records; sampling plan; harvest log |
-| `cp_soil_emissions` | `field_cultivation` | managed-soil nitrous oxide | nutrient, residue, soil-amendment, volatilization, leaching, and field-management records | N inputs by pathway; residue dry matter and N content; removal fraction; emission factors; conversion basis | Apply the declared IPCC tier or justified higher-tier model to collected field records; Raw aggregation and attribution: Calculate pathway emissions separately, sum without double counting, and normalize to crop output | kg N; kg dry matter; fraction; kg N2O-N | Each application and annual or crop-cycle calculation | Complete crop cycle with declared annualization | Each field and emission stratum | per declared reference flow | source records; factor version; calculation workbook; independent formula check |
+| `cp_soil_emissions` | `field_cultivation` | managed-soil nitrous oxide | nutrient, residue, soil-amendment, volatilization, leaching, and field-management records | N inputs by pathway; residue dry matter and N content; removal fraction; emission factors; conversion basis | Apply the declared IPCC tier or justified higher-tier model to collected field records; Raw aggregation and attribution: Calculate pathway emissions separately, sum without double counting, and normalize to crop output | kg N; kg dry matter; fraction; kg N2O-N ; kg molecular N2O after one conversion| Each application and annual or crop-cycle calculation | Complete crop cycle with declared annualization | Each field and emission stratum | per declared reference flow | source records; factor version; calculation workbook; independent formula check |
 | `cp_harvest_outputs` | `harvest_field_preparation` | saleable heads, outer leaves, rejected heads | scale, lot, grading, and destination records | incoming crop mass; saleable mass; leaf residue mass; rejected-head mass; destination; variety; maturity; trimming and packaging state | Weigh each output where practicable and use documented representative sampling for unweighed field residues; Raw aggregation and attribution: Sum by output state and destination; reconcile all outputs to incoming mature crop within the declared tolerance | kg wet mass | Each harvest or dispatch lot | Full harvest and field-dispatch window | Each field, lot, and destination | per declared reference flow | calibrated scale; sample sheets; grade records; dispatch records; mass-balance check |
 
 ### Calculation Rules
@@ -507,6 +484,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_mature_crop` | Mature cabbage crop hand-off | gross mature crop = measured gross harvest or sampled mean head mass × harvested head count | gross mass or head-count sample records | kg wet mature crop | `fao-horticultural-marketing` |
 | `calc_harvest_mass_balance` | Harvest outputs | incoming mature crop = saleable cabbage + outer leaves + rejected heads + documented uncollected loss, within declared uncertainty | all harvest output masses; uncollected loss estimate | reconciled kg wet mass and closure ratio | `fao-postharvest-loss-manual` |
 | `calc_managed_soil_n2o` | Managed-soil nitrous oxide | Apply the declared IPCC direct and applicable indirect N2O equations to collected N inputs and residue pathways; prevent double counting of removed, burned, or field-returned residues. | N inputs; residue N; removal and burning fractions; leaching and volatilization parameters; selected factors | kg N2O-N per crop cycle | `ipcc-2019-managed-soils` |
+| `cabbage_planting_material_identity_and_fate` | `field_cultivation` | For the original cabbage_planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_cultivation_inputs` | Identity-specific exchanges and reconciled activity records |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_soil_emissions`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
 
 ### Data Quality Requirements
 

@@ -53,10 +53,10 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | 适用于 | 必需属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_mass_as_received` | terminal leaf | Mass | kg | Report as-received mass and measured moisture; retain moisture basis for dry-matter comparisons. |
-| `area_to_reference_conversion` | field flows | activity-specific property | activity-specific unit | Normalize same-cycle field totals first to harvested green leaf, then use matched curing and grading balances for cured leaf. |
+| `reference_mass_as_received` | terminal leaf | Mass | kg | 报告接收态质量及实测含水率，保留含水率基准以比较干物质。 |
+| `area_to_reference_conversion` | field flows | activity-specific property | activity-specific unit | 先将同周期田间总量归一化至收获绿叶，再通过匹配调制及分级平衡转换为调制叶。 |
 | `nutrient_content_basis` | nutrient inputs | nutrient mass | kg N, kg P2O5, kg K2O | Preserve product mass, formulation, assay, and elemental/oxide basis separately. |
-| `curing_energy_basis` | curing energy | energy or carrier mass | MJ, kWh, kg, m3 | Preserve carrier and measured amount; document every conversion to delivered energy. |
+| `curing_energy_basis` | curing energy | energy or carrier mass | MJ, kWh, kg, m3 | 保留载能体及实测数量，记录每项交付能源换算。 |
 
 ## 5. 系统边界
 
@@ -96,30 +96,6 @@ sync_with: pcr.en-US.md
 
 #### 输入
 ##### 产品流
-
-###### 烟草种子或幼苗 (`tobacco_planting_material_input`)
-
-平台仅返回通用的 CPC 01990 幼苗标识，因此烟草专用种植材料标识仍未解析。
-
-- 选定流： 烟草种子或幼苗
-- 流属性/单位： Mass or number of items / kg or item
-- 数量规则： 实测种子质量或计数的移栽幼苗
-- 数值来源模式： 前景记录（`foreground_record`）
-- 适用范围： 产品特定（`product_specific`）
-原始活动或阶段基准：每栽培公顷并用同周期产量换算.
-
-- 归一化基准：每声明的参考流
-- 基准类型： 作物周期（`crop_cycle`）
-- 证据类型： 采集记录（`collected_record`）
-- 采集协议： `cp_field_records`
-- 数量范围： Provisional transplant-density screen
-  - 范围角色： QA 校验（`qa_guardrail`）
-  - 下限： 8,000
-  - 上限： 40,000
-  - 单位： seedlings/ha
-  - 基准： one transplanted crop cycle; direct-seeded systems use actual seed basis
-  - 基准类型： 作物周期（`crop_cycle`）
-  - 证据类型： 推理估算（`reasoned_estimate`）
 
 ###### 尿素肥料投入（`tobacco_field_agricultural_nutrient_inputs`）
 
@@ -721,8 +697,8 @@ sync_with: pcr.en-US.md
 - 选定流：未加工烟草，生产混合，农场门，鲜叶未加工 仅用于青烟叶；调制烟叶标识未解析
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -747,8 +723,8 @@ sync_with: pcr.en-US.md
 - 选定流：未加工烟草，生产混合，农场门，鲜叶未加工 仅用于青烟叶；调制烟叶标识未解析
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -773,10 +749,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用于 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_avoid_by_subdivision` | all nodes | Separate field, curing, grading, and batch records; attribute shared meters/equipment by operating time, throughput, or occupied capacity before allocation. | `iso-14044-2006` |
-| `allocation_leaf_grades` | useful grades | Preserve grades and direct burdens; if subdivision is infeasible, use contemporaneous hand-off economic allocation and disclose mass sensitivity. | `iso-14044-2006` |
-| `allocation_residue_reject` | residues, rework, rejects | Do not allocate to internal rework or waste; prevent reworked leaf from becoming a second output. |  |
-| `allocation_shared_infrastructure` | shared barns/assets | Attribute each shared asset once across batches/periods with documented use; prevent cross-node double counting. | `iso-14044-2006` |
+| `allocation_avoid_by_subdivision` | all nodes | 田间、调制、分级及批次记录分开；分配前按运行时间、吞吐量或占用容量归属共享仪表/设备。 | `iso-14044-2006` |
+| `allocation_leaf_grades` | useful grades | 保留等级及直接负担；无法细分时按同期交接经济价值分配，并披露质量分配敏感性。 | `iso-14044-2006` |
+| `allocation_residue_reject` | residues, rework, rejects | 不向内部返工或废物分配，防止返工叶成为第二份产出。 |  |
+| `allocation_shared_infrastructure` | shared barns/assets | 按有据使用量，将共享资产在批次/期间间归属一次；防止跨节点双计。 | `iso-14044-2006` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -791,42 +767,51 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_field_records` | `tobacco_field_production` | planting, nutrients, water, energy, protection | log, invoice, meter, contractor record | field; area; variety; product; formulation; amount; assay; date; operation | reconcile inputs to field/cycle；原始汇总与分配：sum by identity/field; normalize with matched yield | item; kg; L; m3; MJ; ha | each event | full cycle | all fields | 每声明的参考流 | invoices; labels; calibrated meters; logs |
 | `cp_harvest_records` | `tobacco_field_production` | green leaf, residue, reject | harvest ticket, scale, moisture, destination | field; date; mass; moisture; grade; residue; fate | weigh/reconcile each picking；原始汇总与分配：separate accepted leaf and every residue fate | kg; percent; ha | each picking | full cycle | all fields | 每声明的参考流 | calibration; lot trace; moisture test |
-| `cp_field_emissions` | `tobacco_field_production` | emissions | nutrient, soil, weather, residue, model | N; residue N; soil; climate; application; drainage; factors; model | declared applicable calculation method；原始汇总与分配：calculate per field, area-weight, normalize | kg N; kg emission; ha | each event/cycle | full cycle | all fields | 每声明的参考流 | activity and factor provenance; model file |
+| `cp_field_emissions` | `tobacco_field_production` | emissions | nutrient, soil, weather, residue, model | N; residue N; soil; climate; application; drainage; factors; model | 在同一兼容路线/产品/状态内，先逐田块核算应归属原始总量。汇总最终强度=应归属原始数量之和×声明参考量/匹配最终合格产出之和。来源为每公顷率 e_h、y_h 时，先以 e_h×面积、y_h×面积还原原始总量，不能再对田块总量作面积加权。每产品强度按匹配产出加权，不能按面积或不加权平均。原分配仅执行一次，保留期间/吞吐和全部来源单位换算，不兼容路线分开。 | kg N; kg emission; ha | each event/cycle | full cycle | all fields | 每声明的参考流 | activity and factor provenance; model file |
 | `cp_curing_records` | `tobacco_leaf_curing` | leaf, energy, rejects, emissions | batch, scale, moisture, meter, barn log | batch; method; barn; input mass/moisture; carrier; energy; time; outputs | match each run to inputs/outputs/meters；原始汇总与分配：reconcile mass; allocate shared services by measured driver | kg; percent; kWh; MJ; h | 每批次/周期 | 完整调制期 | 所有调制设施和场址 | 每声明的参考流 | calibrated scale/meter; invoice; barn log |
 | `cp_grading_records` | `cured_leaf_grading_packing` | grades, packaging, rework, rejects | batch, scale, grade, issue, destination | batch; input; moisture; accepted; downgrade; rework; reject; packaging | reconcile grades/destinations；原始汇总与分配：count rework once and close mass balance | kg; item; percent | 每批次 | 完整分级期 | 所有分级和包装场址 | 每声明的参考流 | calibration; grade sheet; package record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | tobacco_field_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
 | rule_id | 适用于 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_field_to_green_leaf` | field flows | crop-cycle amount / matched green-leaf mass | amount; area; green leaf | amount/kg green leaf |  |
+| `calc_field_to_green_leaf` | field flows | 作物周期数量 / 匹配鲜叶质量仅得到每 kg 鲜叶的中间强度。鲜叶参考结果按应归属总量 * 1,000 kg / 最终合格鲜叶质量计算。烤制叶参考结果须按 calc_green_to_cured_leaf 的实际关联鲜叶投入/合格烤制叶 kg 换算鲜叶中间强度，再乘 1,000 kg；烤制和分级贡献在同一最终基准上相加一次。保留实际批次、损失、产出份额和单位；不得对直接烤制数量套鲜叶转换或重复归一化最终强度。 | amount; area; green leaf | amount/kg green leaf |  |
 | `calc_green_to_cured_leaf` | cured route | green-leaf-normalized amount × green-leaf input / cured output | masses; moisture; rejects | amount/kg cured leaf | `mass-balance-identity` |
 | `calc_nutrient_content` | nutrient supply | product amount × declared nutrient fraction | identity; amount; assay | nutrient by product |  |
-| `calc_managed_soil_emissions` | field emissions | applicable IPCC/regional method using inputs, residues, volatilization, and leaching | activity; soil; climate; factors | emissions by pathway | `ipcc-2019-managed-soils` |
-| `calc_curing_combustion` | curing | fuel quantity × carrier-specific factor; purchased electricity is not on-site combustion | carrier; amount; factor | pollutant/batch | `ipcc-2006-stationary-combustion` |
+| `calc_managed_soil_emissions` | field emissions | 采用适用 IPCC/区域方法，覆盖投入、残体、挥发及淋失。 | activity; soil; climate; factors | emissions by pathway | `ipcc-2019-managed-soils` |
+| `calc_curing_combustion` | curing | 燃料数量×载能体特定因子；外购电力不属于现场燃烧。 | carrier; amount; factor | pollutant/batch | `ipcc-2006-stationary-combustion` |
 | `calc_curing_mass_balance` | curing | green wet mass = cured leaf + rejects + water/other loss within uncertainty | masses; moisture | reconciled outputs | `mass-balance-identity` |
 | `calc_grading_mass_balance` | grading | input = accepted + downgraded + rejects + loss; count rework once | batch masses; routes | reconciled grades | `mass-balance-identity` |
+| `tobacco_planting_material_input_identity_and_fate` | `tobacco_field_production` | 对于本作业原有 tobacco_planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_field_records` | 按身份区分的交换和对账活动记录 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用于 | 要求 | 证据 |
+| requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_route_identity` | reference | Distinguish green/cured and air/fire/flue/sun route; retain variety, grade, moisture, crop year, gate. | crop, curing, grade, sales records |
-| `dq_temporal_alignment` | all rows | Match field, harvest, curing, grading, energy, and outputs to the same crop/batches; disclose proxies. | dated records |
+| `dq_route_identity` | reference | 区分绿叶/调制叶及晾晒/明火/烤房/日晒路线，保留品种、等级、含水率、作物年度及交接点。 | crop, curing, grade, sales records |
+| `dq_temporal_alignment` | all rows | 将田间、收获、调制、分级、能源及产出匹配至同一作物/批次，并披露代理数据。 | dated records |
 | `dq_mass_moisture` | transformations | Use calibrated masses and paired moisture at green, cured, and packed states. | calibration; moisture records |
-| `dq_route_completeness` | curing | Record energy carrier and combustion location; zero energy requires passive-route evidence. | barn log; invoice; meter |
+| `dq_route_completeness` | curing | 记录载能体及燃烧位置，零能源须有被动路线证据。 | barn log; invoice; meter |
 | `dq_identity_resolution` | parameterized/unresolved | Resolve every emitted exchange to one verified UUID before process publication. | identity review record |
 
 ## 9. 验证规则
 
 | rule_id | 适用于 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validation_terminal_route` | reference | Select exactly one terminal route: 1,000 kg green or 1,000 kg cured graded leaf; forbid fresh UUID for cured leaf. |  |
-| `validation_curing_method` | cured route | Declare one primary curing method per batch and include its energy, barn service, emissions, rejects, and hand-off. | `who-tobacco-environment-2017` |
-| `validation_mass_balance` | harvest/curing/grading | Reconcile mass, moisture, grades, rework, rejects, and losses within documented uncertainty. | `mass-balance-identity` |
-| `validation_nutrient_emissions` | field | Reconcile nutrient/residue N with N2O, NH3, and nitrate methods without duplicate pathways. | `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook` |
-| `validation_rework` | curing/grading | Link rework to origin and count once; rejected material cannot be accepted reference product. |  |
+| `validation_terminal_route` | reference | 恰选一条终端路线：1,000 kg 绿叶或1,000 kg 调制分级叶；调制叶不得使用鲜叶 UUID。 |  |
+| `validation_curing_method` | cured route | 每批声明一种主要调制方法，纳入其能源、烟房服务、排放、拒收物及交接。 | `who-tobacco-environment-2017` |
+| `validation_mass_balance` | harvest/curing/grading | 在有据不确定性内核对质量、水分、等级、返工、拒收及损失。 | `mass-balance-identity` |
+| `validation_nutrient_emissions` | field | 将养分/残体氮与 N2O、NH3 及硝酸根方法核对，避免重叠路径。 | `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook` |
+| `validation_rework` | curing/grading | 将返工关联来源且只计一次；拒收物不作合格参考产品。 |  |
 | `validation_shared_assets` | barns/meters/equipment | Apply one attribution driver per period and prevent double counting. | `iso-14044-2006` |
 | `validation_flow_identity` | every flow | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 

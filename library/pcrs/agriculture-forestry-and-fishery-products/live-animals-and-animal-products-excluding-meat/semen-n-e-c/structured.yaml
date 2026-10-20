@@ -1024,6 +1024,16 @@ dataset_production:
       source_ids:
         - review-ipcc-livestock-2019
         - review-ipcc-soils-2019
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_pathway_emissions
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: identity
       applies_to: "reference"
@@ -1132,7 +1142,7 @@ data_sources:
     used_for: "Polyethylene glove identity for a documented compatible operator-protection use; non-sterile product evidence does not authorize semen-contact or sterile use."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e6f921aced43e5abeeccb61211ef8f60acd2323f1e609106fd5cf5df0b563b00"
+  source_sha256: "sha256:43f1d7200a9948d40d757d5478c9efb33032c5dba91ba9b49487b568667454ac"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6821"
@@ -1231,16 +1241,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_66552"
+    - unit_id: "normative_67981"
       family: "validation"
       span:
         start:
-          offset: 66552
-          line: 822
+          offset: 67981
+          line: 823
           column: 1
         end:
-          offset: 69698
-          line: 836
+          offset: 71127
+          line: 837
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `non_bovine` | reference | Reject bovine donor, mismatched CPC or any UUID not detail-confirmed as non-bovine breeding semen with matching gate/property. | `un-cpc-3-2025` |\n| `balance` | graded-to-release chain | Reconcile liquid and discrete units across accepted, downgraded, rejected and lost states within documented measurement tolerances. | `woah-semen-hygiene-2024` |\n| `branch` | final state | Require one fresh/chilled/frozen final state per lot; chilled/frozen lots need observed intervention and duration, never bovine default factors. | `fao-cryoconservation-2012` |\n| `no_double_count` | donor and assets | Dated donor phases and housing, laboratory, collection and refrigeration shares must charge each service once per period. | `woah-semen-hygiene-2024` |\n| `gate_quality` | release | Require donor species, count, volume, sperm specification and quality release; reject insemination/distribution activity. | `woah-semen-hygiene-2024` |\n| `v_pathway_emission_coverage` | `donor` | Require a pathway coverage ledger for enteric CH4 where biologically applicable, manure CH4, direct/indirect N2O, NH3 and relevant field emissions. Every pathway needs a measured/calculated value, a named linked process with matching coverage, or supported inapplicability; absent data cannot become zero. Keep wild life before capture outside managed husbandry, assess actual managed holding separately, and retain species-specific evidence. | `review-ipcc-livestock-2019`; `review-ipcc-soils-2019`; `review-eea-manure-2023` |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `review-fao-pig-lca-2018` |\n| `v_manure_n2o_coverage` | Applicable manure and managed-soil N pathways | Require explicit direct and indirect pathway coverage, stage N balances and molecular-mass conversion. Map each component to an existing N2O card or an explicitly covering linked process once under calc_manure_n2o_coverage. Missing indirect-pathway evidence prevents a completeness claim; no default zero or duplicate aggregate-plus-components. | `review-ipcc-livestock-2019`; `review-ipcc-soils-2019` |\n\n"
       headings:
@@ -1259,12 +1269,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 66552
-              line: 822
+              offset: 67981
+              line: 823
               column: 1
             end:
-              offset: 66574
-              line: 822
+              offset: 68003
+              line: 823
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1413,119 +1423,119 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "non_bovine"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 66647
-          line: 826
+          offset: 68076
+          line: 827
           column: 1
         end:
-          offset: 66822
-          line: 826
+          offset: 68251
+          line: 827
           column: 176
     - pointer: "/validation_rules/1"
       rule_id: "balance"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 66823
-          line: 827
+          offset: 68252
+          line: 828
           column: 1
         end:
-          offset: 67024
-          line: 827
+          offset: 68453
+          line: 828
           column: 202
     - pointer: "/validation_rules/2"
       rule_id: "branch"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 67025
-          line: 828
+          offset: 68454
+          line: 829
           column: 1
         end:
-          offset: 67228
-          line: 828
+          offset: 68657
+          line: 829
           column: 204
     - pointer: "/validation_rules/3"
       rule_id: "no_double_count"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 67229
-          line: 829
+          offset: 68658
+          line: 830
           column: 1
         end:
-          offset: 67421
-          line: 829
+          offset: 68850
+          line: 830
           column: 193
     - pointer: "/validation_rules/4"
       rule_id: "gate_quality"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 67422
-          line: 830
+          offset: 68851
+          line: 831
           column: 1
         end:
-          offset: 67602
-          line: 830
+          offset: 69031
+          line: 831
           column: 181
     - pointer: "/validation_rules/5"
       rule_id: "v_pathway_emission_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 67603
-          line: 831
+          offset: 69032
+          line: 832
           column: 1
         end:
-          offset: 68174
-          line: 831
+          offset: 69603
+          line: 832
           column: 572
     - pointer: "/validation_rules/6"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 68175
-          line: 832
+          offset: 69604
+          line: 833
           column: 1
         end:
-          offset: 68775
-          line: 832
+          offset: 70204
+          line: 833
           column: 601
     - pointer: "/validation_rules/7"
       rule_id: "v_feed_supply_intake_separation"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 68776
-          line: 833
+          offset: 70205
+          line: 834
           column: 1
         end:
-          offset: 69216
-          line: 833
+          offset: 70645
+          line: 834
           column: 441
     - pointer: "/validation_rules/8"
       rule_id: "v_manure_n2o_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 69217
-          line: 834
+          offset: 70646
+          line: 835
           column: 1
         end:
-          offset: 69696
-          line: 834
+          offset: 71125
+          line: 835
           column: 480
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1566,15 +1576,15 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_66552"
+      unit_id: "normative_67981"
       source_span:
         start:
-          offset: 66552
-          line: 822
+          offset: 67981
+          line: 823
           column: 1
         end:
-          offset: 66574
-          line: 822
+          offset: 68003
+          line: 823
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1583,5 +1593,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e6f921aced43e5abeeccb61211ef8f60acd2323f1e609106fd5cf5df0b563b00"
-  generated_content_sha256: "sha256:6520a73ce5a1f6430a468c748db9aafb5b4970dcefb867e0c449b331ae410f00"
+    sha256: "sha256:43f1d7200a9948d40d757d5478c9efb33032c5dba91ba9b49487b568667454ac"
+  generated_content_sha256: "sha256:d908db86cd7e3a316ebcdb58439c0b3fc46e8f4ea2fc6066a32c58ace956f38f"

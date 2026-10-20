@@ -40,13 +40,13 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Nut `ee70bc1a-99d9-40f5-905c-c0a661f21881` |
+| Reference product flow | 声明实际状态的油棕果核或分离棕榈仁 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | 油棕物种或声明的杂交种；果核或分离棕榈仁状态；完整或破碎；榨油前；含水率及基准；等级；地理来源；生产期间；初级油厂交接；明确排除 FFB 和棕榈仁壳 |
 
-天工基名较泛。只有必填限定词将其收窄为榨油前的油棕果核或分离棕榈仁时，前景数据包才合规。禁止用 FFB 或棕榈仁壳替代参考流。
+按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。
 
 ## 4. 计量与单位规则
 | rule_id | Applies to | Required property | Required unit | Rule |
@@ -1021,7 +1021,7 @@ sync_with: pcr.en-US.md
 
 合格分级物是唯一参考输出：榨油前的油棕果核或分离棕榈仁，绝非 FFB 或棕榈仁壳。
 
-- 选定流：Nut `ee70bc1a-99d9-40f5-905c-c0a661f21881`
+- 选定流：声明实际状态的油棕果核或分离棕榈仁
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：measured accepted product mass
 
@@ -1042,6 +1042,8 @@ sync_with: pcr.en-US.md
   - 基准：per kg grading feed
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`)
+
+身份适用性：按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。
 
 ###### 降级或返工物料（`grading_downgrade`）
 
@@ -1125,6 +1127,7 @@ sync_with: pcr.en-US.md
 | cp_cracking_records | cracking | all linked flow roles | measurement/log | mass, carrier, time, lot, product state, moisture, destination | meter, weighbridge, invoice, batch log or reconciled mass balance；原始汇总与分配：sum by lot/run, reconcile inputs and outputs, then normalize to linked basis | declared card unit | per batch or operating day | representative annual period including crop cycle | all included estates and mill lines | 每声明的参考流 | calibration, invoice, lot id and reconciliation residual |
 | cp_drying_records | drying | all linked flow roles | measurement/log | mass, carrier, time, lot, product state, moisture, destination | meter, weighbridge, invoice, batch log or reconciled mass balance；原始汇总与分配：sum by lot/run, reconcile inputs and outputs, then normalize to linked basis | declared card unit | per batch or operating day | representative annual period including crop cycle | all included estates and mill lines | 每声明的参考流 | calibration, invoice, lot id and reconciliation residual |
 | cp_grading_records | grading | all linked flow roles | measurement/log | mass, carrier, time, lot, product state, moisture, destination | meter, weighbridge, invoice, batch log or reconciled mass balance；原始汇总与分配：sum by lot/run, reconcile inputs and outputs, then normalize to linked basis | declared card unit | per batch or operating day | representative annual period including crop cycle | all included estates and mill lines | 每声明的参考流 | calibration, invoice, lot id and reconciliation residual |
+| `cp_phase1_environment_coverage` | cultivation | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 
 ### 计算规则
 
@@ -1133,6 +1136,13 @@ sync_with: pcr.en-US.md
 | `calc_moisture_conversion` | nut/kernel mass | 干质量 = 收到态质量 ×（1 − 含水率）；反向换算使用目标含水率 | 收到态质量；含水率；试验基准 | 干质量或调整后的收到态质量 |  |
 | `calc_mass_balance` | each mill node | 残差 = 投入质量 + 辅助材料质量 − 预期产出 − 残余物/废物 − 实测水分损失 | 按运行关联的质量记录 | 对账残差及百分比 | `fao-palm-oil-processing` |
 | `calc_period_attribution` | plantation phases and shared infrastructure | 归属负荷 = 期间负荷 × 声明的分配份额 ÷ 合格参考产品质量 | 阶段/运行负荷；服务或产出驱动因子；合格质量 | 每 kg 参考产品负荷 | `rspo-ghg-procedure-v4` |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
 
 ### 数据质量要求
 
@@ -1147,7 +1157,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference flow | 若参考为 FFB、棕榈仁壳、棕榈油或棕榈仁油，或缺少油棕果核/棕榈仁限定、榨油前状态、含水基准或交接信息，则拒绝数据包。 | `unsd-cpc-3-01491` |
+| `validate_reference_identity` | reference flow | 按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。 | `unsd-cpc-3-01491` |
 | `validate_route` | process map | 要求种植、收获、油厂处理、纤维—果核分离、干燥和分级；仅分离棕榈仁分支要求破核，并禁止棕榈仁榨油。 | `fao-palm-oil-processing` |
 | `validate_mass_balance` | every treatment/conditioning run | 检查投入与预期产出、中间流、残余物、拒收物及水分变化；调查超出流卡 QA 范围的值。 | `fao-palm-oil-processing` |
 | `validate_multi_output` | intended outputs | 要求粗棕榈油、合格果核/棕榈仁、纤维、壳及任何其他预期产出具有列明的交接和一个明确归属决策。 | `iso-14044-2006` |
@@ -1174,3 +1184,4 @@ sync_with: pcr.en-US.md
 | `fao-palm-oil-processing` | handbook | https://www.fao.org/4/y4355e/y4355e04.htm | 初级油厂顺序、纤维—果核分离、破核、仁壳分离和干燥 |
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines | 分配层级与透明度 |
 | `rspo-ghg-procedure-v4` | official_guidance | https://rspo.org/endorsed-greenhouse-gas-ghg-assessment-procedure-v4/ | 种植园起始条件、土地/泥炭背景和期间披露 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

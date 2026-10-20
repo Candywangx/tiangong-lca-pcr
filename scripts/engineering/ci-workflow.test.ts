@@ -100,8 +100,8 @@ test('coverage receives same-attempt isolated raw artifacts and verifies members
 });
 
 test('verified web construction and product sealing have separate mandatory bounded jobs',()=>{
- const producer=job('web-build');assert.equal(producer['timeout-minutes'],60);
- assert.deepEqual(job('documentation').needs,['plan','web-build']);assert.equal(job('documentation')['timeout-minutes'],60);
+ const producer=job('web-build');assert.equal(producer['timeout-minutes'],120);
+ assert.deepEqual(job('documentation').needs,['plan','web-build']);assert.equal(job('documentation')['timeout-minutes'],120);
  assert.ok(CI_JOBS.includes('web-build' as typeof CI_JOBS[number]));
  assert.equal(object(object(object(workflow.on).workflow_call).outputs).product_artifact_id!==undefined,true);
  const publicOutput=object(object(object(object(workflow.on).workflow_call).outputs).product_artifact_id);

@@ -38,12 +38,11 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Cinnamon and cinnamon-tree flowers, raw `6e9b5ee6-fbb3-48f8-9b7a-dc50936ee79a` |
+| 参考产品流 | 按声明实际鲜/干状态交付的肉桂树皮或花/花芽 |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
 | 必需限定信息 | 物种或商业类型；植物部位 `bark` 或 `flower/bud`；适用时的树皮形态；鲜品或农场干燥状态；实测水分分数与基准；等级或去向；地区；采收年；园龄；萌蘖周期位置；路线 id；门口 `Production mix, at farm gate` |
-| 绑定模式 | `fixed` |
 
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需属性 | 必需单位 | 规则 |
@@ -257,32 +256,6 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 管理土壤的直接氧化亚氮排放（`soil_n2o`）
-
-按声明的清单方法依据实际氮投入计算土壤直接 N2O 排放。
-
-- 选定流： Dinitrogen monoxide to air
-- 流属性/单位： Mass / kg N2O-N
-- 数量规则：将声明的现行管理土壤方法应用于采集的氮投入和场址条件。
-- 数值来源模式： 计算值（`calculated_value`）
-- 适用范围： 场址特定（`site_specific`）
-原始活动或阶段基准：每 kg 施入氮.
-
-- 归一化基准：每声明的参考流
-- 基准类型： 氮投入（`n_input`）
-- 证据类型： 方法公式（`method_formula`）
-- 采集协议： `cp_stand_management`
-- 来源： `ipcc-2019-managed-soils`
-- 数量范围：方法结果 QA 校验
-  - 范围角色： QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 0.1
-  - 单位： kg N2O-N/kg N input
-  - 基准：每 kg 进入土壤直接排放计算的氮投入
-  - 基准类型： 氮投入（`n_input`）
-  - 证据类型： 方法公式（`method_formula`）
-  - 来源： `ipcc-2019-managed-soils`
-
 #### 输出
 ##### 产品流
 
@@ -315,6 +288,31 @@ sync_with: pcr.en-US.md
 ##### 废物流
 
 ##### 基本流
+
+#### 输出
+
+##### 基本流
+
+###### 管理土壤的直接氧化亚氮排放（`soil_n2o`）
+
+按声明的清单方法依据实际氮投入计算土壤直接 N2O 排放。
+
+- 选定流： Dinitrogen monoxide to air
+- 流属性/单位: Mass / kg N2O
+- 数量规则：将声明的现行管理土壤方法应用于采集的氮投入和场址条件。
+- 数值来源模式： 计算值（`calculated_value`）
+- 适用范围： 场址特定（`site_specific`）
+原始活动或阶段基准：每 kg 施入氮.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 氮投入（`n_input`）
+- 证据类型： 方法公式（`method_formula`）
+- 采集协议： `cp_stand_management`
+- 来源： `ipcc-2019-managed-soils`
+
+最终交换为 kg N2O。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 44/28，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
 
 ### 过程：树皮采收、剥皮与初级整备（`bark_harvest_conditioning`）
 
@@ -470,7 +468,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： Water to air
 - 流属性/单位： Mass / kg
-- 数量规则：干燥前水质量减去干燥后水质量。
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式： 计算值（`calculated_value`）
 - 适用范围： 场址特定（`site_specific`）
 原始活动或阶段基准：每 1 kg 农场干燥整备树皮.
@@ -618,7 +616,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： Water to air
 - 流属性/单位： Mass / kg
-- 数量规则：干燥前水质量减去干燥后水质量。
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式： 计算值（`calculated_value`）
 - 适用范围： 场址特定（`site_specific`）
 原始活动或阶段基准：每 1 kg 农场干燥花/花芽.
@@ -677,7 +675,7 @@ sync_with: pcr.en-US.md
 
 这是参考流交接点，不包括降级产品与拒收物。
 
-- 选定流： Cinnamon and cinnamon-tree flowers, raw `6e9b5ee6-fbb3-48f8-9b7a-dc50936ee79a`
+- 选定流：声明实际鲜/干状态的肉桂树皮或花/花蕾
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：测量接收的预期产出质量并归一化至 1 kg。
 
@@ -698,6 +696,8 @@ sync_with: pcr.en-US.md
   - 基准：每个声明的 1 kg 接收参考产品
   - 基准类型： 参考流（`reference_flow`）
   - 证据类型： 由采集记录计算（`calculated_from_collection`）
+
+身份适用性：按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。
 
 ###### 降级但可销售的产品（`downgraded_cinnamon_product`）
 
@@ -777,7 +777,7 @@ sync_with: pcr.en-US.md
 | `cp_energy_records` | 所有前景过程 | 燃料与电力 | 发票、燃料日志和仪表 | process_id, lot_id, carrier, quantity, unit, date, conversion_factor | 计量或核对采购与库存；原始汇总与分配：按载体换算并仅一次分配至过程、批次和期间 | 原生单位、MJ、kWh | 每批或每月 | 完整报告年及所有纳入批次 | 每个纳入场址 | 每声明的参考流 | 发票、校准仪表和换算依据 |
 | `cp_harvest_lot_balance` | `perennial_cinnamon_cultivation`; `bark_harvest_conditioning` | 树皮投入、产品、共产品和拒收物 | 采收质量平衡 | stand_id, cycle_id, lot_id, stem_mass, bark_mass_before, bark_mass_after, bark_form, wood_mass, leaf_mass, twig_mass, reject_mass, destination, moisture | 称量每次交接；原始汇总与分配：核对干物质并将接收批次汇总至园地年度 | kg、质量分数 | 每个树皮批次 | 报告年内所有树皮批次 | 每个树皮园地和剥皮场址 | 每声明的参考流 | 秤校验、水分测试、批次链接和收据 |
 | `cp_flower_lot_balance` | `perennial_cinnamon_cultivation`; `flower_harvest_conditioning` | 花/花芽投入、产品和拒收物 | 采收质量平衡 | stand_id, lot_id, botanical_part, maturity, harvested_mass, prepared_mass, stem_mass, foreign_matter, reject_mass, destination, moisture | 称量每次交接并核验植物部位；原始汇总与分配：按批次核对产品、去除物和水分 | kg、质量分数 | 每个花批次 | 报告年内所有花/花芽批次 | 每个花产品园地和场址 | 每声明的参考流 | 秤校验、植物学记录、水分测试和批次链接 |
-| `cp_moisture_and_drying` | `bark_harvest_conditioning`; `flower_harvest_conditioning` | 条件性干燥 | 干燥日志和水分测试 | lot_id, route_id, drying_active, method, start_mass, end_mass, start_moisture, end_moisture, duration, energy | 干燥前后成对测量质量与水分；原始汇总与分配：计算干物质闭合和蒸发水；未启用时为零 | kg、质量分数、hour、kWh | 每个干燥批次 | 报告年内所有干燥批次 | 每个干燥场址 | 每声明的参考流 | 测试方法、校准天平、时间戳和仪表 |
+| `cp_moisture_and_drying` | `bark_harvest_conditioning`; `flower_harvest_conditioning` | 条件性干燥 | 干燥日志和水分测试 | lot_id, route_id, drying_active, method, start_mass, end_mass, start_moisture, end_moisture, duration, energy ；含拒收物/残体的全部进出水；实际加水/降雨；单独液体转出；期初期末水库存；含水率及密度；有据蒸发| 干燥前后成对测量质量与水分；原始汇总与分配：计算干物质闭合和蒸发水；未启用时为零 | kg、质量分数、hour、kWh | 每个干燥批次 | 报告年内所有干燥批次 | 每个干燥场址 | 每声明的参考流 | 测试方法、校准天平、时间戳和仪表 |
 | `cp_grading_balance` | `farm_gate_grading` | 接收、降级、返工和拒收状态 | 分级与去向记录 | lot_id, route_id, incoming_mass, grade, accepted_mass, downgraded_mass, rework_mass, reject_mass, defect, destination, price | 称量每个状态并链接交接点；原始汇总与分配：进入量 = 接收 + 降级 + 拒收 + 一次返工后的有记录损失 | kg、currency/kg | 每个批次 | 报告年内所有分级批次 | 每个分级场址 | 每声明的参考流 | 秤校验、分级单、销售和拒收去向记录 |
 
 ### 计算规则
@@ -785,15 +785,16 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_moisture_conversion` | 鲜品与干燥状态 | dry_mass = wet_mass × (1 − moisture_fraction) | 成对质量和水分 | 干质量 | `iso-6539-2014` |
-| `calc_drying_water` | 条件性干燥 | evaporated_water = start_mass × start_moisture − end_mass × end_moisture | 成对质量和水分 | kg 水排入空气 |  |
+| `calc_drying_water` | 条件性干燥 | 进入空气的去除水=进入材料水+实际外加水+期初水库存-全部合格/降级/拒收/残余转出物流含水-单独外排液态水-期末水库存；采用匹配实测湿质量和水分比例或相容密度。内部循环相消。纳入实际雨水吸收/返潮，干物质和非水损失分开。实测或有据闭合平衡应确认实际蒸发和接收空气边界；缺少组分或未解释差额不能证明水汽或零。按匹配最终合格产出归一化一次。 | 成对质量和水分 | kg 水排入空气 |  |
 | `calc_perennial_attribution` | 建园与共享园地负荷 | 建园负荷分配至有证据的生产年；每年按声明规则将共享负荷分配给分别实测的产出。 | 生产年、园地投入、路线产出 | 各路线及参考 kg 的负荷 | `suriyagoda-2021-ceylon-cinnamon` |
 | `calc_lot_yield` | 采收批次 | accepted_yield = accepted_mass ÷ incoming_route_mass；共产品和拒收比例单独报告 | 批次质量平衡 | 产率与比例 |  |
 | `calc_grading_balance` | 分级 | incoming = accepted + downgraded + reject + documented loss；返工是一次内部循环 | 分级记录 | 已核对状态 |  |
 | `calc_managed_soil_emissions` | 氮投入 | 对产品特定氮投入、气候和管理应用声明的现行方法与因子，并披露因子版本。 | 施氮量和方法参数 | 直接与间接氮排放 | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_stand_management`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_identity` | 路线产品 | 对每批核验物种/类型、植物部位、形态、花/花芽成熟度、鲜/干状态和等级。 | 身份记录、照片或植物学记录及分级单 |
 | `dq_temporal` | 多年期归属 | 覆盖完整报告年及所有纳入批次；披露建园、生产、终止阶段及不完整周期。 | 带日期园地与采收记录 |
@@ -807,7 +808,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | 参考流 | 缺少物种/类型、植物部位、形态、水分状态、等级/去向、采收年、周期位置或农场门口声明时拒绝数据包。 |  |
+| `validate_reference_identity` | 参考流 | 按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。 |  |
 | `validate_route_exclusivity` | 过程图 | 一个参考批次只能由一条采收整备路线供应；共享种植负荷可分配，但直接路线负荷不得同时出现在两条路线。 |  |
 | `validate_nutrient_binding` | `nutrient_supply` | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validate_conditional_drying` | 干燥 | 未启用时干燥能源和去除水均为零；启用时需要成对质量、水分、时长和能源记录及干物质闭合。 | `sri-lanka-dcd-postharvest` |
@@ -832,7 +833,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源 id | 类型 | 引用 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `sri-lanka-dcd-postharvest` | official_guidance | Sri Lanka Department of Cinnamon Development, “Post Harvest Technology”, https://cinnamon.gov.lk/about-cinnamon/post-harvest-technology/ | 采收、刮皮、剥皮、4–7 天干燥、分级及报告的 300–600 kg/acre-year 桂皮筒产量 |
 | `suriyagoda-2021-ceylon-cinnamon` | literature | Suriyagoda et al. (2021), “Ceylon cinnamon: Much more than just a spice”, *Plants, People, Planet*, https://doi.org/10.1002/ppp3.10192 | 建园、园地寿命、萌蘖更新、过程分解和共产品 |

@@ -132,7 +132,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Record certified or otherwise documented alfalfa seed by pure-live-seed basis. Keep seed-coating mass separate where the tag permits. Raw activity or stage basis: per hectare newly established stand before stand-life annualization."
           amount:
-            expression: "measured purchased and used mass, corrected to pure live seed for the seeded area"
+            expression: "Record actual physical seed-product mass used, net of documented unused returns, with its supplier/lot, treatment, purity and germination/viability attributes. Pure-live-seed equivalent = physical seed mass × purity fraction × viability fraction is a separate quality/rate attribute, never the purchased-product exchange mass or another purchase. If only pure-live-seed rate is known, recover physical quantity using evidenced nonzero lot fractions; otherwise leave physical seed use incomplete. Retain the original stock, period and reference-output attribution."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -527,7 +527,7 @@ process_inventory:
           name: "Irrigation water"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record gross irrigation delivery by source, event and regrowth period; record zero for rainfed production. Raw activity or stage basis: per productive hectare-year before yield normalization."
+          description: "Record gross irrigation delivery by source, event and regrowth period; record zero for rainfed production. Raw activity or stage basis: per productive hectare-year before yield normalization. The cited crop-water requirement or precipitation-plus-irrigation context is not a supplied-irrigation amount or validity bound. Collect actual delivered irrigation at its stated meter/boundary, or derive it from a fully declared site water balance distinguishing effective rainfall, soil-water storage, conveyance/application efficiency and returns. No numeric delivery range is established here; rainfed zero requires evidence and a measured value outside a literature water-demand context must not be clipped."
           amount:
             expression: "metered delivery or calculated volume from flow rate and operating time"
             value_mode: "foreground_record"
@@ -541,17 +541,7 @@ process_inventory:
               source_ids:
                 - umn-alfalfa-drought-2024
                 - usda-ars-alfalfa-irrigation
-            ranges:
-              - role: typical_range
-                lower: "4000"
-                upper: "8000"
-                unit: "m3/ha*a"
-                basis: "seasonal precipitation plus irrigation-equivalent water use per productive hectare-year; report supplied irrigation separately"
-                basis_kind: "crop_cycle"
-                evidence_kind: "external_source"
-                source_ids:
-                  - umn-alfalfa-drought-2024
-                  - usda-ars-alfalfa-irrigation
+            ranges: []
         - row_id: annual_field_energy
           role: "Electricity, medium voltage input"
           name: "Electricity, medium voltage"
@@ -1019,6 +1009,16 @@ dataset_production:
       output: "species-specific elementary exchanges"
       source_ids:
         - ipcc-2019-managed-soils
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_stand_year_records
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference product"
@@ -1150,7 +1150,7 @@ data_sources:
     used_for: "exact reference output and normalization"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:8c485b023a3e850cfe7b08e217082e6cbb4e9bad44377d7fc47965578662da91"
+  source_sha256: "sha256:ef0fa881b8da66c1698f9ef8a7990cbf495e31faa3cb23604b06d3ea2ff2489d"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4878"
@@ -1201,16 +1201,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47182"
+    - unit_id: "normative_47721"
       family: "allocation"
       span:
         start:
-          offset: 47182
-          line: 827
+          offset: 47721
+          line: 820
           column: 1
         end:
-          offset: 48718
-          line: 837
+          offset: 49257
+          line: 830
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_establishment_life` | establishment burdens | Attribute establishment inputs, emissions and losses to all accepted fresh output produced over the actual stand life. Use realized stand termination and output where known; disclose any prospective lifetime used for an incomplete stand. Do not allocate the same establishment burden again in later stand-years. | `umn-alfalfa-establishment`; `usda-ars-alfalfa-management-2024` |\n| `allocation_stand_year` | annual management burdens | Assign stand-year inputs first to the reporting hectare-year, then divide by accepted fresh output from that year. Do not spread annual inputs across other production years. | `area-time-identity` |\n| `allocation_cut` | cut-specific operations | Assign harvest energy, cut-specific irrigation and losses to the identified cut; shared annual operations use a documented physical basis such as area or accepted fresh mass across cuts. | `usda-ars-alfalfa-management-2024` |\n| `allocation_rejects` | rejected or downgraded biomass | Keep burdens with the producing stand-year and cut unless an evidenced recovered-product allocation is declared. Exclude rejected biomass from accepted reference output. |  |\n| `allocation_no_double_count` | all periods | Establishment, stand-year and cut records carry unique phase and period identifiers; each input, output, loss and field event may enter the normalized result once only. |  |\n\n"
       headings:
@@ -1229,12 +1229,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47182
-              line: 827
+              offset: 47721
+              line: 820
               column: 1
             end:
-              offset: 47222
-              line: 827
+              offset: 47761
+              line: 820
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1249,16 +1249,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_56099"
+    - unit_id: "normative_58068"
       family: "validation"
       span:
         start:
-          offset: 56099
-          line: 873
+          offset: 58068
+          line: 867
           column: 1
         end:
-          offset: 58124
-          line: 887
+          offset: 60093
+          line: 881
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_gate` | reference product | Reject a package that includes ensiling, fermentation, drying, baling or feed manufacture in the reference-product process. |  |\n| `validate_stand_periods` | all processes | Require establishment year, stand age, reporting stand-year, cut identifiers, actual or prospective stand life, and termination treatment; reject double attribution across periods. |  |\n| `validate_nutrient_consolidation` | each applicable process | Require a separate atomic card for each actual fertilizer or amendment with measured product quantity and composition; do not bind a generic nutrient group as one exchange. |  |\n| `validate_n_fixing_crop` | annual nutrient records | Do not accept routine mineral-N input without evidence of the route-specific need; require nodulation or soil/plant evidence when mineral N is reported. | `umn-alfalfa-fertilizer` |\n| `validate_cut_balance` | each cut | Require accepted output plus rejects and other destinations to reconcile with harvest-ready input within disclosed measurement uncertainty. | `mass-balance-identity` |\n| `validate_irrigation_route` | water card | Require zero supplied irrigation water for rainfed strata and event-linked measured or calculated delivery for irrigated strata. |  |\n| `validate_reject_path` | rejected biomass | Require each rejected state to be left in field, recovered, downgraded or discarded with a declared destination; it shall not enter accepted output. |  |\n| `validate_route_delta` | alternative routes | Require evidence for any claimed change in topology, inventory, calculation or validation and prevent averaging mutually exclusive post-harvest product states. |  |\n| `validate_range_shape` | cards with ranges | For each supplied Range, require role, lower/upper bounds, unit, basis, basis kind, evidence kind and applicable source ids. Report missing important-flow ranges as candidate evidence gaps. |  |\n\n"
       headings:
@@ -1277,12 +1277,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 56099
-              line: 873
+              offset: 58068
+              line: 867
               column: 1
             end:
-              offset: 56121
-              line: 873
+              offset: 58090
+              line: 867
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1366,184 +1366,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_establishment_life"
       identity_kind: "explicit"
-      unit_id: "normative_47182"
+      unit_id: "normative_47721"
       source_span:
         start:
-          offset: 47295
-          line: 831
+          offset: 47834
+          line: 824
           column: 1
         end:
-          offset: 47734
-          line: 831
+          offset: 48273
+          line: 824
           column: 440
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_stand_year"
       identity_kind: "explicit"
-      unit_id: "normative_47182"
+      unit_id: "normative_47721"
       source_span:
         start:
-          offset: 47735
-          line: 832
+          offset: 48274
+          line: 825
           column: 1
         end:
-          offset: 47989
-          line: 832
+          offset: 48528
+          line: 825
           column: 255
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_cut"
       identity_kind: "explicit"
-      unit_id: "normative_47182"
+      unit_id: "normative_47721"
       source_span:
         start:
-          offset: 47990
-          line: 833
+          offset: 48529
+          line: 826
           column: 1
         end:
-          offset: 48262
-          line: 833
+          offset: 48801
+          line: 826
           column: 273
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_47182"
+      unit_id: "normative_47721"
       source_span:
         start:
-          offset: 48263
-          line: 834
+          offset: 48802
+          line: 827
           column: 1
         end:
-          offset: 48495
-          line: 834
+          offset: 49034
+          line: 827
           column: 233
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_no_double_count"
       identity_kind: "explicit"
-      unit_id: "normative_47182"
+      unit_id: "normative_47721"
       source_span:
         start:
-          offset: 48496
-          line: 835
+          offset: 49035
+          line: 828
           column: 1
         end:
-          offset: 48716
-          line: 835
+          offset: 49255
+          line: 828
           column: 221
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_gate"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 56194
-          line: 877
+          offset: 58163
+          line: 871
           column: 1
         end:
-          offset: 56372
-          line: 877
+          offset: 58341
+          line: 871
           column: 179
     - pointer: "/validation_rules/1"
       rule_id: "validate_stand_periods"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 56373
-          line: 878
+          offset: 58342
+          line: 872
           column: 1
         end:
-          offset: 56603
-          line: 878
+          offset: 58572
+          line: 872
           column: 231
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_consolidation"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 56604
-          line: 879
+          offset: 58573
+          line: 873
           column: 1
         end:
-          offset: 56845
-          line: 879
+          offset: 58814
+          line: 873
           column: 242
     - pointer: "/validation_rules/3"
       rule_id: "validate_n_fixing_crop"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 56846
-          line: 880
+          offset: 58815
+          line: 874
           column: 1
         end:
-          offset: 57082
-          line: 880
+          offset: 59051
+          line: 874
           column: 237
     - pointer: "/validation_rules/4"
       rule_id: "validate_cut_balance"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 57083
-          line: 881
+          offset: 59052
+          line: 875
           column: 1
         end:
-          offset: 57288
-          line: 881
+          offset: 59257
+          line: 875
           column: 206
     - pointer: "/validation_rules/5"
       rule_id: "validate_irrigation_route"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 57289
-          line: 882
+          offset: 59258
+          line: 876
           column: 1
         end:
-          offset: 57467
-          line: 882
+          offset: 59436
+          line: 876
           column: 179
     - pointer: "/validation_rules/6"
       rule_id: "validate_reject_path"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 57468
-          line: 883
+          offset: 59437
+          line: 877
           column: 1
         end:
-          offset: 57667
-          line: 883
+          offset: 59636
+          line: 877
           column: 200
     - pointer: "/validation_rules/7"
       rule_id: "validate_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 57668
-          line: 884
+          offset: 59637
+          line: 878
           column: 1
         end:
-          offset: 57880
-          line: 884
+          offset: 59849
+          line: 878
           column: 213
     - pointer: "/validation_rules/8"
       rule_id: "validate_range_shape"
       identity_kind: "explicit"
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 57881
-          line: 885
+          offset: 59850
+          line: 879
           column: 1
         end:
-          offset: 58122
-          line: 885
+          offset: 60091
+          line: 879
           column: 242
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1572,27 +1572,27 @@ normative_context:
           column: 227
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47182"
+      unit_id: "normative_47721"
       source_span:
         start:
-          offset: 47182
-          line: 827
+          offset: 47721
+          line: 820
           column: 1
         end:
-          offset: 47222
-          line: 827
+          offset: 47761
+          line: 820
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_56099"
+      unit_id: "normative_58068"
       source_span:
         start:
-          offset: 56099
-          line: 873
+          offset: 58068
+          line: 867
           column: 1
         end:
-          offset: 56121
-          line: 873
+          offset: 58090
+          line: 867
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1601,5 +1601,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:8c485b023a3e850cfe7b08e217082e6cbb4e9bad44377d7fc47965578662da91"
-  generated_content_sha256: "sha256:64d6b97250b82d88654eb1a2eb56e477981ac7202cab68598d48099a2d338278"
+    sha256: "sha256:ef0fa881b8da66c1698f9ef8a7990cbf495e31faa3cb23604b06d3ea2ff2489d"
+  generated_content_sha256: "sha256:0237d8934f3a01563e3045700927131d8a5d5929d4ad277005cff6d45b1892e7"

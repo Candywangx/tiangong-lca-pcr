@@ -28,7 +28,7 @@ sync_with: pcr.en-US.md
 | How much | 1 kg |
 | How well | 声明的种/品种、等级、成熟度、状态和出口 |
 | How long or cycle | 一个生产年度或作物周期；适用时分摊多年生建园 |
-| reference_flow_link | saleable_fruit |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | Field | Value |
 | --- | --- |
@@ -40,6 +40,8 @@ sync_with: pcr.en-US.md
 | Required qualifiers | species/cultivar; fresh or chilled state; grade; maturity; production year; outlet; fruit mass basis; irrigation status |
 
 本参考 UUID 表示新鲜、未加工的农场门产品。使用该绑定前须核对实际物种、产品状态及交接门；独立包装站、进一步加工或不兼容状态的输出必须单独核实身份，不得直接继承此 UUID。身份核实不改变本 PCR 的实际系统边界或数量归一化要求。
+
+唯一参考产出为 `declared_reference_handoff` 的 `reference_product_at_declared_handoff`，它仅对既有声明交接点的实际合格产品作必需计量。`p_conditioning` 的实体活动仍为条件性活动；省略该活动不取消参考产出。选择实际最后纳入的产品交接并记录过程/产出 id，物种、物理状态、等级、含水率基准及交接点必须与第3节一致。原 `saleable_fruit` 行仅在其作业实际发生时记录该作业实测产出，不是另一笔最终销售。旁路不新增加工、得率假设或负担，也不改变产品边界。
 
 ## 4. 计量与单位规则
 | rule_id | Applies to | Required property | Required unit | Rule |
@@ -75,6 +77,7 @@ sync_with: pcr.en-US.md
 | `p_harvest` | 采收与捕获 | required | 人工或机械采收 | harvest capture | site-specific records |
 | `p_conditioning` | 分选与初级调理 | conditional | 出口前发生 | grading and conditioning | site-specific records |
 | `p_rejects` | 次品去向 | conditional | 次品离开系统 | reject routing | mass balance |
+| `declared_reference_handoff` | 声明交接点合格产品计量 | required | 每条实际选定路线，包括条件处理/包装/储存的旁路 | 仅计量及核对，不新增实体加工 | 1 kg 同一声明交接点净合格产品 |
 
 ### 过程：栽培与作物保护（`p_cultivation`）
 #### 输入
@@ -379,7 +382,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录本节点实际消耗的材料质量，扣除退回量及上游服务已含投入；期间及输出归属仅计算一次，再除以匹配的最终合格参考输出质量。保留原始量，不再次归一化已归一化的数量。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -426,15 +429,17 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 可销售果实（`saleable_fruit`）
-使用声明出口处最终称量的可销售果实。
+
+仅在 `p_conditioning` 作业实际发生时记录该作业实测合格产出，保留物种、状态、等级、含水率、批次和真实移出交接点。此稳定行 id 表示实际路线产出；唯一最终参考产出为 reference_product_at_declared_handoff。保留原始产出并关联选定最终批次，不作为另一份最终产品重复计数。所列 UUID 仅适用于已独立确认的物理状态/交接点；不相容的上游/中间状态须另行核实或明确保持身份未解析。保留原阶段计量及采集记录。
+
 - 选定流：其他浆果，越橘属水果 `b9b4cf8e-fbb5-46a3-a4ba-0c9c98d46745`
 - 流属性/单位：Mass / kg
-原始产出计量与核对要求：指定出口的分级产出
+原始产出计量及核对：按 `cp_harvest_mass_balance` 称量实际作业净合格批次产出，保留毛重/皮重、拒收、库存、含水率及匹配后续批次记录，在最终归一化前核对。
 
-- 数量规则：1 千克
+- 数量规则：按 `cp_harvest_mass_balance` 实测实际作业净合格产出；保留原始批次数量及实际阶段处理量，依第8节最终交接归一化规则换算一次，不规定固定中间得率
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 可销售果实.
+原始活动或阶段基准：实测实际作业/批次产出及处理量，在一次最终参考归一化前保留。
 
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
@@ -459,6 +464,46 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_mass_balance`
 - 来源：`fao-gap-framework-2003`
+### 过程：声明交接点合格产品计量（`declared_reference_handoff`）
+本计量不新增加工、废物产生或排放。保留全部真实上游作业和损失，仅旁路有据未发生的活动。选择一个实际终端产品批次，系统汇总时将其成对内部转移抵销一次；不得把未启用路线、共产品或来源产出与交接产出相加为合格最终产出。
+
+#### 输入
+##### 产品流
+###### 同一交接点实际路线合格产品 (`actual_route_product_for_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：其他浆果，越橘属水果 `b9b4cf8e-fbb5-46a3-a4ba-0c9c98d46745`
+- 流属性/单位：质量 / kg
+- 数量规则：本同一交接点实测净合格质量，按 R/R × 1 kg 归一化；成对投入与合格产出相等，保留原始 R
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+##### 基本流
+#### 输出
+##### 产品流
+###### 声明交接点参考产品 (`reference_product_at_declared_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：其他浆果，越橘属水果 `b9b4cf8e-fbb5-46a3-a4ba-0c9c98d46745`
+- 流属性/单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+实际废物保留在其产生作业，不在此重复。
+##### 基本流
+实际释放保留在其负责的实体作业，不在此重复。
+
 ## 7. 分配与联产品处理
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
@@ -467,6 +512,10 @@ sync_with: pcr.en-US.md
 | `allocation_intercrop_shared_area` | shared plots | 使用实测面积/时间份额或有记录的物理/经济依据。 | `iso-14044-2006` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -510,6 +559,8 @@ sync_with: pcr.en-US.md
 | `calc_mass_balance` | harvest and conditioning | 在称量不确定度内核对投入、可销售产出、次品和损失。 | lot records | reconciled totals | `fao-gap-framework-2003` |
 | `calc_nutrient_basis` | fertilizer and amendments | 产品量 × 供应商养分比例，并保留两种量。 | product; declaration | product and nutrient mass | `fao-gap-framework-2003` |
 | `calc_managed_soil_nitrogen` | `p_cultivation` | 为肥料、有机改良剂、还田残体及适用的管理土壤源选择兼容的直接和间接方法。直接 N2O-N 按适用氮活动乘以对应 EF1 分组因子并另计其他适用源；间接 N2O-N 按适用的挥发氮前体乘 EF4 加淋失或径流氮前体乘 EF5。N2O-N 仅乘44/28换算一次。NH3 与硝酸根须使用独立有依据的物种特定损失比例，不能把全部 NH3+NOx 当 NH3 或全部淋失氮当硝酸根。NH3-N 仅乘17/14、硝酸根氮仅乘62/14换算一次。分开保留组分、源库、介质、方法不确定性和负荷责任，已覆盖排放不得重复。缺少适用数据时不能声称完整，不虚构排放默认值。 | `cp_managed_soil_nitrogen` | molecular emission amounts per declared reference flow | `ipcc-managed-soils-2019`; `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_managed_soil_nitrogen`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
 ### 数据质量要求
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
@@ -518,6 +569,18 @@ sync_with: pcr.en-US.md
 | `dq_temporal` | all rows | 声明报告期、作物周期和多年生分摊。 | farm register |
 | `dq_measurement` | quantitative rows | 优先校准秤/表计并保留假设和不确定度。 | calibration records |
 | `dq_disclosure` | published datasets | 披露缺失数据、估算、灌溉、改良剂、次品和分配。 | quality statement |
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | 实际合格终端产品及成对转移 | 称量/批次/验收记录 | 物种；状态；等级；含水率/基准；交接点；actual_terminal_process_id；actual_terminal_output_row_id；lot/transfer_id；毛/皮/净质量 R；阶段原始总量/吞吐量；库存、拒收及去向 | 在既有交接点称量净合格 R，匹配唯一实际同批次/同状态终端来源，并核对前序损失及库存。若未发生条件性准备，采用最后实际纳入的适格产品产出，不虚构该准备作业。保留原活动记录及全部必需限定项。 | kg 及原生活动单位 | 每个合格批次 | 匹配生产及交接期间 | 既有声明生产者/初级交接点 | 每声明的参考流 | 校准称量、验收/等级记录、批次链、启用/旁路证据及闭合平衡 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | 全部前景数量及实际路线产出 | R 为匹配单一物种/状态/等级/交接点/期间且实测为正的合格最终质量 kg，剔除皮重、拒收、共产品及留存库存。物理台账＝原始物理数量/R×1 kg，不乘负荷分配份额；归属清单贡献＝可归属原始数量/R×1 kg，保留分子原生单位及原有产品/期间归属。阶段强度 q_i＝Q_i/O_i 须先按实际关联 O_i 还原 Q_i＝q_i×O_i；已最终归一化后不得再次除以 R。交接两侧均为同一实测事件 R/R×1 kg，不是另一实体得率。仅纳入实际启用作业，旁路须记录并有据。R 缺失/非正或终端记录未关联会阻断完整归一化结果，不能记零。保留原始阶段数据，成对内部转移抵销一次。 | cp_declared_reference_handoff; original linked collection protocols | 按声明最终参考报告的原生数量 | `declared-handoff-measurement-definition` |
 
 ## 9. 验证规则
 | rule_id | Applies to | Rule | source_ids |
@@ -531,6 +594,11 @@ sync_with: pcr.en-US.md
 | `validation_species_route_evidence` | 全部所代表过程 | 区分蓝莓灌木生产与蔓越莓种植床生产。记录物种、基质或土壤、酸度管理、灌溉及实际采用的淹水或干湿采收。不将蓝莓营养或灌溉假设套用于蔓越莓，也不假定每次蔓越莓采收均淹水。记录物种、品种、地点、相关土壤及叶片证据、株龄、实际作业、产量、损失及报告期。每项采用的农艺参数须保留原始或地区来源，并解释产品、气候、土壤、技术及期间兼容性。所引地区指南支持路线调查，不提供通用用量。数据缺口限制相关数据集的结论，本PCR不虚构现场实测值。 | `osu-blueberry-route`; `umass-cranberry-route` |
 | `validation_evidence_based_ranges` | 数量及筛查界限 | 不对土地、材料、水、产品或损失统一套用0–1000范围。使用实测记录及有依据的不确定性，核对同单位物理平衡，并保留精确声明参考量。今后任何数值筛查界限须注明投入、单位、分母、适用性及证据；异常值触发调查，不自动替换数值。 | `mass-balance-identity` |
 | `validation_field_emission_coverage` | 田间排放及上游覆盖 | 逐条氮路径记录：本地量化、由具名兼容上游过程覆盖一次、有证据不适用或尚未解决。先选择IPCC层级及适用气候、土壤和投入类别，再选择因子；保留氮活动量、因子单位、不确定性及分子换算。NH3与NOx、硝酸盐与其他淋失物种须有依据地拆分，不把总前体氮视作单一化合物。另核对实际尿素和石灰施用的CO2，与制造及N2O区分，并记录方法、碳基准及上游归属。其他适用的土地利用、土壤碳、农药、磷、燃烧及水管理排放须采用兼容且有记录的方法；仅有四张氮排放卡不证明排放覆盖完整。实质性路径未量化时不得声明数据集完整。 | `ipcc-managed-soils-2019`; `ipcc-liming-urea-2006`; `mass-balance-identity` |
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | 实际选定路线及全部条件旁路状态 | 按实际记录检查可选处理/包装/储存启用及省略两种状态：始终保留唯一必需交接参考；来源产品/状态/交接点与第3节一致；启用的实体行保留实测吞吐量，未启用实体活动不新增交换。要求原始合格质量、上游闭合、唯一转移配对及一次最终归一化；未知状态或缺少身份不得当作已成立分支。 | `declared-handoff-measurement-definition` |
 
 ## 10. 发布数据集画像
 | Field | Value |
@@ -560,3 +628,8 @@ sync_with: pcr.en-US.md
 | `osu-blueberry-route` | extension_guidance | OSU Extension, EM 9179, Growing Berries on the Oregon Coast: Blueberries. https://extension.oregonstate.edu/sites/extd8/files/documents/em9179.pdf | 有地域限制的蓝莓土壤、灌溉及营养背景；不强制采用pH或施肥剂量。 |
 | `umass-cranberry-route` | extension_guidance | UMass Cranberry Station, Nutrition Management for Producing Bogs. https://www.umass.edu/agriculture-food-environment/cranberry/cranberry-chart-book/nutrition-management-for-producing-bogs | 蔓越莓种植床、水管理及营养计划背景；不外推至所有越橘属作物。 |
 | `ipcc-liming-urea-2006` | method_factor | IPCC 2006 Guidelines, Volume 4, Chapter 11, sections 11.3 and 11.4. https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/4_Volume4/V4_11_Ch11_N2O%26CO2.pdf | 适用的石灰及尿素施用CO2覆盖，与肥料制造及管理土壤N2O区分。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | 本 PCR 第3、6及8节：同一合格交接质量除以自身再乘声明参考数量；属于物理转移配对及量纲归一化恒等式，不是经验得率或新增实体操作。 | 唯一合格参考及实测路线吞吐关联 |

@@ -272,7 +272,7 @@ translation_status: aligned
 - 采集协议：`cp_field_energy_records`
 - 来源：`ipcc-2019-cropland`；`fao-agricultural-energy`
 
-仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 
 ##### 废物流
 
@@ -383,7 +383,7 @@ translation_status: aligned
 根据声明养分投入使用选定方法层级计算直接土壤排放，并披露物种和换算基准。
 
 - 选定流：排放到空气的氧化亚氮
-- 流属性/单位：Mass / kg N2O or kg N2O-N
+- 流属性/单位: Mass / kg N2O
 - 数量规则：将选定方法层级应用于采集的氮投入和管理背景
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -393,6 +393,8 @@ translation_status: aligned
 - 基准类型：氮投入（`n_input`）
 - 证据类型：方法公式（`method_formula`）
 - 来源：`ipcc-2019-managed-soils-n2o`
+
+最终交换为 kg N2O。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 44/28，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
 
 ###### 氨挥发（`ammonia_volatilization`）
 
@@ -427,12 +429,11 @@ translation_status: aligned
 - 来源：`ipcc-2019-managed-soils-n2o`
 
 ###### 田间能源产生的化石二氧化碳（`fossil_carbon_dioxide_from_field_energy`）
-
-依据声明因子源由田间燃料和能源记录计算化石二氧化碳。
+仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。
 
 - 选定流：排放到空气的化石二氧化碳
 - 流属性/单位：Mass / kg CO2
-- 数量规则：采集燃料或能源数量乘以声明排放因子
+- 数量规则： 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每燃料清单以及每 1 kg 接收小米种子输出.
@@ -441,6 +442,7 @@ translation_status: aligned
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：根据采集计算（`calculated_from_collection`）
 - 采集协议：`cp_field_energy_records`
+- 来源： `ipcc-2006-energy-combustion-boundary`
 
 ### 过程：小米种子处理和处理剂应用（`millet_seed_conditioning_and_treatment`）
 
@@ -473,7 +475,7 @@ translation_status: aligned
 - 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按`cp_conditioning_energy_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -601,32 +603,14 @@ translation_status: aligned
 - 采集协议：`cp_reject_and_screening_records`
 - 来源：`usda-seed-cleaning-handling`; `mass-balance-identity`
 
-###### 处理粉尘和清扫物（`conditioning_dust_and_sweepings`）
-
-记录作为废物或独立材料流离开设施的粉尘、颖壳和清扫物。
-
-- 选定流：处理粉尘、颖壳或清扫物
-- 流属性/单位：Mass / kg
-- 数量规则：收集质量或有记录的质量平衡残差及去向
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每接收的清选小米种子输出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_reject_and_screening_records`
-- 来源：`usda-seed-cleaning-handling`; `mass-balance-identity`
-
 ##### 基本流
 
 ###### 处理产生的化石二氧化碳（`fossil_carbon_dioxide_from_conditioning`）
-
-依据声明因子源由处理燃料或能源记录计算化石二氧化碳。
+仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。
 
 - 选定流：排放到空气的化石二氧化碳
 - 流属性/单位：Mass / kg CO2
-- 数量规则：处理燃料或能源乘以声明排放因子
+- 数量规则： 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
 原始活动或阶段基准：每接收的清选小米种子输出.
@@ -635,6 +619,7 @@ translation_status: aligned
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：根据采集计算（`calculated_from_collection`）
 - 采集协议：`cp_conditioning_energy_records`
+- 来源： `ipcc-2006-energy-combustion-boundary`
 
 ### 过程：小米种子储存和交付（`millet_seed_storage_and_delivery`）
 
@@ -717,12 +702,11 @@ translation_status: aligned
 ##### 基本流
 
 ###### 储存和交付产生的化石二氧化碳（`storage_and_delivery_fossil_carbon_dioxide`）
-
-仅当条件过程纳入时，根据储存和交付能源计算化石二氧化碳。
+仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。
 
 - 选定流：排放到空气的化石二氧化碳
 - 流属性/单位：Mass / kg CO2
-- 数量规则：储存和交付能源乘以声明排放因子
+- 数量规则： 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：路线特定（`route_specific`）
 原始活动或阶段基准：每 kg 交付小米种子.
@@ -731,7 +715,7 @@ translation_status: aligned
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：根据采集计算（`calculated_from_collection`）
 - 采集协议：`cp_delivery_transport_records`
-
+- 来源： `ipcc-2006-energy-combustion-boundary`
 
 ### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
 该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
@@ -743,7 +727,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -769,7 +753,7 @@ translation_status: aligned
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -801,6 +785,10 @@ translation_status: aligned
 | `allocation_reject_fate` | 拒收物、残余物、废物和储存损失 | 保持田间残余物、处理拒收物、包装废物、储存损失、回收和处置相互区分；没有去向和替代证据不得抵扣被替代产品。 | `mass-balance-identity` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算和质量规则
 
@@ -834,13 +822,13 @@ translation_status: aligned
 | `cp_source_seed_lot_records` | `millet_seed_multiplication` | 源种子批次 | 批次接收记录 | 批次；种类或品种；等级；处理；质量；水分；来源 | 证书、接收记录、校准秤；原始汇总与分配：按单元汇总并归一化 | kg 和属性 | 每批次 | 作物周期 | 田块或生产单元 | 每声明的参考流 | 证书、记录、秤 |
 | `cp_nutrient_input_records` | `millet_seed_multiplication` | 养分和改良投入 | 施用记录 | 产品；配方；养分；质量；日期；田块；方法 | 发票、标签、施用日志；原始汇总与分配：按田块汇总 | kg 产品和 kg 养分 | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 发票、标签、记录 |
 | `cp_irrigation_records` | `millet_seed_multiplication` | 灌溉和取水 | 计量或水源记录 | 水源；仪表；读数；体积；日期；田块；泵送能源 | 校准仪表、泵送日志、水源记录；原始汇总与分配：区分供水和取水 | m3、kg、kWh | 事件或月度 | 作物周期 | 田块和水源 | 每声明的参考流 | 校准、读数 |
-| `cp_field_energy_records` | `millet_seed_multiplication` | 田间燃料和电力 | 燃料或公用事业记录 | 作业；载能体；数量；机器；日期；田块 | 燃料日志、仪表、发票、遥测；原始汇总与分配：分配能源且不得重复计数 | L、kg、MJ、kWh | 作业或计费周期 | 作物周期 | 田块或单元 | 每声明的参考流 | 仪表、发票、日志 |
+| `cp_field_energy_records` | `millet_seed_multiplication` | 田间燃料和电力 | 燃料或公用事业记录 | 作业；载能体；数量；机器；日期；田块 ；实际本地燃烧燃料、数量和单位、密度和低位热值、化石/生物源比例、仅燃烧因子及单位、供应或服务边界、已有燃烧覆盖 | 燃料日志、仪表、发票、遥测；原始汇总与分配：分配能源且不得重复计数 ；执行能源排放计算规则的仅燃烧边界；外购电和含排放服务保留为独立上游负担。 | L、kg、MJ、kWh | 作业或计费周期 | 作物周期 | 田块或单元 | 每声明的参考流 | 仪表、发票、日志 |
 | `cp_crop_protection_records` | `millet_seed_multiplication` | 作物保护 | 施用记录 | 产品；有效成分；剂量；面积；日期；田块；目标 | 标签和施用日志；原始汇总与分配：按产品和成分汇总 `crop_protection_products_specific_input`: 作业 millet_seed_multiplication：记录用于杂草、害虫或病害管理的配方产品和有效成分。 - 选定流：已命名作物保护产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获小米种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-seed-systems` 原数量方法：按产品和有效成分记录施用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg 产品、kg 有效成分、ha | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 标签、记录 |
 | `cp_land_use_records` | `millet_seed_multiplication` | 土地占用 | 田块面积记录 | 田块；种植面积；日期；周期 | 田块记录、GIS、农场登记；原始汇总与分配：计算面积-时间并归一化 | ha 和作物周期 | 每周期 | 作物周期 | 田块 | 每声明的参考流 | 田图、GIS |
 | `cp_harvested_seed_mass` | `millet_seed_multiplication` | 收获种子作物 | 收获记录 | 田块；日期；质量；水分；路线；拒收物 | 校准秤和收获记录；原始汇总与分配：处理前核对 | kg 和水分分数 | 每次收获 | 作物周期 | 田块和接收点 | 每声明的参考流 | 秤、收获记录 |
 | `cp_field_residue_records` | `millet_seed_multiplication` | 田间残余物和废物 | 残余物记录 | 流；质量；去向；日期；田块 | 秤、票据、田间日志；原始汇总与分配：按去向和边界汇总 | kg | 每事件 | 作物周期 | 田块 | 每声明的参考流 | 秤、票据 |
 | `cp_conditioning_input_records` | `millet_seed_conditioning_and_treatment` | 收获种子投入 | 批次接收记录 | 批次；投入质量；水分；来源；日期 | 批次表和校准秤；原始汇总与分配：核对接收与输出 | kg 和水分分数 | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 批次表、秤 |
-| `cp_conditioning_energy_records` | `millet_seed_conditioning_and_treatment` | 处理能源 | 仪表或设备记录 | 活动；能源；数量；作业；期间 | 仪表、账单、设备日志；原始汇总与分配：按作业汇总并归一化 按路线确认要求：`conditioning_energy_identification`: 种子清选、分级、检测、处理、包装的实际电机，以及确有安装的干燥风机。干燥热源另行确认，不根据除水需求推定燃烧器燃料。 原始活动或阶段基准：每接收的清选小米种子输出. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kWh、MJ、kg、L | 活动或间隔 | 处理活动期 | 设施 | 每声明的参考流 | 仪表、账单、日志 |
+| `cp_conditioning_energy_records` | `millet_seed_conditioning_and_treatment` | 处理能源 | 仪表或设备记录 | 活动；能源；数量；作业；期间 ；实际本地燃烧燃料、数量和单位、密度和低位热值、化石/生物源比例、仅燃烧因子及单位、供应或服务边界、已有燃烧覆盖 | 仪表、账单、设备日志；原始汇总与分配：按作业汇总并归一化 按路线确认要求：`conditioning_energy_identification`: 种子清选、分级、检测、处理、包装的实际电机，以及确有安装的干燥风机。干燥热源另行确认，不根据除水需求推定燃烧器燃料。 原始活动或阶段基准：每接收的清选小米种子输出. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 ；执行能源排放计算规则的仅燃烧边界；外购电和含排放服务保留为独立上游负担。 | kWh、MJ、kg、L | 活动或间隔 | 处理活动期 | 设施 | 每声明的参考流 | 仪表、账单、日志 |
 | `cp_conditioning_water_records` | `millet_seed_conditioning_and_treatment` | 处理用水 | 仪表或设施记录 | 水源；仪表；数量；日期；活动 | 仪表、账单、设施日志；原始汇总与分配：汇总跨边界用水 | m3 或 kg | 活动或间隔 | 处理活动期 | 设施 | 每声明的参考流 | 仪表、账单 |
 | `cp_seed_treatment_records` | `millet_seed_conditioning_and_treatment` | 处理材料 | 处理记录 | 产品；有效成分；剂量；处理质量；批次 | 处理日志、标签、供应商证书；原始汇总与分配：按产品和批次汇总 `seed_treatment_material_specific_input`: 记录每种处理产品和有效成分。输出处理状态是必需限定信息。 按处理批次记录处理产品质量和有效成分含量 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-seeds` | kg 产品、kg 有效成分、kg 种子 | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 日志、标签 |
 | `cp_packaging_input_records` | `millet_seed_conditioning_and_treatment` | 包装 | 包装领用记录 | 类型；件数；容量；质量；批次 | 库存记录或包装日志；原始汇总与分配：按容量或质量换算 | 件和 kg | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 包装日志 |
@@ -848,8 +836,8 @@ translation_status: aligned
 | `cp_reject_and_screening_records` | `millet_seed_conditioning_and_treatment` | 拒收物、筛下物、粉尘和清扫物 | 拒收记录 | 批次；流；质量；去向 | 秤或质量平衡；原始汇总与分配：按流和去向汇总 | kg | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 秤、日志、去向记录 |
 | `cp_packaging_waste_records` | `millet_seed_conditioning_and_treatment` | 包装废物 | 废物记录 | 材料；质量；去向；期间 | 秤或承包商记录；原始汇总与分配：按材料和去向汇总 `packaging_waste_specific_output`: 按材料和去向记录包装边角料、损坏包装和废弃包装。 废物质量和声明处理或回收去向的实测记录 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | kg | 每次发运或活动 | 处理活动期 | 设施 | 每声明的参考流 | 秤票、承包商记录 |
 | `cp_conditioning_emission_records` | `millet_seed_conditioning_and_treatment` | 处理排放 | 排放记录 | 物质；介质；质量或因子；活动 | 粉尘日志、维护记录、计算；原始汇总与分配：按物种和介质汇总 `conditioning_dust_emission_to_air_specific_output`: 只有在有实测或记录的设施排放证据时记录直接粉尘排放。收集粉尘和排放粉尘不是同一流。 设施排放实测值或声明方法的排放计算 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | kg | 活动或期间 | 处理活动期 | 设施 | 每声明的参考流 | 日志、计算 |
-| `cp_storage_energy_records` | `millet_seed_storage_and_delivery` | 储存电力 | 库存或公用事业记录 | 批次；仪表；数量；期间；储存质量 | 仪表或账单；原始汇总与分配：按质量和时间分配 | kWh 或 MJ | 期间 | 储存时间 | 储存地点 | 每声明的参考流 | 仪表、账单 |
-| `cp_delivery_transport_records` | `millet_seed_storage_and_delivery` | 交付运输 | 运输记录 | 路线；距离；车辆；燃料或 tonne-km；质量 | 承运商发票、发运记录、燃料日志；原始汇总与分配：汇总服务并归一化 | kg 燃料或 tonne-km | 每次发运 | 交付期间 | 路线 | 每声明的参考流 | 发票、发运、日志 |
+| `cp_storage_energy_records` | `millet_seed_storage_and_delivery` | 储存电力 | 库存或公用事业记录 | 批次；仪表；数量；期间；储存质量 ；实际运行的储存燃烧器/发电机燃料；数量及原生单位；密度/净热值；化石/生物来源比例；仅燃烧因子；供应覆盖| 仪表或账单；原始汇总与分配：按质量和时间分配 | kWh 或 MJ ; L or kg fuel where applicable| 期间 | 储存时间 | 储存地点 | 每声明的参考流 | 仪表、账单 |
+| `cp_delivery_transport_records` | `millet_seed_storage_and_delivery` | 交付运输 | 运输记录 | 路线；距离；车辆；燃料或 tonne-km；质量 ；实际本地燃烧燃料、数量和单位、密度和低位热值、化石/生物源比例、仅燃烧因子及单位、供应或服务边界、已有燃烧覆盖 | 承运商发票、发运记录、燃料日志；原始汇总与分配：汇总服务并归一化 ；执行能源排放计算规则的仅燃烧边界；外购电和含排放服务保留为独立上游负担。 | kg 燃料或 tonne-km | 每次发运 | 交付期间 | 路线 | 每声明的参考流 | 发票、发运、日志 |
 | `cp_storage_loss_records` | `millet_seed_storage_and_delivery` | 储存损失 | 损失记录 | 批次；损失质量；类别；去向；期间 | 库存核对和秤；原始汇总与分配：按去向汇总 | kg | 每批次或期间 | 储存时间 | 储存地点 | 每声明的参考流 | 库存、处置记录 |
 | `cp_delivered_seed_mass` | `millet_seed_storage_and_delivery` | 交付种子 | 交付记录 | 批次；质量；日期；门；接收方；水分 | 发运记录和校准秤；原始汇总与分配：汇总且不得重复计数 | kg 和水分分数 | 每次发运 | 交付期间 | 声明门 | 每声明的参考流 | 发运、秤 |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
@@ -864,16 +852,18 @@ translation_status: aligned
 | `calculate_land_occupation` | 土地占用 | 种植面积乘以声明作物周期占用并归一化到接收种子。 | 土地记录；接收种子质量 | 参考流面积-时间 | `ipcc-2019-cropland` |
 | `calculate_water_withdrawal` | 取水 | 必要时换算计量体积，并将水源取水与供给灌溉水分开。 | 灌溉记录 | 参考流资源取水 | `ipcc-2019-cropland` |
 | `calculate_managed_soil_emissions` | 氮排放 | 将选定方法层级应用于养分投入及声明的土壤、气候和管理背景，并披露物种换算。 | 养分记录；方法因子 | 按物种排放 | `ipcc-2019-managed-soils-n2o` |
-| `calculate_field_energy_emissions` | 田间能源 | 将记录燃料或能源乘以声明因子并归一化到接收种子。 | 田间能源；因子 | 田间能源排放 | `ipcc-2019-cropland` |
-| `calculate_conditioning_energy_emissions` | 处理能源 | 将处理燃料或能源乘以声明因子并归一化。 | 处理能源；因子 | 处理排放 | `usda-seed-cleaning-handling` |
-| `calculate_storage_delivery_emissions` | 储存和交付 | 对纳入的储存和交付能源使用声明因子，并归一化到声明门。 | 储存能源；运输记录；因子 | 储存和交付排放 | `mass-balance-identity` |
+| `calculate_field_energy_emissions` | 田间能源 | 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。 | 田间能源；因子 | 田间能源排放 | `ipcc-2006-energy-combustion-boundary` |
+| `calculate_conditioning_energy_emissions` | 处理能源 | 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。 | 处理能源；因子 | 处理排放 | `ipcc-2006-energy-combustion-boundary` |
+| `calculate_storage_delivery_emissions` | 储存和交付 | 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。 | 储存能源；运输记录；因子 | 储存和交付排放 | `ipcc-2006-energy-combustion-boundary` |
 | `reconcile_field_outputs` | 田间生产 | 在声明水分基准上，将收获种子作物、残余物、田间废物和记录损失与田间记录核对。 | 收获、残余物和废物记录 | 田间输出平衡 | `mass-balance-identity` |
 | `reconcile_conditioning_outputs` | 处理 | 将接收质量和水分与接收种子、筛下物、拒收物、粉尘、包装废物和记录损失核对。 | 处理投入、接收种子和拒收记录 | 处理平衡 | `mass-balance-identity`; `usda-seed-cleaning-handling` |
 | `reconcile_storage_outputs` | 储存 | 将储存质量与声明期间的交付种子、储存损失和期末库存核对。 | 储存、交付和损失记录 | 储存平衡 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_input_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+| `conditioning_dust_and_sweepings_identity_and_fate` | `millet_seed_conditioning_and_treatment` | 原作业产生相关物料时，conditioning_dust_and_sweepings 的采集职责必须履行。每种物理上独立的物流须分别记录实际材料、组成、状态、实测质量与去向。粉尘、糠壳、籽粒、包装及产品拒收物不能仅因在同一作业产生而共用交换；真实混合物流仅在组成和处理边界有据时可单列一张卡。降级农产品须区分具有接收者和用途证据的预期可销售联产品与实际送处理的废物；等级较低本身不决定废物属性或分配。场内返工／回用和留田生物量保留在对账的内部台账，不作为外运废物。完整性通过前须按实际属性建立具体产品或废物卡，使用相容的已核验 UUID 或明确未解析身份；保留可归属负荷，不作无据替代抵扣，各物流不得双计。实测量仅按原有合格参考产出归一化一次。身份、数量或去向缺失时不得宣称完整，不推定聚合默认量或数值界限。 | `cp_reject_and_screening_records` | 按身份区分的交换和对账活动记录 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
 
 ### 数据质量要求
 
-| requirement_id | 适用于 | 要求 | 证据 |
+| requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
 | `dq_seed_identity` | 参考产品和源批次 | 声明小米种类或品种、种子等级、处理状态、水分基准、物理纯度、发芽率或活力以及批次身份。 | 证书、批次记录、质量检验 |
 | `dq_mass_records` | 所有质量行 | 每个质量值标明日期、场址或批次、单位、相关水分基准以及计量设备或来源记录。 | 校准、地磅票、批次表 |
@@ -898,6 +888,8 @@ translation_status: aligned
 | `validation_reject_fate` | 拒收物和废物 | 核对每个拒收种子、筛下物、残余物、粉尘、包装废物和储存损失都有去向；不得将产品投入流集分配给废物。 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
 | `validation_mass_balance` | 所有输出 | 核对田间、处理和储存平衡在声明水分基准上相符，且接收种子未在两个交接点重复计算。 | `mass-balance-identity` |
 | `validation_allocation` | 有意联产品 | 核对任何有意联产品均被单独识别、去向有证据且分配或替代处理已披露。 | `iso-14044-2006` |
+| `validation_local_combustion_boundary` | 能源和化石 CO2 | 核对每项本地 CO2 与边界内实际燃料燃烧及兼容的仅燃烧因子一致；核对上游电、热、燃料供应及含排放服务覆盖，同一释放仅计一次。 | `ipcc-2006-energy-combustion-boundary` |
+
 
 ## 10. 已发布数据集概况
 
@@ -932,3 +924,5 @@ translation_status: aligned
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ipcc-2006-energy-combustion-boundary` | method_factor | IPCC 2006 Guidelines, Volume 2 Energy, Chapters 2 and 3 (stationary and mobile combustion), https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html | 燃烧活动量、兼容的逐燃料因子及化石/生物源区分；不采用通用场址因子。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

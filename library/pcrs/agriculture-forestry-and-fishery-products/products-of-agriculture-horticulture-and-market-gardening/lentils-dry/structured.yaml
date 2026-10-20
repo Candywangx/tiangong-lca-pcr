@@ -255,7 +255,7 @@ process_inventory:
           name: "Irrigation water"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per cultivated ha in one crop cycle."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per cultivated ha in one crop cycle. For irrigation, distinguish crop evapotranspiration from net irrigation and gross delivered/withdrawn water. Reconcile effective rainfall, soil-water stock change, capillary supply, application efficiency and the actual delivery boundary; use metered site records or a documented water balance. A general crop-water-demand table does not establish a universal irrigation upper bound."
           amount:
             expression: "metered or calculated delivered irrigation; zero for verified rainfed fields"
             value_mode: "foreground_record"
@@ -268,16 +268,7 @@ process_inventory:
               collection_protocol_id: cp_field_inputs
               source_ids:
                 - fao-crop-water-needs
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5000"
-                unit: "m3/ha"
-                basis: "delivered irrigation per cultivated hectare"
-                basis_kind: "crop_cycle"
-                evidence_kind: "external_source"
-                source_ids:
-                  - fao-crop-water-needs
+            ranges: []
         - row_id: field_energy
           role: "Electricity, medium voltage input"
           name: "Electricity, medium voltage"
@@ -317,34 +308,7 @@ process_inventory:
       waste:
         []
       elementary:
-        - row_id: soil_n2o
-          role: "Managed-soil nitrous oxide"
-          name: "Dinitrogen monoxide, to air"
-          flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per cultivated ha in one crop cycle."
-          amount:
-            expression: "IPCC selected-tier calculation from collected nitrogen and residue records"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "method_formula"
-              collection_protocol_id: cp_field_emissions
-              source_ids:
-                - ipcc-2019-managed-soils
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg N2O/ha"
-                basis: "direct and indirect N2O per cultivated hectare"
-                basis_kind: "crop_cycle"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - ipcc-2019-managed-soils
+        []
     outputs:
       product:
         - row_id: standing_mature_crop
@@ -352,7 +316,7 @@ process_inventory:
           name: "Standing mature lentil crop"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per cultivated ha in one crop cycle."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per cultivated ha in one crop cycle. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "mass balance of harvested grain, residues and field losses"
             value_mode: "calculated_value"
@@ -366,21 +330,29 @@ process_inventory:
               source_ids:
                 - mass-balance-identity
                 - ndsu-pulse-field-guide-2019
-            ranges:
-              - role: qa_guardrail
-                lower: "500"
-                upper: "10000"
-                unit: "kg/ha"
-                basis: "standing mature above-ground crop mass per hectare"
-                basis_kind: "crop_cycle"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - ndsu-pulse-field-guide-2019
+            ranges: []
       waste:
         []
       elementary:
-        []
+        - row_id: soil_n2o
+          role: "Managed-soil nitrous oxide"
+          name: "Dinitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per cultivated ha in one crop cycle. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
+          amount:
+            expression: "IPCC selected-tier calculation from collected nitrogen and residue records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_field_emissions
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
   - id: harvest_threshing
     label: "Harvest and threshing"
     inputs:
@@ -499,7 +471,7 @@ process_inventory:
           name: "Lentil grain lost in field"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per cultivated ha harvested."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per cultivated ha harvested. The cited guidance does not establish this broad numerical interval for all represented routes. Use matched lot measurements and moisture/loss balances; report quantitative screening unavailable until route-specific evidence supports bounds. Do not substitute the deleted range for a measured yield or loss."
           amount:
             expression: "representative loss samples extrapolated to harvested area"
             value_mode: "calculated_value"
@@ -512,16 +484,7 @@ process_inventory:
               collection_protocol_id: cp_harvest_mass_balance
               source_ids:
                 - ndsu-pulse-field-guide-2019
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "kg/ha"
-                basis: "shattered and uncollected grain per hectare"
-                basis_kind: "crop_cycle"
-                evidence_kind: "external_source"
-                source_ids:
-                  - ndsu-pulse-field-guide-2019
+            ranges: []
       elementary:
         []
   - id: primary_conditioning
@@ -533,7 +496,7 @@ process_inventory:
           name: "Uncleaned harvested lentil grain"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg cleaned grain output."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg cleaned grain output. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "measured input mass linked to harvest lot"
             value_mode: "foreground_record"
@@ -547,17 +510,7 @@ process_inventory:
               source_ids:
                 - mass-balance-identity
                 - manitoba-lentils-production-management
-            ranges:
-              - role: qa_guardrail
-                lower: "1000"
-                upper: "1250"
-                unit: "kg/1000 kg output"
-                basis: "uncleaned input per 1,000 kg cleaned output"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - manitoba-lentils-production-management
+            ranges: []
         - row_id: cleaning_energy
           role: "Electricity, medium voltage input"
           name: "Electricity, medium voltage"
@@ -634,7 +587,7 @@ process_inventory:
           name: "Cleaning rejects and foreign matter"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg cleaned grain output."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg cleaned grain output. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "measured by rework, recovery or disposal destination"
             value_mode: "foreground_record"
@@ -648,17 +601,7 @@ process_inventory:
               source_ids:
                 - mass-balance-identity
                 - manitoba-lentils-production-management
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "250"
-                unit: "kg/1000 kg output"
-                basis: "rejects per 1,000 kg cleaned output"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - manitoba-lentils-production-management
+            ranges: []
       elementary:
         []
   - id: grading_sorting
@@ -704,7 +647,7 @@ process_inventory:
           name: "Accepted-grade lentil grain"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw output measurement and reconciliation: measured accepted mass excluding downgrade, reject and rework Raw activity or stage basis: per 1,000 kg graded input."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw output measurement and reconciliation: measured accepted mass excluding downgrade, reject and rework Raw activity or stage basis: per 1,000 kg graded input. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff"
             value_mode: "foreground_record"
@@ -718,23 +661,13 @@ process_inventory:
               source_ids:
                 - mass-balance-identity
                 - manitoba-lentils-production-management
-            ranges:
-              - role: qa_guardrail
-                lower: "750"
-                upper: "1000"
-                unit: "kg/1000 kg input"
-                basis: "accepted grain per 1,000 kg graded input"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - manitoba-lentils-production-management
+            ranges: []
         - row_id: downgraded_grain
           role: "Intended output downgraded co-product grain"
           name: "Downgraded lentil grain"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg graded input."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg graded input. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "measured downgraded mass with independent destination"
             value_mode: "foreground_record"
@@ -748,24 +681,14 @@ process_inventory:
               source_ids:
                 - mass-balance-identity
                 - manitoba-lentils-production-management
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "250"
-                unit: "kg/1000 kg input"
-                basis: "downgraded usable grain per 1,000 kg graded input"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - manitoba-lentils-production-management
+            ranges: []
       waste:
         - row_id: grading_rejects
           role: "Grading rejects and rework"
           name: "Rejected lentil material"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg graded input."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg graded input. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "measured split, cracked, discoloured, damaged or foreign material by return, recovery or disposal destination"
             value_mode: "foreground_record"
@@ -779,17 +702,7 @@ process_inventory:
               source_ids:
                 - mass-balance-identity
                 - manitoba-lentils-production-management
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "250"
-                unit: "kg/1000 kg input"
-                basis: "rejected material per 1,000 kg graded input"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - manitoba-lentils-production-management
+            ranges: []
       elementary:
         []
   - id: stabilization
@@ -801,7 +714,7 @@ process_inventory:
           name: "Accepted-grade lentil grain"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg final dry lentils."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg final dry lentils. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "measured wet input mass and inlet moisture"
             value_mode: "foreground_record"
@@ -815,17 +728,7 @@ process_inventory:
               source_ids:
                 - mass-balance-identity
                 - manitoba-lentils-production-management
-            ranges:
-              - role: qa_guardrail
-                lower: "1000"
-                upper: "1250"
-                unit: "kg/1000 kg final"
-                basis: "wet input per 1,000 kg final dry lentils"
-                basis_kind: "reference_flow"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - manitoba-lentils-production-management
+            ranges: []
         - row_id: stabilization_energy
           role: "Electricity, medium voltage"
           name: "Electricity, medium voltage"
@@ -926,7 +829,7 @@ process_inventory:
           name: "Rejected stabilized lentil grain"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg final dry lentils."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg final dry lentils. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
             expression: "measured heat-damaged, mould-affected or rejected mass by destination"
             value_mode: "foreground_record"
@@ -940,26 +843,16 @@ process_inventory:
               source_ids:
                 - mass-balance-identity
                 - manitoba-lentils-production-management
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg/1000 kg final"
-                basis: "rejects per 1,000 kg final dry lentils"
-                basis_kind: "reference_flow"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - manitoba-lentils-production-management
+            ranges: []
       elementary:
         - row_id: water_removed
           role: "Water removed"
           name: "Water, to air"
           flow_type: "elementary"
           property_unit: "Mass / kg"
-          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg final dry lentils."
+          description: "Record the stated flow for the linked field or lot and preserve its destination and hand-off. Raw activity or stage basis: per 1,000 kg final dry lentils. No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default."
           amount:
-            expression: "wet-basis inlet/outlet moisture mass balance reconciled with rejects"
+            expression: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -972,18 +865,7 @@ process_inventory:
                 - mass-balance-identity
                 - manitoba-lentils-production-management
                 - ndsu-pulse-field-guide-2019
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "250"
-                unit: "kg/1000 kg final"
-                basis: "water removed per 1,000 kg final dry lentils"
-                basis_kind: "reference_flow"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
-                  - manitoba-lentils-production-management
-                  - ndsu-pulse-field-guide-2019
+            ranges: []
   - id: declared_reference_handoff
     label: "Product Measurement at Declared Handoff"
     inputs:
@@ -1151,7 +1033,7 @@ dataset_production:
       process_id: "stabilization"
       flow_role: "grain, water, reject"
       record_type: "moisture, scale, operation log"
-      raw_fields: "lot; inlet/outlet mass and moisture; reject; airflow; duration; energy"
+      raw_fields: "lot; inlet/outlet mass and moisture; reject; airflow; duration; energy ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation"
       collection_method: "test and weigh before/after; Raw aggregation and attribution: moisture balance with rejects"
       unit: "kg; %; h"
       frequency: "lot"
@@ -1171,6 +1053,18 @@ dataset_production:
       site_scope: "declared handoff gate"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "calibration or weighing tickets, acceptance and lot traceability"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "field_production"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calc_normalization
       applies_to: "all"
@@ -1206,6 +1100,23 @@ dataset_production:
       output: "closure"
       source_ids:
         - mass-balance-identity
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_field_emissions
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference product"
@@ -1263,9 +1174,8 @@ validation_rules:
       - ndsu-pulse-field-guide-2019
   - rule_id: validate_ranges
     applies_to: "all cards"
-    rule: "Require exactly one complete Range with lower, upper, unit, denominator/basis, basis kind, evidence kind and source ids, aligned in EN, ZH and structured output."
-    source_ids:
-      - mass-balance-identity
+    rule: "Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "Foreground farm-gate dry-lentil production dataset"
   downstream_use: "secondary_dataset; background_dataset after representativeness review"
@@ -1301,7 +1211,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:b0ac5b386c1d66ef00e7b00e5ba1ca2fce2f8ce313b1fdb8678b62f258097dab"
+  source_sha256: "sha256:6c5c967762962127798af10ecb34484b4ae99954e7d4181441e7f487a84761bc"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3931"
@@ -1352,16 +1262,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47192"
+    - unit_id: "normative_48189"
       family: "allocation"
       span:
         start:
-          offset: 47192
-          line: 964
+          offset: 48189
+          line: 882
           column: 1
         end:
-          offset: 48157
-          line: 973
+          offset: 49154
+          line: 891
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_single_product` | grain only | Attribute burdens to accepted dry lentils when other outputs are residues or wastes; disclose destinations without credit. | `mass-balance-identity` |\n| `allocation_coproduct` | intended outputs | Enumerate each independently intended straw/pod or downgraded-grain output and apply a disclosed study-specific allocation; use physical dry mass when causality supports it, otherwise disclose economic allocation and prices. | `mass-balance-identity` |\n| `allocation_batch` | fields, lots and runs | Link inputs, outputs, cleaning and changeover to runs; allocate shared burdens once by measured throughput. | `mass-balance-identity` |\n| `allocation_rework` | returned material | Retain prior burdens, add only incremental rework, and count material once at its final destination. | `mass-balance-identity` |\n\n"
       headings:
@@ -1380,12 +1290,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47192
-              line: 964
+              offset: 48189
+              line: 882
               column: 1
             end:
-              offset: 47232
-              line: 964
+              offset: 48229
+              line: 882
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1400,18 +1310,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54784"
+    - unit_id: "normative_60157"
       family: "validation"
       span:
         start:
-          offset: 54784
-          line: 1011
+          offset: 60157
+          line: 937
           column: 1
         end:
-          offset: 56451
-          line: 1024
+          offset: 62021
+          line: 950
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | reference flow | Require the fixed UUIDs, 1,000 kg amount and every qualifier. | `manitoba-lentils-production-management` |\n| `validate_route` | harvest | Exactly one direct-combine or swath/combine route per lot; both routes cannot be counted together. | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |\n| `validate_nutrient_cardinality` | field production | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `ipcc-2019-managed-soils` |\n| `validate_outputs` | harvest/grading | Enumerate intended products, residues, loss, accepted, downgraded, reject and hand-offs; decide attribution for every co-product. | `mass-balance-identity` |\n| `validate_rework` | cleaning/grading | Link each off-spec state to rework, downgrade, recovery or disposal and prevent double counting. | `mass-balance-identity` |\n| `validate_batch` | all runs | Link inputs, outputs, cleaning and changeovers to field/lot/batch and assign shared burdens once. | `mass-balance-identity` |\n| `validate_conditioning` | stabilization | When used, require inlet/outlet moisture, energy, duration, water removed, rejects and closure. | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |\n| `validate_ranges` | all cards | Require exactly one complete Range with lower, upper, unit, denominator/basis, basis kind, evidence kind and source ids, aligned in EN, ZH and structured output. | `mass-balance-identity` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | reference flow | Require the fixed UUIDs, 1,000 kg amount and every qualifier. | `manitoba-lentils-production-management` |\n| `validate_route` | harvest | Exactly one direct-combine or swath/combine route per lot; both routes cannot be counted together. | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |\n| `validate_nutrient_cardinality` | field production | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `ipcc-2019-managed-soils` |\n| `validate_outputs` | harvest/grading | Enumerate intended products, residues, loss, accepted, downgraded, reject and hand-offs; decide attribution for every co-product. | `mass-balance-identity` |\n| `validate_rework` | cleaning/grading | Link each off-spec state to rework, downgrade, recovery or disposal and prevent double counting. | `mass-balance-identity` |\n| `validate_batch` | all runs | Link inputs, outputs, cleaning and changeovers to field/lot/batch and assign shared burdens once. | `mass-balance-identity` |\n| `validate_conditioning` | stabilization | When used, require inlet/outlet moisture, energy, duration, water removed, rejects and closure. | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |\n| `validate_ranges` | all cards | Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values. | |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1428,12 +1338,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54784
-              line: 1011
+              offset: 60157
+              line: 937
               column: 1
             end:
-              offset: 54806
-              line: 1011
+              offset: 60179
+              line: 937
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1504,159 +1414,159 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_single_product"
       identity_kind: "explicit"
-      unit_id: "normative_47192"
+      unit_id: "normative_48189"
       source_span:
         start:
-          offset: 47305
-          line: 968
+          offset: 48302
+          line: 886
           column: 1
         end:
-          offset: 47500
-          line: 968
+          offset: 48497
+          line: 886
           column: 196
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_47192"
+      unit_id: "normative_48189"
       source_span:
         start:
-          offset: 47501
-          line: 969
+          offset: 48498
+          line: 887
           column: 1
         end:
-          offset: 47799
-          line: 969
+          offset: 48796
+          line: 887
           column: 299
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_batch"
       identity_kind: "explicit"
-      unit_id: "normative_47192"
+      unit_id: "normative_48189"
       source_span:
         start:
-          offset: 47800
-          line: 970
+          offset: 48797
+          line: 888
           column: 1
         end:
-          offset: 47982
-          line: 970
+          offset: 48979
+          line: 888
           column: 183
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_47192"
+      unit_id: "normative_48189"
       source_span:
         start:
-          offset: 47983
-          line: 971
+          offset: 48980
+          line: 889
           column: 1
         end:
-          offset: 48155
-          line: 971
+          offset: 49152
+          line: 889
           column: 173
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 54879
-          line: 1015
+          offset: 60252
+          line: 941
           column: 1
         end:
-          offset: 55026
-          line: 1015
+          offset: 60399
+          line: 941
           column: 148
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 55027
-          line: 1016
+          offset: 60400
+          line: 942
           column: 1
         end:
-          offset: 55232
-          line: 1016
+          offset: 60605
+          line: 942
           column: 206
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 55233
-          line: 1017
+          offset: 60606
+          line: 943
           column: 1
         end:
-          offset: 55486
-          line: 1017
+          offset: 60859
+          line: 943
           column: 254
     - pointer: "/validation_rules/3"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 55487
-          line: 1018
+          offset: 60860
+          line: 944
           column: 1
         end:
-          offset: 55685
-          line: 1018
+          offset: 61058
+          line: 944
           column: 199
     - pointer: "/validation_rules/4"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 55686
-          line: 1019
+          offset: 61059
+          line: 945
           column: 1
         end:
-          offset: 55851
-          line: 1019
+          offset: 61224
+          line: 945
           column: 166
     - pointer: "/validation_rules/5"
       rule_id: "validate_batch"
       identity_kind: "explicit"
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 55852
-          line: 1020
+          offset: 61225
+          line: 946
           column: 1
         end:
-          offset: 56009
-          line: 1020
+          offset: 61382
+          line: 946
           column: 158
     - pointer: "/validation_rules/6"
       rule_id: "validate_conditioning"
       identity_kind: "explicit"
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 56010
-          line: 1021
+          offset: 61383
+          line: 947
           column: 1
         end:
-          offset: 56225
-          line: 1021
+          offset: 61598
+          line: 947
           column: 216
     - pointer: "/validation_rules/7"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 56226
-          line: 1022
+          offset: 61599
+          line: 948
           column: 1
         end:
-          offset: 56449
-          line: 1022
-          column: 224
+          offset: 62019
+          line: 948
+          column: 421
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1684,27 +1594,27 @@ normative_context:
           column: 196
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47192"
+      unit_id: "normative_48189"
       source_span:
         start:
-          offset: 47192
-          line: 964
+          offset: 48189
+          line: 882
           column: 1
         end:
-          offset: 47232
-          line: 964
+          offset: 48229
+          line: 882
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54784"
+      unit_id: "normative_60157"
       source_span:
         start:
-          offset: 54784
-          line: 1011
+          offset: 60157
+          line: 937
           column: 1
         end:
-          offset: 54806
-          line: 1011
+          offset: 60179
+          line: 937
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1713,5 +1623,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:b0ac5b386c1d66ef00e7b00e5ba1ca2fce2f8ce313b1fdb8678b62f258097dab"
-  generated_content_sha256: "sha256:96e9530f06fc56861acd810164227d49521174b20912ef83bc5024ec4df474d7"
+    sha256: "sha256:6c5c967762962127798af10ecb34484b4ae99954e7d4181441e7f487a84761bc"
+  generated_content_sha256: "sha256:a40f6cc66cd4121e9aa3d02013d49a57e7c472d936485f874544ae16c40ba8b8"

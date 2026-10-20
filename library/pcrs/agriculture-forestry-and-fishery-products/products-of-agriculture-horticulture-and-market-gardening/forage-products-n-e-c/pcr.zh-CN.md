@@ -549,31 +549,6 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 归还土壤的饲草作物残留物 (`residue_to_soil`)
-
-记录有意留在或归还田间的作物生物量，不得将其作为可销售产品。
-
-- 选定流: Biogenic crop residue to soil; UUID unresolved
-- 流属性/单位: Mass / kg dry matter
-- 数量规则: Sampled dry matter partitioned to the field destination
-- 数值来源模式: 计算值 (`calculated_value`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：每 1 kg 收获饲草.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 参考流 (`reference_flow`)
-- 证据类型: 由采集数据计算 (`calculated_from_collection`)
-- 采集协议: `cp_residues`
-
-- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
-  - 范围角色: 默认估计 (`default_estimate`)
-  - 下限: 0
-  - 上限: 10
-  - 单位: kg dry matter/kg harvested forage
-  - 基准: 残留物还田宽泛筛选区间
-  - 基准类型: 参考流 (`reference_flow`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-
 ### 过程：可选的首次饲草调制 (`primary_forage_conditioning`)
 
 将收获饲草转为一种明确的首次调制状态，不包括饲料配方加工。
@@ -861,8 +836,8 @@ sync_with: pcr.en-US.md
 - 选定流：指定饲草产品（UUID 未解析）
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -887,8 +862,8 @@ sync_with: pcr.en-US.md
 - 选定流：指定饲草产品（UUID 未解析）
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
-- 数值模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -913,10 +888,14 @@ sync_with: pcr.en-US.md
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
-| allocation_outputs | Multiple intended outputs | Use subdivision first. If shared burdens remain, use a documented causal physical relation where defensible; otherwise document the selected allocation basis and sensitivity. Waste and field residue without intended product function receive no co-product allocation. | iso-14044-allocation |
-| allocation_periods | Establishment and productive periods | Attribute establishment or multi-year burdens across declared productive outputs using recorded production history or an explicit forecast, and prevent duplicate attribution to each year. | iso-14044-allocation |
-| allocation_rejects | Lower grades, rejects and rework | Trace each lot to accepted product, lower grade, rework, recovery, soil return or discard. Count accepted material at its final handoff and include rework inputs once. | iso-14044-allocation |
-| allocation_shared_assets | Shared fields, machinery and conditioning assets | Prefer metered use or operating time; otherwise use a documented physical driver. Enumerate consuming nodes and periods and prevent duplicate burdens. | iso-14044-allocation |
+| allocation_outputs | Multiple intended outputs | 优先细分；共享负担仍存在时，采用可辩护且有据的因果物理关系，否则记录所选基准及敏感性。没有预期产品功能的废物及田间残体不作共产品分配。 | iso-14044-allocation |
+| allocation_periods | Establishment and productive periods | 按实测生产历史或明确预测，将建植及多年负担归属声明生产产出，防止在各年度重复归属。 | iso-14044-allocation |
+| allocation_rejects | Lower grades, rejects and rework | 将各批次追踪至合格产品、低等级品、返工、回收、还田或废弃；合格物料仅在最终交接计数，返工投入计一次。 | iso-14044-allocation |
+| allocation_shared_assets | Shared fields, machinery and conditioning assets | 优先使用计量用量或运行时间，否则采用有据物理驱动；列举使用节点及期间，防止负担重复。 | iso-14044-allocation |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -950,37 +929,39 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| normalize_reference | All processes | Divide each process exchange by net reference-product mass at the selected gate while retaining crop-period and lot linkage. | Process amount, net reference mass, gate, crop period and lot | Exchange per 1 kg reference forage | mass-balance-identity |
-| convert_dry_matter | Fresh, wilted and dried forage | Dry matter = measured wet mass × (1 − moisture fraction on wet basis); inverse conversion requires the target moisture. | Wet mass, moisture test and basis | Dry mass or converted product mass | fao-grassland-forage |
-| calculate_n2o | Direct soil N2O | Apply the declared IPCC managed-soils equation and factor to collected N activity data; convert N2O-N to N2O when required by the method. | N inputs, factor, tier, soil and climate fields | kg direct N2O per reference flow | ipcc-2019-managed-soils |
-| reconcile_lot | Harvest and conditioning | On one moisture basis, input equals intended outputs plus lower grades, rejects, residues, removed water and measured loss. | Lot masses, grades, moisture and destinations | Reconciled mutually exclusive lot balance | mass-balance-identity |
-| road_transport_work | Field-to-conditioner transport | Transport work = net transported tonnes × loaded route kilometres; apply return treatment only when evidenced. | Net mass, loaded distance and return record | t·km by lot | iso-14044-allocation |
+| normalize_reference | All processes | 各过程交换除以所选交接点净参考产品质量，保留作物期间及批次关联。 | Process amount, net reference mass, gate, crop period and lot | Exchange per 1 kg reference forage | mass-balance-identity |
+| convert_dry_matter | Fresh, wilted and dried forage | 干物质＝实测湿质量×（1－湿基含水率分数）；反向换算须有目标含水率。 | Wet mass, moisture test and basis | Dry mass or converted product mass | fao-grassland-forage |
+| calculate_n2o | Direct soil N2O | 将声明 IPCC 管理土壤方程和因子用于所采氮活动数据，方法要求时将 N2O-N 换算为 N2O。 | N inputs, factor, tier, soil and climate fields | kg direct N2O per reference flow | ipcc-2019-managed-soils |
+| reconcile_lot | Harvest and conditioning | 在同一含水率基准上：进料＝预期产出＋低等级品＋拒收物＋残体＋移出水＋实测损失。 | Lot masses, grades, moisture and destinations | Reconciled mutually exclusive lot balance | mass-balance-identity |
+| road_transport_work | Field-to-conditioner transport | 运输工作量＝净运输吨数×载货路线公里数；仅有证据时采用返程处理。 | Net mass, loaded distance and return record | t·km by lot | iso-14044-allocation |
+| `residue_to_soil_identity_and_fate` | `forage_harvest` | 按实测干湿基和实际去向核对作物残余物、收获损失和生物量。留田或还田生物量是支持分解与养分路径计算的内部残余物台账，不是外购资源或虚构的生物量基本交换。单独收集的材料须有实际产品／废物身份及去向；环境释放须识别物质与接收环境。 本规则替代含糊的聚合交换，不取消采集义务。数据集完整性通过前，每项实际交换须建立具体卡片、核实相容 UUID 或明确保留未解析身份，并记录数量、单位、阶段／期间、去向和证据。依据相连协议恢复可归属原始分子量，再按匹配的合格参考产出归一化一次。缺失数据不等于零，原聚合范围不得作为单项物流默认值。 | `cp_residues` | 按身份区分的交换和对账活动记录 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrients`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| identity_gate | Reference product | Record one species/product, plant part, form, moisture/dry matter, grade, crop period, production system and exclusive gate. | Lot identity, product description and reviewed flow evidence |
-| period_coverage | Production periods | Include establishment and productive periods when relevant and retain period-specific yield and attribution records. | Field register, planting/harvest dates and yield history |
+| identity_gate | Reference product | 记录单一物种/产品、植物部位、形态、含水率/干物质、等级、作物期间、生产系统及互斥交接点。 | Lot identity, product description and reviewed flow evidence |
+| period_coverage | Production periods | 适用时纳入建植及生产期间，保留各期间产量及归属记录。 | Field register, planting/harvest dates and yield history |
 | input_completeness | 全部过程投入 | 将繁殖材料、每种独立的养分产品、植保产品、水、能源、运输及处理投入与原始记录逐项核对；不得接受笼统养分交换。 | Invoices, logs, meters and 具体流身份核验 |
-| output_reconciliation | All outputs | Partition accepted product, lower grades, rejects, residues, wastewater and losses into mutually exclusive destinations. | Scale, grade, moisture and disposition records |
-| range_replacement | Provisional ranges | Use reasoned ranges only for screening and replace them with product-, region-, technology- and gate-specific evidence before reviewed or active use. | Reviewed records or external quantitative evidence |
-| unresolved_identity | UUID-bearing flows | Retain blank UUIDs until one exact product, property, unit group and context are confirmed; do not substitute compound feed, alfalfa or grazing-service identities. | Identity lookup and detail-read audit record |
+| output_reconciliation | All outputs | 将合格产品、低等级品、拒收物、残体、废水及损失划分为互斥去向。 | Scale, grade, moisture and disposition records |
+| range_replacement | Provisional ranges | 推理范围仅用于筛查，审查或启用前以产品、地区、技术及交接点特定证据替换。 | Reviewed records or external quantitative evidence |
+| unresolved_identity | UUID-bearing flows | 具体产品、属性、单位组及情境未全部确认前 UUID 保持空白，不得替换为配合饲料、苜蓿或放牧服务身份。 | Identity lookup and detail-read audit record |
 
 ## 9. 验证规则
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
-| validate_identity | Reference product | Require one named forage species/product, plant part or harvested portion, form, moisture or dry-matter state, crop period, grade and selected gate. | unsd-cpc-01919 |
-| validate_exclusions | Category boundary | Reject maize forage, alfalfa, cereal straw/husks, non-forage crops, compound feed, mixtures and grazing-service inventories. | unsd-cpc-01919 |
-| validate_gate | Process graph | Require one exclusive reference gate and reconcile every inter-process handoff without counting the same material as both intermediate and final product. | fao-grassland-forage |
-| validate_mass_moisture | Harvest and conditioning lots | Reconcile inputs, products, lower grades, residues, wastewater, removed moisture and losses on a consistent moisture or dry-matter basis; investigate output above input. | mass-balance-identity |
+| validate_identity | Reference product | 要求具名饲草物种/产品、植物部位或收获部分、形态、含水率或干物质状态、作物期间、等级及选定交接点。 | unsd-cpc-01919 |
+| validate_exclusions | Category boundary | 玉米饲草、苜蓿、谷物秸秆/谷壳、非饲草作物、配合饲料、混合物及放牧服务清单不通过。 | unsd-cpc-01919 |
+| validate_gate | Process graph | 要求唯一参考交接点，核对各过程间交接，不将同一物料同时计作中间物及最终产品。 | fao-grassland-forage |
+| validate_mass_moisture | Harvest and conditioning lots | 在一致含水率或干物质基准上核对投入、产品、低等级品、残体、废水、移出水分及损失，并调查产出大于进料。 | mass-balance-identity |
 | validate_flow_identitys | Product inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| validate_periods | Crop periods | Reconcile establishment and productive periods and ensure shared assets and multi-period burdens are attributed once. | iso-14044-allocation |
-| validate_destinations | Grades, rejects and residues | Require mutually exclusive intended-product, lower-grade, rework, recovery, soil-return and waste destinations; do not count rejects as accepted product. | iso-14044-allocation |
-| validate_n2o | Direct soil N2O | Require documented nitrogen activity data, selected IPCC equation, factor and tier; keep direct and indirect pathways separate and avoid double counting. | ipcc-2019-managed-soils |
-| validate_conditioning | Conditional conditioning routes | Confirm each declared wilting, drying, chopping, baling, pelleting, cleaning or grading operation occurred and has inputs, output state, losses and handoff recorded; omit inactive routes. | fao-grassland-forage |
-| validate_ranges | All inventory cards | Check each Range against its amount rule, unit, denominator and route condition. Treat reasoned estimates as replaceable screening values before reviewed or active use. |  |
+| validate_periods | Crop periods | 核对建植及生产期间，确保共享资产及多期间负担仅归属一次。 | iso-14044-allocation |
+| validate_destinations | Grades, rejects and residues | 要求互斥的预期产品、低等级品、返工、回收、还田及废物去向；拒收物不计合格产品。 | iso-14044-allocation |
+| validate_n2o | Direct soil N2O | 要求有记录氮活动数据、所选 IPCC 方程、因子及层级；直接和间接路径分开并防止双计。 | ipcc-2019-managed-soils |
+| validate_conditioning | Conditional conditioning routes | 确认每项声明萎蔫、干燥、切碎、打捆、制粒、清理或分级实际发生，且投入、产出状态、损失和交接有记录；省略未启用路线。 | fao-grassland-forage |
+| validate_ranges | All inventory cards | 按数量规则、单位、分母及路线条件检查每项范围；推理估算为可替换筛查值，审查或启用前须替换。 |  |
 
 ## 10. 发布数据集配置
 
@@ -1007,3 +988,4 @@ sync_with: pcr.en-US.md
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

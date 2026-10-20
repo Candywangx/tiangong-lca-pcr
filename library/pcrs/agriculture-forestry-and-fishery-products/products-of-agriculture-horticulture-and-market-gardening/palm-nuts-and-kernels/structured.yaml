@@ -50,8 +50,8 @@ boundary_abstraction:
 reference_flow_definition:
   reference_amount: "1"
   product_flow_ref:
-    name: "Nut"
-    uuid: "ee70bc1a-99d9-40f5-905c-c0a661f21881"
+    name: "Oil-palm nut or separated kernel in declared actual state"
+    uuid: ""
   flow_property_ref:
     uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
   unit_group_ref:
@@ -1141,12 +1141,10 @@ process_inventory:
       product:
         - row_id: accepted_reference_product
           role: "Accepted oil-palm nut or separated kernel"
-          name: "Nut"
+          name: "Oil-palm nut or separated kernel in declared actual state"
           flow_type: "product"
-          flow_ref:
-            uuid: "ee70bc1a-99d9-40f5-905c-c0a661f21881"
           property_unit: "Mass / kg"
-          description: "Accepted graded material is the sole reference output: oil-palm nut or separated kernel before oil extraction, never FFB or palm kernel shell. Raw output measurement and reconciliation: measured accepted product mass Raw activity or stage basis: per kg grading feed."
+          description: "Accepted graded material is the sole reference output: oil-palm nut or separated kernel before oil extraction, never FFB or palm kernel shell. Raw output measurement and reconciliation: measured accepted product mass Raw activity or stage basis: per kg grading feed. Identity applicability: Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match."
           amount:
             expression: "1 kg"
             value_mode: "foreground_record"
@@ -1345,6 +1343,18 @@ dataset_production:
       site_scope: "all included estates and mill lines"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "calibration, invoice, lot id and reconciliation residual"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "cultivation"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
   calculation_rules:
     - id: calc_moisture_conversion
       applies_to: "nut/kernel mass"
@@ -1373,6 +1383,21 @@ dataset_production:
       output: "burden per kg reference product"
       source_ids:
         - rspo-ghg-procedure-v4
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference output"
@@ -1393,7 +1418,7 @@ dataset_production:
 validation_rules:
   - rule_id: validate_reference_identity
     applies_to: "reference flow"
-    rule: "Reject a package whose reference is FFB, palm kernel shell, palm oil or kernel oil, or whose oil-palm nut/kernel qualifier, before-extraction state, moisture basis or hand-off is missing."
+    rule: "Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match."
     source_ids:
       - unsd-cpc-3-01491
   - rule_id: validate_route
@@ -1445,20 +1470,24 @@ data_sources:
     type: "official_guidance"
     reference: "https://rspo.org/endorsed-greenhouse-gas-ghg-assessment-procedure-v4/"
     used_for: "plantation starting conditions, land/peat context and period disclosure"
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:cabebce0e37a33db6874709b1b933d6e3459b488ff08905b0025db323bf6f22b"
+  source_sha256: "sha256:e9d1753e4db5542967bec526f43a1db6ce447222f8f616cc01f1c04bd138701f"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4801"
+    - unit_id: "normative_5298"
       family: "system_boundary"
       span:
         start:
-          offset: 4801
+          offset: 5298
           line: 59
           column: 1
         end:
-          offset: 7513
+          offset: 8010
           line: 84
           column: 1
       markdown: "## 5. System Boundary\n\nThe boundary begins with the declared plantation starting condition and includes managed perennial production, harvest, FFB hand-off, primary mill conditioning and treatment, fibre-nut separation, optional cracking, drying, grading and hand-off. Palm-kernel oil extraction and downstream refining are excluded. Shared nurseries, roads, irrigation, steam/electricity assets and mill utilities are included through measured use and attributed once across consuming nodes and periods.\n\nHarvest is independent because it removes mature FFB from the managed stand and creates a measured hand-off to the mill. Sterilization/digestion changes received FFB into pressed outputs; fibre-nut separation creates palm-nut and fibre states; cracking changes nut to kernel and shell; drying changes usable wet material to a stabilized state; grading creates accepted, downgraded/rework and rejected destinations.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Estate establishment status, previous land cover/use, palm age distribution, planting material, soil/peat status, geographic boundary and opening inventory |\n| starting_condition_role | Entry condition for perennial managed biological production and cross-period attribution |\n| product_classification_scope | Oil-palm nuts or separated kernels within the narrower accepted CPC 3.0 01491 mapping; this rule excludes FFB and shells as reference products |\n| recursive_input_rule | A purchased nut or kernel input in the same product category is a separately identified upstream dataset and may not be recursively regenerated inside this foreground package |\n| upstream_dataset_requirement | Supplier-specific dataset with product state, moisture, origin, period and hand-off; generic proxy use must be disclosed |\n| disclosure | Declare plantation phase, land history, route, mill mode, nut/kernel branch, cracking decision, moisture basis, grade, location, period and all upstream proxy choices |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route` | all foreground nodes | Include the full route from declared plantation starting condition to dried and graded nut/kernel hand-off; exclude kernel-oil extraction. | `fao-palm-oil-processing` |\n| `boundary_reference_exclusions` | reference identity | FFB and palm kernel shell may appear as route flows but never satisfy the reference flow. | `unsd-cpc-3-01491` |\n| `boundary_periods` | perennial plantation | Separate establishment, immature and productive periods when inputs, assets or outputs differ, then attribute them across the declared productive basis. | `rspo-ghg-procedure-v4` |\n\n"
@@ -1478,11 +1507,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4801
+              offset: 5298
               line: 59
               column: 1
             end:
-              offset: 4822
+              offset: 5319
               line: 59
               column: 22
           text: "## 5. System Boundary"
@@ -1498,16 +1527,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52023"
+    - unit_id: "normative_53287"
       family: "allocation"
       span:
         start:
-          offset: 52023
-          line: 1114
+          offset: 53287
+          line: 1116
           column: 1
         end:
-          offset: 53543
-          line: 1124
+          offset: 54807
+          line: 1126
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | plantation and mill | First subdivide independently measured estate blocks, mill nodes, runs and product routes; do not allocate burdens already separable. | `iso-14044-2006` |\n| `allocation_multi_output` | crude palm oil, nut/kernel, fibre, shell and other intended outputs | Enumerate every intended output and hand-off. Where subdivision cannot avoid allocation, use a documented physical causal relation; use economic allocation only when no defensible physical relation exists, with prices, period and sensitivity disclosed. | `iso-14044-2006`; `fao-palm-oil-processing` |\n| `allocation_period` | perennial crop and shared assets | Attribute establishment, immature-phase and shared-infrastructure burdens once over the declared productive output or service basis; record period-specific decisions and prevent double attribution. | `rspo-ghg-procedure-v4` |\n| `allocation_rework` | downgraded and rejected material | Rework retains the producing-node burden and receives only incremental rework burdens; accepted output excludes unrecovered rejects. Recovered residues are classified consistently as intended output, residue or waste by actual fate. |  |\n| `allocation_shared_runs` | batch and continuous mill operation | Attribute cleaning, start-up, shutdown and shared utilities to the corresponding run or operating period once; document the driver and reconciliation. |  |\n\n"
       headings:
@@ -1526,12 +1555,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52023
-              line: 1114
+              offset: 53287
+              line: 1116
               column: 1
             end:
-              offset: 52063
-              line: 1114
+              offset: 53327
+              line: 1116
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1546,18 +1575,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_61468"
+    - unit_id: "normative_68106"
       family: "validation"
       span:
         start:
-          offset: 61468
-          line: 1161
+          offset: 68106
+          line: 1171
           column: 1
         end:
-          offset: 62898
-          line: 1172
+          offset: 70075
+          line: 1182
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Reject a package whose reference is FFB, palm kernel shell, palm oil or kernel oil, or whose oil-palm nut/kernel qualifier, before-extraction state, moisture basis or hand-off is missing. | `unsd-cpc-3-01491` |\n| `validate_route` | process map | Require plantation, harvest, mill treatment, fibre-nut separation, drying and grading; require cracking only for the separated-kernel branch and prohibit kernel-oil extraction. | `fao-palm-oil-processing` |\n| `validate_mass_balance` | every treatment/conditioning run | Check inputs against intended outputs, intermediates, residues, rejects and moisture change; investigate values outside the card QA ranges. | `fao-palm-oil-processing` |\n| `validate_multi_output` | intended outputs | Require enumerated hand-offs and one explicit attribution decision for crude palm oil, accepted nut/kernel, fibre, shell and any other intended output. | `iso-14044-2006` |\n| `validate_period_and_assets` | plantation phases and shared infrastructure | Require phase/run links and verify that each shared burden is attributed once. | `rspo-ghg-procedure-v4` |\n| `validate_mode_rework` | batch/continuous runs and grading | Require run indexing, cleaning/changeover attribution, rework destinations, and exclusion of rejects from accepted output. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match. | `unsd-cpc-3-01491` |\n| `validate_route` | process map | Require plantation, harvest, mill treatment, fibre-nut separation, drying and grading; require cracking only for the separated-kernel branch and prohibit kernel-oil extraction. | `fao-palm-oil-processing` |\n| `validate_mass_balance` | every treatment/conditioning run | Check inputs against intended outputs, intermediates, residues, rejects and moisture change; investigate values outside the card QA ranges. | `fao-palm-oil-processing` |\n| `validate_multi_output` | intended outputs | Require enumerated hand-offs and one explicit attribution decision for crude palm oil, accepted nut/kernel, fibre, shell and any other intended output. | `iso-14044-2006` |\n| `validate_period_and_assets` | plantation phases and shared infrastructure | Require phase/run links and verify that each shared burden is attributed once. | `rspo-ghg-procedure-v4` |\n| `validate_mode_rework` | batch/continuous runs and grading | Require run indexing, cleaning/changeover attribution, rework destinations, and exclusion of rejects from accepted output. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1574,12 +1603,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 61468
-              line: 1161
+              offset: 68106
+              line: 1171
               column: 1
             end:
-              offset: 61490
-              line: 1161
+              offset: 68128
+              line: 1171
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1598,259 +1627,259 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_4801"
+      unit_id: "normative_5298"
       source_span:
         start:
-          offset: 4824
+          offset: 5321
           line: 61
           column: 1
         end:
-          offset: 5305
+          offset: 5802
           line: 61
           column: 482
     - pointer: "/system_boundary/rules/1"
       rule_id: "system_boundary_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_4801"
+      unit_id: "normative_5298"
       source_span:
         start:
-          offset: 5307
+          offset: 5804
           line: 63
           column: 1
         end:
-          offset: 5721
+          offset: 6218
           line: 63
           column: 415
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_4801"
+      unit_id: "normative_5298"
       source_span:
         start:
-          offset: 6902
+          offset: 7399
           line: 80
           column: 1
         end:
-          offset: 7114
+          offset: 7611
           line: 80
           column: 213
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_reference_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_4801"
+      unit_id: "normative_5298"
       source_span:
         start:
-          offset: 7115
+          offset: 7612
           line: 81
           column: 1
         end:
-          offset: 7284
+          offset: 7781
           line: 81
           column: 170
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_periods"
       identity_kind: "explicit"
-      unit_id: "normative_4801"
+      unit_id: "normative_5298"
       source_span:
         start:
-          offset: 7285
+          offset: 7782
           line: 82
           column: 1
         end:
-          offset: 7511
+          offset: 8008
           line: 82
           column: 227
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid"
       identity_kind: "explicit"
-      unit_id: "normative_52023"
+      unit_id: "normative_53287"
       source_span:
         start:
-          offset: 52136
-          line: 1118
+          offset: 53400
+          line: 1120
           column: 1
         end:
-          offset: 52335
-          line: 1118
+          offset: 53599
+          line: 1120
           column: 200
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_multi_output"
       identity_kind: "explicit"
-      unit_id: "normative_52023"
+      unit_id: "normative_53287"
       source_span:
         start:
-          offset: 52336
-          line: 1119
+          offset: 53600
+          line: 1121
           column: 1
         end:
-          offset: 52736
-          line: 1119
+          offset: 54000
+          line: 1121
           column: 401
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_period"
       identity_kind: "explicit"
-      unit_id: "normative_52023"
+      unit_id: "normative_53287"
       source_span:
         start:
-          offset: 52737
-          line: 1120
+          offset: 54001
+          line: 1122
           column: 1
         end:
-          offset: 53021
-          line: 1120
+          offset: 54285
+          line: 1122
           column: 285
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_52023"
+      unit_id: "normative_53287"
       source_span:
         start:
-          offset: 53022
-          line: 1121
+          offset: 54286
+          line: 1123
           column: 1
         end:
-          offset: 53318
-          line: 1121
+          offset: 54582
+          line: 1123
           column: 297
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_shared_runs"
       identity_kind: "explicit"
-      unit_id: "normative_52023"
+      unit_id: "normative_53287"
       source_span:
         start:
-          offset: 53319
-          line: 1122
+          offset: 54583
+          line: 1124
           column: 1
         end:
-          offset: 53541
-          line: 1122
+          offset: 54805
+          line: 1124
           column: 223
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_61468"
+      unit_id: "normative_68106"
       source_span:
         start:
-          offset: 61563
-          line: 1165
+          offset: 68201
+          line: 1175
           column: 1
         end:
-          offset: 61824
-          line: 1165
-          column: 262
+          offset: 69001
+          line: 1175
+          column: 801
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_61468"
+      unit_id: "normative_68106"
       source_span:
         start:
-          offset: 61825
-          line: 1166
+          offset: 69002
+          line: 1176
           column: 1
         end:
-          offset: 62066
-          line: 1166
+          offset: 69243
+          line: 1176
           column: 242
     - pointer: "/validation_rules/2"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_61468"
+      unit_id: "normative_68106"
       source_span:
         start:
-          offset: 62067
-          line: 1167
+          offset: 69244
+          line: 1177
           column: 1
         end:
-          offset: 62299
-          line: 1167
+          offset: 69476
+          line: 1177
           column: 233
     - pointer: "/validation_rules/3"
       rule_id: "validate_multi_output"
       identity_kind: "explicit"
-      unit_id: "normative_61468"
+      unit_id: "normative_68106"
       source_span:
         start:
-          offset: 62300
-          line: 1168
+          offset: 69477
+          line: 1178
           column: 1
         end:
-          offset: 62519
-          line: 1168
+          offset: 69696
+          line: 1178
           column: 220
     - pointer: "/validation_rules/4"
       rule_id: "validate_period_and_assets"
       identity_kind: "explicit"
-      unit_id: "normative_61468"
+      unit_id: "normative_68106"
       source_span:
         start:
-          offset: 62520
-          line: 1169
+          offset: 69697
+          line: 1179
           column: 1
         end:
-          offset: 62705
-          line: 1169
+          offset: 69882
+          line: 1179
           column: 186
     - pointer: "/validation_rules/5"
       rule_id: "validate_mode_rework"
       identity_kind: "explicit"
-      unit_id: "normative_61468"
+      unit_id: "normative_68106"
       source_span:
         start:
-          offset: 62706
-          line: 1170
+          offset: 69883
+          line: 1180
           column: 1
         end:
-          offset: 62896
-          line: 1170
+          offset: 70073
+          line: 1180
           column: 191
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4801"
+      unit_id: "normative_5298"
       source_span:
         start:
-          offset: 4801
+          offset: 5298
           line: 59
           column: 1
         end:
-          offset: 4822
+          offset: 5319
           line: 59
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4801"
+      unit_id: "normative_5298"
       source_span:
         start:
-          offset: 5749
+          offset: 6246
           line: 67
           column: 1
         end:
-          offset: 6809
+          offset: 7306
           line: 74
           column: 184
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52023"
+      unit_id: "normative_53287"
       source_span:
         start:
-          offset: 52023
-          line: 1114
+          offset: 53287
+          line: 1116
           column: 1
         end:
-          offset: 52063
-          line: 1114
+          offset: 53327
+          line: 1116
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_61468"
+      unit_id: "normative_68106"
       source_span:
         start:
-          offset: 61468
-          line: 1161
+          offset: 68106
+          line: 1171
           column: 1
         end:
-          offset: 61490
-          line: 1161
+          offset: 68128
+          line: 1171
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1859,5 +1888,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:cabebce0e37a33db6874709b1b933d6e3459b488ff08905b0025db323bf6f22b"
-  generated_content_sha256: "sha256:a85bb3a9dae423e41a6a3ff91b79ce36251104ff484e478840a3f64d0ee99648"
+    sha256: "sha256:e9d1753e4db5542967bec526f43a1db6ce447222f8f616cc01f1c04bd138701f"
+  generated_content_sha256: "sha256:4ab767d9211dd7c03aabf52937b14d0344a60ba2018af4f9acb0db69795ea476"

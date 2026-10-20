@@ -98,31 +98,6 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 用于种植建立的种植材料（`planting_material`）
-
-用于建立葱属作物的种子、种瓣、鳞茎或移栽苗作为产品投入记录。最终身份解析需要实际材料类型、物种或品种、批次、处理状态和质量。
-
-- 选定流：葱属种植材料（种子、种瓣、鳞茎或移栽苗；证据缺口）
-- 流属性/单位：质量 / kg（供应状态）
-- 数量规则：种植周期实际发放的材料量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1 kg 声明交付门的新鲜可销售葱属产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_planting_material_records`
-- 来源：
-- 数量范围：暂定种植材料筛选范围
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0.001
-  - 上限：0.25
-  - 单位：kg 材料/kg 产品
-  - 基准：每单位参考产品质量的种植材料质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 柴油 (`establishment_fuel_diesel`)
 
 仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`establishment_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
@@ -131,7 +106,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_establishment_fuel_records`采集`field_preparation_and_establishment`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -495,7 +470,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按`cp_harvest_fuel_records`采集`harvest_and_field_handling`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
 - 数值来源模式：`calculated_value`
-- 特异性：`site_specific`
+- 适用范围：`site_specific`
 - 归一化基准：per declared reference flow
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
@@ -800,7 +775,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -826,7 +801,7 @@ sync_with: pcr.en-US.md
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
-- 特异性：场址特定（`site_specific`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
@@ -903,13 +878,15 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `normalize_mass_to_reference_flow` | 所有产品和废物质量行 | 将记录质量换算为声明含水率基准，除以相关过程输出质量，再缩放至 1 kg 参考产品。 | 收获、整理和交付记录 | 每参考产品质量 | `mass-balance-identity` |
+| `normalize_mass_to_reference_flow` | 所有产品和废物质量行 | 保留原始数量及含水率/组分基准。R 为匹配批次、状态及交接点实测且为正的合格最终交接质量 kg。最终贡献＝可归属原始数量 / R × 1 kg。来源若为阶段强度 q_i＝Q_i/O_i，先用实际关联阶段吞吐量还原 Q_i＝q_i×O_i，再归属并归一化一次；不得将 O_i 当作 R，也不得再除已按最终参考归一化的数量。未分配物理物料平衡与负荷分配分列。 | 收获、整理和交付记录 | 每参考产品质量 | `mass-balance-identity` |
 | `calculate_nutrient_basis` | 肥料和土壤改良剂投入 | 养分质量 = 施用产品质量 × 声明养分分数；将产品质量和各养分基准作为分开报告值保留。 | `cp_nutrient_product_records` | 每参考产品的 kg N、P、K 或有机养分基准 | `mass-balance-identity` |
 | `calculate_irrigation_requirement` | 作物灌溉水供应 | 根据场址天气、土壤、作物阶段、有效降雨和灌溉效率确定作物需水量；有计量时报告计量供水，计算时记录水量平衡。 | `cp_irrigation_records` | 每参考产品的 m3 水 | `fao-56-crop-evapotranspiration` |
 | `calculate_nutrient_emissions` | 养分相关基本流输出 | 对记录的养分投入和路径应用选定的 IPCC 或场址因子，保留受纳介质和报告物质，并记录直接和间接路径。 | `cp_nutrient_product_records`; `cp_nutrient_emission_calculations` | 每参考产品的 kg 报告物质 | `ipcc-2019-refinement-vol4-ch11` |
 | `allocate_shared_operations` | 共用田间、整理或交付操作 | 在无法进一步拆分后，按声明含水率基准下的实测产品质量分配共用投入。 | 田间、整理和交付操作记录 | 每参考产品的分配投入 | `iso-14044-2006` |
 | `amortize_reusable_packaging` | 可重复使用箱和容器 | 可重复使用包装量 = 发放包装质量 × 可归属使用份额；使用有记录的周期次数及损耗或更换记录。 | `cp_conditioning_packaging_records` | 每整理后产品的 kg 包装 | `iso-14044-2006` |
 | `reconcile_gate_mass_balance` | 田间、整理和交付输出 | 在每个声明门核对进入质量与可销售输出、拒收物、移除残余物以及有记录的含水率或运输损失。 | 收获、整理和交付记录 | 交付门质量平衡校验 | `mass-balance-identity` |
+| `planting_material_identity_and_fate` | `field_preparation_and_establishment` | 对于本作业原有 planting_material 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_planting_material_records` | 按身份区分的交换和对账活动记录 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_emission_calculations`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
