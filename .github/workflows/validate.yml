@@ -213,13 +213,13 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
-  documentation:
+  web-build:
     needs: plan
     runs-on: ubuntu-latest
     # Instrumented full export runs here; EdgeOne only imports the sealed archive.
     timeout-minutes: 120
     outputs:
-      product_artifact_id: ${{ steps.product-upload.outputs.artifact-id }}
+      web_artifact_id: ${{ steps.web-upload.outputs.artifact-id }}
       coverage_artifact_id: ${{ steps.documentation-coverage.outputs.artifact-id }}
     steps:
       - name: Check out complete source history
@@ -283,11 +283,12 @@ jobs:
           PCR_GOOGLE_SITE_VERIFICATION: 4W5GYY5tOwicaRGTZr7AdfJ4VB8KB87r2ex-rZxP-fM
           PCR_BAIDU_SITE_VERIFICATION: codeva-IJKQ9SxWkZ
         run: |
+          set -euo pipefail
           node scripts/engineering/ci-plan.ts verify "$RUNNER_TEMP/pcr-plan/ci.json"
           if [ "${{ needs.plan.outputs.mode }}" = full ]; then
-            node scripts/engineering/coverage.ts collect "$RUNNER_TEMP/pcr-documentation-coverage" --qualification-plan "$RUNNER_TEMP/pcr-plan/qualification.json" --selection documentation -- npm --prefix packages/pcr-docs run build
+            node scripts/engineering/coverage.ts collect "$RUNNER_TEMP/pcr-documentation-coverage" --qualification-plan "$RUNNER_TEMP/pcr-plan/qualification.json" --selection documentation -- npm --prefix packages/pcr-docs run build 2>&1 | tee "$RUNNER_TEMP/pcr-web-build.log"
           else
-            npm --prefix packages/pcr-docs run build
+            npm --prefix packages/pcr-docs run build 2>&1 | tee "$RUNNER_TEMP/pcr-web-build.log"
           fi
       - name: Preserve exact full-build coverage inputs
         id: documentation-coverage
@@ -298,9 +299,60 @@ jobs:
           path: ${{ runner.temp }}/pcr-documentation-coverage/
           if-no-files-found: error
           retention-days: 14
-      - name: Verify shared SEO invariants without rebuilding
-        run: |
-          python3 scripts/vendor/workspace-seo/check.py --root packages/pcr-docs/out --origin https://pcr.tiangong.earth --output "${{ runner.temp }}/pcr-seo-report.json"
+      - name: Freeze the complete verified web handoff
+        run: node builder/scripts/product-web-build-artifact.ts create "$RUNNER_TEMP/pcr-plan" packages/pcr-docs/out "$RUNNER_TEMP/pcr-web-build.log" "$RUNNER_TEMP/pcr-web-build"
+      - name: Preserve the immutable full web build
+        id: web-upload
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: pcr-web-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-web-build/
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 14
+
+  documentation:
+    needs: [plan, web-build]
+    runs-on: ubuntu-latest
+    # Sealing consumes the exact verified web export; it never rebuilds Next.
+    timeout-minutes: 120
+    outputs:
+      product_artifact_id: ${{ steps.product-upload.outputs.artifact-id }}
+      coverage_artifact_id: ${{ needs.web-build.outputs.coverage_artifact_id }}
+    steps:
+      - name: Check out the same complete source history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Select the pinned product packaging toolchain
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - name: Install locked product tools
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
+          path: ${{ runner.temp }}/pcr-plan
+          merge-multiple: true
+          digest-mismatch: error
+      - name: Download the exact verified web build
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.web-build.outputs.web_artifact_id }}
+          path: ${{ runner.temp }}/pcr-web-build
+          merge-multiple: true
+          digest-mismatch: error
+      - name: Identify the clean artifact candidate
+        id: candidate
+        run: node builder/scripts/product-release.ts identity
+      - name: Verify and materialize the same-source web build
+        run: node builder/scripts/product-web-build-artifact.ts materialize "$RUNNER_TEMP/pcr-plan" "$RUNNER_TEMP/pcr-web-build" "$RUNNER_TEMP/pcr-materialized-web"
+      - name: Verify shared SEO invariants on the materialized build
+        run: node builder/scripts/product-web-build-artifact.ts accept "$RUNNER_TEMP/pcr-plan" "$RUNNER_TEMP/pcr-web-build" "$RUNNER_TEMP/pcr-materialized-web" "$RUNNER_TEMP/pcr-seo-report.json" "$RUNNER_TEMP/pcr-web-acceptance.json"
       - name: Preserve SEO verification report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -309,12 +361,12 @@ jobs:
           path: ${{ runner.temp }}/pcr-seo-report.json
           if-no-files-found: warn
           retention-days: 14
-
       - name: Build and verify the two packages and sealed web artifact
         env:
           PRODUCT_TAG: ${{ inputs.product_tag || steps.candidate.outputs.tag }}
-        run: npm run product:build -- "$PRODUCT_TAG" dist/product-release packages/pcr-docs/out
-
+        run: npm run product:build -- "$PRODUCT_TAG" dist/product-release "$RUNNER_TEMP/pcr-materialized-web"
+      - name: Bind sealed product to complete web and SEO evidence
+        run: node builder/scripts/product-web-build-artifact.ts bind-product "$RUNNER_TEMP/pcr-plan" "$RUNNER_TEMP/pcr-web-build" "$RUNNER_TEMP/pcr-web-acceptance.json" "$RUNNER_TEMP/pcr-seo-report.json" dist/product-release
       - name: Preserve the exact product bundle for qualification and publication
         id: product-upload
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -327,6 +379,10 @@ jobs:
             dist/product-release/*.tar.gz
             dist/product-release/*.sqlite
             dist/product-release/*.sqlite.json
+            dist/product-release/web-build-handoff.json
+            dist/product-release/web-build.log
+            dist/product-release/web-seo.json
+            dist/product-release/web-build-acceptance.json
           if-no-files-found: error
           retention-days: ${{ inputs.product_tag != '' && 30 || 7 }}
 
@@ -540,7 +596,7 @@ jobs:
 
   validate:
     if: always()
-    needs: [plan, contracts, test-shards, documentation, offline-distribution, provider-importer, sealed-distribution, sealed-web, source-coverage]
+    needs: [plan, contracts, test-shards, web-build, documentation, offline-distribution, provider-importer, sealed-distribution, sealed-web, source-coverage]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

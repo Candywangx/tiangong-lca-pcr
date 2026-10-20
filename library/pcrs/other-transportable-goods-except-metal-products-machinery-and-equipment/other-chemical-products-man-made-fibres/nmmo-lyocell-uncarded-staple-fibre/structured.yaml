@@ -1,0 +1,1407 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.nmmo-lyocell-uncarded-staple-fibre"
+  classification_refs: "CPC 3.0: 35540; proposed narrower scope, acceptance pending"
+  covered_products: "Unblended, unmodified lyocell staple from dissolving-grade wood pulp and aqueous NMMO, supplied before carding or combing"
+  excluded_products: "Viscose, modal, cupro, cellulose acetate/triacetate, synthetic fibres, tow for sale, filament yarn, prepared fibre, spun yarn, functionalised/recycled-feedstock variants without an evidenced extension"
+  representative_product: "One declared lyocell staple grade and cut length, at measured supplied moisture/finish state"
+  production_route: "Pulp receipt, NMMO direct dissolution and filtration, solution spinning, aqueous precipitation, washing, finishing, drying and cutting in documented site order; NMMO/water recovery, packing, storage and dispatch"
+  market_state: "Net delivered uncarded staple fibre at producing-site dispatch gate; packaging and finish/moisture disclosed"
+functional_unit:
+  what: "Supply of uncarded lyocell staple fibre for subsequent textile or nonwoven manufacture"
+  how_much: "1 kg net actual delivered fibre Q at the producing-site dispatch gate"
+  how_well: "One documented grade, cut length, linear density, supplied moisture and finish state; no packaging tare in Q"
+  how_long_or_cycle: "One reconciled production-to-delivery cohort; no service lifetime is claimed"
+  reference_flow_link: "delivered_fibre"
+system_boundary:
+  rules:
+    - rule_id: route_scope
+      applies_to: "all processes"
+      rule: "Keep NMMO direct dissolution distinct from chemical derivatisation/regeneration and synthetic polymer manufacture. No source recipe, recovery percentage or nominal grade becomes a plant value."
+      source_ids:
+        - jrc-polymers-2007
+        - lenzing-lyocell-technology
+        - cirfs-lyocell-production
+    - rule_id: complete_gate
+      applies_to: "all processes"
+      rule: "Include actual receipt handling, dissolution, filtration, spinning, precipitation, washing, cutting, finishing, drying, solvent/water recovery, treatment services, packing, storage, handling and dispatch to the selected Q gate. Add atomic rows and protocols for every actual stabiliser, cleaning/regeneration chemical, fuel, refrigerant, packing component, treatment reagent and measured emission absent from these baseline cards; missing collection is not zero. Model internal boilers and treatment explicitly if present, with no purchased-steam or offsite-treatment double count."
+      source_ids:
+        - jrc-polymers-2007
+        - lenzing-lyocell-technology
+    - rule_id: period_stock
+      applies_to: "all processes"
+      rule: "Collect full raw period numerators including failed and zero-output runs, rework and opening/closing WIP with inherited burdens. Supply ledger on a consistent component basis: opening finished fibre + P + external accepted receipts + physical returns + independently measured moisture gains = Q + closing finished fibre + other documented physical outlets + independently measured moisture losses. Packaging is separate. Identify repeat dispatches as physical transfers without new accepted Q; reverse/correct prior delivery acceptance for returns while retaining inherited burdens, and release returned stock once without new P. Reconcile each unique lot and its moisture state; do not force as-supplied masses of different moisture into equality. Manufacturing output is P, never P plus closing stock of that same P. Carry the burdens of all undelivered stock; include them when its cohort is delivered, not again as new production. Internal P output/input cancels on consolidation."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received dissolving wood pulp, purchased whole NMMO solution, finish emulsion, utilities and packing at the producing site; upstream inputs and transport remain linked"
+  starting_condition_role: "Foreground receipt gate for one NMMO-route fibre/supply system, with inherited opening-stock burdens"
+  product_classification_scope: "Only uncarded lyocell staple within proposed CPC 3.0 35540 narrower scope; no filament-yarn or prepared-fibre substitution"
+  recursive_input_rule: "Externally received same-category fibre remains an explicit upstream-linked input. Internal recovered solvent, water, fibre returns and transfer P retain their lineage and cancel on consolidation; they are not fresh procurement or new production"
+  upstream_dataset_requirement: "Use route-, supplied-state-, geography- and property-compatible datasets for pulp, whole solutions, energy, packaging, transport and waste treatment. An identity UUID does not establish a provider quantity"
+  disclosure: "Declare all actual process owners, start/end gates, P/Q, WIP/finished opening/closing stocks and carried burdens, treatment cut points, internal transfer cancellation, stock cohort method and allocated services"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Regenerated cellulose staple fibre"
+    uuid: "d0e37315-a795-4f13-85b9-325c681d3c57"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "NMMO direct-dissolution lyocell route and dissolving wood-pulp origin"
+    - "single grade / staple cut length and linear density specification"
+    - "uncarded / uncombed / unblended and unmodified condition"
+    - "actual operation order and site technology"
+    - "as-supplied net fibre mass / measured moisture basis and finish add-on"
+    - "packaging components / tare and loading gate"
+    - "P new-release and Q actual-delivery definitions with unique lot lineage"
+    - "opening and closing WIP/finished stocks with carried burdens"
+    - "returns / failed runs / zero-output runs and rework"
+    - "site / geography / production and delivery cohort periods"
+    - "actual NMMO formulation assay and separate water/finish subledgers"
+    - "recovery / purge / effluent treatment and measured emission destinations"
+    - "upstream providers / transport and shared-service allocation evidence"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_supply_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is the unique positive net delivered fibre at the declared gate, not P. Weigh each delivered bale net of all packaging; record moisture/finish state and exclude cancelled/held dispatches. Returns and reshipments cannot manufacture a second accepted quantity."
+  - id: fibre_moisture
+    applies_to: "all fibre and pulp masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep wet net fibre, dry cellulose, non-cellulosic pulp solids, finish solids, residual NMMO and water as separate measured components. Drying-test mass loss is not automatically pure water; use the actual validated method. Convert wet-basis moisture w to dry fibre mass only with declared scope: dry mass = wet mass × (1-w); dry-basis regain r gives wet mass = dry mass × (1+r). Do not apply either factor twice or erase finish."
+  - id: whole_formulation
+    applies_to: "external solution inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Procure whole NMMO solution and whole spin-finish emulsion once. Assayed NMMO/active finish and carrier water are constituent subledgers, never duplicate purchases. Onsite blending instead records separately purchased ingredients plus actual blend losses and energy."
+  - id: utility_dimensions
+    applies_to: "metered utilities"
+    required_property_ref:
+      name: "Energy or volume"
+      uuid: ""
+    required_unit: "kWh, MJ, m3"
+    rule: "Preserve electricity and useful steam heat separately; steam mass needs measured pressure/temperature/quality and return-condensate enthalpy for heat conversion. Rate × duration yields volume; an already integrated volume gets no second duration multiplier. Convert volume to mass only with independent fluid-state density, not a secondary flow-property factor."
+  - id: physical_ledger
+    applies_to: "fibre and recovery processes"
+    required_property_ref:
+      name: "Mass and elements"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Close total physical mass and relevant elemental ledgers independently of the species/reaction ledger. Direct dissolution, aqueous precipitation and water evaporation do not establish stoichiometric reaction water. Independently evidence any real degradation, cleaning or treatment reactions and actual species; never solve unknown reaction water and an unknown outlet from the same residual, or infer species from COD."
+process_map:
+  - id: fibreline
+    name: "Direct dissolution, fibre formation and staple finishing"
+    inclusion: "required"
+    inclusion_condition: "Actual operation in the declared route; conditional exchanges require records"
+    role: "manufacturing"
+    quantitative_reference: "per 1 kg reference flow; internal transfers by actual cohort attribution"
+  - id: recovery
+    name: "NMMO and water recovery"
+    inclusion: "required"
+    inclusion_condition: "Actual operation in the declared route; conditional exchanges require records"
+    role: "manufacturing"
+    quantitative_reference: "per 1 kg reference flow; internal transfers by actual cohort attribution"
+  - id: supply
+    name: "Packing, finished storage and actual dispatch"
+    inclusion: "required"
+    inclusion_condition: "Actual operation in the declared route; conditional exchanges require records"
+    role: "supply"
+    quantitative_reference: "per 1 kg reference flow; internal transfers by actual cohort attribution"
+process_inventory:
+  - id: fibreline
+    label: "Direct dissolution, fibre formation and staple finishing"
+    inputs:
+      product:
+        - row_id: wood_pulp
+          role: "Dissolving-grade wood pulp"
+          name: "Dissolving-grade wood pulp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Whole received pulp including measured moisture; assay cellulose and other dry solids separately. Record wood origin and bleaching grade; no polymer granule or textile-fibre substitution."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: fresh_nmmo
+          role: "Aqueous N-methylmorpholine N-oxide solution"
+          name: "Aqueous N-methylmorpholine N-oxide solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Whole external purchased makeup solution, with supplier formulation, assay, hydration/carrier-water basis and packaging declared. Internal recovered solution is a different physical row; constituent NMMO and water are not extra purchases."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: nmmo_return_in
+          role: "Recovered aqueous NMMO solution"
+          name: "Recovered aqueous NMMO solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Internal transfer paired with nmmo_return_out using measured solution mass, NMMO assay, water and contaminants. No avoided-virgin credit or fresh purchase; cancel paired quantities and burdens once."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: fibre_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "External makeup water for actual premix, aqueous precipitation, washing and cleaning; internal recovered water is separate. Disclose supply/treatment and prevent solution-carrier water duplication."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: water_return_in
+          role: "Recovered process water"
+          name: "Recovered process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Internal transfer paired with water_return_out, retaining residual NMMO/solids assays. It is not purchased makeup or an automatic effluent discharge."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: spin_finish
+          role: "Aqueous lyocell spin-finish emulsion"
+          name: "Aqueous lyocell spin-finish emulsion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One actual purchased spin-finish formulation including carrier water; retain composition/SDS, active solids, application losses, fibre retention and effluent share from records. No assumed recipe or add-on."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: fibreline_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual process-owned meter or documented causal service assignment, including idle, failed runs and rework; do not duplicate recovery or warehouse meters in fibreline totals."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: fibreline_steam
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Actual purchased steam and heat duty with steam state and returned condensate documented. Onsite boiler instead requires separate actual fuel/air/emission accounting and no duplicate purchased-steam burden."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_fibre
+          role: "Regenerated cellulose staple fibre"
+          name: "Regenerated cellulose staple fibre"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d0e37315-a795-4f13-85b9-325c681d3c57"
+          property_unit: "Mass / kg"
+          description: "P is newly positive quality-released uncarded lyocell staple transferred internally to received_fibre; not terminal Q. Native identity is generic regenerated cellulose staple fibre, with empty mix/location and route components, no CAS, no geographic/locationOfSupply or medium restriction, no grade/moisture/finish specification and one Mass reference property. It does not establish lyocell technology, supplier quantities or regional representativeness; these require the declared wood-pulp/NMMO route and actual lot evidence. Preserved source classification 399 is legacy metadata, distinct from current 35540."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: spent_liquor_out
+          role: "Spent aqueous NMMO liquor"
+          name: "Spent aqueous NMMO liquor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Internal whole-liquor transfer paired with spent_liquor_in, including NMMO, water, dissolved solids and finish contamination. Do not also count it as wastewater leaving the consolidated site."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: fibreline_condensate_return
+          role: "Returned steam condensate"
+          name: "Returned steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual external condensate returned to the steam supplier, including measured mass, state and enthalpy. Retain physical water mass separately from useful heat MJ; do not credit return heat twice or confuse it with internal process-water recovery."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+            ranges: []
+      waste:
+        - row_id: offspec_fibre
+          role: "Unrecovered off-spec lyocell staple fibre"
+          name: "Unrecovered off-spec lyocell staple fibre"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only material actually leaving as waste; distinguish recoverable internal rework and quarantine. Retain moisture, finish and residual solvent plus actual treatment and carried burden."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: dope_filter_residue
+          role: "Cellulose-rich dope filtration residue"
+          name: "Cellulose-rich dope filtration residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whole wet residue with retained NMMO/water measured; do not count its embedded solution again as an external solvent loss stream."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: fibre_effluent
+          role: "Lyocell fibreline wastewater"
+          name: "Lyocell fibreline wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual purge leaving the fibreline recovery loop for declared onsite/offsite treatment; measure integrated effluent, NMMO, solids and treatment destination. COD is a quality measurement, not a molecular emission identity."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+      elementary:
+        - row_id: fibreline_water_air
+          role: "Water, to air"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measured external evaporation/vent water after actual capture; internal condensate or recycled water is not an elementary emission. Physical phase transfer is not reaction-water formation."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: fibreline_cellulose_dust
+          role: "Cellulose particulate, to air"
+          name: "Cellulose particulate, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual uncaptured cellulose dust with sampling basis and air compartment. Collected dust belongs in the appropriate waste/rework ledger and is not simultaneously emitted."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: fibreline_nmmo_air
+          role: "N-methylmorpholine N-oxide, to air"
+          name: "N-methylmorpholine N-oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only an independently identified and quantified external NMMO loss/aerosol after capture. No automatic volatilisation assumption or solvent-balance-residual emission factor; actual other species require separate measured rows."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibreline
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+  - id: recovery
+    label: "NMMO and water recovery"
+    inputs:
+      product:
+        - row_id: recovery_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual process-owned meter or documented causal service assignment, including idle, failed runs and rework; do not duplicate recovery or warehouse meters in fibreline totals."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: recovery_steam
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Actual purchased steam and heat duty with steam state and returned condensate documented. Onsite boiler instead requires separate actual fuel/air/emission accounting and no duplicate purchased-steam burden."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: spent_liquor_in
+          role: "Spent aqueous NMMO liquor"
+          name: "Spent aqueous NMMO liquor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Exact internal counterpart of spent_liquor_out; include filtration/purification/concentration as actually installed, with separately identified consumables and all startup/shutdown losses."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: recovery_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measured external recovery/cleaning makeup; distinguish recovered condensate and resin-regeneration water if used. Add each actual regeneration chemical separately rather than assuming an acid/alkali recipe."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: nmmo_return_out
+          role: "Recovered aqueous NMMO solution"
+          name: "Recovered aqueous NMMO solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Internal solution delivered back to nmmo_return_in; retain composition and recovery stock. Recovery fraction is calculated from actual consistent NMMO masses and period stocks, never a published percentage."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: water_return_out
+          role: "Recovered process water"
+          name: "Recovered process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Internal separated water delivered to water_return_in, with measured residual solvent/solid content and destination. No external discharge credit."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: recovery_condensate_return
+          role: "Returned steam condensate"
+          name: "Returned steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual external condensate return from recovery heating. Steam input water mass and returned condensate remain in the physical water ledger; energy burden follows net actual heat and documented supplier convention once."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+            ranges: []
+      waste:
+        - row_id: recovery_purge
+          role: "NMMO recovery purge wastewater"
+          name: "NMMO recovery purge wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual aqueous purge to declared treatment, with whole liquid mass and constituent NMMO/degradation-solute assays. Preserve treatment burdens and add actual final species only after evidenced treatment."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: recovery_residue
+          role: "NMMO recovery filtration residue"
+          name: "NMMO recovery filtration residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual removed wet solids with measured retained solution, disposal route and replacement-filter burden. Additional spent resin/carbon requires its own atomic row when present."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+      elementary:
+        - row_id: recovery_water_air
+          role: "Water, to air"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measured external evaporation/vent water after actual capture; internal condensate or recycled water is not an elementary emission. Physical phase transfer is not reaction-water formation."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: recovery_nmmo_air
+          role: "N-methylmorpholine N-oxide, to air"
+          name: "N-methylmorpholine N-oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only an independently identified and quantified external NMMO loss/aerosol after capture. No automatic volatilisation assumption or solvent-balance-residual emission factor; actual other species require separate measured rows."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+  - id: supply
+    label: "Packing, finished storage and actual dispatch"
+    inputs:
+      product:
+        - row_id: supply_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual process-owned meter or documented causal service assignment, including idle, failed runs and rework; do not duplicate recovery or warehouse meters in fibreline totals."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: received_fibre
+          role: "Regenerated cellulose staple fibre"
+          name: "Regenerated cellulose staple fibre"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d0e37315-a795-4f13-85b9-325c681d3c57"
+          property_unit: "Mass / kg"
+          description: "Internal counterpart of released_fibre P; finished opening stock is independently carried with its historical burdens. Native generic regenerated-cellulose identity has no specified route, grade, moisture, finish, CAS, geography/locationOfSupply or medium; empty mix/location and route name components do not establish lyocell or a regional mix. Current CPC35540 and preserved legacy source399 are disclosed distinctly. The actual wood-pulp/NMMO uncarded staple cohort supplies the missing specificity."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: pe_wrap
+          role: "Polyethylene bale wrapping film"
+          name: "Polyethylene bale wrapping film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Whole actual PE wrapping mass including trims and damaged wraps; excluded from fibre Q. Declare resin/additives, recycled share, supplier and material structure; substitute no generic packaging bundle."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: pet_strap
+          role: "Polyethylene terephthalate bale strap"
+          name: "Polyethylene terephthalate bale strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual PET strap separately from wrapping; record composition, receipts, stock and discarded strap. Another actual strap material needs its own identity, not relabelling."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: supply_water_air_in
+          role: "Water, from air"
+          name: "Water, from air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only independently measured atmospheric moisture absorbed during actual fibre conditioning/storage. Keep whole fibre mass and moisture components separate; never infer this input as an unconstrained mass-balance closure or count purchased conditioning water here. Demonstrated absence can be recorded without inventing a zero."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+            ranges: []
+    outputs:
+      product:
+        - row_id: delivered_fibre
+          role: "Regenerated cellulose staple fibre"
+          name: "Regenerated cellulose staple fibre"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d0e37315-a795-4f13-85b9-325c681d3c57"
+          property_unit: "Mass / kg"
+          description: "Terminal Product output selected by reference_flow_link. Q is unique actual net delivered NMMO-route wood-pulp lyocell uncarded/uncombed staple, at measured supplied moisture and finish, excluding PE/PET tare. Native generic regenerated cellulose staple has empty mix/location and route components; CAS, grade, moisture, finish, medium and geography/locationOfSupply are not specified. It establishes neither a lyocell-specific background provider nor regional representativeness. Preserve current CPC35540 separately from historical source399 metadata. Actual lot route/form/state/supply gate must establish applicability; the unspecified native supplier is not a contrary route. P internal transfer and any independently real coproduct cannot be hidden if they share this UUID."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+      waste:
+        - row_id: pe_scrap
+          role: "Waste polyethylene wrapping film"
+          name: "Waste polyethylene wrapping film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual wrap trim and damaged film crossing the waste boundary; exclude internally reused wrap, retain actual treatment and stock."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: pet_scrap
+          role: "Waste PET bale strap"
+          name: "Waste PET bale strap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discarded strap with treatment route; do not equate waste to total purchased strap or reduce fibre Q by strap mass twice."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: supply_fibre_loss
+          role: "Waste lyocell staple fibre from handling"
+          name: "Waste lyocell staple fibre from handling"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measured unrecoverable warehouse/loading loss with finish/moisture and lot attribution. Returned or held fibre is stock/rework until a real waste decision is recorded."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+      elementary:
+        - row_id: supply_cellulose_dust
+          role: "Cellulose particulate, to air"
+          name: "Cellulose particulate, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual uncaptured cellulose dust with sampling basis and air compartment. Collected dust belongs in the appropriate waste/rework ledger and is not simultaneously emitted."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+                - lenzing-lyocell-technology
+            ranges: []
+        - row_id: supply_water_air_out
+          role: "Water, to air"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Independently measured actual moisture loss during fibre storage/loading, with receiving air compartment and lot state recorded. It changes as-supplied fibre mass but creates neither chemical reaction water nor new dry cellulose output."
+          amount:
+            expression: "A_i / Q; one report operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - jrc-polymers-2007
+            ranges: []
+allocation_rules:
+  - rule_id: internal_loops
+    applies_to: "internal transfers"
+    rule: "Keep P and NMMO/water transfers explicit in the process inventories and cancel matched internal exchanges on consolidation. Their energy, losses, waste treatment and carried burdens remain. Internal recovery is neither a coproduct credit nor fresh production."
+    source_ids: []
+  - rule_id: shared_services
+    applies_to: "shared services and stock"
+    rule: "Prefer direct process/lot metering. Subdivide shared facilities; otherwise document causal physical drivers and sensitivity. Carry stock burdens to delivered cohorts by a consistent explicit method. Sold secondary material requires real product/specification and an independently justified allocation method; waste price alone is not product evidence. No default share or avoided-burden credit."
+    source_ids:
+      - jrc-ilcd-allocation-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fibreline
+      process_id: "fibreline"
+      flow_role: "atomic exchanges and service burdens"
+      record_type: "period ledger"
+      raw_fields: "process owner; period; lot; meter start/end; receipts/issues; whole formulation mass and assays; output and disposition; internal transfer IDs; opening/closing WIP/stock; inherited burden vector; failed/zero-output runs; rework; steam mass and state; condensate mass and enthalpy; independently measured moisture gains/losses; integrated volume or rate and duration; density evidence"
+      collection_method: "The named process owner retains unnormalised raw records, full boundary numerators and opening/closing carried burdens. Reconcile each atomic exchange and paired transfers; no A_i/Q in collection. Retain all failed and zero-output operation burdens; causally assign shared services once. Supply owner also retains P, Q, dispatch/acceptance/return IDs, stock lineage and tare/moisture tests."
+      unit: "kg; kWh; MJ; m3; h"
+      frequency: "each lot and meter interval"
+      temporal_coverage: "complete reporting period plus stock-origin periods"
+      site_scope: "one declared site, route and grade; named owner"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; invoices; assays; mass ledger; stock/burden reconciliation; treatment manifests"
+    - protocol_id: cp_recovery
+      process_id: "recovery"
+      flow_role: "atomic exchanges and service burdens"
+      record_type: "period ledger"
+      raw_fields: "process owner; period; lot; meter start/end; receipts/issues; whole formulation mass and assays; output and disposition; internal transfer IDs; opening/closing WIP/stock; inherited burden vector; failed/zero-output runs; rework; steam mass and state; condensate mass and enthalpy; independently measured moisture gains/losses; integrated volume or rate and duration; density evidence"
+      collection_method: "The named process owner retains unnormalised raw records, full boundary numerators and opening/closing carried burdens. Reconcile each atomic exchange and paired transfers; no A_i/Q in collection. Retain all failed and zero-output operation burdens; causally assign shared services once. Supply owner also retains P, Q, dispatch/acceptance/return IDs, stock lineage and tare/moisture tests."
+      unit: "kg; kWh; MJ; m3; h"
+      frequency: "each lot and meter interval"
+      temporal_coverage: "complete reporting period plus stock-origin periods"
+      site_scope: "one declared site, route and grade; named owner"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; invoices; assays; mass ledger; stock/burden reconciliation; treatment manifests"
+    - protocol_id: cp_supply
+      process_id: "supply"
+      flow_role: "atomic exchanges and service burdens"
+      record_type: "period ledger"
+      raw_fields: "process owner; period; lot; meter start/end; receipts/issues; whole formulation mass and assays; output and disposition; internal transfer IDs; opening/closing WIP/stock; inherited burden vector; failed/zero-output runs; rework; steam mass and state; condensate mass and enthalpy; independently measured moisture gains/losses; integrated volume or rate and duration; density evidence"
+      collection_method: "The named process owner retains unnormalised raw records, full boundary numerators and opening/closing carried burdens. Reconcile each atomic exchange and paired transfers; no A_i/Q in collection. Retain all failed and zero-output operation burdens; causally assign shared services once. Supply owner also retains P, Q, dispatch/acceptance/return IDs, stock lineage and tare/moisture tests."
+      unit: "kg; kWh; MJ; m3; h"
+      frequency: "each lot and meter interval"
+      temporal_coverage: "complete reporting period plus stock-origin periods"
+      site_scope: "one declared site, route and grade; named owner"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; invoices; assays; mass ledger; stock/burden reconciliation; treatment manifests"
+  calculation_rules:
+    - id: cohort_burdens
+      applies_to: "all inventory rows"
+      rule: "Retain full raw period exchange vector R_i. Derive unnormalised delivered-cohort numerator A_i = opening carried vector + current attributable vector - closing carried vector - separately documented other-outlet carried vector. Apply documented lot tracing or consistent causal stock-layer method at WIP and finished-stock gates. Include failed/zero-output and rework burdens; cancel internal P, NMMO and water transfers once without cancelling their actual processing burdens. Preserve every undelivered burden for later delivery."
+      inputs:
+        - R_i
+        - opening_carried_vector
+        - closing_carried_vector
+        - other_outlet_carried_vector
+        - cp_fibreline
+        - cp_recovery
+        - cp_supply
+      output: "A_i"
+      source_ids: []
+    - id: normalize_supply
+      applies_to: "all inventory rows"
+      rule: "a_i = A_i / Q. This is the sole normalisation to 1 kg net actual delivered reference flow; the card amount and protocol aggregation describe this same report operation, not additional divisions. Q must be positive and from the identical product, route, supplied state and delivered cohort; no positive Q means no per-kg result."
+      inputs:
+        - A_i
+        - Q
+        - cp_supply
+      output: "a_i"
+      source_ids: []
+    - id: constituent_accounts
+      applies_to: "all solution and fibre rows"
+      rule: "For each whole commercial solution or wet fibre mass, multiply by independently measured matching constituent fraction for its subledger only. Close NMMO, water, cellulose and finish with stock changes, measured residues, effluent, actual emissions and independently identified transformation species. Internal solution recovery is not external purchase; no fixed solvent recovery fraction or residual-fitted outlet."
+      inputs:
+        - whole_mass
+        - constituent_assay
+        - stock_changes
+        - measured_outlets
+      output: "constituent_ledger"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all rows"
+      requirement: "Verify actual grade, state, route, supplier, geography and full native identity; a generic reference UUID supplies no recipe or provider amount. Keep unresolved auxiliary UUIDs explicit and match real providers before dataset use."
+      evidence: "Direct identity records; product and supplier specifications"
+    - id: period_completeness
+      applies_to: "all processes"
+      requirement: "Reconcile raw period inputs, internal transfers, positive accepted release P, Q delivery, all stocks and carried burdens including failures/rework; investigate residuals with measured uncertainty, never force closure."
+      evidence: "Lot ledger; calibrated scales/meters; opening/closing burden vectors"
+    - id: environment
+      applies_to: "recovery and treatment"
+      requirement: "Identify each actual outlet and receiving medium from sampling/analysis and treatment evidence. Wastewater to a treatment provider is not the same as a direct elemental water discharge. Do not infer zero air emissions or reaction-water stoichiometry from a closed-loop label."
+      evidence: "Sampling methods; permits/monitoring; treatment contracts and mass/species ledgers"
+    - id: quantities
+      applies_to: "all inputs and outputs"
+      requirement: "No source-paper recipe, lab setting, claimed recovery rate or industry allocation share substitutes for actual matched records. Missing auxiliaries require completion, not invented quantities or an automatic downgrade of this authored collection method."
+      evidence: "Originals, real source scope and foreground protocol evidence"
+validation_rules:
+  - rule_id: terminal
+    applies_to: "delivered_fibre"
+    rule: "Exactly one explicit terminal Product row is selected by reference_flow_link, with the same UUID in both languages. Real internal or coproduct rows sharing that UUID remain visible. Terminal quantity is 1 kg supplied-state fibre, not pulp, dope, tow, P, stock, gross bale or yarn."
+    source_ids: []
+  - rule_id: normalisation
+    applies_to: "all inventory rows"
+    rule: "Require positive Q, matched raw cohort and carried burdens, once-only normalize_supply, separately reconciled P/Q and all opening/closing WIP/finished stocks. Returns/re-acceptance do not create new production. Missing raw data, untraced stocks or unexplained duplicate exchanges make the produced dataset incomplete."
+    source_ids: []
+  - rule_id: atomic_completeness
+    applies_to: "all processes"
+    rule: "Every real material, utility, waste, treatment and elementary species is one correctly typed exchange with its own amount, unit, process owner and collection link. Conditional absence needs actual evidence; all additional actual consumables/outlets must be added as atomic rows before dataset completion. Do not emit wastewater treatment twice or invent molecular species from COD, stock residuals or physical evaporation."
+    source_ids: []
+  - rule_id: readiness
+    applies_to: "dataset use"
+    rule: "Scientific review, classification acceptance and publication are independent pending decisions. Structural/measurement/native-format checks establish neither methodology approval nor measured plant performance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Declared-route supplied lyocell staple input for later spinning or nonwoven manufacture, once a complete real dataset is produced and reviewed"
+  allowed_use: "Only matching uncarded staple grade/state/supply gate, with provider and geography compatibility evaluated"
+  excluded_use: "Filament yarn, viscose/modal/cupro/acetate, synthetic fibres, prepared fibre and unqualified cross-route averages; no producer-brand footprint claim"
+  required_metadata: "All reference qualifiers; site/route/period; primary records; upstream/treatment links; P/Q; stock/burden cohort; moisture/finish; packaging and dispatch gate"
+  required_quality_disclosure: "Completeness, uncertainty, stock carry, native generic-identity limits, auxiliary UUID/provider gaps, service allocation, exclusions and pending scientific review"
+  update_trigger: "Changed route, feedstock, functional treatment, staple state, process order, moisture basis, recovery configuration, supplier, geography or terminal gate"
+data_sources:
+  - id: "jrc-polymers-2007"
+    type: "official_guidance"
+    reference: "European Commission (2007), Reference Document on Best Available Techniques in the Production of Polymers, section 11.2.4, printed pp.179–180. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/pol_bref_0807.pdf"
+    used_for: "Industrial direct-dissolution, precipitation, cutting, washing, finishing and recovery architecture only; no numerical recovery rate, consumption factor, operating recipe or emission claim adopted. Diagram winding does not define this staple terminal gate."
+  - id: "lenzing-lyocell-technology"
+    type: "literature"
+    reference: "Lenzing, Fiber Technologies: Explore Lenzing’s Production Processes, Process A: Lyocell, publisher web snapshot 2026-10-16. https://www.lenzing.com/technology-production/technologies/"
+    used_for: "Producer primary evidence of a commercial pulp/NMMO route and cut fibre endpoint. Actual operation order and product qualification are site-specific. No brand-wide inventory, solvent-recovery percentage or alternative cellulose feedstock assumed."
+  - id: "cirfs-lyocell-production"
+    type: "literature"
+    reference: "CIRFS, Lyocell, Production, publisher web snapshot 2026-10-16. https://www.cirfs.org/man-made-fibers/Fibre-range/lyocell"
+    used_for: "Independent industry-origin description of commercial staple-fibre production and aqueous NMMO recovery; qualitative corroboration, not the same plant or a quantitative inventory."
+  - id: "jrc-ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment — Detailed guidance, First edition March2010, section7.9.3, printed pp.257–258 (PDF277–278); https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "LCA method support only for attributional cases where allocation rather than substitution is selected: virtual subdivision and flow-specific determining physical causality support direct metering, subdivision and documented causal-driver allocation of shared services. The process sources establish fibre/recovery architecture, not this LCA method. No default physical/economic share, stock-layer formula, recovery rate, yield/utility/emission factor, automatic coproduct status, avoided-burden credit or PEF/CFF conformity is established. Actual stock lineage, service drivers, sensitivity and any genuine secondary-product allocation remain independently evidenced."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:6839e6684720211413f20f0fbbf21c8a6d685a8d6f9b13a7f80f9aba75d33edd"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7674"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7674
+          line: 64
+          column: 1
+        end:
+          offset: 11051
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received dissolving wood pulp, purchased whole NMMO solution, finish emulsion, utilities and packing at the producing site; upstream inputs and transport remain linked |\n| starting_condition_role | Foreground receipt gate for one NMMO-route fibre/supply system, with inherited opening-stock burdens |\n| product_classification_scope | Only uncarded lyocell staple within proposed CPC 3.0 35540 narrower scope; no filament-yarn or prepared-fibre substitution |\n| recursive_input_rule | Externally received same-category fibre remains an explicit upstream-linked input. Internal recovered solvent, water, fibre returns and transfer P retain their lineage and cancel on consolidation; they are not fresh procurement or new production |\n| upstream_dataset_requirement | Use route-, supplied-state-, geography- and property-compatible datasets for pulp, whole solutions, energy, packaging, transport and waste treatment. An identity UUID does not establish a provider quantity |\n| disclosure | Declare all actual process owners, start/end gates, P/Q, WIP/finished opening/closing stocks and carried burdens, treatment cut points, internal transfer cancellation, stock cohort method and allocated services |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| route_scope | all processes | Keep NMMO direct dissolution distinct from chemical derivatisation/regeneration and synthetic polymer manufacture. No source recipe, recovery percentage or nominal grade becomes a plant value. | jrc-polymers-2007; lenzing-lyocell-technology; cirfs-lyocell-production |\n| complete_gate | all processes | Include actual receipt handling, dissolution, filtration, spinning, precipitation, washing, cutting, finishing, drying, solvent/water recovery, treatment services, packing, storage, handling and dispatch to the selected Q gate. Add atomic rows and protocols for every actual stabiliser, cleaning/regeneration chemical, fuel, refrigerant, packing component, treatment reagent and measured emission absent from these baseline cards; missing collection is not zero. Model internal boilers and treatment explicitly if present, with no purchased-steam or offsite-treatment double count. | jrc-polymers-2007; lenzing-lyocell-technology |\n| period_stock | all processes | Collect full raw period numerators including failed and zero-output runs, rework and opening/closing WIP with inherited burdens. Supply ledger on a consistent component basis: opening finished fibre + P + external accepted receipts + physical returns + independently measured moisture gains = Q + closing finished fibre + other documented physical outlets + independently measured moisture losses. Packaging is separate. Identify repeat dispatches as physical transfers without new accepted Q; reverse/correct prior delivery acceptance for returns while retaining inherited burdens, and release returned stock once without new P. Reconcile each unique lot and its moisture state; do not force as-supplied masses of different moisture into equality. Manufacturing output is P, never P plus closing stock of that same P. Carry the burdens of all undelivered stock; include them when its cohort is delivered, not again as new production. Internal P output/input cancels on consolidation. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 10
+              column: 1
+            end:
+              offset: 360
+              line: 10
+              column: 66
+          text: "# NMMO-route lyocell uncarded staple fibre manufacture and supply"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7674
+              line: 64
+              column: 1
+            end:
+              offset: 7695
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_42779"
+      family: "allocation"
+      span:
+        start:
+          offset: 42779
+          line: 722
+          column: 1
+        end:
+          offset: 43670
+          line: 729
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| internal_loops | internal transfers | Keep P and NMMO/water transfers explicit in the process inventories and cancel matched internal exchanges on consolidation. Their energy, losses, waste treatment and carried burdens remain. Internal recovery is neither a coproduct credit nor fresh production. |  |\n| shared_services | shared services and stock | Prefer direct process/lot metering. Subdivide shared facilities; otherwise document causal physical drivers and sensitivity. Carry stock burdens to delivered cohorts by a consistent explicit method. Sold secondary material requires real product/specification and an independently justified allocation method; waste price alone is not product evidence. No default share or avoided-burden credit. | jrc-ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 10
+              column: 1
+            end:
+              offset: 360
+              line: 10
+              column: 66
+          text: "# NMMO-route lyocell uncarded staple fibre manufacture and supply"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 42779
+              line: 722
+              column: 1
+            end:
+              offset: 42819
+              line: 722
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50763"
+      family: "validation"
+      span:
+        start:
+          offset: 50763
+          line: 756
+          column: 1
+        end:
+          offset: 52250
+          line: 765
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| terminal | delivered_fibre | Exactly one explicit terminal Product row is selected by reference_flow_link, with the same UUID in both languages. Real internal or coproduct rows sharing that UUID remain visible. Terminal quantity is 1 kg supplied-state fibre, not pulp, dope, tow, P, stock, gross bale or yarn. |  |\n| normalisation | all inventory rows | Require positive Q, matched raw cohort and carried burdens, once-only normalize_supply, separately reconciled P/Q and all opening/closing WIP/finished stocks. Returns/re-acceptance do not create new production. Missing raw data, untraced stocks or unexplained duplicate exchanges make the produced dataset incomplete. |  |\n| atomic_completeness | all processes | Every real material, utility, waste, treatment and elementary species is one correctly typed exchange with its own amount, unit, process owner and collection link. Conditional absence needs actual evidence; all additional actual consumables/outlets must be added as atomic rows before dataset completion. Do not emit wastewater treatment twice or invent molecular species from COD, stock residuals or physical evaporation. |  |\n| readiness | dataset use | Scientific review, classification acceptance and publication are independent pending decisions. Structural/measurement/native-format checks establish neither methodology approval nor measured plant performance. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 10
+              column: 1
+            end:
+              offset: 360
+              line: 10
+              column: 66
+          text: "# NMMO-route lyocell uncarded staple fibre manufacture and supply"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50763
+              line: 756
+              column: 1
+            end:
+              offset: 50785
+              line: 756
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "route_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_7674"
+      source_span:
+        start:
+          offset: 9060
+          line: 79
+          column: 1
+        end:
+          offset: 9360
+          line: 79
+          column: 301
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "complete_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_7674"
+      source_span:
+        start:
+          offset: 9361
+          line: 80
+          column: 1
+        end:
+          offset: 10026
+          line: 80
+          column: 666
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "period_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_7674"
+      source_span:
+        start:
+          offset: 10027
+          line: 81
+          column: 1
+        end:
+          offset: 11049
+          line: 81
+          column: 1023
+    - pointer: "/allocation_rules/0"
+      rule_id: "internal_loops"
+      identity_kind: "explicit"
+      unit_id: "normative_42779"
+      source_span:
+        start:
+          offset: 42892
+          line: 726
+          column: 1
+        end:
+          offset: 43196
+          line: 726
+          column: 305
+    - pointer: "/allocation_rules/1"
+      rule_id: "shared_services"
+      identity_kind: "explicit"
+      unit_id: "normative_42779"
+      source_span:
+        start:
+          offset: 43197
+          line: 727
+          column: 1
+        end:
+          offset: 43668
+          line: 727
+          column: 472
+    - pointer: "/validation_rules/0"
+      rule_id: "terminal"
+      identity_kind: "explicit"
+      unit_id: "normative_50763"
+      source_span:
+        start:
+          offset: 50858
+          line: 760
+          column: 1
+        end:
+          offset: 51174
+          line: 760
+          column: 317
+    - pointer: "/validation_rules/1"
+      rule_id: "normalisation"
+      identity_kind: "explicit"
+      unit_id: "normative_50763"
+      source_span:
+        start:
+          offset: 51175
+          line: 761
+          column: 1
+        end:
+          offset: 51536
+          line: 761
+          column: 362
+    - pointer: "/validation_rules/2"
+      rule_id: "atomic_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_50763"
+      source_span:
+        start:
+          offset: 51537
+          line: 762
+          column: 1
+        end:
+          offset: 52004
+          line: 762
+          column: 468
+    - pointer: "/validation_rules/3"
+      rule_id: "readiness"
+      identity_kind: "explicit"
+      unit_id: "normative_50763"
+      source_span:
+        start:
+          offset: 52005
+          line: 763
+          column: 1
+        end:
+          offset: 52248
+          line: 763
+          column: 244
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7674"
+      source_span:
+        start:
+          offset: 7674
+          line: 64
+          column: 1
+        end:
+          offset: 7695
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7674"
+      source_span:
+        start:
+          offset: 7723
+          line: 68
+          column: 1
+        end:
+          offset: 8987
+          line: 75
+          column: 228
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_42779"
+      source_span:
+        start:
+          offset: 42779
+          line: 722
+          column: 1
+        end:
+          offset: 42819
+          line: 722
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50763"
+      source_span:
+        start:
+          offset: 50763
+          line: 756
+          column: 1
+        end:
+          offset: 50785
+          line: 756
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6839e6684720211413f20f0fbbf21c8a6d685a8d6f9b13a7f80f9aba75d33edd"
+  generated_content_sha256: "sha256:64477ec9d5c3f51169249dded94c87baf0e45b48757e83e514cf705517187465"

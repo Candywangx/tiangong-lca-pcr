@@ -37,7 +37,7 @@ Beet seed, vegetative planting material (including seedlings, bulbs, tubers, roo
 | How much | 1 kg net accepted seed |
 | How well | Declared species; variety or hybrid; seed class and generation; untreated, treated, coated, encrusted, or pelleted state; moisture basis; analytical purity; germination or viability; health or phytosanitary status; lot identity; packaging state; geography; and release gate |
 | How long or cycle | One complete seed crop multiplication cycle plus attributable harvest, extraction, conditioning, testing, packaging, and pre-gate storage; storage duration is declared when included |
-| reference_flow_link | vegetable_seed_release_output |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | Field | Value |
 | --- | --- |
@@ -49,6 +49,8 @@ Beet seed, vegetative planting material (including seedlings, bulbs, tubers, roo
 | Required qualifiers | Species; variety or hybrid and parent-line role where relevant; seed class and generation; production geography; crop cycle; pollination and isolation route; seed-bearing organ; harvested and accepted mass; moisture basis; analytical purity; germination or viability; health status; treatment, coating, encrusting, or pelleting; packaging; storage duration; lot identifier; intended sowing use; and declared release gate |
 
 When constructing a foreground data package, every item in `Required qualifiers` must be declared in dataset metadata, process notes, the reference-flow comment, product description, lot certificate, or an equivalent data-package field. The reference amount is net accepted seed; rejected lots and conditioning losses are not silently included in that amount.
+
+The sole reference output is `reference_product_at_declared_handoff` at `declared_reference_handoff`, a mandatory measurement of the actual accepted product at the already declared gate. Process `vegetable_seed_treatment_packaging_and_storage` remains conditional: omission of its physical activities does not remove this reference. Select the actual last included product handoff and record its process/output id; accept only the same species, physical state, grade, moisture basis and gate as Section 3. The prior `vegetable_seed_release_output` row is the measured output of its actual operation when active, not an additional final sale. No bypass creates processing, a yield assumption, an extra burden or a change of product boundary.
 
 ## 4. Measurement and Unit Rules
 
@@ -92,6 +94,7 @@ When constructing a foreground data package, every item in `Required qualifiers`
 | `vegetable_seed_harvest_and_extraction` | Vegetable seed harvest and seed extraction | required | always | harvest mature seed-bearing organs and separate seed from fruit, pod, capsule, inflorescence, or other carrier | incoming harvested material, raw extracted seed, residues, water, energy, and wastewater |
 | `vegetable_seed_conditioning_and_grading` | Vegetable seed drying, cleaning, grading, and quality release | required | always for a released lot; individual drying, wet-cleaning, or grading steps may be zero or not applicable when the lot route documents that state | prepare raw seed for testing and release by moisture control, cleaning, grading, sampling, and quality checks | raw seed input and conditioned seed output on a declared moisture basis |
 | `vegetable_seed_treatment_packaging_and_storage` | Vegetable seed treatment, packaging, storage, and release | conditional | treatment, coating, pelleting, packaging, or pre-gate storage occurs before the declared release gate | apply declared product treatment or physical enhancement and deliver a traceable released lot | conditioned seed, treatment and packaging materials, storage energy, and released seed |
+| `declared_reference_handoff` | Accepted-product measurement at declared handoff | required | Every actual selected route, including bypass of conditional conditioning/packing/storage | Measurement and reconciliation only; no added physical processing | 1 kg net accepted product at the same declared gate |
 
 ### Process: Vegetable seed crop establishment and field multiplication (`vegetable_seed_field_multiplication`)
 
@@ -867,21 +870,21 @@ Raw activity or stage basis: per final-preparation batch and converted to 1 kg r
 
 ###### Released market-ready vegetable seed (`vegetable_seed_release_output`)
 
-Set the terminal output to the accepted net seed mass at the declared release gate. Preserve all species, lot, quality, treatment, packaging, and moisture qualifiers in the data package.
+Record the measured accepted output of `vegetable_seed_treatment_packaging_and_storage` only when that operation actually occurs. Preserve species, condition, grade, moisture, lot and its real outgoing gate. This stable row id identifies an actual route output; the sole final reference is reference_product_at_declared_handoff. Retain raw output and link the selected final lot without counting it as another final product. Any UUID shown is usable only for its independently confirmed physical state/gate; an incompatible upstream/intermediate state needs a separately verified or explicit unresolved identity. Preserve the original stage measurement and collection records.
 
 - Selected flow: Vegetable seed, except beet seed, market-ready lot
 - Flow property / unit: Mass / kg
-Raw output measurement and reconciliation: scale the complete route to 1 kg accepted released seed on the declared moisture basis
+Raw output measurement and reconciliation: Weigh the accepted net lot output of the actual operation under `cp_treatment_packaging_records`, retain gross/tare, rejects, stocks, moisture and matched onward lot records, and reconcile before final normalization.
 
-- Amount rule: 1 kg
-- Value mode: Fixed value (`fixed_value`)
-- Specificity: Generic (`generic`)
-Raw activity or stage basis: terminal output equal to 1 kg reference flow.
+- Amount rule: measured accepted net output from the actual operation under `cp_treatment_packaging_records`; retain raw lot quantity and actual stage throughput, then normalize once under the final-handoff normalization in Section 8; never prescribe a fixed intermediate yield
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: measured actual operation/lot output and throughput, retained before one final-reference normalization.
 
 - Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Method formula (`method_formula`)
-- Collection protocol:
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_treatment_packaging_records`
 - Sources: `mass-balance-identity`; `eu-vegetable-seed-directive`
 
 ##### Waste flows
@@ -937,6 +940,46 @@ Raw activity or stage basis: per final-preparation batch and converted to 1 kg r
   - Basis: treatment, coating, encrusting, or pelleting operations
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Accepted-product measurement at declared handoff (`declared_reference_handoff`)
+This measurement adds no processing, waste generation or emission. Preserve all real upstream operations and losses; bypass only operations demonstrated absent. Select one actual terminal product lot and cancel its paired internal transfer once when aggregating the system. Do not sum inactive routes, co-products or both source and handoff as accepted final output.
+
+#### Inputs
+##### Product flows
+###### Accepted actual-route product at the same handoff (`actual_route_product_for_handoff`)
+
+Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID.
+- Selected flow: Vegetable seed, except beet seed, market-ready lot (UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net mass at this same handoff, normalized as R/R * 1 kg; paired input equals accepted output, with raw R retained
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+
+##### Waste flows
+##### Elementary flows
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+
+Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID.
+- Selected flow: Vegetable seed, except beet seed, market-ready lot (UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: 1 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+
+##### Waste flows
+Actual waste remains at the operation that generates it; no duplicate here.
+##### Elementary flows
+Actual releases remain at their responsible physical operation; no duplicate here.
 
 ## 7. Allocation and Co-product Handling
 
@@ -1012,6 +1055,18 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `dq_completeness_and_fate` | all inputs, residues, screenings, wastewater, packaging, and failed lots | Reconcile each material and energy input and every non-reference output to a documented destination; distinguish zero, not applicable, estimated, proxy, and missing values. | process records; destination evidence; mass-balance result |
 | `dq_identity_resolution` | reference flow and all inventory rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | concrete flow identity evidence |
 
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | actual accepted terminal product and paired transfer | scale/lot/acceptance records | species; state; grade; moisture/basis; gate; actual_terminal_process_id; actual_terminal_output_row_id; lot/transfer_id; gross/tare/net mass R; raw stage totals/throughputs; stocks, rejects and destinations | Weigh accepted net R at the existing gate; match exactly one actual terminal source of the same lot/state and reconcile all earlier losses and stocks. If conditional preparation is absent use the last actual included eligible product output, without inventing that preparation. Preserve original activity records and all required qualifiers. | kg and native activity units | each accepted lot | matched production and handoff period | existing declared producer/primary gate | per declared reference flow | calibrated weighing, acceptance/grade records, lot chain, activation/bypass evidence and closed balances |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | all foreground quantities and actual route outputs | Let R be positive measured accepted final mass in kg for one matched species/state/grade/gate/period, excluding tare, rejects, co-products and held stock. Physical ledger = raw physical quantity/R * 1 kg, without burden-allocation scaling. Attributable inventory contribution = attributable raw quantity/R * 1 kg, preserving native numerator units and the existing output/period attribution. A local intensity q_i=Q_i/O_i first reconstructs Q_i=q_i*actual linked O_i; do not divide by R again after final normalization. Both handoff sides are the same measured event R/R*1 kg, not another physical yield. Include only actual active operations; record and substantiate bypass. Missing/nonpositive R or an unlinked terminal record blocks a normalized complete result, not zero. Preserve original stage data and cancel paired internal transfers once. | cp_declared_reference_handoff; original linked collection protocols | native quantities per declared final reference | `declared-handoff-measurement-definition` |
+
 ## 9. Validation Rules
 
 Validation output must report accepted input, checks performed, checks skipped, findings, and completeness. An identity evidence gap, unexplained mass difference, missing lot-quality evidence, or inconclusive fate check remains a finding and is not converted to zero.
@@ -1026,6 +1081,11 @@ Validation output must report accepted input, checks performed, checks skipped, 
 | `validation_lot_quality` | sampling, tests, treatment, packaging, and release | Confirm homogeneous lot identity, sampling and test records, purity, germination or viability, health, treatment disclosure, packaging, sealing or label information, and declared net quantity appropriate to the selected market scheme. | `ista-seed-testing-rules`; `eu-vegetable-seed-directive` |
 | `validation_allocation_and_fate` | co-products, residues, failed lots, and waste | Confirm allocation basis, documented recipient or fate, treatment or discharge route, and no double counting of retained residues, reprocessed lots, shared energy, reusable packaging, or waste. | `iso-14044-2006`; `mass-balance-identity` |
 | `validation_flow_identity` | every reference and inventory flow | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | selected actual route and all conditional bypass states | Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch. | `declared-handoff-measurement-definition` |
 
 ## 10. Published Dataset Profile
 
@@ -1057,3 +1117,7 @@ Validation output must report accepted input, checks performed, checks skipped, 
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |
 | `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | This PCR Sections 3, 6 and 8: matched accepted handoff mass divided by itself times the declared reference amount; physical transfer pairing and dimensional normalization identity, not an empirical yield or new physical operation. | single accepted reference and measured route-throughput linkage |

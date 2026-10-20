@@ -54,10 +54,10 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_mass` | Reference pea product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Report net accepted grain at declared moisture; exclude foreign matter, rejects, packaging and field loss. |
-| `moisture_basis` | Grain hand-offs | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg and mass-% | Record wet mass and wet-basis moisture at each hand-off and reconcile dry matter before normalization. |
+| `reference_mass` | Reference pea product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 按声明含水率报告净合格籽粒，剔除异物、拒收物、包装及田间损失。 |
+| `moisture_basis` | Grain hand-offs | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg and mass-% | 每次交接记录湿质量及湿基含水率，归一化前核对干物质。 |
 | `nutrient_product_mass` | 各项养分产品 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg product and kg nutrient | 每种产品的质量及 N、P2O5、K2O 或改良剂组成分别记录为独立交换；养分总量仅在分析层计算，不合并物理产品。 |
-| `area_to_mass` | Field records | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg/kg | Divide crop-cycle field totals by net accepted grain attributed to the same field or lot. |
+| `area_to_mass` | Field records | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg/kg | 将作物周期田间总量除以归属同一田块或批次的净合格籽粒。 |
 
 ## 5. 系统边界
 
@@ -906,10 +906,10 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_field_outputs` | Grain and straw/pods | Avoid allocation when residue remains managed in-field material. Deliberately removed residue with an evidenced product hand-off is a co-product; use declared physical or economic allocation consistently and disclose sensitivity. | `mass-balance-identity` |
-| `allocation_reject_routes` | Damage, downgrade, rework and rejects | Retain burdens through rework. Treat a downgraded sale/feed hand-off as intended output only with an evidenced destination; otherwise it is waste. Never count accepted and rejected mass together. | `mass-balance-identity` |
-| `allocation_batches` | All batches | Attribute inputs, outputs, clean-out, carryover and changeover to the causing batch. Use processed-mass allocation for shared burdens only when direct metering is absent and never allocate one shared burden twice. | `mass-balance-identity` |
-| `allocation_no_default_substitution` | Co-products | Do not apply avoided-burden credit by default; any downstream substitution reports the unallocated inventory, substituted product, ratio and evidence. | `mass-balance-identity` |
+| `allocation_field_outputs` | Grain and straw/pods | 残体仍为田间受管理物料时避免分配；有意移出且有据产品交接的残体为共产品，须一致采用声明物理或经济分配并披露敏感性。 | `mass-balance-identity` |
+| `allocation_reject_routes` | Damage, downgrade, rework and rejects | 返工承接既有负担；降级销售/饲用交接仅在有据去向时作预期产出，否则为废物；合格与拒收质量不得合计。 | `mass-balance-identity` |
+| `allocation_batches` | All batches | 将投入、产出、清场、留存物及换线归属其对应批次；仅在缺少直接计量时按处理质量分配共享负担，同一负担不得分配两次。 | `mass-balance-identity` |
+| `allocation_no_default_substitution` | Co-products | 默认不作避免负担抵扣；下游替代分析须报告未分配清单、被替代产品、比例及证据。 | `mass-balance-identity` |
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
@@ -939,7 +939,7 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 
 | rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_moisture` | Grain hand-offs | dry matter = wet mass × (1 − moisture fraction); equivalent target mass = dry matter ÷ (1 − target fraction) | wet mass; moisture | dry matter and adjusted mass | `mass-balance-identity` |
+| `calc_moisture` | Grain hand-offs | 干物质＝湿质量×（1－含水率分数）；等效目标质量＝干物质÷（1－目标含水率分数）。 | wet mass; moisture | dry matter and adjusted mass | `mass-balance-identity` |
 | `calc_field_normalization` | Field inventory | field amount ÷ same-field net accepted grain | field amount; accepted grain | amount/kg reference | `mass-balance-identity` |
 | `calc_direct_n2o` | Soil N2O | N2O-N = Σ(N pool × EF1); N2O = N2O-N × 44/28 | N pools; EF1 | kg N2O | `ipcc-2019-managed-soils` |
 | `calc_batch_balance` | Harvest/cleaning/drying | input = accepted + co-products/downgrades + rejects + losses + moisture change | all hand-off masses and moisture | closure and residual | `mass-balance-identity` |
@@ -967,15 +967,15 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | Reference flow | Fail unless output is mature whole dry *Pisum sativum* grain with moisture, 等级/去向 and route qualifiers. | `ndsu-field-pea-production-2021` |
-| `validate_route_topology` | Process map | Require field, harvest and cleaning nodes; require drying/aeration only when active, and reject unweighted mixed routes. | `saskatchewan-dry-pea-guide` |
+| `validate_reference_identity` | Reference flow | 产出不是成熟完整干 Pisum sativum 籽粒，或缺少含水率、等级/去向及路线限定项时不通过。 | `ndsu-field-pea-production-2021` |
+| `validate_route_topology` | Process map | 要求田间、采收及清理节点；仅在实际启用时要求干燥/通风，拒绝未加权混合路线。 | `saskatchewan-dry-pea-guide` |
 | `validate_nutrient_cardinality` | `field_production` | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | `ndsu-field-pea-fertility-2023` |
-| `validate_output_destinations` | Outputs | Require one explicit hand-off for grain, residues, damage/downgrade, rework, foreign matter, rejects and loss; reject double counting. | `mass-balance-identity` |
-| `validate_rework` | Cleaning/stabilization | Link each rework return to source lot, destination and pass; accepted output excludes unresolved reject/rework mass. | `mass-balance-identity` |
-| `validate_batch_mode` | Harvest/cleaning/stabilization | Require batch/campaign boundaries and assign clean-out, carryover and shared energy once. | `mass-balance-identity` |
+| `validate_output_destinations` | Outputs | 籽粒、残体、损伤/降级、返工、异物、拒收和损失各须一处明确交接，禁止双计。 | `mass-balance-identity` |
+| `validate_rework` | Cleaning/stabilization | 每项返工返回关联来源批次、去向及处理轮次；未决拒收/返工质量不计合格产出。 | `mass-balance-identity` |
+| `validate_batch_mode` | Harvest/cleaning/stabilization | 要求批次/生产活动边界，将清场、留存物和共享能源归属一次。 | `mass-balance-identity` |
 | `validate_ranges` | Inventory | 逐条检查已提供范围的上下限、单位、基准、证据及双语一致性。任何强制界限均须有相容定量证据；无支持界限时保留实测数量并明确报告范围筛查不可用，不得编造范围或宣称该项检查完整。调查偏离，不以范围覆盖实测值。 | |
 | `validate_mass_balance` | Harvest/cleaning/drying | Require moisture-corrected reconciliation and review residual above 5%. | `mass-balance-identity` |
-| `validate_drying_condition` | `drying_aeration` | Require input/output moisture and temperature, route, duration and energy; destination limits override the general storage screen. | `saskatchewan-dry-pea-guide` |
+| `validate_drying_condition` | `drying_aeration` | 要求进出口含水率及温度、路线、时长和能源；去向要求的限值优先于一般储存筛查范围。 | `saskatchewan-dry-pea-guide` |
 | `validate_drying_water_balance` | 干燥向空气释放水 | 按同一批次、水控制边界及含水率基准，依据 `cp_drying_batch` 核对 `calc_drying_water`。纳入全部拒收物／残体及其他材料出口带水、实际加水、单独液体转出与期初期末库存；内部循环抵销。蒸发须有证据，未解释或负平衡须调查，不得截为零；有据释放量按匹配合格最终产出仅归属和归一化一次。 | `mass-balance-identity` |
 
 ## 10. 发布数据集画像

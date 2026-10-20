@@ -20,12 +20,14 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.apples` |
-| classification_refs | CPC 3.0 `01341`, `Apples`; mapping relation: exact |
+| classification_refs | CPC 3.0 `01341`, `Apples`; mapping relation: narrower |
 | covered_products | 商业栽培品种 *Malus domestica* 的果园门新鲜采收苹果 |
 | excluded_products | 苗木；果汁；苹果酒；干制、腌制或其他加工苹果；包装场或冷库产出；主要用于工业加工的果实 |
 | representative_product | 自然品种混合、果园门散装可销售鲜苹果 |
 | production_route | 多年生果园建园、年度管理、采收及果园门处理 |
 | market_state | 果园门新鲜、完整、未加工散装果实，并声明等级和包装状态 |
+
+本 PCR 覆盖 CPC 3.0 01341 的较窄子集，既有产品、用途及交接点限制保持有效。已接受的分类关系为 narrower，不表示覆盖该 CPC 子类的全部货品。
 
 ## 3. 参考流
 

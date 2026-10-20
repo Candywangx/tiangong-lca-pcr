@@ -49,7 +49,7 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
-| `reference_mass` | reference and intermediate seed | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Use net seed mass at the moisture value reported for the same lot; exclude packaging mass. |
+| `reference_mass` | reference and intermediate seed | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 采用同批次报告含水率下的净种子质量，剔除包装质量。 |
 | `quality_alignment` | released seed | lot-specific test result | declared test unit | Purity, germination/viability and moisture shall refer to the same sampled lot. |
 
 ## 5. 系统边界
@@ -739,11 +739,11 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_mass_reconciliation` | each process | Reconcile opening stock, inputs, outputs, moisture change, residues, rejects and closing stock on one basis. |  |
-| `allocation_secondary_outputs` | saleable plant material or downgraded seed | Prefer subdivision or direct physical attribution; if allocation remains, disclose outputs, causal basis, formula and sensitivity. |  |
-| `allocation_rejects` | all rejects | Do not include rejected seed in released output or credit a destination before routing is evidenced. |  |
-| `allocation_periods` | perennial crops and shared assets | Attribute establishment and infrastructure over documented productive output using one consistent period rule. |  |
-| `allocation_batches` | shared processing, storage and changeovers | Assign shared burdens by measured time, occupied storage, throughput or another causal driver without double counting. |  |
+| `allocation_mass_reconciliation` | each process | 在同一基准上核对期初库存、投入、产出、水分变化、残体、拒收物及期末库存。 |  |
+| `allocation_secondary_outputs` | saleable plant material or downgraded seed | 优先细分或直接物理归属；仍须分配时，披露产出、因果基准、公式及敏感性。 |  |
+| `allocation_rejects` | all rejects | 拒收种子不计放行产出；没有有据去向前不得给予抵扣。 |  |
+| `allocation_periods` | perennial crops and shared assets | 按有据生产产出归属建植及基础设施，采用一致期间规则。 |  |
+| `allocation_batches` | shared processing, storage and changeovers | 共享负担按实测时间、占用储存量、吞吐量或其他因果驱动分配，禁止双计。 |  |
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
@@ -791,23 +791,23 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | reference lot | Species, cultivar, lot, sowing use and state shall be explicit; a species UUID represents only that species. | label, release record, binding review |
-| `dq_quality_tests` | released seed | Purity, germination/viability and moisture shall cover the released lot and state method/date. | laboratory record and sample chain |
+| `dq_identity` | reference lot | 明确物种、品种、批次、播种用途及状态；物种 UUID 仅代表该物种。 | label, release record, binding review |
+| `dq_quality_tests` | released seed | 纯度、发芽率/活力及含水率须覆盖放行批次，并说明方法及日期。 | laboratory record and sample chain |
 | `dq_completeness` | foreground route | Include all released/rejected lots and at least 95% of operating days; quantify gaps. | coverage reconciliation |
 | `dq_mass_balance` | each node | Reconcile material on a consistent moisture basis and disclose tolerance. | stage balance and calibration |
-| `dq_binding` | emitted exchanges | Resolve parameterized and unmapped cards to verified UUIDs before final TIDAS publication. | expansion and identity review |
+| `dq_binding` | emitted exchanges | 最终 TIDAS 发布前，将参数化和未绑定卡解析为已核实 UUID。 | expansion and identity review |
 
 ## 9. 验证规则
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_scope` | reference product | Reject non-sowing seed, vegetative propagules, cut flowers and records without species, cultivar and lot. |  |
+| `validate_scope` | reference product | 非播种种子、营养繁殖材料、切花及没有物种、品种或批次的记录不通过。 |  |
 | `validate_reference` | reference flow | Require exactly 1 kg net released seed and the required quality qualifiers. |  |
-| `validate_species_uuid` | reference identity | Keep the category UUID blank unless compatible; use `50835e31-8359-4b7c-a818-81ef48e5ed42` only for explicitly declared H. annuus after detail compatibility is rechecked. |  |
+| `validate_species_uuid` | reference identity | 类别 UUID 在相容性确认前保持空白；仅对明确声明的 H. annuus，在重新核对详情相容性后使用 50835e31-8359-4b7c-a818-81ef48e5ed42。 |  |
 | `validate_nutrient_cardinality` | `seed_crop_production` | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validate_lot_chain` | all processes | Require an unbroken parent-stock, production, extraction, conditioning and release lot chain. |  |
-| `validate_rework_rejects` | rework/rejects | Rework re-enters through a recorded node; rejected mass cannot also be released output. |  |
-| `validate_ranges` | all flow cards | Require ordered bounds, unit, basis, basis kind and evidence kind; foreground records determine amounts. |  |
+| `validate_lot_chain` | all processes | 要求不间断的亲本材料、生产、提取、调理及放行批次链。 |  |
+| `validate_rework_rejects` | rework/rejects | 返工经有记录节点重新进入；拒收质量不能同时作放行产出。 |  |
+| `validate_ranges` | all flow cards | 要求有序界限、单位、基准、基准类型及证据类型；数量取自前景记录。 |  |
 | `validate_binding` | all cards | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 
 ## 10. 发布数据集配置

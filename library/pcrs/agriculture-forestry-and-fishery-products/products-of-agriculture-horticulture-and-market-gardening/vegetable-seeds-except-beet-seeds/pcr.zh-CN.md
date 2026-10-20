@@ -37,18 +37,20 @@ sync_with: pcr.en-US.md
 | How much | 1 kg 净接收种子 |
 | How well | 声明的物种；品种或杂交种；种子等级和世代；未处理、处理、包衣、包膜或丸粒化状态；水分基准；分析纯度；发芽率或活力；健康或植物检疫状态；批次身份；包装状态；地理范围；以及放行门 |
 | How long or cycle | 一个完整种子作物繁育周期，加上可归属的收获、提取、调制、检验、包装和门前储存；储存在范围内时声明储存时间 |
-| reference_flow_link | vegetable_seed_release_output |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Vegetable seed, except beet seed, market-ready lot |
+| 参考产品流 | 蔬菜种子（甜菜种子除外）的可销售种批（UUID 未解析） |
 | Reference flow property | Mass (`93a60a56-a3c8-11da-a746-0800200b9a66`) |
 | Reference unit group | Units of mass (`93a60a57-a4c8-11da-a746-0800200c9a66`) |
 | Reference unit | kg |
 | Required qualifiers | 物种；品种或杂交种及相关亲本角色；种子等级和世代；生产地理范围；作物周期；授粉和隔离路线；种子载体器官；收获量和接收量；水分基准；分析纯度；发芽率或活力；健康状态；处理、包衣、包膜或丸粒化；包装；储存时间；批次标识；播种用途；以及声明的放行门 |
 
 构建前景数据包时，`Required qualifiers` 中的每项信息都必须写入数据集元数据、过程说明、参考流备注、产品说明、批次证书或等效数据包字段。参考数量是声明水分基准下的净放行种子；拒收批次和调制损失不得被默默计入该数量。
+
+唯一参考产出为 `declared_reference_handoff` 的 `reference_product_at_declared_handoff`，它仅对既有声明交接点的实际合格产品作必需计量。`vegetable_seed_treatment_packaging_and_storage` 的实体活动仍为条件性活动；省略该活动不取消参考产出。选择实际最后纳入的产品交接并记录过程/产出 id，物种、物理状态、等级、含水率基准及交接点必须与第3节一致。原 `vegetable_seed_release_output` 行仅在其作业实际发生时记录该作业实测产出，不是另一笔最终销售。旁路不新增加工、得率假设或负担，也不改变产品边界。
 
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
@@ -91,6 +93,7 @@ sync_with: pcr.en-US.md
 | `vegetable_seed_harvest_and_extraction` | 蔬菜种子收获和种子提取 | required | always | 收获成熟的种子载体器官，并从果实、荚、蒴果、花序或其他载体中分离种子 | 收获材料、提取原始种子、残余物、水、能源和废水投入输出 |
 | `vegetable_seed_conditioning_and_grading` | 蔬菜种子干燥、清选、分级和质量放行 | required | always for a released lot; 当路线文件证明某步骤为零或不适用时，个别干燥、湿清洗或分级步骤可为零或不适用 | 通过水分控制、清选、分级、取样和质量检查使原始种子达到检验和放行状态 | 按声明水分基准计的原始种子投入和调制种子输出 |
 | `vegetable_seed_treatment_packaging_and_storage` | 蔬菜种子处理、包装、储存和放行 | conditional | 在声明放行门前发生处理、包衣、丸粒化、包装或储存时 | 施加声明的产品处理或物理增强，并交付可追溯的放行批次 | 调制种子、处理和包装材料、储存能源及放行种子 |
+| `declared_reference_handoff` | 声明交接点合格产品计量 | required | 每条实际选定路线，包括条件处理/包装/储存的旁路 | 仅计量及核对，不新增实体加工 | 1 kg 同一声明交接点净合格产品 |
 
 ### 过程：蔬菜种子作物建植和田间繁育（`vegetable_seed_field_multiplication`）
 
@@ -858,21 +861,21 @@ sync_with: pcr.en-US.md
 
 ###### 放行的可上市蔬菜种子（`vegetable_seed_release_output`）
 
-将终端输出设为声明放行门的合格种子净质量，并在数据包中保留物种、批次、质量、处理、包装和水分限定信息。
+仅在 `vegetable_seed_treatment_packaging_and_storage` 作业实际发生时记录该作业实测合格产出，保留物种、状态、等级、含水率、批次和真实移出交接点。此稳定行 id 表示实际路线产出；唯一最终参考产出为 reference_product_at_declared_handoff。保留原始产出并关联选定最终批次，不作为另一份最终产品重复计数。所列 UUID 仅适用于已独立确认的物理状态/交接点；不相容的上游/中间状态须另行核实或明确保持身份未解析。保留原阶段计量及采集记录。
 
 - 选定流：甜菜种子除外的可上市蔬菜种子批次＼
 - 流属性/单位：Mass / kg
-原始产出计量与核对要求：按声明水分基准将完整路线缩放为 1 kg 接收放行种子
+原始产出计量及核对：按 `cp_treatment_packaging_records` 称量实际作业净合格批次产出，保留毛重/皮重、拒收、库存、含水率及匹配后续批次记录，在最终归一化前核对。
 
-- 数量规则：1 千克
-- 数值来源模式：固定值（`fixed_value`）
-- 适用范围：通用（`generic`）
-原始活动或阶段基准：等于 1 kg 参考流的终端输出.
+- 数量规则：按 `cp_treatment_packaging_records` 实测实际作业净合格产出；保留原始批次数量及实际阶段处理量，依第8节最终交接归一化规则换算一次，不规定固定中间得率
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：实测实际作业/批次产出及处理量，在一次最终参考归一化前保留。
 
 - 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：方法公式（`method_formula`）
-- 采集协议：
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_treatment_packaging_records`
 - 来源：`mass-balance-identity`; `eu-vegetable-seed-directive`
 
 ##### 废物流
@@ -928,6 +931,46 @@ sync_with: pcr.en-US.md
   - 基准：处理、包衣、包膜或丸粒化操作
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
+
+### 过程：声明交接点合格产品计量（`declared_reference_handoff`）
+本计量不新增加工、废物产生或排放。保留全部真实上游作业和损失，仅旁路有据未发生的活动。选择一个实际终端产品批次，系统汇总时将其成对内部转移抵销一次；不得把未启用路线、共产品或来源产出与交接产出相加为合格最终产出。
+
+#### 输入
+##### 产品流
+###### 同一交接点实际路线合格产品 (`actual_route_product_for_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：蔬菜种子（甜菜种子除外）的可销售种批（UUID 未解析）
+- 流属性/单位：质量 / kg
+- 数量规则：本同一交接点实测净合格质量，按 R/R × 1 kg 归一化；成对投入与合格产出相等，保留原始 R
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+##### 基本流
+#### 输出
+##### 产品流
+###### 声明交接点参考产品 (`reference_product_at_declared_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：蔬菜种子（甜菜种子除外）的可销售种批（UUID 未解析）
+- 流属性/单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+实际废物保留在其产生作业，不在此重复。
+##### 基本流
+实际释放保留在其负责的实体作业，不在此重复。
 
 ## 7. 分配与共产品处理
 
@@ -1003,6 +1046,18 @@ sync_with: pcr.en-US.md
 | `dq_completeness_and_fate` | 所有投入、残余物、筛下物、废水、包装和不合格批次 | 将每个材料和能源投入以及每个非参考输出核对到有文件证明的去向；区分零、不适用、估算、代理和缺失值。 | 过程记录；去向证据；质量平衡结果 |
 | `dq_identity_resolution` | 参考流和所有库存行 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | 具体流身份核验证据 |
 
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | 实际合格终端产品及成对转移 | 称量/批次/验收记录 | 物种；状态；等级；含水率/基准；交接点；actual_terminal_process_id；actual_terminal_output_row_id；lot/transfer_id；毛/皮/净质量 R；阶段原始总量/吞吐量；库存、拒收及去向 | 在既有交接点称量净合格 R，匹配唯一实际同批次/同状态终端来源，并核对前序损失及库存。若未发生条件性准备，采用最后实际纳入的适格产品产出，不虚构该准备作业。保留原活动记录及全部必需限定项。 | kg 及原生活动单位 | 每个合格批次 | 匹配生产及交接期间 | 既有声明生产者/初级交接点 | 每声明的参考流 | 校准称量、验收/等级记录、批次链、启用/旁路证据及闭合平衡 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | 全部前景数量及实际路线产出 | R 为匹配单一物种/状态/等级/交接点/期间且实测为正的合格最终质量 kg，剔除皮重、拒收、共产品及留存库存。物理台账＝原始物理数量/R×1 kg，不乘负荷分配份额；归属清单贡献＝可归属原始数量/R×1 kg，保留分子原生单位及原有产品/期间归属。阶段强度 q_i＝Q_i/O_i 须先按实际关联 O_i 还原 Q_i＝q_i×O_i；已最终归一化后不得再次除以 R。交接两侧均为同一实测事件 R/R×1 kg，不是另一实体得率。仅纳入实际启用作业，旁路须记录并有据。R 缺失/非正或终端记录未关联会阻断完整归一化结果，不能记零。保留原始阶段数据，成对内部转移抵销一次。 | cp_declared_reference_handoff; original linked collection protocols | 按声明最终参考报告的原生数量 | `declared-handoff-measurement-definition` |
+
 ## 9. 校验规则
 
 校验输出必须报告接受的输入、已执行校验、跳过的校验、发现和完整性。身份证据缺口、未解释的质量差、缺失的批次质量证据或不确定的去向校验都应保留为发现，不得转换为零。
@@ -1017,6 +1072,11 @@ sync_with: pcr.en-US.md
 | `validation_lot_quality` | 取样、检验、处理、包装和放行 | 确认均质批次身份、取样和检验记录、纯度、发芽率或活力、健康、处理披露、包装、封口或标签信息以及适用市场方案要求的净数量。 | `ista-seed-testing-rules`; `eu-vegetable-seed-directive` |
 | `validation_allocation_and_fate` | 共产品、残余物、不合格批次和废物 | 确认分配基准、有文件证明的接收人或去向、处理或排放路线，并避免重复计算还田残余物、再处理批次、共用能源、重复使用包装和废物。 | `iso-14044-2006`; `mass-balance-identity` |
 | `validation_flow_identity` | 每个参考流和库存流 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | 实际选定路线及全部条件旁路状态 | 按实际记录检查可选处理/包装/储存启用及省略两种状态：始终保留唯一必需交接参考；来源产品/状态/交接点与第3节一致；启用的实体行保留实测吞吐量，未启用实体活动不新增交换。要求原始合格质量、上游闭合、唯一转移配对及一次最终归一化；未知状态或缺少身份不得当作已成立分支。 | `declared-handoff-measurement-definition` |
 
 ## 10. 发布数据集画像
 
@@ -1048,3 +1108,7 @@ sync_with: pcr.en-US.md
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
 | `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | 本 PCR 第3、6及8节：同一合格交接质量除以自身再乘声明参考数量；属于物理转移配对及量纲归一化恒等式，不是经验得率或新增实体操作。 | 唯一合格参考及实测路线吞吐关联 |

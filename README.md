@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: "2026-10-19"
-lastReviewedCommit: "0b573ce10cbdb352a5a67855aad6fb14e9161663"
-lastReviewedNote: "Reviewed the documentation and full test-shard job timeout increase from 60 to 120 minutes. PCR content, dependency pins, workflow selection, qualification checks and evidence bindings are unchanged. Local macOS checks remain partial; fresh hosted Linux qualification is required."
+lastReviewedAt: "2026-10-20"
+lastReviewedCommit: "623239f3b89f335ee5461b422378cf709a8228f3"
+lastReviewedNote: "Reconciled Candy main PCR additions and same-source web-build handoff with the CPC 01/02/03 content repairs and 120-minute job limits. Preserved both sides of the methodology and CI contracts; regenerated combined catalog/coverage artifacts. Local PCR and focused checks pass; full hosted Linux qualification remains required."
 ---
 
 # TianGong LCA PCR Library
@@ -129,6 +129,10 @@ acceptance; its full code coverage is explicitly unmeasured. Every reusable
 release qualification selects full mode, even with an empty product tag. See
 [CI qualification lanes](docs/typescript-engineering.md#ci-qualification-lanes)
 for allowed changes, evidence binding and complete-attempt retry requirements.
+The required `web-build` and `documentation` jobs separate the complete instrumented
+website export from product sealing without increasing either job limit. An exact
+source/run/attempt-bound archive preserves all web bytes and build/SEO evidence;
+both lanes retain the same sealed-product and coverage obligations.
 All first-party implementation, scripts and tests use strict TypeScript/TSX; installed packages and browsers receive compiled JavaScript. The shared SEO checker remains Python. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
 migration boundaries and final qualification requirements. The Python SEO checker
 is retained. Projection v2 now preserves normative source context; see the [semantic contract](docs/semantic-projection-contract.md). Authored JavaScript inventory is zero; final production qualification and cutover remain tracked under #69/#79 until live acceptance.

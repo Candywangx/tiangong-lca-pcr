@@ -82,11 +82,11 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_declared_crop_cycle` | 从田间或设施场地准备、播种、作物管理、采收到交付门前处理，均纳入声明的胡萝卜或芜菁作物周期。 | undefined | `fao-gap-framework-2003` |
-| `boundary_farm_gate` | 默认前景边界在声明的农场门或包装场交接点结束。仅在清洗、分级、冷却、一次包装和交付门前运输发生在交接点之前时纳入。 | undefined | `fao-postharvest-handling-vegetables`; `codex-cxc-53-2003-fresh-produce` |
-| `boundary_route_and_infrastructure` | 披露露地或设施路线；当路线特定的能源、水、消耗品和共享基础设施服务分配给声明周期时纳入。 | undefined | `fao-gap-framework-2003` |
-| `boundary_managed_soils` | 依据一个声明的方法纳入养分和还田残体造成的直接和间接管理土壤排放。不得重复计算上游数据集已包含的负荷。 | undefined | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |
-| `boundary_residue_and_reject_fate` | 记录每个非商品流的第一去向：还田、堆肥、饲料、处理、处置或其他文件化用途。未报告去向属于数据质量缺口。 | undefined | `fao-gap-framework-2003`; `mass-balance-identity` |
+| `boundary_declared_crop_cycle` | 建植至最后采收 | 从田间或设施场地准备、播种、作物管理、采收到交付门前处理，均纳入声明的胡萝卜或芜菁作物周期。 | `fao-gap-framework-2003` |
+| `boundary_farm_gate` | 处理及交接 | 默认前景边界在声明的农场门或包装场交接点结束。仅在清洗、分级、冷却、一次包装和交付门前运输发生在交接点之前时纳入。 | `fao-postharvest-handling-vegetables`; `codex-cxc-53-2003-fresh-produce` |
+| `boundary_route_and_infrastructure` | 露地或设施路线 | 披露露地或设施路线；当路线特定的能源、水、消耗品和共享基础设施服务分配给声明周期时纳入。 | `fao-gap-framework-2003` |
+| `boundary_managed_soils` | 养分、改良剂、残体及土壤流 | 依据一个声明的方法纳入养分和还田残体造成的直接和间接管理土壤排放。不得重复计算上游数据集已包含的负荷。 | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |
+| `boundary_residue_and_reject_fate` | 次品、残体、废水及包装废物 | 记录每个非商品流的第一去向：还田、堆肥、饲料、处理、处置或其他文件化用途。未报告去向属于数据质量缺口。 | `fao-gap-framework-2003`; `mass-balance-identity` |
 
 ## 6. 过程清单结构
 
@@ -800,11 +800,11 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_same_crop_and_route` | 多个田块、品种、场址或路线时，在归一化前保持记录分开；需要汇总时，按文件化的面积-时间、运行时间、输送水量、吞吐量或质量分配共享投入。 | undefined | `iso-14044-2006` |
-| `allocation_marketable_and_off_grade` | 当次品或降级根菜有文件化产品接收方和功能时使用质量分配；若被丢弃、还田或处理，则建模其去向，不分配共产品收益。 | undefined | `iso-14044-2006`; `mass-balance-identity` |
-| `allocation_shared_water_and_energy` | 按实测水量、产品质量、批次时间或运行时间分配共享公用工程，并说明选用的基准。 | undefined | `fao-crop-evapotranspiration-56`; `fao-postharvest-handling-vegetables` |
-| `allocation_reusable_packaging` | 将包装生产和补充分配到已核实的使用周期，并将损失归属于发生路线；不得把一次性物品分摊到未文件化周期。 | undefined | `fao-postharvest-handling-vegetables` |
-| `allocation_residue_destination` | 保留按去向区分的行。还田、堆肥、饲料、处理和处置是不同路径，不可互换为共产品。 | undefined | `fao-gap-framework-2003`; `iso-14044-2006` |
+| `allocation_same_crop_and_route` | 同作物及路线的共享投入 | 多个田块、品种、场址或路线时，在归一化前保持记录分开；需要汇总时，按文件化的面积-时间、运行时间、输送水量、吞吐量或质量分配共享投入。 | `iso-14044-2006` |
+| `allocation_marketable_and_off_grade` | 商品根菜与有用途次品 | 当次品或降级根菜有文件化产品接收方和功能时使用质量分配；若被丢弃、还田或处理，则建模其去向，不分配共产品收益。 | `iso-14044-2006`; `mass-balance-identity` |
+| `allocation_shared_water_and_energy` | 共享水及能源 | 按实测水量、产品质量、批次时间或运行时间分配共享公用工程，并说明选用的基准。 | `fao-crop-evapotranspiration-56`; `fao-postharvest-handling-vegetables` |
+| `allocation_reusable_packaging` | 可重复使用包装 | 将包装生产和补充分配到已核实的使用周期，并将损失归属于发生路线；不得把一次性物品分摊到未文件化周期。 | `fao-postharvest-handling-vegetables` |
+| `allocation_residue_destination` | 残体及次品去向 | 保留按去向区分的行。还田、堆肥、饲料、处理和处置是不同路径，不可互换为共产品。 | `fao-gap-framework-2003`; `iso-14044-2006` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
@@ -845,7 +845,7 @@ translation_status: aligned
 | `cp_pregate_transport_records` | `harvest_and_gate_preparation` | 交付门前运输服务 | 移动或服务记录 | 装载质量；距离；车辆；日期；起点；终点 | 运输日志或供应商记录；原始汇总与分配：仅汇总声明边界内运输 | 吨公里 | 每次移动 | 交付门前期间 | 场址至声明交付门 | 每声明的参考流 | 行程日志或供应商票据 |
 | `cp_wastewater_records` | `harvest_and_gate_preparation` | 废水处理和排放 | 处理记录 | 批次；进水；处理技术；回用；排放；固体 | 处理日志、票据和水量平衡；原始汇总与分配：核对进水、回用、处理和排放 | m3 和日期 | 每批次 | 交付门前处理期 | 场址或处理厂 | 每声明的参考流 | 处理记录和平衡审核 |
 | `cp_harvest_and_grade_records` | `harvest_and_gate_preparation` | 商品输出和次品 | 地磅、秤或等级记录 | 采收质量；商品质量；等级；次品；去向；水分；交接日期 | 校准秤和等级登记；原始汇总与分配：核对采收质量与等级、损失和去向行 | kg | 每次采收和交接 | 采收窗口 | 场址和去向 | 每声明的参考流 | 秤检查、等级登记和交付记录 |
-| `cp_residue_and_loss_records` | `root_crop_management; harvest_and_gate_preparation` | 残体、间苗和田间损失 | 残体和损失记录 | 残体类型；质量；水分；事件；去向；方法 | 田间观察、称量和去向记录；原始汇总与分配：称量、水分检查和去向记录 | kg 鲜/干物质 | 每个事件和周期 | 完整作物周期 | 保留按去向区分的行并与采收平衡核对 | 每声明的参考流 | undefined |
+| `cp_residue_and_loss_records` | `root_crop_management; harvest_and_gate_preparation` | 残体、间苗和田间损失 | 残体和损失记录 | 残体类型；质量；水分；事件；去向；方法 | 田间观察、称量和去向记录；原始汇总与分配：保留按去向区分的行，并与采收平衡核对 | kg 鲜/干物质 | 每个事件和周期 | 完整作物周期 | 生产田块、采收及交付门前处理场址 | 每声明的参考流 | 称量、水分检查及去向记录 |
 
 ### 计算规则
 

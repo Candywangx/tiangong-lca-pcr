@@ -49,10 +49,10 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_mass` | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Report net mass and measured moisture content/basis; never mix fresh and dried mass without moisture conversion. |
+| `reference_mass` | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 报告净质量及实测含水率/基准；没有水分换算不得混用鲜质量与干质量。 |
 | `land_time_basis` | establishment and management | area and time | ha, year | Separate establishment, non-bearing and productive phases. |
-| `nutrient_active_mass` | nutrient inventory | product and nutrient mass | kg product, kg N/P/K | Collect every actual nutrient product and composition separately below the consolidated card. |
-| `lot_reconciliation` | harvest through grading | Mass | kg/lot | Reconcile accepted, downgraded, rejected, sampled and moisture-loss states by lot/batch. |
+| `nutrient_active_mass` | nutrient inventory | product and nutrient mass | kg product, kg N/P/K | 在归集卡之下，分别采集每种实际养分产品及其组成。 |
+| `lot_reconciliation` | harvest through grading | Mass | kg/lot | 按批次核对合格、降级、拒收、取样及水分损失状态。 |
 
 ## 5. 系统边界
 
@@ -410,7 +410,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： Nitrous oxide to air
 - 流属性/单位：质量 / kg N2O
-- 数量规则：apply selected IPCC tier to collected synthetic, organic and residue N; convert N2O-N to N2O once using 44/28
+- 数量规则：将所选 IPCC 层级用于所采合成、有机及残体氮；按 44/28 将 N2O-N 换算为 N2O，仅一次。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：per kg N included in the direct managed-soil equation.
@@ -827,10 +827,10 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `allocation_avoid_first` | all shared operations | Subdivide route-specific and separately metered operations before allocation. | `iso-14044-2006` |
-| `allocation_nutmeg_outputs` | nutmeg production/separation | Treat seed and mace as intended co-products. Allocate inseparable burdens by matched-period farm-gate economic value and report mass-allocation sensitivity. Pericarp receives burden only when deliberately sold or used. | `iso-14044-2006`; `fao-nutmeg-handling` |
+| `allocation_nutmeg_outputs` | nutmeg production/separation | 将种子和肉豆蔻衣视为预期共产品；不可分负担按匹配期间农场门经济价值分配，并报告质量分配敏感性。果皮仅在有意出售或使用时承接分配负担。 | `iso-14044-2006`; `fao-nutmeg-handling` |
 | `allocation_establishment` | perennial establishment | 跨生命周期阶段，将建园负荷除以实际累计可售产出； for incomplete lives use a documented forecast and update for mortality, replacement or termination. Never charge one cohort twice. | `cerutti-perennial-crops-2016` |
-| `allocation_batches` | conditioning/grading | Assign measured batch inputs directly; apportion shared run/changeover burden once by mass handled. Re-dried lots retain prior burden and receive additional re-drying burden. | `iso-14044-2006` |
-| `allocation_rejects` | downgrade/rework/waste | Return rework to its producing lot; keep burden with downgraded saleable product under the chosen co-product rule; give waste no avoided credit in an attributional dataset. | `iso-14044-2006` |
+| `allocation_batches` | conditioning/grading | 实测批次投入直接归属，共享运行/换线负担按处理质量分摊一次；复干批次承接既有负担，并增加实际复干负担。 | `iso-14044-2006` |
+| `allocation_rejects` | downgrade/rework/waste | 返工返回其产生批次；有用途降级品按所选共产品规则承接负担；归属型数据集不向废物给予避免负担抵扣。 | `iso-14044-2006` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -854,10 +854,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_establishment_attribution` | establishment | cohort inventory × product allocation share / cumulative actual or forecast saleable lifetime output | cohort inputs, area, survival, productive years, outputs | inventory/kg saleable output | `cerutti-perennial-crops-2016` |
-| `calc_soil_n2o` | managed soil | apply selected IPCC tier to collected synthetic, organic and residue N; convert N2O-N to N2O once using 44/28 | N inputs, soil/climate and factors | kg N2O with factor provenance | `ipcc-2019-managed-soils` |
-| `calc_conditioning_balance` | conditioning | wet input = conditioned output + rejects + samples + moisture loss, all on consistent basis | masses and moisture | reconciled yield/water loss | `iisir-cardamom-2022`; `fao-nutmeg-handling` |
-| `calc_nutmeg_allocation` | seed/mace | share = output mass × matched farm-gate price / total intended-output revenue; repeat by mass | saleable masses and prices | shares summing to one | `iso-14044-2006` |
+| `calc_establishment_attribution` | establishment | 群组清单量×产品分配份额÷累计实际或预测可销售寿命期产出。 | cohort inputs, area, survival, productive years, outputs | inventory/kg saleable output | `cerutti-perennial-crops-2016` |
+| `calc_soil_n2o` | managed soil | 将所选 IPCC 层级用于所采合成、有机及残体氮；按 44/28 将 N2O-N 换算为 N2O，仅一次。 | N inputs, soil/climate and factors | kg N2O with factor provenance | `ipcc-2019-managed-soils` |
+| `calc_conditioning_balance` | conditioning | 在一致基准上：湿进料＝处理后产出＋拒收物＋样品＋水分损失。 | masses and moisture | reconciled yield/water loss | `iisir-cardamom-2022`; `fao-nutmeg-handling` |
+| `calc_nutmeg_allocation` | seed/mace | 份额＝产出质量×匹配农场门价格÷全部预期产出收入；另按质量法作敏感性核算。 | saleable masses and prices | shares summing to one | `iso-14044-2006` |
 | `calc_reference_normalization` | dataset | attributed inventory / accepted mass × 1,000 | attributed inventory; accepted mass | inventory/1,000 kg |  |
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_management`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
@@ -871,12 +871,12 @@ sync_with: pcr.en-US.md
 
 | requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | all records | Preserve crop/species, organ, stand, harvest period, lot, moisture and route; mixed lots need measured composition. | maps, lot ledger, specification |
-| `dq_temporal` | perennial phases | Cover the full represented year and retain establishment history or remaining-life model. | cohort history and replacement plan |
+| `dq_identity` | all records | 保留作物/物种、器官、群落、采收期间、批次、水分及路线；混合批次须有实测组成。 | maps, lot ledger, specification |
+| `dq_temporal` | perennial phases | 覆盖完整代表年度，并保留建植历史或剩余寿命模型。 | cohort history and replacement plan |
 | `dq_mass_balance` | separation/conditioning/grading | Investigate unexplained difference above 5% of input rather than forcing closure. | calibrated weights and reconciliation |
 | `dq_moisture` | fresh/dried conversion | Use one documented moisture method and basis; record sampling time. | test and calibration record |
 | `dq_completeness` | inventory | 将种植材料、每种实际肥料/改良剂配方、植保产品、水、能源、产出、降级/拒收、残余和排放驱动与原始记录核对。每种实际肥料/改良剂采用单独原子产品输入卡，保留产品质量、组成和施用记录；养分当量为属性/计算输入，不是重复产品数量。UUID缺失保留明确待核验状态。 | invoices, logs, meters, receipts |
-| `dq_representativeness` | aggregation | Disclose geography, system, route, ages, intercropping and drying technology; justify farm aggregation. | sampling frame and weights |
+| `dq_representativeness` | aggregation | 披露地理、系统、路线、年龄、间作及干燥技术，并论证农场汇总。 | sampling frame and weights |
 
 ## 9. 校验规则
 
@@ -884,12 +884,12 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `validate_reference_identity` | reference flow | 按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。 |  |
 | `validate_route_exclusivity` | graph | Fail if nutmeg/cardamom or fresh/ambient/heated routes are silently averaged. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |
-| `validate_period_attribution` | establishment | Fail if phase, stand age, replacement or termination treatment is absent or double counted. | `cerutti-perennial-crops-2016` |
-| `validate_output_set` | nutmeg separation | Fail unless seed, mace and pericarp destinations are declared and intended products allocated. | `fao-nutmeg-handling` |
-| `validate_batch_linkage` | harvest through dispatch | Fail if inputs, cleaning, outputs, re-drying or rejects lack a lot/batch/period link or shared burden is duplicated. |  |
+| `validate_period_attribution` | establishment | 缺少阶段、群落年龄、补植或终止处理，或发生双计时不通过。 | `cerutti-perennial-crops-2016` |
+| `validate_output_set` | nutmeg separation | 除非声明种子、肉豆蔻衣及果皮去向，并对预期产品分配，否则不通过。 | `fao-nutmeg-handling` |
+| `validate_batch_linkage` | harvest through dispatch | 投入、清洁、产出、复干或拒收缺少批次/期间关联，或共享负担重复时不通过。 |  |
 | `validate_nutrient_cardinality` | each process | 每种实际肥料/改良剂配方须有一张原子产品输入卡，含产品质量、组成、施用记录和已核验或明确未决身份。拒绝组或异质产品合并交换、漏实际产品、产品与养分重复数量或虚构UUID；过程没有最多一张卡的限制。 |  |
 | `validate_mass_balance` | separation/conditioning/grading | Fail when output states are not reconciled or rejects are accepted product. | `fao-nutmeg-handling`; `iisir-cardamom-2022` |
-| `validate_boundary` | downstream | Fail if grinding, extraction, commercial-kernel cracking, blending, fumigation or consumer packaging is included. | `fao-nutmeg-handling` |
+| `validate_boundary` | downstream | 纳入研磨、提取、商业取仁脱壳、混配、熏蒸或消费包装时不通过。 | `fao-nutmeg-handling` |
 
 ## 10. 发布数据集画像
 

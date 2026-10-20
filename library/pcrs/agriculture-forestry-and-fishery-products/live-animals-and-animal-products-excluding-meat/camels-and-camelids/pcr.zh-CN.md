@@ -50,10 +50,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 要求属性 | 要求单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_live_weight` | reference animals | Mass | kg | Weigh immediately before transfer and retain scale point, calibration, individual/lot basis and any fasting or gut-fill convention. |
-| `count_to_mass` | entries, births, deaths and transfers | Mass | kg | Preserve head, species and class; convert only with measured weights or a documented matching-class mean. |
-| `feed_dry_matter` | forage, browse, concentrates and supplements | Mass | kg dry matter and kg as-fed | Preserve as-fed mass and dry-matter fraction; identify the reviewed method for unmeasured intake. |
-| `water_basis` | supplied water | Mass or volume | kg or m3 | Separate managed supply from rainfall or unmanaged access and disclose meter coverage or estimation. |
+| `reference_live_weight` | reference animals | Mass | kg | 交接前立即称重，保留称重点、校准、个体/批次基准及禁食或胃肠充盈约定。 |
+| `count_to_mass` | entries, births, deaths and transfers | Mass | kg | 保留头数、物种及类别；仅以实测体重或有记录匹配类别平均体重换算。 |
+| `feed_dry_matter` | forage, browse, concentrates and supplements | Mass | kg dry matter and kg as-fed | 保留原饲喂态质量及干物质分数；采食量非实测时说明经审查方法。 |
+| `water_basis` | supplied water | Mass or volume | kg or m3 | 将受管理供水与降雨或非受管理饮水分开，披露计量覆盖或估算。 |
 | `emission_basis` | CH4, N2O and NH3 | 最终交换中指定化合物的质量 | kg CH4; kg N2O; kg NH3 | 保留氮基准原始记录；在最终归一化前，将 kg N2O-N 乘以 44/28 换算为 kg N2O，将 kg NH3-N 乘以 17/14 换算为 kg NH3。已为化合物质量的数量不得再次换算。最终固定 UUID 交换使用所绑定化合物的质量，不能直接填写氮基准数量。明确原始物种与元素基准；碳当量不得替代 CH4 质量。 |
 | `inventory_reference_normalization` | 所有清单行 | 实际流属性 | 每参考流的交换单位 | 下方清单和采集汇总字段表示每个声明参考流的最终数量。保留全部原始采集记录、原分母限定信息、路线及期间分层、单位换算和分配要求。对每项流，先依原有规则取得以其自身分子单位表示的可归属数量，再除以同一范围的实测合格参考产出数量，并乘以声明参考数量。不得混合物种、状态、交付门或不相容路线；内部移交及共享负担只计一次。合格产出分母缺失、为零或不可追溯时，属于阻断性数据质量问题。暂定 QA 范围仍使用其明确声明的基准，不能视为换算因子或生产默认值。 归一化数量 = 可归属数量 × 声明参考数量 / 实测合格参考产出数量。归一化只执行一次，不得再次除以已使用的分母。 |
 | `stage_throughput_linkage` | 阶段记录及最终数据包贡献 | 实际流属性及其原始基准 | 保留原生分子及阶段分母单位 | 保留原始批次、事件、群组、期间及阶段分母与单位。使用实测阶段数量 Q_stage 和有依据的归属关系重建可归属分子 A，再作最终归一化。若报告数量 a_B 对应明确阶段基准 B_stage（例如 1000 kg），则 A = a_B × Q_stage / B_stage。若 r_stage 已是交换单位／阶段单位的单位强度，则改用 A = r_stage × Q_stage，不再次除以 B_stage。可归属原始总量直接使用。最终贡献 = A × 声明参考数量 / 实测合格最终产出。明确换算相容单位，每项归属／分配份额恰应用一次；不得将基准数量下的报告用量或单位强度当成原始总量。阶段移交、损失、拒收、库存、共享服务及分配必须关联同一实际路线、期间和最终产出分层。1000 kg 基准仍明确保留 1000 kg。不得假设单位产率、鲜干质量相同、个体质量相同、剂量质量等价或交付门可互换。关联缺失、单位换算无依据、分母为零或分配不可追溯时，阻断数据包生产。阶段原生数据集保留自身阶段参考；数据包贡献为单独投影。 |
@@ -474,10 +474,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `complete_outputs` | animals, camel milk, fibre/hair and exported manure | Enumerate intended outputs and hand-offs; milk is camel-only and fibre follows actual species/state. Mortalities and untransferred residues are loss/waste. | `fao-ruminant-lca-2013`; `fao-leap-nutrient-flows-2018` |
+| `complete_outputs` | animals, camel milk, fibre/hair and exported manure | 列举预期产出及交接；乳仅适用于骆驼，纤维依实际物种/状态；死亡及未转移残体属于损失/废物。 | `fao-ruminant-lca-2013`; `fao-leap-nutrient-flows-2018` |
 | `partition_first` | 物种、路线、活动、期间和产出 | 在剩余负担分配前，直接归属实测饲料、水、移动、粪污、能源和产出负担。 | `fao-ruminant-lca-2013` |
-| `residual_allocation` | inseparable joint outputs | Use representative farm-gate economic value unless reviewed physical causation is demonstrated; disclose prices, currency, period and sensitivity. | `fao-ruminant-lca-2013` |
-| `period_attribution` | breeding/replacement animals and long-lived assets | Link events to phases/periods, attribute over actual service and prohibit later duplicate attribution. | `fao-ruminant-lca-2013` |
+| `residual_allocation` | inseparable joint outputs | 除经审查物理因果成立外，采用代表农场门经济价值；披露价格、币种、期间及敏感性。 | `fao-ruminant-lca-2013` |
+| `period_attribution` | breeding/replacement animals and long-lived assets | 将事件关联阶段/期间，按实际服务归属，禁止以后重复归属。 | `fao-ruminant-lca-2013` |
 | `shared_asset_attribution` | 共享饮水、庇护、操作、车辆和粪污资产 | 列举消费者和期间；优先使用计量值，其次为运行小时、动物日或活重时间；仅计一次。 | `fao-ruminant-lca-2013` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
@@ -511,9 +511,9 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `normalize_output` | all rows | attributable period amount / accepted farm-gate live weight; preserve raw species/route records. | amount; transferred live weight | amount/kg reference | `fao-ruminant-lca-2013` |
-| `herd_balance` | herd events | opening + entries + births = closing + transfers + deaths; class transitions are linked, not new animals. | events | reconciled head balance | `fao-ruminant-lca-2013` |
-| `dry_matter` | feed/browse | as-fed mass × measured/supplier dry-matter fraction; declare method for unmeasured intake. | as-fed; fraction; land records | kg dry matter | `ipcc-2019-livestock-manure` |
+| `normalize_output` | all rows | 可归属期间数量÷合格农场门活重；保留物种/路线原始记录。 | amount; transferred live weight | amount/kg reference | `fao-ruminant-lca-2013` |
+| `herd_balance` | herd events | 期初＋进入＋出生＝期末＋转移＋死亡；类别转变须关联，不计作新增动物。 | events | reconciled head balance | `fao-ruminant-lca-2013` |
+| `dry_matter` | feed/browse | 原饲喂态质量×实测/供应商干物质分数；非实测采食量须声明方法。 | as-fed; fraction; land records | kg dry matter | `ipcc-2019-livestock-manure` |
 | `enteric_methane` | 肠道 CH4 | 按物种/类别和期间应用已声明层级；保留活动数据和因子。 | 类别；动物日；饲料/能量；因子 | kg CH4 | `ipcc-2019-livestock-manure` |
 | `manure_emissions` | 粪污 CH4、N2O 和 NH3 | 按动物类别、排泄及粪污路径应用声明的经审查公式。保留氮基准原始记录；在最终归一化前，将 kg N2O-N 乘以 44/28 换算为 kg N2O，将 kg NH3-N 乘以 17/14 换算为 kg NH3。已为化合物质量的数量不得再次换算。最终固定 UUID 交换使用所绑定化合物的质量，不能直接填写氮基准数量。 | 类别；排泄/N；路径；气候；因子 | kg CH4、N2O、NH3 | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |
 | `transport_service` | included transport | tonnes × included one-way km. | cargo mass; distance | t*km | `fao-ruminant-lca-2013` |
@@ -528,7 +528,7 @@ sync_with: pcr.en-US.md
 | `identity_gate` | 参考产出 | 声明物种、类别/用途、路线、地域、期间、称重和移交。 | 畜群、秤、移交和元数据记录 |
 | `route_specificity` | 所有行 | 分开记录实质不同的牧区/移动式、混合及舍饲路线。 | 路线、移动、饲料、水、庇护设施和汇总记录 |
 | `temporal_completeness` | herd/assets | Cover material phases/events or disclose missing phases and supplier datasets. | herd calendar and event records |
-| `output_reconciliation` | outputs/losses | Reconcile animals, applicable milk/fibre, manure, deaths, closing stock and internal use. | output, inventory, mortality and waste records |
+| `output_reconciliation` | outputs/losses | 核对动物、适用乳/纤维、粪污、死亡、期末存栏及内部使用。 | output, inventory, mortality and waste records |
 | `manure_balance` | nutrients/emissions | Reconcile deposition, storage, treatment, application, export and waste. | pathway balance and transfer records |
 | `shared_traceability` | 共享资产 | 保留消费者、期间、测量、驱动因素和单次计数证据。 | 仪表、日志和归属工作表 |
 
@@ -539,7 +539,7 @@ sync_with: pcr.en-US.md
 | `validate_reference` | 参考产出 | 拒绝肉、奶、纤维、皮、服务或已屠宰身份；要求固定活体动物 UUID、物种/路线限定项和农场门口活重基准。 | `fao-gleam` |
 | `validate_route` | 路线变体 | 要求单一物种/路线或透明汇总，并有匹配的饲料、移动、水、庇护设施、粪污、能源和产出记录。 | `fao-gleam`; `ipcc-2019-livestock-manure` |
 | `validate_periods` | 多期间生产 | 按物种和期间核对存量/事件，并拒绝动物、替换或资产负担重复。 | `fao-ruminant-lca-2013` |
-| `validate_outputs` | reference/co-products | Require complete outputs/losses, hand-offs, partitioning and residual method; reject camel milk on South American camelid routes and duplicate hand-offs. | `fao-ruminant-lca-2013`; `fao-leap-nutrient-flows-2018` |
+| `validate_outputs` | reference/co-products | 要求完整产出/损失、交接、划分及剩余负担方法；南美骆驼科路线出现骆驼乳或重复交接时不通过。 | `fao-ruminant-lca-2013`; `fao-leap-nutrient-flows-2018` |
 | `validate_shared_assets` | 共享资产 | 要求至少两个消费者/期间、一个服务边界、一个驱动因素，且无重复负担。 | `fao-ruminant-lca-2013` |
 | `validate_emissions` | 肠道/粪污行 | 要求类别、活动、路径、层级、因子溯源、物种/基准及核对；因子是输入而非观测量。 | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |
 | `validate_flow_identity` | 水、能源、运输 | 具体发布要求一个与实际产品或载体、属性、单位、地域和用途匹配的已验证 UUID；待确认卡片不得同时携带固定 UUID。 |  |

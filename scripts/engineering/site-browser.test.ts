@@ -25,10 +25,10 @@ test('sealed browser selects a real bounded inline download and rejects a missin
    const markdown=findInlineDownload(inspectSiteExport(f.root),name);assert.ok(markdown);assert.equal(markdown.name,name);assert.equal(markdown.bytes,bytes.length);
   }
 
-  const larger=Buffer.alloc(24000,65),largerUrl='data:application/octet-stream;base64,'+larger.toString('base64');
+  const larger=Buffer.alloc(40960,65),largerUrl='data:application/octet-stream;base64,'+larger.toString('base64');
   f.put('en/docs/pcr/a/b/c/index.html',`<html lang="en-US"><h1>Fixture</h1><a download="pcr.en-US.md" href="${url}" class="pcr-download-name">pcr.en-US.md</a></html>`);
   f.put('en/docs/pcr/a/b/larger/index.html',`<html lang="en-US"><h1>Fixture</h1><a download="pcr.en-US.md" href="${largerUrl}" class="pcr-download-name">pcr.en-US.md</a></html>`);
-  const largest=findInlineDownload(inspectSiteExport(f.root),'pcr.en-US.md');assert.ok(largest);assert.equal(largest.bytes,24000);assert.equal(largest.route,'/en/docs/pcr/a/b/larger/');
+  const largest=findInlineDownload(inspectSiteExport(f.root),'pcr.en-US.md');assert.ok(largest);assert.equal(largest.bytes,40960);assert.equal(largest.route,'/en/docs/pcr/a/b/larger/');
   f.put('en/docs/pcr/a/b/c/index.html',`<html lang="en-US"><h1>Fixture</h1><a href="${url}" class="pcr-download-name">manifest.yaml</a></html>`);
   assert.throws(()=>findInlineDownload(inspectSiteExport(f.root)),/manifest.yaml/u);
  }finally{f.close();}

@@ -53,7 +53,7 @@ sync_with: pcr.en-US.md
 | `reference_mass` | accepted fresh yautia | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Weigh accepted cormels on the fresh wet basis after included trimming and cleaning. |
 | `field_area_cycle` | cultivation inputs and emissions | Area; crop cycle | ha; cycle | Record actual area and dates; normalize only after linked mass balances close. |
 | `nutrient_content` | fertilizers | Product mass and nutrient content | kg product; kg N; kg P2O5 or P; kg K2O or K | Retain product mass and assay separately and state oxide-to-element conversions. |
-| `water_energy` | irrigation and utilities | Volume or energy | m3; kWh; L; MJ | Record each utility separately and disclose source, pumping boundary and upstream coverage. |
+| `water_energy` | irrigation and utilities | Volume or energy | m3; kWh; L; MJ | 各项公用工程分别记录，披露来源、泵送边界及上游覆盖。 |
 
 ## 5. 系统边界
 
@@ -768,10 +768,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_output_classification` | all outputs | Classify each output once as reference product, downgraded product, propagation material, residue, waste, or loss; record one hand-off and prohibit double counting. | `mass-balance-identity` |
-| `allocation_planting_material` | propagation output | Treat internally retained material as an internal transfer. For independently sold intended products, prefer subdivision; otherwise allocate remaining shared burdens by fresh mass and disclose an economic sensitivity when values differ materially. |  |
-| `allocation_residue` | residues and rejects | Give no co-product allocation to material returned to soil or discarded without a documented product function; include its treatment burden. |  |
-| `allocation_shared_operations` | shared operations | Assign separable inputs directly before allocating remaining shared burdens; disclose output quantities, prices where used, method and precedence. |  |
+| `allocation_output_classification` | all outputs | 各产出仅归类一次为参考产品、降级产品、繁殖材料、残体、废物或损失，记录一处交接并禁止双计。 | `mass-balance-identity` |
+| `allocation_planting_material` | propagation output | 内部留用物料视为内部转移；独立销售的预期产品优先细分，否则按鲜质量分配剩余共享负担，价值显著不同时披露经济分配敏感性。 |  |
+| `allocation_residue` | residues and rejects | 没有有据产品功能的还田或废弃物料不作共产品分配；纳入其处理负担。 |  |
+| `allocation_shared_operations` | shared operations | 先直接归属可分离投入，再分配剩余共享负担；披露产出数量、使用时的价格、方法及优先级。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -818,21 +818,21 @@ sync_with: pcr.en-US.md
 | `dq_mass_balance` | harvest through grading | Reconcile each hand-off and explain differences exceeding 2% of the relevant input. | calibrated weights and worksheet |
 | `dq_range_review` | every inventory card | Use ranges as QA context, retain foreground values, and explain outliers. | range review and linked evidence |
 | `dq_co_products` | multiple outputs | Enumerate every intended output/destination and prevent double counting. | transfers, invoices and destination receipts |
-| `dq_completeness` | inventory | Account for at least 95% by mass of external non-water materials and disclose missing water, energy, pesticide, nutrient, emission, reject or destination records. | completeness and missing-data logs |
+| `dq_completeness` | inventory | 覆盖至少 95% 的外部非水物料质量，并披露缺少的水、能源、农药、养分、排放、拒收或去向记录。 | completeness and missing-data logs |
 
 ## 9. 校验规则
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference flow | Exactly one 1,000 kg output uses Yautia flow `72013e1f-538d-4031-b97a-03bfaa42b37d`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66` and all qualifiers. |  |
-| `validate_species_boundary` | identity | Reject an ambiguous “cocoyam” identity or *Colocasia* substitution without reviewed proxy disclosure. | `fao-aroids-postharvest`; `codex-tannia-224-2001` |
-| `validate_node_handoffs` | process map | Require exact cultivation→lifting, lifting→conditioning and conditioning→grading lot links. | `mass-balance-identity` |
-| `validate_destinations` | grading | Require explicit zero or measured accepted, downgraded, propagation and reject states, each with one hand-off. | `codex-tannia-224-2001` |
-| `validate_conditional_routes` | conditioning | Unused washing/powered routes have zero flows; used routes report utilities and wastes. Storage/packaging requires a boundary extension. |  |
-| `validate_ranges` | all cards | Require ordered nonnegative bounds, unit, denominator, basis kind and evidence kind; external ranges require source ids and regional examples are not limits. |  |
-| `validate_multi_output` | intended outputs | Require a complete output set and explicit attribution; prohibit crediting internally transferred planting material as a sale. |  |
+| `validate_reference_identity` | reference flow | 恰好一个 1,000 kg 产出采用 Yautia 流 72013e1f-538d-4031-b97a-03bfaa42b37d、质量属性 93a60a56-a3c8-11da-a746-0800200b9a66 及全部限定项。 |  |
+| `validate_species_boundary` | identity | 没有经审查的代理披露时，拒绝含混“cocoyam”身份或以 Colocasia 替代。 | `fao-aroids-postharvest`; `codex-tannia-224-2001` |
+| `validate_node_handoffs` | process map | 要求栽培→挖收、挖收→处理及处理→分级的批次精确关联。 | `mass-balance-identity` |
+| `validate_destinations` | grading | 合格、降级、繁殖及拒收状态均须有明确零值或实测值，且各有一次交接。 | `codex-tannia-224-2001` |
+| `validate_conditional_routes` | conditioning | 未使用的清洗/动力路线流量为零，使用路线报告公用工程和废物；储存/包装须扩展边界。 |  |
+| `validate_ranges` | all cards | 要求有序非负界限、单位、分母、基准类型及证据类型；外部范围须有来源 id，区域示例不是通用限值。 |  |
+| `validate_multi_output` | intended outputs | 要求完整产出集合及明确归属；不得将内部转移种植材料作为销售给予抵扣。 |  |
 | `validate_flow_identity_bindings` | 参数化身份的产品输入 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validate_direct_emissions` | field emissions | Require selected soil-emission method, 氮投入, factors, conversions and flow assignments; never infer emissions from fertilizer product mass alone. | `ipcc-2019-managed-soils` |
+| `validate_direct_emissions` | field emissions | 要求所选土壤排放方法、氮投入、因子、换算及流归属；不得仅由肥料产品质量推算排放。 | `ipcc-2019-managed-soils` |
 
 ## 10. 发布数据集画像
 

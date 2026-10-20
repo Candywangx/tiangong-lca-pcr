@@ -653,10 +653,10 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_apricot_reference_normalization` | all process outputs | normalized amount = declared flow amount / accepted farm-gate fruit mass × 1,000 kg | flow amount; accepted fruit mass | amount per 1,000 kg accepted fruit | `iso-14067` |
-| `calc_apricot_orchard_life_allocation` | establishment and replacement inputs | allocated orchard-year amount = total declared asset input × reporting orchard-year share over declared orchard life | asset input; orchard life; reporting period | orchard-year input | `fao-gap-framework-2003`; `iso-14067` |
-| `calc_apricot_nutrient_basis` | nutrient and amendment card | nutrient mass = product mass × declared nutrient fraction; retain product mass and nutrient basis separately | product mass; label or analysis fraction | kg product and kg nutrient | `fao-gap-framework-2003` |
-| `calc_apricot_mass_balance` | harvest and primary handling | incoming mass = accepted output + rejected output + measured loss, with unexplained residual investigated | incoming, accepted, rejected, and loss records | reconciled batch flows | `fao-gap-framework-2003` |
-| `calc_apricot_field_emissions` | soil and residue emissions | apply the selected geographic method to collected nutrient, residue, soil, and climate inputs; do not reuse a default factor without recording applicability | nutrient, residue, soil, climate, and method inputs | elementary emission flows | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
+| `calc_apricot_orchard_life_allocation` | establishment and replacement inputs | 分配的果园年度数量＝声明资产投入总量×声明果园寿命内的报告年度份额。 | asset input; orchard life; reporting period | orchard-year input | `fao-gap-framework-2003`; `iso-14067` |
+| `calc_apricot_nutrient_basis` | nutrient and amendment card | 养分质量＝产品质量×声明养分分数；产品质量及养分基准分列。 | product mass; label or analysis fraction | kg product and kg nutrient | `fao-gap-framework-2003` |
+| `calc_apricot_mass_balance` | harvest and primary handling | 进料质量＝合格产出＋拒收产出＋实测损失；调查未解释差额。 | incoming, accepted, rejected, and loss records | reconciled batch flows | `fao-gap-framework-2003` |
+| `calc_apricot_field_emissions` | soil and residue emissions | 对所采养分、残体、土壤及气候投入使用所选地理适用方法；未记录适用性时不得复用默认因子。 | nutrient, residue, soil, climate, and method inputs | elementary emission flows | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
 
 ### 数据质量要求
 

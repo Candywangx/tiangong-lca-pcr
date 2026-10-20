@@ -30,17 +30,19 @@ translation_status: aligned
 | How much | 1 kg 净合格干果 |
 | How well | 声明属/种、整粒形态、进出含水率、等级、干燥路线、地域和交付点 |
 | How long or cycle | 一个声明的采收季及其对应干燥批次 |
-| reference_flow_link | accepted_dried_fruit |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | 整粒未加工辣椒属或多香果属干果；UUID 待确认 |
+| 参考产品流 | 完整未研磨的辣椒属（Capsicum）或多香果属（Pimenta）原料干果（UUID 未解析） |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | 属和种；品种或商品类型；整粒未加工状态；含水率；等级；自然/太阳能或机械干燥；采收季；地域；声明交付点；散装或容器状态 |
 参考量不包含皮重、去除的自由水、拒收物、交付点前分离的果柄和低等级果实。Tiangong 身份查询成功前不得声称已有 CPC 专用产品流 UUID。
+
+唯一参考产出为 `declared_reference_handoff` 的 `reference_product_at_declared_handoff`，它仅对既有声明交接点的实际合格产品作必需计量。`first_cleaning_grading` 的实体活动仍为条件性活动；省略该活动不取消参考产出。选择实际最后纳入的产品交接并记录过程/产出 id，物种、物理状态、等级、含水率基准及交接点必须与第3节一致。原 `accepted_dried_fruit` 行仅在其作业实际发生时记录该作业实测产出，不是另一笔最终销售。旁路不新增加工、得率假设或负担，也不改变产品边界。
 
 ## 4. 计量与单位规则
 | rule_id | Applies to | Required property | Required unit | Rule |
@@ -79,6 +81,7 @@ translation_status: aligned
 | `fruit_harvest` | 果实采收与收集 | conditional | 前景包含种植时 | foreground | 收集鲜果 |
 | `primary_drying` | 果实初级干燥 | required | 所有纳入的自然/太阳能及机械干燥步骤 | foreground | 实测含水率的干果 |
 | `first_cleaning_grading` | 首次清理分级 | conditional | 交付点前实施清理或分级时 | foreground | 合格整粒干果 |
+| `declared_reference_handoff` | 声明交接点合格产品计量 | required | 每条实际选定路线，包括条件处理/包装/储存的旁路 | 仅计量及核对，不新增实体加工 | 1 kg 同一声明交接点净合格产品 |
 
 ### 过程：受管理果实生产（`managed_fruit_production`）
 #### 输入
@@ -539,15 +542,17 @@ translation_status: aligned
 ##### 产品流
 
 ###### 整粒未加工辣椒属或多香果属干果；UUID 待确认（`accepted_dried_fruit`）
-按声明含水率称量各合格等级，仅汇总符合参考规格的等级。
+
+仅在 `first_cleaning_grading` 作业实际发生时记录该作业实测合格产出，保留物种、状态、等级、含水率、批次和真实移出交接点。此稳定行 id 表示实际路线产出；唯一最终参考产出为 reference_product_at_declared_handoff。保留原始产出并关联选定最终批次，不作为另一份最终产品重复计数。所列 UUID 仅适用于已独立确认的物理状态/交接点；不相容的上游/中间状态须另行核实或明确保持身份未解析。保留原阶段计量及采集记录。
+
 - 选定流：整粒未加工辣椒属或多香果属干果；UUID 待确认
 - 流属性/单位：Mass / kg
-原始产出计量与核对要求：按具体工序和批次测量，再归一化至 1 kg 净合格未加工干果
+原始产出计量及核对：按 `cp_grade_records` 称量实际作业净合格批次产出，保留毛重/皮重、拒收、库存、含水率及匹配后续批次记录，在最终归一化前核对。
 
-- 数量规则：1 千克
+- 数量规则：按 `cp_grade_records` 实测实际作业净合格产出；保留原始批次数量及实际阶段处理量，依第8节最终交接归一化规则换算一次，不规定固定中间得率
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 合格未加工干果.
+原始活动或阶段基准：实测实际作业/批次产出及处理量，在一次最终参考归一化前保留。
 
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
@@ -567,6 +572,46 @@ translation_status: aligned
 分别记录降级但可用果实、拒收物、分离的果柄/杂质和粉尘。声明每项是否返工、销售、回收或弃置；仅有依据的联产品参与分配。
 ##### 基本流
 不预设通用基本流。
+
+### 过程：声明交接点合格产品计量（`declared_reference_handoff`）
+本计量不新增加工、废物产生或排放。保留全部真实上游作业和损失，仅旁路有据未发生的活动。选择一个实际终端产品批次，系统汇总时将其成对内部转移抵销一次；不得把未启用路线、共产品或来源产出与交接产出相加为合格最终产出。
+
+#### 输入
+##### 产品流
+###### 同一交接点实际路线合格产品 (`actual_route_product_for_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：完整未研磨的辣椒属（Capsicum）或多香果属（Pimenta）原料干果（UUID 未解析）
+- 流属性/单位：质量 / kg
+- 数量规则：本同一交接点实测净合格质量，按 R/R × 1 kg 归一化；成对投入与合格产出相等，保留原始 R
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+##### 基本流
+#### 输出
+##### 产品流
+###### 声明交接点参考产品 (`reference_product_at_declared_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：完整未研磨的辣椒属（Capsicum）或多香果属（Pimenta）原料干果（UUID 未解析）
+- 流属性/单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+实际废物保留在其产生作业，不在此重复。
+##### 基本流
+实际释放保留在其负责的实体作业，不在此重复。
 
 ## 7. 分配与联产品处理
 | rule_id | Applies to | Rule | source_ids |
@@ -615,6 +660,18 @@ translation_status: aligned
 | `dq_moisture` | 干燥 | 须测量或记录进出含水率、方法和抽样方案；不得假定跨属的统一目标。 | 含水率检测及规格 |
 | `dq_balance` | 采收至交付点 | 按批次核对合格、降级、拒收及损失质量，并解释差异。 | 签署的质量平衡表 |
 
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | 实际合格终端产品及成对转移 | 称量/批次/验收记录 | 物种；状态；等级；含水率/基准；交接点；actual_terminal_process_id；actual_terminal_output_row_id；lot/transfer_id；毛/皮/净质量 R；阶段原始总量/吞吐量；库存、拒收及去向 | 在既有交接点称量净合格 R，匹配唯一实际同批次/同状态终端来源，并核对前序损失及库存。若未发生条件性准备，采用最后实际纳入的适格产品产出，不虚构该准备作业。保留原活动记录及全部必需限定项。 | kg 及原生活动单位 | 每个合格批次 | 匹配生产及交接期间 | 既有声明生产者/初级交接点 | 每声明的参考流 | 校准称量、验收/等级记录、批次链、启用/旁路证据及闭合平衡 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | 全部前景数量及实际路线产出 | R 为匹配单一物种/状态/等级/交接点/期间且实测为正的合格最终质量 kg，剔除皮重、拒收、共产品及留存库存。物理台账＝原始物理数量/R×1 kg，不乘负荷分配份额；归属清单贡献＝可归属原始数量/R×1 kg，保留分子原生单位及原有产品/期间归属。阶段强度 q_i＝Q_i/O_i 须先按实际关联 O_i 还原 Q_i＝q_i×O_i；已最终归一化后不得再次除以 R。交接两侧均为同一实测事件 R/R×1 kg，不是另一实体得率。仅纳入实际启用作业，旁路须记录并有据。R 缺失/非正或终端记录未关联会阻断完整归一化结果，不能记零。保留原始阶段数据，成对内部转移抵销一次。 | cp_declared_reference_handoff; original linked collection protocols | 按声明最终参考报告的原生数量 | `declared-handoff-measurement-definition` |
+
 ## 9. 验证规则
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
@@ -624,6 +681,11 @@ translation_status: aligned
 | `validation_balance` | 干燥及分选 | 核对干物质和水分；最终出口前，合格产出须排除拒收、降级及仍在返工中的质量。 | `mass-balance-identity` |
 | `validation_identity_gap` | 参考流 | UUID 未确定时，数据集不得声称拥有固定的 Tiangong 参考产品流。 | `un-cpc-3-exp-2025` |
 
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | 实际选定路线及全部条件旁路状态 | 按实际记录检查可选处理/包装/储存启用及省略两种状态：始终保留唯一必需交接参考；来源产品/状态/交接点与第3节一致；启用的实体行保留实测吞吐量，未启用实体活动不新增交换。要求原始合格质量、上游闭合、唯一转移配对及一次最终归一化；未知状态或缺少身份不得当作已成立分支。 | `declared-handoff-measurement-definition` |
 
 ## 10. 发布数据集概况
 | Field | Value |
@@ -646,3 +708,7 @@ translation_status: aligned
 | `mass-balance-identity` | method_factor | 对实测采收、干燥与分选阶段应用干物质和水的守恒关系 | 干燥质量平衡与核对 |
 | `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
 | `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | 本 PCR 第3、6及8节：同一合格交接质量除以自身再乘声明参考数量；属于物理转移配对及量纲归一化恒等式，不是经验得率或新增实体操作。 | 唯一合格参考及实测路线吞吐关联 |

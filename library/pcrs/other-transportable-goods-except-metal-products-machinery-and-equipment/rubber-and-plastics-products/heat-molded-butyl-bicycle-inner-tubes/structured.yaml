@@ -1,0 +1,1415 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.heat-molded-butyl-bicycle-inner-tubes"
+  classification_refs: "CPC 3.0 36114 (narrower product subset)"
+  covered_products: "Valve-equipped heat-molded IIR bicycle inner tubes from onsite virgin-rubber compounding"
+  excluded_products: "Complete pneumatic tyres, tubeless tyre inner liners, solid/cushion tyres, interchangeable treads, flaps, curing bladders, industrial hoses, open-ended repair tubes, latex and TPU tubes, autoclave-cured tubes, halobutyl-based tubes, reclaimed-rubber-feed routes and purchase-and-pack-only operations are excluded. No claim is made to all CPC 36114 products or to tyre service equivalence."
+  representative_product: "One declared tube size/wall and valve configuration, supplied complete"
+  production_route: "Ingredient mixing and filtration → extrusion/cooling → splicing/valving → heated-mold cure and inspection → storage/packing/loading"
+  market_state: "New, cured, accepted tube with declared valve/fittings; net product mass at net delivery"
+functional_unit:
+  what: "Provide the air-retaining inner component for a separately supplied bicycle tyre"
+  how_much: "1 kg net accepted delivered complete inner tube"
+  how_well: "Declared size/wall, valve compatibility, splice integrity and leak-test acceptance"
+  how_long_or_cycle: "One manufacturing-to-delivery cycle; no riding-distance or service-life equivalence"
+  reference_flow_link: "delivered_tube"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacture
+      applies_to: "all processes"
+      rule: "Include material production through linked upstream datasets, inbound transport, all actual onsite ingredient mixing/filtration, extrusion/cooling, splicing/valving, mold curing, inspection, failures, rework, storage, packaging and loading through the declared net-delivery gate. The listed cards are a minimum for the declared route, not permission to omit an actual exchange: add each additional ingredient, supplied formulation, fuel, refrigerant, packaging component, waste or elementary species as a separate card and protocol entry. A conditional row is not_applicable only with evidence of absence; unknown is not zero."
+      source_ids:
+        - schwalbe-tube-tech-2015
+        - innovative-tube-process-2017
+        - epa-rubber-process-2008
+    - rule_id: boundary_terminal
+      applies_to: "all processes"
+      rule: "The terminal reference gate is actual net accepted delivery at the manufacturing site after the declared storage, packaging and loading operations, before external outbound transport. Q is the positive net delivered mass of the same product/configuration, route, period and supplied state, excluding packaging and test air. Production release P is a separate ledger quantity. Count each physical delivery once after matched return/cancellation corrections; reinspection or reshipment does not create new production. Undelivered finished goods are excluded from Q and retain their carried burdens."
+      source_ids:
+        - schwalbe-tube-tech-2015
+        - innovative-tube-process-2017
+    - rule_id: boundary_internal
+      applies_to: "all processes"
+      rule: "Match compound_out/compound_in, green_out/green_in and released_tubes/released_in by batch, physical quantity and carried burdens. Cancel each internal handoff once in the consolidated dataset, including internal steam or recovered offcut loops. Opening/closing WIP and finished stock are physical stocks with burden vectors, not purchased intermediates or extra terminal outputs. Returned products retain their identity and prior burdens."
+      source_ids: []
+    - rule_id: boundary_evidence
+      applies_to: "all processes"
+      rule: "Schwalbe 2015 supports heat-molded bicycle butyl tubes, filtration, valve bonding and individual inspection. Its seven filters and 24-hour test hold are manufacturer case conditions, not universal defaults. Innovative 2017 supports the separate tube mixing-to-dispatch route; adjacent tyre-only recipe prose is excluded. EPA 2008 is a historical DRAFT generic process account, not a current legal rule or inner-tube factor source; tyre bladder/liner recipes and their factors are not adopted. No universal recipe, cure temperature/time, yield, service life or emission factor is prescribed."
+      source_ids:
+        - schwalbe-tube-tech-2015
+        - innovative-tube-process-2017
+        - epa-rubber-process-2008
+boundary_abstraction:
+  declared_starting_condition: "Separately acquired dry virgin IIR and declared actual ingredients/whole supplied formulations, valve assemblies and utilities at named site"
+  starting_condition_role: "Foreground manufacturing with linked upstream production and inbound transport"
+  product_classification_scope: "Narrow heat-molded bicycle inner-tube subset of CPC 36114"
+  recursive_input_rule: "Purchased complete inner tubes cannot replace onsite production. Returned/reworked tubes retain traced previous burdens without a recursive new-tube purchase; separately declare any true external returned product and its carried burdens."
+  upstream_dataset_requirement: "Match each acquired physical form, recipe/supplier, geography, supply state and actual transport; generic identity alone is insufficient provider evidence"
+  disclosure: "Declare production/delivery gates, actual utility technology, raw and stock period, tests, packaging, excluded downstream transport/use/end of life and all remaining data/provider gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Inner tubes, solid or cushion tyres, interchangeable tyre treads and tyre flaps, of rubber"
+    uuid: "362630fe-314f-443f-b191-f8bed8eec674"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "tube size and compatible tyre/rim dimensions"
+    - "IIR grade and complete supplier/recipe identity"
+    - "wall thickness and heat-molded route"
+    - "valve type and complete supplied fittings"
+    - "site geography and actual utility supply"
+    - "acceptance tests and hold conditions"
+    - "net delivery gate and reporting period"
+    - "net mass excluding packaging and test air"
+    - "WIP and finished-stock quantities with carried burdens"
+    - "packaging and storage/loading scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net supplied complete-tube mass including declared valve/fittings and excluding packaging/test air. Preserve native Mass as the reference; counts are auxiliary QC records and cannot substitute without measured configuration-specific net mass. No universal piece weight is supplied."
+  - id: delivery_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use actual positive net delivery Q, not production release P. Preserve unnormalized raw records and stocks/burden vectors. normalize_delivery is the sole reporting division; the card and aggregation fields describe that same operation."
+process_map:
+  - id: p_compound
+    name: "Ingredient preparation, mixing and filtration"
+    inclusion: "required"
+    inclusion_condition: "Actual declared route and supplied configuration"
+    role: "foreground manufacturing stage"
+    quantitative_reference: "per reference flow"
+  - id: p_form
+    name: "Tube extrusion, cooling, splicing and valve fitting"
+    inclusion: "required"
+    inclusion_condition: "Actual declared route and supplied configuration"
+    role: "foreground manufacturing stage"
+    quantitative_reference: "per reference flow"
+  - id: p_cure
+    name: "Heated-mold curing and acceptance inspection"
+    inclusion: "required"
+    inclusion_condition: "Actual declared route and supplied configuration"
+    role: "foreground manufacturing stage"
+    quantitative_reference: "per reference flow"
+  - id: p_delivery
+    name: "Finished storage, packaging and net delivery"
+    inclusion: "required"
+    inclusion_condition: "Actual declared route and supplied configuration"
+    role: "foreground manufacturing stage"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: p_compound
+    label: "Ingredient preparation, mixing and filtration"
+    inputs:
+      product:
+        - row_id: iir_feed
+          role: "Virgin IIR feed"
+          name: "Isobutylene-isoprene rubber, non-halogenated"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual separately acquired dry IIR grade, lot, net mass and supplier evidence. A butadiene/styrene route is incompatible. The polymer is acquired; its polymerization is upstream, while all onsite compounding remains inside this boundary."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: carbon_black
+          role: "Separately supplied reinforcing carbon black"
+          name: "Carbon Black"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dee14a4f-c02b-4bf5-affc-9e66b1d9a8ce"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use only for separately acquired carbon black. Native CAS 1333-86-4, solid commercial carbon reinforcing rubber; no grade, route or geography is fixed. The native CPC 37950 graphite-family assignment is a disclosed classification defect; consistent name, CAS and comment support the physical identity, without proving supplier grade or production technology. Carbon black already inside a purchased formulation remains its constituent subledger."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: sulfur
+          role: "Separately supplied sulfur curative"
+          name: "Sulfur"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only the actual separately acquired elemental-sulfur input to the declared cure system; retain purity and commercial form."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: zinc_oxide
+          role: "Separately supplied zinc oxide activator"
+          name: "Zinc oxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include the separately acquired zinc oxide only when the actual recipe uses it; a dispersed supplier product is recorded as its entire supplied formulation instead."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: stearic_acid
+          role: "Separately supplied stearic acid"
+          name: "Stearic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional recipe row for separately purchased stearic acid; do not impose a generic phr recipe."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: mbts
+          role: "Separately supplied MBTS accelerator"
+          name: "2,2-dibenzothiazyl disulfide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional specific accelerator row, only if the actual recipe confirms MBTS. Resolve its commercial form; do not use it as a selector for other accelerators."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: process_oil
+          role: "Separately supplied paraffinic process oil"
+          name: "Paraffinic rubber process oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual oil input, measured as the whole commercial oil rather than its aromatic or hydrocarbon fractions."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: curative_dispersion
+          role: "Purchased aqueous sulfur dispersion"
+          name: "Aqueous sulfur dispersion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional one supplied sulfur dispersion, not a collection of curatives. Record net supplied wet mass, supplier composition, active sulfur and carrier water as a non-additive subledger. Suppress duplicate separately purchased sulfur/water for these same constituents. Other actual commercial formulations each require their own atomic card."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: talc
+          role: "Talc anti-tack powder"
+          name: "Talc"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure actual anti-tack talc issued and its residual, captured and emitted destinations; do not count recycled dust as a new purchase."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: compound_electricity
+          role: "Metered process electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Native identity is CN supply, 1–35 kV alternating current, grid-average consumption mix delivered to the user, referenced by Net calorific value in MJ. Use this UUID only for that matching supply. Other geographies, voltages or dedicated supply require a matching identity before dataset delivery; retain their measured electricity rather than dropping it. Convert metered kWh to MJ once using the exact unit chain factor 3.6; this energy coefficient is not density."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: compound_out
+          role: "Internal unvulcanized tube compound"
+          name: "Unvulcanized butyl inner-tube compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh compound transferred after all productive mixing and straining. This is an internal handoff, reconciled with compound_in and canceled in consolidation; it is not finished-tube Q."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+      waste:
+        - row_id: filter_residue
+          role: "Rejected rubber strainer residue"
+          name: "Rubber strainer residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure rejected strainer residue with retained rubber/filler composition and actual treatment. Returned clean uncured rubber is an internal loop, not this waste or a fresh virgin input."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+      elementary:
+        - row_id: carbon_black_air
+          role: "Uncaptured carbon black to air"
+          name: "Carbon black particulate to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure only the uncaptured actual carbon black air emission; captured filter dust is a separate material/waste destination. Do not identify total dust as pure carbon black without composition evidence. Add talc and other actual dust species as separate cards."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+  - id: p_form
+    label: "Tube extrusion, cooling, splicing and valve fitting"
+    inputs:
+      product:
+        - row_id: compound_in
+          role: "Internal tube compound received"
+          name: "Unvulcanized butyl inner-tube compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Match compound_out mass, lot and carried burdens without another upstream purchase."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_form
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: valve
+          role: "Complete supplied bicycle tube valve"
+          name: "Bicycle inner-tube valve assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one complete supplied valve assembly including its actual base, core, nut and cap configuration; separately supplied fittings get separate rows. Do not add embedded metal/rubber masses as duplicate purchases. Retain supplier composition for the physical mass ledger."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_form
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: cooling_water
+          role: "Fresh cooling-water make-up"
+          name: "Fresh process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only boundary-crossing cooling make-up and actual purge; internal recirculation is separately metered and not repurchased. Water added inside a supplied formulation is not counted here again."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_form
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: form_electricity
+          role: "Metered process electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Native identity is CN supply, 1–35 kV alternating current, grid-average consumption mix delivered to the user, referenced by Net calorific value in MJ. Use this UUID only for that matching supply. Other geographies, voltages or dedicated supply require a matching identity before dataset delivery; retain their measured electricity rather than dropping it. Convert metered kWh to MJ once using the exact unit chain factor 3.6; this energy coefficient is not density."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_form
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: green_out
+          role: "Internal spliced valved green tube"
+          name: "Unvulcanized closed-ring butyl inner tube with valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Match size, extrusion length/wall, splice and valve lot after cooling, cutting and assembly; cancel against green_in after consolidation."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_form
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+      waste:
+        - row_id: uncured_scrap
+          role: "Discarded uncured tube offcut"
+          name: "Uncured butyl rubber offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only material actually sent for treatment leaves as waste. Weigh internal returned offcuts separately with carried burdens and retain all failed extrusion/splice energy."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_form
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: cooling_purge
+          role: "Discharged cooling-water purge"
+          name: "Cooling-circuit wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discharged water mass and measured pollutants separately from freshwater and evaporation. A treatment-service input is not a second mass outlet."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_form
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+      elementary:
+        []
+  - id: p_cure
+    label: "Heated-mold curing and acceptance inspection"
+    inputs:
+      product:
+        - row_id: green_in
+          role: "Internal green tube received"
+          name: "Unvulcanized closed-ring butyl inner tube with valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Match green_out and preserve its carried burdens; no finished-tube purchase can replace the forming/curing inventory."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: steam
+          role: "Purchased curing steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional externally supplied steam at its declared pressure, temperature, dryness and return-condensate convention. Use actual metered enthalpy delivery and return. For onsite steam, expand the generator with each real fuel, water, chemical and emission, and cancel internal steam; do not buy steam and count its own generator fuel again."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: release_dispersion
+          role: "Purchased aqueous silicone mold-release dispersion"
+          name: "Aqueous silicone mold-release dispersion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional one actual purchased formulation measured as supplied wet mass. Record silicone, carrier water and additives in the supplier subledger, not as additional procurement. Different actual release products need separate cards."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: cure_electricity
+          role: "Metered process electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Native identity is CN supply, 1–35 kV alternating current, grid-average consumption mix delivered to the user, referenced by Net calorific value in MJ. Use this UUID only for that matching supply. Other geographies, voltages or dedicated supply require a matching identity before dataset delivery; retain their measured electricity rather than dropping it. Convert metered kWh to MJ once using the exact unit chain factor 3.6; this energy coefficient is not density."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_tubes
+          role: "Quality-released tubes to finished storage"
+          name: "Inner tubes, solid or cushion tyres, interchangeable tyre treads and tyre flaps, of rubber"
+          flow_type: "product"
+          flow_ref:
+            uuid: "362630fe-314f-443f-b191-f8bed8eec674"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is production-release mass P, not delivery Q. The native Product identity is a broad manufactured rubber-article family, production mix at plant; no geography, recipe or size is specified and its only property is Mass. This card restricts it to complete heat-molded IIR bicycle inner tubes including the declared valve/fittings. It is neither a piece-count identity nor evidence for a supplier/background dataset. Match the declared configuration and net supplied mass; do not infer density, a unit weight or a service lifetime. Match released_in and cancel the internal handoff in consolidation; retain production testing, rejects and any destructive samples."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: condensate
+          role: "Exported steam condensate"
+          name: "Steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual return/discharge of steam condensate; preserve its heat and water destination without duplicating a steam-provider return credit. Closed-loop mold water is not a purchased output."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+                - epa-rubber-process-2008
+            ranges: []
+      waste:
+        - row_id: cured_reject
+          role: "Scrapped cured inner tube"
+          name: "Rejected cured butyl inner tube with valve"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure complete reject mass, including its valve if retained. Split valve recovery and remaining rubber only at the actual separation step with conserved mass; no sale credit by default."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+                - epa-rubber-process-2008
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Measured evaporated process water"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Air compartment only; independently quantify moisture/steam evaporation with state and measurement evidence. No generic stoichiometric reaction-water factor is imposed for rubber crosslinking."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+                - epa-rubber-process-2008
+            ranges: []
+        - row_id: toluene_air
+          role: "Toluene emission if analytically present"
+          name: "Toluene to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual species-specific air emission from confirmed formulation/aid and monitoring. It is not a generic VOC remainder; add every other identified emitted species separately. Unidentified significant organics remain an explicit measurement gap, never zero or a closure fit."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+                - epa-rubber-process-2008
+            ranges: []
+  - id: p_delivery
+    label: "Finished storage, packaging and net delivery"
+    inputs:
+      product:
+        - row_id: released_in
+          role: "Quality-released tubes received"
+          name: "Inner tubes, solid or cushion tyres, interchangeable tyre treads and tyre flaps, of rubber"
+          flow_type: "product"
+          flow_ref:
+            uuid: "362630fe-314f-443f-b191-f8bed8eec674"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Match released_tubes and opening finished lots with their carried burdens. The native Product identity is a broad manufactured rubber-article family, production mix at plant; no geography, recipe or size is specified and its only property is Mass. This card restricts it to complete heat-molded IIR bicycle inner tubes including the declared valve/fittings. It is neither a piece-count identity nor evidence for a supplier/background dataset. Match the declared configuration and net supplied mass; do not infer density, a unit weight or a service lifetime. Do not recreate P when a returned tube passes reinspection."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated cardboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual separately supplied single carton mass, composition and reuse cycles; exclude it from net tube Q. Include packaging losses and returned/replaced cartons in this ledger."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: pe_bag
+          role: "Polyethylene tube bag"
+          name: "Polyethylene packaging bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional one actual separately supplied polyethylene bag. Do not use this card for other polymers, labels or mixed packaging."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: label
+          role: "Paper product label"
+          name: "Printed paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional one supplied printed paper label; include its supplied adhesive in supplier composition rather than duplicate raw input unless actually separately applied."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+        - row_id: delivery_electricity
+          role: "Metered process electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Native identity is CN supply, 1–35 kV alternating current, grid-average consumption mix delivered to the user, referenced by Net calorific value in MJ. Use this UUID only for that matching supply. Other geographies, voltages or dedicated supply require a matching identity before dataset delivery; retain their measured electricity rather than dropping it. Convert metered kWh to MJ once using the exact unit chain factor 3.6; this energy coefficient is not density."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - epa-rubber-process-2008
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_tube
+          role: "Net accepted supplied inner tube"
+          name: "Inner tubes, solid or cushion tyres, interchangeable tyre treads and tyre flaps, of rubber"
+          flow_type: "product"
+          flow_ref:
+            uuid: "362630fe-314f-443f-b191-f8bed8eec674"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The native Product identity is a broad manufactured rubber-article family, production mix at plant; no geography, recipe or size is specified and its only property is Mass. This card restricts it to complete heat-molded IIR bicycle inner tubes including the declared valve/fittings. It is neither a piece-count identity nor evidence for a supplier/background dataset. Match the declared configuration and net supplied mass; do not infer density, a unit weight or a service lifetime. The terminal reference gate is actual net accepted delivery at the manufacturing site after the declared storage, packaging and loading operations, before external outbound transport. Q is the positive net delivered mass of the same product/configuration, route, period and supplied state, excluding packaging and test air. Production release P is a separate ledger quantity. Count each physical delivery once after matched return/cancellation corrections; reinspection or reshipment does not create new production. Undelivered finished goods are excluded from Q and retain their carried burdens."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery_gate
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+      waste:
+        - row_id: waste_carton
+          role: "Discarded corrugated carton"
+          name: "Waste corrugated cardboard carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional actual damaged carton waste before the terminal gate. Record destination and avoid treating delivered packaging as site waste."
+          amount:
+            expression: "n_i, the single normalized exchange defined in section 8 after raw-unit conversion and stock/burden attribution."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - schwalbe-tube-tech-2015
+                - innovative-tube-process-2017
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_trace
+    applies_to: "all processes"
+    rule: "Separate sites, products, valve configurations, routes and periods first. Directly meter or trace batches before allocating shared electricity, steam, ventilation, cooling, warehouse and loading burdens using documented causal machine/occupancy records. Declare the driver, units, scope and conservation of total shared burden. Never divide shared burdens by all-tyre output while the reference cohort is inner tubes."
+    source_ids:
+      - jrc-ilcd-2010-allocation
+  - rule_id: allocation_stock
+    applies_to: "all processes"
+    rule: "The same-product delivery ledger carries opening WIP/finished-stock burden vectors forward and closing vectors out, with all actual failed/zero-output, return, repeat-test and rework burdens retained. No scrap/recycling substitution credit is automatic. A genuine separately delivered coproduct requires its own mass, destination and justified allocation; internal uncured-rubber reuse is not a coproduct."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_compound
+      process_id: "p_compound"
+      flow_role: "Atomic exchanges and batch operations"
+      record_type: "Foreground raw period ledger"
+      raw_fields: "batch IDs; recipe and supplied form; ingredient wet/dry masses; ingredient assay and water subledger; start/end meter readings; runtime; stage handoff IDs and masses; failures and zero-output runs; offcut return and rework; opening/closing WIP and finished lots; carried burden vector; wastes and species results"
+      collection_method: "Owner: the named process production engineer, with metrology and quality sign-off. Preserve unnormalized complete raw-period numerators, failed/zero-output runs, return/rework increments and opening/closing carried burden vectors. Reconcile calibrated scales, recipe issue/return records, utility meters and internal handoffs. Preserve timestamps and actual units. Do not execute A_i/Q here."
+      unit: "kg; MJ; kWh; m3; h; species-specific kg"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Complete declared period including start-up, shutdown and failures"
+      site_scope: "Named site and same tube/configuration/route cohort"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; recipe issue/return sheets; batch genealogy; meter boundaries; stock/burden reconciliation; signed dispositions"
+    - protocol_id: cp_form
+      process_id: "p_form"
+      flow_role: "Atomic exchanges and batch operations"
+      record_type: "Foreground raw period ledger"
+      raw_fields: "batch IDs; recipe and supplied form; ingredient wet/dry masses; ingredient assay and water subledger; start/end meter readings; runtime; stage handoff IDs and masses; failures and zero-output runs; offcut return and rework; opening/closing WIP and finished lots; carried burden vector; wastes and species results"
+      collection_method: "Owner: the named process production engineer, with metrology and quality sign-off. Preserve unnormalized complete raw-period numerators, failed/zero-output runs, return/rework increments and opening/closing carried burden vectors. Reconcile calibrated scales, recipe issue/return records, utility meters and internal handoffs. Preserve timestamps and actual units. Do not execute A_i/Q here."
+      unit: "kg; MJ; kWh; m3; h; species-specific kg"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Complete declared period including start-up, shutdown and failures"
+      site_scope: "Named site and same tube/configuration/route cohort"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; recipe issue/return sheets; batch genealogy; meter boundaries; stock/burden reconciliation; signed dispositions"
+    - protocol_id: cp_cure
+      process_id: "p_cure"
+      flow_role: "Atomic exchanges and batch operations"
+      record_type: "Foreground raw period ledger"
+      raw_fields: "batch IDs; recipe and supplied form; ingredient wet/dry masses; ingredient assay and water subledger; start/end meter readings; runtime; stage handoff IDs and masses; failures and zero-output runs; offcut return and rework; opening/closing WIP and finished lots; carried burden vector; wastes and species results"
+      collection_method: "Owner: the named process production engineer, with metrology and quality sign-off. Preserve unnormalized complete raw-period numerators, failed/zero-output runs, return/rework increments and opening/closing carried burden vectors. Reconcile calibrated scales, recipe issue/return records, utility meters and internal handoffs. Preserve timestamps and actual units. Do not execute A_i/Q here."
+      unit: "kg; MJ; kWh; m3; h; species-specific kg"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Complete declared period including start-up, shutdown and failures"
+      site_scope: "Named site and same tube/configuration/route cohort"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; recipe issue/return sheets; batch genealogy; meter boundaries; stock/burden reconciliation; signed dispositions"
+    - protocol_id: cp_delivery
+      process_id: "p_delivery"
+      flow_role: "Atomic exchanges and batch operations"
+      record_type: "Foreground raw period ledger"
+      raw_fields: "batch IDs; recipe and supplied form; ingredient wet/dry masses; ingredient assay and water subledger; start/end meter readings; runtime; stage handoff IDs and masses; failures and zero-output runs; offcut return and rework; opening/closing WIP and finished lots; carried burden vector; wastes and species results"
+      collection_method: "Owner: the named process production engineer, with metrology and quality sign-off. Preserve unnormalized complete raw-period numerators, failed/zero-output runs, return/rework increments and opening/closing carried burden vectors. Reconcile calibrated scales, recipe issue/return records, utility meters and internal handoffs. Preserve timestamps and actual units. Do not execute A_i/Q here."
+      unit: "kg; MJ; kWh; m3; h; species-specific kg"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Complete declared period including start-up, shutdown and failures"
+      site_scope: "Named site and same tube/configuration/route cohort"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; recipe issue/return sheets; batch genealogy; meter boundaries; stock/burden reconciliation; signed dispositions"
+    - protocol_id: cp_delivery_gate
+      process_id: "p_delivery"
+      flow_role: "Reference product and stock reconciliation"
+      record_type: "Net acceptance/delivery ledger"
+      raw_fields: "lot and configuration; net tube mass; valve/fittings included; packaging tare; dispatch/receipt IDs and times; cancellations/returns/reshipments; P; opening/closing finished-stock mass and burden vectors; unique supplied Q"
+      collection_method: "Owner: dispatch custodian and quality manager. Weigh accepted supplied tubes on calibrated scales, subtract measured packaging tare and exclude test air. Reconcile net accepted deliveries and matched cancellations/returns by identity, not by assumption P=Q. Preserve raw delivery and stock records plus carried burdens; perform no input normalization."
+      unit: "kg"
+      frequency: "Each delivery and period close"
+      temporal_coverage: "Same complete period and cohort as production and stocks"
+      site_scope: "Declared manufacturing-site net-delivery gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Signed delivery/acceptance; calibrated tare/net weighing; stock genealogy; return corrections"
+    - protocol_id: cp_acceptance
+      process_id: "p_cure"
+      flow_role: "Mold, tube and valve acceptance"
+      record_type: "Quality and disposition record"
+      raw_fields: "mold and batch; actual time/temperature/pressure; wall and splice results; valve bond; air-retention test pressure/hold/temperature; pass/fail; retest; sample loss; final disposition"
+      collection_method: "Owner: quality manager. Retain mold-cycle and cooling records and individual visual/leak acceptance, including failed, repeated and destructive tests. Support test conditions from the actual product specification. Record test air as an internal utility balance, not shipped product mass."
+      unit: "kg; actual test units"
+      frequency: "Each cycle and individual tube test"
+      temporal_coverage: "Complete matched period"
+      site_scope: "Same declared bicycle tube and valve configuration"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Test specification; equipment calibration; signed acceptance and reject trail"
+  calculation_rules:
+    - id: convert_raw
+      applies_to: "all inventory rows"
+      rule: "Convert each raw quantity into its row unit once before burden attribution. Electricity MJ = measured kWh × 3.6. A rate requires its matched duration; an already integrated gas/liquid volume receives no extra time factor. A volume-to-mass conversion requires independent fluid-specific density at declared state and calibration. Formulation wet mass and assays are not additive procurement."
+      inputs:
+        - raw_readings
+        - calibration
+        - supplied_form
+      output: "converted_raw"
+      source_ids: []
+    - id: delivery_attribution
+      applies_to: "all inventory rows"
+      rule: "For each exchange i, A_i = opening carried WIP/finished-stock burden_i + converted raw-period burden_i + traced incoming return burden_i - closing carried WIP/finished-stock burden_i - separately justified non-reference burden_i. Cancel internal transfers once. Retain all actual failed, zero-output, return, rework, storage, packing and loading increments. Use batch genealogy for stock burden vectors, not just stock mass or an assumed production/delivery ratio; do not add P and closing finished mass as two delivered outputs. The raw-period term contains only newly incurred burdens; the incoming-return term contains prior carried burdens once, excluding new reinspection/rework already recorded in raw-period increments. Reverse the matched prior delivery and restore its traced carried burdens before any redelivery; do not add both the reversal and the same return burden twice. Track actual physical stock balance separately from this burden ledger."
+      inputs:
+        - converted_raw
+        - opening_burden
+        - closing_burden
+        - return_burden
+        - non_reference_burden
+        - cp_delivery_gate
+      output: "A_i"
+      source_ids: []
+    - id: normalize_delivery
+      applies_to: "all inventory rows"
+      rule: "n_i = A_i / Q. Q is strictly positive net accepted delivered tube mass in kg after matched returns/cancellations for the same product, configuration, route, period and supplied state. This is the sole normalization operation, executed once after raw conversion and burden attribution. Amount cards and protocol aggregation refer to this same reporting operation, not subsequent divisions. If Q is zero, retain the unresolved campaign and its burdens without a normalized result."
+      inputs:
+        - A_i
+        - Q
+        - cp_delivery_gate
+      output: "n_i"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "all inventory rows"
+      rule: "Physical balance uses complete as-supplied masses and independent constituent/element ledgers, including valve/fittings, fillers, moisture, steam/condensate, wastes, measured species and opening/closing stocks. Crosslinking does not justify an invented reaction-water quantity. Determine any actual chemical water formation/consumption from a separate reaction/species evidence chain; evaporation is a separate phase transfer, not fitted reaction water."
+      inputs:
+        - raw_mass
+        - composition
+        - opening_stock
+        - closing_stock
+        - measured_species
+      output: "mass_and_element_reconciliation"
+      source_ids:
+        - epa-rubber-process-2008
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "Reference and every native flow"
+      requirement: "Retain native names, route, geography, medium, all properties and exact reference-unit chain. The reference family is narrowed by configuration. Carbon-black classification debt does not authorize a different material; the CN medium-voltage electricity identity is supply-limited."
+      evidence: "Native identity and supplier specification"
+    - id: quality_complete
+      applies_to: "All raw and carried burdens"
+      requirement: "Cover the full declared period, failures, WIP, finished stocks, returns and rework. Keep independent owners and calibrated evidence; disclose missing quantities, provider matches and significant species without assuming zero."
+      evidence: "Signed stock, batch, utility and delivery reconciliation"
+    - id: quality_evidence
+      applies_to: "Applicability of industrial sources"
+      requirement: "Independent manufacturers establish compatible process modules, not a single plant recipe. Actual mass, recipe, energy, cure cycle and acceptance conditions require foreground measurement; document every substituted condition and temporal/geographical limitation."
+      evidence: "schwalbe-tube-tech-2015; innovative-tube-process-2017; epa-rubber-process-2008"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "all processes"
+    rule: "Require the exact reference Product UUID, native Mass/kg chain and terminal link delivered_tube, consistent with both language renderings. Respect all native scope limits in inventory descriptions. Reject the IIR candidate whose fixed route is butadiene/styrene; do not relabel a piece-count flow as mass or infer a density from a secondary property."
+    source_ids: []
+  - rule_id: validate_inventory
+    applies_to: "all processes"
+    rule: "Check all atomic rows and raw-period batch/meter records, actual recipe and supplied-formulation subledgers, internal handoff cancellation, stocks and burden carryover, positive net delivery Q and normalization exactly once. If Q is zero or attribution remains unresolved, retain records and do not issue a normalized dataset. Do not delete rejected campaigns to improve a ratio."
+    source_ids: []
+  - rule_id: validate_mass_species
+    applies_to: "all processes"
+    rule: "Close physical total mass and relevant elemental ledgers separately: actual whole purchased inputs plus opening stocks equal net delivered product, packaging carried out with dispatched goods, other actual external Product outlets, closing stocks, actual waste/recovery and measured releases, with internal transfers canceled. Keep a separate complete packaging physical subledger of actual receipts, exports, losses and opening/closing stocks outside Q; do not add packaging mass to Q or duplicate its procurement. Retain valve metals, fillers, cure-system constituents, supplied carrier water, condensate, moisture and air balances. Identify actual emitted species using independent analysis and time-integrated monitoring. Do not fit unknown reaction water and an unknown outlet to the same residual, assume every dust is carbon black, use COD as a species mass, or manufacture a crosslinking water factor. Investigate unexplained residuals."
+    source_ids:
+      - epa-rubber-process-2008
+  - rule_id: validate_quality
+    applies_to: "all processes"
+    rule: "Require individual tube acceptance tied to wall/splice/valve integrity, declared leak-test conditions and disposition of rejects, plus actual mold cure and cooling records. Count sampling/destructive inspection burdens. Manufacturer case hold time or filter count cannot be used without applicability evidence. Record missing data and test-method uncertainty explicitly; identity/schema checks do not establish scientific approval."
+    source_ids:
+      - schwalbe-tube-tech-2015
+      - innovative-tube-process-2017
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Upstream supply modelling of the declared tube configuration and net-delivery gate"
+  excluded_use: "Full tyre service comparison, all-CPC coverage, use-phase air loss, riding lifetime, or unknown configuration substitution"
+  required_metadata: "All required qualifiers; source IDs; raw period; gates; allocation drivers; exact provider and utility matches; recipe/commercial-form identities"
+  required_quality_disclosure: "Actual foreground coverage, inventory carryover, missing exchanges/species, native scope/classification debt, evidence applicability and scientific review state"
+  update_trigger: "Changed recipe, route, mold/valve configuration, utilities, measured losses, delivery gate, provider identity or source applicability"
+data_sources:
+  - id: "schwalbe-tube-tech-2015"
+    type: "handbook"
+    reference: "Schwalbe Technical Information Bicycle Tires, Edition 3, 2015, p.28. https://www.schwalbe.com/media/32/85/58/1694006374/Schwalbe-TechInfo-2015_GB.pdf"
+    used_for: "Butyl bicycle inner-tube identity, heat-mold route, filtration, valve bonding and individual inspection; seven-filter/24-hour conditions are manufacturer-specific, not universal."
+  - id: "innovative-tube-process-2017"
+    type: "literature"
+    reference: "Innovative Tyres & Tubes Limited, Prospectus, September 2017, printed pp.157–158 (PDF 158–159), tube process only. https://www.sebi.gov.in/sebi_data/attachdocs/oct-2017/1509101010348.pdf"
+    used_for: "Industrial tube mixing, filtering, extrusion/cooling, splicing/valve fitting, mold curing and inspection-to-packing route, distinct from adjacent tyre process; no transfer of tyre-only recipe or a common SKU claim."
+  - id: "epa-rubber-process-2008"
+    type: "official_guidance"
+    reference: "US EPA AP-42, section 4.12 Manufacture of Rubber Products, November 2008 DRAFT Final, pp.4.12-1–2. https://www.epa.gov/sites/default/files/2020-10/documents/d04s12.pdf"
+    used_for: "Historical qualitative rubber-compounding stages and additive roles only. No numerical recipe, temperature or emission factor adopted; bladder/liner cases and excluded solvent aids cannot establish an inner-tube factor; a later 2026 draft exists."
+  - id: "jrc-ilcd-2010-allocation"
+    type: "handbook"
+    reference: "European Commission JRC, ILCD Handbook General guide Detailed guidance, first edition March 2010, section 7.9.3, PDF pp277–278 / printed pp257–258; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional direct assignment, virtual subdivision and determining physical causality for actual shared manufacturing/storage/loading service burdens only. No product-specific recipe, quantity, yield, intensity, fixed allocation share, recycling credit or full PEF conformity; stock and normalization rules are PCR-specific consistency reasoning."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:aa3343ed47d586cf7f946f0aaacb03c8191069c6ef207cbb19cb78955c0df538"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5830"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5830
+          line: 61
+          column: 1
+        end:
+          offset: 9673
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Separately acquired dry virgin IIR and declared actual ingredients/whole supplied formulations, valve assemblies and utilities at named site |\n| starting_condition_role | Foreground manufacturing with linked upstream production and inbound transport |\n| product_classification_scope | Narrow heat-molded bicycle inner-tube subset of CPC 36114 |\n| recursive_input_rule | Purchased complete inner tubes cannot replace onsite production. Returned/reworked tubes retain traced previous burdens without a recursive new-tube purchase; separately declare any true external returned product and its carried burdens. |\n| upstream_dataset_requirement | Match each acquired physical form, recipe/supplier, geography, supply state and actual transport; generic identity alone is insufficient provider evidence |\n| disclosure | Declare production/delivery gates, actual utility technology, raw and stock period, tests, packaging, excluded downstream transport/use/end of life and all remaining data/provider gaps |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_manufacture | all processes | Include material production through linked upstream datasets, inbound transport, all actual onsite ingredient mixing/filtration, extrusion/cooling, splicing/valving, mold curing, inspection, failures, rework, storage, packaging and loading through the declared net-delivery gate. The listed cards are a minimum for the declared route, not permission to omit an actual exchange: add each additional ingredient, supplied formulation, fuel, refrigerant, packaging component, waste or elementary species as a separate card and protocol entry. A conditional row is not_applicable only with evidence of absence; unknown is not zero. | `schwalbe-tube-tech-2015`; `innovative-tube-process-2017`; `epa-rubber-process-2008` |\n| boundary_terminal | all processes | The terminal reference gate is actual net accepted delivery at the manufacturing site after the declared storage, packaging and loading operations, before external outbound transport. Q is the positive net delivered mass of the same product/configuration, route, period and supplied state, excluding packaging and test air. Production release P is a separate ledger quantity. Count each physical delivery once after matched return/cancellation corrections; reinspection or reshipment does not create new production. Undelivered finished goods are excluded from Q and retain their carried burdens. | `schwalbe-tube-tech-2015`; `innovative-tube-process-2017` |\n| boundary_internal | all processes | Match compound_out/compound_in, green_out/green_in and released_tubes/released_in by batch, physical quantity and carried burdens. Cancel each internal handoff once in the consolidated dataset, including internal steam or recovered offcut loops. Opening/closing WIP and finished stock are physical stocks with burden vectors, not purchased intermediates or extra terminal outputs. Returned products retain their identity and prior burdens. |  |\n| boundary_evidence | all processes | Schwalbe 2015 supports heat-molded bicycle butyl tubes, filtration, valve bonding and individual inspection. Its seven filters and 24-hour test hold are manufacturer case conditions, not universal defaults. Innovative 2017 supports the separate tube mixing-to-dispatch route; adjacent tyre-only recipe prose is excluded. EPA 2008 is a historical DRAFT generic process account, not a current legal rule or inner-tube factor source; tyre bladder/liner recipes and their factors are not adopted. No universal recipe, cure temperature/time, yield, service life or emission factor is prescribed. | `schwalbe-tube-tech-2015`; `innovative-tube-process-2017`; `epa-rubber-process-2008` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 9
+              column: 1
+            end:
+              offset: 307
+              line: 9
+              column: 51
+          text: "# Heat-molded butyl bicycle inner tube manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5830
+              line: 61
+              column: 1
+            end:
+              offset: 5851
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_41158"
+      family: "allocation"
+      span:
+        start:
+          offset: 41158
+          line: 684
+          column: 1
+        end:
+          offset: 42204
+          line: 691
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_trace | all processes | Separate sites, products, valve configurations, routes and periods first. Directly meter or trace batches before allocating shared electricity, steam, ventilation, cooling, warehouse and loading burdens using documented causal machine/occupancy records. Declare the driver, units, scope and conservation of total shared burden. Never divide shared burdens by all-tyre output while the reference cohort is inner tubes. | jrc-ilcd-2010-allocation |\n| allocation_stock | all processes | The same-product delivery ledger carries opening WIP/finished-stock burden vectors forward and closing vectors out, with all actual failed/zero-output, return, repeat-test and rework burdens retained. No scrap/recycling substitution credit is automatic. A genuine separately delivered coproduct requires its own mass, destination and justified allocation; internal uncured-rubber reuse is not a coproduct. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 9
+              column: 1
+            end:
+              offset: 307
+              line: 9
+              column: 51
+          text: "# Heat-molded butyl bicycle inner tube manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 41158
+              line: 684
+              column: 1
+            end:
+              offset: 41198
+              line: 684
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_53106"
+      family: "validation"
+      span:
+        start:
+          offset: 53106
+          line: 721
+          column: 1
+        end:
+          offset: 55568
+          line: 730
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | all processes | Require the exact reference Product UUID, native Mass/kg chain and terminal link delivered_tube, consistent with both language renderings. Respect all native scope limits in inventory descriptions. Reject the IIR candidate whose fixed route is butadiene/styrene; do not relabel a piece-count flow as mass or infer a density from a secondary property. |  |\n| validate_inventory | all processes | Check all atomic rows and raw-period batch/meter records, actual recipe and supplied-formulation subledgers, internal handoff cancellation, stocks and burden carryover, positive net delivery Q and normalization exactly once. If Q is zero or attribution remains unresolved, retain records and do not issue a normalized dataset. Do not delete rejected campaigns to improve a ratio. |  |\n| validate_mass_species | all processes | Close physical total mass and relevant elemental ledgers separately: actual whole purchased inputs plus opening stocks equal net delivered product, packaging carried out with dispatched goods, other actual external Product outlets, closing stocks, actual waste/recovery and measured releases, with internal transfers canceled. Keep a separate complete packaging physical subledger of actual receipts, exports, losses and opening/closing stocks outside Q; do not add packaging mass to Q or duplicate its procurement. Retain valve metals, fillers, cure-system constituents, supplied carrier water, condensate, moisture and air balances. Identify actual emitted species using independent analysis and time-integrated monitoring. Do not fit unknown reaction water and an unknown outlet to the same residual, assume every dust is carbon black, use COD as a species mass, or manufacture a crosslinking water factor. Investigate unexplained residuals. | `epa-rubber-process-2008` |\n| validate_quality | all processes | Require individual tube acceptance tied to wall/splice/valve integrity, declared leak-test conditions and disposition of rejects, plus actual mold cure and cooling records. Count sampling/destructive inspection burdens. Manufacturer case hold time or filter count cannot be used without applicability evidence. Record missing data and test-method uncertainty explicitly; identity/schema checks do not establish scientific approval. | `schwalbe-tube-tech-2015`; `innovative-tube-process-2017` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 9
+              column: 1
+            end:
+              offset: 307
+              line: 9
+              column: 51
+          text: "# Heat-molded butyl bicycle inner tube manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 53106
+              line: 721
+              column: 1
+            end:
+              offset: 53128
+              line: 721
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_manufacture"
+      identity_kind: "explicit"
+      unit_id: "normative_5830"
+      source_span:
+        start:
+          offset: 7017
+          line: 76
+          column: 1
+        end:
+          offset: 7773
+          line: 76
+          column: 757
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_terminal"
+      identity_kind: "explicit"
+      unit_id: "normative_5830"
+      source_span:
+        start:
+          offset: 7774
+          line: 77
+          column: 1
+        end:
+          offset: 8470
+          line: 77
+          column: 697
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_internal"
+      identity_kind: "explicit"
+      unit_id: "normative_5830"
+      source_span:
+        start:
+          offset: 8471
+          line: 78
+          column: 1
+        end:
+          offset: 8953
+          line: 78
+          column: 483
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_5830"
+      source_span:
+        start:
+          offset: 8954
+          line: 79
+          column: 1
+        end:
+          offset: 9671
+          line: 79
+          column: 718
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_trace"
+      identity_kind: "explicit"
+      unit_id: "normative_41158"
+      source_span:
+        start:
+          offset: 41271
+          line: 688
+          column: 1
+        end:
+          offset: 41754
+          line: 688
+          column: 484
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_41158"
+      source_span:
+        start:
+          offset: 41755
+          line: 689
+          column: 1
+        end:
+          offset: 42202
+          line: 689
+          column: 448
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_53106"
+      source_span:
+        start:
+          offset: 53201
+          line: 725
+          column: 1
+        end:
+          offset: 53594
+          line: 725
+          column: 394
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_53106"
+      source_span:
+        start:
+          offset: 53595
+          line: 726
+          column: 1
+        end:
+          offset: 54018
+          line: 726
+          column: 424
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_mass_species"
+      identity_kind: "explicit"
+      unit_id: "normative_53106"
+      source_span:
+        start:
+          offset: 54019
+          line: 727
+          column: 1
+        end:
+          offset: 55035
+          line: 727
+          column: 1017
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_53106"
+      source_span:
+        start:
+          offset: 55036
+          line: 728
+          column: 1
+        end:
+          offset: 55566
+          line: 728
+          column: 531
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5830"
+      source_span:
+        start:
+          offset: 5830
+          line: 61
+          column: 1
+        end:
+          offset: 5851
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5830"
+      source_span:
+        start:
+          offset: 5879
+          line: 65
+          column: 1
+        end:
+          offset: 6944
+          line: 72
+          column: 202
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_41158"
+      source_span:
+        start:
+          offset: 41158
+          line: 684
+          column: 1
+        end:
+          offset: 41198
+          line: 684
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_53106"
+      source_span:
+        start:
+          offset: 53106
+          line: 721
+          column: 1
+        end:
+          offset: 53128
+          line: 721
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:aa3343ed47d586cf7f946f0aaacb03c8191069c6ef207cbb19cb78955c0df538"
+  generated_content_sha256: "sha256:af2bb2f548e69db79bb8037a8463c5433972eecfa4701e8c1f1f3f387a304035"

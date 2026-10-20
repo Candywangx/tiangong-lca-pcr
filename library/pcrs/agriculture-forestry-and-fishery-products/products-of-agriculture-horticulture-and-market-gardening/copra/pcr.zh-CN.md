@@ -716,10 +716,10 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `avoid_allocation` | all nodes | Subdivide by site, crop period, route and lot; use direct measurement first. |  |
-| `multi_output` | production and drying | Enumerate accepted, downgraded, husk, shell, residue and waste hand-offs; use dry-matter mass only when physical causality cannot be established. |  |
-| `internal_fuel` | husk or shell fuel | Count internal transfer and combustion once; do not also claim sold co-product output. |  |
-| `rework` | rejects | Record rework, downgrade, recovery or disposal and incremental burdens once; exclude rejected mass from accepted output. |  |
-| `multi_period` | crop and storage periods | Link events to the affected period and prevent double attribution to batch and annual totals. |  |
+| `multi_output` | production and drying | 列举合格、降级、外果皮、硬壳、残体和废物交接；仅在无法建立物理因果关系时使用干物质质量分配。 |  |
+| `internal_fuel` | husk or shell fuel | 内部转移及燃烧各计一次，不得同时声称该物料是出售共产品。 |  |
+| `rework` | rejects | 返工、降级、回收或处置及其增量负担只记录一次；拒收质量排除于合格产出。 |  |
+| `multi_period` | crop and storage periods | 将事件关联受影响期间，防止在批次及年度总量中重复归属。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -766,8 +766,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_identity` | reference | Fail whole fresh coconut, fresh meat, oil, press cake or meal and any fresh/unprocessed description lacking dry-state qualifiers. | `fao-coconut-postharvest-compendium` |
-| `validate_moisture` | copra | Require measured value, basis, method and lot; investigate values outside 5–12% wet-basis screen. | `fao-coconut-postharvest-compendium`; `fao-aflatoxin-copra` |
+| `validate_identity` | reference | 完整鲜椰、鲜椰肉、油、压榨饼或粕，以及缺少干态限定项的鲜态/未加工描述不通过。 | `fao-coconut-postharvest-compendium` |
+| `validate_moisture` | copra | 要求实测值、基准、方法及批次；调查超出湿基 5–12% 筛查范围的数值。 | `fao-coconut-postharvest-compendium`; `fao-aflatoxin-copra` |
 | `validate_route` | drying | Require route, heat source, smoke contact, time and route-specific energy. | `fao-coconut-postharvest-compendium` |
 | `validate_nutrients` | 养分投入 | 每一种实际使用的肥料或改良剂须分别建立原子产品交换，记录数量、组成及经核实或明确待核实的身份。 |  |
 | `validate_bindings` | cards | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |

@@ -1155,7 +1155,7 @@ dataset_production:
   calculation_rules:
     - id: normalize_mass_to_reference_flow
       applies_to: "all product and waste mass rows"
-      rule: "Convert each recorded mass to the declared moisture basis, then divide by the mass of the relevant process output and scale to 1 kg reference product."
+      rule: "Retain raw quantities and moisture/component bases. Let R be positive measured accepted final handoff mass in kg for the matched lot, state and gate. Final contribution = attributable raw quantity / R * 1 kg. If a source is a local intensity q_i = Q_i/O_i, first recover Q_i = q_i*O_i from the actual linked stage throughput, then attribute and normalize once; never treat O_i as R or divide a final-reference quantity again. Keep the unallocated physical material balance separate from burden allocation."
       inputs:
         - harvest
         - conditioning
@@ -1339,7 +1339,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e3e613c87ef1ad13a1a51de418a677d4a963391ede37d26fdadb349ae84c04c1"
+  source_sha256: "sha256:c18b2628ceb0217ef71f592544565c9d85aa1a36af6b707913f1957b0abbb49c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5103"
@@ -1438,15 +1438,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_77212"
+    - unit_id: "normative_77567"
       family: "validation"
       span:
         start:
-          offset: 77212
+          offset: 77567
           line: 913
           column: 1
         end:
-          offset: 78585
+          offset: 78940
           line: 923
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_qualifiers` | reference flow | Reject a data package that omits species or cultivar, fresh market state, trim or grade, moisture basis, or declared gate. | `unece-ffv-21-leeks-2023` |\n| `validate_mass_balance` | process gates | Check that input, marketable output, rejects, removed residues, and documented losses reconcile after moisture conversion at each included gate. | `mass-balance-identity` |\n| `validate_nutrient_basis_and_pathways` | nutrient inputs and elementary outputs | Check that fertilizer or amendment product mass is separate from N/P/K or organic nutrient basis and that every calculated emission states its pathway, factor basis, receiving medium, and reported substance. | `ipcc-2019-refinement-vol4-ch11` |\n| `validate_conditional_processes` | post-harvest conditioning and delivery | Check that every conditional process is supported by a declared gate and operator responsibility and that omitted conditional processes are disclosed when they are known to occur outside scope. | `iso-14044-2006` |\n| `validate_allocation_disclosure` | shared operations and mixed allium lots | Check that separate records were subdivided where available, otherwise the mass-based allocation key and moisture basis are stated. | `iso-14044-2006` |\n\n"
@@ -1466,11 +1466,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 77212
+              offset: 77567
               line: 913
               column: 1
             end:
-              offset: 77234
+              offset: 77589
               line: 913
               column: 23
           text: "## 9. Validation Rules"
@@ -1594,66 +1594,66 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_77212"
+      unit_id: "normative_77567"
       source_span:
         start:
-          offset: 77307
+          offset: 77662
           line: 917
           column: 1
         end:
-          offset: 77512
+          offset: 77867
           line: 917
           column: 206
     - pointer: "/validation_rules/1"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_77212"
+      unit_id: "normative_77567"
       source_span:
         start:
-          offset: 77513
+          offset: 77868
           line: 918
           column: 1
         end:
-          offset: 77729
+          offset: 78084
           line: 918
           column: 217
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_basis_and_pathways"
       identity_kind: "explicit"
-      unit_id: "normative_77212"
+      unit_id: "normative_77567"
       source_span:
         start:
-          offset: 77730
+          offset: 78085
           line: 919
           column: 1
         end:
-          offset: 78058
+          offset: 78413
           line: 919
           column: 329
     - pointer: "/validation_rules/3"
       rule_id: "validate_conditional_processes"
       identity_kind: "explicit"
-      unit_id: "normative_77212"
+      unit_id: "normative_77567"
       source_span:
         start:
-          offset: 78059
+          offset: 78414
           line: 920
           column: 1
         end:
-          offset: 78351
+          offset: 78706
           line: 920
           column: 293
     - pointer: "/validation_rules/4"
       rule_id: "validate_allocation_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_77212"
+      unit_id: "normative_77567"
       source_span:
         start:
-          offset: 78352
+          offset: 78707
           line: 921
           column: 1
         end:
-          offset: 78583
+          offset: 78938
           line: 921
           column: 232
   diagnostics:
@@ -1695,14 +1695,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_77212"
+      unit_id: "normative_77567"
       source_span:
         start:
-          offset: 77212
+          offset: 77567
           line: 913
           column: 1
         end:
-          offset: 77234
+          offset: 77589
           line: 913
           column: 23
 projection_metadata:
@@ -1712,5 +1712,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e3e613c87ef1ad13a1a51de418a677d4a963391ede37d26fdadb349ae84c04c1"
-  generated_content_sha256: "sha256:a10cb0721e8831e5a752d7a9e000c97f7e6e784b8b04fe66b07ce257f5126d0c"
+    sha256: "sha256:c18b2628ceb0217ef71f592544565c9d85aa1a36af6b707913f1957b0abbb49c"
+  generated_content_sha256: "sha256:12e6ab4bcecf492ddc1787b00ab6caeb85774da9a049a9af192e84cc38f1a9cd"

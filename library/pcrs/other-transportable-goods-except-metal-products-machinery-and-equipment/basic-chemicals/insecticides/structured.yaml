@@ -1,10 +1,1022 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34661"
-  title: "Insecticides"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.insecticides"
+  classification_refs: "CPC 3.0 34661 Insecticides; narrower formulation scope"
+  covered_products: "One actual sole-active imidacloprid aqueous SC of nominal 600 g/L from acquired technical powder, JM dispersant solution and Example-2 additive identities"
+  excluded_products: "Other active substances or co-actives; other formulation types/concentrations; technical-active synthesis; onsite JM or hydrogel production; downstream pesticide use"
+  representative_product: "600 g/L nominal imidacloprid SC; actual mass fraction, density, complete supplied formulation and release specification declared"
+  production_route: "Acquired ingredients → aqueous high-shear preblend → technical powder addition → sand milling → post-mill hydrogel/antifoam adjustment → acceptance → actual packaging/delivery"
+  market_state: "Accepted net wet formulation ready for supply at formulation-facility gate; actual site/country, SKU, batch, assay, water/solvent/carrier and packaging disclosed"
+functional_unit:
+  what: "Manufacture and supply of the declared aqueous imidacloprid SC"
+  how_much: "1 kg net accepted supplied wet formulation"
+  how_well: "Documented batch release against the actual registered/product specification: active identity and assay, homogeneity, particle distribution, suspension stability, viscosity, pH and relevant impurities; no claim of pest-control equivalence"
+  how_long_or_cycle: "One matched manufacturing/acceptance period; storage stability is declared product quality, not a treatment lifetime"
+  reference_flow_link: "finished_sc"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "formulation"
+      rule: "Include receipt/issue, preblend, technical charging, high-shear dispersion, sand milling, post-mill thickening, all attributable auxiliaries, cleaning, QC and actual filling; preserve independent stage records. No active synthesis or JM polymerisation is moved into this plant."
+      source_ids:
+        - sinochem-imidacloprid-sc-2015
+    - rule_id: boundary_use
+      applies_to: "supply and downstream"
+      rule: "Count the complete supplied wet formulation and actual packaging manufacture/filling burden to gate; keep field dilution/application and post-use packaging disposal in separate downstream models."
+      source_ids:
+        - sinochem-imidacloprid-sc-2015
+    - rule_id: boundary_composition
+      applies_to: "whole supplied inputs"
+      rule: "Inventory complete acquired wet additives once. Measure constituent subledgers without creating extra purchases of their polymer, active, solvent or water. Add a separate atomic exchange for every real additional ingredient/utility/waste/species; absence requires evidence, not a blank amount."
+      source_ids:
+        - sinochem-imidacloprid-sc-2015
+boundary_abstraction:
+  declared_starting_condition: "Acquired technical imidacloprid powder and whole supplied additives, water, electricity and actual packaging at formulation site"
+  starting_condition_role: "Foreground is formulation, wet milling and delivery preparation; upstream active and additive manufacture are linked datasets"
+  product_classification_scope: "The specific insecticidal aqueous preparation, not every pesticide or active substance; complete composition checked against HS Chapter 38 notes"
+  recursive_input_rule: "External acquired SC or returned sold formulation is a distinct whole input with prior burdens and acceptance history; never recursively create the reference output or double count internally returned slurry"
+  upstream_dataset_requirement: "Match the actual supplied technical grade, complete JM/hydrogel/antifoam and other inputs to independent providers; generic native reference is neither a provider nor a production mix for the site"
+  disclosure: "Declare actual formulation, outsourced operations, site/geography, utility and waste-treatment boundaries, packaging, allocation, gaps and source applicability; patent applicant location is not dataset geography"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Pesticide"
+    uuid: "23a65bba-3eb5-406c-ad26-6841bd151f9c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "sole active imidacloprid CAS 138261-41-3"
+    - "aqueous SC"
+    - "nominal 600 g/L and measured g/kg"
+    - "measured density with temperature and method"
+    - "complete as-supplied ingredient identities and assay/water/solvent/carrier"
+    - "JM solution supply state"
+    - "purchased hydrogel solids"
+    - "release tests"
+    - "manufacturer/site/country"
+    - "SKU and batch"
+    - "reporting period and accepted-output cohort"
+    - "packaging components and net/gross mass"
+    - "upstream provider geography/technology"
+    - "native generic identity limits and classification debt"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use accepted net wet formulation mass, excluding all packaging. All inventory rows use per 1 kg reference flow and the same positive accepted output cohort measured by cp_acceptance."
+  - id: active_carrier_basis
+    applies_to: "technical powder and formulation"
+    required_property_ref:
+      name: "Mass and actual assay"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep whole technical/formulation mass distinct from active mass and water/solvent/carrier subledgers. For concentration in g/L use independently measured density at matching temperature to obtain g/kg; never assume 1 L equals 1 kg or infer density from a patent designation."
+  - id: raw_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Original meter property"
+      uuid: ""
+    required_unit: "original units"
+    rule: "Convert raw units before division by accepted mass. Integrate a measured rate over duration only once; an already integrated volume or meter total receives no extra time factor. Electricity kWh remains kWh unless an explicit documented conversion is requested."
+process_map:
+  - id: sc_formulation
+    name: "Aqueous formulation, milling, acceptance and filling"
+    inclusion: "required"
+    inclusion_condition: "Selected acquired-ingredient SC route only"
+    role: "One foreground unit; stage, owner and meter records remain separate"
+    quantitative_reference: "1 kg accepted net wet SC"
+process_inventory:
+  - id: sc_formulation
+    label: "Aqueous formulation, milling, acceptance and filling"
+    inputs:
+      product:
+        - row_id: technical_imidacloprid
+          role: "Technical imidacloprid powder"
+          name: "Technical imidacloprid powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the entire acquired technical powder at its measured assay, impurities and moisture, not a second purchase of pure active ingredient. Declare CAS 138261-41-3, technical powder form and measured supplied grade; supplier-specific identity remains to be matched."
+          amount:
+            expression: "Use cp_materials to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: jm_dispersant
+          role: "JM copolymer dispersant solution, as supplied"
+          name: "JM copolymer dispersant solution, as supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One complete supplied JM dispersant from the selected patent: copolymer of methallyl polyethylene glycol ether, hydroxyethyl methacrylate, styrene and sulfonated styrene. Record actual solids, solvent identity and water separately as constituent subledgers. The patent does not identify the synthesis solvent; do not assume water, density or a monomer-to-product yield. Its upstream polymerisation is outside this formulation plant."
+          amount:
+            expression: "Use cp_materials to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: sdbs
+          role: "Sodium dodecylbenzenesulfonate, as supplied"
+          name: "Sodium dodecylbenzenesulfonate, as supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual supplied wetting agent, concentration and carrier; constituent active and carrier masses are not additional procurement."
+          amount:
+            expression: "Use cp_materials to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: xanthan_hydrogel
+          role: "Xanthan gum aqueous hydrogel, 4% nominal"
+          name: "Xanthan gum aqueous hydrogel, 4% nominal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased complete hydrogel charged after milling in the selected route. Verify actual solids and water. Do not procure its carrier water again; onsite hydrogel preparation needs separately acquired gum/water rows and a revised declared route."
+          amount:
+            expression: "Use cp_materials to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: magnesium_aluminium_silicate
+          role: "Magnesium aluminium silicate"
+          name: "Magnesium aluminium silicate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record supplied rheology additive mass and grade, including any supplied moisture; do not substitute a different silicate or generic mineral filler."
+          amount:
+            expression: "Use cp_materials to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: ethylene_glycol
+          role: "Ethylene glycol"
+          name: "Ethylene glycol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual antifreeze input including declared purity; no default dosage or volatilisation fraction is prescribed."
+          amount:
+            expression: "Use cp_materials to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: silicone_antifoam
+          role: "Silicone antifoam formulation, as supplied"
+          name: "Silicone antifoam formulation, as supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one complete supplied antifoam product added during processing. Retain formulation, carrier and actual batch issue; do not count silicone and carrier as separate purchases."
+          amount:
+            expression: "Use cp_materials to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: formulation_water
+          role: "Water for aqueous formulation"
+          name: "Water for aqueous formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separately supplied water actually charged into the formulation; exclude water already inside technical material, JM, wetting agent, hydrogel or antifoam. Record actual treatment/supply route without assuming the patent water is deionized."
+          amount:
+            expression: "Use cp_water to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: electricity
+          role: "Electricity, low voltage"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Electric energy / kWh"
+          description: "Submeter shearing, sand milling, pumps, cooling auxiliaries, filling, cleaning and attributable idle/failed operation. Include purchased cooling service only through separately declared actual atomic exchanges; a closed cooling loop is not a water consumption equal to circulation."
+          amount:
+            expression: "Use cp_power to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+        - row_id: cleaning_water
+          role: "Tap water for equipment cleaning"
+          name: "Tap water for equipment cleaning"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual water cleaning; identify first-rinse recovery to this same formulation versus external wastewater. It is distinct from formulation water and closed-loop circulation."
+          amount:
+            expression: "Use cp_water to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: hdpe_bottle
+          role: "High-density polyethylene bottle"
+          name: "High-density polyethylene bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this actual delivery component. Record entire purchased bottle by material mass and actual filling losses; packaging mass is outside net formulation reference mass."
+          amount:
+            expression: "Use cp_packaging to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pp_closure
+          role: "Polypropylene screw closure"
+          name: "Polypropylene screw closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual closure; distinguish any separately supplied liner with an additional atomic row. Do not infer closure resin from bottle resin."
+          amount:
+            expression: "Use cp_packaging to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: paper_label
+          role: "Printed paper label"
+          name: "Printed paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual paper labels. Record entire acquired printed label; separately purchased adhesive requires its own row."
+          amount:
+            expression: "Use cp_packaging to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_carton
+          role: "Corrugated fibreboard carton"
+          name: "Corrugated fibreboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual secondary packaging; record carton mass, rejected packs and reuse treatment. Bulk or returnable delivery must declare its real components instead."
+          amount:
+            expression: "Use cp_packaging to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_sc
+          role: "Pesticide"
+          name: "Pesticide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "23a65bba-3eb5-406c-ad26-6841bd151f9c"
+          property_unit: "Mass / kg"
+          description: "One qualified output: the selected 600 g/L nominal imidacloprid aqueous suspension concentrate, not a portfolio of pesticides. Native Product flow name Pesticide / 农药 describes a pest-control substance or mixture, chemical or biological; no CAS, concentration, formulation, treatment route, grade, mix/location component or locationOfSupply is specified. Its native classification 35499 is a disclosed classification debt, not evidence for 34661 or a residual-identity exclusion. Its only flow property is reference Mass with meanValue 1; this is not density. This broad identity supplies no recipe, supplier, geography, efficacy or background intensity; retain all specific qualifiers and select actual upstream providers independently."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - sinochem-imidacloprid-sc-2015
+            ranges: []
+      waste:
+        - row_id: formulation_wastewater
+          role: "Imidacloprid-containing aqueous cleaning wastewater"
+          name: "Imidacloprid-containing aqueous cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh or integrate actual external wastewater with density at declared conditions; record imidacloprid, glycol and other assayed constituents as subledgers, receiver and treatment boundary. Recovered rinse used internally is an internal transfer, not waste output plus new input."
+          amount:
+            expression: "Use cp_waste to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: offspec_sc
+          role: "Rejected imidacloprid aqueous suspension concentrate"
+          name: "Rejected imidacloprid aqueous suspension concentrate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record formulation actually sent for external treatment/disposal, including abandoned runs; internal rework stays in WIP with carried burdens and is not a saleable co-product."
+          amount:
+            expression: "Use cp_waste to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: contaminated_filter
+          role: "Imidacloprid-contaminated filter cloth"
+          name: "Imidacloprid-contaminated filter cloth"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual disposable filtration or captured solids: retain wet mass, cloth material, entrained formulation and receiver. Additional distinct maintenance or packaging waste requires its own atomic exchange."
+          amount:
+            expression: "Use cp_waste to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: imidacloprid_air
+          role: "Imidacloprid, air"
+          name: "Imidacloprid, air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual quantified post-control release to air. Captured dust returned to production is internal; captured dust sent to disposal is a specific waste row. Detection limits and unmeasured release remain explicit; no emission factor or zero is invented."
+          amount:
+            expression: "Use cp_air to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+        - row_id: water_vapour
+          role: "Water vapour, air"
+          name: "Water vapour, air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include independently determined evaporative water loss where material. No reaction water is generated by the selected mechanical mixing/milling route. A physical closure residual cannot establish this release or chemical degradation."
+          amount:
+            expression: "Use cp_air to retain the complete matched raw-period numerator, including assigned failed-run and carried WIP burdens; divide the attributable accepted-cohort quantity by its unique positive accepted wet mass once to express per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_single_product
+    applies_to: "sc_formulation"
+    rule: "One accepted supplied SC is the sole useful output; waste, samples and internal rework are not co-products. Assign the complete attributable campaign burden, including failed/zero-output operation, to that product cohort; do not credit avoided pesticide, wastewater or packaging production."
+    source_ids:
+      - sinochem-imidacloprid-sc-2015
+  - rule_id: allocation_shared
+    applies_to: "shared utilities and cleaning"
+    rule: "Prefer dedicated meters and batch/stage submetering. For genuinely shared service, document a measured causal driver and partition each raw burden once across products and closing WIP; retain totals and allocation evidence. Unresolved allocation stays a data gap, never an unreported zero."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_acceptance
+      process_id: "sc_formulation"
+      flow_role: "accepted supplied product"
+      record_type: "release_and_weighing"
+      raw_fields: "site; SKU; route; period start/end; stage; owner; batch; instrument; unit; raw value; opening/closing WIP; return/rework IDs; burden cohort; unique lot/acceptance ID; net wet mass; gross/tare; fresh manufacture flag; shipment/finished-stock reconciliation; rejected and recovered mass; g/kg assay; g/L assay; density and temperature; particle size and release tests"
+      collection_method: "Owner: quality release lead and weighing custodian. Use calibrated net weighing and signed release records. Establish Q only from newly accepted supplied formulation of the same product/route/state. Old finished stock, returned already-accepted product, rework transfers and rejected material do not add another Q; reconcile dispatch and opening/closing finished stock separately. Retain unnormalized period records and the compatible attributable raw numerator without division, with cohort and WIP burden transfers documented. After verified raw-unit conversion and attribution, normalize_period alone divides by the unique positive accepted wet SC mass Q. Card amount formulas and aggregation_rule describe this same final reporting operation, not a second division. No duplicated returned or reworked output; Q=0 retains the complete pool without a normalized result."
+      unit: "kg; g/kg; g/L; kg/L"
+      frequency: "Each batch/stage and full period closure"
+      temporal_coverage: "Complete actual matched period, including failed and zero-output runs and associated start-up/idle/cleaning"
+      site_scope: "One declared site, actual supply country, SKU and aqueous milling route; no cross-formulation average"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source ticket; signed reconciliation; raw unsuccessful runs; uncertainty and gaps"
+    - protocol_id: cp_materials
+      process_id: "sc_formulation"
+      flow_role: "each acquired ingredient"
+      record_type: "issue_and_assay"
+      raw_fields: "site; SKU; route; period start/end; stage; owner; batch; instrument; unit; raw value; opening/closing WIP; return/rework IDs; burden cohort; ingredient SKU; complete supplied mass; supplier; assay; moisture; solvent/carrier identity and fraction; unopened returns; spills; constituent ledger"
+      collection_method: "Owner: materials custodian and laboratory analyst. Weigh batch issues and unconsumed returns; retain certificates and independent assay where needed. Record complete supplied JM, wetting agent, hydrogel and antifoam once; active/polymer/water are subledgers. Internal slurry and first-rinse recovery retain originating burdens, not a new external purchase. Retain unnormalized period records and the compatible attributable raw numerator without division, with cohort and WIP burden transfers documented. After verified raw-unit conversion and attribution, normalize_period alone divides by the unique positive accepted wet SC mass Q. Card amount formulas and aggregation_rule describe this same final reporting operation, not a second division. No duplicated returned or reworked output; Q=0 retains the complete pool without a normalized result."
+      unit: "kg; fraction"
+      frequency: "Each batch/stage and full period closure"
+      temporal_coverage: "Complete actual matched period, including failed and zero-output runs and associated start-up/idle/cleaning"
+      site_scope: "One declared site, actual supply country, SKU and aqueous milling route; no cross-formulation average"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source ticket; signed reconciliation; raw unsuccessful runs; uncertainty and gaps"
+    - protocol_id: cp_power
+      process_id: "sc_formulation"
+      flow_role: "electricity"
+      record_type: "submeter"
+      raw_fields: "site; SKU; route; period start/end; stage; owner; batch; instrument; unit; raw value; opening/closing WIP; return/rework IDs; burden cohort; start/end meter; time; rated versus measured power; line allocation; failed/idle energy; cooling pump/filler readings"
+      collection_method: "Owner: electrical metering custodian. Use net meter differences. Integrate measured power over duration only when no cumulative energy total exists; do not use nameplate power as a measured consumption. Retain shearing/milling/auxiliary stage totals independently. Retain unnormalized period records and the compatible attributable raw numerator without division, with cohort and WIP burden transfers documented. After verified raw-unit conversion and attribution, normalize_period alone divides by the unique positive accepted wet SC mass Q. Card amount formulas and aggregation_rule describe this same final reporting operation, not a second division. No duplicated returned or reworked output; Q=0 retains the complete pool without a normalized result."
+      unit: "kWh"
+      frequency: "Each batch/stage and full period closure"
+      temporal_coverage: "Complete actual matched period, including failed and zero-output runs and associated start-up/idle/cleaning"
+      site_scope: "One declared site, actual supply country, SKU and aqueous milling route; no cross-formulation average"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source ticket; signed reconciliation; raw unsuccessful runs; uncertainty and gaps"
+    - protocol_id: cp_water
+      process_id: "sc_formulation"
+      flow_role: "separate formulation and cleaning water"
+      record_type: "meter_and_transfer"
+      raw_fields: "site; SKU; route; period start/end; stage; owner; batch; instrument; unit; raw value; opening/closing WIP; return/rework IDs; burden cohort; source; water treatment; integrated volume or rate/duration flag; density/temperature; fresh issue; hydrogel/JM-carried water subledger; rinse destination; cooling makeup"
+      collection_method: "Owner: water-meter custodian and batch operator. Use calibrated mass or cumulative volume with supported density. Distinguish formulation charge, cleaning, makeup, recovered transfers and discharge. No extra duration on integrated volume, no circulation counted as consumption, and no duplicated supplied carrier water. Retain unnormalized period records and the compatible attributable raw numerator without division, with cohort and WIP burden transfers documented. After verified raw-unit conversion and attribution, normalize_period alone divides by the unique positive accepted wet SC mass Q. Card amount formulas and aggregation_rule describe this same final reporting operation, not a second division. No duplicated returned or reworked output; Q=0 retains the complete pool without a normalized result."
+      unit: "kg; L; kg/L"
+      frequency: "Each batch/stage and full period closure"
+      temporal_coverage: "Complete actual matched period, including failed and zero-output runs and associated start-up/idle/cleaning"
+      site_scope: "One declared site, actual supply country, SKU and aqueous milling route; no cross-formulation average"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source ticket; signed reconciliation; raw unsuccessful runs; uncertainty and gaps"
+    - protocol_id: cp_packaging
+      process_id: "sc_formulation"
+      flow_role: "each actual packaging component"
+      record_type: "component_issue"
+      raw_fields: "site; SKU; route; period start/end; stage; owner; batch; instrument; unit; raw value; opening/closing WIP; return/rework IDs; burden cohort; component material/grade; unit count and measured component mass; rejects; returnable cycles; net/gross fill; other components"
+      collection_method: "Owner: packaging custodian and filling lead. Verify actual BOM and weigh each component; use count times measured component mass when required, before normalization. Keep bottle, closure, liner, label and carton distinct. Actual extra components require individual rows, and absent listed components need documented non-applicability. Retain unnormalized period records and the compatible attributable raw numerator without division, with cohort and WIP burden transfers documented. After verified raw-unit conversion and attribution, normalize_period alone divides by the unique positive accepted wet SC mass Q. Card amount formulas and aggregation_rule describe this same final reporting operation, not a second division. No duplicated returned or reworked output; Q=0 retains the complete pool without a normalized result."
+      unit: "kg; item; kg/item"
+      frequency: "Each batch/stage and full period closure"
+      temporal_coverage: "Complete actual matched period, including failed and zero-output runs and associated start-up/idle/cleaning"
+      site_scope: "One declared site, actual supply country, SKU and aqueous milling route; no cross-formulation average"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source ticket; signed reconciliation; raw unsuccessful runs; uncertainty and gaps"
+    - protocol_id: cp_waste
+      process_id: "sc_formulation"
+      flow_role: "each external wastewater or solid waste"
+      record_type: "transfer_and_assay"
+      raw_fields: "site; SKU; route; period start/end; stage; owner; batch; instrument; unit; raw value; opening/closing WIP; return/rework IDs; burden cohort; waste ID; wet/dry mass; active/water/glycol assay; receiver; treatment route; internal recovery; abandoned-run burdens"
+      collection_method: "Owner: environmental waste custodian. Weigh outgoing streams and assay relevant constituents; trace each to one receiver and actual treatment boundary. External wastewater is a waste exchange; do not also invent an elementary discharge of its entire content at this gate. If onsite treatment occurs, add its actual separate inputs and species outlets with independent evidence. Retain unnormalized period records and the compatible attributable raw numerator without division, with cohort and WIP burden transfers documented. After verified raw-unit conversion and attribution, normalize_period alone divides by the unique positive accepted wet SC mass Q. Card amount formulas and aggregation_rule describe this same final reporting operation, not a second division. No duplicated returned or reworked output; Q=0 retains the complete pool without a normalized result."
+      unit: "kg; fraction"
+      frequency: "Each batch/stage and full period closure"
+      temporal_coverage: "Complete actual matched period, including failed and zero-output runs and associated start-up/idle/cleaning"
+      site_scope: "One declared site, actual supply country, SKU and aqueous milling route; no cross-formulation average"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source ticket; signed reconciliation; raw unsuccessful runs; uncertainty and gaps"
+    - protocol_id: cp_air
+      process_id: "sc_formulation"
+      flow_role: "each actual direct species release"
+      record_type: "post_control_measurement"
+      raw_fields: "site; SKU; route; period start/end; stage; owner; batch; instrument; unit; raw value; opening/closing WIP; return/rework IDs; burden cohort; species; medium/subcompartment; post-control sampling point; integrated volume or measured rate/time; concentration; detection limit; vapour loss measurement; temperature/pressure"
+      collection_method: "Owner: environmental monitoring lead. Quantify actual releases at the declared final boundary by matched sampling/metering. A concentration times integrated gas volume is already a period mass; rate times duration is integrated only once. Report below-detection and unmeasured quantities explicitly. Add an atomic row for each other actual solvent/species, never infer speciation from COD or a balance residual. Retain unnormalized period records and the compatible attributable raw numerator without division, with cohort and WIP burden transfers documented. After verified raw-unit conversion and attribution, normalize_period alone divides by the unique positive accepted wet SC mass Q. Card amount formulas and aggregation_rule describe this same final reporting operation, not a second division. No duplicated returned or reworked output; Q=0 retains the complete pool without a normalized result."
+      unit: "kg; concentration; gas volume"
+      frequency: "Each batch/stage and full period closure"
+      temporal_coverage: "Complete actual matched period, including failed and zero-output runs and associated start-up/idle/cleaning"
+      site_scope: "One declared site, actual supply country, SKU and aqueous milling route; no cross-formulation average"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source ticket; signed reconciliation; raw unsuccessful runs; uncertainty and gaps"
+    - protocol_id: cp_balance
+      process_id: "sc_formulation"
+      flow_role: "complete raw period and WIP burdens"
+      record_type: "cohort_mass_and_burden_ledger"
+      raw_fields: "site; SKU; route; period start/end; stage; owner; batch; instrument; unit; raw value; opening/closing WIP; return/rework IDs; burden cohort; opening/closing physical WIP; opening/closing burden vector by exchange; failed/zero-output runs; rework/return lineage; accepted lot IDs; raw input/output mass; constituent composition; transfers and allocation"
+      collection_method: "Owner: production accountant, stage owners and environmental lead jointly. Close a physical mass/element ledger separately from a burden ledger. Carry opening WIP mass and all embodied burdens into the matching accepted cohort; retain closing WIP and burdens for the next period. Account for zero-output runs, abandoned batches and external returned products without dropping their burdens or accepting their mass twice. Sign each transfer so current charges plus opening burdens equal accepted-cohort burden plus closing/transferred burdens. Retain unnormalized period records and the compatible attributable raw numerator without division, with cohort and WIP burden transfers documented. After verified raw-unit conversion and attribution, normalize_period alone divides by the unique positive accepted wet SC mass Q. Card amount formulas and aggregation_rule describe this same final reporting operation, not a second division. No duplicated returned or reworked output; Q=0 retains the complete pool without a normalized result."
+      unit: "kg; original burden units"
+      frequency: "Each batch/stage and full period closure"
+      temporal_coverage: "Complete actual matched period, including failed and zero-output runs and associated start-up/idle/cleaning"
+      site_scope: "One declared site, actual supply country, SKU and aqueous milling route; no cross-formulation average"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source ticket; signed reconciliation; raw unsuccessful runs; uncertainty and gaps"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Convert raw quantities to their declared numerator units, retain complete actual period burdens including failures and opening WIP, remove only documented burdens carried into closing WIP or transferred to another cohort, and divide the matched accepted-cohort burden by unique positive Q once. Finished SC is 1 kg. Zero Q permits no ratio; retain and carry or explicitly dispose the complete burdens."
+      inputs:
+        - raw_period_quantity
+        - opening_burden
+        - closing_burden
+        - transfer_ledger
+        - Q
+        - cp_acceptance
+        - cp_balance
+      output: "exchange amount per 1 kg reference flow"
+      source_ids: []
+    - id: composition_subledgers
+      applies_to: "technical_imidacloprid; jm_dispersant; sdbs; xanthan_hydrogel; silicone_antifoam; finished_sc"
+      rule: "Constituent mass = whole supplied mass × independently measured mass fraction. For assay C in g/L and density rho in kg/L at matching temperature, g/kg = C / rho. Constituent totals reconcile to whole mass but do not add procurement rows."
+      inputs:
+        - whole_supplied_mass
+        - measured_fraction
+        - C
+        - rho
+        - cp_materials
+        - cp_acceptance
+      output: "active/water/solvent/carrier subledgers"
+      source_ids:
+        - sinochem-imidacloprid-sc-2015
+    - id: physical_balance
+      applies_to: "sc_formulation"
+      rule: "Reconcile complete physical input + opening WIP = accepted output + measured external waste + independently measured direct releases + closing WIP + documented transfers, with packaging accounted separately. Close relevant elements using actual compositions independently. Mechanical mixing/milling creates no reaction water; phase change and entrained/free water are recorded separately. COD or a closure residual proves neither species nor reaction water. Investigate and disclose residuals without fitting two unknown outlets to one residual."
+      inputs:
+        - raw_input_mass
+        - opening_WIP
+        - accepted_mass
+        - waste_mass
+        - measured_species
+        - closing_WIP
+        - composition
+        - cp_balance
+      output: "separate physical and species reconciliation"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "reference and ingredients"
+      requirement: "Require actual composition, technical grade, aqueous SC state, nominal and measured concentration, supplier conditions, release criteria, site and country. Broad pesticide identity cannot supply an unstated geography or recipe; disclose native classification debt."
+      evidence: "Supplier certificates; actual product specification; signed release; native limitation disclosure"
+    - id: quality_period
+      applies_to: "all inventory rows"
+      requirement: "Complete matched raw numerator and unique fresh accepted output are mandatory, including unsuccessful operation, returns/rework, opening/closing WIP and carried burdens. Retain unnormalized originals and uncertainty; no silent exclusion of zero-output runs."
+      evidence: "cp_acceptance; cp_balance"
+    - id: quality_sources
+      applies_to: "method and performance"
+      requirement: "Patent ingredient identities and unit operations are one case, not an industry average or guaranteed SKU. No formula amounts, efficacy, application rate, emission factor, field release fraction or density are defaults. Verify site/SKU measurements before creating quantitative datasets. FAO scope requires assessed manufacturer/equivalence; this PCR claims no certification."
+      evidence: "sinochem-imidacloprid-sc-2015; fao-imidacloprid-2013"
+    - id: quality_completeness
+      applies_to: "optional rows and emissions"
+      requirement: "Demonstrate non-applicability of each absent physical exchange. Every additional real material, fuel, refrigerant, cleaning chemical, package, waste and emitted species needs a separate atomic row with records and provider/medium. Unknown is disclosed, never encoded as measured zero."
+      evidence: "cp_materials; cp_power; cp_water; cp_packaging; cp_waste; cp_air"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Reject aggregate insecticide output, a pure-active kilogram as a wet-SC kilogram, another physical formulation or nominal concentration, undocumented JM supply composition, missing qualifiers, or unreviewed HS-note substance applicability. Generic UUID availability does not waive actual recipe and provider evidence."
+    source_ids:
+      - unstats-cpc3-2025
+      - wco-hs38-2022
+      - sinochem-imidacloprid-sc-2015
+  - rule_id: validate_denominator
+    applies_to: "all inventory rows"
+    rule: "Require Q > 0, unique fresh acceptance IDs, correct net wet mass, matched route/SKU/period, full raw burdens and documented WIP/return/rework transfers. Reject omitted failed/zero-output runs, double normalization, repeated acceptance, extra time factors on integrated volume and density inferred from patent labels."
+    source_ids: []
+  - rule_id: validate_physical
+    applies_to: "material and emission reconciliation"
+    rule: "Require separate whole-mass/element and actual-species evidence, including all supplied carrier water/solvents and independently quantified water loss. Reject duplicate constituent purchases, COD-derived species, residual-fitted emissions, unsupported reaction water and onsite synthesis added to the formulation route."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "data package"
+    rule: "Report performed checks, skipped scopes, limits, providers and unmeasured exchanges. Incomplete actual emission/allocation/composition evidence remains inconclusive; methodological rules and a valid projection alone do not validate a future dataset or approve methodology."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Site/SKU-specific foreground formulation dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacture of the same qualified aqueous SC; background supply to separately modelled pesticide use"
+  excluded_use: "Generic all-insecticide mix; active synthesis inventory; efficacy comparison; kg-active substitution without assay; field emissions or regulatory approval"
+  required_metadata: "Actual formulation and complete supplied-input states; nominal/measured concentration and density; site/country/provider; SKU/period/cohort; packaging and net mass; WIP and burden transfer ledger; treatment and allocation boundaries; protocol owners; native identity limits/classification debt"
+  required_quality_disclosure: "Raw-period completeness; failed runs; uncertainty; unmeasured species; missing auxiliary UUID/provider matches; patent/FAO applicability limits and actual release evidence"
+  update_trigger: "Change in active/grade, formulation type/concentration, JM/other supplied additive, solvent/carrier, milling route, hydrogel make/buy state, packaging, site/provider, release specification or waste treatment"
+data_sources:
+  - id: "unstats-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025, printed p.167, entries 34661/34666/34669. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Official titles and separation of classification leaves only; those explanatory entries have no additional text. A classification leaf neither creates a PCR identity nor establishes the full scope of this narrow formulation."
+  - id: "wco-hs38-2022"
+    type: "official_guidance"
+    reference: "WCO, HS Nomenclature 2022, Chapter 38, Subheading Notes 1–2 and heading 38.08. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0638_2022e.pdf"
+    used_for: "Check listed substances versus other insecticidal preparations: imidacloprid is absent from both lists. Does not approve a CPC edge; actual complete composition and product purpose still require classification assessment."
+  - id: "sinochem-imidacloprid-sc-2015"
+    type: "literature"
+    reference: "中化化工科学技术研究总院、北京广源益农化学有限责任公司, 一种吡虫啉悬浮剂及其制备方法, CN105028457A, 2015-11-11, description [0006], [0011] Example 2, PDF pp.4–5; pp.3,6–7 limitations/context. https://patents.google.com/patent/CN105028457A/zh"
+    used_for: "Primary patent facsimile supports technical powder, JM solution, sodium dodecylbenzenesulfonate, preformed 4% xanthan hydrogel, magnesium aluminium silicate, silicone antifoam, ethylene glycol, water and shear/sand-mill/post-mill sequence. Laboratory recipe is not a default quantity, density, field efficacy or factory intensity. JM synthesis solvent is unspecified; require actual supplied composition and upstream data. Upstream polymerisation is not the selected foreground."
+  - id: "fao-imidacloprid-2013"
+    type: "standard"
+    reference: "FAO, Specifications and Evaluations for Agricultural Pesticides: Imidacloprid, May 2013, 582/SC, printed pp.11–13; introduction p.1 and evaluations 582/2004, 582/2012. https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/Specs/Imidacloprid_2013_01.pdf"
+    used_for: "Independent physical description of aqueous technical-particle suspension and concentration/density distinction. Applies to evaluated manufacturers/technical materials and equivalence scope, not nominally similar unassessed suppliers/routes; no endorsement, warranty of efficacy or automatic compliance. Its 2013 SC tolerance table stops at 500 g/kg or g/L; no tolerance is extrapolated to 600 g/L. No formulation recipe or use/emission factor adopted."
+  - id: "changqing-imidacloprid-sc-2014"
+    type: "literature"
+    reference: "江苏长青农化股份有限公司, 吡虫啉悬浮剂的制备方法, CN104126600A, 2014-11-05, claims 1–2 and description [0005]–[0019], PDF pp.2–4. https://patents.google.com/patent/CN104126600A/zh"
+    used_for: "Independent counterexample: nominal 350 g/L water-phase sulfonated-calix[5]arene route. Not the selected 600 g/L JM formulation; its ratios and suspensibility cannot transfer to the selected route or establish generic insecticide performance."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:c21df1d9f36cca9eecfa1024d28312305c7d83a2c360f3418a701eda06c2cf65"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7090"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7090
+          line: 62
+          column: 1
+        end:
+          offset: 9431
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Acquired technical imidacloprid powder and whole supplied additives, water, electricity and actual packaging at formulation site |\n| starting_condition_role | Foreground is formulation, wet milling and delivery preparation; upstream active and additive manufacture are linked datasets |\n| product_classification_scope | The specific insecticidal aqueous preparation, not every pesticide or active substance; complete composition checked against HS Chapter 38 notes |\n| recursive_input_rule | External acquired SC or returned sold formulation is a distinct whole input with prior burdens and acceptance history; never recursively create the reference output or double count internally returned slurry |\n| upstream_dataset_requirement | Match the actual supplied technical grade, complete JM/hydrogel/antifoam and other inputs to independent providers; generic native reference is neither a provider nor a production mix for the site |\n| disclosure | Declare actual formulation, outsourced operations, site/geography, utility and waste-treatment boundaries, packaging, allocation, gaps and source applicability; patent applicant location is not dataset geography |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | formulation | Include receipt/issue, preblend, technical charging, high-shear dispersion, sand milling, post-mill thickening, all attributable auxiliaries, cleaning, QC and actual filling; preserve independent stage records. No active synthesis or JM polymerisation is moved into this plant. | sinochem-imidacloprid-sc-2015 |\n| boundary_use | supply and downstream | Count the complete supplied wet formulation and actual packaging manufacture/filling burden to gate; keep field dilution/application and post-use packaging disposal in separate downstream models. | sinochem-imidacloprid-sc-2015 |\n| boundary_composition | whole supplied inputs | Inventory complete acquired wet additives once. Measure constituent subledgers without creating extra purchases of their polymer, active, solvent or water. Add a separate atomic exchange for every real additional ingredient/utility/waste/species; absence requires evidence, not a blank amount. | sinochem-imidacloprid-sc-2015 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 219
+              line: 9
+              column: 1
+            end:
+              offset: 276
+              line: 9
+              column: 58
+          text: "# Aqueous imidacloprid suspension concentrate formulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7090
+              line: 62
+              column: 1
+            end:
+              offset: 7111
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_27599"
+      family: "allocation"
+      span:
+        start:
+          offset: 27599
+          line: 405
+          column: 1
+        end:
+          offset: 28434
+          line: 412
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_single_product | sc_formulation | One accepted supplied SC is the sole useful output; waste, samples and internal rework are not co-products. Assign the complete attributable campaign burden, including failed/zero-output operation, to that product cohort; do not credit avoided pesticide, wastewater or packaging production. | sinochem-imidacloprid-sc-2015 |\n| allocation_shared | shared utilities and cleaning | Prefer dedicated meters and batch/stage submetering. For genuinely shared service, document a measured causal driver and partition each raw burden once across products and closing WIP; retain totals and allocation evidence. Unresolved allocation stays a data gap, never an unreported zero. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 219
+              line: 9
+              column: 1
+            end:
+              offset: 276
+              line: 9
+              column: 58
+          text: "# Aqueous imidacloprid suspension concentrate formulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 27599
+              line: 405
+              column: 1
+            end:
+              offset: 27639
+              line: 405
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_45781"
+      family: "validation"
+      span:
+        start:
+          offset: 45781
+          line: 443
+          column: 1
+        end:
+          offset: 47374
+          line: 452
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference product | Reject aggregate insecticide output, a pure-active kilogram as a wet-SC kilogram, another physical formulation or nominal concentration, undocumented JM supply composition, missing qualifiers, or unreviewed HS-note substance applicability. Generic UUID availability does not waive actual recipe and provider evidence. | unstats-cpc3-2025; wco-hs38-2022; sinochem-imidacloprid-sc-2015 |\n| validate_denominator | all inventory rows | Require Q > 0, unique fresh acceptance IDs, correct net wet mass, matched route/SKU/period, full raw burdens and documented WIP/return/rework transfers. Reject omitted failed/zero-output runs, double normalization, repeated acceptance, extra time factors on integrated volume and density inferred from patent labels. |  |\n| validate_physical | material and emission reconciliation | Require separate whole-mass/element and actual-species evidence, including all supplied carrier water/solvents and independently quantified water loss. Reject duplicate constituent purchases, COD-derived species, residual-fitted emissions, unsupported reaction water and onsite synthesis added to the formulation route. |  |\n| validate_coverage | data package | Report performed checks, skipped scopes, limits, providers and unmeasured exchanges. Incomplete actual emission/allocation/composition evidence remains inconclusive; methodological rules and a valid projection alone do not validate a future dataset or approve methodology. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 219
+              line: 9
+              column: 1
+            end:
+              offset: 276
+              line: 9
+              column: 58
+          text: "# Aqueous imidacloprid suspension concentrate formulation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 45781
+              line: 443
+              column: 1
+            end:
+              offset: 45803
+              line: 443
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7090"
+      source_span:
+        start:
+          offset: 8437
+          line: 76
+          column: 1
+        end:
+          offset: 8781
+          line: 76
+          column: 345
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_use"
+      identity_kind: "explicit"
+      unit_id: "normative_7090"
+      source_span:
+        start:
+          offset: 8782
+          line: 77
+          column: 1
+        end:
+          offset: 9052
+          line: 77
+          column: 271
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_composition"
+      identity_kind: "explicit"
+      unit_id: "normative_7090"
+      source_span:
+        start:
+          offset: 9053
+          line: 78
+          column: 1
+        end:
+          offset: 9429
+          line: 78
+          column: 377
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_single_product"
+      identity_kind: "explicit"
+      unit_id: "normative_27599"
+      source_span:
+        start:
+          offset: 27712
+          line: 409
+          column: 1
+        end:
+          offset: 28083
+          line: 409
+          column: 372
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_shared"
+      identity_kind: "explicit"
+      unit_id: "normative_27599"
+      source_span:
+        start:
+          offset: 28084
+          line: 410
+          column: 1
+        end:
+          offset: 28432
+          line: 410
+          column: 349
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_45781"
+      source_span:
+        start:
+          offset: 45876
+          line: 447
+          column: 1
+        end:
+          offset: 46303
+          line: 447
+          column: 428
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_45781"
+      source_span:
+        start:
+          offset: 46304
+          line: 448
+          column: 1
+        end:
+          offset: 46671
+          line: 448
+          column: 368
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_45781"
+      source_span:
+        start:
+          offset: 46672
+          line: 449
+          column: 1
+        end:
+          offset: 47057
+          line: 449
+          column: 386
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_45781"
+      source_span:
+        start:
+          offset: 47058
+          line: 450
+          column: 1
+        end:
+          offset: 47372
+          line: 450
+          column: 315
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7090"
+      source_span:
+        start:
+          offset: 7090
+          line: 62
+          column: 1
+        end:
+          offset: 7111
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7090"
+      source_span:
+        start:
+          offset: 7138
+          line: 65
+          column: 1
+        end:
+          offset: 8364
+          line: 72
+          column: 229
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_27599"
+      source_span:
+        start:
+          offset: 27599
+          line: 405
+          column: 1
+        end:
+          offset: 27639
+          line: 405
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_45781"
+      source_span:
+        start:
+          offset: 45781
+          line: 443
+          column: 1
+        end:
+          offset: 45803
+          line: 443
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c21df1d9f36cca9eecfa1024d28312305c7d83a2c360f3418a701eda06c2cf65"
+  generated_content_sha256: "sha256:70fd32738df9dec8794659d6ee811f68b124d29f8a65d5ac171e435d66a09a31"

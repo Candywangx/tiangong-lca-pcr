@@ -38,12 +38,11 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Cinnamon and cinnamon-tree flowers, raw `6e9b5ee6-fbb3-48f8-9b7a-dc50936ee79a` |
+| 参考产品流 | 按声明实际鲜/干状态交付的肉桂树皮或花/花芽 |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
 | 必需限定信息 | 物种或商业类型；植物部位 `bark` 或 `flower/bud`；适用时的树皮形态；鲜品或农场干燥状态；实测水分分数与基准；等级或去向；地区；采收年；园龄；萌蘖周期位置；路线 id；门口 `Production mix, at farm gate` |
-| 绑定模式 | `fixed` |
 
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需属性 | 必需单位 | 规则 |

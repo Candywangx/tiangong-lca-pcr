@@ -797,7 +797,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `identity_gate` | 参考蛋 | 要求非鸡、鲜态带壳、实测一 kg、实际非孵化用途及真实生产者门口；非食用的未孵化用途仍可纳入。 | `fao-codex-eggs` |
-| `route_gate` | 节点 | Laying and independent collection required, 分选/包装 evidence-based; species and housing differences change 清单 or QA. | `fao-codex-eggs`; `fao-leap-poultry` |
+| `route_gate` | 节点 | 要求产蛋及独立采集；分选/包装须有实际证据，物种及舍饲差异须反映于清单或 QA。 | `fao-codex-eggs`; `fao-leap-poultry` |
 | `grade_gate` | grades | 分选须至少两个真实去向；孵化/加工转用须有适用性及合法接收；破损蛋不得充作参考产出。 | `fao-codex-eggs` |
 | `attribution_gate` | co-outputs/期间/设施 | 核实各交付、服务期间与分配总量，不得跨节点或期间重复。 | `fao-leap-poultry` |
 | `uuid_gate` | concrete downstream exchanges | 进入下游 TIDAS 过程前逐项核实 UUID、属性及单位；空白项不得强绑。 | `fao-leap-poultry` |

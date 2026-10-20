@@ -410,7 +410,7 @@ Raw activity or stage basis: per 1 kg accepted seed output.
 ##### Product flows
 ###### Harvested seed crop input (`harvested_seed_crop_input`)
 Record the field output received by conditioning as a separate intermediate input, retaining lot, moisture, and source-field identity.
-- Selected flow: harvested soya bean seed crop received for conditioning dc436b03-e044-43a2-be71-c229dce5b901
+- Selected flow: Harvested unconditioned soya bean seed crop at measured receiving moisture (UUID unresolved)
 - Flow property / unit: Mass / kg
 - Amount rule: measured receiving mass at declared moisture basis
 - Value mode: Foreground record (`foreground_record`)
@@ -430,6 +430,9 @@ Raw activity or stage basis: per 1 kg accepted packaged seed.
   - Basis: declared process or reference-flow basis
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+This receiving intermediate has not yet been established as cleaned, quality-released sowing seed. Confirm its actual physical state and identity independently; the final cleaned-for-sowing UUID is not its default. A lot already cleaned upstream requires evidence and the corresponding non-overlapping conditioning boundary, not assumed equivalence.
+
 ###### Conditioning and drying electricity (`conditioning_and_drying_electricity`)
 Record electricity for drying, shelling, cleaning, grading, testing, treatment, and packaging when it crosses the conditioning boundary.
 - Selected flow: purchased electricity for seed conditioning and packaging

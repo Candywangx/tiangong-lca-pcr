@@ -31,7 +31,7 @@ sync_with: pcr.en-US.md
 | How much | 1 kg |
 | How well | 声明物种、品种、系统、季节、质量等级、状态和可销售产量定义 |
 | How long or cycle | 一个声明的生产季；披露多年生建植和跨年度归属 |
-| reference_flow_link | marketable_berries |
+| reference_flow_link | `reference_product_at_declared_handoff` |
 
 | 字段 | 值 |
 | --- | --- |
@@ -43,6 +43,8 @@ sync_with: pcr.en-US.md
 | Required qualifiers | 物种；品种；生产系统；采收季；质量等级；可销售产量；出口状态；分配基础；作物年龄或建植处理 |
 
 本参考 UUID 表示新鲜、未加工的农场门产品。使用该绑定前须核对实际物种、产品状态及交接门；独立包装站、进一步加工或不兼容状态的输出必须单独核实身份，不得直接继承此 UUID。身份核实不改变本 PCR 的实际系统边界或数量归一化要求。
+
+唯一参考产出为 `declared_reference_handoff` 的 `reference_product_at_declared_handoff`，它仅对既有声明交接点的实际合格产品作必需计量。`process_conditioning_grading` 的实体活动仍为条件性活动；省略该活动不取消参考产出。选择实际最后纳入的产品交接并记录过程/产出 id，物种、物理状态、等级、含水率基准及交接点必须与第3节一致。原 `marketable_berries` 行仅在其作业实际发生时记录该作业实测产出，不是另一笔最终销售。旁路不新增加工、得率假设或负担，也不改变产品边界。
 
 ## 4. 计量与单位规则
 | rule_id | Applies to | Required property | Required unit | Rule |
@@ -81,6 +83,7 @@ sync_with: pcr.en-US.md
 | `process_harvest` | 采收和田间捕获 | required | 始终纳入 | harvest capture | 采收和可销售质量 |
 | `process_conditioning_grading` | 初级调理和分级 | conditional | 出口前有清洗、冷却、排序或包装时纳入 | primary conditioning | 发运 kg |
 | `process_reject_routing` | 拒收、损失和副产品去向 | conditional | 有不可销售浆果或副产品时纳入 | attribution and waste routing | 质量平衡 |
+| `declared_reference_handoff` | 声明交接点合格产品计量 | required | 每条实际选定路线，包括条件处理/包装/储存的旁路 | 仅计量及核对，不新增实体加工 | 1 kg 同一声明交接点净合格产品 |
 
 每个过程均按方向（`Inputs`、`Outputs`）和流类型（`Product flows`、`Waste flows`、`Elementary flows`）报告。每行均为 flow card，含 `row_id`、流身份、流属性/单位、数量规则、`value_mode`、`specificity`、`basis_kind`、`evidence_kind`、`collection_protocol_id` 和 `source_ids`。
 
@@ -619,19 +622,21 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 可销售浆果（`marketable_berries`）
-使用声明农场交付或首个可销售出口处的最终称量产品。
+
+仅在 `process_conditioning_grading` 作业实际发生时记录该作业实测合格产出，保留物种、状态、等级、含水率、批次和真实移出交接点。此稳定行 id 表示实际路线产出；唯一最终参考产出为 reference_product_at_declared_handoff。保留原始产出并关联选定最终批次，不作为另一份最终产品重复计数。所列 UUID 仅适用于已独立确认的物理状态/交接点；不相容的上游/中间状态须另行核实或明确保持身份未解析。保留原阶段计量及采集记录。
+
 - 选定流：覆盆子、黑莓、桑葚和罗甘莓 `562e96d5-9c9f-4b90-877c-b2ebf33c87cc`
 - 流属性/单位：质量 / kg
-原始产出计量与核对要求：批次发运重量
+原始产出计量及核对：按 `cp_yield_records` 称量实际作业净合格批次产出，保留毛重/皮重、拒收、库存、含水率及匹配后续批次记录，在最终归一化前核对。
 
-- 数量规则：1 千克
+- 数量规则：按 `cp_yield_records` 实测实际作业净合格产出；保留原始批次数量及实际阶段处理量，依第8节最终交接归一化规则换算一次，不规定固定中间得率
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 可销售鲜浆果.
+原始活动或阶段基准：实测实际作业/批次产出及处理量，在一次最终参考归一化前保留。
 
 - 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：身份引用（`identity_reference`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_yield_records`
 - 来源：`fao-gap-framework-2003`
 ##### 废物流
@@ -649,6 +654,46 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_reject_records`
 - 来源：`fao-gap-framework-2003`
+
+### 过程：声明交接点合格产品计量（`declared_reference_handoff`）
+本计量不新增加工、废物产生或排放。保留全部真实上游作业和损失，仅旁路有据未发生的活动。选择一个实际终端产品批次，系统汇总时将其成对内部转移抵销一次；不得把未启用路线、共产品或来源产出与交接产出相加为合格最终产出。
+
+#### 输入
+##### 产品流
+###### 同一交接点实际路线合格产品 (`actual_route_product_for_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：覆盆子、黑莓、桑葚和罗甘莓 `562e96d5-9c9f-4b90-877c-b2ebf33c87cc`
+- 流属性/单位：质量 / kg
+- 数量规则：本同一交接点实测净合格质量，按 R/R × 1 kg 归一化；成对投入与合格产出相等，保留原始 R
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+##### 基本流
+#### 输出
+##### 产品流
+###### 声明交接点参考产品 (`reference_product_at_declared_handoff`)
+
+仅计量既有声明交接点的合格产品，并匹配一份实际终端来源记录。成对内部转移与本参考表示同一事件，不是两笔销售。按实际物种/状态/交接点独立核实身份；仅对鲜态农场门产品确认的标识不能代表不相容调理状态或独立包装场状态。身份缺失须明确保留，不得靠复制相邻产出的 UUID 解决。
+- 选定流：覆盆子、黑莓、桑葚和罗甘莓 `562e96d5-9c9f-4b90-877c-b2ebf33c87cc`
+- 流属性/单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+
+##### 废物流
+实际废物保留在其产生作业，不在此重复。
+##### 基本流
+实际释放保留在其负责的实体作业，不在此重复。
 
 ## 7. 分配和副产品处理
 
@@ -720,6 +765,18 @@ sync_with: pcr.en-US.md
 必须具备可追溯身份、校准称量、完整季节覆盖、地块范围、批次对账、书面分配和缺失数据处理。披露代表性、不确定性、作物年龄、产量变异和未解析身份。
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `` | 按身份区分的交换和对账活动记录 |  |
 
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_declared_reference_handoff` | `declared_reference_handoff` | 实际合格终端产品及成对转移 | 称量/批次/验收记录 | 物种；状态；等级；含水率/基准；交接点；actual_terminal_process_id；actual_terminal_output_row_id；lot/transfer_id；毛/皮/净质量 R；阶段原始总量/吞吐量；库存、拒收及去向 | 在既有交接点称量净合格 R，匹配唯一实际同批次/同状态终端来源，并核对前序损失及库存。若未发生条件性准备，采用最后实际纳入的适格产品产出，不虚构该准备作业。保留原活动记录及全部必需限定项。 | kg 及原生活动单位 | 每个合格批次 | 匹配生产及交接期间 | 既有声明生产者/初级交接点 | 每声明的参考流 | 校准称量、验收/等级记录、批次链、启用/旁路证据及闭合平衡 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_final_handoff_normalization` | 全部前景数量及实际路线产出 | R 为匹配单一物种/状态/等级/交接点/期间且实测为正的合格最终质量 kg，剔除皮重、拒收、共产品及留存库存。物理台账＝原始物理数量/R×1 kg，不乘负荷分配份额；归属清单贡献＝可归属原始数量/R×1 kg，保留分子原生单位及原有产品/期间归属。阶段强度 q_i＝Q_i/O_i 须先按实际关联 O_i 还原 Q_i＝q_i×O_i；已最终归一化后不得再次除以 R。交接两侧均为同一实测事件 R/R×1 kg，不是另一实体得率。仅纳入实际启用作业，旁路须记录并有据。R 缺失/非正或终端记录未关联会阻断完整归一化结果，不能记零。保留原始阶段数据，成对内部转移抵销一次。 | cp_declared_reference_handoff; original linked collection protocols | 按声明最终参考报告的原生数量 | `declared-handoff-measurement-definition` |
+
 ## 9. 验证规则
 
 | rule_id | Applies to | Rule | source_ids |
@@ -732,6 +789,11 @@ sync_with: pcr.en-US.md
 | `validation_species_route_evidence` | 全部所代表过程 | 将树莓、黑莓及Logan类藤本或灌丛管理与桑属果树管理分开。悬钩子类记录枝条生长习性、支架及采收路线；桑葚记录果用树体管理。不把叶用或蚕桑产量、修剪、施肥及共产品假设移用到纯果品系统。记录物种、品种、地点、相关土壤及叶片证据、株龄、实际作业、产量、损失及报告期。每项采用的农艺参数须保留原始或地区来源，并解释产品、气候、土壤、技术及期间兼容性。所引地区指南支持路线调查，不提供通用用量。数据缺口限制相关数据集的结论，本PCR不虚构现场实测值。 | `osu-caneberry-nutrition`; `osu-caneberry-route`; `fao-mulberry-use` |
 | `validation_evidence_based_ranges` | 数量及筛查界限 | 不对土地、材料、水、产品或损失统一套用0–1000范围。使用实测记录及有依据的不确定性，核对同单位物理平衡，并保留精确声明参考量。今后任何数值筛查界限须注明投入、单位、分母、适用性及证据；异常值触发调查，不自动替换数值。 | `mass-balance-identity` |
 | `validation_field_emission_coverage` | 田间排放及上游覆盖 | 逐条氮路径记录：本地量化、由具名兼容上游过程覆盖一次、有证据不适用或尚未解决。先选择IPCC层级及适用气候、土壤和投入类别，再选择因子；保留氮活动量、因子单位、不确定性及分子换算。NH3与NOx、硝酸盐与其他淋失物种须有依据地拆分，不把总前体氮视作单一化合物。另核对实际尿素和石灰施用的CO2，与制造及N2O区分，并记录方法、碳基准及上游归属。其他适用的土地利用、土壤碳、农药、磷、燃烧及水管理排放须采用兼容且有记录的方法；仅有四张氮排放卡不证明排放覆盖完整。实质性路径未量化时不得声明数据集完整。 | `ipcc-managed-soils-2019`; `ipcc-liming-urea-2006`; `mass-balance-identity` |
+
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_final_handoff_bypass` | 实际选定路线及全部条件旁路状态 | 按实际记录检查可选处理/包装/储存启用及省略两种状态：始终保留唯一必需交接参考；来源产品/状态/交接点与第3节一致；启用的实体行保留实测吞吐量，未启用实体活动不新增交换。要求原始合格质量、上游闭合、唯一转移配对及一次最终归一化；未知状态或缺少身份不得当作已成立分支。 | `declared-handoff-measurement-definition` |
 
 ## 10. 发布数据集画像
 
@@ -766,3 +828,7 @@ sync_with: pcr.en-US.md
 | `fao-mulberry-use` | official_guidance | FAO, Mulberry cultivation and utilization in China. https://www.fao.org/4/X9895E/x9895e03.htm | 区分果用及叶用或蚕桑用途；叶产量及采叶建议不作为果品生产默认值。 |
 | `ipcc-liming-urea-2006` | method_factor | IPCC 2006 Guidelines, Volume 4, Chapter 11, sections 11.3 and 11.4. https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/4_Volume4/V4_11_Ch11_N2O%26CO2.pdf | 适用的石灰及尿素施用CO2覆盖，与肥料制造及管理土壤N2O区分。 |
 | `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapter 9; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 分配层级，不提供场址特定数值份额 |
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | method_factor | 本 PCR 第3、6及8节：同一合格交接质量除以自身再乘声明参考数量；属于物理转移配对及量纲归一化恒等式，不是经验得率或新增实体操作。 | 唯一合格参考及实测路线吞吐关联 |

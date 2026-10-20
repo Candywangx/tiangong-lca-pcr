@@ -725,8 +725,8 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_shared_crop_inputs` | multiple crops or products sharing a field, bed, meter, facility, or transport | Allocate shared inputs using measured crop-specific records where available. If a shared record cannot be separated, use a documented physical basis such as area-time, operating time, water delivered, or mass, and disclose the basis. | `iso-14044-2006` |
-| `allocation_downgraded_pods` | downgraded pods and other secondary outputs | Treat downgraded pods as waste or residue unless a recipient, intended use, quality, and hand-off are documented. Apply co-product allocation only when the secondary output has a defined function and the allocation basis is stated. | `iso-14044-2006`; `mass-balance-identity` |
+| `allocation_shared_crop_inputs` | multiple crops or products sharing a field, bed, meter, facility, or transport | 有实测作物特定记录时按其分配共享投入；无法分离共享记录时，采用有据面积时间、运行时间、交付水或质量等物理基准并披露。 | `iso-14044-2006` |
+| `allocation_downgraded_pods` | downgraded pods and other secondary outputs | 降级豆荚作为废物或残体，除非接收方、预期用途、质量及交接均有记录；仅在次级产出有明确功能且声明分配基准时使用共产品分配。 | `iso-14044-2006`; `mass-balance-identity` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
@@ -771,36 +771,36 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_area_occupation` | crop establishment | area-time = declared production area × crop occupation period; keep protected structures separate when separately attributed | area, start date, end date, protected status | ha*a or declared area-time | `fao-good-agricultural-practices` |
-| `calc_nutrient_equivalents` | nutrient inputs | nutrient mass = formulated product mass × documented nutrient fraction; retain product and nutrient bases separately and de-duplicate compound products | product mass, label or plan concentration | kg N, kg P2O5, and kg K2O | `fao-good-agricultural-practices` |
-| `calc_managed_soil_emissions` | nitrogen-related elementary outputs | apply one declared nitrogen-emission method to nutrient inputs, crop residues, and environmental factors; do not duplicate pathways | nutrient input, residue fate, method factors | declared nitrogen emission flows | `ipcc-2019-managed-soils-n2o` |
-| `calc_water_balance` | irrigation, withdrawal, washing, and wastewater | reconcile source withdrawal, delivered water, recirculation, evaporation, retained solids, and discharged water; keep irrigation and washing systems separate | meter readings, batch records, return flow, and solids | water-delivery and wastewater values | `fao-crop-evapotranspiration-56`; `mass-balance-identity` |
-| `calc_transport_service` | pre-gate road freight | transport service = transported mass (t) × documented distance (km); state whether return or empty-leg burden is included | mass, distance, load, and route record | t*km | `fao-good-agricultural-practices` |
+| `calc_area_occupation` | crop establishment | 面积时间＝声明生产面积×作物占用期；设施结构单独归属时保持分列。 | area, start date, end date, protected status | ha*a or declared area-time | `fao-good-agricultural-practices` |
+| `calc_nutrient_equivalents` | nutrient inputs | 养分质量＝配方产品质量×有据养分分数；产品和养分基准分列，复合产品去重。 | product mass, label or plan concentration | kg N, kg P2O5, and kg K2O | `fao-good-agricultural-practices` |
+| `calc_managed_soil_emissions` | nitrogen-related elementary outputs | 对养分投入、作物残体及环境因子采用一个声明的氮排放方法，不重复计算路径。 | nutrient input, residue fate, method factors | declared nitrogen emission flows | `ipcc-2019-managed-soils-n2o` |
+| `calc_water_balance` | irrigation, withdrawal, washing, and wastewater | 核对水源取水、交付水、循环水、蒸发、固体滞留量及排水；灌溉系统与清洗系统分开。 | meter readings, batch records, return flow, and solids | water-delivery and wastewater values | `fao-crop-evapotranspiration-56`; `mass-balance-identity` |
+| `calc_transport_service` | pre-gate road freight | 运输服务＝运输质量 t×有据距离 km；说明是否包含返程或空驶负担。 | mass, distance, load, and route record | t*km | `fao-good-agricultural-practices` |
 | `calc_reference_normalization` | all inventory rows | normalized value = crop-cycle quantity × 1,000 kg / accepted 商品 output at the declared gate | crop-cycle quantity and accepted output mass | quantity per 1,000 kg reference flow | `mass-balance-identity` |
-| `calc_mass_reconciliation` | harvest, downgraded pods, rejects, residues, losses, and packaging | gross harvested mass = accepted output + downgraded pods + rejects + field or handling losses + declared residue streams, with measured moisture and tare treatment disclosed | picking, grade, residue, packaging, and loss records | reconciled crop-cycle mass balance | `mass-balance-identity` |
+| `calc_mass_reconciliation` | harvest, downgraded pods, rejects, residues, losses, and packaging | 总收获质量＝合格产出＋降级豆荚＋拒收物＋田间或搬运损失＋声明残体流；披露实测水分及皮重处理。 | picking, grade, residue, packaging, and loss records | reconciled crop-cycle mass balance | `mass-balance-identity` |
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | all flows and product qualifiers | Record semantic identity, physical state, direction, process role, and 证据缺口 or verified status for every flow; resolve the reference identity before final dataset publication. | flow description, qualifier record, and foreground review |
-| `dq_measurement` | quantities and conversions | Use calibrated scales, meters, invoices, logs, or transparent calculations; retain raw values and conversion factors with units. | measurement record and calculation worksheet |
-| `dq_temporal` | 作物周期 and harvest campaign | Cover the complete declared planting-to-gate period and identify missing picking rounds, exceptional weather, or substituted records. | planting, application, picking, and gate dates |
-| `dq_completeness` | boundary inputs and outputs | Provide a value, justified zero, or documented exclusion for planting material, land, water, nutrients, protection, energy, emissions, yield, downgraded pods, rejects, residues, packaging, wastewater, and pre-gate transport when applicable. | completeness checklist and mass-balance review |
-| `dq_allocation` | shared meters, fields, facilities, packaging, or transport | State the allocation basis and test its effect when records serve multiple crops, products, or campaigns. | allocation record and sensitivity note |
-| `dq_disclosure` | final dataset metadata | Declare variety group, geography, route, planting and picking dates, 作物周期, gate, yield and grade, irrigation and nutrient bases, crop protection, residue and reject fates, packaging, washing, wastewater, pre-gate transport, and any identity 证据缺口. | dataset metadata and reference-flow comment |
+| `dq_identity` | all flows and product qualifiers | 对每项流记录语义身份、物理状态、方向、过程角色及证据缺口或核实状态；最终数据集发布前解析参考身份。 | flow description, qualifier record, and foreground review |
+| `dq_measurement` | quantities and conversions | 使用经校准秤、仪表、发票、日志或透明计算；保留原始数值及带单位的换算因子。 | measurement record and calculation worksheet |
+| `dq_temporal` | 作物周期 and harvest campaign | 覆盖完整声明的栽植至交接期间，识别缺失采收轮次、异常天气及替代记录。 | planting, application, picking, and gate dates |
+| `dq_completeness` | boundary inputs and outputs | 适用时，对种植材料、土地、水、养分、植保、能源、排放、产量、降级豆荚、拒收物、残体、包装、废水及交接前运输给出数值、有据零值或有记录的排除。 | completeness checklist and mass-balance review |
+| `dq_allocation` | shared meters, fields, facilities, packaging, or transport | 记录服务多种作物、产品或生产活动时，说明分配基准并检验其影响。 | allocation record and sensitivity note |
+| `dq_disclosure` | final dataset metadata | 声明品种组、地理、路线、栽植和采收日期、周期、交接点、产量和等级、灌溉及养分基准、植保、残体和拒收去向、包装、清洗、废水、交接前运输及身份缺口。 | dataset metadata and reference-flow comment |
 
 ## 9. 验证规则
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validation_reference_definition` | reference flow | Confirm the 1,000 kg functional unit, all required qualifiers, and the verified reference product, mass property, and unit-group identities before foreground generation. | `mass-balance-identity` |
+| `validation_reference_definition` | reference flow | 前景生成前确认 1,000 kg 功能单位、全部必需限定项及已核实参考产品、质量属性和单位组身份。 | `mass-balance-identity` |
 | `validation_flow_identity_binding` | parameterized product inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validation_mass_reconciliation` | harvest and gate preparation | Check accepted output, downgraded pods, rejects, residues, field losses, handling losses, wastewater, and packaging waste against the declared mass and water bases, with container tare and moisture treatment explicit. | `mass-balance-identity` |
-| `validation_boundary_disclosure` | system boundary | Reject a dataset that omits the declared gate, 作物周期, route, irrigation source, nutrient basis, residue and reject fate, or pre-gate handling included by the scope. | `fao-good-agricultural-practices`; `codex-fresh-produce-hygiene` |
-| `validation_soil_emissions` | managed nutrients and residues | Verify that one declared emissions method is used and that direct and indirect nitrogen pathways are not double counted. | `ipcc-2019-managed-soils-n2o` |
-| `validation_data_quality` | all foreground records | Report identity, measurement, temporal coverage, completeness, allocation, and disclosure findings separately; inconclusive or error findings fail validation by default. | `iso-14044-2006` |
+| `validation_mass_reconciliation` | harvest and gate preparation | 按声明质量和水平衡基准检查合格产出、降级豆荚、拒收物、残体、田间和搬运损失、废水及包装废物；明确容器皮重及水分处理。 | `mass-balance-identity` |
+| `validation_boundary_disclosure` | system boundary | 数据集缺少声明交接点、作物周期、路线、灌溉水源、养分基准、残体和拒收去向，或范围内交接前处理时，不予通过。 | `fao-good-agricultural-practices`; `codex-fresh-produce-hygiene` |
+| `validation_soil_emissions` | managed nutrients and residues | 核实采用一个声明的排放方法，直接及间接氮路径不重复计算。 | `ipcc-2019-managed-soils-n2o` |
+| `validation_data_quality` | all foreground records | 分别报告身份、测量、时间覆盖、完整性、分配及披露发现；不确定或错误发现默认不通过验证。 | `iso-14044-2006` |
 
 ## 10. 发布数据集画像
 

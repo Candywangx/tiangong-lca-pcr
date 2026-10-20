@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: "2026-10-19"
-lastReviewedCommit: "0b573ce10cbdb352a5a67855aad6fb14e9161663"
-lastReviewedNote: "Reviewed the documentation and full test-shard job timeout increase from 60 to 120 minutes. PCR content, dependency pins, workflow selection, qualification checks and evidence bindings are unchanged. Local macOS checks remain partial; fresh hosted Linux qualification is required."
+lastReviewedAt: "2026-10-20"
+lastReviewedCommit: "623239f3b89f335ee5461b422378cf709a8228f3"
+lastReviewedNote: "Reconciled Candy main PCR additions and same-source web-build handoff with the CPC 01/02/03 content repairs and 120-minute job limits. Preserved both sides of the methodology and CI contracts; regenerated combined catalog/coverage artifacts. Local PCR and focused checks pass; full hosted Linux qualification remains required."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -203,8 +203,18 @@ the run. Collect only from a frozen clean checkout. `test:coverage` requires fre
 results without claiming threshold success; `report` enforces the gates. Keep raw
 V8/capture evidence and the explicit rejection/unobserved-file ledgers.
 
-PR and formal release qualification build one sealed product bundle in the
-documentation job. Four platform jobs download that same immutable artifact ID,
+PR and formal release qualification run one complete instrumented export in the
+`web-build` job, then create one sealed product bundle in the separate
+`documentation` job. Both jobs retain 60-minute limits and are mandatory in both
+lanes. A versioned handoff binds the actual checked-out source (including PR merge
+commits), product identity, current run/attempt, CI plan and full-mode qualification
+ID/plan hash to the complete archive/tree and successful build log. The verifier
+hashes every exported file before handoff. Safe materialization and fresh vendored
+SEO run on those exact bytes; the sealed archive must match the handoff hash.
+The final product artifact retains build/SEO audit files and their hashes. The
+public reusable `product_artifact_id` output remains owned by `documentation`; its
+coverage output forwards the same-run `web-build` measurement unchanged. Four
+platform jobs download that same immutable product artifact ID,
 verify its identity and checksums, install both tarballs with an empty cache and
 no network, then execute compiled bins with type stripping disabled against the
 pinned SQLite. A separate job extracts the same sealed web archive and runs the
@@ -233,11 +243,13 @@ Formal sealed artifact and live publication evidence remain separate.
 `.github/workflows/validate.yml` freezes an exact-source CI decision with
 `scripts/engineering/ci-plan.ts`. The stable `validate` job is the aggregate gate:
 `scripts/engineering/ci-gate.ts` requires every job selected by that decision to
-succeed and rejects unexpected skips, missing jobs and failed jobs. Local
+succeed and rejects unexpected skips, missing jobs and failed jobs. This includes
+both `web-build` and `documentation` in full and data lanes; transfer or sealing
+failure cannot be hidden behind a successful web render. Local
 `npm run validate`, `npm test` and `all`/`root` remain complete entrypoints.
 
-The full test-shard jobs and documentation build each have a 120-minute GitHub
-Actions job timeout. This limit applies independently to each job; dependency
+The full test-shard jobs, web build and documentation sealing each have a
+120-minute GitHub Actions job timeout. This limit applies independently to each job; dependency
 waiting time and the complete workflow duration are separate.
 
 Full qualification partitions the entire discovered test inventory into eight

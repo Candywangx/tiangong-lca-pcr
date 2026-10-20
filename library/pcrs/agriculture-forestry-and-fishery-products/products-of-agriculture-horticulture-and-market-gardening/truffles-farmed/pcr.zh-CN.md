@@ -766,21 +766,21 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_scaling` | all inventory rows | `normalized amount = period amount / accepted fresh-truffle output × 1 kg reference flow` | period amount; accepted fresh-truffle output; reference amount | amount per 1 kg accepted fresh truffle | `iso-14044-2006` |
-| `calc_perennial_annualization` | establishment and shared stand inputs | Allocate each input to the declared reporting period using documented stand period, establishment period, replacement, and productive output; do not use an unstated universal lifetime. | establishment and stand records; period; output; replacement and mortality | period-attributed inventory amount | `iso-14044-2006` |
-| `calc_nutrient_basis` | nutrient or soil-amendment input | `nutrient basis = supplied product mass × declared nutrient fraction`; retain product mass and each declared nutrient basis as separate outputs. | product mass; label, invoice, or supplier nutrient fraction | kg product and kg nutrient basis | `iso-14044-2006` |
-| `calc_managed_soil_emissions` | managed-soil nitrogen emission | Apply the selected geographically appropriate method to collected nutrient, amendment, residue, and soil activity records; document factors and avoid counting the same nitrogen source twice. | nutrient basis; residue and soil activity; selected method factors | method-calculated elementary emissions | `ipcc-2019-afolu` |
-| `calc_mass_reconciliation` | harvest and conditioning | `incoming mass = accepted output + rejects + documented process loss` for each lot or batch, with moisture and soil state retained. | lot or batch incoming mass; accepted mass; rejects; losses | reconciled mass balance and QA finding | `iso-14044-2006` |
+| `calc_perennial_annualization` | establishment and shared stand inputs | 按有据群落期间、建植期间、补植及生产产出，将各项投入分配至声明报告期；不得使用未声明的通用寿命。 | establishment and stand records; period; output; replacement and mortality | period-attributed inventory amount | `iso-14044-2006` |
+| `calc_nutrient_basis` | nutrient or soil-amendment input | 养分基准量＝供应产品质量×声明养分分数；产品质量及各声明养分基准分别保留。 | product mass; label, invoice, or supplier nutrient fraction | kg product and kg nutrient basis | `iso-14044-2006` |
+| `calc_managed_soil_emissions` | managed-soil nitrogen emission | 对所采养分、改良剂、残体及土壤活动记录采用所选地理适用方法；记录因子，避免同一氮源重复计数。 | nutrient basis; residue and soil activity; selected method factors | method-calculated elementary emissions | `ipcc-2019-afolu` |
+| `calc_mass_reconciliation` | harvest and conditioning | 各批次进料质量＝合格产出＋拒收物＋有记录过程损失；保留含水率及附土状态。 | lot or batch incoming mass; accepted mass; rejects; losses | reconciled mass balance and QA finding | `iso-14044-2006` |
 | `managed_soil_nitrogen_emission_specific_emission` | `truffle_stand_management` | 依据实际松露种植地的养分、改良剂、残余物和土壤管理记录，按适用方法及场址、土壤、气候条件评估直接和间接土壤氮排放。保留种植地期间归属及合格鲜松露分母；方法或物种未知仍是完整性缺口。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_stand_management_records` | 逐物质和介质的排放交换及独立元素台账 | `ipcc-2019-afolu` |
 
 ### 数据质量要求
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity_and_boundary` | all datasets | Declare product identity, host species, inoculation status, farm-gate state, boundary processes, and whether conditioning is included. | site description, product specification, and dataset metadata |
-| `dq_perennial_time_series` | establishment and stand management | Link multi-year inputs, replacement, mortality, stand age, productive periods, and outputs to an explicit time basis. | stand register, block history, and reporting-period reconciliation |
-| `dq_input_reconciliation` | product inputs and services | Reconcile invoices, meters, contractor records, and field logs to the declared blocks and periods; explain missing or zero records. | primary records and reconciliation worksheet |
-| `dq_output_mass_balance` | harvest and conditioning | Reconcile harvested, accepted, rejected, and documented loss mass with consistent moisture, soil-adherence, and grading bases. | calibrated scale records, lot tickets, batch sheets, and destination records |
-| `dq_emission_method` | elementary emissions | Identify the selected method, geography, factors, activity data, and uncertainty; do not present provisional estimates as measured emissions. | method record, factor reference, and calculation worksheet |
+| `dq_identity_and_boundary` | all datasets | 声明产品身份、宿主物种、接种状态、农场门状态、边界过程及是否纳入处理。 | site description, product specification, and dataset metadata |
+| `dq_perennial_time_series` | establishment and stand management | 将多年投入、补植、死亡、群落年龄、生产期间及产出关联明确时间基准。 | stand register, block history, and reporting-period reconciliation |
+| `dq_input_reconciliation` | product inputs and services | 将发票、仪表、承包商记录及田间日志核对至声明地块和期间，解释缺失或零值记录。 | primary records and reconciliation worksheet |
+| `dq_output_mass_balance` | harvest and conditioning | 在一致含水率、附土和分级基准上核对收获、合格、拒收及有据损失质量。 | calibrated scale records, lot tickets, batch sheets, and destination records |
+| `dq_emission_method` | elementary emissions | 识别所选方法、地理、因子、活动数据及不确定性；不得把暂定估算表述为实测排放。 | method record, factor reference, and calculation worksheet |
 | `dq_identity_evidence` | 证据缺口或参数化流 | 将身份证据缺口保持明确，并在激活或发布前以已验证或经审查的身份替换。 | 身份审查记录和最终数据集回读 |
 
 ## 9. 校验规则

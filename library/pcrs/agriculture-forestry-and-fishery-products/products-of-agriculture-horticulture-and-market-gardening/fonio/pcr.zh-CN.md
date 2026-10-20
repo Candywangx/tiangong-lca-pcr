@@ -653,11 +653,11 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_area_to_reference_flow` | field flows | crop-cycle amount per hectare / marketable grain yield per hectare × 1,000 kg | flow amount; area; same-cycle grain mass | amount per 1,000 kg grain |  |
-| `calc_nutrient_content` | fertilizer and amendment inputs | product mass × declared nutrient fraction; preserve product identity and nutrient reporting basis | product identity; mass; assay; reporting basis | kg N, kg P2O5, kg K2O by source |  |
-| `calc_managed_soil_n2o` | soil N2O | apply selected IPCC tier or regional method to mineral N, organic N, returned-residue N, volatilization, and leaching pathways | nitrogen activity; residue fate; soil and climate; factors | kg N2O by pathway | `ipcc-2019-managed-soils` |
+| `calc_nutrient_content` | fertilizer and amendment inputs | 产品质量×声明养分分数；保留产品身份及养分报告基准。 | product identity; mass; assay; reporting basis | kg N, kg P2O5, kg K2O by source |  |
+| `calc_managed_soil_n2o` | soil N2O | 将所选 IPCC 层级或区域方法用于矿质氮、有机氮、还田残体氮、挥发及淋失路径。 | nitrogen activity; residue fate; soil and climate; factors | kg N2O by pathway | `ipcc-2019-managed-soils` |
 | `calc_ammonia_volatilization` | ammonia to air | calculate by nutrient product, application method, timing, and applicable factor | nutrient records; application details; factors | kg NH3 | `emep-eea-2023-guidebook` |
-| `calc_primary_postharvest_mass_balance` | primary preparation | incoming wet grain = accepted grain + useful fractions + rejects + moisture and other measured losses within uncertainty | incoming and output masses; moisture; loss records | reconciled outputs per accepted grain | `mass-balance-identity` |
-| `calc_energy_carrier_conversion` | post-harvest energy | convert measured fuel or heat carrier to delivered energy using the declared carrier property and retain the original carrier record | fuel or heat amount; carrier property; equipment record | kWh or MJ delivered |  |
+| `calc_primary_postharvest_mass_balance` | primary preparation | 在声明不确定性内：进料湿谷物＝合格谷物＋有用分离组分＋拒收物＋水分及其他实测损失。 | incoming and output masses; moisture; loss records | reconciled outputs per accepted grain | `mass-balance-identity` |
+| `calc_energy_carrier_conversion` | post-harvest energy | 按声明载能体属性将实测燃料或热载体换算为交付能源，并保留原始载能体记录。 | fuel or heat amount; carrier property; equipment record | kWh or MJ delivered |  |
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emission_activity`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求

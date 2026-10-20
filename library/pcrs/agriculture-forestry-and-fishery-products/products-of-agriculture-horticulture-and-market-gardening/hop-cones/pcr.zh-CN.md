@@ -837,7 +837,7 @@ sync_with: pcr.en-US.md
 | `calc_productive_life` | 建园和资产 | 汇总情景内各阶段归属负荷，并除以同面积、同期间累计合格质量。 | phase, asset, area, period and accepted-output records | burden/kg accepted cones | `cordella-hop-lca-2026` |
 | `calc_route_yield` | 作物年份和路线 | 农场门合格质量除以占地面积，并报告状态和水分。 | accepted mass; area; state; moisture | kg/ha/year | `penn-state-hop-production` |
 | `calc_grading_balance` | 收获和分级 | 投入减去唯一的合格、降级、不合格、糠屑和损失状态；返工返回是转移。 | all lot masses and state codes | closure mass and ratio | `mass-balance-identity` |
-| `calc_drying_water` | 干燥 | 湿料投入×初始水分−合格干燥产出×最终水分−不合格质量×不合格水分。 | batch masses and moisture fractions | kg water to air | `mass-balance-identity` |
+| `calc_drying_water` | 干燥 | 在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。 | cp_drying_batch；所有物料流的湿质量/含水率、实际加水/液体外排、期初期末水库存及有据蒸发 | kg water to air | `mass-balance-identity` |
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 环境覆盖计算规则

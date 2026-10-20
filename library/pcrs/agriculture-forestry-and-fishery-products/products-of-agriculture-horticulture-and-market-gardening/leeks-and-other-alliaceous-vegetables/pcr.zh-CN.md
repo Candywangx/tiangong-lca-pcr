@@ -878,7 +878,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `normalize_mass_to_reference_flow` | 所有产品和废物质量行 | 将记录质量换算为声明含水率基准，除以相关过程输出质量，再缩放至 1 kg 参考产品。 | 收获、整理和交付记录 | 每参考产品质量 | `mass-balance-identity` |
+| `normalize_mass_to_reference_flow` | 所有产品和废物质量行 | 保留原始数量及含水率/组分基准。R 为匹配批次、状态及交接点实测且为正的合格最终交接质量 kg。最终贡献＝可归属原始数量 / R × 1 kg。来源若为阶段强度 q_i＝Q_i/O_i，先用实际关联阶段吞吐量还原 Q_i＝q_i×O_i，再归属并归一化一次；不得将 O_i 当作 R，也不得再除已按最终参考归一化的数量。未分配物理物料平衡与负荷分配分列。 | 收获、整理和交付记录 | 每参考产品质量 | `mass-balance-identity` |
 | `calculate_nutrient_basis` | 肥料和土壤改良剂投入 | 养分质量 = 施用产品质量 × 声明养分分数；将产品质量和各养分基准作为分开报告值保留。 | `cp_nutrient_product_records` | 每参考产品的 kg N、P、K 或有机养分基准 | `mass-balance-identity` |
 | `calculate_irrigation_requirement` | 作物灌溉水供应 | 根据场址天气、土壤、作物阶段、有效降雨和灌溉效率确定作物需水量；有计量时报告计量供水，计算时记录水量平衡。 | `cp_irrigation_records` | 每参考产品的 m3 水 | `fao-56-crop-evapotranspiration` |
 | `calculate_nutrient_emissions` | 养分相关基本流输出 | 对记录的养分投入和路径应用选定的 IPCC 或场址因子，保留受纳介质和报告物质，并记录直接和间接路径。 | `cp_nutrient_product_records`; `cp_nutrient_emission_calculations` | 每参考产品的 kg 报告物质 | `ipcc-2019-refinement-vol4-ch11` |

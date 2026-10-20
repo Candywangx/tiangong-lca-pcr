@@ -20,12 +20,14 @@ Conventional, integrated, organic, rain-fed, and irrigated routes are included w
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.apples` |
-| classification_refs | CPC 3.0 `01341`, `Apples`; mapping relation: exact |
+| classification_refs | CPC 3.0 `01341`, `Apples`; mapping relation: narrower |
 | covered_products | fresh harvested apples from commercial cultivars of *Malus domestica* at orchard gate |
 | excluded_products | nursery trees; juice; cider; dried, preserved, or otherwise processed apples; packing-house or cold-store outputs; fruit produced primarily for industrial processing |
 | representative_product | marketable fresh apples, natural cultivar mix, bulk at orchard |
 | production_route | perennial orchard establishment, annual management, harvest, and orchard-gate handling |
 | market_state | fresh, whole, unprocessed bulk fruit at orchard gate, with grade and packaging state declared |
+
+This PCR covers a narrower subset of CPC 3.0 01341. Its existing product, use and gate restrictions remain in force. The accepted classification mapping is narrower, not a declaration that all goods in the CPC leaf are covered.
 
 ## 3. Reference Flow
 

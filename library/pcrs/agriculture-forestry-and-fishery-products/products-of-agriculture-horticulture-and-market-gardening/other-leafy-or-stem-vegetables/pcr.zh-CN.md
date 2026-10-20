@@ -642,11 +642,11 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_nutrient_equivalent` | fertilizer inputs | Product mass multiplied by documented nutrient fraction equals kg N, P2O5, or K2O; retain each basis separately. | product mass; nutrient concentration; area | nutrient-equivalent input | `extension-leafy-vegetable-production` |
-| `calc_irrigation_withdrawal` | irrigation | Withdrawal equals metered or documented source volume; delivered irrigation and conveyance loss are reported separately. | source meter; field meter; loss method | source withdrawal and delivered irrigation | `fao-water-efficiency` |
+| `calc_nutrient_equivalent` | fertilizer inputs | 产品质量乘有据养分分数得到 kg N、P2O5 或 K2O；各基准分别保留。 | product mass; nutrient concentration; area | nutrient-equivalent input | `extension-leafy-vegetable-production` |
+| `calc_irrigation_withdrawal` | irrigation | 取水量采用水源计量或有记录的体积；交付灌溉水及输配损失分别报告。 | source meter; field meter; loss method | source withdrawal and delivered irrigation | `fao-water-efficiency` |
 | `calc_field_cycle_normalization` | cultivation | 最终参考流贡献 = 应归属的完整田块周期数量 / 同作物同周期匹配的适销产出 kg * 1,000 kg。保留原分子单位；仅数量除以产出得到的是每 kg 中间强度，不是 1,000 kg 结果。 | field-cycle quantity; marketable mass | quantity per 1,000 kg reference product |  |
-| `calc_product_balance` | harvest and handling | Gross harvested input plus measured mass change equals marketable product plus rejects and trimmings within declared uncertainty. | gross, marketable, reject, trim, and mass-change records | reconciled output quantities | `usda-ams-fresh-produce` |
-| `calc_managed_soil_emissions` | soil nitrogen emissions | Apply the declared applicable IPCC or accepted regional equations to synthetic, organic, and returned-residue nitrogen; preserve factors and prevent double counting. | nitrogen activity data; factors; climate and management qualifiers | direct and indirect nitrogen emissions | `ipcc-2019-managed-soils` |
+| `calc_product_balance` | harvest and handling | 在声明不确定性内，总收获进料加实测质量变化等于商品产品加拒收物和修整物。 | gross, marketable, reject, trim, and mass-change records | reconciled output quantities | `usda-ams-fresh-produce` |
+| `calc_managed_soil_emissions` | soil nitrogen emissions | 对合成、有机及还田残体氮使用声明且适用的 IPCC 或公认区域方程；保留因子并防止重复计数。 | nitrogen activity data; factors; climate and management qualifiers | direct and indirect nitrogen emissions | `ipcc-2019-managed-soils` |
 | `planting_material_input_identity_and_fate` | `crop_establishment` | 对于本作业原有 planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_establishment_records` | 按身份区分的交换和对账活动记录 | `extension-leafy-vegetable-production` |
 
 ### 环境覆盖计算规则

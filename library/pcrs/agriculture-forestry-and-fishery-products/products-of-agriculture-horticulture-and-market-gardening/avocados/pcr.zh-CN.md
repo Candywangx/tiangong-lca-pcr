@@ -619,22 +619,22 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_area_to_reference_mass` | all orchard-year flows | normalized amount = orchard-year activity total / accepted farm-gate fruit mass × 1,000 kg | activity total; accepted fruit mass; reference amount | amount per 1,000 kg accepted fruit |  |
-| `calc_orchard_life_allocation` | establishment and replacement inputs | allocate establishment or replacement total to each declared production year using the documented productive-life horizon and accepted fruit output basis; retain non-bearing years in the denominator when specified | establishment total; replacement events; orchard life; annual accepted output | allocated orchard input per production year and reference flow | `fao-gap-framework-2003`; `iso-14067` |
-| `calc_nutrient_basis` | nutrient and amendment input | nutrient mass = product mass × declared nutrient fraction; report product mass and nutrient mass separately | product quantity; label or supplier nutrient analysis | kg product and kg N, kg P2O5, or kg K2O | `fao-gap-framework-2003` |
-| `calc_mass_balance_harvest` | harvest output and rejects | harvested mass = accepted fruit + named co-products + rejects/losses, with documented stock change and measurement basis | harvest tickets; accepted mass; co-product destinations; reject and loss mass; stock change | reconciled harvest balance |  |
-| `calc_conditioning_balance` | conditioning output and waste | incoming fruit + conditioning inputs crossing as product or material = accepted conditioned fruit + named destinations + waste, after documenting moisture or handling adjustments | batch inputs; accepted output; destinations; waste; adjustment basis | reconciled batch balance |  |
-| `calc_direct_field_emissions` | soil, residue, and crop-protection emissions | apply the selected geographically applicable method to collected nutrient, residue, and activity data; do not apply a generic factor without recording tier, geography, and activity basis | nutrient inputs; residue fate; soil or climate context; method parameters | substance-specific elementary flows by compartment | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
+| `calc_orchard_life_allocation` | establishment and replacement inputs | 按有据生产寿命期限及合格果实产出基准，将建园或补植总量分配至各声明生产年度；有规定时在分母中保留未结果年度。 | establishment total; replacement events; orchard life; annual accepted output | allocated orchard input per production year and reference flow | `fao-gap-framework-2003`; `iso-14067` |
+| `calc_nutrient_basis` | nutrient and amendment input | 养分质量＝产品质量×声明养分分数；产品质量及养分质量分别报告。 | product quantity; label or supplier nutrient analysis | kg product and kg N, kg P2O5, or kg K2O | `fao-gap-framework-2003` |
+| `calc_mass_balance_harvest` | harvest output and rejects | 收获质量＝合格果实＋具名共产品＋拒收/损失；记录库存变化及计量基准。 | harvest tickets; accepted mass; co-product destinations; reject and loss mass; stock change | reconciled harvest balance |  |
+| `calc_conditioning_balance` | conditioning output and waste | 记录含水率或搬运调整后：进料果实＋作为产品或物料跨界的处理投入＝合格处理后果实＋具名去向＋废物。 | batch inputs; accepted output; destinations; waste; adjustment basis | reconciled batch balance |  |
+| `calc_direct_field_emissions` | soil, residue, and crop-protection emissions | 对所采养分、残体及活动数据使用所选地理适用方法；未记录层级、地理和活动基准时不得使用通用因子。 | nutrient inputs; residue fate; soil or climate context; method parameters | substance-specific elementary flows by compartment | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
 
 ### 数据质量要求
 
 | requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_orchard_identity` | all processes | Identify orchard block, cultivar or cultivar group, country and region, crop year, orchard age, productive status, and conditioning boundary. | orchard register; farm map; dataset metadata |
-| `dq_perennial_time_basis` | establishment and management | State establishment year, non-bearing period, productive-life horizon, replacement events, and allocation basis used for orchard assets. | orchard history; allocation worksheet |
-| `dq_input_traceability` | nutrients, irrigation, energy, crop protection, and planting material | Trace each material or energy input to an invoice, meter, product label, contractor record, or justified field record; retain product and nutrient identities separately. | primary farm records; supplier records |
-| `dq_mass_balance` | harvest and conditioning | Reconcile harvested, accepted, rejected, co-product, stock-change, and waste masses within a documented tolerance and explain moisture or grading adjustments. | weighbridge, lot, grading, batch, and destination records |
-| `dq_temporal_coverage` | all processes | Cover the full declared production year and include establishment or replacement records needed by orchard-life allocation. | annual production ledger; orchard history |
-| `dq_emission_method` | elementary flows | Record method name, tier, geography, activity data, and assumptions for each calculated emission; keep 证据缺口 flow identity separate from amount evidence. | calculation worksheet; method reference |
+| `dq_orchard_identity` | all processes | 识别果园地块、品种或品种组、国家地区、作物年度、园龄、生产状态及处理边界。 | orchard register; farm map; dataset metadata |
+| `dq_perennial_time_basis` | establishment and management | 说明建园年份、未结果期、生产寿命期限、补植事件及果园资产分配基准。 | orchard history; allocation worksheet |
+| `dq_input_traceability` | nutrients, irrigation, energy, crop protection, and planting material | 将每项物料或能源投入追溯至发票、仪表、产品标签、承包商记录或有据田间记录；产品及养分身份分列。 | primary farm records; supplier records |
+| `dq_mass_balance` | harvest and conditioning | 在有据容差内核对收获、合格、拒收、共产品、库存变化及废物质量，并解释含水率或分级调整。 | weighbridge, lot, grading, batch, and destination records |
+| `dq_temporal_coverage` | all processes | 覆盖完整声明生产年度，并包含果园寿命分配需要的建园或补植记录。 | annual production ledger; orchard history |
+| `dq_emission_method` | elementary flows | 每项计算排放记录方法名称、层级、地理、活动数据及假设；流身份缺口与数量证据分开。 | calculation worksheet; method reference |
 
 ## 9. 校验规则
 

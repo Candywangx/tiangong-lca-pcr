@@ -732,9 +732,9 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `calc_normalize` | all inventory rows | amount per reference kg = lot amount / net accepted seed mass | lot amount; accepted net mass | normalized amount per kg |  |
 | `calc_water` | irrigation | delivered water = metered volume, or pump rate × verified runtime when no meter exists | meter or pump rate and runtime | m3 delivered water |  |
-| `calc_energy` | energy inputs | convert each recorded carrier to declared energy unit, then allocate by causal lot driver | carrier quantity; conversion; lot driver | MJ or kWh per kg |  |
-| `calc_loss` | each process | loss or residue = opening input + additions − intended output − closing stock, reconciled for moisture | mass and moisture records | loss/residue mass |  |
-| `calc_period` | perennial field | annualized establishment burden = total establishment input × current-year seed yield / documented productive-period seed yield | establishment inputs; annual yields | current-year attributed burden |  |
+| `calc_energy` | energy inputs | 将各实测载能体换算为声明能源单位，再按因果批次驱动分配。 | carrier quantity; conversion; lot driver | MJ or kWh per kg |  |
+| `calc_loss` | each process | 损失或残体＝期初进料＋添加量－预期产出－期末库存，并按含水率核对。 | mass and moisture records | loss/residue mass |  |
+| `calc_period` | perennial field | 年化建植负担＝建植投入总量×本年度种子产量÷有据生产期间种子产量。 | establishment inputs; annual yields | current-year attributed burden |  |
 
 ### 环境覆盖计算规则
 
@@ -747,10 +747,10 @@ sync_with: pcr.en-US.md
 
 | requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | reference lot | Species, cultivar, seed class and CPC scope must be explicit; a species-specific UUID cannot represent another species or the complete category. | lot label and identity review |
+| `dq_identity` | reference lot | 明确物种、品种、种子等级及 CPC 范围；物种特定 UUID 不代表其他物种或完整类别。 | lot label and identity review |
 | `dq_mass_balance` | each process | Mass balance shall reconcile within a disclosed tolerance and moisture basis. | weighing and moisture records |
-| `dq_completeness` | foreground route | Collect at least 95% of recorded operating days and all released/rejected lots; disclose estimated gaps. | coverage calculation |
-| `dq_temporal` | crop and processing cycle | Use data covering one complete multiplication and processing cycle; perennial stands retain age and yearly yield. | field and batch dates |
+| `dq_completeness` | foreground route | 采集至少95%的记录运营日及全部放行/拒收批次，披露估算缺口。 | coverage calculation |
+| `dq_temporal` | crop and processing cycle | 采用覆盖完整繁种及加工周期的数据，多年生群落保留年龄及逐年产量。 | field and batch dates |
 | `dq_flow_binding` | all cards | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | binding review record |
 
 ## 9. 验证规则

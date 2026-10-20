@@ -52,10 +52,10 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_mass` | Grain-state mass | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Report as-delivered mass with wet-basis moisture; convert dry matter as `wet mass × (1 - moisture fraction)`. |
-| `area_to_reference` | Field inputs, emissions and output | Stated activity property | source unit and kg reference product | Retain area and crop-cycle records, then normalize by accepted farm-gate grain from the same cycle. |
+| `reference_mass` | Grain-state mass | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 报告交付态质量及湿基含水率；干物质＝湿质量×（1－含水率分数）。 |
+| `area_to_reference` | Field inputs, emissions and output | Stated activity property | source unit and kg reference product | 保留面积和作物周期记录，再按同周期农场门合格籽粒归一化。 |
 | `nutrient_composition` | 每项养分投入 | Product mass and nutrient-element mass | kg product and kg element | 每种实际产品的质量、养分组成和施用日期分别记录为独立交换；产品质量不等于养分质量。 |
-| `lot_reconciliation` | Harvest and conditioning | Mass | kg | Reconcile input with products, co-products, rework transfers, rejects, moisture removal and physical loss without counting returned material twice. |
+| `lot_reconciliation` | Harvest and conditioning | Mass | kg | 核对进料、产品、共产品、返工转移、拒收物、移出水及物理损失，不将返回物料计数两次。 |
 
 ## 5. 系统边界
 
@@ -999,11 +999,11 @@ Record heat or mould damage, contamination and physical loss; calculated water r
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_subdivision_first` | All nodes | Subdivide field, flush, lot, batch, technology and rework records before allocation when independent measurements exist. |  |
-| `allocation_crop_cycle` | Shared cultivation | Attribute shared cultivation burdens once across all flushes in proportion to dry accepted and downgraded grain mass unless a reviewed causal method is used; never reapply them per flush. |  |
-| `allocation_intended_outputs` | Grain, stems and pods | Treat outputs as co-products only with production intent, quality state, recipient and hand-off. Apply one declared economic, physical or reviewed causal method to the complete intended-output set and disclose sensitivity. |  |
-| `allocation_rework` | Re-drying and re-cleaning | Returned material retains prior burdens; add incremental burdens once and do not count returned mass as new input or accepted output before release. |  |
-| `allocation_reject_exit` | Downgrade and waste | Downgraded outputs follow the complete-output attribution rule; treatment of waste remains with the producing node unless a disclosed downstream waste convention applies. |  |
+| `allocation_subdivision_first` | All nodes | 有独立测量时，分配前细分田块、采收轮次、批次、技术及返工记录。 |  |
+| `allocation_crop_cycle` | Shared cultivation | 除采用经审查因果方法外，按各轮合格及降级干籽粒质量比例将共享栽培负担分配一次，不在每轮重复施加。 |  |
+| `allocation_intended_outputs` | Grain, stems and pods | 仅在有生产意图、质量状态、接收方及交接时将产出作共产品；对完整预期产出集合采用一个声明经济、物理或经审查因果方法并披露敏感性。 |  |
+| `allocation_rework` | Re-drying and re-cleaning | 返回物料承接既有负担，增量负担只加一次；放行前不将返回质量作新投入或合格产出。 |  |
+| `allocation_reject_exit` | Downgrade and waste | 降级产出按完整产出归属规则处理；除非适用已披露下游废物约定，废物处理负担留于产生节点。 |  |
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
@@ -1034,8 +1034,8 @@ Record heat or mould damage, contamination and physical loss; calculated water r
 | --- | --- | --- | --- | --- | --- |
 | `calc_moisture` | Wet/dry mass | 进入空气的去除水=进入材料水+实际外加水+期初水库存-全部合格/降级/拒收/残余转出物流含水-单独外排液态水-期末水库存；采用匹配实测湿质量和水分比例或相容密度。内部循环相消。纳入实际雨水吸收/返潮，干物质和非水损失分开。实测或有据闭合平衡应确认实际蒸发和接收空气边界；缺少组分或未解释差额不能证明水汽或零。按匹配最终合格产出归一化一次。 | mass and moisture | dry matter and water removed | `mass-balance-identity` |
 | `calc_normalization` | All activities | Sum only linked records, divide by accepted as-delivered grain and multiply by 1,000 kg. | linked quantities and accepted grain | quantity per reference flow | `mass-balance-identity` |
-| `calc_soil_n2o` | N additions and residues | Apply the declared applicable IPCC or reviewed national Tier method, including relevant direct, volatilization/deposition and leaching/runoff pathways. | N composition, residue N, factors | kg N2O by pathway | `ipcc-managed-soils-2019` |
-| `calc_reconciliation` | Every lot/batch | Input dry mass equals accepted, intended co-product, downgrade, reject and physical-loss dry mass; rework return is a transfer. | linked input/output mass and moisture | variance and completeness flag | `mass-balance-identity` |
+| `calc_soil_n2o` | N additions and residues | 采用声明且适用的 IPCC 或经审查国家层级方法，包括适用直接、挥发/沉降及淋失/径流路径。 | N composition, residue N, factors | kg N2O by pathway | `ipcc-managed-soils-2019` |
+| `calc_reconciliation` | Every lot/batch | 进料干质量＝合格、预期共产品、降级、拒收及物理损失干质量之和；返工返回是转移。 | linked input/output mass and moisture | variance and completeness flag | `mass-balance-identity` |
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_cultivation`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 环境覆盖计算规则
@@ -1048,26 +1048,26 @@ Record heat or mould damage, contamination and physical loss; calculated water r
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | Reference output | Confirm species, whole-grain state, farm-gate status, grade, moisture, damage and foreign matter. | release and specification |
+| `dq_identity` | Reference output | 确认物种、完整籽粒状态、农场门状态、等级、含水率、损伤及异物。 | release and specification |
 | `dq_temporal` | Route lineage | Cover every input event, flush, drying lot, batch and rework pass. | field-to-gate lineage |
-| `dq_completeness` | Output states | Classify every output as accepted, downgrade, intended co-product, rework, residue, waste or loss. | reconciled balance |
-| `dq_measurement` | Quantities | Use calibrated or verified equipment and state estimation methods and uncertainty. | calibration and records |
-| `dq_representativeness` | Production mix | Weight fields/routes by accepted output and disclose exclusions, substitutions and shares. | contribution table |
+| `dq_completeness` | Output states | 将每项产出归类为合格、降级、预期共产品、返工、残体、废物或损失。 | reconciled balance |
+| `dq_measurement` | Quantities | 使用校准或已核实设备，并说明估算方法及不确定性。 | calibration and records |
+| `dq_representativeness` | Production mix | 按合格产出加权田块/路线，披露排除、替代及份额。 | contribution table |
 
 ## 9. 校验规则
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_identity` | Reference product | Reject green, planting-seed-market or processed product and grain without species, moisture, grade and farm-gate qualifiers. |  |
-| `validate_lineage` | Process map | Require continuous field–cycle–flush–drying-lot–conditioning-batch–rework–farm-gate lineage and one parent for every alternative route. | `icrisat-pigeonpea-production-1992` |
-| `validate_flushes` | Pod picking | Require flush ids, retained standing crop and one-time attribution of shared cultivation burdens. | `icrisat-pigeonpea-production-1992` |
-| `validate_grades` | Grading | Require accepted and non-accepted states, a hand-off for every state, and separation of downgrade, reject, waste and rework. |  |
-| `validate_rework` | Rework | Reject double counting of returned mass or prior burdens and exclude unresolved off-spec grain from accepted output. |  |
-| `validate_multi_output` | Intended outputs | Require complete output enumeration and an explicit attribution decision; one output cannot occur at two hand-offs. |  |
-| `validate_mode_indexing` | Periods/lots/batches | Link inputs, outputs, cleaning/changeover and yield to the relevant period, flush, lot or batch; reject duplicated shared burdens. |  |
+| `validate_identity` | Reference product | 青态、种子市场用途或加工产品，以及缺少物种、含水率、等级及农场门限定项的籽粒不通过。 |  |
+| `validate_lineage` | Process map | 要求连续的田块—周期—采收轮次—干燥批次—处理批次—返工—农场门追溯链，每项替代路线有唯一母路线。 | `icrisat-pigeonpea-production-1992` |
+| `validate_flushes` | Pod picking | 要求采收轮次 id、留存站立作物及共享栽培负担一次归属。 | `icrisat-pigeonpea-production-1992` |
+| `validate_grades` | Grading | 要求合格及非合格状态、每种状态的交接，区分降级、拒收、废物及返工。 |  |
+| `validate_rework` | Rework | 拒绝返回质量或既有负担双计，将未决不合格籽粒排除于合格产出。 |  |
+| `validate_multi_output` | Intended outputs | 要求完整列举产出及明确归属决定，同一产出不得出现在两个交接点。 |  |
+| `validate_mode_indexing` | Periods/lots/batches | 将投入、产出、清理/换线及得率关联相应期间、采收轮次或批次；重复共享负担不通过。 |  |
 | `validate_nutrient_cardinality` | Cultivation Product inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validate_ranges` | 带数量范围的卡片 | 已提供的范围须核对完整上下限及中英文本与结构化输出的一致性；重要流缺少范围须作为候选证据缺口披露，不得编造数值界限。 |  |
-| `validate_final_condition` | Farm-gate grain | Require measured final moisture. ICRISAT's 6–8% observation is source-specific QA guidance, not a universal grade unless adopted by the declared specification. | `icrisat-pigeonpea-production-1992` |
+| `validate_final_condition` | Farm-gate grain | 要求实测最终含水率；ICRISAT 的6–8%观察属于来源特定 QA 指引，除非声明规格采用，否则不是通用等级要求。 | `icrisat-pigeonpea-production-1992` |
 
 ## 10. 发布数据集画像
 

@@ -1,10 +1,1237 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34614"
-  title: "Double salts and mixtures of calcium nitrate and ammonium nitrate"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.double-salts-and-mixtures-of-calcium-nitrate-and-ammonium-nitrate"
+  classification_refs: "CPC:3.0:34614; narrower; un-cpc-2025"
+  covered_products: "Solid hydrated calcium-nitrate/ammonium-nitrate double-salt prills, route and hydration qualified"
+  excluded_products: "Carbonate-filled CAN; ammonia-free calcium nitrate; pure AN; solutions; dry blends; coated/additive grades; non-CNTH routes"
+  representative_product: "Actual site accepted hydrated double-salt prills; Yara CALCINIT is an identity example, not a required supplier or formulation"
+  production_route: "CNTH receipt → melt/acid assay → ammonia neutralisation → evaporation/recovery → prill/cool/screen → net acceptance/packing"
+  market_state: "Solid hydrated factory-gate prills; net as-delivered product; packaging separate"
+functional_unit:
+  what: "Accepted hydrated double-salt prills"
+  how_much: "1 kg"
+  how_well: "Declared lot/SKU; both salts confirmed; nitrate-N, ammonium-N, Ca, hydration/free moisture, free acid, insolubles and size tested; no generic assay default"
+  how_long_or_cycle: "One complete declared production campaign through factory-gate acceptance; no field service-life equivalence"
+  reference_flow_link: "finished_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "double_salt_manufacture"
+      rule: "Include receiving/melting, ammonia vaporisation where needed, neutralisation, evaporation, prilling, screening, product acceptance, packing, recovery and ventilation within one foreground unit. Keep stages separately metered in cp_stage. jrc-lvic-aaf-2007 §§7.4.4/7.4.8."
+      source_ids:
+        - jrc-lvic-aaf-2007
+    - rule_id: boundary_utilities
+      applies_to: "double_salt_manufacture"
+      rule: "Link external electricity, industrial-boiler steam heat, water and waste treatment to their actual providers once. On-site combustion or biological/chemical effluent treatment requires separately evidenced operations and atomic fuel/reagent/emission rows before completeness can be claimed; it is not hidden in a heat or waste quantity."
+      source_ids:
+        - jrc-lvic-aaf-2007
+        - jrc-cww-2016
+    - rule_id: boundary_recycle
+      applies_to: "double_salt_manufacture"
+      rule: "Record fines, oversize, scrubbed nitrate liquor and condensate internally with equal mass on each sending/receiving stage link and measured inventories. Only net external exchanges appear below. If material leaves the plant for a receiver, retain its real output identity and quantity."
+      source_ids:
+        - jrc-lvic-aaf-2007
+        - jrc-cww-2016
+boundary_abstraction:
+  declared_starting_condition: "Measured CNTH crystals/entrained mother liquor and other inputs received at a defined foreground gate"
+  starting_condition_role: "Unit-process gate; upstream cradle burdens retained through linked suppliers"
+  product_classification_scope: "CPC:3.0:34614 narrower"
+  recursive_input_rule: "Actual purchased same-category double salt is an input only with supplier quantity/background and explicit rework scope; never count internal recycled fines as purchase or expand into infinite identical processes"
+  upstream_dataset_requirement: "CNTH upstream rock digestion/crystallisation and shared acid/ammonia burdens require traceable upstream datasets and documented co-production partition; CNTH is not assumed burden-free waste"
+  disclosure: "Declare origin, concentration/phase, lot, measured quantity, provider basis, shared-site interfaces and unresolved links; gate-to-gate records alone do not establish cradle-to-gate completeness"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Double salts and mixtures of calcium nitrate and ammonium nitrate"
+    uuid: "a1758590-0e52-4ea5-a9d5-526c5893686a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "CNTH source/route and upstream burden basis"
+    - "SKU/lot"
+    - "nitrate-N and ammonium-N"
+    - calcium
+    - "crystal/free water"
+    - "free acid/impurities"
+    - "solid form/size"
+    - "no intentional additives/coating"
+    - "net acceptance campaign"
+    - "energy/water providers and quantity bases"
+    - "wastewater receiver or actual freshwater outlet"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "1 kg accepted net as-delivered product; retain crystal and permitted free water. Collect accepted campaign mass P using cp_product; exclude sacks/pallets, recycle and rejected mass. Every row uses the same P."
+  - id: material_basis
+    applies_to: "cnth_feed, ammonia_feed"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep delivered wet mass, dry salt, adhering liquor, free acid and active ammonia separate in cp_material. Assay times mass provides component ledgers; active mass cannot replace provider delivered quantity."
+  - id: steam_basis
+    applies_to: "heat_input"
+    required_property_ref:
+      name: "Gross calorific value"
+      uuid: "93a60a56-a3c8-14da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "cp_heat must reconcile supplier GCV quantity with measured steam/return enthalpy, actual pressure and dryness. An MJ unit alone proves no net-heat equivalence. Missing supplier conversion means incomplete linkage, not zero heat."
+  - id: nitrogen_species
+    applies_to: "ammonia_air, nitrate_water, ammonium_water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Retain original mass-as-N or species basis, molecular/ion identity and conversion trace. Total N and nitrate aerosol N are balance diagnostics; do not duplicate them as extra species exchanges."
+process_map:
+  - id: double_salt_manufacture
+    name: "CNTH conversion and accepted prill delivery"
+    inclusion: "required"
+    inclusion_condition: "Only qualified CNTH melt/ammonia/evaporation/prilling route"
+    role: "Integrated foreground unit; cp_stage preserves stage meters and internal links"
+    quantitative_reference: "finished_product; 1 kg"
+process_inventory:
+  - id: double_salt_manufacture
+    label: "CNTH conversion and accepted prill delivery"
+    inputs:
+      product:
+        - row_id: cnth_feed
+          role: "Calcium nitrate tetrahydrate crystals with adhering mother liquor"
+          name: "Calcium nitrate tetrahydrate crystals with adhering mother liquor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Receive CNTH from nitrophosphate separation; measure gross wet receipt, crystal assay, adhering liquor, free acid, nitrate-N, ammonium-N and impurities separately. Melt inside this unit; never substitute pure final double salt or a water-treatment solution."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: ammonia_feed
+          role: "Ammonia, anhydrous"
+          name: "Ammonia, anhydrous"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a0e3299b-9484-4ec3-89d3-cd1e2d6c2225"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Meter actual anhydrous ammonia crossing the unit boundary; declare liquid/gas receipt and include any vaporisation energy inside this unit. Gaseous ammonia neutralises residual acid; determine requirement from measured acid and production records, not a universal recipe."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: electricity_input
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use this identity only for delivered CN grid-average 1–35 kV supply; the native locationOfSupply is CN, and another geography requires a separately verified compatible flow/provider; meter melting, evaporation/compression, prilling, screening, pumps, ventilation, scrubbing and packaging. A different voltage or supply route needs its own verified atomic row. Convert metered kWh to MJ; this property name does not make electricity a fuel."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: water_input
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual treated industrial make-up water for process, scrubbing, rinsing and closed-circuit cooling. Record supply treatment and grade, mass, meter location and measured density for any volume conversion; recovered condensate and circulating water remain internal. Raw abstraction or different treatment requires a distinct verified row."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: heat_input
+          role: "Process heat from steam"
+          name: "Process heat from steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fcf9e128-688f-42f0-9dca-85d2319cfac5"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only externally supplied industrial-boiler steam heat. Record pressure, temperature, dryness, mass, condensate return and supplier definition of the Gross calorific value/MJ reference. Independently reconcile delivered heat from inlet and return enthalpies. Never equate this GCV property with net delivered heat; unknown conversion to the provider reference quantity makes the background link incomplete. Internal recovered process steam is not purchased heat."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pp_bag
+          role: "Woven polypropylene fertilizer sack"
+          name: "Woven polypropylene fertilizer sack"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When used, weigh actual woven polypropylene outer sacks excluding the separately recorded PE liner; record coatings, stitching and supplier grade. No assumed bag capacity or seed-packaging quantity."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pe_liner
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual PE film liner or wrap, CAS9002-88-4; separately weigh it, describe thickness and resin grade, and exclude integrated film already counted with a composite sack. Source classification is inconsistent with the explicit film name/CAS; supplier identity and clarification remain required."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pallet
+          role: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The broad wooden-load-platform identity includes the actual wooden pallet subset. Record net wood mass, treatment, nails and supplier; apportion reusable pallet burdens over verified rotations without inventing a lifetime. Do not add pallet mass to fertilizer output."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: lubricating_oil
+          role: "Lubricating oil"
+          name: "Lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional petroleum-fraction lubricating oil used by equipment, measured as mass. Verify supplier petroleum origin and grade; the record calorific-value annotation is not a PCR consumption or combustion factor. Synthetic PAO or wax/solvent lubricant is a different row."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_product
+          role: "Double salts and mixtures of calcium nitrate and ammonium nitrate"
+          name: "Double salts and mixtures of calcium nitrate and ammonium nitrate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a1758590-0e52-4ea5-a9d5-526c5893686a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Single final accepted net hydrated double-salt prill output at factory gate. Broad identity is restricted here to the physical product and CNTH route in sections1–2; count acceptance once, including measured crystal water and residual free moisture, excluding packaging."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+                - yara-calcinit-2023
+            ranges: []
+      waste:
+        - row_id: nitrate_wastewater
+          role: "Calcium-nitrate/ammonium-nitrate condensate purge wastewater"
+          name: "Calcium-nitrate/ammonium-nitrate condensate purge wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only liquid sent to an identified external wastewater-treatment receiver. Weigh or meter wet quantity and analyse nitrate, ammonium, calcium, pH and solids. Carry provider treatment burdens once; never also report its embedded pollutants as direct factory elementary emissions."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: nitrate_sludge
+          role: "Wet insoluble residue from CNTH melt filtration"
+          name: "Wet insoluble residue from CNTH melt filtration"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual polishing/physical-separation residue; record dry solids, liquor, nitrate/ammonium/calcium contamination and receiver. CNTH upstream rock-digestion residue belongs upstream unless physically received here. Biological sludge is outside this row."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: nitrate_reject
+          role: "Discarded hydrated calcium-nitrate/ammonium-nitrate double salt"
+          name: "Discarded hydrated calcium-nitrate/ammonium-nitrate double salt"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only rejected prills/spillage actually leaving for treatment, with composition and receiver recorded. Oversize/fines and dissolved spills returned to production remain internal and are not waste outputs or second final-product outputs."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: waste_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Weigh actual used lubricant separately from nitrate-bearing residues; declare petroleum/synthetic composition, water, contamination and receiver treatment. It is not a product credit."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: spent_pp_bag
+          role: "Polypropylene Wastes"
+          name: "Polypropylene Wastes"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "88215d1b-e6b6-4ec7-af7f-83375e80637b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only separately recovered PP sack scrap actually accepted for mechanical recycling; document residual fertilizer contamination and receiving conditions. Do not use the hard recycling-route UUID for mixed bags, disposal, or unaccepted hazardous packaging; split those identities."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+      elementary:
+        - row_id: ammonia_air
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual molecular NH3 after scrubbing and diffuse releases at the outdoor plant boundary, unspecified air compartment. Separate NH3 from NH4+ aerosol and convert a measured nitrogen basis explicitly; no historical plant emission default."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: nitrate_water
+          role: "nitrate"
+          name: "nitrate"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-8d68-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only directly discharged NO3− to freshwater at the final outlet. Convert measured nitrate-N to nitrate-ion mass with documented molar masses; total nitrogen is a reconciliation indicator, not a second emission."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: ammonium_water
+          role: "ammonium"
+          name: "ammonium"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aaa5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only directly discharged NH4+ to freshwater. Ammonia-nitrogen tests may include dissolved NH3: require speciation/pH/temperature and a method-compatible conversion before assigning all measured N to NH4+; unresolved speciation is not zero."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: calcium_water
+          role: "calcium"
+          name: "calcium"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a296-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual dissolved calcium discharged to freshwater, reported as elemental Ca mass, not metallic calcium feed or CaCO3 mass. Preserve laboratory speciation and suspended-solids partition; do not add total dissolved solids again."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: water_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Water vapour released to outdoor air, unspecified compartment; derive net water evaporation from measured moisture/condensate and exhaust humidity. Recovered condensate or latent heat is not another water mass output."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_fine
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Final emitted nitrate-containing particulate mass in the non-overlapping aerodynamic ≤2.5 μm fraction, outdoor air unspecified. Retain aerosol water/solids measurement definition and composition for nitrogen/calcium balance; collected scrubber dust is internal/waste, not airborne emission."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_coarse
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only the >2.5 to ≤10 μm emitted fraction, outdoor air unspecified. If tests provide cumulative PM10 and PM2.5, subtract their compatible same-source/time masses; never add cumulative PM10 on top of this row."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pm_large
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only emitted aerodynamic >10 μm particles, outdoor air unspecified. Derive from compatible total-minus-PM10 or an independent measurement; unspecified dust cannot be assigned an invented fraction."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: water_freshwater
+          role: "Liquid water released to freshwater"
+          name: "Liquid water released to freshwater"
+          flow_type: "elementary"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Only carrier-water volume in an actual direct freshwater discharge, excluding separately measured solute mass. Use measured discharged carrier-water mass divided by measured density at stated temperature for a mass-to-volume conversion; bulk wastewater volume alone is not the pure carrier-water volume. Preserve physical water mass for the water balance. Externally treated wastewater is counted through its receiver instead. Database linkage remains pending."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+        - row_id: heat_air
+          role: "Waste heat dissipated to outdoor air"
+          name: "Waste heat dissipated to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Measured dissipated heat; identity pending / MJ"
+          description: "Conditional sensible/latent heat actually dissipated to outdoor air, not energy purchased or heat exported. Use measured energy balance and explicit temperature/enthalpy datum; exact quantity-compatible UUID unresolved."
+          amount:
+            expression: "Measure the campaign exchange through this protocol and divide by accepted net product mass P from cp_product. Record actual absence with evidence; unknown quantity or identity is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvic-aaf-2007
+                - jrc-cww-2016
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_separation
+    applies_to: "double_salt_manufacture"
+    rule: "Use an explicitly declared attributional LCI context, following jrc-ilcd-2010 §§7.9.2–7.9.3. Consequential questions need a separate goal/scope decision and cannot inherit this hierarchy automatically. Retain a physical unit/stage ledger before allocation. Separate shared-site utilities and upstream CNTH/NPK co-production using measured causal/subdivision evidence first. Receiving a separated CNTH stream never establishes zero upstream burden. Allocation convention and provider denominator must accompany its upstream dataset."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-lvic-aaf-2007
+  - rule_id: allocation_burden
+    applies_to: "double_salt_manufacture"
+    rule: "If subdivision fails, document the selected defensible physical relation; if none exists, disclose actual dated economic data and sensitivity. Calculate burden shares summing to one in a separate ledger. Never multiply real co-product output masses, elemental balances or internal link quantities by those shares. This is an attributional hierarchy based on jrc-ilcd-2010, not a BAT-prescribed allocation formula. Economic values must reflect the actual condition and gate where co-products leave co-production, not downstream packed/transported prices without adjustment."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: allocation_recovery
+    applies_to: "double_salt_manufacture"
+    rule: "Internal recovered salts/condensate are circulation, without extra product output or avoided-production credit. Discarded salt, sludge and wastewater retain actual receiver treatment. A genuinely sold recovered product requires demonstrated acceptance, composition and a separate verified identity before applying any allocation."
+    source_ids:
+      - jrc-ilcd-2010
+      - jrc-lvic-aaf-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "double_salt_manufacture"
+      flow_role: "reference product"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "lot SKU; route; gross/tare/net accepted mass P; nitrate-N; ammonium-N; Ca; crystal/free water; free acid; insolubles; size; returns/reacceptance; opening/closing finished and work-in-progress stocks; production history and carried inventory burdens"
+      collection_method: "Calibrated scales and acceptance records; validated lot-specific chemical/moisture analysis. Count accepted output once and reconcile dispatch plus opening/closing stocks."
+      unit: "kg"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_material
+      process_id: "double_salt_manufacture"
+      flow_role: "CNTH ammonia lubricant"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "separate receipt IDs; wet mass; crystal/solution phase; liquor/free acid; assay; NH3 phase/purity; lubricant origin/grade; stock changes; supplier basis"
+      collection_method: "Weigh or calibrated mass meter each material; measure actual composition and reconcile net use from stocks and receipts. Preserve delivered quantity and component ledgers independently; vaporisation/recovery are measured stage operations."
+      unit: "kg"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_energy
+      process_id: "double_salt_manufacture"
+      flow_role: "electricity and dissipated heat"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "stage meter IDs; kWh; actual voltage; electricity provider; energy/enthalpy balance; starts/stops; time; output P"
+      collection_method: "Submeter and integrate actual electricity, fan/compressor and mechanical load. Determine dissipated heat with explicit reference temperature, sensible/latent terms and recovery; no fuel emission copied from imported heat."
+      unit: "MJ"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_heat
+      process_id: "double_salt_manufacture"
+      flow_role: "external industrial-boiler steam heat"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "supplier reference GCV/MJ definition; pressure; temperature; dryness; inlet steam/return mass; inlet/return enthalpy; agreed datum; supplier conversion; background boundary"
+      collection_method: "Measure steam and return streams; calculate net delivered enthalpy independently, then use an evidenced supplier conversion to the linked GCV reference. Maintain conversion as pending when undefined; do not infer it from MJ."
+      unit: "MJ"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_water
+      process_id: "double_salt_manufacture"
+      flow_role: "make-up evaporation condensate"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "external make-up mass/volume; density/temperature; treatment; condensate return; humidity; stock; water in CNTH and accepted prills"
+      collection_method: "Meter make-up separately from circulation; reconcile water carried in wet inputs, crystal/free water in output, condensation, evaporation and purge. Record losses and uncertainty instead of assigning a balance residual as an invented species."
+      unit: "kg"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_pack
+      process_id: "double_salt_manufacture"
+      flow_role: "individual packaging components"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "sack count/mass; PE liner mass; thickness/resin; pallet net mass/treatment; rotations; supplier IDs; scraps"
+      collection_method: "Weigh components separately and reconcile use/scrap and accepted product. Record actual rotations and measured supplier conversion where units differ; no packaging mass in P."
+      unit: "kg"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_waste
+      process_id: "double_salt_manufacture"
+      flow_role: "individual external wastes"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "row waste ID; wet/dry mass; composition/contamination; nitrate/ammonium/Ca; receiver; acceptance and treatment route; time"
+      collection_method: "Separate weighed wastes and chain-of-custody receipts; distinguish mechanical-PP recycling from disposal and residues from internal recovery. Analyse liquid/solid partition and link receiver burdens once."
+      unit: "kg"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_air
+      process_id: "double_salt_manufacture"
+      flow_role: "NH3 and each non-overlapping PM fraction"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "outlet ID; gas flow; concentration; wet/dry and normal T/P; operating hours; NH3 versus N; PM2.5/PM10/total; aerosol moisture/chemistry; recovery; detection limits"
+      collection_method: "Validated paired flow/concentration tests after abatement, plus time-representative diffuse assessment; integrate each physical species/fraction once. Retain start/stop periods, uncertainty and censored values. Unspecified dust remains unpartitioned pending size evidence."
+      unit: "kg"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_effluent
+      process_id: "double_salt_manufacture"
+      flow_role: "direct freshwater outlet species/water"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "outlet and recipient; discharge flow; sampling times; NO3-N or NO3; NH4-N or NH4; dissolved NH3; Ca; pH/temperature; suspended solids; water fraction; carrier-water density/temperature and separate carrier-water volume; lab method"
+      collection_method: "Only actual direct discharge: paired calibrated flow and representative laboratory analysis at final outlet; preserve species and original units. External-treatment transfer is recorded in cp_waste instead; do not duplicate its loads here."
+      unit: "kg; m3"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+    - protocol_id: cp_stage
+      process_id: "double_salt_manufacture"
+      flow_role: "internal physical links and allocation"
+      record_type: "calibrated measurements and traceable records"
+      raw_fields: "stage IDs; sending/receiving amounts; recycle solids/liquor; condensate; stocks; heat recovery; upstream/shared-site partition; independent burden ledger"
+      collection_method: "Preserve measured stage diagrams, mass/water/N/Ca balance and equal link quantities before allocating burdens. Use measured utility causes/subdivision; document any physical/economic relation and sensitivity."
+      unit: "kg; MJ"
+      frequency: "each lot/transfer; continuous meters integrated; representative outlet campaigns"
+      temporal_coverage: "complete declared campaign including starts/stops and stock reconciliation"
+      site_scope: "same foreground unit; actual supplier/receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lab method/speciation, receipts, timestamps, coverage and uncertainty"
+  calculation_rules:
+    - id: normalise_campaign
+      applies_to: "all inventory rows"
+      rule: "Exchange per reference kg = raw net campaign exchange total / accepted net product mass P, divided once. Sum raw quantities over the complete same route, hydration/specification and campaign, including attributable failed/zero-output intervals, starts/stops, cleaning and rework; do not average successful-interval ratios or divide a per-kg value again. P must be positive and is credited once after reconciling returns/reacceptance, finished stocks and work in progress. Preserve their production history and carried burdens so attribution covers the same accepted output; burden adjustments do not erase raw physical exchanges. Internal recycle remains outside the external numerator and is not a new accepted output. If P is zero, retain totals and disclose no unit result rather than divide or omit burdens."
+      inputs:
+        - cp_product
+        - "row-specific protocol"
+      output: "row amount per 1 kg reference flow"
+      source_ids:
+        - jrc-cww-2016
+    - id: components_and_water
+      applies_to: "cnth_feed, finished_product"
+      rule: "Component mass = measured delivered mass × measured component mass fraction. Maintain disjoint dry salt, crystal water, free water and adhering-liquor terms; no manufacturer assay transplanted."
+      inputs:
+        - cp_material
+        - cp_product
+        - cp_water
+      output: "physical component/water ledger"
+      source_ids:
+        - jrc-lvic-aaf-2007
+    - id: electricity_conversion
+      applies_to: "electricity_input"
+      rule: "MJ = measured kWh × 3.6; the definition 1 kWh = 3.6 MJ is a unit conversion, not a technology consumption value."
+      inputs:
+        - cp_energy
+      output: "provider-compatible MJ per reference kg"
+      source_ids: []
+    - id: emission_load
+      applies_to: "ammonia_air, nitrate_water, ammonium_water, calcium_water"
+      rule: "Species mass = sum over measured intervals of concentration × compatible gas/water flow × interval duration × explicit unit/species conversion. For mass-as-N multiply by molar mass of measured species / molar mass of N after confirming speciation."
+      inputs:
+        - cp_air
+        - cp_effluent
+      output: "physical species load then per-reference amount"
+      source_ids:
+        - jrc-cww-2016
+    - id: particle_partition
+      applies_to: "pm_fine, pm_coarse, pm_large"
+      rule: "Disjoint bins: fine = measured PM2.5; middle = compatible PM10 − PM2.5; large = compatible total PM − PM10. Independent disjoint tests may replace differences. Incompatible tests or negative differences require review, not clipping to zero."
+      inputs:
+        - cp_air
+      output: "non-overlapping physical particle loads"
+      source_ids:
+        - jrc-cww-2016
+    - id: heat_reconciliation
+      applies_to: "heat_input"
+      rule: "Net delivered heat = measured inlet steam mass × inlet enthalpy − measured return mass × return enthalpy, using one explicit datum and appropriate pressure/temperature/dryness; reconcile other outlet/loss terms. The supplier GCV conversion is separate measured/declared evidence; no default GCV-to-net factor."
+      inputs:
+        - cp_heat
+        - cp_stage
+      output: "separate physical heat and provider reference ledgers"
+      source_ids:
+        - jrc-lvic-aaf-2007
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all inventory rows"
+      requirement: "Verify actual species/state, route, medium, property/unit and provider definition. Empty UUID or pending compatibility remains explicit; identity verification alone is not a complete background dataset."
+      evidence: "supplier specifications, flow evidence, receiver criteria"
+    - id: balances
+      applies_to: "double_salt_manufacture"
+      requirement: "Reconcile unallocated mass, water, N and Ca, impurities/stock changes and stage links; state uncertainties and unresolved residuals. Never invent yield, purity, hydration or zero emissions to close balances."
+      evidence: "cp_product; cp_material; cp_water; cp_stage"
+    - id: coverage
+      applies_to: "double_salt_manufacture"
+      requirement: "Capture normal and start/stop production, cleaning, leaks, recovery and each real waste/emission. Additional actual reagents, pollutants or utilities must be separate scoped rows with evidence; absent or unquantified rows cannot imply completeness."
+      evidence: "jrc-cww-2016; cp_stage"
+    - id: sources
+      applies_to: "double_salt_manufacture"
+      requirement: "Historic BAT/CALCINIT case values do not define universal recipes, water removal, energy, emission factors or quality thresholds. Require current lot tests and supplier evidence; disclose modelling choices separately from external facts."
+      evidence: "un-cpc-2025; jrc-lvic-aaf-2007; jrc-cww-2016; yara-calcinit-2023"
+validation_rules:
+  - rule_id: validate_product
+    applies_to: "reference product"
+    rule: "Confirm both nitrate salts, solid hydration and the declared CNTH route; exactly one final reference output is 1 kg of net accepted product. Packaging, off-spec waste and internal intermediates do not add another reference output."
+    source_ids:
+      - un-cpc-2025
+      - jrc-lvic-aaf-2007
+      - yara-calcinit-2023
+  - rule_id: validate_quantity
+    applies_to: "all inventory rows"
+    rule: "All rows and collection aggregation use the same accepted net P and campaign; source/property/unit conversions and upstream CNTH allocation must be explicit. Undefined steam GCV/enthalpy conversion, missing quantities, uncertain speciation or missing exact identity remain findings and block complete dataset validation."
+    source_ids:
+      - jrc-cww-2016
+      - jrc-ilcd-2010
+  - rule_id: validate_no_overlap
+    applies_to: "double_salt_manufacture"
+    rule: "Check equal internal links, stock changes, physical balances versus burden allocation, disjoint PM bins and total-N reconciliation. A transferred wastewater stream and its direct elementary pollutant load are mutually exclusive at this boundary; source case “no discharge” is not proof of actual absence."
+    source_ids:
+      - jrc-cww-2016
+      - jrc-lvic-aaf-2007
+published_dataset_profile:
+  dataset_role: "Foreground industrial double-salt manufacture; optional cradle-to-gate integration"
+  downstream_use: "Mass-based supplied fertilizer/chemical input with declared composition and hydration"
+  allowed_use: "Only qualified CNTH/ammonia/evaporation/prilling solid route; compatible provider bases"
+  excluded_use: "Other CAN identities/routes, solution reference, field-use efficacy or universal fertilizer recipe"
+  required_metadata: "Reference qualifiers; complete campaign P; provider and receiver identities/bases; stages and inventories; assays; allocation; emission compartments and methods"
+  required_quality_disclosure: "Actual measured versus modelled data; coverage/uncertainty; unresolved UUIDs and steam compatibility; upstream CNTH burden completeness; metadata debts"
+  update_trigger: "Change of CNTH origin, process route, hydration/assay, additive/coating, provider basis, abatement, waste receiver or shared-site allocation"
+data_sources:
+  - id: "un-cpc-2025"
+    type: "official_guidance"
+    reference: "[UNSD CPC Version3.0 Structure, 30Jun2025](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv)"
+    used_for: "Rows34613/34614/34615. Official category separation only; no manufacture recipe."
+  - id: "jrc-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "[European Commission LVIC-AAF BREF, August2007](https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic_aaf.pdf)"
+    used_for: "§7.2.2.1 p286/PDF314; §7.4.4 p302/PDF330; §7.4.8 Table7.10 pp310–311/PDF338–339. CNTH-origin and conversion/prilling process evidence. Historic/plant-specific quantities and NPK-prilling moisture are not transferable defaults."
+  - id: "jrc-cww-2016"
+    type: "official_guidance"
+    reference: "[European Commission CWW BREF, 2016, JRC103096](https://publications.jrc.ec.europa.eu/repository/bitstream/JRC103096/jrc103096_cww_bref_10_2016.pdf)"
+    used_for: "BAT2–4 pp543–544/PDF573–574: chemical process diagrams, stream inventory, species/load and final-outlet monitoring. Used for collection design only, without asserting current legal BAT compliance, universal pollutants or prescribed schedule."
+  - id: "yara-calcinit-2023"
+    type: "handbook"
+    reference: "[YaraLiva CALCINIT Greenhouse/Solution Grade PDS, 0623-R1](https://www.yara.us/contentassets/280676bbae1c466799e9d22b57225584/yaraliva-calcinit-greenhouse-pds.pdf)"
+    used_for: "One page, June2023: hydrated ammonium calcium nitrate double salt, soluble solid prilled/granular market identity. One manufacturer grade only; no specification, recipe, solubility, nutrient or size value adopted as PCR default; does not prove the route of an actual site."
+  - id: "jrc-ilcd-2010"
+    type: "official_guidance"
+    reference: "[JRC ILCD Handbook, Detailed guidance, first edition March2010](https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf)"
+    used_for: "§§7.9.2–7.9.3, printed255–257/263–264, PDF275–277/283–284. Attributional multifunctionality subdivision, physical causality then economic allocation; economic value at actual co-production gate/condition. No CNTH share or recipe; not automatically applicable to consequential studies."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:347a3529b550c36e616a47f9a3b3f52e82fe4579b3b043f716ad4f567000548f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5278"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5278
+          line: 60
+          column: 1
+        end:
+          offset: 7541
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Measured CNTH crystals/entrained mother liquor and other inputs received at a defined foreground gate |\n| starting_condition_role | Unit-process gate; upstream cradle burdens retained through linked suppliers |\n| product_classification_scope | CPC:3.0:34614 narrower |\n| recursive_input_rule | Actual purchased same-category double salt is an input only with supplier quantity/background and explicit rework scope; never count internal recycled fines as purchase or expand into infinite identical processes |\n| upstream_dataset_requirement | CNTH upstream rock digestion/crystallisation and shared acid/ammonia burdens require traceable upstream datasets and documented co-production partition; CNTH is not assumed burden-free waste |\n| disclosure | Declare origin, concentration/phase, lot, measured quantity, provider basis, shared-site interfaces and unresolved links; gate-to-gate records alone do not establish cradle-to-gate completeness |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | double_salt_manufacture | Include receiving/melting, ammonia vaporisation where needed, neutralisation, evaporation, prilling, screening, product acceptance, packing, recovery and ventilation within one foreground unit. Keep stages separately metered in cp_stage. `jrc-lvic-aaf-2007` §§7.4.4/7.4.8. | jrc-lvic-aaf-2007 |\n| boundary_utilities | double_salt_manufacture | Link external electricity, industrial-boiler steam heat, water and waste treatment to their actual providers once. On-site combustion or biological/chemical effluent treatment requires separately evidenced operations and atomic fuel/reagent/emission rows before completeness can be claimed; it is not hidden in a heat or waste quantity. | jrc-lvic-aaf-2007; jrc-cww-2016 |\n| boundary_recycle | double_salt_manufacture | Record fines, oversize, scrubbed nitrate liquor and condensate internally with equal mass on each sending/receiving stage link and measured inventories. Only net external exchanges appear below. If material leaves the plant for a receiver, retain its real output identity and quantity. | jrc-lvic-aaf-2007; jrc-cww-2016 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 347
+              line: 12
+              column: 1
+            end:
+              offset: 435
+              line: 12
+              column: 89
+          text: "# Prilled hydrated calcium-nitrate/ammonium-nitrate double salt from nitrophosphate CNTH"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5278
+              line: 60
+              column: 1
+            end:
+              offset: 5299
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_34984"
+      family: "allocation"
+      span:
+        start:
+          offset: 34984
+          line: 482
+          column: 1
+        end:
+          offset: 36779
+          line: 490
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_separation | double_salt_manufacture | Use an explicitly declared attributional LCI context, following `jrc-ilcd-2010` §§7.9.2–7.9.3. Consequential questions need a separate goal/scope decision and cannot inherit this hierarchy automatically. Retain a physical unit/stage ledger before allocation. Separate shared-site utilities and upstream CNTH/NPK co-production using measured causal/subdivision evidence first. Receiving a separated CNTH stream never establishes zero upstream burden. Allocation convention and provider denominator must accompany its upstream dataset. | jrc-ilcd-2010; jrc-lvic-aaf-2007 |\n| allocation_burden | double_salt_manufacture | If subdivision fails, document the selected defensible physical relation; if none exists, disclose actual dated economic data and sensitivity. Calculate burden shares summing to one in a separate ledger. Never multiply real co-product output masses, elemental balances or internal link quantities by those shares. This is an attributional hierarchy based on `jrc-ilcd-2010`, not a BAT-prescribed allocation formula. Economic values must reflect the actual condition and gate where co-products leave co-production, not downstream packed/transported prices without adjustment. | jrc-ilcd-2010 |\n| allocation_recovery | double_salt_manufacture | Internal recovered salts/condensate are circulation, without extra product output or avoided-production credit. Discarded salt, sludge and wastewater retain actual receiver treatment. A genuinely sold recovered product requires demonstrated acceptance, composition and a separate verified identity before applying any allocation. | jrc-ilcd-2010; jrc-lvic-aaf-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 347
+              line: 12
+              column: 1
+            end:
+              offset: 435
+              line: 12
+              column: 89
+          text: "# Prilled hydrated calcium-nitrate/ammonium-nitrate double salt from nitrophosphate CNTH"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 34984
+              line: 482
+              column: 1
+            end:
+              offset: 35024
+              line: 482
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_49798"
+      family: "validation"
+      span:
+        start:
+          offset: 49798
+          line: 527
+          column: 1
+        end:
+          offset: 51008
+          line: 535
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_product | reference product | Confirm both nitrate salts, solid hydration and the declared CNTH route; exactly one final reference output is 1 kg of net accepted product. Packaging, off-spec waste and internal intermediates do not add another reference output. | un-cpc-2025; jrc-lvic-aaf-2007; yara-calcinit-2023 |\n| validate_quantity | all inventory rows | All rows and collection aggregation use the same accepted net P and campaign; source/property/unit conversions and upstream CNTH allocation must be explicit. Undefined steam GCV/enthalpy conversion, missing quantities, uncertain speciation or missing exact identity remain findings and block complete dataset validation. | jrc-cww-2016; jrc-ilcd-2010 |\n| validate_no_overlap | double_salt_manufacture | Check equal internal links, stock changes, physical balances versus burden allocation, disjoint PM bins and total-N reconciliation. A transferred wastewater stream and its direct elementary pollutant load are mutually exclusive at this boundary; source case “no discharge” is not proof of actual absence. | jrc-cww-2016; jrc-lvic-aaf-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 347
+              line: 12
+              column: 1
+            end:
+              offset: 435
+              line: 12
+              column: 89
+          text: "# Prilled hydrated calcium-nitrate/ammonium-nitrate double salt from nitrophosphate CNTH"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 49798
+              line: 527
+              column: 1
+            end:
+              offset: 49820
+              line: 527
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5278"
+      source_span:
+        start:
+          offset: 6409
+          line: 75
+          column: 1
+        end:
+          offset: 6748
+          line: 75
+          column: 340
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_5278"
+      source_span:
+        start:
+          offset: 6749
+          line: 76
+          column: 1
+        end:
+          offset: 7170
+          line: 76
+          column: 422
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_5278"
+      source_span:
+        start:
+          offset: 7171
+          line: 77
+          column: 1
+        end:
+          offset: 7539
+          line: 77
+          column: 369
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_separation"
+      identity_kind: "explicit"
+      unit_id: "normative_34984"
+      source_span:
+        start:
+          offset: 35097
+          line: 486
+          column: 1
+        end:
+          offset: 35719
+          line: 486
+          column: 623
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_burden"
+      identity_kind: "explicit"
+      unit_id: "normative_34984"
+      source_span:
+        start:
+          offset: 35720
+          line: 487
+          column: 1
+        end:
+          offset: 36360
+          line: 487
+          column: 641
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_34984"
+      source_span:
+        start:
+          offset: 36361
+          line: 488
+          column: 1
+        end:
+          offset: 36777
+          line: 488
+          column: 417
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_product"
+      identity_kind: "explicit"
+      unit_id: "normative_49798"
+      source_span:
+        start:
+          offset: 49893
+          line: 531
+          column: 1
+        end:
+          offset: 50219
+          line: 531
+          column: 327
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_49798"
+      source_span:
+        start:
+          offset: 50220
+          line: 532
+          column: 1
+        end:
+          offset: 50615
+          line: 532
+          column: 396
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_no_overlap"
+      identity_kind: "explicit"
+      unit_id: "normative_49798"
+      source_span:
+        start:
+          offset: 50616
+          line: 533
+          column: 1
+        end:
+          offset: 51006
+          line: 533
+          column: 391
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5278"
+      source_span:
+        start:
+          offset: 5278
+          line: 60
+          column: 1
+        end:
+          offset: 5299
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5278"
+      source_span:
+        start:
+          offset: 5327
+          line: 64
+          column: 1
+        end:
+          offset: 6336
+          line: 71
+          column: 211
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_34984"
+      source_span:
+        start:
+          offset: 34984
+          line: 482
+          column: 1
+        end:
+          offset: 35024
+          line: 482
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_49798"
+      source_span:
+        start:
+          offset: 49798
+          line: 527
+          column: 1
+        end:
+          offset: 49820
+          line: 527
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:347a3529b550c36e616a47f9a3b3f52e82fe4579b3b043f716ad4f567000548f"
+  generated_content_sha256: "sha256:201594cab4651d4cda3a980375943fa2e647daf8babbb16d3c7a10b58be9a0e5"

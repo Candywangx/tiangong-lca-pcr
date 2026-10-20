@@ -1081,7 +1081,7 @@ sync_with: pcr.en-US.md
 
 | requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | 参考流 and every rubber transfer | Declare form, route, grade, basis, chemistry, gate and UUID compatibility; never substitute synthetic or compounded rubber. | product certificate, batch record and identity audit |
+| `dq_identity` | 参考流 and every rubber transfer | 声明形态、路线、等级、基准、化学组成、交接点及 UUID 相容性；不得替换为合成橡胶或混炼橡胶。 | product certificate, batch record and identity audit |
 | `dq_route_completeness` | process map | 只能启用一条终端路线；未启用路线没有交换或负担。 | route declaration and process graph |
 | `dq_mass_basis` | liquid and wet materials | 保留收到态质量、DRC/水分、检测方法和取样时间；换算必须可复现。 | laboratory certificate and calculation record |
 | `dq_temporal` | plantation and processing | 覆盖建园归属、所有割胶轮次和对产出有贡献的每个加工批次。 | period and batch completeness report |

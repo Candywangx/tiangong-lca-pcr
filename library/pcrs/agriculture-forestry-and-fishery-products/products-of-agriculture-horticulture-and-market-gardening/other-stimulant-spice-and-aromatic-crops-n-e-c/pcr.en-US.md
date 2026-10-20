@@ -354,7 +354,7 @@ Raw activity or stage basis: Per 1 kg of product at the selected gate.
 
 ###### Removed non-target crop biomass (`removed_crop_biomass`)
 
-Record non-target biomass removed from the field only when it leaves the crop system as a discard or residue. Biomass retained or incorporated in the field is recorded under the elementary soil-return row in the harvest process, not as a waste exchange. If it is sold or used as a co-product, classify it under the actual intended product output instead.
+Record non-target biomass removed from the field only when it leaves the crop system as a discard or residue. Biomass retained or incorporated in the field remains in the internal residue and nutrient ledger under crop_residue_to_soil_identity_and_fate; it is neither an exported waste nor a bulk elementary biomass exchange. Quantify only actual substance-specific releases with their receiving compartments. If it is sold or used as a co-product, classify it under the actual intended product output instead.
 
 - Selected flow: Crop-specific non-target plant biomass sent to a declared waste destination (UUID unresolved)
 - Flow property / unit: Mass / kg dry matter where measured

@@ -1054,9 +1054,12 @@ dataset_production:
         - mass-balance-identity
     - id: calc_drying_water
       applies_to: "Drying"
-      rule: "wet input × initial moisture − accepted dry output × final moisture − reject mass × reject moisture."
+      rule: "Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference."
       inputs:
-        - "batch masses and moisture fractions"
+        - cp_drying_batch
+        - "wet mass/moisture of all material streams"
+        - "actual water additions/liquid exports"
+        - "opening/closing water stocks and supported evaporation"
       output: "kg water to air"
       source_ids:
         - mass-balance-identity
@@ -1196,7 +1199,7 @@ data_sources:
     used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3e08186abe6c0fd69ff8d8c27b211277cdd05eeae3709613407b14b3c6e3d9f8"
+  source_sha256: "sha256:47151b4f6cbad146dd16724cf39950d475d0b9a785d0a73b38f948f97b8cb66c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4742"
@@ -1295,15 +1298,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_64134"
+    - unit_id: "normative_64992"
       family: "validation"
       span:
         start:
-          offset: 64134
+          offset: 64992
           line: 868
           column: 1
         end:
-          offset: 67243
+          offset: 68101
           line: 884
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match. |  |\n| `validate_route_exclusivity` | Route | Require exactly one wet or dried hand-off; wet has no drying inventory, dried has one linked drying node and declared parent activity and delta. | `penn-state-hop-production` |\n| `validate_periods` | Perennial attribution | Require phase treatment, cumulative output, attribution period and evidence and reject double attribution. | `cordella-hop-lca-2026` |\n| `validate_shared_assets` | Shared infrastructure | Require asset identity, consuming nodes and periods, service boundary, attribution driver and duplicate-burden check. |  |\n| `validate_nutrient_cardinality` | Every process | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_batch_linkage` | Harvest, grading and drying | Require lot/batch IDs for inputs, outputs, energy, cleaning and changeover and reject shared burdens counted twice. |  |\n| `validate_mass_balance` | Harvest, grading and drying | Reconcile accepted, downgraded, rework, rejected, chaff, loss and moisture states within disclosed uncertainty. | `mass-balance-identity` |\n| `validate_reject_routing` | Off-spec material | Give every downgrade, rework, recovery or discard state one producing node and documented next state; exclude unresolved rejects from accepted output. |  |\n| `validate_drying` | Dried route | Require initial/final moisture, test method, batch mass, energy and acceptance state. The 20–26% initial dry matter and 8–10% target moisture are QA context, not universal limits. | `cornell-hop-yard-2017` |\n| `validate_ranges` | All flow cards | Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values. | |\n| `validate_exclusions` | Boundary | Reject pelletizing, extraction, brewing, merchant storage, downstream packaging and post-gate transport. | `penn-state-hop-production` |\n\n"
@@ -1323,11 +1326,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 64134
+              offset: 64992
               line: 868
               column: 1
             end:
-              offset: 64156
+              offset: 65014
               line: 868
               column: 23
           text: "## 9. Validation Rules"
@@ -1529,144 +1532,144 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 64229
+          offset: 65087
           line: 872
           column: 1
         end:
-          offset: 65011
+          offset: 65869
           line: 872
           column: 783
     - pointer: "/validation_rules/1"
       rule_id: "validate_route_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 65012
+          offset: 65870
           line: 873
           column: 1
         end:
-          offset: 65229
+          offset: 66087
           line: 873
           column: 218
     - pointer: "/validation_rules/2"
       rule_id: "validate_periods"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 65230
+          offset: 66088
           line: 874
           column: 1
         end:
-          offset: 65411
+          offset: 66269
           line: 874
           column: 182
     - pointer: "/validation_rules/3"
       rule_id: "validate_shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 65412
+          offset: 66270
           line: 875
           column: 1
         end:
-          offset: 65587
+          offset: 66445
           line: 875
           column: 176
     - pointer: "/validation_rules/4"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 65588
+          offset: 66446
           line: 876
           column: 1
         end:
-          offset: 65813
+          offset: 66671
           line: 876
           column: 226
     - pointer: "/validation_rules/5"
       rule_id: "validate_batch_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 65814
+          offset: 66672
           line: 877
           column: 1
         end:
-          offset: 65993
+          offset: 66851
           line: 877
           column: 180
     - pointer: "/validation_rules/6"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 65994
+          offset: 66852
           line: 878
           column: 1
         end:
-          offset: 66191
+          offset: 67049
           line: 878
           column: 198
     - pointer: "/validation_rules/7"
       rule_id: "validate_reject_routing"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 66192
+          offset: 67050
           line: 879
           column: 1
         end:
-          offset: 66397
+          offset: 67255
           line: 879
           column: 206
     - pointer: "/validation_rules/8"
       rule_id: "validate_drying"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 66398
+          offset: 67256
           line: 880
           column: 1
         end:
-          offset: 66641
+          offset: 67499
           line: 880
           column: 244
     - pointer: "/validation_rules/9"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 66642
+          offset: 67500
           line: 881
           column: 1
         end:
-          offset: 67067
+          offset: 67925
           line: 881
           column: 426
     - pointer: "/validation_rules/10"
       rule_id: "validate_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 67068
+          offset: 67926
           line: 882
           column: 1
         end:
-          offset: 67241
+          offset: 68099
           line: 882
           column: 174
   diagnostics:
@@ -1708,14 +1711,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_64134"
+      unit_id: "normative_64992"
       source_span:
         start:
-          offset: 64134
+          offset: 64992
           line: 868
           column: 1
         end:
-          offset: 64156
+          offset: 65014
           line: 868
           column: 23
 projection_metadata:
@@ -1725,5 +1728,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3e08186abe6c0fd69ff8d8c27b211277cdd05eeae3709613407b14b3c6e3d9f8"
-  generated_content_sha256: "sha256:b491319f9019284098db75baebd1f28d969d3f9e37fedb3220fa8243888f9719"
+    sha256: "sha256:47151b4f6cbad146dd16724cf39950d475d0b9a785d0a73b38f948f97b8cb66c"
+  generated_content_sha256: "sha256:80e4332b4acbb45498be69879ebd9e0e3e8805551fddb3e417d926341a6efd72"

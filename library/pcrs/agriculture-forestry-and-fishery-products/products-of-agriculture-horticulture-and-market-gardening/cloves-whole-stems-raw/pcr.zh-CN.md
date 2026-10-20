@@ -51,10 +51,10 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_mass` | accepted product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Measure net mass at hand-off and record moisture and wet/dry basis; do not convert fresh and dried lots without measured moisture. |
-| `intermediate_mass` | clusters, buds, stems, residues, rejects, moisture loss | Mass | kg | Weigh each state or reconcile by a documented same-batch mass balance; never count one state twice. |
+| `reference_mass` | accepted product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 交接时计量净质量，记录含水率及湿/干基准；没有实测含水率不得换算鲜、干批次。 |
+| `intermediate_mass` | clusters, buds, stems, residues, rejects, moisture loss | Mass | kg | 称量每种状态，或按有据同批次质量平衡核对；同一状态不得计数两次。 |
 | `nutrient_content` | 每项养分投入 | Mass | kg product and kg nutrient | 每一种实际矿质肥料、有机肥、石灰、堆肥、粪肥或其他改良剂分别记录为产品交换；保留其质量、水分和养分分析。养分汇总只能作为计算结果，不得作为合并物理流。 |
-| `energy_carrier` | fuel and electricity | Energy or carrier mass/volume | MJ, kWh, kg, or L | Retain carrier identity, original quantity, conversion factor, consuming node, batch, and period. |
+| `energy_carrier` | fuel and electricity | Energy or carrier mass/volume | MJ, kWh, kg, or L | 保留载能体身份、原始数量、换算因子、使用节点、批次及期间。 |
 
 ## 5. 系统边界
 
@@ -811,11 +811,11 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_avoid_where_measured` | all nodes | Subdivide and measure route, batch, grade, residue, and destination states before allocation. Accepted output excludes rejects, losses, detached stems, and downgraded material. | `iso-14044-2006` |
-| `allocation_perennial_life` | establishment and long-lived assets | Attribute establishment, immature-year, replacement, and termination burdens once across actual accepted output during the declared service/productive life; do not repeat them in annual management. | `fao-ecocrop-clove`; `kau-clove-practices-2016` |
-| `allocation_mixed_crop` | mixed stands and shared infrastructure | Prefer measured use, area-time, irrigation volume, operating time, or another causal driver. If causality is unavailable and products have economic functions, use documented economic allocation with sensitivity. | `iso-14044-2006`; `kau-clove-practices-2016` |
-| `allocation_batches_routes` | harvest and drying | Link inputs, outputs, cleaning/changeover, and shared-run services to batches or periods; weight route strata by accepted output and count each shared burden once. | `iso-14044-2006` |
-| `allocation_rejects` | stems, residues, downgraded and rejected material | Retain burdens with the producing node until documented recovery or product function begins. Separately sold outputs trigger subdivision or allocation; wastes do not. | `iso-14044-2006` |
+| `allocation_avoid_where_measured` | all nodes | 分配前对路线、批次、等级、残体及去向状态细分并计量；合格产出剔除拒收物、损失、脱落梗及降级物。 | `iso-14044-2006` |
+| `allocation_perennial_life` | establishment and long-lived assets | 按声明服务/生产寿命内实际合格产出，将建植、未结果年、补植及终止负担归属一次，不在年度管理中重计。 | `fao-ecocrop-clove`; `kau-clove-practices-2016` |
+| `allocation_mixed_crop` | mixed stands and shared infrastructure | 优先采用实测使用量、面积时间、灌溉体积、运行时间或其他因果驱动；无法建立因果且各产品具有经济功能时，使用有据经济分配并披露敏感性。 | `iso-14044-2006`; `kau-clove-practices-2016` |
+| `allocation_batches_routes` | harvest and drying | 将投入、产出、清洁/换线及共享运行服务关联批次或期间；按合格产出加权各路线分层，共享负担只计一次。 | `iso-14044-2006` |
+| `allocation_rejects` | stems, residues, downgraded and rejected material | 有据回收或产品功能开始前，负担保留于产生节点；独立销售产出须细分或分配，废物不触发共产品分配。 | `iso-14044-2006` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -842,22 +842,22 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_lifetime_attribution` | perennial phases and assets | Sum cohort/asset burdens assigned by service period and causal share / accepted output over that period | events; service years; driver; annual output | burden per kg accepted product | `fao-ecocrop-clove`; `iso-14044-2006` |
+| `calc_lifetime_attribution` | perennial phases and assets | 按服务期间及因果份额归属的群组/资产负担之和，除以该期间合格产出。 | events; service years; driver; annual output | burden per kg accepted product | `fao-ecocrop-clove`; `iso-14044-2006` |
 | `calc_nutrients` | 各项养分产品 | 逐项声明养分分数基准。收到基养分分数：养分质量＝实测收到基产品质量×养分分数。干物质基养分分数：养分质量＝实测收到基产品质量×实测干物质分数×干物质基养分分数。不得重复进行干物质校正；分别保留元素与氧化物报告基准及适用换算。逐项计算后仅在分析层汇总养分，不合并物理产品交换。 | mass; moisture; composition | kg product and nutrient by form | `kau-clove-practices-2016` |
-| `calc_soil_n2o` | managed-soil N2O | Apply selected IPCC tier to synthetic/organic/residue N, volatilization, and leaching; convert N2O-N × 44/28 | nutrient ledger; residue N; selected factors | kg N2O per kg clusters | `ipcc-2019-managed-soils` |
-| `calc_mass_balance` | harvest/grading/drying | Same-batch input = product outputs + wastes + elementary loss ± documented difference; accepted output excludes unresolved material | masses and moisture | reconciliation and normalized flows | `mass-balance-identity` |
-| `calc_route_weighting` | route strata | Sum(route amount × accepted route output) / total accepted output after calculating each route separately | route inventories and outputs | weighted inventory | `iso-14044-2006` |
+| `calc_soil_n2o` | managed-soil N2O | 将所选 IPCC 层级用于合成/有机/残体氮、挥发及淋失；N2O-N 乘 44/28 换算。 | nutrient ledger; residue N; selected factors | kg N2O per kg clusters | `ipcc-2019-managed-soils` |
+| `calc_mass_balance` | harvest/grading/drying | 同批次进料＝产品产出＋废物＋基本流损失±有据差额；身份或状态未决物料不计合格产出。 | masses and moisture | reconciliation and normalized flows | `mass-balance-identity` |
+| `calc_route_weighting` | route strata | 分别核算各路线后，汇总“路线单位数量×路线合格产出”，再除以总合格产出。 | route inventories and outputs | weighted inventory | `iso-14044-2006` |
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_ledger`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
 | requirement_id | 适用对象 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | reference product | Confirm species, unopened maturity, whole state, stem condition, grade, fresh/dried state, moisture basis, and farm gate for every lot. | specification, inspection/photo, moisture test, ticket |
-| `dq_periods` | perennial system | Cover establishment, immature/productive years, replacements, and termination or disclose censored phases and lifetime sensitivity. | cohort, multi-year yield/input, asset records |
+| `dq_identity` | reference product | 每批确认物种、未开放成熟度、完整状态、附梗状况、等级、鲜/干状态、含水率基准及农场门。 | specification, inspection/photo, moisture test, ticket |
+| `dq_periods` | perennial system | 覆盖建植、未结果/生产年、补植及终止；否则披露被截断阶段及寿命敏感性。 | cohort, multi-year yield/input, asset records |
 | `dq_completeness` | harvest/grading/drying | Account for at least 95% of same-batch input/output mass or explain and correct the gap. | mass-balance and calibration records |
-| `dq_route` | alternatives | Keep sole/mixed, rainfed/irrigated, and fresh/sun/assisted-dried records separate until output weighting. | stratified records and worksheet |
-| `dq_temporal` | foreground | Cover a complete year and all harvests; use at least three representative productive years when alternate bearing is material, or disclose limitation. | dated input, yield, and lot records |
+| `dq_route` | alternatives | 单作/混作、雨养/灌溉、鲜态/日晒/辅助干燥记录在按产出加权前保持分开。 | stratified records and worksheet |
+| `dq_temporal` | foreground | 覆盖完整年度及全部采收；大小年影响显著时使用至少三个代表生产年度，否则披露限制。 | dated input, yield, and lot records |
 | `dq_fertilizer` | 养分投入 | 每种实际产品及其组成单独成卡；缺少天工 UUID 时须在 manifest 中明确登记，直至独立核实。 | ledger, label, invoice, lab certificate, resolution record |
 
 ## 9. 校验规则
@@ -865,12 +865,12 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validate_reference_identity` | reference flow | 按所选实际物种/器官、播种或商品用途、鲜/调制/干燥及带壳状态、等级、供应方和声明交接点核对具体身份及Mass/kg支持。本PCR保留语义路线和计量定义，但不宣称一个固定UUID覆盖全部替代状态。鲜态流不能自动绑定调制/干燥产物，含义不清的果核/果仁流不能证明两种状态，商品籽不能证明播种种子身份。已有核验绑定仅用于其有据状态，否则明确保持UUID未决，直至详情确认。不得为强制匹配而改变产品边界、数量或路线。 | `icar-iisr-clove`; `kau-clove-harvesting` |
-| `validate_period_attribution` | perennial life/shared assets | Require phase, period, replacement, termination, consuming-node, and attribution records; reject double attribution across establishment, annual management, mixed crops, and assets. | `fao-ecocrop-clove`; `iso-14044-2006` |
-| `validate_route_delta` | production/drying alternatives | Require parent activity, changed topology/inventory/calculation/data/validation fields, mutually exclusive lot route, and evidence for each stratum. | `kau-clove-practices-2016`; `unido-spice-postharvest-2015` |
-| `validate_batch_reconciliation` | harvest through drying | Require batch/period identifiers, input-output and cleaning/changeover linkage when present, mass reconciliation, and no duplicate shared-run burden. | `mass-balance-identity` |
-| `validate_reject_routes` | grading/drying | Every accepted, downgraded, rejected, residue, recovery, and disposal state requires mass and hand-off; reject unresolved material in accepted output or undocumented rework. | `kau-clove-harvesting`; `unido-spice-postharvest-2015` |
+| `validate_period_attribution` | perennial life/shared assets | 要求阶段、期间、补植、终止、使用节点及归属记录；拒绝建植、年度管理、混作和资产之间的重复归属。 | `fao-ecocrop-clove`; `iso-14044-2006` |
+| `validate_route_delta` | production/drying alternatives | 要求母活动、变化的拓扑/清单/计算/数据/验证字段、互斥批次路线及各分层证据。 | `kau-clove-practices-2016`; `unido-spice-postharvest-2015` |
+| `validate_batch_reconciliation` | harvest through drying | 要求批次/期间标识、存在时的投入产出及清洁/换线关联、质量核对，且无重复共享运行负担。 | `mass-balance-identity` |
+| `validate_reject_routes` | grading/drying | 每种合格、降级、拒收、残体、回收及处置状态须有质量及交接记录；未决物料不得进入合格产出，禁止无记录返工。 | `kau-clove-harvesting`; `unido-spice-postharvest-2015` |
 | `validate_nutrient_cardinality` | nutrient inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | `kau-clove-practices-2016` |
-| `validate_drying_condition` | drying | If inactive, drying inputs and dried reference output are absent/zero. If active, require method, energy, fresh/dried mass, moisture, rejects, duration, and stabilized hand-off; count output once. | `kau-clove-harvesting`; `unido-spice-postharvest-2015` |
+| `validate_drying_condition` | drying | 干燥未启用时，干燥投入及干态参考产出不存在或为零；启用时要求方法、能源、鲜/干质量、含水率、拒收物、时长及稳定交接，产出只计一次。 | `kau-clove-harvesting`; `unido-spice-postharvest-2015` |
 | `validate_ranges` | all quantitative cards | 对每个已提供的数量筛查核对具体交换、上下界、相容单位和分母、基准、适用性、证据类型及外部来源，中英文和投影保持等义。临时推理范围仅为非强制复核提示，不是默认数量、允许损失或完整性证据。没有相容数量界限依据时明确报告无法进行范围筛查，复核计量、匹配组分平衡和不确定性；不得为满足检查虚构范围。最终参照归一化保持精确，并非实证产率。实际交换数量、采集协议及相容单位/换算证据独立于范围要求。 | `iso-14044-2006` |
 
 ## 10. 发布数据集画像

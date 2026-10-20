@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: "2026-10-19"
-lastReviewedCommit: "0b573ce10cbdb352a5a67855aad6fb14e9161663"
-lastReviewedNote: "Reviewed the documentation and full test-shard job timeout increase from 60 to 120 minutes. PCR content, dependency pins, workflow selection, qualification checks and evidence bindings are unchanged. Local macOS checks remain partial; fresh hosted Linux qualification is required."
+lastReviewedAt: "2026-10-20"
+lastReviewedCommit: "623239f3b89f335ee5461b422378cf709a8228f3"
+lastReviewedNote: "Reconciled Candy main PCR additions and same-source web-build handoff with the CPC 01/02/03 content repairs and 120-minute job limits. Preserved both sides of the methodology and CI contracts; regenerated combined catalog/coverage artifacts. Local PCR and focused checks pass; full hosted Linux qualification remains required."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -323,6 +323,12 @@ npm run validate
 
 Canonical lint retains full diagnostics in `.reports/pcr-lint.json` and prints a bounded summary.
 Warnings retain their existing severity; report-write failures fail validation. See `builder/README.md`.
+
+CI requires both the instrumented `web-build` producer and the separate
+`documentation` product sealer in full and data lanes. Their complete archive/tree
+handoff binds the actual source, current run/attempt and applicable qualification
+plan, preserving original web bytes and build/SEO evidence without raising budgets.
+The public reusable product artifact output and downstream sealed checks remain.
 
 CI uses the stable `validate` aggregate gate under
 [the engineering qualification contract](docs/typescript-engineering.md#ci-qualification-lanes).

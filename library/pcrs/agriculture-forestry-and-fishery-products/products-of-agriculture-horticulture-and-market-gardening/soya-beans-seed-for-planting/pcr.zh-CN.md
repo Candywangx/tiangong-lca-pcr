@@ -68,11 +68,11 @@ translation_status: aligned
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_field_to_seed_gate` | 前景边界 | 纳入种子生产、收获、种子调理、质量检测、可选处理、包装，以及达到声明农场门所需的储存或交付阶段。 | `fao-seed-production`; `fao-seed-conditioning` |
-| `boundary_gate_definition` | 参考产品 | 默认使用农场门。只有在明确采集储存或交付记录、损失和门点交接时，才可使用交付门点。 | `fao-seed-production`; `mass-balance-identity` |
-| `boundary_seed_quality` | 合格种子 | 当分级、质量检测、处理状态和批次放行决定输出是否为合格播种种子时，将其作为产品边界的一部分。 | `fao-seed-production`; `usda-seed-cleaning-handling` |
+| `boundary_field_to_seed_gate` | 前景边界 | 纳入种子生产、收获、种子调理、质量检测、可选处理、包装，以及达到声明农场门所需的储存或交付阶段。 | `fao-soya-seed-production`; `fao-soya-drying-handling` |
+| `boundary_gate_definition` | 参考产品 | 默认使用农场门。只有在明确采集储存或交付记录、损失和门点交接时，才可使用交付门点。 | `fao-soya-seed-production`; `mass-balance-identity` |
+| `boundary_seed_quality` | 合格种子 | 当分级、质量检测、处理状态和批次放行决定输出是否为合格播种种子时，将其作为产品边界的一部分。 | `fao-soya-seed-production`; `usda-seed-cleaning-handling` |
 | `boundary_input_completeness` | 田间和调理 | 对来源种子、养分投入、植保、灌溉、田间能源、土地、调理能源、包装、不合格物和处理提供采集值、合理零值或有记录的排除。 | `ipcc-2019-cropland`; `ipcc-2019-managed-soils-n2o` |
-| `boundary_output_separation` | 所有输出 | 按实测质量和去向区分合格播种种子、中间收获种子作物、不合格物、筛下物、粉尘、残余物、包装废弃物和未解释损失。 | `mass-balance-identity`; `fao-seed-conditioning` |
+| `boundary_output_separation` | 所有输出 | 按实测质量和去向区分合格播种种子、中间收获种子作物、不合格物、筛下物、粉尘、残余物、包装废弃物和未解释损失。 | `mass-balance-identity`; `fao-soya-drying-handling` |
 ## 6. 过程清单结构
 年度种子路线按作物周期和批次计量。默认不假设储存或库存跨期；除非明确纳入储存期间，使用单一期间的作物周期基准。有意副产品、降级物流和拒收物作为独立输出并声明交接。
 ### 过程图
@@ -98,7 +98,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_source_seed_lot_records`
-- 来源：`fao-seed-production`
+- 来源：`fao-soya-seed-production`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -354,7 +354,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvested_seed_mass`
-- 来源：`fao-seed-production`; `mass-balance-identity`
+- 来源：`fao-soya-seed-production`; `mass-balance-identity`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -418,7 +418,7 @@ translation_status: aligned
 ##### 产品流
 ###### 收获种子作物投入（`harvested_seed_crop_input`）
 将田间输出作为独立的中间投入接收，并保留种批、含水率和来源田块身份。
-- 选定流：大豆种子（用于种植） `dc436b03-e044-43a2-be71-c229dce5b901`
+- 选定流：按接收含水率计量的未调理收获大豆种子作物（UUID 未解析）
 - 流属性/单位：Mass / kg
 - 数量规则：按声明含水率基准记录接收质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -429,7 +429,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_input_records`
-- 来源：`mass-balance-identity`; `fao-seed-conditioning`
+- 来源：`mass-balance-identity`; `fao-soya-drying-handling`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -438,6 +438,9 @@ translation_status: aligned
   - 基准：声明的过程或参考流基准
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估计（`reasoned_estimate`）
+
+
+本接收中间物尚未证明属于经清选、质量放行的可播种种子。须独立确认实际物理状态及身份，最终经清选可播种产品的 UUID 不是本行默认值。若已在上游清选，须保留证据并明确不重复的调理边界，不得假定两者等同。
 
 ###### 调理和干燥电力（`conditioning_and_drying_electricity`）
 记录干燥、脱粒、清选、分级、检测、处理和包装作业跨越调理边界的电力。
@@ -452,7 +455,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_energy_records`
-- 来源：`fao-seed-conditioning`
+- 来源：`fao-soya-drying-handling`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -531,7 +534,7 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_accepted_seed_mass`
-- 来源：`fao-seed-production`; `mass-balance-identity`
+- 来源：`fao-soya-seed-production`; `mass-balance-identity`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -582,7 +585,7 @@ translation_status: aligned
 - 基准类型：储存时长（`storage_duration`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_storage_lot_records`
-- 来源：`fao-seed-production`
+- 来源：`fao-soya-seed-production`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -605,7 +608,7 @@ translation_status: aligned
 - 基准类型：储存时长（`storage_duration`）
 - 证据类型：基于采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_storage_energy_records`
-- 来源：`fao-seed-production`
+- 来源：`fao-soya-seed-production`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -752,7 +755,7 @@ translation_status: aligned
 
 | requirement_id | collection_protocol_id | 保留的采集范围 |
 | --- | --- | --- |
-| `crop_protection_products_specific_input` | `cp_crop_protection_records` | 作业 field_soya_bean_seed_multiplication：记录用于杂草、虫害或病害的具体制剂产品和有效成分。产品身份和有效成分含量分开。 - 选定流：具体植保产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录实际施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-seed-production` - 数量范围：QA 校验 - 范围角色：QA 校验（`qa_guardrail`） - 下限：0 - 上限：1000 - 单位：声明的流单位 - 基准：声明的过程或参考流基准 - 基准类型：过程输出（`process_output`） - 证据类型：推理估计（`reasoned_estimate`） 原数量方法：按产品和有效成分记录实际施用量 |
+| `crop_protection_products_specific_input` | `cp_crop_protection_records` | 作业 field_soya_bean_seed_multiplication：记录用于杂草、虫害或病害的具体制剂产品和有效成分。产品身份和有效成分含量分开。 - 选定流：具体植保产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录实际施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-soya-seed-production` - 数量范围：QA 校验 - 范围角色：QA 校验（`qa_guardrail`） - 下限：0 - 上限：1000 - 单位：声明的流单位 - 基准：声明的过程或参考流基准 - 基准类型：过程输出（`process_output`） - 证据类型：推理估计（`reasoned_estimate`） 原数量方法：按产品和有效成分记录实际施用量 |
 
 
 ### 按实际路线确认能源身份
@@ -775,18 +778,18 @@ translation_status: aligned
 | `cp_nutrient_input_records` | `field_soya_bean_seed_multiplication` | 养分和改良剂投入; 必须完成的具体排放识别与计算 | 施用记录 | 产品；配方；养分含量；质量；日期；田块；方法; 物质名称；接收环境；报告单位及元素或化合物基准；方法和因子来源；实际活动量；期间；数量不确定性；相关既有交换 | 发票、标签、施用记录或服务记录；原始汇总与分配：按田块汇总产品和养分质量; managed_soil_nitrogen_emissions_to_air_specific_emission: 识别实际大豆种子田管理土壤向空气排放的每个适用气态氮物种，保留养分投入记录、方法层级、直接或间接路径及土壤和气候适用性。保留原合格种子分母与氮投入计算基准。原来以未指定流单位表示的 0 至 1000 筛选值不构成有效物种数量或默认量。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | kg 产品和 kg 养分; kg 具体物质与 kg N 分开记录 | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 发票、标签、施用记录 |
 | `cp_irrigation_records` | `field_soya_bean_seed_multiplication` | 灌溉和取水 | 水表或水源记录 | 水源；水表；读数；体积；日期；田块；抽水能源 | 校准水表、抽水记录或水记录；原始汇总与分配：按水源汇总并区分供应水和取水 | m3、kg 和 kWh | 事件或月份 | 作物周期 | 田块和水源 | 每声明的参考流 | 水表校准、读数、水源记录 |
 | `cp_field_energy_records` | `field_soya_bean_seed_multiplication` | 田间燃料和电力 | 燃料或电力记录 | 作业；载体；数量；机械或供应方；日期；田块 ；实际本地燃烧燃料、数量和单位、密度和低位热值、化石/生物源比例、仅燃烧因子及单位、供应或服务边界、已有燃烧覆盖 | 燃料台账、电表、发票或承包商记录；原始汇总与分配：分配到作业且不重复计算 ；执行能源排放计算规则的仅燃烧边界；外购电和含排放服务保留为独立上游负担。 | L、kg、MJ 或 kWh | 作业或账期 | 作物周期 | 田块或生产单元 | 每声明的参考流 | 电表、发票、台账 |
-| `cp_crop_protection_records` | `field_soya_bean_seed_multiplication` | 植保产品 | 施用记录 | 产品；有效成分；剂量；面积；日期；田块；对象 | 标签和施用记录；原始汇总与分配：按产品和有效成分汇总 `crop_protection_products_specific_input`: 作业 field_soya_bean_seed_multiplication：记录用于杂草、虫害或病害的具体制剂产品和有效成分。产品身份和有效成分含量分开。 - 选定流：具体植保产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录实际施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-seed-production` - 数量范围：QA 校验 - 范围角色：QA 校验（`qa_guardrail`） - 下限：0 - 上限：1000 - 单位：声明的流单位 - 基准：声明的过程或参考流基准 - 基准类型：过程输出（`process_output`） - 证据类型：推理估计（`reasoned_estimate`） 原数量方法：按产品和有效成分记录实际施用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg 产品、kg 有效成分和 ha | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 标签、施用记录 |
+| `cp_crop_protection_records` | `field_soya_bean_seed_multiplication` | 植保产品 | 施用记录 | 产品；有效成分；剂量；面积；日期；田块；对象 | 标签和施用记录；原始汇总与分配：按产品和有效成分汇总 `crop_protection_products_specific_input`: 作业 field_soya_bean_seed_multiplication：记录用于杂草、虫害或病害的具体制剂产品和有效成分。产品身份和有效成分含量分开。 - 选定流：具体植保产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录实际施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-soya-seed-production` - 数量范围：QA 校验 - 范围角色：QA 校验（`qa_guardrail`） - 下限：0 - 上限：1000 - 单位：声明的流单位 - 基准：声明的过程或参考流基准 - 基准类型：过程输出（`process_output`） - 证据类型：推理估计（`reasoned_estimate`） 原数量方法：按产品和有效成分记录实际施用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg 产品、kg 有效成分和 ha | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 标签、施用记录 |
 | `cp_land_use_records` | `field_soya_bean_seed_multiplication` | 土地占用 | 田块面积记录 | 田块；种植面积；日期；作物周期 | 田块记录、GIS 或农场登记；原始汇总与分配：计算面积—时间并按合格输出归一化 | ha 和作物周期 | 每个周期 | 作物周期 | 田块 | 每声明的参考流 | 田块图、GIS、农场记录 |
 | `cp_harvested_seed_mass` | `field_soya_bean_seed_multiplication` | 收获种子作物 | 收获记录 | 田块；日期；质量；含水率；种子路线；不合格物 | 校准秤和收获记录；原始汇总与分配：在调理前平衡收获质量 | kg 和含水率分数 | 每次收获 | 作物周期 | 田块和接收点 | 每声明的参考流 | 秤校准、收获记录 |
 | `cp_field_residue_records` | `field_soya_bean_seed_multiplication` | 田间残余物 | 残余物记录 | 物流；质量；去向；日期；田块 | 称重、打包票据或田间记录；原始汇总与分配：按去向和边界跨越汇总 | kg | 每次事件 | 作物周期 | 田块 | 每声明的参考流 | 称重、票据、田间记录 |
 | `cp_conditioning_input_records` | `seed_conditioning_treatment_and_packaging` | 收获种子投入 | 批次接收记录 | 批次；投入质量；含水率；来源；日期 | 批次单和校准秤；原始汇总与分配：将接收质量与输出物流平衡 | kg 和含水率分数 | 每批 | 调理周期 | 设施 | 每声明的参考流 | 批次单、称重记录 |
 | `cp_conditioning_energy_records` | `seed_conditioning_treatment_and_packaging` | 调理能源 | 电表或设备记录 | 批次；能源类型；数量；作业；时段 | 电表、账单或设备台账；原始汇总与分配：按作业汇总并按合格种子归一化 按路线确认要求：`conditioning_combustion_energy_identification`: 实际种子干燥供热，按设备和供应商记录确认燃烧器燃料或外购热状态；与现有调理电力分开，不强制干燥或燃烧。 原始活动或阶段基准：每 1 kg 合格包装种子. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kWh、MJ、kg 或 L | 批次或时段 | 调理周期 | 设施 | 每声明的参考流 | 电表、账单、设备台账 |
-| `cp_seed_treatment_records` | `seed_conditioning_treatment_and_packaging` | 处理材料 | 处理记录 | 产品；有效成分；剂量；处理质量；种批 | 处理记录、标签或供应商证书；原始汇总与分配：按产品和处理种批汇总 `seed_treatment_material_specific_input`: 记录应用于合格种批的处理产品和有效成分，包括剂量、处理质量和处理状态。 按种批记录处理产品和有效成分质量 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-seed-production` | kg 产品、kg 有效成分和 kg 种子 | 每批 | 调理周期 | 设施 | 每声明的参考流 | 处理记录、标签 |
+| `cp_seed_treatment_records` | `seed_conditioning_treatment_and_packaging` | 处理材料 | 处理记录 | 产品；有效成分；剂量；处理质量；种批 | 处理记录、标签或供应商证书；原始汇总与分配：按产品和处理种批汇总 `seed_treatment_material_specific_input`: 记录应用于合格种批的处理产品和有效成分，包括剂量、处理质量和处理状态。 按种批记录处理产品和有效成分质量 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-soya-seed-production` | kg 产品、kg 有效成分和 kg 种子 | 每批 | 调理周期 | 设施 | 每声明的参考流 | 处理记录、标签 |
 | `cp_packaging_input_records` | `seed_conditioning_treatment_and_packaging` | 包装功能 | 包装领用记录 | 类型；件数；容量；材料质量；批次 | 库存领用记录或包装线台账；原始汇总与分配：只有声明容量或质量时才将件数转质量 | item 和 kg | 每批 | 调理周期 | 设施 | 每声明的参考流 | 包装台账、库存记录 |
 | `cp_accepted_seed_mass` | `seed_conditioning_treatment_and_packaging` | 合格大豆种子（用于种植） | 放行记录 | 批次；合格质量；含水率；净度；发芽率；处理；门点 | 校准秤和质量检测；原始汇总与分配：按声明基准汇总放行种批 | kg 和声明属性 | 每批 | 调理周期 | 设施和门点 | 每声明的参考流 | 称重、检测、放行记录 |
 | `cp_reject_mass_records` | `seed_conditioning_treatment_and_packaging` | 调理不合格物和筛下物 | 不合格物记录 | 批次；物流；质量；去向 | 称重或批次质量平衡；原始汇总与分配：按物流和去向汇总 | kg | 每批 | 调理周期 | 设施 | 每声明的参考流 | 称重、不合格物日志、去向记录 |
 | `cp_packaging_waste_records` | `seed_conditioning_treatment_and_packaging` | 包装废弃物 | 废物记录 | 材料；质量；去向；批次或时段 | 称重或承包商记录；原始汇总与分配：按材料和去向汇总 `packaging_waste_specific_output`: 按材料和去向记录包装损耗和废弃包装。 按批次称重或包装库存平衡 这是必需的产出身份确认要求，不是集合式交换。保留本作业实际副产品、拒收物、包装废物及处理物流的全部核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料和状态、数量、去向及产品或废物角色。确实混合的废物流可作为一条物理组成明确且组成有计量依据的混合物，不编造分离，也不重复计入其中组分。不同单位分别记录，保留原分配和参考流归一化规则并协调产出平衡。联产品分配前确认实际功能，废物不能仅因具有质量而分得联产品负荷。核验兼容UUID或明确保留未解析身份，缺失记录不等于零数量或可排除。 `usda-seed-cleaning-handling` | kg | 每批或每期 | 调理周期 | 设施 | 每声明的参考流 | 称重单、承包商记录 |
-| `cp_conditioning_emission_records` | `seed_conditioning_treatment_and_packaging` | 调理排放 | 排放记录 | 物质；分室；质量或因子；批次 | 粉尘记录、维护记录或计算；原始汇总与分配：按环境分室和物种汇总并归一化 `conditioning_dust_and_combustion_emissions_specific_emission`: 根据声明接收环境、物种和方法记录清选和干燥产生的颗粒物或燃烧物种。 按批次实测、收集或计算排放 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。 `fao-seed-conditioning` | kg | 批次或时段 | 调理周期 | 设施 | 每声明的参考流 | 记录、方法计算 |
+| `cp_conditioning_emission_records` | `seed_conditioning_treatment_and_packaging` | 调理排放 | 排放记录 | 物质；分室；质量或因子；批次 | 粉尘记录、维护记录或计算；原始汇总与分配：按环境分室和物种汇总并归一化 `conditioning_dust_and_combustion_emissions_specific_emission`: 根据声明接收环境、物种和方法记录清选和干燥产生的颗粒物或燃烧物种。 按批次实测、收集或计算排放 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。 `fao-soya-drying-handling` | kg | 批次或时段 | 调理周期 | 设施 | 每声明的参考流 | 记录、方法计算 |
 | `cp_storage_lot_records` | `seed_storage` | 进入储存的合格种子 | 储存库存记录 | 种批；质量；起止日期；含水率；地点 | 库存平衡和称重；原始汇总与分配：汇总储存质量并保留时长 | kg 和 days | 每批 | 储存期 | 储存点 | 每声明的参考流 | 库存记录、称重 |
 | `cp_storage_energy_records` | `seed_storage` | 储存电力 | 电表或账单记录 | 电表；数量；时段；储存质量 | 电表或电费单；原始汇总与分配：按储存质量和时长分配 | kWh 或 MJ | 时段 | 声明储存时长 | 储存点 | 每声明的参考流 | 电表、账单 |
 | `cp_storage_loss_records` | `seed_storage` | 储存损失或损伤 | 损失记录 | 种批；损失质量；类别；去向；时段 | 库存平衡和称重；原始汇总与分配：按去向汇总损失 | kg | 每批或时段 | 储存期 | 储存点 | 每声明的参考流 | 库存和处置记录 |
@@ -796,7 +799,7 @@ translation_status: aligned
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `normalize_to_accepted_seed` | 所有前景行 | 将实测或计算质量除以同一声明门点和基准下的净合格种子质量 | 输出记录；投入记录 | 每 1 kg 参考流的数量 | `mass-balance-identity` |
-| `convert_seed_moisture_basis` | 田间和调理质量 | 仅根据记录质量和含水率使用明确的水分与干物质方程转换 | 收获、接收和质量记录 | 声明基准质量 | `mass-balance-identity`; `fao-seed-conditioning` |
+| `convert_seed_moisture_basis` | 田间和调理质量 | 仅根据记录质量和含水率使用明确的水分与干物质方程转换 | 收获、接收和质量记录 | 声明基准质量 | `mass-balance-identity`; `fao-soya-drying-handling` |
 | `calculate_seed_conditioning_yield` | 调理输出 | 合格种子质量除以接收的收获种子作物质量，并分别保留不合格物和含水率变化 | 调理接收；合格质量；不合格物质量 | 产率、不合格率和未解释比例 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
 | `calculate_land_occupation` | 土地占用 | 种植面积乘以声明作物周期占用，并按合格种子归一化 | 土地记录；合格种子质量 | 每参考流的面积—时间 | `ipcc-2019-cropland` |
 | `calculate_water_withdrawal` | 取水 | 必要时将计量体积换算为质量，并保持水源取水与供应灌溉水分开 | 灌溉记录 | 每参考流的资源取水 | `ipcc-2019-cropland` |
@@ -804,7 +807,7 @@ translation_status: aligned
 | `calculate_field_energy_emissions` | 田间能源 | 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。 | 田间能源；因子 | 田间能源排放 | `ipcc-2006-energy-combustion-boundary` |
 | `calculate_conditioning_energy_emissions` | 调理能源 | 仅计算本前景作业边界内燃料燃烧实际释放的化石 CO2。对每种实际燃烧燃料，用实测质量或体积，并按有据密度和低位热值换算到兼容的仅燃烧 kg CO2 因子活动单位；逐燃料汇总排放，分配一次后按匹配的最终合格产出归一化一次。区分化石碳与生物源碳。外购电、外购热和包含能源与排放的运输或机械服务生命周期因子属于上游负担，不得记为本地 CO2 基本排放；关联相应供应或服务数据集一次。明确拆出燃烧时，须从关联数据集边界中排除同一燃烧。不得把供应链 CO2 或 CO2 当量总结果填入该物质质量卡。有据确认不存在本地化石燃烧时该卡不适用；缺少记录不能表示零。 | 调理能源；因子 | 调理排放 | `ipcc-2006-energy-combustion-boundary` |
 | `reconcile_field_outputs` | 田间生产 | 收获种子作物、田间残余物、非种子材料和有文件的损失在声明容差内与收获记录平衡 | 收获；残余物记录 | 田间输出平衡 | `mass-balance-identity` |
-| `reconcile_conditioning_outputs` | 调理 | 接收质量和含水率与合格种子、不合格物、包装废物、排放和有文件的损失平衡 | 调理接收；合格种子；不合格物 | 调理平衡 | `mass-balance-identity`; `fao-seed-conditioning` |
+| `reconcile_conditioning_outputs` | 调理 | 接收质量和含水率与合格种子、不合格物、包装废物、排放和有文件的损失平衡 | 调理接收；合格种子；不合格物 | 调理平衡 | `mass-balance-identity`; `fao-soya-drying-handling` |
 | `reconcile_storage_outputs` | 储存 | 储存质量与交付合格种子、储存损失和声明期末库存平衡 | 储存；交付；损失记录 | 储存平衡 | `mass-balance-identity` |
 | `managed_soil_nitrogen_emissions_to_air_specific_emission` | `field_soya_bean_seed_multiplication` | 识别实际大豆种子田管理土壤向空气排放的每个适用气态氮物种，保留养分投入记录、方法层级、直接或间接路径及土壤和气候适用性。保留原合格种子分母与氮投入计算基准。原来以未指定流单位表示的 0 至 1000 筛选值不构成有效物种数量或默认量。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_nutrient_input_records` | 逐物质和介质的排放交换及独立元素台账 | `ipcc-2019-managed-soils-n2o` |
 | `conditioning_rejects_and_screenings_identity_and_fate` | `seed_conditioning_treatment_and_packaging` | 原作业产生相关物料时，conditioning_rejects_and_screenings 的采集职责必须履行。每种物理上独立的物流须分别记录实际材料、组成、状态、实测质量与去向。粉尘、糠壳、籽粒、包装及产品拒收物不能仅因在同一作业产生而共用交换；真实混合物流仅在组成和处理边界有据时可单列一张卡。降级农产品须区分具有接收者和用途证据的预期可销售联产品与实际送处理的废物；等级较低本身不决定废物属性或分配。场内返工／回用和留田生物量保留在对账的内部台账，不作为外运废物。完整性通过前须按实际属性建立具体产品或废物卡，使用相容的已核验 UUID 或明确未解析身份；保留可归属负荷，不作无据替代抵扣，各物流不得双计。实测量仅按原有合格参考产出归一化一次。身份、数量或去向缺失时不得宣称完整，不推定聚合默认量或数值界限。 | `cp_reject_mass_records` | 按身份区分的交换和对账活动记录 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
@@ -830,12 +833,12 @@ translation_status: aligned
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validation_reference_flow` | 参考产品 | 确认已核实的大豆种子（用于种植） UUID、全部限定信息和声明门点；最终交换必须保留该 UUID。 | `mass-balance-identity` |
-| `validation_scope` | 边界 | 确认数据集是用于播种的大豆种子，不能静默包含商品谷物、饲草或青贮大豆、下游种植或下游加工。 | `fao-seed-production` |
-| `validation_process_map` | 过程清单 | 确认田间制种、调理、质量放行和纳入范围的储存彼此分开，并且每个交接清楚。 | `fao-seed-production`; `usda-seed-cleaning-handling` |
+| `validation_scope` | 边界 | 确认数据集是用于播种的大豆种子，不能静默包含商品谷物、饲草或青贮大豆、下游种植或下游加工。 | `fao-soya-seed-production` |
+| `validation_process_map` | 过程清单 | 确认田间制种、调理、质量放行和纳入范围的储存彼此分开，并且每个交接清楚。 | `fao-soya-seed-production`; `usda-seed-cleaning-handling` |
 | `validation_flow_coordinates` | 库存行 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | `mass-balance-identity` |
 | `validation_nutrients_and_emissions` | 养分和土壤排放 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | `ipcc-2019-managed-soils-n2o` |
 | `validation_water_and_land` | 灌溉、取水和土地 | 保持供应灌溉水产品投入、自然水取水和土地占用独立，并防止重复计算。 | `ipcc-2019-cropland` |
-| `validation_quality_release` | 合格种子 | 确认参考输出声明种子等级、质量属性、处理状态、批次放行、包装状态和门点。 | `fao-seed-production` |
+| `validation_quality_release` | 合格种子 | 确认参考输出声明种子等级、质量属性、处理状态、批次放行、包装状态和门点。 | `fao-soya-seed-production` |
 | `validation_reject_fate` | 不合格物和废物 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | `usda-seed-cleaning-handling`; `mass-balance-identity` |
 | `validation_mass_balance` | 所有输出 | 确认田间、调理和储存平衡在声明容差内成立，并且合格种子没有在两个交接点重复计数。 | `mass-balance-identity` |
 | `validation_allocation` | 有意形成的共产品 | 确认任何有意共产品均单独识别、去向有证据、分配或替代处理已披露。 | `iso-14044-2006` |
@@ -855,9 +858,9 @@ translation_status: aligned
 ## 11. 数据源
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-seed-production` | official_guidance | FAO seed production and quality guidance, <https://www.fao.org/4/y4011e/y4011e0v.htm> | 种子等级、质量属性、批次放行和制种边界 |
+| `fao-soya-seed-production` | official_guidance | FAO seed production and quality guidance, <https://www.fao.org/4/y4011e/y4011e0v.htm> | 种子等级、质量属性、批次放行和制种边界 |
 | `fao-soya-postharvest-operations` | handbook | FAO INPhO, Soybean: Post-harvest Operations, https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_SOYBEAN.pdf | crop harvest, drying and storage context only; seed acceptance/certification needs its own declared standard |
-| `fao-seed-conditioning` | handbook | FAO, Agricultural engineering in development: Grain and post-harvest systems, <https://www.fao.org/4/t0522e/T0522E03.htm> | 干燥、含水率、清选、调理和过程交接 |
+| `fao-soya-drying-handling` | handbook | FAO, Agricultural engineering in development: Grain and post-harvest systems, <https://www.fao.org/4/t0522e/T0522E03.htm> | 干燥、含水率、清选、调理和过程交接 |
 | `usda-seed-cleaning-handling` | handbook | USDA, Seed cleaning and handling guidance, <https://www.govinfo.gov/content/pkg/GOVPUB-A-PURL-gpo20323/pdf/GOVPUB-A-PURL-gpo20323.pdf> | 清选、分级、筛下物、不合格物和处理记录 |
 | `ipcc-2019-cropland` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 5 Cropland, <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch05_Cropland.pdf> | 耕地管理、残余物处理、土地和作物管理方法背景 |
 | `ipcc-2019-managed-soils-n2o` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11, <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | 管理土壤氮排放和因子选择 |

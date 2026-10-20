@@ -604,8 +604,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_field` | cultivation | Attribute to linked seed cotton; residues left in field receive no product allocation. | `mass-balance-identity` |
-| `allocation_gin` | lint and cottonseed | Prefer subdivision; otherwise declared economic allocation with mass sensitivity. | `iso-14044`; `mass-balance-identity` |
+| `allocation_field` | cultivation | 归属关联籽棉；留田残体不作产品分配。 | `mass-balance-identity` |
+| `allocation_gin` | lint and cottonseed | 优先细分，否则采用声明经济分配并报告质量分配敏感性。 | `iso-14044`; `mass-balance-identity` |
 | `allocation_reject` | rework/rejects | Return rework once; route rejects by destination and exclude from accepted output. | `mass-balance-identity` |
 | `allocation_runs` | gin runs | Assign startup, cleaning and changeover once by meter or throughput-time driver. | `mass-balance-identity` |
 
@@ -678,9 +678,9 @@ sync_with: pcr.en-US.md
 | `validate_balance` | harvest/gin | Close mass balance within declared uncertainty. | error |
 | `validate_states` | outputs | Every accepted, downgraded, reworked and discarded state has one destination. | error |
 | `validate_runs` | gin | Startup, cleaning and changeover are assigned once. | error |
-| `validate_route_deltas` | alternative routes | Name the parent activity, evidence each changed inventory/calculation/validation category, and select one mutually exclusive route per stratum. | error |
-| `validate_conditioning_states` | ginning | Record raw seed-cotton intake, any drying/moisture-conditioning inputs, prepared moisture-safe lint, cottonseed, trash, dust, rejects, loss and each hand-off. | error |
-| `validate_single_period` | all routes | Confirm one linked accounting interval and require single-period records; no storage, replacement or termination. | error |
+| `validate_route_deltas` | alternative routes | 说明母活动，证明清单/计算/验证各变化类别，并对每个分层选择一条互斥路线。 | error |
+| `validate_conditioning_states` | ginning | 记录原始籽棉进料、实际干燥/水分调理投入、达到安全含水状态的棉纤维、棉籽、杂物、粉尘、拒收物、损失及各交接。 | error |
+| `validate_single_period` | all routes | 确认唯一关联核算期间并要求单期间记录；不包括储存、补植或终止。 | error |
 
 ## 10. 已发布数据集配置
 

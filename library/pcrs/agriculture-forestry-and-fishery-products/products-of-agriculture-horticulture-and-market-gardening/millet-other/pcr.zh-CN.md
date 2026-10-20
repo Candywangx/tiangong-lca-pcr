@@ -461,7 +461,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validation_reference_identity` | 参考流 | 确认固定 UUID 表示非种用小米，数量为 1 kg 质量，并声明必需限定信息。 | `unsd-cpc-3-millet` |
-| `validation_binding` | 每个清单交换 | 核对实际物质或产品身份、状态、方向、流类型、属性、单位和适用边界；仅保留已核实匹配的 UUID，其余身份明确留空并逐行登记。 | 身份核验记录 |
+| `validation_binding` | 每个清单交换 | 核对实际物质或产品身份、状态、方向、流类型、属性、单位和适用边界；仅保留已核实匹配的 UUID，其余身份明确留空并逐行登记。 |  |
 | `validation_protocols` | 采集和计算行 | 确认每个采集或由采集记录计算的行引用现有协议。 |  |
 | `validation_mass_balance` | 收获 | 核对谷物、移出秸秆或茎叶、糠秕、破碎穗、水分变化和损失。 | `mass-balance-identity` |
 | `validation_nitrogen` | 养分和 N2O | 核对产品记录与氮质量，并核验因子层级、环境区室和换算。 | `ipcc-2019-managed-soils` |

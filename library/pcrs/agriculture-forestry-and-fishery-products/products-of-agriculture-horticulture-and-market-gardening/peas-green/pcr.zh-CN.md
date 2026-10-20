@@ -799,11 +799,11 @@ The transport process delivers the declared reference product when purchased tra
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_accepted_and_downgraded` | accepted peas, downgraded peas, shell residue, and rejects | Allocate shared crop-cycle inputs first to declared accepted green pea output using measured mass reconciliation. Report downgraded or rejected produce and shell residue separately; apply a co-product allocation only when a documented productive recipient exists. | `iso-14044-2006`; `unece-ffv-27-peas-2025` |
-| `allocation_podded_and_shelled_forms` | podded and shelled green pea products | Keep podded and shelled forms separate when shelling changes the product boundary or output basis. If shared operations are aggregated, allocate them by measured mass or another declared physical relationship and retain form-specific evidence. | `iso-14044-2006`; `mass-balance-identity` |
-| `allocation_multiple_cycles_or_types` | multiple plantings, cultivars, or harvest campaigns | Keep cycles and types separate when input regimes, route, grade, or gate differ. If aggregated, allocate shared operations by measured accepted mass or another declared physical basis. | `iso-14044-2006` |
-| `allocation_reusable_packaging` | reusable crates, pallets, and containers | Allocate packaging burdens over documented reuse cycles and declared capacity or mass basis. Include return and loss records when attributable to the declared gate. | `iso-14044-2006` |
-| `allocation_residue_use` | crop residue, shell residue, wash solids, and wastewater solids | Keep residue treatment and productive use separate from accepted product. Assign a credit only when recipient, intended use, substitution claim, and allocation method are documented. | `iso-14044-2006` |
+| `allocation_accepted_and_downgraded` | accepted peas, downgraded peas, shell residue, and rejects | 按实测质量核对先将共享作物周期投入分配至声明合格青豌豆产出；降级或拒收产品及荚壳残体分列，仅在有记录的生产性接收方存在时作共产品分配。 | `iso-14044-2006`; `unece-ffv-27-peas-2025` |
+| `allocation_podded_and_shelled_forms` | podded and shelled green pea products | 脱荚改变产品边界或产出基准时，带荚及去荚形态分开；共享作业汇总时按实测质量或其他声明物理关系分配，并保留形态特定证据。 | `iso-14044-2006`; `mass-balance-identity` |
+| `allocation_multiple_cycles_or_types` | multiple plantings, cultivars, or harvest campaigns | 投入制度、路线、等级或交接点不同的周期及类型保持分开；汇总时按实测合格质量或其他声明物理基准分配共享作业。 | `iso-14044-2006` |
+| `allocation_reusable_packaging` | reusable crates, pallets, and containers | 按有记录的复用周期及声明容量或质量基准分摊包装负担；与声明交接点有关的返还和损失记录须纳入。 | `iso-14044-2006` |
+| `allocation_residue_use` | crop residue, shell residue, wash solids, and wastewater solids | 残体处理及生产性用途与合格产品分开；仅在接收方、预期用途、替代声明及分配方法有记录时给予抵扣。 | `iso-14044-2006` |
 
 具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
@@ -850,44 +850,44 @@ The transport process delivers the declared reference product when purchased tra
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_accepted_green_pea_output` | accepted product reference flow | Sum net accepted podded or shelled green pea mass by harvest lot after grading and any included shelling, washing, or cooling, excluding package tare. | harvest tickets; scale records; grade records; shelling records; tare | kg accepted fresh 青豌豆 | `unece-ffv-27-peas-2025` |
-| `calc_mass_reconciliation` | harvest and gate preparation | Gross harvested or received mass = accepted product + downgraded or rejected produce + pod shells where applicable + trim and foreign material + measured process loss; investigate unexplained residual. | gross mass; accepted mass; rejects; shell residue; trim; loss; moisture basis | reconciled product and residue mass balance | `mass-balance-identity` |
-| `calc_product_form_conversion` | podded and shelled product | Shelled edible output = podded input − shell residue − rejected or lost mass, after declaring the moisture and measurement basis. | pod input; shell mass; accepted seed; rejects; loss | accepted shelled green pea mass and shell residue | `mass-balance-identity` |
-| `calc_nutrient_equivalents` | nutrient products | Nutrient mass = formulated product mass × documented nutrient concentration; retain product and nutrient bases separately. | product mass; label or supplier concentration; application date | kg N, kg P2O5, and kg K2O | `ipcc-2019-managed-soils` |
+| `calc_accepted_green_pea_output` | accepted product reference flow | 分级及纳入的脱荚、清洗或冷却后，按采收批次汇总净合格带荚或去荚青豌豆质量，剔除包装皮重。 | harvest tickets; scale records; grade records; shelling records; tare | kg accepted fresh 青豌豆 | `unece-ffv-27-peas-2025` |
+| `calc_mass_reconciliation` | harvest and gate preparation | 总收获或接收质量＝合格产品＋降级或拒收产品＋适用荚壳＋修整和异物＋实测过程损失；调查未解释差额。 | gross mass; accepted mass; rejects; shell residue; trim; loss; moisture basis | reconciled product and residue mass balance | `mass-balance-identity` |
+| `calc_product_form_conversion` | podded and shelled product | 去荚可食产出＝带荚进料－荚壳残体－拒收或损失质量；先声明含水率及计量基准。 | pod input; shell mass; accepted seed; rejects; loss | accepted shelled green pea mass and shell residue | `mass-balance-identity` |
+| `calc_nutrient_equivalents` | nutrient products | 养分质量＝配方产品质量×有据养分浓度；产品和养分基准分列。 | product mass; label or supplier concentration; application date | kg N, kg P2O5, and kg K2O | `ipcc-2019-managed-soils` |
 | `calc_water_balance` | irrigation, source withdrawal, washing, and drainage | 逐个识别累计水表，期间水量 = 期末读数 - 期初读数，仅按有文件的回零、溢出及水表单位修正；保留两端读数、时间和水表位置。不同测点的源头总取水 W 与供水 D 分开保留。供水管网边界满足 W + 其他外部流入 = D + 向边界外的回水或排放 + 输配损失 + 期末蓄水 - 期初蓄水。边界内循环水相互抵销，不是新增取水，也不直接从总取水扣减。田间排水另属田间水量平衡，不得再次加到已经计量的供水量上。保留实测值并调查差额；缺读数不能推断零用水。 | meter readings; delivery; rainfall; recirculation; drainage; storage change | m3 source withdrawal and delivered water | `fao-crop-evapotranspiration-56` |
-| `calc_crop_cycle_normalization` | all crop-cycle amounts | Normalized amount = recorded or calculated amount ÷ accepted green pea output × 1,000 kg. Preserve production-unit, crop-cycle, and product-form denominators. | recorded amount; accepted output | amount per 1,000 kg accepted 青豌豆 | `mass-balance-identity` |
-| `calc_nutrient_emissions` | direct and indirect nutrient emissions | Apply one declared method to documented nutrient inputs, soil or substrate conditions, drainage or runoff, and residue fate; do not sum overlapping factors. | nutrient inputs; method factors; drainage; runoff; residue fate | emissions by substance and receiving medium | `ipcc-2019-managed-soils` |
-| `calc_reusable_packaging` | reusable crates and pallets | Allocated packaging burden = item burden ÷ documented reuse cycles × pea-lot share by capacity or declared mass basis. | item mass; reuse cycles; lot capacity or mass; return and loss records | kg packaging allocated to pea lot | `iso-14044-2006` |
-| `calc_transport_service` | purchased road freight | Transport service = loaded mass in tonnes × verified route distance in kilometres; report return or backhaul assumption separately. | shipment mass; route distance; service record | tonne-kilometres | `mass-balance-identity` |
+| `calc_crop_cycle_normalization` | all crop-cycle amounts | 归一化数量＝记录或计算数量÷合格青豌豆产出×1,000 kg；保留生产单元、作物周期及产品形态分母。 | recorded amount; accepted output | amount per 1,000 kg accepted 青豌豆 | `mass-balance-identity` |
+| `calc_nutrient_emissions` | direct and indirect nutrient emissions | 对有记录的养分投入、土壤或基质条件、排水或径流及残体去向采用一个声明方法，不相加重叠因子。 | nutrient inputs; method factors; drainage; runoff; residue fate | emissions by substance and receiving medium | `ipcc-2019-managed-soils` |
+| `calc_reusable_packaging` | reusable crates and pallets | 分配的包装负担＝单件负担÷有记录的复用周期×按容量或声明质量基准确定的豌豆批次份额。 | item mass; reuse cycles; lot capacity or mass; return and loss records | kg packaging allocated to pea lot | `iso-14044-2006` |
+| `calc_transport_service` | purchased road freight | 运输服务＝实际装载质量吨数×已核实路线公里数；返程或回程假设另行报告。 | shipment mass; route distance; service record | tonne-kilometres | `mass-balance-identity` |
 | `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_emission_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
 
 ### 数据质量要求
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `quality_identity_qualifiers` | reference flow and product lots | Declare pea form, type, cultivar group, route, geography, gate, maturity, tenderness, grade, and packaging state; retain 证据缺口 platform identity for later foreground resolution. | lot metadata; product specification; gate record |
-| `quality_mass_closure` | harvest, shelling, rejects, residues, washing, and wastewater | Close the product and process mass balance for each represented 作物周期 or document the unexplained difference and its effect on normalized values. | calibrated scale; mass-balance worksheet; waste ticket |
-| `quality_temporal_coverage` | crop-cycle inputs and outputs | Cover the full planting-to-gate 作物周期 and every harvest round; identify missing periods, substitutions, and averaging windows. | planting log; harvest log; meter periods |
-| `quality_route_disclosure` | 露地 and protected production | Identify route, occupied area, infrastructure attribution, recirculation, heating or lighting, substrate, drainage, and crop-termination treatment whenever included. | production-unit record; equipment log; route declaration |
-| `quality_nutrient_traceability` | nutrient inputs and nutrient emissions | Link each nutrient value to a product record, concentration, application log, and declared emission method; distinguish product mass from nutrient mass. | invoice; label; nutrient plan; calculation worksheet |
-| `quality_water_traceability` | irrigation, withdrawal, washing, and drainage | Identify source, meter or water-balance method, delivered volume, recirculation, drainage, discharge, and receiving medium. | meter record; water-balance closure; discharge record |
-| `quality_product_form_and_grade` | podded and shelled output | Record product form, maturity, tenderness, colour, size or grade, accepted mass, shell residue where applicable, and defect tolerance for every lot. | harvest ticket; grade record; product specification |
-| `quality_reject_and_residue_fate` | downgraded produce, shell residue, crop residue, wash solids, and wastewater | Record measured amount, moisture basis where relevant, destination, treatment, transport, and recipient evidence for every non-product stream. | waste ticket; contractor record; recipient declaration |
-| `quality_energy_and_transport` | fuel, electricity, and purchased transport | Retain carrier or service type, quantity, operation, route, date, meter or shipment evidence, and allocation basis. | invoice; meter record; bill of lading; route record |
+| `quality_identity_qualifiers` | reference flow and product lots | 声明豌豆形态、类型、品种组、路线、地理、交接点、成熟度、嫩度、等级及包装状态；保留平台身份缺口供后续前景解析。 | lot metadata; product specification; gate record |
+| `quality_mass_closure` | harvest, shelling, rejects, residues, washing, and wastewater | 对每个代表作物周期闭合产品及过程质量平衡，或记录未解释差额及其对归一化数值的影响。 | calibrated scale; mass-balance worksheet; waste ticket |
+| `quality_temporal_coverage` | crop-cycle inputs and outputs | 覆盖完整栽植至交接作物周期及每轮采收，识别缺失期间、替代数据及平均窗口。 | planting log; harvest log; meter periods |
+| `quality_route_disclosure` | 露地 and protected production | 纳入时，识别路线、占用面积、基础设施归属、循环水、供暖或照明、基质、排水及作物终止处理。 | production-unit record; equipment log; route declaration |
+| `quality_nutrient_traceability` | nutrient inputs and nutrient emissions | 将每个养分数值关联产品记录、浓度、施用日志及声明排放方法；产品质量与养分质量分开。 | invoice; label; nutrient plan; calculation worksheet |
+| `quality_water_traceability` | irrigation, withdrawal, washing, and drainage | 识别水源、仪表或水平衡方法、交付体积、循环水、排水、排放及接收环境。 | meter record; water-balance closure; discharge record |
+| `quality_product_form_and_grade` | podded and shelled output | 每个批次记录产品形态、成熟度、嫩度、颜色、尺寸或等级、合格质量、适用荚壳残体及缺陷容差。 | harvest ticket; grade record; product specification |
+| `quality_reject_and_residue_fate` | downgraded produce, shell residue, crop residue, wash solids, and wastewater | 每项非产品流记录实测数量、适用含水率基准、去向、处理、运输及接收方证据。 | waste ticket; contractor record; recipient declaration |
+| `quality_energy_and_transport` | fuel, electricity, and purchased transport | 保留载能体或服务类型、数量、作业、路线、日期、仪表或运输证据及分配基准。 | invoice; meter record; bill of lading; route record |
 
 ## 9. 验证规则
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validation_reference_mass` | reference flow and accepted output | Require 1,000 kg net accepted fresh 青豌豆 as the normalized reference amount and preserve the declared podded or shelled product form and gate state. | `unece-ffv-27-peas-2025` |
-| `validation_mass_reconciliation` | harvest, shelling, and gate-preparation inventory | Check that accepted output, downgraded or rejected produce, pod shells where applicable, residues, trim, wastewater solids, and process losses reconcile with gross harvested or received mass within documented measurement tolerance. | `mass-balance-identity` |
-| `validation_crop_cycle_completeness` | crop establishment and crop management | Reject a dataset that omits a represented planting campaign, harvest round, or route-specific input without a justified zero or documented exclusion. | `unece-ffv-27-peas-2025` |
-| `validation_product_form` | podded and shelled products | Check that product form, shelling boundary, accepted output, shell residue, moisture basis, and product qualifiers are consistent throughout the process inventory and dataset metadata. | `mass-balance-identity`; `unece-ffv-27-peas-2025` |
-| `validation_nutrient_basis` | nutrient products and nutrient emissions | Check product mass, nutrient concentration, nutrient amount, application timing, and declared emission method before accepting nitrogen, ammonia, nitrate, or phosphate values. | `ipcc-2019-managed-soils` |
-| `validation_water_balance` | irrigation, source withdrawal, washing, and drainage | Check units, source, meter or balance period, delivered water, recirculation, discharge, and receiving medium; investigate negative or unexplained balances. | `fao-crop-evapotranspiration-56` |
-| `validation_gate_state` | reference product and boundary | Check that shelling, grading, washing, cooling, packaging, and transport are included only when before the declared gate and disclosed in metadata. | `unece-ffv-27-peas-2025`; `ucdavis-edible-pod-peas-postharvest` |
-| `validation_range_screen` | important inventory rows | Compare site values with the row range or documented evidence. Values outside a range require an explanation, revised evidence, or an explicit scenario declaration. | `unece-ffv-27-peas-2025`; `fao-crop-evapotranspiration-56` |
-| `validation_residue_fate` | rejects, shell residue, crop residue, wash solids, and wastewater | Require a fate and destination for each non-product stream; do not apply a credit without documented productive use, recipient, and allocation treatment. | `iso-14044-2006` |
+| `validation_reference_mass` | reference flow and accepted output | 以 1,000 kg 净合格新鲜青豌豆为归一化参考量，保留声明的带荚或去荚形态及交接状态。 | `unece-ffv-27-peas-2025` |
+| `validation_mass_reconciliation` | harvest, shelling, and gate-preparation inventory | 检查合格产出、降级或拒收产品、适用荚壳、残体、修整物、废水固体及过程损失在有据计量容差内与总收获或接收质量闭合。 | `mass-balance-identity` |
+| `validation_crop_cycle_completeness` | crop establishment and crop management | 如无有据零值或有记录排除，不得省略所代表的栽植活动、采收轮次或路线特定投入。 | `unece-ffv-27-peas-2025` |
+| `validation_product_form` | podded and shelled products | 检查产品形态、脱荚边界、合格产出、荚壳残体、含水率基准及产品限定项在清单和元数据中一致。 | `mass-balance-identity`; `unece-ffv-27-peas-2025` |
+| `validation_nutrient_basis` | nutrient products and nutrient emissions | 接受氮、氨、硝酸根或磷酸根数值前，检查产品质量、养分浓度、养分数量、施用时间及声明排放方法。 | `ipcc-2019-managed-soils` |
+| `validation_water_balance` | irrigation, source withdrawal, washing, and drainage | 检查单位、水源、计量或平衡期间、交付水、循环水、排放及接收环境；调查负值或未解释平衡。 | `fao-crop-evapotranspiration-56` |
+| `validation_gate_state` | reference product and boundary | 检查脱荚、分级、清洗、冷却、包装及运输仅在声明交接点前纳入，并在元数据中披露。 | `unece-ffv-27-peas-2025`; `ucdavis-edible-pod-peas-postharvest` |
+| `validation_range_screen` | important inventory rows | 将场址数值与行范围或有据证据比较；超范围须给出解释、修订证据或明确情景声明。 | `unece-ffv-27-peas-2025`; `fao-crop-evapotranspiration-56` |
+| `validation_residue_fate` | rejects, shell residue, crop residue, wash solids, and wastewater | 每项非产品流须有去向及目的地；没有有据生产性用途、接收方及分配处理，不得作抵扣。 | `iso-14044-2006` |
 
 ## 10. 发布数据集画像
 

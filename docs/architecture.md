@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: "2026-10-19"
-lastReviewedCommit: "0b573ce10cbdb352a5a67855aad6fb14e9161663"
-lastReviewedNote: "Reviewed the documentation and full test-shard job timeout increase from 60 to 120 minutes. PCR content, dependency pins, workflow selection, qualification checks and evidence bindings are unchanged. Local macOS checks remain partial; fresh hosted Linux qualification is required."
+lastReviewedAt: "2026-10-20"
+lastReviewedCommit: "623239f3b89f335ee5461b422378cf709a8228f3"
+lastReviewedNote: "Reconciled Candy main PCR additions and same-source web-build handoff with the CPC 01/02/03 content repairs and 120-minute job limits. Preserved both sides of the methodology and CI contracts; regenerated combined catalog/coverage artifacts. Local PCR and focused checks pass; full hosted Linux qualification remains required."
 ---
 
 # PCR 资料库架构

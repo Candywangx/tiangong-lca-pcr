@@ -508,7 +508,6 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：从采集计算（`calculated_from_collection`）
 - 采集协议：`cp_incubation_climate_records`
-- 来源：`robinson-2018-mushroom-lca`
 
 ### 过程：出菇、气候控制和重复潮次（`fruiting_and_cropping`）
 
@@ -546,7 +545,6 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fruiting_climate_records`
-- 来源：`fao-make-money-growing-mushrooms-2010`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0.1
@@ -647,7 +645,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cropping_records`
-- 来源：`robinson-2018-mushroom-lca`；`usda-ams-mushroom-grade-standard`
+- 来源：`robinson-2018-mushroom-lca`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：1,000
@@ -728,7 +726,6 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：从采集计算（`calculated_from_collection`）
 - 采集协议：`cp_fruiting_climate_records`
-- 来源：`robinson-2018-mushroom-lca`
 
 ### 过程：采收、分级和初级包装（`harvest_grading_and_primary_packaging`）
 
@@ -750,7 +747,6 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_wash_water_records`
-- 来源：`fao-make-money-growing-mushrooms-2010`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -829,7 +825,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_grade_records`
-- 来源：`usda-ams-mushroom-grade-standard`；`iso-14044-2006`
+- 来源：`usda-ams-mushroom-grade-standard`
 - 数量范围：QA 校验
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0

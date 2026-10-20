@@ -53,10 +53,10 @@ sync_with: pcr.en-US.md
 ## 4. 计量与单位规则
 | rule_id | 适用于 | 必需属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `reference_mass_as_received` | terminal leaf | Mass | kg | Report as-received mass and measured moisture; retain moisture basis for dry-matter comparisons. |
-| `area_to_reference_conversion` | field flows | activity-specific property | activity-specific unit | Normalize same-cycle field totals first to harvested green leaf, then use matched curing and grading balances for cured leaf. |
+| `reference_mass_as_received` | terminal leaf | Mass | kg | 报告接收态质量及实测含水率，保留含水率基准以比较干物质。 |
+| `area_to_reference_conversion` | field flows | activity-specific property | activity-specific unit | 先将同周期田间总量归一化至收获绿叶，再通过匹配调制及分级平衡转换为调制叶。 |
 | `nutrient_content_basis` | nutrient inputs | nutrient mass | kg N, kg P2O5, kg K2O | Preserve product mass, formulation, assay, and elemental/oxide basis separately. |
-| `curing_energy_basis` | curing energy | energy or carrier mass | MJ, kWh, kg, m3 | Preserve carrier and measured amount; document every conversion to delivered energy. |
+| `curing_energy_basis` | curing energy | energy or carrier mass | MJ, kWh, kg, m3 | 保留载能体及实测数量，记录每项交付能源换算。 |
 
 ## 5. 系统边界
 
@@ -749,10 +749,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用于 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_avoid_by_subdivision` | all nodes | Separate field, curing, grading, and batch records; attribute shared meters/equipment by operating time, throughput, or occupied capacity before allocation. | `iso-14044-2006` |
-| `allocation_leaf_grades` | useful grades | Preserve grades and direct burdens; if subdivision is infeasible, use contemporaneous hand-off economic allocation and disclose mass sensitivity. | `iso-14044-2006` |
-| `allocation_residue_reject` | residues, rework, rejects | Do not allocate to internal rework or waste; prevent reworked leaf from becoming a second output. |  |
-| `allocation_shared_infrastructure` | shared barns/assets | Attribute each shared asset once across batches/periods with documented use; prevent cross-node double counting. | `iso-14044-2006` |
+| `allocation_avoid_by_subdivision` | all nodes | 田间、调制、分级及批次记录分开；分配前按运行时间、吞吐量或占用容量归属共享仪表/设备。 | `iso-14044-2006` |
+| `allocation_leaf_grades` | useful grades | 保留等级及直接负担；无法细分时按同期交接经济价值分配，并披露质量分配敏感性。 | `iso-14044-2006` |
+| `allocation_residue_reject` | residues, rework, rejects | 不向内部返工或废物分配，防止返工叶成为第二份产出。 |  |
+| `allocation_shared_infrastructure` | shared barns/assets | 按有据使用量，将共享资产在批次/期间间归属一次；防止跨节点双计。 | `iso-14044-2006` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -780,8 +780,8 @@ sync_with: pcr.en-US.md
 | `calc_field_to_green_leaf` | field flows | 作物周期数量 / 匹配鲜叶质量仅得到每 kg 鲜叶的中间强度。鲜叶参考结果按应归属总量 * 1,000 kg / 最终合格鲜叶质量计算。烤制叶参考结果须按 calc_green_to_cured_leaf 的实际关联鲜叶投入/合格烤制叶 kg 换算鲜叶中间强度，再乘 1,000 kg；烤制和分级贡献在同一最终基准上相加一次。保留实际批次、损失、产出份额和单位；不得对直接烤制数量套鲜叶转换或重复归一化最终强度。 | amount; area; green leaf | amount/kg green leaf |  |
 | `calc_green_to_cured_leaf` | cured route | green-leaf-normalized amount × green-leaf input / cured output | masses; moisture; rejects | amount/kg cured leaf | `mass-balance-identity` |
 | `calc_nutrient_content` | nutrient supply | product amount × declared nutrient fraction | identity; amount; assay | nutrient by product |  |
-| `calc_managed_soil_emissions` | field emissions | applicable IPCC/regional method using inputs, residues, volatilization, and leaching | activity; soil; climate; factors | emissions by pathway | `ipcc-2019-managed-soils` |
-| `calc_curing_combustion` | curing | fuel quantity × carrier-specific factor; purchased electricity is not on-site combustion | carrier; amount; factor | pollutant/batch | `ipcc-2006-stationary-combustion` |
+| `calc_managed_soil_emissions` | field emissions | 采用适用 IPCC/区域方法，覆盖投入、残体、挥发及淋失。 | activity; soil; climate; factors | emissions by pathway | `ipcc-2019-managed-soils` |
+| `calc_curing_combustion` | curing | 燃料数量×载能体特定因子；外购电力不属于现场燃烧。 | carrier; amount; factor | pollutant/batch | `ipcc-2006-stationary-combustion` |
 | `calc_curing_mass_balance` | curing | green wet mass = cured leaf + rejects + water/other loss within uncertainty | masses; moisture | reconciled outputs | `mass-balance-identity` |
 | `calc_grading_mass_balance` | grading | input = accepted + downgraded + rejects + loss; count rework once | batch masses; routes | reconciled grades | `mass-balance-identity` |
 | `tobacco_planting_material_input_identity_and_fate` | `tobacco_field_production` | 对于本作业原有 tobacco_planting_material_input 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_field_records` | 按身份区分的交换和对账活动记录 |  |
@@ -797,21 +797,21 @@ sync_with: pcr.en-US.md
 
 | requirement_id | 适用于 | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_route_identity` | reference | Distinguish green/cured and air/fire/flue/sun route; retain variety, grade, moisture, crop year, gate. | crop, curing, grade, sales records |
-| `dq_temporal_alignment` | all rows | Match field, harvest, curing, grading, energy, and outputs to the same crop/batches; disclose proxies. | dated records |
+| `dq_route_identity` | reference | 区分绿叶/调制叶及晾晒/明火/烤房/日晒路线，保留品种、等级、含水率、作物年度及交接点。 | crop, curing, grade, sales records |
+| `dq_temporal_alignment` | all rows | 将田间、收获、调制、分级、能源及产出匹配至同一作物/批次，并披露代理数据。 | dated records |
 | `dq_mass_moisture` | transformations | Use calibrated masses and paired moisture at green, cured, and packed states. | calibration; moisture records |
-| `dq_route_completeness` | curing | Record energy carrier and combustion location; zero energy requires passive-route evidence. | barn log; invoice; meter |
+| `dq_route_completeness` | curing | 记录载能体及燃烧位置，零能源须有被动路线证据。 | barn log; invoice; meter |
 | `dq_identity_resolution` | parameterized/unresolved | Resolve every emitted exchange to one verified UUID before process publication. | identity review record |
 
 ## 9. 验证规则
 
 | rule_id | 适用于 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validation_terminal_route` | reference | Select exactly one terminal route: 1,000 kg green or 1,000 kg cured graded leaf; forbid fresh UUID for cured leaf. |  |
-| `validation_curing_method` | cured route | Declare one primary curing method per batch and include its energy, barn service, emissions, rejects, and hand-off. | `who-tobacco-environment-2017` |
-| `validation_mass_balance` | harvest/curing/grading | Reconcile mass, moisture, grades, rework, rejects, and losses within documented uncertainty. | `mass-balance-identity` |
-| `validation_nutrient_emissions` | field | Reconcile nutrient/residue N with N2O, NH3, and nitrate methods without duplicate pathways. | `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook` |
-| `validation_rework` | curing/grading | Link rework to origin and count once; rejected material cannot be accepted reference product. |  |
+| `validation_terminal_route` | reference | 恰选一条终端路线：1,000 kg 绿叶或1,000 kg 调制分级叶；调制叶不得使用鲜叶 UUID。 |  |
+| `validation_curing_method` | cured route | 每批声明一种主要调制方法，纳入其能源、烟房服务、排放、拒收物及交接。 | `who-tobacco-environment-2017` |
+| `validation_mass_balance` | harvest/curing/grading | 在有据不确定性内核对质量、水分、等级、返工、拒收及损失。 | `mass-balance-identity` |
+| `validation_nutrient_emissions` | field | 将养分/残体氮与 N2O、NH3 及硝酸根方法核对，避免重叠路径。 | `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook` |
+| `validation_rework` | curing/grading | 将返工关联来源且只计一次；拒收物不作合格参考产品。 |  |
 | `validation_shared_assets` | barns/meters/equipment | Apply one attribution driver per period and prevent double counting. | `iso-14044-2006` |
 | `validation_flow_identity` | every flow | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 

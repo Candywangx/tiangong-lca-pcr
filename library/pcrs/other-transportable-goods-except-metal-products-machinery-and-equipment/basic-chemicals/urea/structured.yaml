@@ -1,10 +1,1454 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34611"
-  title: "Urea"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.urea"
+  classification_refs: "CPC 3.0 34611 Urea; narrower scope; classification is not methodology identity"
+  covered_products: "Accepted additive-free uncoated bulk solid urea prills or granules"
+  excluded_products: "UAN, supplied solutions, coating/additive formulations, resins, melamine, specialised purification/recrystallisation routes"
+  representative_product: "Bulk urea prills meeting the actual agricultural grade and declared purity/moisture/biuret requirements"
+  production_route: "Liquid ammonia/CO2 high-pressure synthesis; total reactant recycle; concentration and particle formation; cooling/screening; declared gas/water treatment"
+  market_state: "Bulk solid at factory gate, measured as net physical supplied mass; residual water and impurities analysed separately"
+functional_unit:
+  what: "Supply usable urea feedstock at factory gate, without substituting fertilisation or end-use service"
+  how_much: "1 kg accepted bulk solid urea in its supplied state"
+  how_well: "Actual SKU/grade acceptance; disclose urea, total N, moisture, biuret, free ammonia, particle size and additive-free confirmation"
+  how_long_or_cycle: "One factory-gate delivery within the same declared representative collection period; no downstream service lifetime"
+  reference_flow_link: "urea_finished"
+system_boundary:
+  rules:
+    - rule_id: boundary_stages
+      applies_to: "urea_manufacture"
+      rule: "Include receiving, compression/pumping, synthesis, stripping/decomposition and recovery, concentration, selected particle formation, cooling/screening, storage/loading and their gas/water controls. Phase records remain separately measurable within one foreground unit."
+      source_ids:
+        - ec-lvic-aaf-2007
+        - epa-ap42-urea-1993
+    - rule_id: boundary_recycle
+      applies_to: "urea_manufacture"
+      rule: "Record internal flow endpoints in the same physical unit/state. Recovered material is neither new purchased feed nor avoided burden. Include external losses and treatment transfers once."
+      source_ids:
+        - ec-lvic-aaf-2007
+    - rule_id: boundary_utilities
+      applies_to: "urea_manufacture"
+      rule: "Retain steam-header imports, recoveries, exports and condensate return separately. Source Table 8.19 excludes particle formation from its energy example; collected energy must also include actual finishing, cooling and controls."
+      source_ids:
+        - ec-lvic-aaf-2007
+    - rule_id: boundary_water
+      applies_to: "urea_manufacture"
+      rule: "Separate internal process-water reuse, external reuse product, wastewater-to-treatment and direct natural discharge. Biological treatment and its chemicals/emissions require a separate treatment unit; no universal recipe is given."
+      source_ids:
+        - ec-lvic-aaf-2007
+    - rule_id: boundary_scope
+      applies_to: "urea_manufacture"
+      rule: "Confirm additive-free route from procurement/formulation records; isolate incompatible variants. Atmospheric source inventories include detected feed impurities; any additional actual substance must be a separately identified atomic row, not silently omitted or represented by total VOC/total nitrogen."
+      source_ids:
+        - epa-ap42-urea-1993
+        - ec-lvic-aaf-2007
+        - yara-technical-urea
+boundary_abstraction:
+  declared_starting_condition: "Receipt of external liquid ammonia, CO2, treated process water and utilities; record opening stocks of recycle liquor/seeds/water/steam"
+  starting_condition_role: "foreground_gate"
+  product_classification_scope: "Additive-free bulk solid urea; a narrower part of CPC 34611"
+  recursive_input_rule: "Keep internal recovered NH3/CO2/carbamate, urea fines, condensate and steam as equal-quantity internal links; purchased urea of the same category requires its upstream link without infinite recursion through this unit"
+  upstream_dataset_requirement: "Link actual feedstock origin, quality, transport and supply energy, utilities and waste-treatment providers; unknown bases/missing providers are explicit dataset gaps"
+  disclosure: "Disclose stages, chosen finishing route, meter boundaries, internal/external interfaces, controls, abnormal operation, utility sources and discharge/reuse destinations"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Urea"
+    uuid: "3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "site and period"
+    - "SKU/grade"
+    - "feedstock origin/purity"
+    - "CO2 carbon origin"
+    - "total-recycle/stripping technology"
+    - "prilling/granulation equipment"
+    - "supplied moisture/impurities"
+    - "no coating/additives"
+    - "particle size"
+    - "utility headers/background bases"
+    - controls
+    - "wastewater fate"
+    - "bulk delivery interface"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use accepted net bulk product mass Q for the same period, corrected for stocks and returns; exclude transport vehicle tare. Report moisture and urea assay without changing the supplied-mass denominator."
+  - id: gas_volume
+    applies_to: "feed_co2, passivation_air"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Match actual and provider gas volume conventions using recorded absolute pressure, temperature, composition, wet/dry state and compressibility. Unknown compatibility makes that dataset link incomplete; no universal density or a secondary database mass coefficient is accepted."
+  - id: steam_basis
+    applies_to: "steam_hp, steam_mp, steam_lp, steam_export"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain each actual header separately and reconcile condensate return. Net usable heat comes from measured steam/condensate enthalpy and the supplier boundary, not from a steam UUID or a generic MJ property."
+  - id: electricity_unit
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "The selected property uses the native label Net calorific value and energy unit MJ. Meter electrical energy and document kWh-to-MJ conversion, not a combustion heating-value assumption."
+  - id: species_basis
+    applies_to: "nh3_air, nh3_water, ammonium_water, urea_water"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Distinguish molecular mass from kg N; preserve analysis definitions and molecular-mass conversion factors. NH3 and NH4+ must partition measured total ammoniacal nitrogen rather than each repeat it."
+  - id: dust_bands
+    applies_to: "pm_fine_air, pm_coarse_air, pm_over10_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use disjoint size-band masses. A cumulative PM10 result includes PM2.5; derive the coarse band only from measurements on a compatible sampling basis and retain uncertainties."
+process_map:
+  - id: urea_manufacture
+    name: "Urea manufacture through bulk delivery"
+    inclusion: "required"
+    inclusion_condition: "Declared total-recycle additive-free solid route"
+    role: "Combined foreground unit with separate stage meters"
+    quantitative_reference: "urea_finished"
+process_inventory:
+  - id: urea_manufacture
+    label: "Urea manufacture through bulk delivery"
+    inputs:
+      product:
+        - row_id: feed_ammonia
+          role: "Fresh anhydrous liquid ammonia"
+          name: "Ammonia, anhydrous, liquid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6928be4f-282b-4448-8f2a-f8c746621303"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Fresh feed only, corrected for tank stock changes and measured purity; recycled ammonia is internal. Do not use an aqueous-ammonia record."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: feed_co2
+          role: "Fresh carbon dioxide reagent"
+          name: "Carbon dioxide, in chemical industry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "25d43910-4875-4d29-9941-950138d9fae8"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Separate compressed reagent CO2 from atmospheric emissions. The reference is Volume/m3; record pressure, temperature, wet/dry state, composition, compressibility and supplier volume convention. A mass balance uses measured composition and a documented conversion, never a database secondary coefficient as density. The native record is a Product flow with CO2 CAS and a captured/processed high-purity reagent description, but its name metadata says waste flow at point of generation. Retain this internal role/location conflict explicitly; it does not prove untreated composition, zero burden or the actual supply interface. Conditional physical identity requires the actual CO2 source, delivery/custody point, purity/state, capture/purification/compression boundary, upstream burdens and m3 convention to match. An unresolved provider boundary remains an incomplete link."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: electricity
+          role: "Purchased medium-voltage electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "The selected identity is grid-average 1-35 kV AC supplied to the user. Use it only for that physical interface; a different voltage or dedicated generation needs its own verified identity/provider. Submeter compression, pumps, concentration, finishing, cooling and water treatment; avoid counting steam-driven and electrically driven compression together."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: steam_hp
+          role: "High-pressure steam header"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7734613a-3ef2-47ce-aff0-9a1bd67906c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One independently metered imported steam header in the declared high-pressure steam header. Record actual absolute/gauge pressure convention, temperature, dryness, condensate return and supplier reference quantity. The broad steam identity does not establish a pressure, energy amount or upstream dataset. An absent header has documented not_applicable status; distinct headers remain separate."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: steam_mp
+          role: "Medium-pressure steam header"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7734613a-3ef2-47ce-aff0-9a1bd67906c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One independently metered imported steam header in the declared medium-pressure steam header. Record actual absolute/gauge pressure convention, temperature, dryness, condensate return and supplier reference quantity. The broad steam identity does not establish a pressure, energy amount or upstream dataset. An absent header has documented not_applicable status; distinct headers remain separate."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: steam_lp
+          role: "Low-pressure steam header"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7734613a-3ef2-47ce-aff0-9a1bd67906c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One independently metered imported steam header in the declared low-pressure steam header. Record actual absolute/gauge pressure convention, temperature, dryness, condensate return and supplier reference quantity. The broad steam identity does not establish a pressure, energy amount or upstream dataset. An absent header has documented not_applicable status; distinct headers remain separate."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: water_makeup
+          role: "Treated process-water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net externally supplied treated liquid water, split by its actual water-quality circuit in the data package. Cooling circulation is an internal volume, not water consumption. Record flushing, seal, scrubber, cooling and boiler-water demands separately in raw records; direct resource abstraction needs distinct source-specific elementary inputs and a water-supply unit."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: passivation_air
+          role: "External compressed passivation air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional on air supplied across the foreground boundary for corrosion passivation or pneumatic use. Record O2 composition, pressure, drying and volume convention. Ambient finishing air is an operating measurement, not a purchased compressed-air exchange; on-site compression is covered by its electricity and raw air records without duplicate purchased air."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: urea_finished
+          role: "Accepted finished bulk solid urea"
+          name: "Urea"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One final reference output for combined synthesis, concentration and finishing. Intermediate solution, melt, seed particles and internally recovered offsize product remain in the physical stage balance. The reference UUID is not duplicated as an intermediate product output."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_product
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: steam_export
+          role: "Exported recovered steam"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7734613a-3ef2-47ce-aff0-9a1bd67906c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on separately metered usable recovered steam delivered outside this unit. Retain its actual header pressure, temperature and quantity as a full physical output; internal heat reuse is not an export. Distinct exported headers require separate atomic exchanges."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: water_reuse_export
+          role: "Treated process water delivered for external reuse"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on accepted treated liquid water supplied to another user, with measured urea/ammonia content and receiver quality requirements. Internal condensate reuse stays internal. Do not call untreated effluent a saleable water product."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+      waste:
+        - row_id: waste_urea
+          role: "Discarded solid urea fines"
+          name: "Discarded solid urea fines"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only non-recycled contaminated or off-spec solid urea sent to a named waste receiver. Record water content, urea, contamination, destination and treatment. Internally recycled fines are not waste outputs."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: wastewater_transfer
+          role: "Urea process condensate transferred for external treatment"
+          name: "Urea process condensate transferred for external treatment"
+          flow_type: "waste"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional on aqueous condensate/blowdown leaving this unit for further treatment, not a discharge to nature. Record volume, urea, NH3/NH4, total nitrogen, COD, pH, solids and receiving treatment conditions."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+      elementary:
+        - row_id: nh3_air
+          role: "Ammonia discharged to outdoor air"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Post-control atmospheric NH3 from synthesis/recovery, concentration, prilling/granulation, cooling, screening, storage and loading; include leaks and abnormal operation. Measure NH3 mass, not nitrogen mass. Recovered ammonia in scrubber liquid remains internal. Subcompartment is air unspecified only when a more precise release descriptor is unavailable."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: co2_fossil_air
+          role: "Fossil-origin carbon dioxide vented to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual non-recovered fossil CO2 vented after controls, by source; product-bound carbon and internal recycled CO2 are not emissions. Upstream ammonia-plant CO2 is outside this foreground unit and must be handled consistently in its provider inventory."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: co2_bio_air
+          role: "Biogenic-origin carbon dioxide vented to air"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Retain actual biogenic CO2 separately whenever carbon-origin evidence establishes it; a climate reporting convention never deletes this LCI exchange. Absence requires source evidence; an unknown origin remains pending rather than assigned to fossil or biogenic."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: pm_fine_air
+          role: "Particles of aerodynamic diameter at most 2.5 micrometres"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net particulate mass crossing the atmospheric boundary in this disjoint aerodynamic-size band, after controls. Sample prilling/granulation, cooling, screening and loading sources separately. Do not add cumulative PM10 or TSP to these bands; collected dust returned to the process is not an atmospheric emission."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: pm_coarse_air
+          role: "Particles larger than 2.5 and at most 10 micrometres"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net particulate mass crossing the atmospheric boundary in this disjoint aerodynamic-size band, after controls. Sample prilling/granulation, cooling, screening and loading sources separately. Do not add cumulative PM10 or TSP to these bands; collected dust returned to the process is not an atmospheric emission."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: pm_over10_air
+          role: "Particles larger than 10 micrometres"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net particulate mass crossing the atmospheric boundary in this disjoint aerodynamic-size band, after controls. Sample prilling/granulation, cooling, screening and loading sources separately. Do not add cumulative PM10 or TSP to these bands; collected dust returned to the process is not an atmospheric emission."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: nh3_water
+          role: "Dissolved un-ionised ammonia released to freshwater"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96b0-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only the independently speciated NH3 fraction in direct discharge to natural freshwater after the included water treatment. Report molecular NH3 mass; ammonium and urea are separate. Total ammoniacal nitrogen cannot be copied simultaneously into NH3 and NH4 rows."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: ammonium_water
+          role: "Ammonium ions released to freshwater"
+          name: "ammonium"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aaa5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only the independently speciated NH4+ fraction of direct discharge, in kg of NH4+ rather than kg of N; record pH/temperature and the analytical conversion basis. This is not ammonium nitrate or ammonium sulphate product."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: urea_water
+          role: "Urea molecules released to freshwater"
+          name: "urea"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "9abf6aa9-c299-47ae-b9d7-539d65107fd8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual residual CO(NH2)2 in direct treated-water discharge. Convert urea-N only using the documented stoichiometric molecular-mass relationship; do not add total nitrogen as another mass of urea. Do not record pollutant load inside externally transferred wastewater as this direct emission."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: liquid_water
+          role: "Liquid-water discharge to natural freshwater"
+          name: "Water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Actual liquid effluent crossing the natural freshwater boundary, Volume/m3. The water carrier volume and contained pollutant masses are separate dimensions; the physical water balance counts this stream once. This is not freshwater abstraction."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: water_vapour
+          role: "Water vapour released to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual atmospheric water loss from concentration/cooling/finishing that is not condensed and reused. Reconcile reaction water, imported steam, make-up, condensate return, liquid outputs and stock change; do not treat closed-loop evaporation and condensation as two external exchanges."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: methane_air
+          role: "Fossil methane in process vent"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on measured fossil-origin methane impurity escaping through process vents after controls; source Table 8.10 is a case observation, not a default positive release. Verify origin and measured load; other carbon origins require their own atomic identity."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+        - row_id: co_air
+          role: "Fossil carbon monoxide in process vent"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on measured fossil-origin CO impurity in process vent gas after controls. Do not use a CO2 record or an unrelated combustion factor; independently measured CO with its carbon origin enters the actual vent balance."
+          amount:
+            expression: "Measure the period quantity under the linked protocol and normalize by same-period accepted net output Q in kg; per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-lvic-aaf-2007
+                - epa-ap42-urea-1993
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "These allocation rules are authored modelling requirements. The BREF supports the integrated material/energy context, not an ISO allocation hierarchy or market-price evidence."
+    source_ids: []
+  - rule_id: allocation_avoid
+    applies_to: "urea_manufacture"
+    rule: "First subdivide by actual meters and process origin; assign attributable feeds, utilities and emissions directly. Internal recycling is not a coproduct. The selected foreground reference is urea, not ammonia manufacture."
+    source_ids:
+      - ec-lvic-aaf-2007
+  - rule_id: allocation_physical
+    applies_to: "urea_manufacture"
+    rule: "Keep all physical coproduct outputs, stage balances and internal links at measured full quantity. Allocation shares act on shared environmental burdens, not physical output mass, water or heat."
+    source_ids:
+      - ec-lvic-aaf-2007
+  - rule_id: allocation_residual
+    applies_to: "urea_manufacture"
+    rule: "For genuinely inseparable shared burdens with usable exported steam or accepted recovered water, document the causal relationship, basis and denominator and test sensitivity. If no defensible physical relationship exists, disclose a chosen economic allocation using actual comparable-period net values; no default share or price is prescribed. Reject unsupported shares rather than forcing a single-product balance."
+    source_ids:
+      - ec-lvic-aaf-2007
+  - rule_id: allocation_co2
+    applies_to: "feed_co2"
+    rule: "Disclose CO2 provider capture/purification/compression energy and upstream allocation. Do not award a capture credit and also deduct product-retained carbon as a negative emission. Downstream release is outside the factory-gate boundary; disclose carbon provenance and quantity for later modelling."
+    source_ids:
+      - ec-lvic-aaf-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "urea_manufacture"
+      flow_role: "urea_finished"
+      record_type: "weighing and assay"
+      raw_fields: "net delivered mass; opening/closing finished stocks; returns; SKU; grade; urea assay; total N; water; biuret; free NH3; particle size; formulation"
+      collection_method: "Calibrated bulk scales, stock reconciliation and documented representative sampling/analysis; verify actual additive-free formulation. Divide raw period totals by same-period Q using normalize_period and the aggregation basis below."
+      unit: "kg; mass fractions"
+      frequency: "each lot; period reconciliation"
+      temporal_coverage: "same declared representative period including abnormal operation"
+      site_scope: "same site and route; accepted bulk delivery"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; assay methods and certificates; acceptance and stock records"
+    - protocol_id: cp_feed
+      process_id: "urea_manufacture"
+      flow_role: "feed_ammonia; feed_co2; passivation_air"
+      record_type: "receipt, meter and composition records"
+      raw_fields: "feed totals; stock changes; composition; purity; carbon origin; phase; T; absolute P; wet/dry basis; Z; supplier reference convention; air O2"
+      collection_method: "Calibrated mass/volume meters and tank reconciliation; validate gas conversion using sample composition and compatible equation/state definition. Divide raw period totals by same-period Q using normalize_period and the aggregation basis below."
+      unit: "kg; m3; composition; T; P"
+      frequency: "continuous/batch; regular assay"
+      temporal_coverage: "same period as Q"
+      site_scope: "external feed interfaces and internal recycle meters distinguished"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; gas certificates; supplier basis; conversion calculation"
+    - protocol_id: cp_energy
+      process_id: "urea_manufacture"
+      flow_role: "electricity; steam_hp; steam_mp; steam_lp; steam_export"
+      record_type: "meter and enthalpy records"
+      raw_fields: "electrical kWh; voltage; supplier/mix; each steam header mass, T, P, quality; condensate-return mass and enthalpy; stage duties; export user"
+      collection_method: "Submeter compressors, synthesis/recovery, concentration, finishing/cooling, loading and controls. Use pressure/temperature/dryness and traceable steam properties for enthalpy balances; separate mass/heat and imports/exports. Divide raw period totals by same-period Q using normalize_period and the aggregation basis below."
+      unit: "kWh; MJ; kg; T; P"
+      frequency: "continuous or shift totals"
+      temporal_coverage: "same period as Q"
+      site_scope: "all included stages and each external utility header"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter checks; enthalpy method/version; provider reference boundary; separate condensate ledger"
+    - protocol_id: cp_water
+      process_id: "urea_manufacture"
+      flow_role: "water_makeup; water_reuse_export; water_vapour"
+      record_type: "water meter and stage balance"
+      raw_fields: "make-up and circulation; independently evidenced net reaction-water formation/consumption; stage assays and reaction extents/model inputs; steam-derived water; stream density/composition and fraction bases; flush/seal/scrubber water; internal reuse; evaporation; condensate return; opening/closing liquid/WIP stocks; external receiver and quality"
+      collection_method: "Meter external water interfaces and collect stage assays/state records for synthesis, included hydrolysis and other actual reactions. Determine reaction-water terms through assay_balance from independent actual reaction-extent evidence, not the residual needed to close this water ledger. Reconcile measured steam-derived/carrier water, liquid outputs, atmospheric losses and stock changes with uncertainty; record receiver acceptance. Retain raw complete-pool totals and apply normalize_period once."
+      unit: "kg; m3; composition"
+      frequency: "continuous/batch; period balance"
+      temporal_coverage: "same period as Q"
+      site_scope: "cooling, concentration and treatment circuits"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter checks; assay and reaction-model basis; physical water ledger; reaction-extent and measurement uncertainty"
+    - protocol_id: cp_waste
+      process_id: "urea_manufacture"
+      flow_role: "waste_urea; wastewater_transfer"
+      record_type: "dispatch and receiver records"
+      raw_fields: "wet/dry mass; volume; water; urea; NH3/NH4; total N; COD; pH; solids; contaminants; receiver; treatment; transport"
+      collection_method: "Weigh discarded solids and meter transferred condensate; representative composition analysis and receiver/treatment acceptance. No unverified generic waste UUID substitutes for origin/fate. Divide raw period totals by same-period Q using normalize_period and the aggregation basis below."
+      unit: "kg; m3; mg/L; mass fractions"
+      frequency: "each dispatch; representative samples"
+      temporal_coverage: "same period as Q"
+      site_scope: "each external waste-to-treatment interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighbridge/meters; analytical QA; transfer receipts and destination contract"
+    - protocol_id: cp_air
+      process_id: "urea_manufacture"
+      flow_role: "nh3_air; co2_fossil_air; co2_bio_air; pm_fine_air; pm_coarse_air; pm_over10_air; methane_air; co_air"
+      record_type: "emission monitoring and vent balance"
+      raw_fields: "source; post-control concentration; dry/wet gas flow; T/P; duration; particle cumulative/band definition; NH3 molecular basis; fossil/biogenic carbon evidence; impurities; control state; abnormal events"
+      collection_method: "Measure each external atmospheric source after controls with matched concentration/flow conditions and duration; include fugitive and event inventories with justified methods. Size-band sampling and control inlet/outlet distinctions are retained; no historic factor copied as a default. Divide raw period totals by same-period Q using normalize_period and the aggregation basis below."
+      unit: "kg; mg/m3; m3; time"
+      frequency: "continuous or representative tests plus events"
+      temporal_coverage: "same period as Q including startup/shutdown"
+      site_scope: "synthesis/recovery, concentration, finishing, cooling, screening, storage/loading and controls"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "test method/calibration; gas state conventions; source map; detection limits; control operation; uncertainty"
+    - protocol_id: cp_effluent
+      process_id: "urea_manufacture"
+      flow_role: "nh3_water; ammonium_water; urea_water; liquid_water"
+      record_type: "final discharge flow and speciation analysis"
+      raw_fields: "direct discharge volume; receiving body; pH/T; NH3; NH4; urea; total N; COD; sampling; detection limits; treatment bypass"
+      collection_method: "Flow-proportional representative sampling at the final natural-discharge interface after included treatment; establish molecular/species versus N basis and speciation without duplicating total ammonia. Wastewater-to-treatment uses cp_waste instead. Divide raw period totals by same-period Q using normalize_period and the aggregation basis below."
+      unit: "m3; mg/L; kg; pH; T"
+      frequency: "continuous flow; representative samples and bypass events"
+      temporal_coverage: "same period as Q"
+      site_scope: "direct freshwater discharge only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "laboratory methods; flow calibration; molecular factors/speciation; receiver and treatment boundary"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For each non-reference exchange i, q_i = X_i / Q exactly once. X_i is the raw attributable stock-corrected exchange for the complete reporting pool defined above, before per-kg division; Q is accepted net supplied urea kg matched to that same site, route, grade/state and pool. Reconcile receipts, production/delivery, returns, opening/closing stocks and WIP with their attributable burdens; do not charge current loads to unmatched shipments or omit failed/zero-output/rework burdens. Prior-period stock requires its matched prior burdens or exclusion from Q. A zero-output subperiod retains its burdens in a justified complete pool with positive Q; if the complete pool has no positive Q, report the per-kg result unavailable, never zero burden or division by zero. Credit each final accepted net lot once after returns and reacceptance; internal rework is not additional product output. Keep urea_finished exactly 1 kg; allocation does not scale physical outputs or alter Q."
+      inputs:
+        - "period exchange"
+        - Q
+        - cp_product
+        - "applicable row protocol"
+      output: "exchange per 1 kg reference flow, or unavailable when no positive matched Q exists"
+      source_ids:
+        - ec-lvic-aaf-2007
+    - id: assay_balance
+      applies_to: "feed_ammonia, feed_co2, urea_finished, waste_urea, wastewater_transfer"
+      rule: "For a physical mass measured in kg, species kg = physical kg times measured species mass fraction. For feed_co2 recorded in m3, first establish mass from measured gas composition, absolute P, T, wet/dry state, Z and a documented compatible conversion, or obtain species moles from the validated molar/volume-fraction basis and convert with documented molecular masses. Never multiply m3 directly by a mass fraction to obtain kg. Convert liquid volume using measured stream density/state before applying mass fractions; retain full solution mass, assayed constituents and carrier water separately. These component accounts do not replace the actual supplier reference quantity or supplied-product denominator. Conserve total mass and relevant C/N/H/O across all inputs, outputs and stage stocks. Separately establish actual net water formation/consumption and dry-species conversion from stage assays and an independently supported reaction-extent model, including urea synthesis, included hydrolysis and actual side reactions. Do not determine those terms by forcing water or dry-component residuals to close. Stoichiometry is a consistency test, not a yield, complete-conversion or actual-consumption default."
+      inputs:
+        - "assays and fraction bases"
+        - "molecular masses"
+        - "verified gas/liquid conversions"
+        - "actual reaction-extent evidence"
+        - "stage stocks"
+        - cp_feed
+        - cp_product
+        - cp_water
+        - cp_energy
+        - cp_waste
+        - cp_air
+        - cp_effluent
+      output: "species kg, conserved mass/element ledger and independently evidenced reaction-water terms with uncertainty"
+      source_ids:
+        - ec-lvic-aaf-2007
+    - id: air_load
+      applies_to: "nh3_air, co2_fossil_air, co2_bio_air, pm_fine_air, pm_coarse_air, pm_over10_air, methane_air, co_air"
+      rule: "For compatible gas-state definitions, source load = sum of concentration times gas volume over matched intervals with explicit unit conversion. Reconcile controlled outlet, fugitives and events once; retain detection-limit treatment and uncertainty."
+      inputs:
+        - "source concentration"
+        - volume
+        - duration
+        - cp_air
+      output: "post-control species/band load"
+      source_ids:
+        - epa-ap42-urea-1993
+        - ec-lvic-aaf-2007
+    - id: effluent_load
+      applies_to: "nh3_water, ammonium_water, urea_water"
+      rule: "Species load = sum of species concentration times discharge volume for matched intervals. Convert mg/L with m3 to kg explicitly; convert kg N to molecular species only with supported assay/speciation and molecular-mass ratios."
+      inputs:
+        - volume
+        - concentration
+        - "assay basis"
+        - "pH/T"
+        - cp_effluent
+      output: "direct freshwater species mass"
+      source_ids:
+        - ec-lvic-aaf-2007
+    - id: energy_balance
+      applies_to: "steam_hp, steam_mp, steam_lp, steam_export"
+      rule: "Usable steam heat = incoming mass times incoming specific enthalpy minus actual condensate-return heat, with the measured system boundary and losses disclosed. Keep electrical energy separate; kWh times 3.6 gives MJ. Do not sum internal recovery and external supply twice."
+      inputs:
+        - "steam/condensate meters"
+        - state
+        - "enthalpy basis"
+        - cp_energy
+      output: "header mass/heat balance and metered electricity"
+      source_ids:
+        - ec-lvic-aaf-2007
+    - id: allocation_ledger
+      applies_to: "all inventory rows"
+      rule: "Apply documented shares only to inseparable shared environmental burdens after direct attribution. Shares sum to one for their declared burden pool. Retain all physical coproduct quantities in an unallocated ledger; no fixed share is specified."
+      inputs:
+        - "direct attribution"
+        - "causal/economic basis"
+        - "burden pool"
+        - "output quantities"
+      output: "separate allocated burden ledger"
+      source_ids:
+        - ec-lvic-aaf-2007
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all inventory rows"
+      requirement: "Verify physical species, phase, formulation, route, medium, primary property and units; a UUID is identity evidence only. Record unresolved waste identity and basis/provider gaps."
+      evidence: "direct identities; supplier/receiver specification"
+    - id: period
+      applies_to: "all inventory rows"
+      requirement: "Use one declared representative period and site/route; disclose production rate, startup/shutdown, seasonal finishing conditions and missing records. Never import one-factory historical consumption as a universal amount."
+      evidence: "production/meter logs; assay and source scope"
+    - id: closure
+      applies_to: "urea_manufacture"
+      requirement: "Reconcile physical mass, nitrogen, carbon, water and each steam header, including opening/closing stocks, reaction water, products, losses and all destinations; investigate residuals against measurement uncertainty, not an invented tolerance."
+      evidence: "separate stage physical ledger; uncertainty budget"
+    - id: completeness
+      applies_to: "all inventory rows"
+      requirement: "Check actual formulation, passivation, cleaning, maintenance and gas/effluent impurities. Add each additional actual chemical, waste or emission as a separate verified atomic exchange; unknowns cannot be declared zero or complete."
+      evidence: "site process map; procurement and source monitoring"
+    - id: background
+      applies_to: "product inputs; waste outputs"
+      requirement: "Match background supply/treatment state, grade, reference quantity, geography/period and allocation. Unconfirmed gas/steam bases or receiving conditions make the dataset link incomplete."
+      evidence: "provider metadata; meter and treatment compatibility"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "urea_manufacture"
+    rule: "Reject supplied solutions, UAN, incompatible grades/routes and intentional coating/conditioning additives. Verify reference UUID/state, product qualifiers and one finished reference output."
+    source_ids:
+      - unsd-cpc3-urea
+      - yara-technical-urea
+  - rule_id: validate_denominator
+    applies_to: "all inventory rows"
+    rule: "Reference amount, inventory normalization and linked protocol aggregation all use 1 kg accepted supplied urea and the same measured Q. Reject purity- or N-normalized values mislabeled as supplied-product mass."
+    source_ids:
+      - ec-lvic-aaf-2007
+  - rule_id: validate_atomic
+    applies_to: "all inventory rows"
+    rule: "Each row is one atomic exchange. Check UUID species/route/CAS, native property/unit and Chinese name; reject correction flows, near-name substitutes and incompatible media. Blank identity remains explicit; verified identity does not establish a complete provider link."
+    source_ids:
+      - ec-lvic-aaf-2007
+  - rule_id: validate_balances
+    applies_to: "urea_manufacture"
+    rule: "Require physical mass/water/N/C/steam closure evidence and equal-quantity internal links. Verify allocation burdens separately; never multiply physical coproduct outputs by allocation shares."
+    source_ids:
+      - ec-lvic-aaf-2007
+  - rule_id: validate_emissions
+    applies_to: "urea_manufacture"
+    rule: "Cover actual post-control vents, finishing and loading dust, leaks/events, evaporated water and final effluent/transfer fate. Use disjoint dust bands, molecular nitrogen species and fossil/biogenic carbon provenance; do not infer default positive emissions or delete measured biogenic CO2."
+    source_ids:
+      - ec-lvic-aaf-2007
+      - epa-ap42-urea-1993
+  - rule_id: validate_gaps
+    applies_to: "all inventory rows"
+    rule: "Before claiming dataset completeness, resolve all applicable waste UUIDs, actual SKU/assays, utility basis/provider matches, additional detected species and receiver conditions. Non-detect, measured zero, absent interface and unknown quantity remain distinct; undisclosed gaps fail completeness."
+    source_ids:
+      - ec-lvic-aaf-2007
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "upstream urea input with known grade and route"
+  allowed_use: "actual declared additive-free solid urea, factory-gate boundary and quality limitations"
+  excluded_use: "no end-use fertilisation/SCR service, UAN/supplied solutions, additive formulation, incompatible technology or unresolved basis links"
+  required_metadata: "product qualifiers; route/site/period; physical reference basis; all applicable atomic flows; physical unallocated and allocated-burden ledgers; background/treatment interfaces"
+  required_quality_disclosure: "measured/calculated/estimated distinction; representativeness, detection limits, uncertainty, missing items and basis-match state; future protocols are not existing measured data"
+  update_trigger: "changes in SKU/formulation, purity/moisture, synthesis/finishing technology, headers/providers, controls or destination"
+data_sources:
+  - id: "ec-lvic-aaf-2007"
+    type: "official_guidance"
+    reference: "European Commission, LVIC-AAF BREF, August 2007. [Official full text](https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic_aaf.pdf), §1.5.1 (printed 33/PDF 61), §8.2.1 and Figure 8.1 (324–326/PDF 352–354), Tables 8.5–8.10 (329–335/PDF 357–363), §8.4.12–8.4.13 (357–359/PDF 385–387), §8.5 (362/PDF 390)."
+    used_for: "Historical synthesis/recovery/particle-formation and water-treatment boundary; separate utility/state and balance measurements. Cases/BAT levels do not supply universal amounts, yield, recipe or current legal thresholds."
+  - id: "epa-ap42-urea-1993"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 §8.2 Urea, July 1993, reformatted January 1995. [Official full text](https://www.epa.gov/sites/default/files/2020-09/documents/8.2_urea.pdf), §8.2.1–8.2.3, Figure 8.2-1, pp.8.2-1–8.2-3."
+    used_for: "Independent historical process/source map; finishing dust, ammonia and conditioning distinction. Route-specific/controlled factors and old factory observations are not defaults."
+  - id: "yara-technical-urea"
+    type: "literature"
+    reference: "Yara International, [Technical Urea](https://www.yara.com/industrial-nitrogen/base-chemicals/technical-urea/), sections “You can get Urea in two forms” and “How we produce Urea”, accessed 2026-10-13 UTC."
+    used_for: "Producer confirmation of prill/granule and additive-free prill option, ammonia/CO2 manufacture, solid versus solution state. No SKU/quantity defaults."
+  - id: "unsd-cpc3-urea"
+    type: "official_guidance"
+    reference: "UNSD, [CPC Version 3.0 subclass 34611 — Urea](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/34611) and class 3461 breakdown, accessed 2026-10-13 UTC."
+    used_for: "Classification location and distinction from subclass 34616 UAN; narrower scope recommendation, not proof of complete classification coverage."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1ce31c9702286fd0958d26c50e53355af27a9942c3427c339b0a6dff4931d646"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6306"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6306
+          line: 64
+          column: 1
+        end:
+          offset: 8985
+          line: 85
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt of external liquid ammonia, CO2, treated process water and utilities; record opening stocks of recycle liquor/seeds/water/steam |\n| starting_condition_role | foreground_gate |\n| product_classification_scope | Additive-free bulk solid urea; a narrower part of CPC 34611 |\n| recursive_input_rule | Keep internal recovered NH3/CO2/carbamate, urea fines, condensate and steam as equal-quantity internal links; purchased urea of the same category requires its upstream link without infinite recursion through this unit |\n| upstream_dataset_requirement | Link actual feedstock origin, quality, transport and supply energy, utilities and waste-treatment providers; unknown bases/missing providers are explicit dataset gaps |\n| disclosure | Disclose stages, chosen finishing route, meter boundaries, internal/external interfaces, controls, abnormal operation, utility sources and discharge/reuse destinations |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_stages | urea_manufacture | Include receiving, compression/pumping, synthesis, stripping/decomposition and recovery, concentration, selected particle formation, cooling/screening, storage/loading and their gas/water controls. Phase records remain separately measurable within one foreground unit. | ec-lvic-aaf-2007; epa-ap42-urea-1993 |\n| boundary_recycle | urea_manufacture | Record internal flow endpoints in the same physical unit/state. Recovered material is neither new purchased feed nor avoided burden. Include external losses and treatment transfers once. | ec-lvic-aaf-2007 |\n| boundary_utilities | urea_manufacture | Retain steam-header imports, recoveries, exports and condensate return separately. Source Table 8.19 excludes particle formation from its energy example; collected energy must also include actual finishing, cooling and controls. | ec-lvic-aaf-2007 |\n| boundary_water | urea_manufacture | Separate internal process-water reuse, external reuse product, wastewater-to-treatment and direct natural discharge. Biological treatment and its chemicals/emissions require a separate treatment unit; no universal recipe is given. | ec-lvic-aaf-2007 |\n| boundary_scope | urea_manufacture | Confirm additive-free route from procurement/formulation records; isolate incompatible variants. Atmospheric source inventories include detected feed impurities; any additional actual substance must be a separately identified atomic row, not silently omitted or represented by total VOC/total nitrogen. | epa-ap42-urea-1993; ec-lvic-aaf-2007; yara-technical-urea |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 10
+              column: 1
+            end:
+              offset: 299
+              line: 10
+              column: 59
+          text: "# Additive-free bulk solid urea by total recycle synthesis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6306
+              line: 64
+              column: 1
+            end:
+              offset: 6327
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35799"
+      family: "allocation"
+      span:
+        start:
+          offset: 35799
+          line: 531
+          column: 1
+        end:
+          offset: 37460
+          line: 542
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nThese allocation rules are authored modelling requirements. The BREF supports the integrated material/energy context, not an ISO allocation hierarchy or market-price evidence.\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_avoid | urea_manufacture | First subdivide by actual meters and process origin; assign attributable feeds, utilities and emissions directly. Internal recycling is not a coproduct. The selected foreground reference is urea, not ammonia manufacture. | ec-lvic-aaf-2007 |\n| allocation_physical | urea_manufacture | Keep all physical coproduct outputs, stage balances and internal links at measured full quantity. Allocation shares act on shared environmental burdens, not physical output mass, water or heat. | ec-lvic-aaf-2007 |\n| allocation_residual | urea_manufacture | For genuinely inseparable shared burdens with usable exported steam or accepted recovered water, document the causal relationship, basis and denominator and test sensitivity. If no defensible physical relationship exists, disclose a chosen economic allocation using actual comparable-period net values; no default share or price is prescribed. Reject unsupported shares rather than forcing a single-product balance. | ec-lvic-aaf-2007 |\n| allocation_co2 | feed_co2 | Disclose CO2 provider capture/purification/compression energy and upstream allocation. Do not award a capture credit and also deduct product-retained carbon as a negative emission. Downstream release is outside the factory-gate boundary; disclose carbon provenance and quantity for later modelling. | ec-lvic-aaf-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 10
+              column: 1
+            end:
+              offset: 299
+              line: 10
+              column: 59
+          text: "# Additive-free bulk solid urea by total recycle synthesis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35799
+              line: 531
+              column: 1
+            end:
+              offset: 35839
+              line: 531
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_51179"
+      family: "validation"
+      span:
+        start:
+          offset: 51179
+          line: 579
+          column: 1
+        end:
+          offset: 53134
+          line: 590
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | urea_manufacture | Reject supplied solutions, UAN, incompatible grades/routes and intentional coating/conditioning additives. Verify reference UUID/state, product qualifiers and one finished reference output. | unsd-cpc3-urea; yara-technical-urea |\n| validate_denominator | all inventory rows | Reference amount, inventory normalization and linked protocol aggregation all use 1 kg accepted supplied urea and the same measured Q. Reject purity- or N-normalized values mislabeled as supplied-product mass. | ec-lvic-aaf-2007 |\n| validate_atomic | all inventory rows | Each row is one atomic exchange. Check UUID species/route/CAS, native property/unit and Chinese name; reject correction flows, near-name substitutes and incompatible media. Blank identity remains explicit; verified identity does not establish a complete provider link. | ec-lvic-aaf-2007 |\n| validate_balances | urea_manufacture | Require physical mass/water/N/C/steam closure evidence and equal-quantity internal links. Verify allocation burdens separately; never multiply physical coproduct outputs by allocation shares. | ec-lvic-aaf-2007 |\n| validate_emissions | urea_manufacture | Cover actual post-control vents, finishing and loading dust, leaks/events, evaporated water and final effluent/transfer fate. Use disjoint dust bands, molecular nitrogen species and fossil/biogenic carbon provenance; do not infer default positive emissions or delete measured biogenic CO2. | ec-lvic-aaf-2007; epa-ap42-urea-1993 |\n| validate_gaps | all inventory rows | Before claiming dataset completeness, resolve all applicable waste UUIDs, actual SKU/assays, utility basis/provider matches, additional detected species and receiver conditions. Non-detect, measured zero, absent interface and unknown quantity remain distinct; undisclosed gaps fail completeness. | ec-lvic-aaf-2007 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 10
+              column: 1
+            end:
+              offset: 299
+              line: 10
+              column: 59
+          text: "# Additive-free bulk solid urea by total recycle synthesis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 51179
+              line: 579
+              column: 1
+            end:
+              offset: 51201
+              line: 579
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_6306"
+      source_span:
+        start:
+          offset: 7402
+          line: 79
+          column: 1
+        end:
+          offset: 7750
+          line: 79
+          column: 349
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_6306"
+      source_span:
+        start:
+          offset: 7751
+          line: 80
+          column: 1
+        end:
+          offset: 7998
+          line: 80
+          column: 248
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_6306"
+      source_span:
+        start:
+          offset: 7999
+          line: 81
+          column: 1
+        end:
+          offset: 8290
+          line: 81
+          column: 292
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_water"
+      identity_kind: "explicit"
+      unit_id: "normative_6306"
+      source_span:
+        start:
+          offset: 8291
+          line: 82
+          column: 1
+        end:
+          offset: 8580
+          line: 82
+          column: 290
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_6306"
+      source_span:
+        start:
+          offset: 8581
+          line: 83
+          column: 1
+        end:
+          offset: 8983
+          line: 83
+          column: 403
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 35841
+          line: 533
+          column: 1
+        end:
+          offset: 36016
+          line: 533
+          column: 176
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_avoid"
+      identity_kind: "explicit"
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 36089
+          line: 537
+          column: 1
+        end:
+          offset: 36370
+          line: 537
+          column: 282
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 36371
+          line: 538
+          column: 1
+        end:
+          offset: 36628
+          line: 538
+          column: 258
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 36629
+          line: 539
+          column: 1
+        end:
+          offset: 37108
+          line: 539
+          column: 480
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_co2"
+      identity_kind: "explicit"
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 37109
+          line: 540
+          column: 1
+        end:
+          offset: 37458
+          line: 540
+          column: 350
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_51179"
+      source_span:
+        start:
+          offset: 51274
+          line: 583
+          column: 1
+        end:
+          offset: 51541
+          line: 583
+          column: 268
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_51179"
+      source_span:
+        start:
+          offset: 51542
+          line: 584
+          column: 1
+        end:
+          offset: 51818
+          line: 584
+          column: 277
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_51179"
+      source_span:
+        start:
+          offset: 51819
+          line: 585
+          column: 1
+        end:
+          offset: 52149
+          line: 585
+          column: 331
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_51179"
+      source_span:
+        start:
+          offset: 52150
+          line: 586
+          column: 1
+        end:
+          offset: 52403
+          line: 586
+          column: 254
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_51179"
+      source_span:
+        start:
+          offset: 52404
+          line: 587
+          column: 1
+        end:
+          offset: 52776
+          line: 587
+          column: 373
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_gaps"
+      identity_kind: "explicit"
+      unit_id: "normative_51179"
+      source_span:
+        start:
+          offset: 52777
+          line: 588
+          column: 1
+        end:
+          offset: 53132
+          line: 588
+          column: 356
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6306"
+      source_span:
+        start:
+          offset: 6306
+          line: 64
+          column: 1
+        end:
+          offset: 6327
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6306"
+      source_span:
+        start:
+          offset: 6355
+          line: 68
+          column: 1
+        end:
+          offset: 7329
+          line: 75
+          column: 185
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 35799
+          line: 531
+          column: 1
+        end:
+          offset: 35839
+          line: 531
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 35841
+          line: 533
+          column: 1
+        end:
+          offset: 36016
+          line: 533
+          column: 176
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 36089
+          line: 537
+          column: 1
+        end:
+          offset: 36370
+          line: 537
+          column: 282
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 36371
+          line: 538
+          column: 1
+        end:
+          offset: 36628
+          line: 538
+          column: 258
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 36629
+          line: 539
+          column: 1
+        end:
+          offset: 37108
+          line: 539
+          column: 480
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_35799"
+      source_span:
+        start:
+          offset: 37109
+          line: 540
+          column: 1
+        end:
+          offset: 37458
+          line: 540
+          column: 350
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_51179"
+      source_span:
+        start:
+          offset: 51179
+          line: 579
+          column: 1
+        end:
+          offset: 51201
+          line: 579
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1ce31c9702286fd0958d26c50e53355af27a9942c3427c339b0a6dff4931d646"
+  generated_content_sha256: "sha256:cb0ebdbe6f014376326371d53d31c603cb0104750e15d857d83cebe52f33e580"

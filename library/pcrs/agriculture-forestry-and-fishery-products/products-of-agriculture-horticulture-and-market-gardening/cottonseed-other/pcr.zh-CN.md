@@ -729,23 +729,23 @@ sync_with: pcr.en-US.md
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity` | reference | Prove non-planting, whole/fuzzy state, cultivar, crop year, moisture, foreign matter, grade, storage and gate. | specification, lot ticket, inspection |
+| `dq_identity` | reference | 证明非播种用途、完整/带绒状态，并记录品种、作物年度、水分、异物、等级、储存及交接点。 | specification, lot ticket, inspection |
 | `dq_traceability` | chain | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | 具体流身份核验证据 |
 | `dq_mass_balance` | gin/storage | Reconcile wet and dry balances and investigate gaps beyond justified uncertainty. | scales, moisture tests, balance |
 | `dq_allocation` | co-products | Retain quantities, grades, prices, period, currency, shares and mass sensitivity. | sales/market evidence, worksheet |
-| `dq_temporal` | all | Cover a complete crop cycle and gin/storage period; disclose proxies and abnormal events. | dates and exception log |
-| `dq_completeness` | all cards | Report applicable value or documented zero/not-applicable and retain concrete selections for sets. | completeness and binding evidence |
+| `dq_temporal` | all | 覆盖完整作物周期及轧花/储存期间；披露代理数据和异常事件。 | dates and exception log |
+| `dq_completeness` | all cards | 报告适用数值或有据零值/不适用，并保留集合的具体选择记录。 | completeness and binding evidence |
 
 ## 9. 验证规则
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | reference | Reject planting, delinted or crushed seed and derived products; require whole fuzzy non-planting cottonseed and qualifiers. |  |
-| `validate_process_chain` | map | Require cultivation/harvest and ginning; include storage only when before gate and impose no inactive-route amount. |  |
-| `validate_gin_balance` | ginning | Require matched input and complete lint, cottonseed, useful output, waste and moisture reconciliation. | `cotton-ginners-handbook-2016` |
-| `validate_coproduct_allocation` | crop/gin | Require explicit lint/cottonseed attribution, economic inputs and mass sensitivity; reject double allocation. |  |
+| `validate_reference_identity` | reference | 拒绝播种用、脱绒、压榨棉籽及衍生产品；要求完整带绒非播种棉籽及全部限定项。 |  |
+| `validate_process_chain` | map | 要求栽培/收获和轧花；储存仅在交接前纳入，不对未启用路线规定数量。 |  |
+| `validate_gin_balance` | ginning | 要求匹配进料，以及完整的棉纤维、棉籽、有用产出、废物和水分核对。 | `cotton-ginners-handbook-2016` |
+| `validate_coproduct_allocation` | crop/gin | 要求明确的棉纤维/棉籽归属、经济输入及质量分配敏感性，禁止重复分配。 |  |
 | `validate_flow_identitys` | inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
-| `validate_ranges` | cards | Require role, bounds, unit, basis and evidence; lower <= upper and inactive conditional routes impose no amount. |  |
+| `validate_ranges` | cards | 要求角色、界限、单位、基准及证据；下限≤上限，未启用条件路线不产生规定数量。 |  |
 | `validate_reject_routing` | rejects | Route each off-spec stream once and exclude rejected mass from accepted output. |  |
 | `validate_shared_burdens` | shared services | Require a causal driver and prove each shared burden is counted once. |  |
 
