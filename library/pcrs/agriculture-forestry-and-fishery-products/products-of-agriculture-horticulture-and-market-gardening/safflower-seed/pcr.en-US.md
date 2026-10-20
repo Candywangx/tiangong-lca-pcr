@@ -1,8 +1,989 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.safflower-seed
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Safflower seed
+
+## 1. Scope and Applicability
+
+This PCR produces a foreground package for whole, unprocessed safflower (Carthamus tinctorius) grain physically handed over at the farm gate. Include managed annual-crop production, a distinct harvest operation, and the cleaning, sorting, drying or short storage actually completed before handover. Exclude oil extraction, meal manufacture, post-gate transport and consumption. The fixed reference flow denotes harvested grain; it does not prove a certified or treated planting-seed output. Declare cultivar and oleic/linoleic type when known, irrigation, harvest path, seed grade, actual moisture, and gate. Regional buyer moisture limits in the sources are not universal PCR limits. [uc-safflower-production; wisconsin-safflower]
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.safflower-seed |
+| classification_refs | CPC 3.0 01446 Safflower seed; this raw-grain route is narrower than the whole classification leaf when planting-seed handling is considered.; mapping relation: narrower |
+| covered_products | Whole harvested safflower grain for oilseed, birdseed or another declared raw-grain market. |
+| excluded_products | Extracted oil, press cake or meal, flowers, forage, processed feed, and certified or treated planting-seed output using the fixed grain UUID. |
+| representative_product | Whole accepted safflower grain at recorded moisture and grade, at physical farm-gate handover. |
+| production_route | Managed annual safflower cultivation is the parent activity. Dryland and irrigated production are alternative management routes: irrigation changes the water and pumping-energy inventory. Direct combining is the parent harvest technology; windrow plus pickup is a conditional alternative with an additional pass and field-drying interval. These harvest choices are mutually exclusive for each lot. [uc-safflower-production; wisconsin-safflower] |
+| market_state | Whole unprocessed grain, as-harvested or first-cleaned, with any actual farm-side drying declared. |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Whole, accepted safflower grain handed over by the farm. |
+| How much | 1 kg at measured as-delivered moisture. |
+| How well | Declare cultivar/oil class, market grade, admixture/cleaning state, damage and actual moisture. |
+| How long or cycle | One identified field crop cycle and its linked harvest and pre-gate conditioning lots. |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Safflower seed |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | Location and crop year; cultivar/oil class if known; dryland or irrigated; direct combine or windrow/pickup; actual moisture; cleaning and grade; pre-gate drying/storage; market destination; physical gate. |
+
+Measurement basis qualifier: 1 kg accepted whole safflower grain at actual handover moisture.
+
+Each foreground dataset must explicitly select one actual route, declared gate, product state and output row. Reconcile the selected terminal route with `reference_product_at_declared_handoff`; normalize that handoff output to the reference quantity and retain preceding-stage outputs as measured transfers. Raw weighing, mass reconciliation and lot traceability requirements continue to apply.
+
+The sole reference output is `reference_product_at_declared_handoff`, receiving the selected actual route product at the declared gate. Existing route-output ids identify the source and physical state; they are no longer individually fixed to the reference quantity.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | Accepted grain | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Use measured final lot mass and moisture; never substitute wet harvest mass without adjustment. |
+| `dry_matter` | Differing moisture states | Mass | kg | Compare dry matter as wet kg × (1 − measured moisture fraction); keep both measured wet masses and moisture values. |
+| `field_yield` | Crop cycle | Mass per area | kg/ha | Divide final accepted mass from the field by harvested area; identify any separately sold lower grade. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Record field area, previous crop/land use, soil preparation, seed supply, and available soil nutrient and water conditions at crop-cycle start. |
+| starting_condition_role | Starting point for managed annual safflower production, without assuming zero upstream burdens for inputs. |
+| product_classification_scope | Whole harvested safflower grain; treated or certified planting seed requires a verified distinct product identity. |
+| recursive_input_rule | Planting seed used as an input retains its actual upstream seed dataset; do not recursively treat this grain output as certified seed supply. |
+| upstream_dataset_requirement | Link purchased seed, fertilizer, crop protection products, fuel, electricity, water supply, and contracted pre-gate operations to supported upstream datasets or disclose gaps. |
+| disclosure | Field/crop year, farm gate, product state and moisture, irrigation, harvest route, actual pre-gate conditioning, all rejects/destinations and missing data. |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `field_to_gate` | Foreground system | Include crop management, separate harvest capture, and actual first cleaning, sorting, drying and storage before handover. Standing plants and collected grain are separate states so harvest loss is visible. | uc-safflower-production; wisconsin-safflower |
+| `route_delta` | Production and harvest | Irrigated fields add measured water and pumping burdens; dryland fields do not. Windrow/pickup adds cutting, field drying and pickup observations; direct-combine lots omit these. Record one path per lot. | uc-safflower-production; wisconsin-safflower |
+| `conditional_nodes` | First handling | Cleaning, drying and storage apply only when physically performed before gate; no California or Upper Midwest moisture target is a global condition. | uc-safflower-production; wisconsin-safflower |
+| `downstream` | Exclusions | Oil pressing, meal processing and post-gate transport remain outside. A separately sold residue or lower grade requires recorded mass, destination and attribution. | uc-safflower-production; wisconsin-safflower |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `safflower_cultivation` | Managed safflower crop | required | Every field/crop year; declare dryland or irrigated. | Grow the seed-bearing standing crop and hand it to harvest. | Field area and input ledger. |
+| `safflower_harvest` | Grain capture | required | Direct combine or conditional windrow/pickup per lot. | Separate collected grain from plant and record field loss. | Harvest scale and route log. |
+| `safflower_conditioning` | First seed conditioning | conditional | Actual first cleaning before gate. | Convert raw harvested grain to prepared whole seed, separating screenings. | In/out scale mass and energy. |
+| `safflower_grading` | Grade and destination sorting | required | Classify every transferred lot. | Split accepted, downgraded and rejected states with handoffs. | Grade tickets and mass balance. |
+| `safflower_stabilization` | Farm-side drying or storage | conditional | Actual pre-gate stabilization. | Transform usable seed to measured stable handover state. | Mass, moisture, energy and duration. |
+| declared_reference_handoff | Product Measurement at Declared Handoff | required |  | foreground | reference_product_at_declared_handoff |
+
+All operations are indexed to field/crop cycle and linked harvest or conditioning runs. A re-cleaned reject returns to its original run; its returning mass is not new crop output. Harvest capture is independent from crop growth and first conditioning because it has distinct equipment, collected-state handoff and field losses. Record straw/chaff remaining on land and uncaptured seed loss as separate field observations with distinct fates; neither is a verified elementary emission or accepted farm-gate grain. [uc-safflower-production; wisconsin-safflower]
+
+### Process: Managed safflower crop (`safflower_cultivation`)
+
+#### Inputs
+
+##### Product flows
+
+###### Planting seed (`planting_seed`)
+
+Record the actual safflower seed supply entering each field. A verified planting-seed flow UUID is not yet available; do not reuse the harvested-grain output UUID for a seed-grade input.
+
+- Selected flow: Safflower planting seed, identity unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Recorded mass sown by field and crop cycle.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+- Sources: wisconsin-safflower
+- Range: Regional planting-rate example for review
+  - Range role: Typical range (`typical_range`)
+  - Lower: 22
+  - Upper: 34
+  - Unit: kg seed/ha
+  - Basis: one crop hectare; California 20–30 lb/acre regional row or drilled examples, not a universal limit
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `uc-safflower-production`
+
+###### Fertilizer, urea input (`safflower_cultivation_agricultural_nutrient_inputs`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+
+###### Fertilizer, monoammonium phosphate input (`safflower_cultivation_agricultural_nutrient_inputs_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+
+###### Fertilizer, potassium chloride input (`safflower_cultivation_agricultural_nutrient_inputs_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+
+###### Cattle manure, as applied input (`safflower_cultivation_agricultural_nutrient_inputs_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+
+###### Agricultural limestone input (`safflower_cultivation_agricultural_nutrient_inputs_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+###### Irrigation water (`irrigation_water`)
+
+Include supplied water only on irrigated fields, with source and event recorded. Dryland fields declare the route and have no invented water supply row amount.
+
+- Selected flow: Irrigation water supply, identity unresolved pending source-specific lookup
+- Flow property / unit: Volume / m3
+- Amount rule: Metered or documented delivered water by field and event.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per irrigated field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+- Sources: wisconsin-safflower
+- Range: Broad provisional QA screen; replace with foreground records
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 20000
+  - Unit: m3/ha
+  - Basis: one crop hectare; zero on rainfed routes, measured withdrawal/delivery on irrigated routes; provisional screen only
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel input (`field_fuel`)
+
+Include this one exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+
+###### Irrigation-pump electricity (`pump_electricity`)
+
+For electric pumping on irrigated fields, record metered electricity separately from supplied water and liquid fuel. Other pumping carriers require their own identified row in the foreground package.
+
+- Selected flow: Purchased electricity for irrigation pumping, identity unresolved pending supply lookup
+- Flow property / unit: Energy / kWh
+- Amount rule: Metered pumping electricity by field and crop cycle.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per irrigated field crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+- Sources: wisconsin-safflower
+- Range: Broad provisional QA screen; replace with foreground records
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 20000
+  - Unit: kWh/ha
+  - Basis: one crop hectare; conditional electric machinery or irrigation pumping, measured kWh; provisional screen only
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+Where a compatible method and measured activity data support a specific managed-field elementary emission, add a separate species-specific exchange with its method, quantity and verified identity in the foreground package. No undifferentiated field-emissions exchange is prescribed here.
+
+#### Outputs
+
+##### Product flows
+
+###### Standing seed-bearing crop (`standing_crop`)
+
+The managed biological output is the standing mature crop handed to harvest, not an extra sold seed output.
+
+- Selected flow: Standing safflower crop, internal state
+- Flow property / unit: Area / ha
+- Amount rule: Recorded harvested field area and maturity handoff.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per crop cycle..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field`
+- Sources: wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: ha/ha cultivated
+  - Basis: one recorded cultivated hectare linked once to the harvest field
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+### Process: Grain capture (`safflower_harvest`)
+
+#### Inputs
+
+##### Product flows
+
+###### Diesel fuel input (`harvest_fuel`)
+
+Include this one exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: Per harvest lot..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest`
+
+###### Contracted harvest service (`harvest_service`)
+
+When a contractor performs harvest, record the purchased service separately from direct fuel; disclose whether its upstream dataset already includes fuel and equipment.
+
+- Selected flow: Actual contracted harvest service, identity unresolved pending supplier/service lookup
+- Flow property / unit: Service / documented operating hour
+- Amount rule: Invoiced equipment hours or other documented service quantity by lot.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: Per harvest lot..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Broad provisional QA screen; replace with foreground records
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: h/ha
+  - Basis: one harvested hectare, contracted machine operating time recorded separately from fuel; provisional screen only
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Captured raw grain (`raw_grain`)
+
+Weigh uncleaned captured seed with admixture and actual moisture before sending it to first cleaning or grade sorting.
+
+- Selected flow: Harvested safflower grain, internal pre-cleaning state
+- Flow property / unit: Mass / kg
+- Amount rule: Scale mass and moisture per lot.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per harvest lot..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Broad provisional QA screen; replace with foreground records
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 10000
+  - Unit: kg raw seed/ha
+  - Basis: one harvested hectare; provisional broad captured-seed screen before first conditioning, replace with scale records
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+### Process: First seed conditioning (`safflower_conditioning`)
+
+#### Inputs
+
+##### Product flows
+
+###### Raw harvested seed intake (`conditioning_seed_input`)
+
+Weigh the harvested grain entering first cleaning and link any rejected lot returned for re-cleaning to its original run.
+
+- Selected flow: Raw harvested safflower grain, internal pre-cleaning state
+- Flow property / unit: Mass / kg
+- Amount rule: Incoming grain mass and measured moisture by cleaning run.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per conditioning run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant material-transfer node; check actual moisture and any mixing before applying conservation
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Cleaning electricity (`conditioning_electricity`)
+
+Include electricity metered for actual cleaning equipment; assign shared meter periods once by throughput or documented run time.
+
+- Selected flow: Purchased electricity for cleaning, identity unresolved pending supply lookup
+- Flow property / unit: Energy / kWh
+- Amount rule: Metered or justified allocated kWh per cleaning run.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per conditioning run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Broad provisional QA screen; replace with foreground records
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 5
+  - Unit: kWh/kg processed seed
+  - Basis: per kg seed entering this actual cleaning, sorting, drying or storage run; provisional screen only
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel input (`conditioning_fuel`)
+
+Include this one exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per conditioning run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Prepared whole seed (`prepared_seed`)
+
+Hand cleaned whole grain to grade sorting; this is an internal state, not a second sale.
+
+- Selected flow: Prepared whole safflower grain, internal state
+- Flow property / unit: Mass / kg
+- Amount rule: Weighed clean mass and moisture.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per conditioning run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant material-transfer node; check actual moisture and any mixing before applying conservation
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Screenings (`screenings`)
+
+Classify broken seed, empty seed, weed seed and hull fragments by actual recovery, sale or disposal destination.
+
+- Selected flow: Safflower cleaning screenings, identity unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Weighed or reconciled removed mass by destination.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per conditioning run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant sorting or drying node; each reject, downgrade or moisture stream is a separate nonnegative part, sum must reconcile
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+### Process: Grade and destination sorting (`safflower_grading`)
+
+#### Inputs
+
+##### Product flows
+
+###### Seed lot to classify (`grade_input`)
+
+Classify as-harvested or cleaned grain against declared buyer requirements and record mass and moisture before the split.
+
+- Selected flow: Whole safflower grain, internal input state
+- Flow property / unit: Mass / kg
+- Amount rule: Incoming lot mass.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per grade lot..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grade`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant material-transfer node; check actual moisture and any mixing before applying conservation
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted raw-grain grade (`accepted_seed`)
+
+Accepted whole seed goes to farm-gate sale or actual pre-gate drying. Count only its final handover mass as reference output.
+
+- Selected flow: Safflower seed `30eacea6-7a8a-457f-a766-c93480303927`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+Raw output measurement and reconciliation: Weighed accepted seed at measured moisture.
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per 1 kg final farm-gate seed..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grade`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant material-transfer node; check actual moisture and any mixing before applying conservation
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Downgraded sold grain (`downgraded_seed`)
+
+If a lower grade actually sells, weigh and identify its destination separately; do not assume it is waste or merge it into accepted mass.
+
+- Selected flow: Downgraded safflower grain, identity unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Weighed sold lower grade by destination.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: Per grade lot..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grade`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant sorting or drying node; each reject, downgrade or moisture stream is a separate nonnegative part, sum must reconcile
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Off-spec reject (`grade_reject`)
+
+Link rejects to the originating grade run and to re-cleaning, documented recovery or disposal; never count unreworked rejects as accepted.
+
+- Selected flow: Rejected safflower seed, identity unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Weighed reject and final disposition.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per grade lot..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grade`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant sorting or drying node; each reject, downgrade or moisture stream is a separate nonnegative part, sum must reconcile
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+### Process: Farm-side drying or storage (`safflower_stabilization`)
+
+#### Inputs
+
+##### Product flows
+
+###### Usable seed before stabilization (`stabilization_seed_input`)
+
+Record the accepted whole-seed lot entering an actual pre-gate drying or storage run with inlet mass and moisture.
+
+- Selected flow: Whole safflower grain, internal pre-stabilization state
+- Flow property / unit: Mass / kg
+- Amount rule: Measured inlet mass and moisture by run.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per stabilization run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stabilization`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant material-transfer node; check actual moisture and any mixing before applying conservation
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel input (`dryer_fuel`)
+
+Include this one exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per stabilization run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stabilization`
+
+###### Dryer electricity (`dryer_electricity`)
+
+Record electricity actually used by dryer fans or controls; do not combine it with fuel or seed mass.
+
+- Selected flow: Purchased electricity for drying, identity unresolved pending supply lookup
+- Flow property / unit: Energy / kWh
+- Amount rule: Metered or justified allocated kWh for the drying run.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per stabilization run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stabilization`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Broad provisional QA screen; replace with foreground records
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 5
+  - Unit: kWh/kg processed seed
+  - Basis: per kg seed entering this actual cleaning, sorting, drying or storage run; provisional screen only
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Storage electricity (`storage_electricity`)
+
+If seed is stored before gate, record ventilation or handling electricity during the documented storage period separately from active drying.
+
+- Selected flow: Purchased electricity for farm-side storage, identity unresolved pending supply lookup
+- Flow property / unit: Energy / kWh
+- Amount rule: Metered or justified allocated kWh and storage duration by lot.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per stabilization run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stabilization`
+- Sources: wisconsin-safflower
+- Range: Broad provisional QA screen; replace with foreground records
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 5
+  - Unit: kWh/kg processed seed
+  - Basis: per kg seed entering this actual cleaning, sorting, drying or storage run; provisional screen only
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Stabilized seed at gate (`stabilized_seed`)
+
+The measured final mass/moisture supersedes the pre-drying grade mass as reference output; no universal target moisture is imposed.
+
+- Selected flow: Safflower seed `30eacea6-7a8a-457f-a766-c93480303927`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+Raw output measurement and reconciliation: Weighed final accepted seed at actual moisture.
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per 1 kg final farm-gate seed..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stabilization`
+- Sources: uc-safflower-production; wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant material-transfer node; check actual moisture and any mixing before applying conservation
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Damaged seed (`stabilization_reject`)
+
+Identify actual spoilage or damaged seed with measured quantity and disposal/recovery destination.
+
+- Selected flow: Damaged safflower seed, identity unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Weighed off-spec mass by destination.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per stabilization run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stabilization`
+- Sources: wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant sorting or drying node; each reject, downgrade or moisture stream is a separate nonnegative part, sum must reconcile
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+###### Evaporated drying water (`drying_water`)
+
+Calculate actual water loss from inlet/outlet mass and moisture without treating it as sold grain or dry matter loss.
+
+- Selected flow: Water to air, semantic elementary flow
+- Flow property / unit: Mass / kg
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: Per drying run..
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_stabilization`
+- Sources: wisconsin-safflower
+- Range: Mass-conservation QA check
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg linked incoming seed
+  - Basis: per kg measured seed entering the relevant sorting or drying node; each reject, downgrade or moisture stream is a separate nonnegative part, sum must reconcile
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+
+### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
+This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
+#### Inputs
+##### Product flows
+###### Actual route product at handoff (`actual_route_product_for_handoff`)
+Record the accepted product delivered by the actual terminal route and reconcile it with handoff weighing and lot records.
+- Selected flow: Safflower seed
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net product mass at the actual handoff, normalized to the reference quantity; do not sum preceding-stage quantities, other routes or co-products
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+This measurement node adds no waste inputs.
+##### Elementary flows
+This measurement node adds no resource inputs.
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+- Selected flow: Safflower seed
+- Flow property / unit: Mass / kg
+- Amount rule: 1 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+Confirm the product UUID independently for the actual state. Until confirmed, retain unresolved identity instead of inheriting a UUID from a preceding stage or another route.
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+Record actual losses at the operation where they occur; do not duplicate them here.
+##### Elementary flows
+Record actual emissions at the operation where they occur; do not duplicate them here.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `single_seed_product` | Normal crop | Attribute crop and harvest burdens to accepted grain when straw stays in the field, uncaptured seed is lost, and screenings/rejects are discarded; these are not presumed saleable co-products. | uc-safflower-production; wisconsin-safflower |
+| `separate_sale` | Sold lower grade or residue | If lower-grade seed, screenings or straw actually sells, measure its mass/destination and document process subdivision or justified allocation before dataset use. No default economic split is supplied. | uc-safflower-production; wisconsin-safflower |
+| `run_attribution` | Shared runs | Link inputs to crop cycle and harvest, cleaning, drying and changeover energy to actual lots/runs. Assign a shared meter period once by measured throughput or documented time and include re-cleaning energy without double counting returned seed. | uc-safflower-production; wisconsin-safflower |
+| `reject_exclusion` | Rework | Accepted reference mass excludes rejected mass unless a linked rework pass restores accepted grade; the returning mass is not a new farm output. | uc-safflower-production; wisconsin-safflower |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+The quantity ranges on flow cards are review triggers before normalization, not inventory defaults or universal acceptance limits. Use actual field, lot and run records for amounts; investigate values outside provisional screens against route, region, units and measurement quality. Regional planting-rate examples are illustrative only.
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_field` | `safflower_cultivation` | Field inputs and irrigation | Field log, invoices and meters | field_id, area_ha, crop_year, seed_kg, product_id, applied_kg, fuel_L, irrigation_m3, pump_kWh, route | Reconcile issue log and meters; Raw aggregation and attribution: Sum by field/year/input | ha; kg; L; m3; kWh | Each event | Full crop cycle | Each field | per declared reference flow | Invoices, log, meter, area record |
+| `cp_harvest` | `safflower_harvest` | Capture and field loss | Work log, scale, moisture test | lot_id, field_id, direct_or_windrow, dates, fuel_L, service_hours, grain_kg, moisture, straw_chaff_kg, uncaptured_seed_kg, residue_fate | Weigh lot and observe residue and uncaptured seed separately; Raw aggregation and attribution: One recorded path and mass per lot | kg; fraction; L | Each lot | Harvest window | Field and route | per declared reference flow | Scale ticket, work log, moisture test |
+| `cp_conditioning` | `safflower_conditioning` | Cleaning and screenings | Run ledger and meters | run_id, lot_id, in_kg, out_kg, screenings_kg, electricity_kWh, fuel_L, return_id, destinations | Weigh input/output and meter energy; Raw aggregation and attribution: Link returns, balance mass | kg; kWh or fuel unit | Each run | Before gate | Farm or pre-gate contractor | per declared reference flow | Scale, meter and disposition tickets |
+| `cp_grade` | `safflower_grading` | Grade and handover | Grade/sale ticket | lot_id, grade, accepted_kg, downgrade_kg, reject_kg, moisture, gate_date, destinations | Apply declared buyer grade and weigh states; Raw aggregation and attribution: Sum final accepted once | kg; fraction | Each lot | Before gate | Farm gate | per declared reference flow | Grade and scale tickets |
+| `cp_stabilization` | `safflower_stabilization` | Actual drying/storage | Dryer and store log | run_id, lot_id, inlet_kg, outlet_kg, inlet_moisture, outlet_moisture, dryer_fuel_L, dryer_electricity_kWh, storage_electricity_kWh, duration, reject_kg ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation| Weigh and moisture-test both sides; meter energy; Raw aggregation and attribution: Dry-matter balance, final accepted once | kg; fraction; energy unit; days | Each run | Before gate | Farm/contractor | per declared reference flow | Scale, moisture, energy records |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | safflower_cultivation | managed environmental coverage by actual node | site/activity/method ledger | actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `accepted_yield` | Field crop cycle | Final accepted kg ÷ harvested ha at declared moisture; disclose separate lower-grade sale. | accepted_kg, area_ha | kg/ha | wisconsin-safflower |
+| `mass_balance` | Harvest through gate | Raw grain = final accepted + downgraded + rejected + process dry-matter loss + net water loss; count returned rework once and explain residual. | Linked lot/run masses and moisture | Balance residual and destination | uc-safflower-production; wisconsin-safflower |
+| `dry_matter_balance` | Drying | Dry mass = wet kg × (1 − measured moisture fraction) for inlet and outlet; report separately removed dry matter. | Inlet/outlet mass and moisture | Dry matter and evaporated water | wisconsin-safflower |
+| `shared_run` | Shared equipment period | Assign measured period energy once by measured throughput or justified time; record mixed-product changeover. | Meter total, runs, throughput/time | Energy per run | wisconsin-safflower |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `identity` | Final product | Demonstrate whole grain, farm gate, actual moisture and accepted grade; planting-seed claim needs separate verified identity. | Sale, grade, UUID identity records |
+| `routes` | Production/harvest | Identify dryland or irrigated and direct or windrow route for every field/lot; keep added operations explicit. | Field water and harvest work logs |
+| `completeness` | Mass and energy | Link field, harvest, cleaning, grading and drying; disclose missing meters, estimated shared loads and material-balance residual. | Linked scale, moisture and meter records |
+| `period` | Temporal coverage | Declare crop year and actual pre-gate storage period; separate years unless an aggregation rule is documented. | Crop and storage log |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `valid_identity` | Reference output | Require grain UUID `30eacea6-7a8a-457f-a766-c93480303927`, Mass property, mass unit group, kg, actual moisture, grade and farm gate; reject planting-seed use of this fixed grain identity. | uc-safflower-production; wisconsin-safflower |
+| `valid_routes` | Fields and harvest lots | Every field has dryland/irrigated status and every lot exactly one direct or windrow/pickup path; selected irrigation and windrow routes require their additional records. | uc-safflower-production; wisconsin-safflower |
+| `valid_nodes` | Conditional handling | Activated cleaning or drying/storage nodes need linked input/output mass, energy and reject disposition; absent nodes get no invented default burden or global moisture threshold. | uc-safflower-production; wisconsin-safflower |
+| `valid_balance` | Grade, rework, shared runs | Reconcile accepted, downgraded, rejected and drying water by linked lot within a disclosed tolerance; keep straw/chaff and uncaptured seed as separately observed fates, not an invented elementary exchange; rejected grain needs a disposition and linked rework before acceptance; count shared energy once. | uc-safflower-production; wisconsin-safflower |
+| `valid_scope` | Dataset use | Exclude pressing/meal and disclose any separately sold residue or screenings with attribution method. | uc-safflower-production; wisconsin-safflower |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | Foreground crop and first farm-gate grain data package; review is needed before publication. |
+| downstream_use | `secondary_dataset`; `background_dataset` only where region, year, route, grade and moisture are representative. |
+| allowed_use | Comparable raw whole safflower grain at the farm gate with declared routes and state. |
+| excluded_use | Planting seed, extracted oil, meal, processed feed, unknown gate or unknown moisture state. |
+| required_metadata | Crop year, region, field area, cultivar/oil class, irrigation, harvest route, grade, actual moisture, conditioning, storage, allocation, gate and UUIDs. |
+| required_quality_disclosure | Field/lot coverage, measured versus allocated values, balance residual, unresolved flow identities and regional applicability. |
+| update_trigger | New verified planting-seed identity, changed market route, new primary records, changed regional practice or revised product flow. |
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| uc-safflower-production | extension_guidance | University of California Agriculture and Natural Resources, Safflower Production in California, Publication 21565, https://oilseeds.ucdavis.edu/sites/g/files/dgvnsk14771/files/inline-files/21565e.pdf | Harvest mode, losses, farm conditioning and downstream oil/meal distinction; California thresholds are regional. |
+| wisconsin-safflower | extension_guidance | University of Wisconsin and University of Minnesota extension, Safflower, Alternative Field Crops Manual (1992), https://corn.aae.wisc.edu/Crops/Safflower.aspx | Crop system, irrigation, harvest, cleaning, drying and buyer/storage distinction. |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |

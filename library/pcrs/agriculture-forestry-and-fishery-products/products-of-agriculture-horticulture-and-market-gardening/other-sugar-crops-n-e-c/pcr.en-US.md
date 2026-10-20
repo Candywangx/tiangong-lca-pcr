@@ -1,8 +1,844 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.other-sugar-crops-n-e-c
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Other sugar crops n.e.c.
+
+## 1. Scope and Applicability
+
+This PCR covers farm-produced sugar maple sap, sweet-purpose sorghum stalks, and stevia leaves at one declared crop-specific harvest or primary-conditioning hand-off. A dataset shall select exactly one species, plant part, intended crop purpose, market state, and hand-off. The three alternatives share a mass-based reference amount only; their exchanges, yields, routes, and environmental burdens shall never be aggregated into one inventory.
+
+Include establishment and management attributable to the declared production period, field or sugarbush operations, harvest or sap collection, and only the primary conditioning needed to reach the declared hand-off. For stevia, declare fresh or dried leaves; this PCR's worked route and ranges use dried leaves. Exclude sugar or sweetener extraction, maple syrup concentration, sorghum juice extraction or fermentation, steviol-glycoside extraction/refinement, and all later manufacture. A different species or product state needs its own foreground record and evidence.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.other-sugar-crops-n-e-c` |
+| classification_refs | `CPC 3.0: 01809` (classification is a discovery reference, not permission to mix products); mapping relation: exact |
+| covered_products | Raw sugar maple sap; stalks from sweet-purpose sorghum; fresh or dried stevia leaves, each in a separate dataset |
+| excluded_products | Ordinary sorghum grain or seed; sugar, syrup, extracted juice, fermented products, refined steviol glycosides, and mixed-crop inventories |
+| representative_product | One declared crop branch and one declared market state per dataset |
+| production_route | Managed perennial sugarbush with tapping and sap collection; annual sweet sorghum cultivation and stalk harvest; or managed stevia leaf cultivation, harvest, and declared fresh/dried conditioning |
+| market_state | Unprocessed sap, harvested stalk, or harvested/primary-conditioned leaf, at a declared hand-off and moisture state |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | One crop-specific raw output: sugar maple sap, sweet-purpose sorghum stalk, or stevia leaf; select one only |
+| How much | 1 kg of the selected output at its declared hand-off; retain the crop, plant part, moisture, and market-state qualifiers |
+| How well | Identify species/cultivar where known, crop purpose, harvest or tapping method, moisture/state, grade, and destination |
+| How long or cycle | One declared tap season for maple; one crop cycle for sorghum; one harvest cycle or declared multi-cut season for stevia |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Route-specific harvested product listed above; UUID unresolved |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | Exactly one crop branch; species/cultivar; plant part; intended sugar-crop purpose; fresh/dried state and moisture; geography; production period; crop-specific hand-off; grade; allocation and multi-period treatment |
+
+Each foreground dataset must explicitly select one actual route, declared gate, product state and output row. Reconcile the selected terminal route with `reference_product_at_declared_handoff`; normalize that handoff output to the reference quantity and retain preceding-stage outputs as measured transfers. Raw weighing, mass reconciliation and lot traceability requirements continue to apply.
+
+The sole reference output is `reference_product_at_declared_handoff`, receiving the selected actual route product at the declared gate. Existing route-output ids identify the source and physical state; they are no longer individually fixed to the reference quantity.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `measure_reference_mass` | all branches | Mass | kg | Weigh net selected product at the declared hand-off; record moisture and any conversion from volume. Do not sum unlike crop products. |
+| `measure_maple_season` | maple | Mass; area; time | kg; ha; tap-season | Record taps, collection dates, gross sap volume or mass, losses, density basis if converted, and productive stand area. |
+| `measure_sorghum_stalk` | sweet sorghum | Mass; area | kg; ha | Weigh stalks at harvest before juice extraction; report cultivar, harvest stage, moisture, stalk area, and any separately marketed grain. |
+| `measure_stevia_leaf` | stevia | Mass; area; moisture | kg; ha; mass fraction | Weigh fresh leaf and dried leaf separately when drying occurs; disclose moisture and dry-matter conversion. |
+| `measure_inputs` | all branches | flow-specific | kg, m3, kWh, plant, or recorded unit | Retain purchased/applied quantity and functional identity; preserve seed mass, live-plant count, water volume, and energy carrier as distinct measurements. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Crop-specific planted or established productive stand, with establishment burdens included or explicitly linked and amortized over represented production periods |
+| starting_condition_role | Managed biological production before harvest or tapping |
+| product_classification_scope | Raw sugar-crop output at the declared farm or primary-conditioning hand-off; no downstream sweetener manufacture |
+| recursive_input_rule | Purchased seed, nursery trees, cuttings, and other propagation stock are distinct upstream product inputs; never treat the harvested reference output as its own planting input. |
+| upstream_dataset_requirement | Match crop identity, planting-stock type, location, period, and gate; if stand establishment predates the dataset, report whether its burden is included, excluded, or represented by an audited linked dataset. |
+| disclosure | Report branch, stand/crop phase, hand-off, moisture, included operations, optional operations, shared assets, and unresolved flow identities. |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_single_branch` | dataset | Select exactly one of maple sap, sweet-purpose sorghum stalk, or stevia leaves and one product state; a combined inventory is nonconforming. | `src_unsd_cpc01809`; `src_fao_sugar_crops` |
+| `boundary_maple` | maple | Include stand management, tapping, collection, and farm-side handling through raw sap hand-off; exclude sap concentration and syrup making. | `src_unsd_cpc01809`; `src_umaine_maple_2025` |
+| `boundary_sorghum` | sweet sorghum | Include crop management and stalk harvest for sugar purpose; keep grain harvest and stalk juice extraction outside this product inventory unless a separately measured co-product leaves the same process. | `src_fao_sweet_sorghum_cultivation`; `src_fao_sweet_sorghum_harvest`; `src_fao_sugar_crops` |
+| `boundary_stevia` | stevia | Include managed leaf production, harvest, and declared leaf stabilization/primary conditioning; exclude steviol-glycoside extraction, purification, and formulation. | `src_ukys_stevia`; `src_jecfa_stevia` |
+| `boundary_period` | perennial or multi-cut production | Attribute establishment, maintenance, replacement, productive harvests, and termination to declared periods; preserve the chosen method and prevent double attribution. | `src_umaine_maple_2025`; `src_sweet_project_stevia_lca` |
+| `boundary_shared_assets` | shared farm assets | Allocate shared machinery, roads, drying structures, and labor by a measured use driver; disclose the driver and avoid duplicate assignment. |  |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `maple_sap_route` | Sugar maple stand management, tapping, and raw sap collection | conditional | Use only when the selected product is sugar maple sap from *Acer saccharum*. | Managed perennial production and resource removal | kg raw sap per declared tap-season and 1 kg reference flow |
+| `sweet_sorghum_stalk_route` | Sweet-purpose sorghum cultivation and stalk harvest | conditional | Use only when the selected product is stalks from sorghum grown for sugar or syrup feedstock. | Annual crop production and harvest capture | kg harvested stalk per crop cycle and 1 kg reference flow |
+| `stevia_dried_leaf_route` | Stevia cultivation, leaf harvest, and farm drying | conditional | Use only for *Stevia rebaudiana* leaves declared as dried at the hand-off. Fresh-leaf datasets must declare a distinct state and omit drying. | Managed leaf production, harvest, and primary stabilization | kg dried leaves per harvest cycle and 1 kg reference flow |
+| declared_reference_handoff | Product Measurement at Declared Handoff | required |  | foreground | reference_product_at_declared_handoff |
+
+### Process: Sugar maple stand management, tapping, and raw sap collection (`maple_sap_route`)
+
+#### Inputs
+
+##### Product flows
+
+###### Maple establishment and replacement stock (`maple_planting_stock`)
+Record nursery trees used to establish or replace the represented sugarbush. Retain tree counts and productive stand period; UUID unresolved.
+- Selected flow: Sugar maple nursery tree / planting stock (UUID unresolved)
+- Flow property / unit: Number of items / plant
+- Amount rule: Record planted and replacement trees by stand and period; allocate establishment stock across the declared productive tap-seasons.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per tap-season and per kg raw sap.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_maple_field_records`
+- Sources: `src_umaine_maple_2025`
+- Range: Provisional stand-stock allocation screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.1
+  - Unit: plant-equivalent/tap-season
+  - Basis: provisional replacement-stock allocation per productive tap-season; replace with stand census and lifespan records
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Fertilizer, urea input (`maple_nutrient_supply`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg raw sap and per tap-season.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+
+###### Fertilizer, monoammonium phosphate input (`maple_nutrient_supply_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg raw sap and per tap-season.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+
+###### Fertilizer, potassium chloride input (`maple_nutrient_supply_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg raw sap and per tap-season.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+
+###### Cattle manure, as applied input (`maple_nutrient_supply_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg raw sap and per tap-season.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+
+###### Agricultural limestone input (`maple_nutrient_supply_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg raw sap and per tap-season.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+
+###### Irrigation water (`maple_irrigation_water`)
+Include only when irrigation is applied to the represented stand; do not count collected sap as irrigation or process water.
+- Selected flow: Irrigation water supply
+- Flow property / unit: Mass or volume / m3
+- Amount rule: Record metered or otherwise measured irrigation volume; report zero when none is applied.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg raw sap.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+- Range: Provisional irrigation screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.02
+  - Unit: m3/kg raw sap
+  - Basis: conditional stand-irrigation volume; zero is valid for rain-fed sugarbushes
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`maple_energy_supply`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per kg raw sap.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+
+###### Diesel fuel input (`maple_energy_supply_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per kg raw sap.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Raw sugar maple sap (`maple_sap_output`)
+Weigh or measure raw sap as collected before concentration or syrup production; UUID unresolved.
+- Selected flow: Sugar maple sap at raw collection hand-off (UUID unresolved)
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: Record accepted raw sap output by tap-season; normalize inventory exchanges to 1 kg.
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per kg raw sap.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_maple_field_records`
+- Sources: `src_umaine_maple_2025`
+- Range: Published full-season sap yield per tap (approximate mass conversion)
+  - Range role: Typical range (`typical_range`)
+  - Lower: 18.9
+  - Upper: 56.8
+  - Unit: kg sap/tap-season
+  - Basis: UMaine reports 5–15 US gallons per tap for a full season; approximate 1 kg/L conversion for screening only
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `src_umaine_maple_2025`
+
+### Process: Sweet-purpose sorghum cultivation and stalk harvest (`sweet_sorghum_stalk_route`)
+
+#### Inputs
+
+##### Product flows
+
+###### Sweet sorghum seed (`sorghum_seed_input`)
+Record purchased or retained seed sown for the declared sugar-purpose crop. Do not substitute harvested grain as the reference output; UUID unresolved.
+- Selected flow: Sweet-purpose sorghum seed for planting (UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: Record seed mass sown and viable stand established; retain cultivar and planting rate.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per kg harvested sweet sorghum stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+- Sources: `src_fao_sweet_sorghum_cultivation`
+- Range: Provisional planting-seed screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.02
+  - Unit: kg seed/kg harvested stalk
+  - Basis: broad first-pass screen; replace with seed invoices and sowing records
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Fertilizer, urea input (`sorghum_nutrient_supply`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+
+###### Fertilizer, monoammonium phosphate input (`sorghum_nutrient_supply_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+
+###### Fertilizer, potassium chloride input (`sorghum_nutrient_supply_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+
+###### Cattle manure, as applied input (`sorghum_nutrient_supply_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+
+###### Agricultural limestone input (`sorghum_nutrient_supply_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+
+###### Irrigation water (`sorghum_irrigation_water`)
+Record irrigation only; rainfed water is not an inventory input.
+- Selected flow: Irrigation water supply
+- Flow property / unit: Mass or volume / m3
+- Amount rule: Record metered or measured irrigation volume for the crop area and cycle; report zero for rainfed fields.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+- Range: Provisional irrigation screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.2
+  - Unit: m3/kg harvested stalk
+  - Basis: broad conditional estimate; replace with field meter or irrigation schedule
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`sorghum_energy_supply`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+
+###### Diesel fuel input (`sorghum_energy_supply_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Sweet-purpose sorghum stalks (`sorghum_stalk_output`)
+Weigh harvested stalks at the crop hand-off before pressing or juice extraction. The range is a published trial interval and does not represent all cultivars or regions; UUID unresolved.
+- Selected flow: Sweet-purpose sorghum stalk at harvest (UUID unresolved)
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: Record accepted stalk mass and moisture by crop cycle; normalize exchanges to 1 kg.
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per kg harvested stalk.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorghum_field_records`
+- Sources: `src_fao_sweet_sorghum_cultivation`; `src_fao_sweet_sorghum_harvest`
+- Range: FAO reported fresh-stalk field-trial yields
+  - Range role: Typical range (`typical_range`)
+  - Lower: 33750
+  - Upper: 52103
+  - Unit: kg fresh stalk/ha
+  - Basis: cultivar and planting-date trial yields; retain local site yield as foreground data
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `src_fao_sweet_sorghum_cultivation`
+
+### Process: Stevia cultivation, leaf harvest, and farm drying (`stevia_dried_leaf_route`)
+
+#### Inputs
+
+##### Product flows
+
+###### Stevia planting material (`stevia_planting_material`)
+Record the actual seedling or vegetative planting stock form used and its replacement rate. UUID unresolved.
+- Selected flow: Stevia nursery plant or rooted cutting (UUID unresolved)
+- Flow property / unit: Number of items / plant
+- Amount rule: Record plants established and replacements by field and harvest cycle; allocate establishment stock over the represented productive period.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg dried leaves and per establishment/harvest cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_stevia_field_records`
+- Sources: `src_sweet_project_stevia_lca`
+- Range: Published planting density and first-year dried-leaf yield screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 35
+  - Unit: plant-equivalent/kg dried leaves
+  - Basis: approximately 60,000–70,000 plants/ha and 2,000 kg dried leaves/ha in one Greek production case; not a universal planting rate
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `src_sweet_project_stevia_lca`
+
+###### Fertilizer, urea input (`stevia_nutrient_supply`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+
+###### Fertilizer, monoammonium phosphate input (`stevia_nutrient_supply_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+
+###### Fertilizer, potassium chloride input (`stevia_nutrient_supply_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+
+###### Cattle manure, as applied input (`stevia_nutrient_supply_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+
+###### Agricultural limestone input (`stevia_nutrient_supply_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+
+###### Irrigation water (`stevia_irrigation_water`)
+Record irrigation only; report rainfall separately as a site condition, not as a purchased product input.
+- Selected flow: Irrigation water supply
+- Flow property / unit: Mass or volume / m3
+- Amount rule: Record metered or measured irrigation volume by field and cycle; report zero when no irrigation is applied.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+- Range: Provisional irrigation screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.3
+  - Unit: m3/kg dried leaves
+  - Basis: broad conditional estimate; replace with field water records
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`stevia_energy_supply`)
+
+Include this one exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+
+###### Diesel fuel input (`stevia_energy_supply_diesel`)
+
+Include this one exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Dried stevia leaves (`stevia_leaf_output`)
+Record leaf mass at the declared dried-leaf hand-off and retain moisture and drying loss records. This regional case range is not transferable as a universal yield; UUID unresolved.
+- Selected flow: Dried Stevia rebaudiana leaves at farm hand-off (UUID unresolved)
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: Record accepted dry-leaf mass, residual moisture, and grade by harvest cycle; normalize exchanges to 1 kg.
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per kg dried leaves.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stevia_field_records`
+- Sources: `src_sweet_project_stevia_lca`; `src_ukys_stevia`
+- Range: Reported Greek field-case dried-leaf yields
+  - Range role: Typical range (`typical_range`)
+  - Lower: 2000
+  - Upper: 4000
+  - Unit: kg dried leaves/ha
+  - Basis: one first-year and multi-year cooperative field case; retain local cultivar, year, and harvest count
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `src_sweet_project_stevia_lca`
+
+
+### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
+This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
+#### Inputs
+##### Product flows
+###### Actual route product at handoff (`actual_route_product_for_handoff`)
+Record the accepted product delivered by the actual terminal route and reconcile it with handoff weighing and lot records.
+- Selected flow: Route-specific harvested product listed above; UUID unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net product mass at the actual handoff, normalized to the reference quantity; do not sum preceding-stage quantities, other routes or co-products
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+This measurement node adds no waste inputs.
+##### Elementary flows
+This measurement node adds no resource inputs.
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+- Selected flow: Route-specific harvested product listed above; UUID unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: 1 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+Confirm the product UUID independently for the actual state. Until confirmed, retain unresolved identity instead of inheriting a UUID from a preceding stage or another route.
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+Record actual losses at the operation where they occur; do not duplicate them here.
+##### Elementary flows
+Record actual emissions at the operation where they occur; do not duplicate them here.
+
+## 7. Allocation and Co-product Handling
+
+Inventory one crop branch only. If one stand or field produces multiple intended products in the declared period, first test subdivision by field, operation, harvest, or lot. If subdivision is not feasible, choose and justify a physical or economic allocation driver consistent with the question, document all products and hand-offs, and test a material alternative. Maple timber, sorghum grain, and stevia stems are co-products only when they are intentionally harvested and leave the process as useful products. Leaves, tops, roots, weeds, rejected material, sap leakage, and field losses are residues or waste unless a real use and hand-off are documented. Record multi-year assets and shared equipment once, allocate them by measured productive area, use, tap-season, or machine time, and prevent duplicate attribution across periods or outputs.
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_maple_field_records` | `maple_sap_route` | stand stock; nutrient products; irrigation; energy; raw sap | stand, purchase, application, meter, and production records | species; stand_id; trees_planted; replacements; taps; tap_dates; sap_mass_or_volume; density_basis; nutrients; irrigation; fuel; electricity; area; losses; co_products; gate | reconcile invoices, stand maps, meters, tapping log, and calibrated scale; Raw aggregation and attribution: aggregate by stand and tap-season; annualize establishment over declared productive periods | plant; kg; m3; kWh; ha | each operation and each tap season | complete represented tap season | each represented sugarbush | per declared reference flow | supplier records; field maps; calibrated scale and meter checks |
+| `cp_sorghum_field_records` | `sweet_sorghum_stalk_route` | seed; nutrient products; irrigation; energy; crop protection; stalk output | seed, field-operation, application, meter, and harvest records | cultivar; crop_purpose; seed_mass; area; sowing_date; fertilizer_product; nutrient_analysis; irrigation; fuel; electricity; pesticide; harvest_date; stalk_mass; moisture; grain; residues; rejects; gate | reconcile invoices, field log, meters, application records, and calibrated harvest scale; Raw aggregation and attribution: aggregate by field and crop cycle; retain grain and stalk quantities separately | kg; m3; kWh; ha; mass fraction | each operation and crop cycle | complete represented crop cycle | each represented field | per declared reference flow | seed labels; invoices; application log; calibrated scale; meter records |
+| `cp_stevia_field_records` | `stevia_dried_leaf_route` | planting stock; nutrient products; irrigation; energy; crop protection; dry leaves | planting, field-operation, application, meter, drying-batch, and production records | cultivar; planting_stock_type; plants; replacements; area; harvest_dates; fertilizer_product; nutrient_analysis; irrigation; fuel; electricity; pesticide; fresh_leaf_mass; dried_leaf_mass; moisture; drying_loss; residues; gate | reconcile field book, invoices, meters, dryer log, and calibrated scales; Raw aggregation and attribution: sum accepted dry leaves by harvest cycle; reconcile fresh input, dry output, moisture, rejects, and residues | plant; kg; m3; kWh; ha; mass fraction | each operation and each harvest/drying batch | complete represented harvest and drying cycle | each represented field and dryer | per declared reference flow | planting invoice; application log; calibrated scales; moisture test; dryer meter |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | maple_sap_route | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage ; actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage| Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_maple_sap_mass` | maple | Convert sap volume to mass only with measured density or a disclosed screening conversion; retain raw volume. | volume; density; tap-season | kg raw sap | `src_umaine_maple_2025` |
+| `calc_sorghum_yield` | sweet sorghum | Divide accepted stalk mass by measured crop area only for area-yield comparison; do not infer stalk mass from grain yield. | stalk mass; area; moisture | kg/ha and kg reference flow | `src_fao_sweet_sorghum_cultivation`; `src_fao_sweet_sorghum_harvest` |
+| `calc_stevia_dry_matter` | stevia | Report fresh and dried leaf masses separately; calculate dry matter only from measured moisture and preserve drying losses. | fresh mass; dried mass; moisture | kg dried leaf and dry-matter fraction | `src_ukys_stevia` |
+| `calc_period_share` | perennial and multi-cut routes | Allocate stand establishment and shared assets across recorded productive periods using a declared lifetime/output or measured-use driver; do not count the same asset in multiple periods. | establishment; productive years; period output; asset use | period-specific attributed inventory | `src_umaine_maple_2025`; `src_sweet_project_stevia_lca` |
+| `calc_soil_emissions` | managed fields | If direct soil emissions are modelled, calculate them from reported nitrogen inputs, climate/soil conditions, and a declared inventory method; disclose factor and uncertainty. This PCR does not assign an unverified emission UUID or universal factor. | nitrogen application; soil and climate data; selected method | method-specific direct soil emissions | `src_ipcc_managed_soils` |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `quality_route_identity` | all datasets | Name one crop, species, plant part, purpose, market state, and hand-off; no unlike route mixing. | field map, crop records, product description, and scale records |
+| `quality_product_state` | all datasets | Report moisture, grade, rejected material, and mass basis; distinguish fresh, dried, and processed states. | calibrated scale, moisture test, sorting and batch records |
+| `quality_inputs` | all datasets | Reconcile seeds/stock, nutrient products, water, energy, and crop-protection applications to invoices, meters, and field logs; zero use must be explicit. | purchase records, application logs, field book, meters |
+| `quality_range` | all datasets | Compare each foreground amount with its card range; explain outliers and replace provisional estimates with local primary data. Ranges are screens, not allowed values. | range-check table, source or reasoned-estimate trace, corrective note |
+| `quality_attribution` | shared and perennial systems | Disclose period and co-product allocation, asset-use driver, and sensitivity for material choices. | allocation worksheet and output hand-offs |
+
+## 9. Validation Rules
+
+- `validate_single_branch`: Exactly one route, species, plant part, intended purpose, product state, and hand-off are present for each dataset.
+- `validate_reference_identity`: Keep the reference product UUID blank until an exact raw product identity and mass property/unit group are confirmed; never use grain, syrup, sugar, or extracted sweetener as a proxy.
+- `validate_process_chain`: Match the selected route to its establishment/management, harvest or tapping, and declared primary-conditioning records; omit downstream extraction and manufacture.
+- `validate_mass_and_moisture`: Reconcile harvested or collected mass, fresh/dry mass, moisture, losses, rejects, and coproducts; no double counting.
+- `validate_uuid_resolution`: Before a final generated exchange, expand each parameterized card from actual records and verify a concrete compatible UUID, property, and unit. Resolve uncovered inputs and outputs independently; retain unresolved identities in this candidate.
+- `validate_period_allocation`: Reconcile establishment, production, replacements, repeated cuts/tapping, and termination; prevent an asset or field burden from being attributed twice.
+- `validate_coproduct_and_reject`: Trace each intended coproduct, downgraded product, rework, residue, and waste to one destination; rejected material is not accepted reference output.
+- `validate_extraction_exclusion`: Reject syrup concentration, sorghum juice/sweetener extraction or fermentation, and steviol-glycoside extraction/refinement from the declared boundary.
+- `validate_range_and_quality`: Check every card range, unit, basis, source scope, and foreground value; investigate exceedances without treating provisional ranges as conformance limits.
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | Foreground dataset for one raw sugar-crop product at its declared farm or primary-conditioning hand-off |
+| downstream_use | `secondary_dataset`; `background_dataset` after representativeness and identity review |
+| allowed_use | Crop-specific supply modelling with aligned species, part, purpose, market state, moisture, route, period, gate, and attribution |
+| excluded_use | Product comparisons that mix routes or states; syrup, sugar, extracted juice, fermented products, purified sweetener, or downstream manufacture |
+| required_metadata | crop branch; species/cultivar; plant part; purpose; geography; period; route; establishment/stand phase; area; harvest/tapping pattern; product mass; moisture; grade; hand-off; inputs; shared assets; allocation; unresolved identities |
+| required_quality_disclosure | primary-data share; UUID gaps; moisture and mass balance; range exceedances; provisional ranges; period and co-product attribution; field emissions method; source geography and technology limits |
+| update_trigger | verified reference UUID; new source-backed route/range evidence; changed product state, crop, gate, technology, concrete flow identity verification|
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `src_unsd_cpc01809` | official_guidance | UNSD CPC 2.1, 01809, https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1074/01809 | Listed crop examples and category boundary evidence |
+| `src_fao_sweet_sorghum_cultivation` | official_guidance | FAO, Sweet sorghum cultivation, https://www.fao.org/4/t4470e/t4470e05.htm | Sorghum crop route and reported stalk trial yields |
+| `src_fao_sweet_sorghum_harvest` | official_guidance | FAO, Sweet sorghum harvest stage, https://www.fao.org/4/t4470e/t4470e07.htm | Harvest timing and stalk sugar-content variability |
+| `src_fao_sugar_crops` | official_guidance | FAO, sugar-crop purpose distinctions, https://www.fao.org/4/x9892e/X9892e06.htm | Distinguishing sugar-purpose sorghum from grain purpose |
+| `src_umaine_maple_2025` | official_guidance | University of Maine Cooperative Extension, Maple syrup production for the beginner, updated 2025, https://extension.umaine.edu/publications/7036e/ | Tapping, collection, seasonal yield and sugarbush records |
+| `src_ukys_stevia` | official_guidance | University of Kentucky Center for Crop Diversification, Stevia, https://ccd.uky.edu/sites/default/files/2024-11/ccd-cp-055_stevia.pdf | Stevia harvest, leaf handling, drying, and moisture records |
+| `src_jecfa_stevia` | standard | FAO/JECFA, Steviol glycosides monograph, https://www.fao.org/fileadmin/templates/agns/pdf/jecfa/cta/63/Steviol.pdf | Boundary distinction between harvested leaves and extracted sweetener |
+| `src_sweet_project_stevia_lca` | literature | SWEET project stevia cultivation and LCA case, https://pmc.ncbi.nlm.nih.gov/articles/PMC9839952/ | Region-specific planting density and dried-leaf yield case; not universal |
+| `src_ipcc_managed_soils` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil nitrogen-emission method inputs and uncertainty disclosure |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |

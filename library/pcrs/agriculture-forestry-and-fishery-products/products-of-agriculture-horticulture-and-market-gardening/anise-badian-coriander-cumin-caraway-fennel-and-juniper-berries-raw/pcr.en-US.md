@@ -1,8 +1,995 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.anise-badian-coriander-cumin-caraway-fennel-and-juniper-berries-raw
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw
+
+## 1. Scope and Applicability
+
+This PCR covers farm production and first on-farm preparation of one declared raw spice crop: anise, star anise (badian), coriander grown for seed, cumin, caraway, fennel grown for seed, or edible juniper berries/cones. The dataset shall identify botanical species, crop, harvested organ, annual/biennial field-crop, cultivated-perennial, or managed-collection route, geography, harvest year, and moisture state. Unrelated species shall not be averaged or mixed unless separately modelled input datasets and mass shares are disclosed.
+
+The gate is `Production mix, at farm gate` and the route is `Fresh, unprocessed produce`. Harvest or fruit collection, threshing where used, cleaning, grading, and conditional drying before the gate are included. Grinding, blending, essential-oil/oleoresin extraction, sterilization, retail packing, and prepared-spice manufacture are excluded.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.anise-badian-coriander-cumin-caraway-fennel-and-juniper-berries-raw |
+| classification_refs | CPC 3.0: 01654; mapping relation: exact |
+| covered_products | Whole raw anise fruit/seed, star anise fruit, coriander seed, cumin fruit/seed, caraway fruit/seed, fennel fruit/seed, or edible juniper berry-like cones, declared by species and organ |
+| excluded_products | Coriander/fennel leaf herbs; undisclosed mixed-species lots; ground/blended spice; essential oil or oleoresin; sterilized or retail-packed product |
+| representative_product | One declared species and harvested organ, cleaned and graded as a whole raw spice lot at farm gate |
+| production_route | Parent: managed biological production. Mutually exclusive deltas: annual/biennial field seed-spice crop, cultivated perennial tree/shrub, or managed collection from an existing juniper stand. Manual/mechanical harvest and ambient/heated drying are route-specific technology deltas. Lots may be aggregated only after separate modelling. |
+| market_state | Whole, unground raw seed, fruit, or berry/cone; moisture and drying status declared |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Declared whole raw spice seed, fruit, or berry/cone at farm gate |
+| How much | 1,000 kg net product at declared moisture |
+| How well | Species, organ, route, geography, harvest year, grade, moisture/basis, and drying status declared; unrelated species are not blended into one reference flow |
+| How long or cycle | One annual/biennial crop cycle or one perennial harvest year/cohort; establishment and multi-year maintenance annualized where applicable |
+| reference_flow_link | accepted_reference_product |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1000 |
+| Reference product flow | Declared actual whole spice seed, fruit or berry/cone in its measured state |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | botanical species; crop; harvested organ; production route; geography; harvest year; grade; moisture content and basis; drying method or not dried |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | Reference product and solid hand-offs | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Record net mass and measured moisture; use `calc_moisture_conversion` before comparing different moisture states. |
+| `moisture_basis` | Harvested, dried, and graded lots | Mass fraction | % | State wet or dry basis and test method. Never aggregate unlike bases without conversion. |
+| `area_time` | Managed land occupation | Area × time | ha·year | Record area and represented time; annualize perennial establishment over recorded productive life. |
+| `nutrient_mass` | Nutrient products and nutrient emissions | Element mass | kg N, kg P, kg K | Retain every product record and composition; never add unlike nutrient elements. |
+
+## 5. System Boundary
+
+The foreground begins with seed/planting stock and prepared land, a cultivated perennial stand, or a documented managed juniper collection area. Managed production ends at the harvest-ready organ. Harvest is separate because removal and field losses have their own records. Primary conditioning converts collected material to a cleaned lot; stabilization converts a moisture-unstable usable lot to a stable state; grading creates accepted, downgraded, and rejected destinations.
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Seed/planting material and prepared field; established/new perennial stand; or managed collection area with origin and management declared |
+| starting_condition_role | Foreground production start; operator-established perennial burdens are annualized, while burdens for naturally established stands are not invented |
+| product_classification_scope | One declared species, crop, and harvested organ within the category |
+| recursive_input_rule | Purchased raw spice of this category entering conditioning requires a separate upstream dataset and input row; it is not folded into the foreground harvest. |
+| upstream_dataset_requirement | Supplier or representative datasets for planting stock, every actual nutrient product, water, crop protection, energy, machinery, and purchased raw spice |
+| disclosure | Species, organ, route, stand origin/age where relevant, period, area, yield, harvest method, conditioning/drying sequence, moisture, grades, rejects, residues, and output destinations |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_route_choice` | All lots | Select exactly one production delta for each lot and collect its route-specific inputs and periods. Do not substitute annual and perennial inventories. | `icar-rabi-coriander-2021`; `ncsu-common-juniper` |
+| `boundary_postharvest` | Farm-gate route | Include harvest/collection, threshing/separation, cleaning, grading, and any drying before the gate. Distinguish accepted, downgraded, rejected, and lost material. | `codex-spice-hygiene`; `fssai-star-anise-2023` |
+| `boundary_exclusions` | Downstream manufacture | Exclude grinding, blending, extraction, sterilization, and retail packing; meter on-site excluded operations in a separate dataset. | `codex-spice-hygiene` |
+| `boundary_periods` | Perennial route | Distinguish establishment, immature, productive maintenance, harvest year/cohort, replacement, and termination; link each burden once. | `ncsu-common-juniper` |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `managed_production` | Managed field crop, perennial stand, or collection area | required | Exactly one route delta per lot | Produces harvest-ready organ; records management, periods, residues, and other outputs | Per crop cycle or harvest year |
+| `harvest_capture` | Harvest, collection, and threshing/separation | required | Threshing only where used | Removes intended organ; records loss and incidental biomass | Per 1,000 kg collected organ |
+| `primary_conditioning` | Cleaning and primary separation | required | All lots | Removes soil, chaff, stalks, and foreign matter | Per 1,000 kg cleaned lot |
+| `stabilization_drying` | Ambient or heated drying | conditional | Only when moisture is reduced before gate | Produces stable declared moisture state; ambient/heated modes are mutually exclusive per batch | Per 1,000 kg dried lot |
+| `grading_sorting` | Farm-gate grading and routing | required | All lots | Produces accepted, downgraded, and rejected destinations | Per 1,000 kg accepted product |
+
+### Process: Managed field crop, perennial stand, or collection area (`managed_production`)
+
+#### Inputs
+
+##### Product flows
+
+###### Planting material or establishment stock (`planting_material`)
+
+Record seed, seedlings, or cuttings only when they enter the foreground. A naturally established managed juniper stand records zero and discloses that condition.
+
+- Selected flow: Species-specific planting material, unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Foreground quantity; perennial establishment is annualized over recorded productive life
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per cultivated hectare per establishment or crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+- Range: Planting-material QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 50
+  - Unit: kg/ha
+  - Basis: per cultivated hectare per establishment or crop cycle; zero allowed for existing managed stands
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Fertilizer, urea input (`nutrient_supply`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+
+###### Fertilizer, monoammonium phosphate input (`nutrient_supply_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+
+###### Fertilizer, potassium chloride input (`nutrient_supply_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+
+###### Cattle manure, as applied input (`nutrient_supply_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+
+###### Agricultural limestone input (`nutrient_supply_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+
+###### Irrigation water (`field_irrigation_water`)
+
+Record supplied irrigation water; exclude rainfall.
+
+- Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
+- Amount rule: metered or calibrated field delivery
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+- Range: Field irrigation-water screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 30000
+  - Unit: m3/ha
+  - Basis: per cultivated hectare per crop cycle or harvest year
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+###### Electricity, medium voltage input (`field_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+
+###### Diesel fuel input (`field_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+
+##### Waste flows
+
+##### Elementary flows
+
+###### Occupation, cropland (`land_soil_emissions`)
+
+Record occupied cropland area and duration by actual land-use class and site; nitrogen emissions are separate substance exchanges.
+Raw activity or stage basis: per 1,000 kg harvest-ready organ.
+
+- Selected flow: Occupation, cropland
+- Flow property / unit: Area × time / ha·year
+- Amount rule: Measured occupied hectares × occupied days / 365.25, normalized once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_production`
+- Sources: `ipcc-2019-managed-soils`
+
+#### Outputs
+
+##### Product flows
+
+###### Harvest-ready intended output (`production_outputs`)
+
+Record the intended harvest-ready seed/fruit/berry at the production-to-harvest hand-off.
+
+- Selected flow: Species-specific harvest-ready biological product, unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Measured mass at declared moisture handed to harvest
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg harvest-ready organ.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+- Range: Harvest-ready output reference
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 1000
+  - Upper: 1000
+  - Unit: kg
+  - Basis: per 1,000 kg harvest-ready organ
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Calculated from collection (`calculated_from_collection`)
+
+###### Spice-crop stalk biomass, declared species and beneficial use (`other_intended_outputs`)
+
+Record any separately marketed leaf, stem, straw, planting seed, wood, or other intended product by identity and hand-off; use zero when no such co-product receives an economic function.
+
+- Selected flow: Spice-crop stalk biomass, declared species and beneficial use
+- Flow property / unit: Mass / kg
+- Amount rule: Measured mass at declared moisture by output identity and destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg harvest-ready organ.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_production`
+- Range: Other intended-output QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 10000
+  - Unit: kg co-product
+  - Basis: per 1,000 kg harvest-ready organ
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Elementary flows
+
+###### Dinitrogen monoxide, to air (`land_soil_emissions_n2o`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg harvest-ready organ.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_production`
+- Sources: `ipcc-2019-managed-soils`
+
+### Process: Harvest, collection, and threshing/separation (`harvest_capture`)
+
+#### Inputs
+
+##### Product flows
+
+###### Harvest-ready organ (`harvest_ready_organ`)
+
+Record the production hand-off by species, organ and batch.
+
+- Selected flow: Species-specific harvest-ready organ
+- Flow property / unit: Mass / kg
+- Amount rule: measured organ mass assigned to the harvest batch
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1,000 kg collected raw organ.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest`
+- Range: Harvest-input mass screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1000
+  - Upper: 2000
+  - Unit: kg
+  - Basis: per 1,000 kg collected raw organ
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`harvest_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1,000 kg collected raw organ.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest`
+
+###### Diesel fuel input (`harvest_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1,000 kg collected raw organ.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Collected raw spice organ (`collected_raw_organ`)
+
+The measured collected organ is handed from harvest to primary conditioning at the declared moisture.
+
+- Selected flow: Species-specific whole seed/fruit/berry organ, unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Measured batch mass and moisture handed to conditioning
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg collected raw organ.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest`
+- Range: Collected-output reference
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 1000
+  - Upper: 1000
+  - Unit: kg
+  - Basis: per 1,000 kg collected raw organ
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Calculated from collection (`calculated_from_collection`)
+
+##### Waste flows
+
+###### Removed harvest residues and losses (`harvest_residue`)
+
+Record residue leaving the area by destination. Residue retained on land is included in soil calculations and is not also waste.
+
+- Selected flow: Species- and destination-specific biomass residue, unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or mass-balanced mass by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg collected raw organ.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest`
+- Range: Removed-residue QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 5000
+  - Unit: kg
+  - Basis: per 1,000 kg collected raw organ
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+### Process: Cleaning and primary separation (`primary_conditioning`)
+
+#### Inputs
+
+##### Product flows
+
+###### Collected lot entering cleaning (`conditioning_material`)
+
+Record the physical lot entering this process.
+
+- Selected flow: Collected species-specific lot
+- Flow property / unit: Mass / kg
+- Amount rule: weighed batch input
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg cleaned output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Range: Input-lot mass screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1000
+  - Upper: 1400
+  - Unit: kg
+  - Basis: per 1,000 kg cleaned output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Process water (`conditioning_water`)
+
+Record supplied washing or cleaning water only when used.
+
+- Selected flow: Process water
+- Flow property / unit: Volume / m3
+- Amount rule: metered water supplied to the batch
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg cleaned output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Range: Conditional process-water screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: m3
+  - Basis: per 1,000 kg cleaned output; zero when no water is used
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`conditioning_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg cleaned output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+
+###### Diesel fuel input (`conditioning_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg cleaned output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Cleaned whole spice lot (`cleaned_lot`)
+
+The cleaned lot is handed to conditional drying or directly to grading with its measured moisture.
+
+- Selected flow: Species-specific cleaned whole spice lot, unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Measured output and moisture handed to drying or grading
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg cleaned output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Range: Cleaned-output reference
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 1000
+  - Upper: 1000
+  - Unit: kg
+  - Basis: per 1,000 kg cleaned output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Calculated from collection (`calculated_from_collection`)
+
+##### Waste flows
+
+###### Whole-spice cleaning screenings, declared species (`conditioning_rejects`)
+
+Record soil, chaff, stalks, foreign matter, and off-spec material by rework, return, recovery, or disposal destination.
+
+- Selected flow: Whole-spice cleaning screenings, declared species
+- Flow property / unit: Mass / kg
+- Amount rule: Measured reject mass by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg cleaned output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Range: Conditioning-reject QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 400
+  - Unit: kg
+  - Basis: per 1,000 kg cleaned output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+### Process: Ambient or heated drying (`stabilization_drying`)
+
+#### Inputs
+
+##### Product flows
+
+###### Moisture-unstable lot entering drying (`drying_material`)
+
+Record the physical lot entering this process.
+
+- Selected flow: Species-specific cleaned lot
+- Flow property / unit: Mass / kg
+- Amount rule: weighed batch input
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg dried output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_drying`
+- Range: Input-lot mass screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1000
+  - Upper: 1600
+  - Unit: kg
+  - Basis: per 1,000 kg dried output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`drying_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg dried output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_drying`
+
+###### Diesel fuel input (`drying_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg dried output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_drying`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Stabilized dried whole spice lot (`dried_lot`)
+
+The stabilized lot is the usable post-drying state handed to grading.
+
+- Selected flow: Species-specific stabilized whole spice lot, unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Measured output at declared moisture; verify dry-matter conservation
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg dried output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_drying`
+- Sources: `fssai-star-anise-2023`
+- Range: Dried-output reference
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 1000
+  - Upper: 1000
+  - Unit: kg
+  - Basis: per 1,000 kg dried output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Calculated from collection (`calculated_from_collection`)
+
+##### Waste flows
+
+###### Damaged anise seed waste (`drying_rejects`)
+
+Conditional one-material exchange: include Damaged anise seed waste only when the actual route and records establish its use or release. Other products, fuels, waste materials, or emitted species require separate atomic rows with independent quantity, state and identity. No use is inferred from this example.
+
+- Selected flow: Damaged anise seed waste
+- Flow property / unit: Mass / kg
+- Amount rule: Measure or calculate only Damaged anise seed waste for this process and period using route-specific records; do not combine other species or carriers.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg dried output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_drying`
+
+##### Elementary flows
+
+###### Water evaporated (`evaporated_water`)
+
+This row represents moisture removed from the product and released to air during drying.
+
+- Selected flow: Water to air, unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg dried output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_drying`
+- Sources: `mass-balance-identity`
+- Range: Evaporated-water QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 600
+  - Unit: kg
+  - Basis: per 1,000 kg dried output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Calculation method corresponds to Section 8 rules: `calc_drying_water`.
+
+### Process: Farm-gate grading and routing (`grading_sorting`)
+
+#### Inputs
+
+##### Product flows
+
+###### Prepared lot entering grading (`grading_material`)
+
+Record the physical lot entering this process.
+
+- Selected flow: Prepared species-specific lot
+- Flow property / unit: Mass / kg
+- Amount rule: weighed batch input
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grading`
+- Range: Input-lot mass screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1000
+  - Upper: 1400
+  - Unit: kg
+  - Basis: per 1,000 kg accepted reference product
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`grading_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grading`
+
+###### Diesel fuel input (`grading_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grading`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted raw spice at farm gate (`accepted_reference_product`)
+
+This is the sole accepted reference-product hand-off at the declared farm gate.
+
+- Selected flow: Declared actual whole spice seed, fruit or berry/cone in its measured state
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+Raw output measurement and reconciliation: Net accepted mass at declared moisture, excluding downgraded and rejected material
+
+- Amount rule: 1000 kg
+- Value mode: Fixed value (`fixed_value`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Identity reference (`identity_reference`)
+- Collection protocol: `cp_grading`
+- Range: Reference-product amount
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 1000
+  - Upper: 1000
+  - Unit: kg
+  - Basis: per reference flow
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Identity reference (`identity_reference`)
+
+Identity applicability: Verify the concrete identity against the selected actual species/organ, sowing or commodity use, fresh/cured/dried and shell state, grade, provider and declared gate, with Mass/kg support. This PCR retains the semantic route and measurement definition; it does not assert that one fixed UUID covers all alternative states. A fresh-state flow cannot automatically bind a cured/dried output, an ambiguous nut/kernel flow cannot prove both states, and commodity seed cannot establish seed-for-sowing identity. Preserve a verified compatible existing binding only for its supported state; otherwise keep the UUID explicitly unresolved until detail-confirmed. Do not change the product boundary, quantity or route to force a match.
+
+###### Downgraded product (`downgraded_product`)
+
+Record every separately marketed off-grade lot by grade and hand-off. It is a co-output only when it receives an economic function and is never accepted reference product.
+
+- Selected flow: Species- and destination-specific downgraded spice, unresolved
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net mass by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grading`
+- Range: Downgraded-output QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 400
+  - Unit: kg
+  - Basis: per 1,000 kg accepted reference product
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Rejected anise seed waste (`grading_rejects`)
+
+Conditional one-material exchange: include Rejected anise seed waste only when the actual route and records establish its use or release. Other products, fuels, waste materials, or emitted species require separate atomic rows with independent quantity, state and identity. No use is inferred from this example.
+
+- Selected flow: Rejected anise seed waste
+- Flow property / unit: Mass / kg
+- Amount rule: Measure or calculate only Rejected anise seed waste for this process and period using route-specific records; do not combine other species or carriers.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_grading`
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_avoid_first` | All multi-output nodes | Subdivide by species lot, field/stand, crop cycle or harvest year, operation, and batch; directly assign causal burdens. |  |
+| `allocation_co_outputs` | Marketed leaves, stems, straw, planting seed, wood, or downgraded spice | After subdivision, use physical dry mass when outputs have comparable biological function; otherwise use documented economic allocation with contemporaneous prices and a physical-mass sensitivity. Residues without economic function receive no upstream burden, but handling remains included. |  |
+| `allocation_periods` | Perennial stands | Annualize operator-incurred establishment/termination over recorded productive life. Assign annual maintenance and harvest burdens to their year/cohort. Do not invent establishment for naturally established collection stands. | `ncsu-common-juniper` |
+| `allocation_batches` | Conditioning, drying, grading | Assign metered batch burdens directly; allocate shared cleaning/changeover once by processed mass or run time. Rework retains previous and incremental burdens. |  |
+| `allocation_rejects` | Rework and rejects | Link each rejected state to exactly one rework, downgrade, recovery, return, or disposal path; never count it as accepted output. |  |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_production` | `managed_production` | Establishment, inputs, area, periods, outputs, soil emissions | Field/stand log, invoice, meter, map, yield ticket | species; organ; route; field/stand; dates; area; origin/age; productive life; input identity/UUID; quantity/composition; output mass/moisture; residue fate | Reconcile invoices, logs, mapped area, meters, and weights; Raw aggregation and attribution: Aggregate only identical species, organ, route, geography, period, moisture basis | Native units plus kg, m3, MJ, ha·year | Each event and annual close | Complete crop cycle or establishment through reporting harvest year | Every included field/stand/area | per declared reference flow | Calibrations, invoices, maps, tickets, completeness reconciliation |
+| `cp_harvest` | `harvest_capture` | Harvest input/output, energy, residue/loss | Harvest batch log | lot; method; dates; input; collected mass/moisture; energy; residue/loss; destinations | Weigh hand-offs and meter/invoice energy; Raw aggregation and attribution: Batch mass balance | kg, %, MJ | Each batch | Complete harvest window | Each source field/stand | per declared reference flow | Scale/moisture checks, machine logs, receipts |
+| `cp_conditioning` | `primary_conditioning` | Input, cleaned output, service, reject | Run log | batch; input/output mass/moisture; equipment; energy; water; reject class/path | Weigh and meter at run boundary; Raw aggregation and attribution: Batch balance; shared changeover once | kg, %, kWh, MJ, m3 | Each run/changeover | All included runs | Each site/line | per declared reference flow | Calibration, reject checks, reconciliation |
+| `cp_drying` | `stabilization_drying` | Input/output, energy, time, rejects, water loss | Drying batch log | batch; method; masses; moisture/basis; dates; energy; rejects ; all input/output water including rejects/residues; actual added/rain water; separate liquid exports; opening/closing water stock; moisture and density; supported evaporation| Weigh/test before and after; meter energy; Raw aggregation and attribution: Dry-matter balance and batch attribution | kg, %, h, MJ | Each batch | Entire drying interval | Each drying area/device | per declared reference flow | Moisture method, calibration, surface protection, reconciliation |
+| `cp_grading` | `grading_sorting` | Input, grades, downgrade, reject, service | Grading/dispatch log | batch; identity; criteria; input; each output; moisture; destination; energy/changeover | Weigh every state and reconcile dispatch; Raw aggregation and attribution: Accepted + downgrade + reject = adjusted input; service once | kg, %, MJ | Each run/changeover | All included runs | Each site/line | per declared reference flow | Grade inspection, calibration, dispatch/rework receipts |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_moisture_conversion` | Mass conversion | dry matter = wet mass × (1 − wet-basis moisture); target wet mass = dry matter ÷ (1 − target wet-basis moisture) | mass; moisture; basis | Comparable mass |  |
+| `calc_drying_water` | `evaporated_water` | Determine supported evaporation on a closed water-mass control volume: incoming material water + actual added water + opening water stock - water in all accepted/co-product/reject/residue exits - separate liquid discharge/exports - closing water stock. Use measured wet mass times wet-basis moisture for each material stream, and compatible density for liquid volumes. Internal recirculation cancels. Retain actual rain/rewetting where relevant; total fresh/dry mass difference is not all water. Independently support all terms and the evaporation pathway; investigate an unexplained or negative balance rather than force it into a vapour release or clip it to zero. Keep water quantities distinct from dry-solids loss and other volatiles. Attribute and normalize the evidenced water release once using the original matched final reference. | `cp_drying`; incoming and all outgoing wet masses and wet-basis moisture fractions; actual added/rain water; separate liquid exports and density; opening/closing water stock; evaporation evidence and uncertainty; matched accepted final output | raw kg water to air and once-normalized contribution per declared reference flow | `mass-balance-identity` |
+| `calc_land` | Land occupation | hectares × occupied days ÷ 365.25; normalize by output | area; dates; output | ha·year/1,000 kg |  |
+| `calc_soil_n2o` | Managed-soil N2O | Apply IPCC managed-soil equations to recorded synthetic/organic N and residue N; convert N2O-N to N2O by 44/28 | N inputs, residue N, factors | kg N2O | `ipcc-2019-managed-soils` |
+| `calc_perennial` | Perennial periods | attributable establishment + termination burden divided by recorded productive life; reflect documented area changes | period inventories; productive years/area | Annualized burden |  |
+| `calc_allocation` | Multi-output nodes | Direct assignment first, then declared physical dry-mass or economic allocation; shares sum to 1 | masses/moisture or prices; shared burden | Burden by output |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_production`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | Product states | Species and organ mandatory; retain route, geography, year, grade, moisture/basis, and drying status. | Traceable lot records |
+| `dq_temporal` | Production | Cover full cycle/year; perennial records include establishment, productive life, replacement, termination, age/origin, and cohort links. | Dated field/stand records |
+| `dq_completeness` | All nodes | Include every actual nutrient product, water, energy, output, rework, reject, residue, and hand-off; reconcile mass. | Invoice/meter and mass balance |
+| `dq_measurement` | Mass, moisture, area, energy | Use calibrated instruments or documented estimates; state moisture method/basis. | Calibration/test/map/worksheet |
+| `dq_aggregation` | Combined records | Combine only identical species, organ, route, geography, period, and moisture basis; disclose included coverage. | Sampling frame and coverage calculation |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_identity` | Reference flow | Fail if species, crop, organ, route, geography, harvest year, grade, moisture/basis, or drying status is missing, or unrelated species are averaged without separate datasets and mass shares. |  |
+| `validate_route` | Graph | Require one production delta per lot and matching period/input records; annual and perennial routes coexist only as traceable lots. | `icar-rabi-coriander-2021`; `ncsu-common-juniper` |
+| `validate_nodes` | Graph | Require production, harvest, conditioning, and grading; require drying when moisture reduction occurs. Every node declares states and hand-offs. | `codex-spice-hygiene` |
+| `validate_mass` | Harvest through grading | Batch input equals accepted + downgraded + rejects + measured moisture loss ± inventory change within 5%; otherwise investigate/disclose. |  |
+| `validate_ranges` | Inventory | For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening. |  |
+| `validate_nutrients` | Production | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+| `validate_outputs` | Multi-output nodes | Enumerate intended outputs/hand-offs, residue/waste, allocation precedence, and shares summing to 1; prevent duplicate hand-offs. |  |
+| `validate_periods` | Perennial route | Require period and replacement/termination decisions and reject duplicated establishment or maintenance burdens. | `ncsu-common-juniper` |
+| `validate_rework` | Post-harvest | Route every off-spec state exactly once; accepted output excludes unresolved rejects; rework retains prior burdens. |  |
+| `validate_star_anise` | Star anise claiming cited specification | For Illicium verum lots explicitly claiming the cited Indian star-anise specification, verify its stated dry-basis tests and limits: moisture 10%, extraneous matter 1%, stalks 3%, and broken/abnormal fruits 25%. Record the applicable market/specification/version and matched sampling/test basis. These regional specification values do not define every star-anise grade or another species; other legitimate lots retain their actual declared specification, quality and measured mass, without automatic rejection or normalization changes. | `fssai-star-anise-2023` |
+| `validate_drying_water_balance` | drying water release | Check `calc_drying_water` against `cp_drying` on the same batch, water boundary and moisture basis. Include water carried by every reject/residue and other material exit, actual additions, separate liquid exports and opening/closing stock; internal recirculation cancels. Require supported evaporation, investigate an unexplained or negative balance without clipping it to zero, and attribute and normalize the evidenced release once to matched accepted final output. | `mass-balance-identity` |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | Species-, organ-, route-, geography-, and period-specific foreground farm-gate production dataset |
+| downstream_use | `secondary_dataset`; `background_dataset` after representativeness and uncertainty review |
+| allowed_use | LCA of a whole raw spice lot matching identity, route, gate, moisture, geography, and period |
+| excluded_use | Mixed-spice average; leaf herb; ground/blended spice; oil/oleoresin; sterilized/retail product; annual-perennial substitution without scenario modelling |
+| required_metadata | Reference qualifiers; field/stand and period; stand origin/age/life; graph; input identities/UUIDs; allocation; mass/moisture balances; grades/destinations; coverage |
+| required_quality_disclosure | Foreground/secondary shares, measurement/estimation, range exceptions, missing UUIDs, representativeness, perennial annualization, allocation sensitivity, reject/rework treatment |
+| update_trigger | Change in species/organ, route, geography, technology, drying, productive life, yield, inputs, allocation, quality specification, reference UUID, or evidence |
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `icar-rabi-coriander-2021` | official_guidance | ICAR, *Rabi Agro-Advisory for Farmers 2021-22*, coriander section. https://icar.gov.in/sites/default/files/2022-09/Rabi-Agro-Advisory-2021-22_0.pdf | Annual grain route, input examples, distinct leaf/grain outputs |
+| `codex-spice-hygiene` | official_guidance | Codex Alimentarius, proposed Code of Hygienic Practice for Spices and Condiments. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/es/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FMeetings%252FCX-712-24%252Fal91_13e.pdf | Harvest, drying, cleaning, grading, and downstream exclusions |
+| `fssai-star-anise-2023` | standard | FSSAI, Chapter 2.9, section 2.9.34 Star Anise, version 1 (2023). https://fssai.gov.in/upload/uploadfiles/files/Chapter%202_9%20%28Salt%20Spices%2C%20Condiments%20and%20related%20products%29.pdf | Star-anise identity and species-specific moisture/quality limits |
+| `codex-cxs-358-2024` | standard | Codex CXS 358-2024, dried/dehydrated fruits and berries including juniper berry and star anise. https://www.fao.org/fao-who-codexalimentarius/codex-texts/standards/en | Dried fruit/berry market route |
+| `ncsu-common-juniper` | extension_guidance | North Carolina State Extension, *Common Juniper*. https://plants.ces.ncsu.edu/plants/juniperus-communis-var-communis/common-name/common-juniper/ | Woody perennial route and second/third-year cone maturation |
+| `ipcc-2019-managed-soils` | method_factor | IPCC, *2019 Refinement*, Volume 4, Chapter 11. https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | Managed-soil N2O method |
+| `mass-balance-identity` | method_factor | Conservation of water mass for a matched drying batch/control volume, including water in every material exit, actual additions, separate liquid exports and opening/closing water stock; a PCR calculation identity, not an empirical evaporation factor. | Closed drying-water balance and once-only reference normalization |

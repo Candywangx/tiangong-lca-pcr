@@ -1,37 +1,153 @@
 schema_version: 1
 id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.rye-other
+version: 0.1.0
+updated_at_utc: 2026-10-18T08:50:04.613Z
 title:
-  en-US: "Rye, other"
-  zh-CN: null
-status: scaffold
+  en-US: Non-seed rye grain at a declared farm or primary-conditioning gate
+  zh-CN: 声明农场门或初级处理门的非播种用黑麦谷物
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "agriculture-forestry-and-fishery-products"
-modules:
-  core:
-    - pcr-minimum-content
-    - unit-of-analysis
-    - reference-flow
-    - inventory-flow-taxonomy
-    - system-boundary
-    - allocation
-    - data-quality
-    - validation-rules
+  - agriculture-forestry-and-fishery-products
 target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "01162"
-    title: "Rye, other"
+    title: Rye, other
     mapping_type: exact
+review_metadata:
+  unresolved_factual_evidence:
+    - Verify crop-specific grain/state parameters independently; wheat handling is a disclosed generic proxy only.
+    - Resolve an actual crop-specific straw UUID; the Wheat straw UUID is not a valid rye/oat identity and is not silently used as proxy.
+  reference_flow_identity:
+    status: unresolved
+    unresolved_support_fields:
+      - reference_product_flow_uuid
+  unresolved_flow_identities:
+    - row_id: harvested_rye_grain
+      reason_code: verification_pending
+      explanation: Harvested grain is an intermediate field output; its identity must not inherit a conditioned-grain UUID.
+    - row_id: rye_crop_received_for_harvest
+      reason_code: verification_pending
+      explanation: Verify the harvested-grain transfer state independently of standing crop and conditioned grain.
+    - row_id: grain_at_handoff
+      reason_code: verification_pending
+      explanation: Verify the actual harvest farm-gate grain state; conditioning is not presumed.
+    - row_id: grain_to_primary_conditioning
+      reason_code: verification_pending
+      explanation: Verify harvested grain before primary conditioning, not its later conditioned product.
+    - row_id: conditioned_rye_grain
+      reason_code: verification_pending
+      explanation: Verify the actual drying, cleaning, grading and tempering state after primary conditioning.
+    - row_id: grain_to_declared_storage
+      reason_code: verification_pending
+      explanation: Verify the grain state at the preceding gate; storage does not imply prior conditioning.
+    - row_id: declared_gate_rye_grain
+      reason_code: verification_pending
+      explanation: Verify the actual grain state and moisture basis after the declared storage or hand-off.
+    - row_id: actual_route_product_for_handoff
+      reason_code: verification_pending
+      explanation: Verify the actual terminal product state and declared gate independently; do not inherit a preceding-stage or alternative-route UUID.
+    - row_id: reference_product_at_declared_handoff
+      reason_code: verification_pending
+      explanation: Verify the actual reference product at the declared handoff independently; this measurement node adds no physical processing.
+    - row_id: rye_crop_production_agricultural_nutrient_inputs_triple_superphosphate
+      reason: No detail-confirmed UUID is recorded for Triple superphosphate fertilizer in rye_crop_production (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: rye_crop_production_agricultural_nutrient_inputs_potassium_chloride
+      reason: No detail-confirmed UUID is recorded for Potassium chloride fertilizer in rye_crop_production (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: rye_crop_production_agricultural_nutrient_inputs_cattle_manure
+      reason: No detail-confirmed UUID is recorded for Cattle manure applied as fertilizer in rye_crop_production (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: rye_crop_production_agricultural_nutrient_inputs_plant_compost
+      reason: No detail-confirmed UUID is recorded for Composted plant residues applied to soil in rye_crop_production (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: land_occupation
+      reason: No detail-confirmed UUID is recorded for Agricultural land occupation in rye_crop_production (inputs/elementary). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: rye_straw_or_field_residue
+      reason: No detail-confirmed UUID is recorded for Rye straw (UUID unresolved; crop-specific identity required) in rye_crop_production (outputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: conditioning_dust_to_air
+      reason: No detail-confirmed UUID is recorded for Grain dust, emissions to air in primary_conditioning (outputs/elementary). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: transport_packaging_input_wood_crate
+      reason: No detail-confirmed UUID is recorded for Wooden crate in storage_and_declared_gate (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: transport_packaging_input_corrugated_box
+      reason: No detail-confirmed UUID is recorded for Corrugated fibreboard box in storage_and_declared_gate (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: transport_packaging_input_pe_film
+      reason: No detail-confirmed UUID is recorded for Polyethylene wrapping film in storage_and_declared_gate (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: harvest_field_delivery_loss
+      reason: Specific rejected grain stream; the former optical-assembly waste UUID was incompatible. Confirm actual grain composition, state and receiving route before binding.
+    - row_id: conditioning_screenings_and_rejects
+      reason: Specific rejected grain stream; the former optical-assembly waste UUID was incompatible. Confirm actual grain composition, state and receiving route before binding.
+    - row_id: storage_loss_or_damaged_grain
+      reason: Specific rejected grain stream; the former optical-assembly waste UUID was incompatible. Confirm actual grain composition, state and receiving route before binding.
+    - row_id: water_withdrawal
+      reason_code: verification_pending
+      explanation: The cached unspecified-water flow has a volume reference and no actual source specificity. Measure m3 and verify water type, source and resource compartment before UUID binding.
+  required_input_identification:
+    - requirement_id: crop_protection_product_input_specific_input
+      rule: Mandatory, projected collection-method requirement. Actual use must become separate specific exchanges before dataset completeness; no fabricated recipe, missing-as-zero assumption or aggregate flow binding.
+    - requirement_id: harvest_transport_service_specific_input
+      rule: Mandatory specific-exchange collection requirement projected in collection_method. Preserve actual quantities, composition and treatment boundaries; instantiate actual exchanges before dataset completeness; do not invent materials or infer zero.
+  content_identity_remediation:
+    scope: Specific input identity, route applicability and source-bound UUID compatibility; no lifecycle promotion or classification acceptance.
+    bound_rows:
+      - row_id: rye_crop_production_agricultural_nutrient_inputs_urea
+        uuid: 3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e
+      - row_id: rye_crop_production_agricultural_nutrient_inputs_ammonium_sulfate
+        uuid: 8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf
+      - row_id: harvest_energy_input_electricity
+        uuid: 455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca
+      - row_id: harvest_energy_input_diesel
+        uuid: 9d258d75-6792-4f1c-9856-81602ed8f816
+      - row_id: conditioning_energy_input_electricity
+        uuid: 455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca
+      - row_id: storage_handoff_energy_electricity
+        uuid: 455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca
+    conditional_rows: []
+    remaining_identity_policy: Specific unresolved rows remain explicit when no compatible public identity was confirmed; no near-match material or reference-property substitution is accepted.
+  required_output_identification: []
+  atomic_identity_followup:
+    scope: Atomic selected identities, compatible UUID receiving compartment, and bilingual identity displays; no scientific status promotion.
+    retired_collection_rows:
+      - harvest_transport_service
+    english_canonical_preserved_except_reviewed_repairs: true
+    unresolved_policy: Concrete unresolved identities remain explicitly registered; a selected UUID alone never establishes actual use or full scientific evidence.
+  methodology_repair:
+    date: 2026-10-18
+    scope: Explicit compound-mass units, atomic collection requirements, and evidence-bound quantitative screens; candidate status retained.
+    retired_collection_rows: []
+    range_policy: No universal numeric bound is inferred from conservation alone; missing compatible range evidence remains unavailable.
+    identity_policy: No new UUID binding or external identity verification is claimed; concrete exchanges remain subject to the recorded identity gaps.
+  inventory_contract:
+    atomic_flows: v1
+  principle_content_audit:
+    date: 2026-10-18
+    scope: CPC 01/02/03 selected unpublished candidates; content and bilingual/structured consistency
+    changes:
+      - kind: direction
+        row_id: conditioning_screenings_and_rejects
+      - kind: direction
+        row_id: storage_loss_or_damaged_grain
+      - kind: chemical_accounting
+        row_id: chemical_species_mass_accounting
+    qualification: Candidate only. Corrections do not establish publication readiness or eliminate site-specific identity and evidence requirements.
+  phase1_local_corrections:
+    date: 2026-10-18
+    finding_ids:
+      - F016
+      - F021-editorial
+      - F046-format
+      - F047
+      - F049
+      - F050-format
+    scope: Completed local phase-one semantic review under eight fixed criteria for the selected batch. Confirmed issues and linked instructions corrected; site observations, empirical screening support and unresolved exact-state identities remain separately disclosed. This is not publication or universal absence-of-error certification.

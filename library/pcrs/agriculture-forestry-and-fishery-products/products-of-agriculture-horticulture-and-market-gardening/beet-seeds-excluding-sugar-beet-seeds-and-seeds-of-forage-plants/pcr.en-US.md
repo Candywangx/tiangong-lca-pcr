@@ -1,8 +1,793 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.beet-seeds-excluding-sugar-beet-seeds-and-seeds-of-forage-plants
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Beet seeds (excluding sugar beet seeds) and seeds of forage plants
+
+## 1. Scope and Applicability
+
+This PCR covers commercial production of sowing-quality beet seed (excluding sugar-beet seed), together with seed of declared forage-plant species. The foreground boundary starts with parent seed and field inputs and ends with cleaned, viable seed released at the seed producer or processor hand-off. A dataset represents one declared species, cultivar, multiplication class, route and lot; it does not average physically unlike species without transparent weighting.
+
+Excluded are sugar-beet seed, grain or forage biomass sold as feed, vegetative planting material, flower seed outside this CPC category, and seed multiplication or processing stages not represented by foreground records. Coatings or chemical treatments are included only when applied before the declared hand-off and recorded for the lot.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.beet-seeds-excluding-sugar-beet-seeds-and-seeds-of-forage-plants |
+| classification_refs | CPC 3.0 `01940`; mapping relation: exact |
+| covered_products | Seed-grade non-sugar beet seed and seed of forage grasses, legumes and other declared forage plants |
+| excluded_products | Sugar-beet seed; feed grain; harvested forage biomass; vegetative propagules; unverified species aggregation |
+| representative_product | One declared cleaned, viable planting-seed lot |
+| production_route | Parent-seed establishment → managed field multiplication → harvest/threshing → drying/conditioning → cleaning/grading → packaging/storage hand-off |
+| market_state | Cleaned seed released for sowing with species/cultivar, purity, germination or viability, moisture, treatment and certification state declared |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Cleaned, viable beet or forage planting seed at the producer or processor hand-off |
+| How much | 1 kg |
+| How well | Declared species/cultivar, physical purity, germination or viability, moisture, treatment, certification class and accepted-lot status |
+| How long or cycle | One traceable multiplication and processing lot; perennial establishment burdens allocated across the declared productive period when relevant |
+| reference_flow_link | accepted_planting_seed |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Beet seeds (excluding sugar beet seeds) and seeds of forage plants |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | species and cultivar; seed class; purity; germination or viability; moisture; treatment/coating; certification; production geography; hand-off gate |
+
+A category-wide fixed UUID remains unresolved. The available *Lupinus albus* row is species-specific and must not represent this composite category.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | reference and intermediate seed flows | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Record net mass on the declared moisture basis; report gross packaging separately. |
+| `quality_basis` | accepted seed | lot test results | declared test units | Purity, germination/viability and moisture shall refer to the same released lot. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Parent seed, field state and any perennial stand age are declared |
+| starting_condition_role | Foreground starting condition for the multiplication cycle |
+| product_classification_scope | One declared member product within CPC 3.0 01940 |
+| recursive_input_rule | Parent seed from the same category is an input exchange from a separately identified upstream seed dataset; do not recurse into the current lot |
+| upstream_dataset_requirement | Species/cultivar, seed class, geography, gate and quality state must match the parent-seed input |
+| disclosure | Declare annual or perennial route, field and processor locations, crop cycle, lot links, rejected destinations and included treatment/storage |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_route` | all datasets | Include only evidenced field multiplication, harvest, threshing, conditioning, grading, packaging and storage operations before the declared hand-off. | `fao-seed-production-1993`; `fao-ilri-forage-seed-1996` |
+| `boundary_parent_seed` | parent seed | Keep the same-category parent seed as a linked upstream input and prevent recursion into the current lot. |  |
+| `boundary_rejects` | off-spec material | Exclude rejected or downgraded material from accepted output and disclose every destination. | `fao-ilri-forage-seed-1996` |
+| `boundary_treatment` | seed treatment | Include treatment or coating only when performed before hand-off and supported by lot records. |  |
+| `boundary_period` | perennial forage seed stands | Allocate establishment and termination burdens across the documented productive seed-harvest period without double counting. |  |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `field_multiplication` | Seed-crop establishment and field multiplication | `required` | Production of a declared beet or forage seed crop through one crop cycle | managed biological production | 1 kg harvestable seed crop |
+| `harvest_thresh` | Harvest and threshing | `required` | Separation of seed-bearing material and threshing from the field crop | harvest and capture | 1 kg raw threshed seed |
+| `dry_condition` | Drying and primary conditioning | `required` | Moisture stabilization plus winnowing or preliminary cleaning before grading | preservation and primary conditioning | 1 kg conditioned seed |
+| `grade_pack` | Cleaning, grading, packaging and hand-off | `required` | Final impurity removal, lot grading, approved treatment when used, packaging, storage and seed-grade hand-off | material treatment and grading | 1 kg accepted planting seed |
+
+### Process: Seed-crop establishment and field multiplication (`field_multiplication`)
+
+#### Inputs
+
+##### Product flows
+
+###### Parent seed for multiplication (`parent_seed`)
+
+Declared species/cultivar parent, basic or certified seed introduced to the multiplication field.
+
+- Selected flow: Beet or forage parent planting seed
+- Flow property / unit: Mass / kg
+- Amount rule: measured mass placed in the field
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per crop cycle producing the reported harvestable seed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_parent_seed`
+- Sources: `fao-seed-production-1993`
+
+- Range: Parent seed for multiplication QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0.001
+  - Upper: 0.30
+  - Unit: kg
+  - Basis: per kg harvestable seed crop
+  - Basis kind: `crop_cycle`
+  - Evidence kind: `reasoned_estimate`
+
+###### Fertilizer, urea input (`nutrient_supply`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_inputs`
+
+###### Fertilizer, monoammonium phosphate input (`nutrient_supply_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_inputs`
+
+###### Fertilizer, potassium chloride input (`nutrient_supply_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_inputs`
+
+###### Cattle manure, as applied input (`nutrient_supply_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_inputs`
+
+###### Agricultural limestone input (`nutrient_supply_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_inputs`
+
+###### Irrigation water supply (`irrigation_water`)
+
+Irrigation water supplied to the seed crop is recorded when irrigation occurs.
+
+- Selected flow: Irrigation water
+- Flow property / unit: Mass / kg
+- Amount rule: metered or calculated irrigation water delivered
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_irrigation`
+
+- Range: Irrigation water supply QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 20
+  - Unit: m3
+  - Basis: per kg harvestable seed crop
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Electricity, medium voltage (`field_energy`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+###### Diesel fuel (`field_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+##### Waste flows
+
+None declared as a separate mandatory card.
+
+##### Elementary flows
+
+None declared as a separate mandatory card.
+
+#### Outputs
+
+##### Product flows
+
+###### Harvestable beet or forage seed crop (`harvestable_seed_crop`)
+
+Mature seed-bearing crop leaving managed field multiplication for harvest and threshing.
+
+- Selected flow: Harvestable beet or forage seed crop
+- Flow property / unit: Mass / kg
+- Amount rule: measured harvested wet mass attributable to the seed lot
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per crop cycle and field lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_harvest_mass`
+- Sources: `fao-seed-production-1993`
+
+- Range: Harvestable beet or forage seed crop QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 8
+  - Unit: kg
+  - Basis: per kg raw threshed seed
+  - Basis kind: `crop_cycle`
+  - Evidence kind: `reasoned_estimate`
+
+##### Waste flows
+
+None declared as a separate mandatory card.
+
+##### Elementary flows
+
+None declared as a separate mandatory card.
+
+### Process: Harvest and threshing (`harvest_thresh`)
+
+#### Inputs
+
+##### Product flows
+
+###### Harvestable seed crop received (`harvestable_crop_input`)
+
+The declared field lot enters harvesting and threshing without substitution by forage biomass produced for feed.
+
+- Selected flow: Harvestable beet or forage seed crop
+- Flow property / unit: Mass / kg
+- Amount rule: linked mass from field multiplication output
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per kg raw threshed seed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_harvest_mass`
+
+- Range: Harvestable seed crop received QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 8
+  - Unit: kg
+  - Basis: per kg raw threshed seed
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Electricity, medium voltage (`harvest_energy`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg raw threshed seed.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+###### Diesel fuel (`harvest_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg raw threshed seed.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+##### Waste flows
+
+None declared as a separate mandatory card.
+
+##### Elementary flows
+
+None declared as a separate mandatory card.
+
+#### Outputs
+
+##### Product flows
+
+###### Raw threshed seed (`raw_threshed_seed`)
+
+Seed separated by threshing before drying, winnowing and final cleaning.
+
+- Selected flow: Raw threshed beet or forage seed
+- Flow property / unit: Mass / kg
+- Amount rule: measured mass transferred to conditioning
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per harvest lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_lot_mass_quality`
+- Sources: `fao-ilri-forage-seed-1996`
+
+- Range: Raw threshed seed QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1.5
+  - Unit: kg
+  - Basis: per kg conditioned seed
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+##### Waste flows
+
+###### Harvest and threshing residues (`harvest_residue`)
+
+Chaff, straw and unrecovered material leaving the seed-product route are reported by destination.
+
+- Selected flow: Harvest and threshing residue
+- Flow property / unit: Mass / kg
+- Amount rule: mass balance difference supported by measured or estimated destination records
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg raw threshed seed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_residue_route`
+
+- Range: Harvest and threshing residues QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 10
+  - Unit: kg
+  - Basis: per kg raw threshed seed
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+##### Elementary flows
+
+None declared as a separate mandatory card.
+
+### Process: Drying and primary conditioning (`dry_condition`)
+
+#### Inputs
+
+##### Product flows
+
+###### Raw threshed seed received (`raw_seed_input`)
+
+The traceable raw seed lot enters moisture stabilization and preliminary conditioning.
+
+- Selected flow: Raw threshed beet or forage seed
+- Flow property / unit: Mass / kg
+- Amount rule: linked input mass from threshing
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per conditioning batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_lot_mass_quality`
+
+- Range: Raw threshed seed received QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1.5
+  - Unit: kg
+  - Basis: per kg conditioned seed
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Electricity, medium voltage (`conditioning_energy`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg conditioned seed.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+###### Diesel fuel (`conditioning_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg conditioned seed.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+##### Waste flows
+
+None declared as a separate mandatory card.
+
+##### Elementary flows
+
+None declared as a separate mandatory card.
+
+#### Outputs
+
+##### Product flows
+
+###### Conditioned seed before final grading (`conditioned_seed`)
+
+Moisture-stable, preliminarily cleaned seed transferred to final cleaning and grading.
+
+- Selected flow: Conditioned beet or forage seed
+- Flow property / unit: Mass / kg
+- Amount rule: measured batch output at declared moisture
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per conditioning batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_lot_mass_quality`
+- Sources: `fao-ilri-forage-seed-1996`
+
+- Range: Conditioned seed before final grading QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1.3
+  - Unit: kg
+  - Basis: per kg accepted planting seed
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+##### Waste flows
+
+None declared as a separate mandatory card.
+
+##### Elementary flows
+
+None declared as a separate mandatory card.
+
+### Process: Cleaning, grading, packaging and hand-off (`grade_pack`)
+
+#### Inputs
+
+##### Product flows
+
+###### Conditioned seed received (`conditioned_seed_input`)
+
+The conditioned lot enters final cleaning, separation, grading and seed-quality release.
+
+- Selected flow: Conditioned beet or forage seed
+- Flow property / unit: Mass / kg
+- Amount rule: linked mass from conditioning output
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per grading lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_lot_mass_quality`
+
+- Range: Conditioned seed received QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1.4
+  - Unit: kg
+  - Basis: per kg accepted planting seed
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Electricity, medium voltage (`grading_energy`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg accepted planting seed.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+###### Diesel fuel (`grading_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg accepted planting seed.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+###### Seed packaging (`seed_packaging`)
+
+Bags or other flexible packages used to protect the released seed lot are selected from the actual packaging record.
+
+- Selected flow: Flexible packaging
+- Flow property / unit: Mass / kg
+- Amount rule: measured packaging mass consumed
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg accepted planting seed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_packaging`
+
+- Range: Seed packaging QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.20
+  - Unit: kg
+  - Basis: per kg accepted planting seed
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+##### Waste flows
+
+None declared as a separate mandatory card.
+
+##### Elementary flows
+
+None declared as a separate mandatory card.
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted beet or forage planting seed (`accepted_planting_seed`)
+
+Cleaned viable seed released for sowing at the processor or producer hand-off; species-specific rows must not stand in for the whole category.
+
+- Selected flow: Beet seeds (excluding sugar beet seeds) and seeds of forage plants
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: measured net released mass
+
+- Amount rule: 1 kg
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per released seed lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_release_tests`
+
+- Range: Accepted beet or forage planting seed QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `collected_record`
+
+##### Waste flows
+
+###### Seed-cleaning rejects (`rejected_seed_material`)
+
+Off-spec seed, screenings and foreign matter that leave as waste are excluded from accepted seed and reported by reuse, recovery or disposal destination. A saleable downgraded product is recorded separately as an intended product in the concrete foreground dataset.
+
+- Selected flow: Seed cleaning rejects `6bfe90ae-a960-45dd-b1fa-89581c562763`
+- Flow property / unit: Mass / kg
+- Amount rule: measured reject mass by destination
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg accepted planting seed.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_reject_route`
+
+- Range: Rejected or downgraded seed material QA range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.60
+  - Unit: kg
+  - Basis: per kg accepted planting seed
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+##### Elementary flows
+
+None declared as a separate mandatory card.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_mass_balance` | each process | Reconcile input, intended output, moisture change, residues and rejects on the declared mass and moisture basis. |  |
+| `allocation_rejects` | cleaning and grading | Do not count rejected lots or screenings as accepted seed; record the destination before applying any avoided-product treatment. | `fao-ilri-forage-seed-1996` |
+| `allocation_coproduct` | saleable secondary outputs | Prefer subdivision or direct physical attribution; when allocation remains necessary, disclose the outputs, prices, period, formula and sensitivity. |  |
+| `allocation_period` | perennial production | Annualize establishment and termination over documented productive seed yield, retaining year-specific yield and loss records. |  |
+| `allocation_batches` | shared runs and storage | Assign cleaning, changeover, testing and storage burdens using measured run time, mass throughput or another documented causal driver; do not count them twice. |  |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_parent_seed` | `field_multiplication` | `parent seed` | purchase and sowing record | species, cultivar, class, supplier, mass, field, date | invoice and calibrated scale; Raw aggregation and attribution: sum accepted parent seed by field lot | kg | each sowing event | complete crop cycle | each field lot | per declared reference flow | invoice, lot label, scale check |
+| `cp_field_inputs` | `field_multiplication` | `nutrients and amendments` | application log | product, nutrient composition, mass, date, field | invoice plus application record; Raw aggregation and attribution: sum by actual product and retain composition | kg product | each application | complete crop cycle | each field lot | per declared reference flow | invoice and application log |
+| `cp_irrigation` | `field_multiplication` | `irrigation water` | meter or pumping record | volume, source, field, date, runtime | meter preferred; pump calculation documented; Raw aggregation and attribution: sum delivered water | m3 | each event | complete crop cycle | each field lot | per declared reference flow | meter calibration or pump specification |
+| `cp_energy` | `all processes` | `energy` | fuel, meter and equipment log | carrier, quantity, unit, run, process, lot | invoice, meter and equipment log; Raw aggregation and attribution: convert carriers and allocate causally to lot | MJ or kWh | each run or reporting interval | complete lot route | each field and facility | per declared reference flow | invoice, meter reading, run log |
+| `cp_harvest_mass` | `field_multiplication; harvest_thresh` | `crop and raw seed mass` | harvest ticket | field, lot, date, gross mass, tare, moisture | calibrated scale; Raw aggregation and attribution: net mass by linked lot | kg | each load | complete harvest | each field lot | per declared reference flow | weigh ticket and scale check |
+| `cp_lot_mass_quality` | `harvest_thresh; dry_condition; grade_pack` | `intermediate seed mass and moisture` | batch record | lot, input mass, output mass, moisture, timestamp | calibrated scale and moisture test; Raw aggregation and attribution: retain stage-specific mass; no cross-lot substitution | kg; % | each batch | complete processing route | each lot and process | per declared reference flow | batch sheet, calibration, sample id |
+| `cp_packaging` | `grade_pack` | `packaging` | packaging issue record | package type, net package mass, count, lot | stock issue plus weighing; Raw aggregation and attribution: sum packaging consumed net of documented returns | kg | each lot | complete released lot | each packaging line and lot | per declared reference flow | stock record and package specification |
+| `cp_release_tests` | `grade_pack` | `accepted seed` | release and laboratory record | species, cultivar, class, purity, germination or viability, moisture, treatment, certification, net mass | lot sampling and recognized seed test method; Raw aggregation and attribution: accept only mass covered by release decision | kg; % | each released lot | release date | each processing lot | per declared reference flow | certificate, laboratory result, sample chain |
+| `cp_residue_route` | `harvest_thresh` | `residues` | destination record | type, mass, destination, date, lot | scale or documented mass balance; Raw aggregation and attribution: sum by destination | kg | each removal | complete harvest lot | each field/facility | per declared reference flow | ticket, receiver record or mass balance |
+| `cp_reject_route` | `grade_pack` | `rejects and downgraded material` | sorting and destination record | reason, grade, mass, destination, lot | scale and dispatch record; Raw aggregation and attribution: sum by reason and destination | kg | each lot | complete grading lot | each line and lot | per declared reference flow | grading report and destination evidence |
+| `cp_phase1_environment_coverage` | field_multiplication | managed environmental coverage by actual node | site/activity/method ledger | actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_normalize` | all inventory rows | amount per reference kg = lot amount / net accepted seed mass | lot amount; accepted net mass | normalized amount per kg |  |
+| `calc_water` | irrigation | delivered water = metered volume, or pump rate × verified runtime when no meter exists | meter or pump rate and runtime | m3 delivered water |  |
+| `calc_energy` | energy inputs | convert each recorded carrier to declared energy unit, then allocate by causal lot driver | carrier quantity; conversion; lot driver | MJ or kWh per kg |  |
+| `calc_loss` | each process | loss or residue = opening input + additions − intended output − closing stock, reconciled for moisture | mass and moisture records | loss/residue mass |  |
+| `calc_period` | perennial field | annualized establishment burden = total establishment input × current-year seed yield / documented productive-period seed yield | establishment inputs; annual yields | current-year attributed burden |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | reference lot | Species, cultivar, seed class and CPC scope must be explicit; a species-specific UUID cannot represent another species or the complete category. | lot label and identity review |
+| `dq_mass_balance` | each process | Mass balance shall reconcile within a disclosed tolerance and moisture basis. | weighing and moisture records |
+| `dq_completeness` | foreground route | Collect at least 95% of recorded operating days and all released/rejected lots; disclose estimated gaps. | coverage calculation |
+| `dq_temporal` | crop and processing cycle | Use data covering one complete multiplication and processing cycle; perennial stands retain age and yearly yield. | field and batch dates |
+| `dq_flow_binding` | all cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | binding review record |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_scope` | reference product | Reject sugar-beet seed, feed biomass, vegetative propagules and lots without a declared species or cultivar. |  |
+| `validate_reference` | reference flow | Require exactly 1 kg net accepted seed and all required quality qualifiers; keep category UUID blank until a category-compatible row is verified. |  |
+| `validate_lot_link` | all processes | Require unbroken field, harvest, conditioning and release lot links. |  |
+| `validate_rejects` | grade_pack | Accepted output plus destination-specific rejects shall reconcile with conditioned input and documented stock change. |  |
+| `validate_period` | perennial route | Require productive-period evidence and prevent establishment burdens from being charged more than once. |  |
+| `validate_coproduct` | secondary outputs | Require explicit intended-output status and attribution method before credit or allocation. |  |
+| `validate_nutrients` | field_multiplication | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+| `validate_ranges` | all flow cards | For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening. |  |
+| `validate_binding` | all flows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | Foreground product-system data package and process projection |
+| downstream_use | `secondary_dataset`; `background_dataset` |
+| allowed_use | Declared species/cultivar, route, geography, seed class and hand-off compatible with the study |
+| excluded_use | Proxy for sugar-beet seed, feed biomass, another seed species, or an unqualified category average |
+| required_metadata | species/cultivar; annual/perennial route; parent-seed class; field and processor geography; crop year; purity; germination/viability; moisture; treatment; certification; lot and gate |
+| required_quality_disclosure | foreground coverage; estimated gaps; range exceedances; unresolved flow identities; allocation and reject destinations |
+| update_trigger | new reviewed species-route evidence, verified category flow UUID, changed concrete flow identity verification|
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `fao-seed-production-1993` | `official_guidance` | FAO, Quality Declared Seed / seed production guidance, AGRIS record https://agris.fao.org/search/zh/records/672364348aa2fad1ce470e8a | field multiplication, harvesting, conditioning and quality-control route |
+| `fao-ilri-forage-seed-1996` | `handbook` | FAO/ILRI, *Forage Seed Production*, https://www.fao.org/4/x3996e/x3996e41.htm | harvest, threshing, drying, cleaning, storage, rejects and lot-quality controls |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |

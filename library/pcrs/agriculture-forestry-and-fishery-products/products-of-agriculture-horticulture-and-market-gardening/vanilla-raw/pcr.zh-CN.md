@@ -1,8 +1,699 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.vanilla-raw
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 生香草荚
+
+## 1. 范围与适用性
+
+本 PCR 覆盖受控多年生香草藤生产、重复选择性采收、农场内最低限度初级整理、分级及农场门口交付的成熟绿色未熟化香草荚。必须声明物种、成熟度、等级、支撑与授粉路线、采收轮次和多年生归属。FAO 指出成熟绿色香草荚基本无香气，熟化是形成特征香气的独立后续工序（`fao-vanilla-postharvest-compendium`）。排除熟化/干燥荚果、厂门清洁/分选替代品、提取物、粉末和其他熟化后产品。
+
+## 2. 产品类别识别
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.vanilla-raw |
+| classification_refs | CPC 3.0: 01658 Vanilla, raw; mapping relation: narrower |
+| covered_products | 声明物种和等级、农场门口熟化前的成熟绿色未熟化香草荚 |
+| excluded_products | 熟化或干燥荚果；清洁或分选的厂门替代品；香草提取物、粉末和种植材料 |
+| representative_product | 成熟绿色未熟化 Vanilla planifolia 荚果，声明等级，农场门口 |
+| production_route | 多年生藤本管理、声明的支撑及授粉路线、重复选择性手工采收、最低限度整理和绿色荚果分级 |
+| market_state | 按收货质量计的鲜绿色未熟化、未干燥荚果，位于香气形成加工前 |
+
+受控生物生产父活动为多年生香草藤栽培。支撑系统、遮阴、授粉方法、投入、产量或资产使用不同的生产/技术路线必须分别记录；仅在各路线清单和产量贡献可追溯时方可加权汇总。
+
+## 3. 参考流
+
+| 字段 | 值 |
+| --- | --- |
+| What | 农场门口熟化前、声明物种和等级的成熟绿色未熟化香草荚 |
+| How much | 1 kg 收货质量 |
+| How well | 满足声明成熟度和等级；保持绿色、未熟化、未干燥并排除拒收荚果 |
+| How long or cycle | 覆盖所有归属的多年生阶段及形成参考数量的全部选择性采收轮次的声明报告期 |
+| reference_flow_link | vanilla_raw_reference |
+
+| 字段 | 值 |
+| --- | --- |
+| 参考数量 | 1 |
+| 参考产品流 | 生香草 `51e085e4-b15c-4933-b7eb-45eee9bd8958` |
+| 参考流属性 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| 参考单位 | kg |
+| 必需限定信息 | 植物物种；成熟绿色标准；未熟化未干燥状态；生产者等级；收货水分基准；熟化前农场门口交付；支撑系统；授粉路线；采收轮次；地理与报告期 |
+
+## 4. 计量与单位规则
+| rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | 参考产品 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 所有清单量按声明收货水分基准归一化至 1 kg 已接收成熟绿色未熟化荚果。 |
+| `grade_mass_reconciliation` | 采收、整理和分级交接 | Mass | kg | 核算输入至已接收等级、拒收/降级荚果、杂物及质量损失；拒收物不得计入参考产出。 |
+| `harvest_round_aggregation` | 重复选择性采收 | Mass | kg | 先按轮次汇总已采收和拒收质量，再汇总报告期，并保留日期和成熟标准。 |
+| `perennial_normalization` | 定植、替换和共享设施 | Mass | kg | 多期负荷按同一生产期已接收产出归属一次，禁止下游再次年化。 |
+
+## 5. 系统边界
+
+### 边界概化
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | 已定植或新种植的受控香草藤，并声明繁殖来源、物种、支撑系统、藤龄/阶段和前期结转 |
+| starting_condition_role | 多年生受控生产的起始存量；定植负荷纳入或链接并在声明生产期归属 |
+| product_classification_scope | 农场门口熟化前成熟绿色未熟化香草荚；不延伸至熟化、干燥、厂门清洁/分选品或提取物 |
+| recursive_input_rule | 农场自留藤本、插条和绿色荚果作为承载既有负荷的可见内部流；外购同类材料须使用上游数据集且不得为零负荷 |
+| upstream_dataset_requirement | 外购繁殖材料、养分、水和能源需要兼容上游数据集；具体流身份核验|
+| disclosure | 声明物种、支撑/遮阴系统、授粉路线、藤本阶段和生产年、替换事件、采收轮次、成熟度和等级、水分基准、拒收去向及熟化前交付点 |
+
+### 边界规则
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `boundary_managed_vine_route` | `perennial_vine_management` | 纳入繁殖/藤本结转、支撑遮阴、整枝修剪、授粉、养分水分、能源、共享设施份额及荚果发育。 | `fao-vanilla-postharvest-compendium` |
+| `boundary_selective_harvest` | `selective_pod_harvest` | 将重复成熟度选择性采收独立建模，并按轮次记录采收荚果、留藤未熟荚果、杂物和损失。 | `fao-vanilla-postharvest-compendium` |
+| `boundary_primary_conditioning` | `on_farm_primary_conditioning` | 仅纳入熟化前最低限度处理；排除杀青、发汗、发酵、香气形成、刻意干燥和厂门清洗。 | `fao-vanilla-postharvest-compendium` |
+| `boundary_grading_handoff` | `green_pod_grading_handoff` | 明确已接收等级及全部降级/拒收去向，交付发生在熟化前。 | `fao-vanilla-postharvest-compendium` |
+| `boundary_route_deltas` | 替代支撑、授粉及处理路线 | 除非按路线记录可复现加权，否则保持拓扑、投入、能源、产量和资产使用差异。 | `fao-vanilla-postharvest-compendium` |
+| `boundary_excluded_processing` | 下游工序 | 排除熟化、干燥、香气形成调理、厂门清洁/分选、研磨和提取物制造。 | `fao-vanilla-postharvest-compendium` |
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `perennial_vine_management` | 多年生香草藤管理与荚果发育 | `required` | 始终纳入并声明支撑和授粉的替代技术路线差异、期间、状态和交接 | 受控生物生产父活动 | kg 可采收成熟绿色荚果 |
+| `selective_pod_harvest` | 成熟绿色荚果的重复选择性采收 | `required` | 始终纳入；每轮使用批次模式记录，并声明路线、期间、状态和交接 | 采收与获取 | kg 各轮次已采收绿色荚果 |
+| `on_farm_primary_conditioning` | 农场内熟化前最低限度处理 | `required` | 始终纳入并声明路线、期间、状态和交接 | 初级整理 | kg 处理后绿色未熟化荚果 |
+| `green_pod_grading_handoff` | 绿色荚果分级与农场门口交付 | `required` | 始终纳入并声明路线、期间、状态和交接 | 分级与分选 | 1 kg 已接收成熟绿色未熟化荚果 |
+
+### 过程：多年生香草藤管理与荚果发育 (`perennial_vine_management`)
+
+该多年生、分期索引过程把定植、藤本替换、支撑/遮阴设施、授粉和荚果发育关联到产生采收荚果的期间与路线。
+
+#### 输入
+##### 产品流
+
+###### 尿素肥料投入（`nutrient_inputs`）
+
+仅当声明的过程实际使用尿素肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：尿素肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的尿素肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_management_inputs`
+
+###### 磷酸一铵肥料投入（`nutrient_inputs_monoammonium_phosphate`）
+
+仅当声明的过程实际使用磷酸一铵肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：磷酸一铵肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的磷酸一铵肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_management_inputs`
+
+###### 氯化钾肥料投入（`nutrient_inputs_potassium_chloride`）
+
+仅当声明的过程实际使用氯化钾肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：氯化钾肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的氯化钾肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_management_inputs`
+
+###### 施用的牛粪肥投入（`nutrient_inputs_cattle_manure`）
+
+仅当声明的过程实际使用施用的牛粪肥时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：施用的牛粪肥
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的施用的牛粪肥数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_management_inputs`
+
+###### 农业石灰石投入（`nutrient_inputs_agricultural_limestone`）
+
+仅当声明的过程实际使用农业石灰石时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：农业石灰石
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的农业石灰石数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_management_inputs`
+
+###### 供应藤本的灌溉水（`irrigation_water`）
+
+该流卡：计量水量，或由泵运行时间和核实流量计算输送量；降雨单独披露但不作为交换。
+
+- 选定流：依据前景水源记录选择的灌溉水
+- 流属性/单位：体积 / m3
+- 数量规则：计量水量，或由泵运行时间和核实流量计算输送量；降雨单独披露但不作为交换。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_management_inputs`
+- 数量范围：数量 QA 范围
+  - 范围角色：`default_estimate`
+  - 下限：0
+  - 上限：20
+  - 单位：m3/kg reference product
+  - 基准：每 kg 已接收产出的输送灌溉水
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+###### 中压电力投入（`management_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`calculated_value`
+- 适用范围：`technology_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_management_inputs`
+
+###### 柴油投入（`management_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`calculated_value`
+- 适用范围：`technology_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_management_inputs`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 待采收的绿色香荚兰荚果（`standing_vines_mature_pods`）
+
+该流卡：依据各采收轮次和损失核算的内部中间状态，不赋予外部 UUID。
+
+- 选定流：待采收的绿色香荚兰荚果
+- 流属性/单位：质量 / kg harvest-ready pods
+- 数量规则：依据各采收轮次和损失核算的内部中间状态，不赋予外部 UUID。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_perennial_vine_records`
+- 数量范围：数量 QA 范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1
+  - 上限：5
+  - 单位：kg/kg reference product
+  - 基准：每 kg 已接收产出的可采荚果
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+##### 废物流
+
+###### 修剪物、枯死藤本和田间残余物（`cultivation_residues`）
+
+该流卡：按原地保留、回收、处理或丢弃去向计量；原地物料不得同时作为外排废物流。
+
+- 选定流：按材料与去向记录的内部/延后解析作物残余物
+- 流属性/单位：质量 / kg
+- 数量规则：按原地保留、回收、处理或丢弃去向计量；原地物料不得同时作为外排废物流。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_residue_and_emission_records`
+- 数量范围：数量 QA 范围
+  - 范围角色：`default_estimate`
+  - 下限：0
+  - 上限：10
+  - 单位：kg/kg reference product
+  - 基准：每 kg 已接收产出的退出生产用途残余物
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+##### 基本流
+
+###### 向空气排放的一氧化二氮（`reported_field_emissions`）
+
+条件性单物质交换：仅在实际路线和记录证明使用或排放向空气排放的一氧化二氮时纳入。其他产品、燃料、废物或排放物种须分别建立原子清单行，独立记录数量、状态和身份；不得从示例推定必然使用。
+
+- 选定流：向空气排放的一氧化二氮
+- 流属性/单位：质量 / kg N2O
+- 数量规则：依据实际路线记录，仅计量或计算本过程与期间的向空气排放的一氧化二氮；不得混合其他物种或能源。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_residue_and_emission_records`
+
+### 过程：成熟绿色荚果的重复选择性采收 (`selective_pod_harvest`)
+
+成熟荚果在多个轮次中从在田多年生藤本上选择性移除，未熟荚果留待后续轮次。
+
+#### 输入
+##### 产品流
+
+###### 待采收的绿色香荚兰荚果（`harvest_ready_vines_input`）
+
+该流卡：内部转移量等于所有轮次核算后的可采荚果质量，不赋予外部 UUID。
+
+- 选定流：待采收的绿色香荚兰荚果
+- 流属性/单位：质量 / kg harvest-ready pods
+- 数量规则：内部转移量等于所有轮次核算后的可采荚果质量，不赋予外部 UUID。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_selective_harvest_rounds`
+- 数量范围：数量 QA 范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1
+  - 上限：5
+  - 单位：kg/kg reference product
+  - 基准：每 kg 已接收产出的可采输入
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+###### 中压电力投入（`harvest_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`foreground_record`
+- 适用范围：`technology_specific`
+原始活动或阶段基准：每 1 kg 已采收绿色荚果.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_selective_harvest_rounds`
+
+###### 柴油投入（`harvest_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：`foreground_record`
+- 适用范围：`technology_specific`
+原始活动或阶段基准：每 1 kg 已采收绿色荚果.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_selective_harvest_rounds`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 已采收的成熟绿色未熟化荚果（`harvested_green_pods`）
+
+该流卡：汇总各轮次计量质量，同时保留物种、成熟度、轮次和批次标识。
+
+- 选定流：内部已采收成熟绿色未熟化荚果
+- 流属性/单位：质量 / kg
+- 数量规则：汇总各轮次计量质量，同时保留物种、成熟度、轮次和批次标识。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_selective_harvest_rounds`
+- 数量范围：数量 QA 范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1
+  - 上限：4
+  - 单位：kg/kg reference product
+  - 基准：每 kg 已接收产出的已采收荚果
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+##### 废物流
+
+###### 采收中损失或拒收的荚果（`harvest_rejects`）
+
+该流卡：按轮次计量受损、过早摘离或病害荚果；留在藤本上的荚果既非产出也非废物。
+
+- 选定流：按状态及去向记录的内部/延后解析拒收荚果废物
+- 流属性/单位：质量 / kg
+- 数量规则：按轮次计量受损、过早摘离或病害荚果；留在藤本上的荚果既非产出也非废物。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已采收绿色荚果.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_selective_harvest_rounds`
+- 数量范围：数量 QA 范围
+  - 范围角色：`default_estimate`
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg harvested green pods
+  - 基准：每 kg 已采收荚果的拒收或损失荚果
+  - 基准类型：`process_output`
+  - 证据类型：`reasoned_estimate`
+
+##### 基本流
+
+### 过程：农场内熟化前最低限度处理 (`on_farm_primary_conditioning`)
+
+仅包括遮阴暂存和去除松散田间杂物；禁止杀青、发汗、发酵、香气形成、刻意干燥或厂门清洗。
+
+#### 输入
+##### 产品流
+
+###### 进入处理的已采收绿色未熟化荚果（`harvested_pods_input`）
+
+该流卡：内部转移量等于已计量采收荚果产出，并保留批次和轮次标识。
+
+- 选定流：内部已采收成熟绿色未熟化荚果
+- 流属性/单位：质量 / kg
+- 数量规则：内部转移量等于已计量采收荚果产出，并保留批次和轮次标识。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 处理后绿色荚果.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_primary_conditioning`
+- 数量范围：数量 QA 范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1
+  - 上限：2
+  - 单位：kg/kg handled green pods
+  - 基准：每 kg 处理后荚果的采收输入
+  - 基准类型：`process_output`
+  - 证据类型：`reasoned_estimate`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 最低限度处理的绿色未熟化荚果（`conditioned_green_pods`）
+
+该流卡：在遮阴暂存或去除松散田间杂物后计量；产品仍为绿色、未熟化、未干燥且基本无香气。
+
+- 选定流：内部最低限度处理的绿色未熟化荚果
+- 流属性/单位：质量 / kg
+- 数量规则：在遮阴暂存或去除松散田间杂物后计量；产品仍为绿色、未熟化、未干燥且基本无香气。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 处理后绿色荚果.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_primary_conditioning`
+- 数量范围：数量 QA 范围
+  - 范围角色：`qa_guardrail`
+  - 下限：0.5
+  - 上限：1
+  - 单位：kg/kg harvested input
+  - 基准：每 kg 已采收输入的处理后绿色荚果
+  - 基准类型：`process_output`
+  - 证据类型：`reasoned_estimate`
+
+##### 废物流
+
+###### 松散田间杂物和处理拒收物（`conditioning_rejects`）
+
+该流卡：按去向计量去除的土壤、植物碎片和受损荚果。
+
+- 选定流：按材料及去向记录的内部/延后解析处理废物
+- 流属性/单位：质量 / kg
+- 数量规则：按去向计量去除的土壤、植物碎片和受损荚果。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已采收输入.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_primary_conditioning`
+- 数量范围：数量 QA 范围
+  - 范围角色：`default_estimate`
+  - 下限：0
+  - 上限：0.5
+  - 单位：kg/kg harvested input
+  - 基准：每 kg 已采收输入的去除物和拒收物
+  - 基准类型：`process_output`
+  - 证据类型：`reasoned_estimate`
+
+##### 基本流
+
+### 过程：绿色荚果分级与农场门口交付 (`green_pod_grading_handoff`)
+
+将输入分为已接收声明等级以及降级、拒收或废弃去向，交付点严格位于熟化前。
+
+#### 输入
+##### 产品流
+
+###### 进入分级的最低限度处理绿色荚果（`conditioned_pods_input`）
+
+该流卡：内部转移量等于已计量处理后荚果产出。
+
+- 选定流：内部最低限度处理的绿色未熟化荚果
+- 流属性/单位：质量 / kg
+- 数量规则：内部转移量等于已计量处理后荚果产出。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_green_pod_grading`
+- 数量范围：数量 QA 范围
+  - 范围角色：`qa_guardrail`
+  - 下限：1
+  - 上限：2
+  - 单位：kg/kg reference product
+  - 基准：每 kg 已接收产出的分级输入
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 农场门口已接收的成熟绿色未熟化香草荚（`vanilla_raw_reference`）
+
+该流卡：分级核算后恰为 1 kg；固定身份已由详情确认是 CPC 01658 农场门口产品流，并由必需限定信息收窄。
+
+- 选定流：生香草 `51e085e4-b15c-4933-b7eb-45eee9bd8958`
+- 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+原始产出计量与核对要求：分级核算后恰为 1 kg；固定身份已由详情确认是 CPC 01658 农场门口产品流，并由必需限定信息收窄。
+
+- 数量规则：1 千克
+- 数值来源模式：`fixed_value`
+- 适用范围：`generic`
+原始活动或阶段基准：1 kg 已接收成熟绿色未熟化香草荚.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`method_formula`
+- 来源：`reference-normalization-definition`
+- 数量范围：数量 QA 范围
+  - 范围角色：`allowed_range`
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg reference product
+  - 基准：参考产品除以 1 kg 参考数量
+  - 基准类型：`reference_flow`
+  - 证据类型：`method_formula`
+  - 来源：`reference-normalization-definition`
+
+##### 废物流
+
+###### 降级、受损或拒收的绿色荚果（`off_grade_pods`）
+
+该流卡：计量每个降级、受损、返工、回收或丢弃路径；返工仅可凭关联批次返回一次，且不得重复计入已接收产出。
+
+- 选定流：按状态及去向记录的内部/延后解析降级荚果废物
+- 流属性/单位：质量 / kg
+- 数量规则：计量每个降级、受损、返工、回收或丢弃路径；返工仅可凭关联批次返回一次，且不得重复计入已接收产出。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+原始活动或阶段基准：每 1 kg 分级输入.
+
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_green_pod_grading`
+- 数量范围：数量 QA 范围
+  - 范围角色：`default_estimate`
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg grading input
+  - 基准：每 kg 分级输入的降级或拒收荚果
+  - 基准类型：`process_output`
+  - 证据类型：`reasoned_estimate`
+
+##### 基本流
+
+## 7. 分配与共产品处理
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `allocation_perennial_periods` | 定植、替换和生产年 | 在声明生产期内按同一期间已接收绿色荚果质量归属一次，保留阶段/年份链接并披露非生产年份。 |  |
+| `allocation_repeated_harvest` | 选择性采收轮次 | 直接关联轮次特定投入、能源、拒收和产出；真实共享负荷按相关轮次采收质量分配且不得在期间汇总时重复。 |  |
+| `allocation_shared_infrastructure` | 支撑、遮阴、灌溉、工具及其他共享资产 | 枚举消耗节点和服务期，按记录的使用时间、面积或生产期产出选一种一致基准归属并防止重复。 |  |
+| `allocation_rejects` | 残余物及拒收/降级荚果 | 丢弃不产生避免负荷抵扣；如有回收产品出界，须单列并披露分配或替代方法及敏感性。 |  |
+| `allocation_single_reference_product` | 已接收绿色未熟化荚果 | 基线路线仅有一个预期参考产品；拒收荚果、杂物、留藤未熟荚果和残余物不得仅为降低负荷而作为共产品。 |  |
+
+## 8. 前景数据采集、计算与质量规则
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_perennial_vine_records` | `perennial_vine_management` | propagation, vine phases, support, pollination, standing crop | field register | species; source; mass; vine count/age; establishment/replacement; support/shade; pollination; dates; harvest-ready mass | 按路线和期间核对地块、繁殖与观察记录；原始汇总与分配：先分层再归属汇总 | kg; count; date | 每次事件和每季 | 全部承载负荷年份 | 农场和地块 | 每声明的参考流 | 带日期记录、发票、物种记录和签字 |
+| `cp_management_inputs` | `perennial_vine_management` | nutrients, irrigation, energy | invoice, log, meter | product; composition; mass; water source/volume; pump hours/rate; carrier/quantity; node; date | 逐次记录并仅用核实因子计算；原始汇总与分配：按实际产品/载体汇总后归一化 | kg; m3; kWh; L; MJ | 每次施用或仪表间隔 | 完整报告期 | 农场、地块、设备路线 | 每声明的参考流 | 发票、校准、日志、因子记录 |
+| `cp_residue_and_emission_records` | `perennial_vine_management` | residues and emissions | weighing log and calculation sheet | material; mass; destination; substance; basis; compartment; activity; factor; method | 计量外排残余物，仅计算已识别排放；原始汇总与分配：按去向核算，解析后汇总 | kg | 每次移除和计算期 | 完整报告期 | 地块和去向 | 每声明的参考流 | 秤、去向凭证、方法引用和复核 |
+| `cp_selective_harvest_rounds` | `selective_pod_harvest` | harvest, rejects, losses, energy | lot sheet | round/date; plot; species; maturity; masses; retained status; carrier; labour mode | 逐轮计量并关联设备记录；原始汇总与分配：仅汇总已关联轮次并分开拒收 | kg; MJ; date | 每个轮次 | 全部贡献轮次 | 地块、轮次、批次 | 每声明的参考流 | 校准秤、签字批次表、能源日志 |
+| `cp_primary_conditioning` | `on_farm_primary_conditioning` | input, handled pods, removed matter | handling sheet | lot; input/output mass; holding time; operations; rejects/destination; no-curing declaration | 处理前后称量并核证无熟化/刻意干燥；原始汇总与分配：核算输入、产出、拒收和损失 | kg; hour | 每批 | 全部贡献批次 | 处理区和批次 | 每声明的参考流 | 校准秤、时间日志、检查表和照片/等效证据 |
+| `cp_green_pod_grading` | `green_pod_grading_handoff` | accepted grade, off-grade, rework, hand-off | grading/dispatch record | lot; species; maturity; grade; input; accepted; off-grade; rework; destination; date; uncured state | 逐状态称量并关联熟化前发运；原始汇总与分配：核算全部状态并去除返工重复 | kg; date | 每批 | 全部贡献批次 | 分级点和批次 | 每声明的参考流 | 校准秤、等级规范、发运和未熟化声明 |
+| `cp_phase1_environment_coverage` | perennial_vine_management | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
+
+### 计算规则
+
+| rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_reference_normalization` | 所有清单行 | normalized amount = attributed amount / accepted reference mass | attributed amount; accepted mass | amount per kg reference product | `reference-normalization-definition` |
+| `calc_period_attribution` | 定植、替换、共享设施 | attributed burden = recorded burden × documented service share | burden; nodes; period; share basis | period-attributed burden |  |
+| `calc_harvest_round_sum` | 重复选择性采收 | period mass = sum of linked round masses; rejects and retained pods separate | round; harvested; reject; retained status | period harvested/rejected mass |  |
+| `calc_mass_reconciliation` | 处理和分级 | difference = input - accepted - rejects - retained/transferred outputs | input and all state masses | difference and completeness flag | `reference-normalization-definition` |
+| `propagation_material_identity_and_fate` | `perennial_vine_management` | 对于本作业原有 propagation_material 采集角色，建立交换前须确定实际物理形态、物种／材料、组成、状态及供给／处理边界。与该角色相关且实际使用／产生的各种种子批次、移栽苗、根冠、插条、幼虫阶段、配方、包衣、保藏剂或分离残余物须各有具体卡片；这些例子是备选，不是必需配方。保留原采集记录和路线特定来源证据。计数种植记录匹配按质量的供应数据时，须使用实测或供应商支持的单位质量；计数与质量是关联属性，不是两次采购。不得合并独立果壳／外皮或不同药剂；真实混合物流须有组成与接收者证据且只计一次。完整性通过前，记录每项适用数量和原生单位、链接相容的已核验 UUID 或明确未解析身份，保留库存／退回归属，并将可归属原始数量按合格参考产出归一化一次。缺失记录不是零，原聚合范围不是单项投入默认值。 | `cp_perennial_vine_records` | 按身份区分的交换和对账活动记录 |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_residue_and_emission_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
+
+### 数据质量要求
+
+| requirement_id | 适用对象 | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity_state` | 参考产品与批次 | 物种、成熟度、等级、未熟化/未干燥、水分基准和农场门口交付完整。 | 物种、等级、批次、未熟化及发运记录 |
+| `dq_temporal_completeness` | 多年生路线与采收 | 覆盖全部承载负荷阶段和贡献轮次并披露排除项。 | 地块历史、阶段、轮次和替换记录 |
+| `dq_route_separation` | 替代路线 | 保留路线差异直至可复现加权。 | 路线编码记录和汇总工作表 |
+| `dq_mass_balance` | 采收、处理、分级 | 逐轮次/批次核算并调查超出场址容差的差异。 | 签字质量平衡表和校准记录 |
+| `dq_flow_resolution` | 具体流身份核验证据 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | 交换解析和详情核实记录 |
+
+## 9. 验证规则
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `validate_reference_identity` | 参考产品 | 要求固定 UUID、质量属性/单位组和全部限定信息；拒绝熟化、干燥、香气形成、厂门清洁/分选品及提取物。 | `fao-vanilla-postharvest-compendium` |
+| `validate_process_topology` | 过程图 | 要求四个节点和内部交接；采收关联在田藤本，整理和分级保持在熟化前。 | `fao-vanilla-postharvest-compendium` |
+| `validate_maturity_grade_species` | 每个已接收批次 | 要求物种、成熟标准、等级、绿色未熟化状态和农场门口交付。 | `fao-vanilla-postharvest-compendium` |
+| `validate_period_attribution` | 多年生及共享负荷 | 要求阶段、服务期、消耗节点和归属证据；遗漏或重复计数即失败。 |  |
+| `validate_round_completeness` | 重复选择性采收 | 要求完整有序轮次，核算采收、拒收、留藤和损失状态。 |  |
+| `validate_reject_routing` | 拒收及降级状态 | 每个状态须关联一次返工、降级/回收出界或丢弃去向，且从已接收产出排除。 |  |
+| `validate_flow_bindings` | 所有流卡 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
+| `validate_mass_balance` | 采收、处理和分级 | 逐轮次/批次核算输入输出并解释质量损失。 | `reference-normalization-definition` |
+
+## 10. 发布数据集简介
+
+| 字段 | 值 |
+| --- | --- |
+| dataset_role | 农场门口成熟绿色未熟化香草荚的前景生产数据包 |
+| downstream_use | `secondary_dataset`; `background_dataset` 需独立审核并匹配地理、时间和技术 |
+| allowed_use | 绿色生香草荚农场门口 LCA，以及独立熟化系统的上游输入 |
+| excluded_use | 熟化/干燥荚果、厂门清洁/分选品、提取物、粉末或未指定芳香香草产品 |
+| required_metadata | 物种；地块/地理；支撑/遮阴；授粉路线；藤本阶段/生产期；替换；轮次；成熟/等级；水分；未熟化；拒收去向；交付 |
+| required_quality_disclosure | 阶段/轮次覆盖；路线分离；流解析；仪表/秤质量；质量平衡；共享设施归属；排除工序；暂定范围状态 |
+| update_trigger | 物种、路线、期间归属、成熟/等级、交付状态、拓扑、参考 UUID、具体流身份核验|
+
+## 11. 数据来源
+
+| 来源标识 | 类型 | 参考文献 | 用途 |
+| --- | --- | --- | --- |
+| `fao-vanilla-postharvest-compendium` | `official_guidance` | Food and Agriculture Organization of the United Nations, *Vanilla: Post-harvest Operations*, Post-harvest Compendium | 生产/采收顺序；绿色成熟荚果基本无香气；熟化为形成香气的独立下游工序；熟化前边界与排除项 |
+| `reference-normalization-definition` | `method_factor` | 本 PCR 的 1 kg 收货质量参考流归一化和节点质量平衡恒等式 | 精确参考产出、归一化和质量核算 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

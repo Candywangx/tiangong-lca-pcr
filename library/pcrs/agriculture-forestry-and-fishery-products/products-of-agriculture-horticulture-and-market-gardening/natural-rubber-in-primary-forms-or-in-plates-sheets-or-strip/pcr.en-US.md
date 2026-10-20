@@ -1,8 +1,1141 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.natural-rubber-in-primary-forms-or-in-plates-sheets-or-strip
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Natural rubber in primary forms or in plates, sheets or strip
+
+## 1. Scope and Applicability
+
+This PCR covers natural rubber from managed rubber-tree production and latex tapping through one declared primary-processing route and its primary-processing hand-off. The permitted terminal forms are latex concentrate, ribbed smoked sheet or another declared sheet grade, crepe rubber, and technically specified rubber (TSR) or another declared block/granular primary form. Each dataset selects exactly one terminal form and route; these physically different products must not be averaged into one reference state. Synthetic rubber, rubber compounded with fillers or curatives, vulcanized rubber, reclaimed rubber, and finished rubber articles are excluded.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.natural-rubber-in-primary-forms-or-in-plates-sheets-or-strip |
+| classification_refs | CPC 3.0: 01950 Natural rubber in primary forms or in plates, sheets or strip; mapping relation: exact |
+| covered_products | Declared natural-rubber latex concentrate, RSS or other sheet grade, crepe rubber, TSR/block/granular rubber at primary-processing hand-off |
+| excluded_products | Synthetic rubber; natural/synthetic mixtures; compounded or vulcanized rubber; reclaimed rubber; adhesives; tyres, gloves and other finished articles |
+| representative_product | One declared commercial natural-rubber form produced through one traceable route |
+| production_route | Managed perennial rubber-tree production and tapping followed by exactly one of latex concentration, sheet/RSS, crepe, or TSR/block processing |
+| market_state | Declared liquid or dry primary form, grade, dry-rubber-content or as-received basis, preservation state and primary-processing gate |
+
+Route alternatives are mutually exclusive at the reference-flow level. Separate route inventories may coexist in one reporting package only as separately quantified datasets; aggregation requires conversion to the same physical form, grade and mass basis and is prohibited for a generic mixed-form reference product.
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | One declared natural-rubber primary form meeting its stated commercial grade at primary-processing hand-off |
+| How much | 1 kg on the declared dry-rubber or as-received mass basis |
+| How well | Route, form, grade, dry-rubber content or moisture, preservative/coagulant state, accepted-lot status and gate are declared |
+| How long or cycle | Declared reporting period covering plantation attribution, tapping rounds and the processing batch or campaign producing the reference amount |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Natural Rubber |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | natural-rubber species or clone where known; terminal form and route; commercial grade; liquid/dry state; dry-rubber-content or moisture basis; preservation or coagulation chemistry; batch/campaign; geography; hand-off gate |
+
+Each foreground dataset must explicitly select one actual route, declared gate, product state and output row. Reconcile the selected terminal route with `reference_product_at_declared_handoff`; normalize that handoff output to the reference quantity and retain preceding-stage outputs as measured transfers. Raw weighing, mass reconciliation and lot traceability requirements continue to apply.
+
+The sole reference output is `reference_product_at_declared_handoff`, receiving the selected actual route product at the declared gate. Existing route-output ids identify the source and physical state; they are no longer individually fixed to the reference quantity.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass_basis` | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | State whether the 1 kg reference is dry-rubber mass or as-received mass. Do not combine the two bases without recorded dry-rubber content and an explicit conversion. |
+| `dry_rubber_conversion` | field latex, concentrate and wet coagulum | Mass and measured dry-rubber content | kg | dry-rubber mass = as-received mass × dry-rubber mass fraction; retain test method, sampling time and batch. |
+| `route_mass_balance` | every tapping and processing batch | Mass | kg | Reconcile accepted rubber, water, removed serum or moisture, off-grade rubber, retained rework and losses on one consistent basis. |
+| `period_attribution` | establishment and productive years | Mass | kg | Attribute establishment, immature years, replacement and end-of-life burdens once over accepted output of the declared productive period. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Managed rubber-tree stand with clone/species, age or productive phase, establishment carry-in and land-management history declared |
+| starting_condition_role | Perennial biological production stock; establishment and replacement burdens are included or linked and attributed over the productive period |
+| product_classification_scope | Natural rubber at primary-processing hand-off in one declared latex concentrate, sheet/RSS, crepe or TSR/block form |
+| recursive_input_rule | Internally transferred field latex, coagulum or off-grade rubber retains upstream burdens and is not represented by a zero-burden loop; purchased same-category material requires a compatible upstream dataset |
+| upstream_dataset_requirement | Purchased nutrients, water, energy, chemicals, packaging and transport services require compatible upstream datasets; concrete flow identity verification|
+| disclosure | Declare plantation phase, tapping system and rounds, route, terminal form, grade, dry-rubber/moisture basis, chemistry, energy source, batch/campaign, reject/rework destination and gate |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_plantation` | `plantation_management` | Include managed tree establishment attribution, maintenance, nutrient and water supply, energy, pest/weed management and productive latex formation. | `fao-rubber-products-classification` |
+| `boundary_tapping` | `latex_tapping_collection` | Include tapping, cup collection, field preservation when used, collection losses and delivery of measured field latex to primary processing. | `rubber-board-natural-rubber-forms` |
+| `boundary_single_route` | terminal processing | Include exactly one terminal route for the reference product. Other route nodes are inactive and contribute zero burden. | `rubber-board-natural-rubber-forms` |
+| `boundary_latex_concentrate` | `latex_concentration` | Include preservation, separation/concentration, stabilization, storage and accepted concentrate hand-off; do not include downstream compounding or product manufacture. | `rubber-board-natural-rubber-forms` |
+| `boundary_sheet_rss` | `sheet_rss_processing` | Include straining, controlled coagulation, rolling/forming, drying or smoking, grading and sheet hand-off. | `rubber-board-natural-rubber-forms` |
+| `boundary_crepe` | `crepe_processing` | Include coagulum preparation, washing, repeated milling/creping, drying, grading and crepe hand-off. | `rubber-board-natural-rubber-forms` |
+| `boundary_tsr_block` | `tsr_block_processing` | Include feedstock sorting, size reduction, washing, drying, baling/block forming, grading and block hand-off. | `rubber-board-natural-rubber-forms` |
+| `boundary_exclusions` | downstream system | Exclude synthetic polymer manufacture, natural/synthetic blending, compounding, vulcanization, conversion into finished articles and use/end-of-life. | `fao-rubber-products-classification` |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `plantation_management` | Managed perennial rubber-tree production | `required` | Always; declare any alternative technology or biological production route delta | Managed biological production and multi-period attribution | kg dry rubber in collected field latex |
+| `latex_tapping_collection` | Latex tapping, preservation and collection | `required` | Always; record tapping rounds in batch mode | Harvest/capture and primary conditioning | kg dry rubber in field latex delivered to processing |
+| `latex_concentration` | Latex concentration and stabilization | `conditional` | Batch mode; only for latex-concentrate reference form | Material treatment and stabilization | 1 kg declared latex concentrate |
+| `sheet_rss_processing` | Sheet forming, drying or smoking and grading | `conditional` | Batch mode; only for RSS or another declared sheet reference form | Coagulation, forming, preservation and grading | 1 kg accepted sheet/RSS |
+| `crepe_processing` | Crepe preparation, milling, drying and grading | `conditional` | Batch mode; only for crepe reference form | Treatment, forming and grading | 1 kg accepted crepe rubber |
+| `tsr_block_processing` | TSR/block preparation, drying, baling and grading | `conditional` | Batch mode; only for TSR/block/granular reference form | Treatment, forming and grading | 1 kg accepted TSR/block rubber |
+| declared_reference_handoff | Product Measurement at Declared Handoff | required |  | foreground | reference_product_at_declared_handoff |
+
+### Process: Managed perennial rubber-tree production (`plantation_management`)
+
+#### Inputs
+
+##### Product flows
+
+###### Fertilizer, urea input (`plantation_nutrients`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered in field latex.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_plantation_period`
+
+###### Fertilizer, monoammonium phosphate input (`plantation_nutrients_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered in field latex.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_plantation_period`
+
+###### Fertilizer, potassium chloride input (`plantation_nutrients_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered in field latex.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_plantation_period`
+
+###### Cattle manure, as applied input (`plantation_nutrients_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered in field latex.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_plantation_period`
+
+###### Agricultural limestone input (`plantation_nutrients_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered in field latex.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_plantation_period`
+
+###### Plantation water supply (`plantation_water`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Actual supplied water product
+- Flow property / unit: Volume / m3 or Mass / kg
+- Amount rule: Measured supplied irrigation or nursery water; rainfall is not a product input
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered in field latex.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_plantation_period`
+- Range: Provisional supplied-water screen
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: 10
+  - Unit: m3/kg dry rubber
+  - Basis: supplied water only
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Electricity, medium voltage input (`plantation_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered in field latex.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_plantation_period`
+
+###### Diesel fuel input (`plantation_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered in field latex.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_plantation_period`
+
+##### Waste flows
+
+No generic waste identity is prescribed. Add a separately identified waste exchange only when foreground records establish the material, state, destination and treatment route.
+
+##### Elementary flows
+
+Add substance-specific land occupation/transformation, water-resource and direct-emission exchanges only from measured or modelled site records with receiving compartment and verified UUID.
+
+#### Outputs
+
+##### Product flows
+
+###### Dry rubber contained in harvest-ready latex (`plantation_latex_output`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg dry rubber
+- Amount rule: Calculated from latex mass and tested dry-rubber content
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: process output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_latex_batches`
+- Range: Output identity range
+  - Range role: `allowed_range`
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg dry rubber
+  - Basis: per kg dry rubber process output
+  - Basis kind: `process_output`
+  - Evidence kind: `method_formula`
+  - Sources: `reference-normalization-definition`
+
+##### Waste flows
+
+No generic waste output is prescribed.
+
+##### Elementary flows
+
+No generic elementary output is prescribed.
+
+### Process: Latex tapping, preservation and collection (`latex_tapping_collection`)
+
+#### Inputs
+
+##### Product flows
+
+###### Plantation latex transfer (`field_latex_input`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg dry rubber
+- Amount rule: Burden-carrying internal transfer from plantation production
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered to primary processing.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_latex_batches`
+- Range: Internal transfer reconciliation
+  - Range role: `qa_guardrail`
+  - Lower: 1
+  - Upper: 1.2
+  - Unit: kg dry rubber/kg delivered dry rubber
+  - Basis: collected dry rubber before documented collection loss
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Aqueous ammonia for field-latex preservation (`field_latex_ammonia`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Aqueous ammonia `058124f8-5e84-4070-b6c0-4bacac3a0024`
+- Flow property / unit: Mass / kg solution
+- Amount rule: Measured solution mass and concentration; zero when the declared route does not use ammonia
+- Value mode: `foreground_record`
+- Specificity: `route_specific`
+Raw activity or stage basis: per kg dry rubber delivered to primary processing.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_latex_batches`
+- Range: Provisional preservation screen
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: 0.1
+  - Unit: kg solution/kg dry rubber
+  - Basis: applies only when aqueous ammonia is used
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Latex collection transport service (`latex_collection_transport`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Actual transport service
+- Flow property / unit: Transport work / tkm or compatible service unit
+- Amount rule: Wet latex mass × measured route distance by mode
+- Value mode: `calculated_value`
+- Specificity: `route_specific`
+Raw activity or stage basis: per kg dry rubber delivered.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `transport_service`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_latex_batches`
+- Range: Provisional collection-distance screen
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: 2
+  - Unit: tkm/kg dry rubber
+  - Basis: wet-latex transport work normalized to dry rubber
+  - Basis kind: `transport_service`
+  - Evidence kind: `reasoned_estimate`
+
+##### Waste flows
+
+No generic waste identity is prescribed; rejected coagulum is either retained as a burden-carrying input to a declared dry-rubber route or recorded with its actual destination.
+
+##### Elementary flows
+
+No generic elementary input is prescribed.
+
+#### Outputs
+
+##### Product flows
+
+###### Collected field latex delivered to processing (`collected_field_latex`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg dry rubber
+- Amount rule: Wet latex mass × batch dry-rubber mass fraction
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg dry rubber delivered.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_latex_batches`
+- Range: Dry-rubber transfer identity
+  - Range role: `allowed_range`
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg dry rubber
+  - Basis: per kg dry rubber delivered to the selected terminal route
+  - Basis kind: `process_output`
+  - Evidence kind: `method_formula`
+  - Sources: `reference-normalization-definition`
+
+##### Waste flows
+
+No generic waste output is prescribed.
+
+##### Elementary flows
+
+No generic elementary output is prescribed.
+
+### Process: Latex concentration and stabilization (`latex_concentration`)
+
+#### Inputs
+
+##### Product flows
+
+###### Field latex for concentration (`latex_concentrate_feed`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg dry rubber
+- Amount rule: Burden-carrying dry-rubber mass in accepted field latex
+- Value mode: `calculated_value`
+- Specificity: `route_specific`
+Raw activity or stage basis: per kg dry rubber in accepted concentrate.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_processing_batch`
+- Range: Provisional dry-rubber yield screen
+  - Range role: `qa_guardrail`
+  - Lower: 1
+  - Upper: 1.15
+  - Unit: kg feed dry rubber/kg accepted dry rubber
+  - Basis: excludes serum water mass
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Aqueous ammonia for concentrate stabilization (`concentrate_ammonia`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Aqueous ammonia `058124f8-5e84-4070-b6c0-4bacac3a0024`
+- Flow property / unit: Mass / kg solution
+- Amount rule: Measured solution mass and concentration in the concentrate batch
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per kg accepted concentrate on declared basis.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+- Range: Provisional stabilization screen
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: 0.1
+  - Unit: kg solution/kg dry rubber
+  - Basis: actual solution concentration must be retained
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Process water, tap water input (`concentrate_water`)
+
+Include this one exchange only when Process water, tap water is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Process water, tap water
+- Flow property / unit: Volume / m3
+- Amount rule: Measured quantity of Process water, tap water used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg accepted concentrate.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Electricity, medium voltage input (`concentrate_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `technology_specific`
+Raw activity or stage basis: per kg accepted concentrate.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Diesel fuel input (`concentrate_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `technology_specific`
+Raw activity or stage basis: per kg accepted concentrate.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+##### Waste flows
+
+No generic waste identity is prescribed. Serum and wastewater require measured composition and actual treatment destination before exchange creation.
+
+##### Elementary flows
+
+No generic elementary input is prescribed.
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted latex concentrate (`latex_concentrate_reference`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: Exactly 1 kg accepted concentrate on the declared dry-rubber or as-received basis
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: `fixed_value`
+- Specificity: `product_specific`
+Raw activity or stage basis: reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `method_formula`
+- Sources: `reference-normalization-definition`
+- Range: Same-stage output measurement reconciliation
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net accepted output of this stage
+  - Basis: same-stage numerator and denominator measurement consistency; not a stage yield or fixed ratio to the final reference output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `reference-normalization-definition`
+
+##### Waste flows
+
+No generic waste output is prescribed.
+
+##### Elementary flows
+
+No generic elementary output is prescribed.
+
+### Process: Sheet forming, drying or smoking and grading (`sheet_rss_processing`)
+
+#### Inputs
+
+##### Product flows
+
+###### Field latex for sheet production (`sheet_latex_feed`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg dry rubber
+- Amount rule: Dry-rubber mass in field latex entering coagulation
+- Value mode: `calculated_value`
+- Specificity: `route_specific`
+Raw activity or stage basis: per kg accepted dry sheet.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_processing_batch`
+- Range: Provisional dry-rubber yield screen
+  - Range role: `qa_guardrail`
+  - Lower: 1
+  - Upper: 1.2
+  - Unit: kg feed dry rubber/kg accepted sheet
+  - Basis: dry-rubber mass balance
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Formic acid coagulant (`sheet_formic_acid`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Formic acid `b2fe4c3e-d4e6-40be-93ee-e47d512b8309`
+- Flow property / unit: Mass / kg
+- Amount rule: Measured acid product mass and concentration; zero when another verified coagulant is declared
+- Value mode: `foreground_record`
+- Specificity: `route_specific`
+Raw activity or stage basis: per kg accepted dry sheet.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+- Range: Provisional coagulant screen
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: 0.05
+  - Unit: kg product/kg dry sheet
+  - Basis: actual acid concentration must be retained
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Process water, tap water input (`sheet_water`)
+
+Include this one exchange only when Process water, tap water is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Process water, tap water
+- Flow property / unit: Volume / m3
+- Amount rule: Measured quantity of Process water, tap water used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg accepted dry sheet.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Electricity, medium voltage input (`sheet_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `technology_specific`
+Raw activity or stage basis: per kg accepted dry sheet.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_processing_batch`
+
+###### Diesel fuel input (`sheet_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `calculated_value`
+- Specificity: `technology_specific`
+Raw activity or stage basis: per kg accepted dry sheet.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_processing_batch`
+
+##### Waste flows
+
+No generic waste identity is prescribed. Coagulation serum, wash water and off-grade sheet require actual identities and destinations.
+
+##### Elementary flows
+
+No generic elementary input is prescribed.
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted sheet or RSS (`sheet_rss_reference`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: Exactly 1 kg accepted sheet of the declared grade and moisture basis
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: `fixed_value`
+- Specificity: `product_specific`
+Raw activity or stage basis: reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `method_formula`
+- Sources: `reference-normalization-definition`
+- Range: Same-stage output measurement reconciliation
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net accepted output of this stage
+  - Basis: same-stage numerator and denominator measurement consistency; not a stage yield or fixed ratio to the final reference output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `reference-normalization-definition`
+
+##### Waste flows
+
+No generic waste output is prescribed.
+
+##### Elementary flows
+
+No generic elementary output is prescribed.
+
+### Process: Crepe preparation, milling, drying and grading (`crepe_processing`)
+
+#### Inputs
+
+##### Product flows
+
+###### Natural-rubber feedstock for crepe route (`crepe_feed`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg dry rubber
+- Amount rule: Dry-rubber mass in declared latex or coagulum feedstock
+- Value mode: `calculated_value`
+- Specificity: `route_specific`
+Raw activity or stage basis: per kg accepted dry crepe.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_processing_batch`
+- Range: Provisional feed-yield screen
+  - Range role: `qa_guardrail`
+  - Lower: 1
+  - Upper: 1.25
+  - Unit: kg feed dry rubber/kg accepted crepe
+  - Basis: dry-rubber mass balance
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Process water, tap water input (`crepe_water`)
+
+Include this one exchange only when Process water, tap water is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Process water, tap water
+- Flow property / unit: Volume / m3
+- Amount rule: Measured quantity of Process water, tap water used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg accepted dry crepe.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Electricity, medium voltage input (`crepe_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `technology_specific`
+Raw activity or stage basis: per kg accepted dry crepe.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Diesel fuel input (`crepe_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `technology_specific`
+Raw activity or stage basis: per kg accepted dry crepe.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+##### Waste flows
+
+No generic waste identity is prescribed. Wash water, contaminants and off-grade crepe require actual identities and destinations.
+
+##### Elementary flows
+
+No generic elementary input is prescribed.
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted crepe rubber (`crepe_reference`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: Exactly 1 kg accepted crepe rubber of declared grade and moisture basis
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: `fixed_value`
+- Specificity: `product_specific`
+Raw activity or stage basis: reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `method_formula`
+- Sources: `reference-normalization-definition`
+- Range: Same-stage output measurement reconciliation
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net accepted output of this stage
+  - Basis: same-stage numerator and denominator measurement consistency; not a stage yield or fixed ratio to the final reference output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `reference-normalization-definition`
+
+##### Waste flows
+
+No generic waste output is prescribed.
+
+##### Elementary flows
+
+No generic elementary output is prescribed.
+
+### Process: TSR/block preparation, drying, baling and grading (`tsr_block_processing`)
+
+#### Inputs
+
+##### Product flows
+
+###### Natural-rubber feedstock for TSR/block route (`tsr_feed`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg dry rubber
+- Amount rule: Dry-rubber mass of separately recorded latex, cup lump or coagulum feedstock
+- Value mode: `calculated_value`
+- Specificity: `route_specific`
+Raw activity or stage basis: per kg accepted TSR/block rubber.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_processing_batch`
+- Range: Provisional feed-yield screen
+  - Range role: `qa_guardrail`
+  - Lower: 1
+  - Upper: 1.3
+  - Unit: kg feed dry rubber/kg accepted TSR
+  - Basis: dry-rubber mass balance
+  - Basis kind: `process_output`
+  - Evidence kind: `reasoned_estimate`
+
+###### Process water, tap water input (`tsr_water`)
+
+Include this one exchange only when Process water, tap water is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Process water, tap water
+- Flow property / unit: Volume / m3
+- Amount rule: Measured quantity of Process water, tap water used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+Raw activity or stage basis: per kg accepted TSR/block rubber.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Electricity, medium voltage input (`tsr_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `technology_specific`
+Raw activity or stage basis: per kg accepted TSR/block rubber.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Diesel fuel input (`tsr_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: `foreground_record`
+- Specificity: `technology_specific`
+Raw activity or stage basis: per kg accepted TSR/block rubber.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Corrugated cardboard box input (`tsr_packaging`)
+
+Include this one exchange only when Corrugated cardboard box is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Corrugated cardboard box
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Corrugated cardboard box used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per kg accepted TSR/block rubber.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+###### Polyethylene packaging film input (`tsr_packaging_plastic_film`)
+
+Include this one exchange only when Polyethylene packaging film is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity.
+
+- Selected flow: Polyethylene packaging film
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Polyethylene packaging film used by this process and declared period; record not applicable only when the actual route excludes it.
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+Raw activity or stage basis: per kg accepted TSR/block rubber.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_processing_batch`
+
+##### Waste flows
+
+No generic waste identity is prescribed. Wash water, contaminants, off-grade blocks and packaging rejects require actual identities and destinations.
+
+##### Elementary flows
+
+No generic elementary input is prescribed.
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted TSR/block rubber (`tsr_block_reference`)
+
+Record this item when the foreground process actually uses, produces or transfers it, retaining the declared route, state, batch and hand-off.
+
+- Selected flow: Natural Rubber `f9f06554-cdcb-422f-b7be-598fdd6cda53`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: Exactly 1 kg accepted TSR/block/granular rubber of declared grade and moisture basis
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: `fixed_value`
+- Specificity: `product_specific`
+Raw activity or stage basis: reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `method_formula`
+- Sources: `reference-normalization-definition`
+- Range: Same-stage output measurement reconciliation
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net accepted output of this stage
+  - Basis: same-stage numerator and denominator measurement consistency; not a stage yield or fixed ratio to the final reference output
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `reference-normalization-definition`
+
+##### Waste flows
+
+No generic waste output is prescribed.
+
+##### Elementary flows
+
+No generic elementary output is prescribed.
+
+
+### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
+This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
+#### Inputs
+##### Product flows
+###### Actual route product at handoff (`actual_route_product_for_handoff`)
+Record the accepted product delivered by the actual terminal route and reconcile it with handoff weighing and lot records.
+- Selected flow: Natural Rubber
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net product mass at the actual handoff, normalized to the reference quantity; do not sum preceding-stage quantities, other routes or co-products
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+This measurement node adds no waste inputs.
+##### Elementary flows
+This measurement node adds no resource inputs.
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+- Selected flow: Natural Rubber
+- Flow property / unit: Mass / kg
+- Amount rule: 1 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+Confirm the product UUID independently for the actual state. Until confirmed, retain unresolved identity instead of inheriting a UUID from a preceding stage or another route.
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+Record actual losses at the operation where they occur; do not duplicate them here.
+##### Elementary flows
+Record actual emissions at the operation where they occur; do not duplicate them here.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_perennial_period` | plantation establishment and replacement | Attribute establishment, immature years, replacements and terminal operations over the declared productive period and accepted dry-rubber output; disclose lifetime and yield basis and prevent double annualization. |  |
+| `allocation_route_separation` | alternative terminal routes | Keep latex concentrate, sheet/RSS, crepe and TSR/block inventories separate. Do not allocate or average across forms merely because they share CPC 01950. | `rubber-board-natural-rubber-forms` |
+| `allocation_internal_rubber` | field latex, coagulum, off-grade and rework | Carry prior burdens with all internal rubber transfers. Reworked material returns to the consuming batch once; downgraded sold rubber is a separately quantified product and never accepted reference output. |  |
+| `allocation_serum_residues` | serum, wastewater and separated non-rubber material | Treat as residue or waste unless evidence establishes an intended co-product with a distinct function and measurable quantity; document any allocation driver before use. |  |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_plantation_period` | `plantation_management` | perennial inputs and accepted latex output | farm log, invoice, asset and yield record | stand area; clone/species; phase; establishment inputs; nutrient products; supplied water; energy; replacements; dry-rubber output | reconcile farm records and calibrated meters/scales; Raw aggregation and attribution: attribute period burdens once to dry-rubber output | native units and kg dry rubber | monthly and annual | complete declared productive period | each plantation and route | per declared reference flow | record completeness, calibration and period reconciliation |
+| `cp_latex_batches` | `latex_tapping_collection` | tapping, preservation, collection and latex transfer | tapping-round and batch log | date; plot; wet latex mass; dry-rubber test; preservative product/concentration; coagulum; loss; distance and mode | batch weighing, sampling and route log; Raw aggregation and attribution: aggregate dry-rubber mass without losing batch identity | kg, fraction, km, tkm | every tapping round/batch | all rounds supplying reported output | plot and collection route | per declared reference flow | scale/test calibration and signed transfer record |
+| `cp_processing_batch` | conditional terminal route | feedstock, chemicals, water, energy, outputs and rejects | batch sheet, meter, invoice and laboratory certificate | route; feedstock state; wet/dry mass; DRC/moisture; chemicals/concentrations; water; energy; grade; accepted/rework/reject mass; packaging | direct measurement and batch mass balance; Raw aggregation and attribution: aggregate only identical terminal form, grade and basis | native units and kg | every batch/campaign | all batches producing reference output | each processing facility and technology | per declared reference flow | meter calibration, laboratory method and closed batch balance |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | plantation_management | managed environmental coverage by actual node | site/activity/method ledger | actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_dry_rubber` | latex and wet coagulum | dry-rubber mass = as-received mass × dry-rubber mass fraction | measured mass; representative DRC test | kg dry rubber | `reference-normalization-definition` |
+| `calc_reference_normalization` | all inventory rows | normalized amount = attributed amount ÷ accepted reference-product mass on the same basis | attributed amount; accepted mass; basis conversion | amount per kg reference flow | `reference-normalization-definition` |
+| `calc_transport` | collection transport | tkm = transported wet mass in tonnes × actual distance in km; normalize by accepted reference mass | wet mass; distance; mode; accepted output | tkm/kg reference flow |  |
+| `calc_period_burden` | plantation multi-period inputs | sum phase-specific burden × attribution share ÷ accepted output over corresponding productive period | phase records; service life; output; attribution driver | burden/kg dry rubber |  |
+| `calc_batch_balance` | each processing batch | input dry rubber = accepted dry rubber + off-grade/rework dry rubber + measured dry-rubber loss | feed and output mass/DRC | reconciled batch balance |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | reference flow and every rubber transfer | Declare form, route, grade, basis, chemistry, gate and UUID compatibility; never substitute synthetic or compounded rubber. | product certificate, batch record and identity audit |
+| `dq_route_completeness` | process map | Exactly one terminal route is active; inactive routes have no exchanges or burden. | route declaration and process graph |
+| `dq_mass_basis` | liquid and wet materials | Retain as-received mass, DRC/moisture, test method and sampling time; conversions are reproducible. | laboratory certificate and calculation record |
+| `dq_temporal` | plantation and processing | Cover establishment attribution, all tapping rounds and every processing batch contributing to output. | period and batch completeness report |
+| `dq_mass_balance` | tapping and processing | Reconcile rubber mass by batch; investigate differences beyond the declared site tolerance. | signed mass-balance record |
+| `dq_binding` | all inventory cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | concrete flow identity evidence |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_reference_identity` | reference product | Require Natural Rubber UUID, Mass property/unit group and every required qualifier; reject synthetic, blended, compounded, vulcanized, reclaimed or finished-rubber products. | `fao-rubber-products-classification` |
+| `validate_one_terminal_form` | process map and reference link | Exactly one of latex concentrate, sheet/RSS, crepe or TSR/block terminal nodes supplies the reference flow. | `rubber-board-natural-rubber-forms` |
+| `validate_basis_conversion` | wet and dry states | Require measured DRC/moisture and explicit conversion before combining or comparing mass bases. | `reference-normalization-definition` |
+| `validate_nutrient_cardinality` | plantation inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+| `validate_fixed_bindings` | fixed cards | Natural Rubber, Formic acid and Aqueous ammonia use only their detail-confirmed UUIDs and compatible Mass property; do not infer quantity evidence from identity verification. |  |
+| `validate_rework_reject` | off-grade or rejected rubber | Declare rework, downgrade/recovery or discard destination; count retained rework once and exclude all nonaccepted rubber from reference output. |  |
+| `validate_period_attribution` | plantation burdens | Require phase, productive life, accepted yield and attribution evidence; fail omitted or duplicated establishment burden. |  |
+| `validate_batch_balance` | each terminal route | Reconcile feed dry rubber to accepted, rework/off-grade and loss; keep batches and routes traceable. |  |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | Foreground production package for one declared natural-rubber primary form at primary-processing hand-off |
+| downstream_use | `secondary_dataset`; `background_dataset` after independent review and geography, time, grade and technology matching |
+| allowed_use | Upstream natural-rubber supply for LCA where terminal form, grade, mass basis and gate match |
+| excluded_use | Generic mixture of forms; synthetic/blended/compounded/vulcanized/reclaimed rubber; finished rubber articles; downstream conversion without added processes |
+| required_metadata | species/clone where known; plantation phase; tapping system; route; form; grade; DRC/moisture; chemistry; batch/campaign; geography; gate; reject/rework destination |
+| required_quality_disclosure | route and period coverage; mass-basis conversion; provisional ranges; meter/test quality; mass-balance closure; concrete flow identity verification; fixed-identity evidence |
+| update_trigger | Change in product form, grade, mass basis, route topology, preservation/coagulation technology, gate, reference UUID, concrete flow identity verification|
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `fao-rubber-products-classification` | `official_guidance` | Food and Agriculture Organization of the United Nations, rubber-products classification material, https://www.fao.org/4/x2613e/x2613e2w.htm | Category boundary including natural latex, sheets/crepes and technically specified primary forms; exclusion of downstream rubber products |
+| `rubber-board-natural-rubber-forms` | `official_guidance` | Rubber Board, natural-rubber grades and forms guidance, https://www.rubberboard.gov.in/rbfilereader?fileid=1013 | Distinct latex concentrate, RSS, TSR and related market forms; route and grade declaration |
+| `reference-normalization-definition` | `method_factor` | This PCR's 1 kg declared-form normalization, DRC conversion and rubber-mass balance | Reference amount, exact-output ranges and calculation formulas |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |

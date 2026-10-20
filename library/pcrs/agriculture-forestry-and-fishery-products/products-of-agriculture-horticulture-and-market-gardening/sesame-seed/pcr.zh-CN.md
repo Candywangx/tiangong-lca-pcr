@@ -1,8 +1,771 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.sesame-seed
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 芝麻籽
+
+## 1. 适用范围
+
+本 PCR 涵盖芝麻（Sesamum indicum）从播种至农场门交付的完整、未经加工籽粒。分别记录田间生产、采收脱粒、初次清选、按实际发生的干燥稳定化及分级。雨养与灌溉是田间生产的两种路线；易裂荚品种可采用割取、田间晾干和人工脱粒，抗裂荚品种可采用联合收获。必须逐田块和批次记录实际路线、能源和籽粒损失。榨油、脱壳、烘焙及研磨属于下游。固定平台流代表收获的商品籽粒，不能冒充经核实的播种用种产出。[ncstate-sesame-2026; tamu-sesame-2007]
+
+## 2. 产品类别身份
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.sesame-seed` |
+| classification_refs | CPC 3.0 `01444`；籽粒路线对应 narrower 范围; mapping relation: narrower |
+| covered_products | 完整的商品芝麻籽粒，声明颜色和市场等级 |
+| excluded_products | 任何用于播种的芝麻种子，不论是否经过认证；脱壳、烘焙、研磨籽粒；芝麻油与粕 |
+| representative_product | 收获并进行实际初次清选的完整芝麻籽粒 |
+| production_route | 一年生芝麻田间管理；雨养或灌溉；人工／田间脱粒或联合收获；初次清选及按需干燥 |
+| market_state | 农场门未经加工的完整籽粒，记录水分、杂质及破损状态 |
+
+narrower 映射反映已核实的商品籽粒流；种用路线须另行核实产出流身份和方法。
+
+## 3. 参考流
+
+| Field | Value |
+| --- | --- |
+| What | 农场门验收的完整芝麻籽粒 |
+| How much | 净重 1 kg |
+| How well | 声明品种、颜色、等级、水分、杂质及破损籽粒比例 |
+| How long or cycle | 一个种植周期直至农场门交付 |
+| reference_flow_link | accepted_gate_seed |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | 芝麻籽 `fa13af02-bb6e-4d44-a4a8-6464c0eece63` |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | 农场和收获年份；品种与裂荚性状；雨养或灌溉；人工或机械采收；水分、损伤、杂质、颜色和等级；农场门前实际清选干燥 |
+
+计量基准补充：净重 1 kg 完整芝麻籽粒
+
+## 4. 计量与单位规则
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `net_gate_mass` | 参考产出 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 按交付时实际水分下验收的完整籽粒净重计量，不得暗中换算为干物质。 |
+| `mass_balance` | 采收、清选及交付 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 将已捕获籽粒与验收、降级、拒收和清选损失核对，并考虑水分变化；捕获前的田间损失另行报告。 |
+| `area_yield` | 田间记录 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 保留原始面积和投入记录，按验收的农场门质量归一化种植周期清单。 |
+
+## 5. 系统边界
+
+### 边界抽象
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | 播种前田块，声明前茬和土地状态；购入种子及其他投入带独立上游负荷。 |
+| starting_condition_role | 声明的种植周期起点，不表示投入无环境负荷。 |
+| product_classification_scope | 仅完整的商品芝麻籽粒。 |
+| recursive_input_rule | 播种的芝麻作为计量投入，不得将本农场门产出回填自身种植模型；需采用独立上游种子数据集或披露缺口。 |
+| upstream_dataset_requirement | 将实际使用的种子、肥料、农药、燃料、电力及外购服务连接至独立上游数据集。 |
+| disclosure | 田块、年份、水分管理、品种性状、采收路线、农场门前处理、交付地点、拒收路径和残茬去向。 |
+
+### 边界规则
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `crop_boundary` | 田间至农场门 | 包括实际播种、田间管理、采收、初次清选、分级及农场门前干燥，也包括交付前的外包作业。 | `ncstate-sesame-2026`; `tamu-sesame-2007` |
+| `capture_boundary` | 成熟田间植株 | 将采收与生长分开：裂荚、人工或割台捕获、脱粒决定回收质量和损失。 | `ncstate-sesame-2026` |
+| `downstream_boundary` | 农场门之后 | 排除交付后运输、食品加工、榨油、脱壳和烘焙。 | `tamu-sesame-2007` |
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `crop_management` | 芝麻田间管理 | required | 每个田块／周期，声明雨养或灌溉 | 培育成熟蒴果；灌溉增加供水及抽水记录 | 每验收 kg 的田间投入 |
+| `harvest_thresh` | 籽粒采收脱粒 | required | 按品种和实际作业声明人工／田间脱粒或联合收获 | 捕获原籽，记录落粒和设备损失 | 每田块／批次捕获 kg |
+| `first_clean_dry` | 初次清选及稳定化 | conditional | 实际清选或干燥时纳入，否则声明旁路 | 去除糠屑杂质，必要时稳定高水分籽粒 | 每遍进出质量及能源 |
+| `grade_gate` | 分级和农场门放行 | required | 每个交付批次 | 区分验收、降级及拒收去向 | 农场门净重 kg |
+
+田间管理以田块及种植周期为单位；采收和清选以批次及运行遍数为单位。每次运行须连接其来源田块，清洗和切换能源只计一次。按 `cp_harvest` 调查裂荚、割取／割台及脱粒前的田间留存籽粒和残体损失，记录方法与去向；它们不是交付出去的废物流，也不是可销售产出。不合格籽粒批次可返回清选、降级销售，或在有记录的决策后成为废弃物；返工后保留原负荷并增加实际处理负荷。
+
+### 过程：芝麻田间管理（`crop_management`）
+
+#### 输入
+##### 产品流
+
+###### 播种用种（`sowing_seed`）
+
+购入或自留播种材料作为独立上游产品记录，固定商品籽粒 UUID 不代表任何播种用种。
+
+- 选定流：独立核实的芝麻播种材料
+- 流属性/单位：Mass / kg
+- 数量规则：逐田块实际播种 kg。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每验收农场门 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 数量范围：地区播种量示例，供复核
+  - 范围角色：常见范围（`typical_range`）
+  - 下限：1.1
+  - 上限：3.4
+  - 单位：kg seed/ha
+  - 基准：一个作物周期每公顷；北卡 1 lb/acre 与得州 3 lb/acre 的地区播种示例，不是通用限值
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：外部来源（`external_source`）
+  - 来源：`ncstate-sesame-2026`; `tamu-sesame-2007`
+
+###### 尿素肥料（`crop_management_agricultural_nutrient_inputs_urea`）
+
+**crop_management_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+逐一采集每种肥料产品。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
+原始活动或阶段基准：每验收农场门 kg.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_field` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 来源：`ncstate-sesame-2026`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 硫酸铵肥料（`crop_management_agricultural_nutrient_inputs_ammonium_sulfate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_field` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 来源：`ncstate-sesame-2026`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 重过磷酸钙肥料（`crop_management_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_field` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 来源：`ncstate-sesame-2026`；`fao-fertilizer-identities`
+
+###### 氯化钾肥料（`crop_management_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_field` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 来源：`ncstate-sesame-2026`；`fao-fertilizer-identities`
+
+###### 作为肥料施用的牛粪（`crop_management_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_field` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 来源：`ncstate-sesame-2026`；`fao-organic-nutrients`
+
+###### 施入土壤的植物残体堆肥（`crop_management_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_field` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 来源：`ncstate-sesame-2026`；`fao-organic-nutrients`
+
+###### 施用采收辅助品（`harvest_aid_input`）
+
+仅在实际施用干燥剂或其他采收辅助品时纳入，保留产品身份和施用记录。
+
+- 选定流：按配方识别的采收辅助品
+- 流属性/单位：Mass / kg
+- 数量规则：采收前实际施用 kg。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每验收农场门 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 来源：`ncstate-sesame-2026`
+- 数量范围：暂定宽幅 QA 筛查；以现场记录替代
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：200
+  - 单位：kg product/ha
+  - 基准：一个作物周期每公顷、每种植保或助收产品单列；仅暂定筛查
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 柴油 (`field_fuel_diesel`)
+
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`field_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_field`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field`
+- 来源：`route-energy-fao`
+
+###### 田间电力（`field_electricity`）
+
+仅在实际使用时记录灌溉抽水或其他田间作业的计量电量。
+
+- 选定流：供应田间作业的电力
+- 流属性/单位：Energy / kWh
+- 数量规则：归于该田块周期的计量 kWh。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每验收农场门 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 数量范围：暂定宽幅 QA 筛查；以现场记录替代
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：20000
+  - 单位：kWh/ha
+  - 基准：一个作物周期每公顷；条件性电动机械或灌溉泵送的实测电量；仅暂定筛查
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 灌溉水（`irrigation_water`）
+
+灌溉生产路线增加计量供水量及水源；雨养田块声明未灌溉。
+
+- 选定流：供给作物的灌溉水
+- 流属性/单位：Volume / m3
+- 数量规则：计量或记录供给田块周期的水量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每验收农场门 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 来源：`tamu-sesame-2007`
+- 数量范围：暂定宽幅 QA 筛查；以现场记录替代
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：20000
+  - 单位：m3/ha
+  - 基准：一个作物周期每公顷；雨养路线为零，灌溉路线以实测取水或送水为准；仅暂定筛查
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 成熟作物交接（`mature_crop`）
+
+成熟植株是交给采收过程的田间生物中间状态，不是第二项农场门产品。
+
+- 选定流：田间成熟芝麻植株，中间状态
+- 流属性/单位：Mass / kg
+- 数量规则：依据田间采样估计植株籽粒质量，连接田块和年份至采收批次；面积保留在 `cp_field`。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每种植周期.
+
+- 归一化基准：每声明的参考流
+- 基准类型：种植周期（`crop_cycle`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field`
+- 数量范围：暂定宽幅 QA 筛查；以现场记录替代
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：50000
+  - 单位：kg/ha
+  - 基准：一个作物周期每公顷；暂定田间生物量筛查，不是第二个可售籽粒产出
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 废物流
+
+##### 基本流
+
+### 过程：籽粒采收脱粒（`harvest_thresh`）
+
+#### 输入
+##### 产品流
+
+###### 柴油 (`harvest_fuel_diesel`)
+
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`harvest_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_harvest`采集`harvest_thresh`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_harvest`
+- 来源：`route-energy-fao`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 捕获的原籽（`raw_seed`）
+
+清选前称量已脱粒籽粒，记录水分、可见杂质和破损状态。
+
+- 选定流：完整芝麻原籽，内部中间品
+- 流属性/单位：Mass / kg
+- 数量规则：逐田块／批次称量捕获质量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每捕获 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程产出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvest`
+- 数量范围：暂定宽幅 QA 筛查；以现场记录替代
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：10000
+  - 单位：kg raw seed/ha
+  - 基准：每一收获公顷；首次调理前原籽粒的暂定宽幅筛查，以称重记录替代
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 废物流
+
+##### 基本流
+
+### 过程：初次清选及稳定化（`first_clean_dry`）
+
+#### 输入
+##### 产品流
+
+###### 待清选原籽（`seed_to_clean`）
+
+连接同一收获批次，不新建独立供应。
+
+- 选定流：完整芝麻原籽，内部中间品
+- 流属性/单位：Mass / kg
+- 数量规则：称量进入批次的原籽。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每准备完成 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程产出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_condition`
+- 数量范围：物料守恒 QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg linked incoming seed
+  - 基准：每 kg 进入相关物料转移节点的实测籽粒；应用守恒前核对实际水分和混料
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 清选电力（`cleaning_electricity`）
+
+仅计入实际清选遍数的电力；旁路清选的批次无清选电量。
+
+- 选定流：供应籽粒清选设备的电力
+- 流属性/单位：Energy / kWh
+- 数量规则：按批次和遍数计量 kWh。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每准备完成 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程产出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_condition`
+- 来源：`tamu-sesame-2007`
+- 数量范围：暂定宽幅 QA 筛查；以现场记录替代
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：5
+  - 单位：kWh/kg processed seed
+  - 基准：每 kg 进入实际清选、分选、干燥或贮存作业的籽粒；仅暂定筛查
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 干燥电力（`drying_electricity`）
+
+仅在农场门前实际稳定水分时纳入风机或电热干燥电量。
+
+- 选定流：供应籽粒干燥设备的电力
+- 流属性/单位：Energy / kWh
+- 数量规则：按批次和干燥遍数计量 kWh。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每准备完成 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程产出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_condition`
+- 数量范围：暂定宽幅 QA 筛查；以现场记录替代
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：5
+  - 单位：kWh/kg processed seed
+  - 基准：每 kg 进入实际清选、分选、干燥或贮存作业的籽粒；仅暂定筛查
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 准备完成的完整籽粒（`prepared_seed`）
+
+实际除杂和必要的水分稳定化后交给分级，记录处理前后水分和质量。
+
+- 选定流：准备完成的完整芝麻籽，内部中间品
+- 流属性/单位：Mass / kg
+- 数量规则：称量处理后批次质量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每准备完成 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程产出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_condition`
+- 数量范围：物料守恒 QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg linked incoming seed
+  - 基准：每 kg 进入相关物料转移节点的实测籽粒；应用守恒前核对实际水分和混料
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 不合格完整籽粒（`offspec_seed`）
+
+将可再清选或降级的完整芝麻籽粒与杂物筛下物分开。记录返清选、买方或最终处置决策；只有实际售出的批次在农场门成为单独产品。
+
+- 选定流：不合格完整芝麻籽，内部中间品
+- 流属性/单位：Mass / kg
+- 数量规则：逐遍称量不合格籽粒及最终去向。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每准备完成 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程产出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_condition`
+- 数量范围：物料守恒 QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg linked incoming seed
+  - 基准：每 kg 进入相关分选或干燥节点的实测籽粒；降级、废弃或失水分别非负，合计须平衡
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 废物流
+
+###### 杂物筛下物（`screening_chaff`）
+
+将作为废弃物离开清选过程的糠屑和杂物单独记录，与可回收的不合格籽粒区分。
+
+- 选定流：糠屑和杂物筛下物
+- 流属性/单位：Mass / kg
+- 数量规则：逐清选遍数称量去除的筛下物。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每准备完成 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程产出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_condition`
+- 来源：`tamu-sesame-2007`
+- 数量范围：物料守恒 QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg linked incoming seed
+  - 基准：每 kg 进入相关分选或干燥节点的实测籽粒；降级、废弃或失水分别非负，合计须平衡
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 基本流
+
+### 过程：分级和农场门放行（`grade_gate`）
+
+#### 输入
+##### 产品流
+
+###### 待分级完整籽粒（`seed_to_grade`）
+
+对已准备批次分级；若明确旁路清选，则直接采用对应捕获批次。
+
+- 选定流：完整芝麻籽，内部中间品
+- 流属性/单位：Mass / kg
+- 数量规则：称量分级投入质量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每验收 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程产出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_gate`
+- 数量范围：物料守恒 QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg linked incoming seed
+  - 基准：每 kg 进入相关物料转移节点的实测籽粒；应用守恒前核对实际水分和混料
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 验收农场门籽粒（`accepted_gate_seed`）
+
+唯一固定参考产出是按实际等级和水分验收的未经加工完整芝麻籽粒。
+
+- 选定流：芝麻籽 `fa13af02-bb6e-4d44-a4a8-6464c0eece63`
+- 流属性/单位：Mass / kg
+原始产出计量与核对要求：农场门称量验收净重。
+
+- 数量规则：1 千克
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：1 kg 验收农场门籽粒.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_gate`
+- 数量范围：物料守恒 QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg linked incoming seed
+  - 基准：每 kg 进入相关物料转移节点的实测籽粒；应用守恒前核对实际水分和混料
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 降级销售籽粒（`downgraded_seed`）
+
+已销售的低等级批次独立于参考产出，保留买方和用途凭证。
+
+- 选定流：按去向区分的降级完整芝麻籽粒
+- 流属性/单位：Mass / kg
+- 数量规则：降级出售的称量质量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每验收 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_gate`
+- 数量范围：物料守恒 QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg linked incoming seed
+  - 基准：每 kg 进入相关分选或干燥节点的实测籽粒；降级、废弃或失水分别非负，合计须平衡
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 废物流
+
+###### 未售拒收籽粒（`gate_reject`）
+
+追踪返清选、回收或处置；返工仍承担原种植及采收负荷。
+
+- 选定流：按去向区分的拒收芝麻
+- 流属性/单位：Mass / kg
+- 数量规则：逐最终路径称量拒收质量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每验收 kg.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_gate`
+- 数量范围：物料守恒 QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg linked incoming seed
+  - 基准：每 kg 进入相关分选或干燥节点的实测籽粒；降级、废弃或失水分别非负，合计须平衡
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
+##### 基本流
+
+## 7. 分配和共产品处理
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `single_product` | 籽粒及留田秸秆和损失 | 种植负荷归于可销售籽粒；留田秸秆、田间未回收籽粒及未售籽粒不是参考产出。记录残茬实际去向。 | `ncstate-sesame-2026` |
+| `grade_split` | 验收及降级出售籽粒 | 等级和质量分别记录。两者均出售时按籽粒实物质量分配共同负荷并披露份额和分级标准；经济分配仅限有理由且有同期价格凭据的例外。 | `tamu-sesame-2007` |
+| `sold_residue` | 有意出售秸秆或糠屑 | 若残余物进入市场，记录干质量和去向，在放行前复核多产出分配；不得假设零负荷。 | `ncstate-sesame-2026` |
+| `run_rework` | 共用设备及返清选 | 依据记录时间或质量对共用机械、清洗和切换各分配一次。返工批次保留原负荷并增加每次实际处理负荷，中间质量不重复计量。 | `tamu-sesame-2007` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
+## 8. 前景数据采集、计算和质量规则
+
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `protection_input_specific_input` | `cp_field` | 作业 crop_management：逐配方记录实际使用的除草剂、杀虫剂或杀菌剂及有效成分和浓度；不得假定必然施用。 原数量方法：田块周期内该配方实际施用 kg。 |
+| `field_fuel_specific_input` | `cp_field` | 作业 crop_management：记录实际播种、中耕、喷施或抽水作业的燃料；共用设备按作业时间或面积分摊。 原数量方法：计量或票据记录归于田块周期的升数。 |
+| `harvest_fuel_specific_input` | `cp_harvest` | 作业 harvest_thresh：记录实际割取、脱粒或联合收获机械的燃料。易裂荚品种割取、田间晾干、捆扎及人工脱粒工时留在 `cp_harvest`；联合收获记录机械遍数。单个采收批次不得同时默认使用两条技术路线。[ncstate-sesame-2026] 原数量方法：采收批次实际消耗升数。 |
+
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+流卡中的数量范围是归一化前的复核触发条件，不是清单默认值或通用合格限值。数量必须采用实际田块、批次和作业记录；超出暂定筛查范围时，应核查路线、地区、单位及计量质量。地区播种量仅为示例。
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_field` | `crop_management` | 种植投入及水 | 田间日志及发票 | 田块；面积；年份；品种；水分路线；田间采样籽粒质量；各投入品身份及质量；燃料 L；电量 kWh；灌溉 m3 | 将施用和仪表日志连接至田块；原始汇总与分配：汇总实际投入，共用作业只分摊一次 `protection_input_specific_input`: 作业 crop_management：逐配方记录实际使用的除草剂、杀虫剂或杀菌剂及有效成分和浓度；不得假定必然施用。 原数量方法：田块周期内该配方实际施用 kg。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `field_fuel_specific_input`: 作业 crop_management：记录实际播种、中耕、喷施或抽水作业的燃料；共用设备按作业时间或面积分摊。 原数量方法：计量或票据记录归于田块周期的升数。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; L; kWh; m3; ha | 每次作业 | 全种植周期 | 全部纳入田块 | 每声明的参考流 | 发票、仪表和施用记录 |
+| `cp_harvest` | `harvest_thresh` | 捕获、损失、残茬 | 采收日志及田间调查 | 田块；批次；裂荚性状；采收方式；燃料；人工；原籽 kg；水分；损失估计；残茬路径 | 称量批次，按声明方法调查损失；原始汇总与分配：将批次连接至田间周期，汇总实际运行 `harvest_fuel_specific_input`: 作业 harvest_thresh：记录实际割取、脱粒或联合收获机械的燃料。易裂荚品种割取、田间晾干、捆扎及人工脱粒工时留在 `cp_harvest`；联合收获记录机械遍数。单个采收批次不得同时默认使用两条技术路线。[ncstate-sesame-2026] 原数量方法：采收批次实际消耗升数。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; h; L; percent | 每批次 | 全采收期 | 每田块／批次 | 每声明的参考流 | 称重、水分及损失记录 |
+| `cp_condition` | `first_clean_dry` | 清选、干燥和拒收 | 批次日志及仪表 | 批次；遍数；进出质量和水分；清选 kWh；干燥 kWh；干燥燃料 L；不合格籽粒 kg 及路径；筛下物 kg 及路径 | 每遍称量检测或记录旁路；原始汇总与分配：每遍只计一次 `drying_fuel_specific_input`: 仅在农场门前实际采用燃料加热干燥时纳入，声明燃料身份。 按批次和干燥遍数计量或票据记录升数。 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。  | kg; percent; kWh; L | 每遍 | 农场门之前 | 农场及外包交付前场所 | 每声明的参考流 | 称重、仪表、检测及处置票据 |
+| `cp_gate` | `grade_gate` | 验收和其他等级 | 分级及交付票据 | 批次；验收 kg；水分；颜色；杂质；破损籽；等级；降级／拒收 kg 及路径 | 交付前称量检查并分级；原始汇总与分配：仅汇总验收量作分母，保留其他去向 | kg; percent | 每批次 | 收获年份 | 每交付点 | 每声明的参考流 | 签收票据及质检报告 |
+| `cp_phase1_environment_coverage` | crop_management | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `reconcile_seed` | 收获至交付 | 估计田间可收籽粒 = 已捕获籽粒 + 另行调查的田间损失。对捕获后批次，捕获量 = 验收量 + 降级量 + 拒收量 + 清选损失 + 水分变化调整；调查剩余差额。 | 称重、水分及田间损失记录 | 核对后的批次质量平衡及独立田间损失记录 | `tamu-sesame-2007`; `ncstate-sesame-2026` |
+| `normalize_gate` | 所有归属清单 | 归属投入／排放总量除以验收农场门净重，保留田块和批次连接。 | 投入、分配和交付记录 | 每 kg 清单 |  |
+| `capture_loss_rate` | 采收路线比较 | 报告调查的损失籽粒占估计可收籽粒比例，同时声明方法及不确定性。 | 损失调查和捕获量 | 捕获损失比例 | `ncstate-sesame-2026` |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
+
+### 数据质量要求
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `product_identity` | 最终产品 | 核实完整芝麻籽、品种、颜色、等级和农场门状态，不得替代种用籽。 | 种植和销售记录 |
+| `mass_moisture` | 采收和交付 | 保留原始称重和水分检测；披露估计和无法解释的平衡差。 | 称重及检测单 |
+| `route_coverage` | 田间和批次 | 证明田块／批次覆盖完整以及返工、降级出售、废物和残茬的最终路径。 | 田间、批次及处置日志 |
+
+## 9. 验证规则
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_reference` | 农场门产品 | 要求固定完整籽粒 UUID、质量属性和单位组、kg 及实际交付状态；不得用本流表示油、脱壳籽或种用籽。 |  |
+| `validate_routes` | 田间和采收 | 要求雨养／灌溉和人工／联合收获选择及品种与批次证据；灌溉计入抽水，不得同时默认两种采收路线。 | `ncstate-sesame-2026`; `tamu-sesame-2007` |
+| `validate_loss_grades` | 采收和清选 | 要求损失方法、水分、清选／干燥遍数或旁路、验收／降级／拒收路径；拒收籽粒不得计入验收量。 | `ncstate-sesame-2026`; `tamu-sesame-2007` |
+| `validate_run_burdens` | 共用机械及返工 | 各运行、清洗／切换及返工遍数仅计一次，解决无法解释的质量差额。 |  |
+
+## 10. 发布数据集概要
+
+| Field | Value |
+| --- | --- |
+| dataset_role | 农场门完整芝麻籽粒前景数据集 |
+| downstream_use | 经审查可作 `secondary_dataset`、`background_dataset` |
+| allowed_use | 区域、年份、路线、水分和等级相近的农场门商品芝麻籽粒 |
+| excluded_use | 任何播种用种产出；油、粕、脱壳、烘焙或研磨产品；把地方推广投入量当作通用值 |
+| required_metadata | 农场及年份、田块面积、品种和裂荚性状、水分及采收路线、批次关系、交付点、水分、颜色和等级 |
+| required_quality_disclosure | 覆盖和缺失投入、计量或估算损失、共用批次归属、拒收及残茬路径、上游种子身份 |
+| update_trigger | 核实新种用流、明显不同的采收或清选路线、交付边界或分配证据变化 |
+
+## 11. 数据来源
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `ncstate-sesame-2026` | `extension_guidance` | NC State Extension, Sesame Production Fact Sheet (2026), https://content.ces.ncsu.edu/sesame-production-fact-sheet | 生物生产、裂荚、采收路线、损失和水分 |
+| `tamu-sesame-2007` | `extension_guidance` | Texas A&M AgriLife Research and Extension Center, Sesame Production Guide (2007), https://sanangelo.tamu.edu/agronomy/agronomy-publications/sesame-production-guide/ | 灌溉差异、联合收获破损、初次清选和分级 |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

@@ -379,6 +379,15 @@ slot positions, complete records, tokenization, text buckets, ranking and both
 browser budgets remain unchanged. The shared codec is an emitted TypeScript
 browser module with the same executable MIME/noindex checks as the Worker.
 
+Search manifest version 4 adds bounded score-slot masks, reversible numeric posting
+ID deltas and optional columnar maps. The generator selects supported encodings
+only when smaller and verifies exact restoration of every original engine export.
+The Worker retains version 1, 2 and 3 readers, validates version-specific metadata
+and rejects malformed masks, columns or posting deltas before import; failed loads
+remain retryable. Complete result records, export and posting order, tokenization,
+ranking, text buckets and the 20 MB raw / 4 MB gzip per-language budgets remain
+unchanged. Build diagnostics report actual raw/gzip bytes, shards and records.
+
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
 identities, with content-derived continuation suffixes. Tables remain whole, and

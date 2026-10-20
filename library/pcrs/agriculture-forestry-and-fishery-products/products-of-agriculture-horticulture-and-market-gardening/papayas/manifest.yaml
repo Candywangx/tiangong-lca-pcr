@@ -1,37 +1,102 @@
 schema_version: 1
 id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.papayas
 title:
-  en-US: "Papayas"
-  zh-CN: null
-status: scaffold
+  en-US: Papayas
+  zh-CN: 木瓜
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "agriculture-forestry-and-fishery-products"
-modules:
-  core:
-    - pcr-minimum-content
-    - unit-of-analysis
-    - reference-flow
-    - inventory-flow-taxonomy
-    - system-boundary
-    - allocation
-    - data-quality
-    - validation-rules
+  - agriculture-forestry-and-fishery-products
 target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "01317"
-    title: "Papayas"
+    title: Papayas
     mapping_type: exact
+review_metadata:
+  unresolved_factual_evidence:
+    - Obtain compatible species/route-specific agronomic evidence for the stated methodology choices; generic GAP/handling frameworks support records only, not crop-specific quantitative defaults or LCA allocation.
+  unresolved_flow_identities:
+    - row_id: papaya_planting_material
+      reason: No detail-confirmed UUID is recorded for Papaya seed or seedling planting material in papaya_crop_establishment (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_crop_establishment_agricultural_nutrient_inputs_triple_superphosphate
+      reason: No detail-confirmed UUID is recorded for Triple superphosphate fertilizer in papaya_crop_establishment (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_crop_establishment_agricultural_nutrient_inputs_potassium_chloride
+      reason: No detail-confirmed UUID is recorded for Potassium chloride fertilizer in papaya_crop_establishment (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_crop_establishment_agricultural_nutrient_inputs_cattle_manure
+      reason: No detail-confirmed UUID is recorded for Cattle manure applied as fertilizer in papaya_crop_establishment (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_crop_establishment_agricultural_nutrient_inputs_plant_compost
+      reason: No detail-confirmed UUID is recorded for Composted plant residues applied to soil in papaya_crop_establishment (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_land_occupation
+      reason: No detail-confirmed UUID is recorded for Agricultural land occupation in papaya_crop_establishment (inputs/elementary). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_irrigation_water
+      reason: No detail-confirmed UUID is recorded for Irrigation water in papaya_crop_management (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_water_withdrawal
+      reason: No detail-confirmed UUID is recorded for Water resource withdrawal in papaya_crop_management (inputs/elementary). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_gross_harvest
+      reason: No detail-confirmed UUID is recorded for Fresh whole papaya, gross harvested in papaya_harvest (outputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_harvest_rejects
+      reason: No detail-confirmed UUID is recorded for Papaya harvest rejects in papaya_harvest (outputs/waste). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_gate_input
+      reason: No detail-confirmed UUID is recorded for Fresh whole papaya, gross harvested in papaya_gate_preparation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+    - row_id: papaya_washing_water
+      reason: No detail-confirmed UUID is recorded for Process water for papaya washing in papaya_gate_preparation (inputs/product). Confirm physical identity, state, boundary, flow type, property and unit before binding; this entry does not assert verification.
+  required_input_identification:
+    - requirement_id: papaya_mobile_fuel_specific_input
+      rule: Mandatory, projected collection-method requirement. Actual use must become separate specific exchanges before dataset completeness; no fabricated recipe, missing-as-zero assumption or aggregate flow binding.
+    - requirement_id: papaya_crop_protection_specific_input
+      rule: Mandatory, projected collection-method requirement. Actual use must become separate specific exchanges before dataset completeness; no fabricated recipe, missing-as-zero assumption or aggregate flow binding.
+    - requirement_id: papaya_primary_packaging_specific_input
+      rule: Mandatory, projected collection-method requirement. Actual use must become separate specific exchanges before dataset completeness; no fabricated recipe, missing-as-zero assumption or aggregate flow binding.
+    - requirement_id: papaya_harvest_containers_specific_input
+      rule: Mandatory, projected collection-method requirement. Actual use must become separate specific exchanges before dataset completeness; no fabricated recipe, missing-as-zero assumption or aggregate flow binding.
+  content_identity_remediation:
+    scope: Specific input identity, route applicability and source-bound UUID compatibility; no lifecycle promotion or classification acceptance.
+    bound_rows:
+      - row_id: papaya_crop_establishment_agricultural_nutrient_inputs_urea
+        uuid: 3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e
+      - row_id: papaya_crop_establishment_agricultural_nutrient_inputs_ammonium_sulfate
+        uuid: 8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf
+    conditional_rows:
+      - row_id: papaya_mobile_fuel_diesel
+        original: papaya_mobile_fuel
+        carrier: diesel
+        uuid: 9d258d75-6792-4f1c-9856-81602ed8f816
+    remaining_identity_policy: Specific unresolved rows remain explicit when no compatible public identity was confirmed; no near-match material or reference-property substitution is accepted.
+  required_emission_identification:
+    - requirement_id: papaya_soil_nitrogen_emissions_specific_emission
+      rule: Identify and quantify each applicable substance and actual receiving compartment separately; preserve environmental returns and upstream coverage without double counting. Required before dataset completeness; missing records never establish zero.
+  required_output_identification:
+    - requirement_id: papaya_gate_rejects_specific_output
+      process_id: papaya_gate_preparation
+      collection_protocol_id: cp_papaya_gate_records
+      rule: Required stream-specific collection and calculation, projected in both collection protocol and calculation rule. Identify actual material, composition/state, native quantity, recipient and product/waste role. Instantiate concrete exchanges before dataset completeness with compatible verified UUIDs or explicitly unresolved identities. A documented single physical mixture may remain one defined stream without duplicate component exports. Missing evidence is not zero; retain original normalization, mass/water balance and treatment responsibilities.
+  principle_content_audit:
+    date: 2026-10-18
+    scope: CPC 01/02/03 selected unpublished candidates; content and bilingual/structured consistency
+    changes:
+      - kind: atomic_identity
+        row_id: papaya_field_residue
+      - kind: atomic_identity
+        row_id: papaya_gate_wastewater
+    qualification: Candidate only. Corrections do not establish publication readiness or eliminate site-specific identity and evidence requirements.
+  phase1_local_corrections:
+    date: 2026-10-18
+    finding_ids:
+      - F016
+      - F047
+    scope: Completed local phase-one semantic review under eight fixed criteria for the selected batch. Confirmed issues and linked instructions corrected; site observations, empirical screening support and unresolved exact-state identities remain separately disclosed. This is not publication or universal absence-of-error certification.
+updated_at_utc: 2026-10-18T08:50:07.260Z

@@ -1,8 +1,799 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.canary-seed
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Canary seed
+# Canary seed grain
+
+## 1. Scope and Applicability
+
+This PCR covers cultivated canary seed grain (annual canarygrass, *Phalaris canariensis*) delivered at the farm gate after harvest. It includes field preparation, seeding, crop management, harvest, and optional on-farm cleaning or drying when those operations occur before hand-off. It covers grain sold for bird feed, food ingredients, or further processing. It excludes certified seed multiplication, whole-crop forage, hay, silage, grazing, cover-crop services, off-farm cleaning or milling, feed manufacture, and downstream transport or use.
+
+The foreground data package shall declare geography, cultivar or variety, crop year, field area, yield, moisture, impurity basis, intended use, residue fate, and whether conditioning is included. Seeding rate, weed-control programme, harvest timing, and post-harvest quality are collected inputs rather than fixed PCR quantities.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.canary-seed |
+| classification_refs | CPC 3.0: 01195 Canary seed; mapping relation: narrower |
+| covered_products | harvested canary seed grain for feed, food, or further processing at the farm gate |
+| excluded_products | certified seed; whole-crop forage, hay, silage, grazing, or cover-crop service; milled products; prepared bird feed; off-farm storage and transport |
+| representative_product | clean or uncleaned harvested canary seed grain, with declared moisture and quality state |
+| production_route | managed annual canarygrass cultivation, harvest, and conditional on-farm grain conditioning |
+| market_state | unprocessed grain at farm gate, with moisture, impurity, treated-seed, variety, and intended-use status declared |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | canary seed grain at the farm gate |
+| How much | 1,000 kg as-received grain |
+| How well | harvested, unprocessed grain with declared moisture, impurity, damage, variety, and intended-use specifications |
+| How long or cycle | one declared canary seed crop cycle |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1000 |
+| Reference product flow | Canary seed, production mix, at farm gate, harvested grain, unprocessed |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | production geography; cultivar or variety; crop year; harvested grain moisture; impurity and dockage basis; intended use; treated-seed status; conditioning included or excluded |
+
+When constructing a foreground data package, the items listed in `Required qualifiers` must be declared in dataset metadata, process notes, reference flow comment, product description, or an equivalent data package field. Missing required qualifiers make the reference flow definition incomplete for that data package.
+
+Each foreground dataset must explicitly select one actual route, declared gate, product state and output row. Reconcile the selected terminal route with `reference_product_at_declared_handoff`; normalize that handoff output to the reference quantity and retain preceding-stage outputs as measured transfers. Raw weighing, mass reconciliation and lot traceability requirements continue to apply.
+
+The sole reference output is `reference_product_at_declared_handoff`, receiving the selected actual route product at the declared gate. Existing route-output ids identify the source and physical state; they are no longer individually fixed to the reference quantity.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass_as_received` | reference canary seed grain | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Report as-received grain mass and measured moisture; retain the moisture basis for every dry-matter or conditioning conversion. |
+| `area_to_reference_conversion` | area-based field records | activity-specific property | activity-specific unit | Divide each crop-cycle field total by marketable grain yield from the same fields and cycle, then scale to 1,000 kg reference grain. The resulting inventory amount is reported on a `reference_flow` basis. |
+| `nutrient_content_basis` | fertilizer and amendment records | nutrient mass | kg N, kg P2O5, or kg K2O | Preserve formulated product mass and declared nutrient content separately; do not merge N, P2O5, and K2O into one fertilizer amount. |
+| `moisture_and_impurity_basis` | grain outputs and conditioning | Mass and moisture | kg and mass-% | State whether quantities are gross, net cleaned, or dry-matter adjusted and keep dockage, screenings, and rejects outside accepted grain mass. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | prepared field at the beginning of the canary seed crop cycle, with seed and purchased management inputs crossing the foreground boundary |
+| starting_condition_role | start of managed canary seed grain production |
+| product_classification_scope | cultivated canary seed grain corresponding to CPC 3.0 code 01195 |
+| recursive_input_rule | purchased or retained canary seed for sowing is an explicit seed input linked to a distinct upstream seed-supply dataset and shall not loop to this harvested-grain process |
+| upstream_dataset_requirement | compatible upstream datasets for seed, fertilizers, crop-protection formulations, fuels, electricity, irrigation supply, and contracted services |
+| disclosure | crop type, cultivar, geography, crop dates, previous crop, tillage, seeding rate, irrigation, nutrient products, pesticide products, yield, moisture, impurity, residue fate, and conditioning boundary |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_crop_cycle_to_farm_gate` | all conforming datasets | Include field preparation, seeding, crop management, harvest, and on-farm cleaning or drying performed before farm-gate hand-off. | `saskatchewan-canary-seed-guide` |
+| `boundary_direct_field_emissions` | managed soil and crop emissions | Include direct and indirect nitrogen-related emissions and relevant combustion or field emissions using geographically applicable methods and the same activity records used for nutrient and residue accounting. | `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook` |
+| `boundary_residue_fate` | straw, chaff, and crop residues | Distinguish residues returned to soil, burned, removed as a useful co-product, and removed as waste; prevent double counting residue nitrogen and exported material. | `ipcc-2019-managed-soils` |
+| `boundary_conditioning_gate` | optional conditioning | Include electricity, heat, incoming grain, accepted grain, screenings, rejects, and measured moisture loss only when cleaning or drying occurs before the declared farm-gate hand-off. | `cgc-canary-seed-grading-2026`; `mass-balance-identity` |
+| `boundary_post_farm_gate_exclusion` | downstream activities | Exclude off-farm transport, storage, milling, feed manufacture, food preparation, and use unless a study explicitly extends beyond this PCR. |  |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `canary_seed_field_production` | Canary seed field production and harvest | required | always | managed biological production and harvest | cultivated hectare and harvested grain mass for one crop cycle |
+| `canary_seed_grain_conditioning` | On-farm canary seed grain conditioning | conditional | cleaning, drying, sorting, or temporary handling occurs before farm-gate hand-off and is not already included in field records | prepare harvested grain to declared market state | matched incoming and accepted grain masses |
+| declared_reference_handoff | Product Measurement at Declared Handoff | required |  | foreground | reference_product_at_declared_handoff |
+
+### Process: Canary seed field production and harvest (`canary_seed_field_production`)
+
+#### Inputs
+
+##### Product flows
+
+###### Canary seed for sowing (`canary_seed_input`)
+
+Record purchased or retained seed crossing into the crop cycle. Do not substitute the harvested-grain UUID for seed identity.
+
+- Selected flow: Canary seed for sowing
+- Flow property / unit: Mass / kg
+- Amount rule: measured seed mass sown, summed by field and converted from crop-cycle records to the reference flow
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain; collect per field and crop cycle, then divide by same-cycle marketable yield.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Sources: `saskatchewan-canary-seed-guide`
+- Range: Published seeding-rate context
+  - Range role: Typical range (`typical_range`)
+  - Lower: 22
+  - Upper: 45
+  - Unit: kg seed/ha
+  - Basis: drilled canary seed establishment per cultivated hectare; convert to the reference flow using same-cycle yield
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `saskatchewan-canary-seed-guide`
+
+###### Urea fertilizer (`canary_seed_field_production_agricultural_nutrient_inputs_urea`)
+
+**Collection scope and applicability for canary_seed_field_production_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
+Raw activity or stage basis: per 1,000 kg reference grain; nutrient product mass multiplied by declared N fraction.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_activity_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Ammonium sulfate fertilizer (`canary_seed_field_production_agricultural_nutrient_inputs_ammonium_sulfate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_activity_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Triple superphosphate fertilizer (`canary_seed_field_production_agricultural_nutrient_inputs_triple_superphosphate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Triple superphosphate fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_activity_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Sources: `fao-fertilizer-identities`
+
+###### Potassium chloride fertilizer (`canary_seed_field_production_agricultural_nutrient_inputs_potassium_chloride`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Potassium chloride fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_activity_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Sources: `fao-fertilizer-identities`
+
+###### Cattle manure applied as fertilizer (`canary_seed_field_production_agricultural_nutrient_inputs_cattle_manure`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Cattle manure applied as fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_activity_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Sources: `fao-organic-nutrients`
+
+###### Composted plant residues applied to soil (`canary_seed_field_production_agricultural_nutrient_inputs_plant_compost`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Composted plant residues applied to soil
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_activity_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Sources: `fao-organic-nutrients`
+
+###### Irrigation water supplied (`irrigation_water_input`)
+
+Record irrigation delivered to the field separately from precipitation. Rainfed production is recorded as zero irrigation input.
+
+- Selected flow: Irrigation water supply
+- Flow property / unit: Volume / m3
+- Amount rule: metered volume or verified pump-flow calculation and conversion to the reference flow
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain; crop-cycle irrigation total divided by same-cycle marketable yield.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_activity_records`
+- Range: Provisional irrigation screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 6,000
+  - Unit: m3/ha
+  - Basis: one crop cycle, including rainfed production at zero; convert using same-cycle yield
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel used by field machinery (`field_diesel_input`)
+
+Record diesel consumed by owned or controlled machinery. Contractor fuel belongs in an upstream contracted-service dataset when that service is modelled separately.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured or invoiced diesel assigned to canary seed operations and converted to the reference flow
+- Value mode: `calculated_value`
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain; crop-cycle fuel total divided by same-cycle marketable yield.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_activity_records`
+
+
+
+Only actual diesel is represented by this card; other fuels or an inclusive contracted service require their own separate identities and must not also be charged here. The linked quantity is kg of diesel: preserve raw tank/invoice units; calculate kg = L × documented density in kg/L at the recorded temperature, or kg = MJ / documented diesel lower heating value in MJ/kg on the same energy basis. Direct mass records require no carrier conversion. Missing density or heating value must be obtained, never assumed. Apply measured area, period and accepted-output normalization once after carrier conversion, retaining the original final reference amount. No universal per-hectare fuel screen is imposed.
+
+##### Waste flows
+
+##### Elementary flows
+
+###### Land occupation for canary seed cultivation (`canary_seed_land_occupation`)
+
+Record cultivated area and occupation duration for the fields represented by the crop-cycle inventory.
+
+- Selected flow: Land occupation, arable land
+- Flow property / unit: Area-time / m2*a
+- Amount rule: cultivated area × occupation duration, converted to the reference flow using same-cycle marketable yield
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain; area-time total divided by same-cycle marketable yield.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_activity_records`
+- Range: Provisional land-occupation screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0.2
+  - Upper: 8
+  - Unit: ha*a/1,000 kg grain
+  - Basis: one declared annual crop cycle and its represented cultivated area
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+#### Outputs
+
+##### Product flows
+
+###### Harvested canary seed grain at farm gate (`harvested_canary_seed_grain_output`)
+
+Record marketable harvested grain leaving field production. If conditioning is included, this row is the matched incoming grain to conditioning rather than the terminal reference output.
+
+- Selected flow: Canary seed, production mix, at farm gate, harvested grain, unprocessed `b390e8bf-4421-40ac-9881-10792f8fef57`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: measured accepted or harvested grain mass with moisture and impurity basis declared; scale to 1,000 kg reference grain
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest_output_records`
+- Range: Provisional marketable-yield screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 250
+  - Upper: 3,000
+  - Unit: kg grain/ha
+  - Basis: same-cycle harvested grain yield per cultivated hectare; retain actual field and weighbridge records
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Canary seed straw or chaff removed from field (`removed_canary_seed_residue_output`)
+
+Record straw or chaff only when it crosses the field boundary as a useful co-product or waste. Residue left or incorporated in the field is recorded through residue fate, not as an exported product.
+
+- Selected flow: Canary seed straw or chaff, removed from field
+- Flow property / unit: Mass / kg dry or as-received material
+- Amount rule: measured removed residue mass with moisture and destination, converted to the reference flow
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain; crop-cycle residue mass divided by same-cycle marketable yield.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_residue_and_waste_fate`
+- Range: Provisional removed-residue screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 2,500
+  - Unit: kg residue/ha
+  - Basis: only residue physically removed from represented fields; convert using same-cycle yield
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Field residue not removed (`retained_canary_seed_residue`)
+
+Record straw, chaff, and other crop residues that remain on the field or are incorporated. This row documents residue fate for emissions and avoids treating retained residue as a co-product.
+
+- Selected flow: Canary seed crop residue, retained in field
+- Flow property / unit: Mass / kg dry matter
+- Amount rule: calculate from residue records, harvest yield, and a measured or justified residue-to-grain ratio, then convert to the reference flow
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_residue_and_waste_fate`
+- Range: Provisional retained-residue screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 2,500
+  - Unit: kg dry residue/ha
+  - Basis: residue returned or retained on the represented field; convert using same-cycle marketable yield
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+###### Nitrous oxide released to ambient air (`field_n2o_air_output`)
+
+Calculate direct and indirect N2O emissions from fertilizer, organic inputs, residue nitrogen, volatilization, and leaching pathways with the selected regional method.
+
+- Selected flow: Nitrous oxide, to ambient air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: selected IPCC or regional method applied to collected nitrogen activity data and residue fate
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_emission_activity`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Provisional N2O screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 40
+  - Unit: kg N2O/1,000 kg grain
+  - Basis: complete crop cycle; method and regional factors must be disclosed
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Ammonia released to ambient air (`field_ammonia_air_output`)
+
+Calculate ammonia volatilization from nitrogen products using product type, placement, timing, weather, and an applicable method factor.
+
+- Selected flow: Ammonia, to ambient air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: product- and application-specific volatilization method applied to collected nitrogen records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_emission_activity`
+- Sources: `emep-eea-2023-guidebook`
+- Range: Provisional ammonia screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 25
+  - Unit: kg NH3/1,000 kg grain
+  - Basis: complete crop cycle; use product and application records with a reviewed factor
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Nitrate released to water (`field_nitrate_water_output`)
+
+Calculate nitrate loss to water from nitrogen inputs, soil, drainage, and local hydrology using the selected method; do not infer nitrate loss from fertilizer mass alone.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: selected regional leaching method applied to nitrogen activity, soil, drainage, and climate records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_emission_activity`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Provisional nitrate-loss screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 80
+  - Unit: kg NO3-/1,000 kg grain
+  - Basis: complete crop cycle; disclose drainage and factor method
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Nitrogen oxides released to ambient air (`field_nox_air_output`)
+
+Record nitrogen oxides from field combustion and nitrogen-related processes where the selected emission method requires the flow.
+
+- Selected flow: Nitrogen oxides, to ambient air
+- Flow property / unit: Mass / kg NOx
+- Amount rule: apply the selected combustion or agricultural emission factor to collected activity data
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg reference grain.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_emission_activity`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Provisional NOx screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 12
+  - Unit: kg NOx/1,000 kg grain
+  - Basis: complete crop cycle and represented fuel activity
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: On-farm canary seed grain conditioning (`canary_seed_grain_conditioning`)
+
+#### Inputs
+
+##### Product flows
+
+###### Harvested grain entering conditioning (`harvested_canary_seed_conditioning_input`)
+
+Include this input only when cleaning, drying, sorting, or temporary handling occurs before the declared farm-gate hand-off.
+
+- Selected flow: Canary seed harvested grain entering conditioning
+- Flow property / unit: Mass / kg
+- Amount rule: weighed incoming grain batch with incoming moisture and impurity basis declared
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference grain output; incoming batch is reconciled to terminal accepted output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_records`
+- Range: Provisional incoming-to-accepted mass screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 950
+  - Upper: 1,300
+  - Unit: kg incoming grain/1,000 kg accepted grain
+  - Basis: matched conditioning batch; retain wet-mass and moisture balance
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity supplied to conditioning (`conditioning_electricity_input`)
+
+Record electricity for fans, conveyors, cleaners, elevators, and other equipment included before farm-gate hand-off.
+
+- Selected flow: Electricity supply, applicable site supply
+- Flow property / unit: Energy / kWh
+- Amount rule: meter reading or equipment energy record allocated to matched conditioning batches
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference grain output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_records`
+- Range: Provisional conditioning electricity screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 80
+  - Unit: kWh/1,000 kg accepted grain
+  - Basis: matched pre-gate conditioning batches
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Thermal energy supplied for drying (`conditioning_heat_input`)
+
+Record purchased heat or fuel-derived thermal energy used to dry grain before farm-gate hand-off; disclose the carrier and avoid double counting fuel already included in machinery records.
+
+- Selected flow: Purchased process heat
+- Flow property / unit: Energy / MJ
+- Amount rule: measured heat meter, fuel-to-heat calculation, or supplier record allocated to matched conditioning batches
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference grain output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_conditioning_records`
+- Range: Provisional conditioning heat screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1,200
+  - Unit: MJ/1,000 kg accepted grain
+  - Basis: matched pre-gate drying batches; disclose moisture reduction and heat source
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+#### Outputs
+
+##### Product flows
+
+###### Conditioned canary seed grain at farm gate (`conditioned_canary_seed_grain_output`)
+
+Use this terminal output when conditioning is included in the declared route. It carries the same reference-flow identity and must state final moisture and quality basis.
+
+- Selected flow: Canary seed, production mix, at farm gate, harvested grain, unprocessed `b390e8bf-4421-40ac-9881-10792f8fef57`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: measured accepted grain mass after conditioning, scaled to 1,000 kg reference grain
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference grain output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_records`
+- Range: Terminal reference-output check
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 1,000
+  - Upper: 1,000
+  - Unit: kg accepted grain/1,000 kg reference grain
+  - Basis: PCR reference flow after route scaling
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `mass-balance-identity`
+
+###### Canary seed screenings directed to a useful use (`canary_seed_screenings_output`)
+
+Record screenings separately when intentionally sold or transferred to a documented useful use. Material sent to disposal belongs in the reject-waste row.
+
+- Selected flow: Canary seed screenings or downgraded grain for documented useful use
+- Flow property / unit: Mass / kg
+- Amount rule: weighed screenings by batch, moisture, and destination, converted to the reference flow
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference grain output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_records`
+- Range: Provisional useful-screenings screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 120
+  - Unit: kg/1,000 kg accepted grain
+  - Basis: matched conditioning batch and documented destination
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Foreign matter and rejected grain (`conditioning_reject_waste_output`)
+
+Record foreign matter, stones, treated seed, damaged grain, and other rejects sent to disposal or a non-product treatment route. Do not count them as accepted grain.
+
+- Selected flow: Canary seed conditioning rejects and foreign matter
+- Flow property / unit: Mass / kg
+- Amount rule: weighed reject mass by destination and batch, converted to the reference flow
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted reference grain output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_records`
+- Sources: `cgc-canary-seed-grading-2026`
+- Range: Provisional conditioning-reject screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 150
+  - Unit: kg/1,000 kg accepted grain
+  - Basis: matched conditioning batch; distinguish dockage, useful screenings, and disposal rejects
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+
+### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
+This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
+#### Inputs
+##### Product flows
+###### Actual route product at handoff (`actual_route_product_for_handoff`)
+Record the accepted product delivered by the actual terminal route and reconcile it with handoff weighing and lot records.
+- Selected flow: Canary seed, production mix, at farm gate, harvested grain, unprocessed
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net product mass at the actual handoff, normalized to the reference quantity; do not sum preceding-stage quantities, other routes or co-products
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+This measurement node adds no waste inputs.
+##### Elementary flows
+This measurement node adds no resource inputs.
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+- Selected flow: Canary seed, production mix, at farm gate, harvested grain, unprocessed
+- Flow property / unit: Mass / kg
+- Amount rule: 1000 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+Confirm the product UUID independently for the actual state. Until confirmed, retain unresolved identity instead of inheriting a UUID from a preceding stage or another route.
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+Record actual losses at the operation where they occur; do not duplicate them here.
+##### Elementary flows
+Record actual emissions at the operation where they occur; do not duplicate them here.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_avoid_by_subdivision` | field production and conditioning | Prefer separate records for field production and conditioning and separate measurement of grain, removed residue, screenings, and rejects before allocating shared burdens. | `iso-14044-2006` |
+| `allocation_retained_residue` | residues retained or incorporated | Do not treat retained residues as co-products; include their management and emissions in field production and prevent double counting with removed residue. | `ipcc-2019-managed-soils` |
+| `allocation_removed_residue` | useful removed straw or chaff | If subdivision cannot resolve shared field burdens, apply economic allocation using contemporaneous farm-gate values; disclose moisture bases and test mass allocation as a sensitivity. | `iso-14044-2006` |
+| `allocation_conditioning_outputs` | useful screenings and rejects | Treat an output with documented positive use as a co-product and disposal material as waste; use economic allocation at conditioning hand-off only when subdivision is infeasible. | `iso-14044-2006` |
+
+Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `crop_protection_input_specific_input` | `cp_field_activity_records` | Operation canary_seed_field_production: Record each herbicide, fungicide, insecticide, desiccant, or other formulation by product identity and application event. Retain active ingredients and product identities before aggregation. Original quantity method: measured or invoiced product mass by formulation, summed by field and converted to the reference flow |
+
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_field_activity_records` | `canary_seed_field_production` | seed, nutrients, irrigation, fuel, crop protection, land | field log, invoice, application record, meter, or contractor record | field_id; area; cultivar; input_product; amount; nutrient_content; date; operation; contractor_scope | reconcile physical inputs and operations to every represented field and crop cycle; Raw aggregation and attribution: sum by physical identity; calculate nutrients without merging products; normalize with same-cycle area and yield `crop_protection_input_specific_input`: Operation canary_seed_field_production: Record each herbicide, fungicide, insecticide, desiccant, or other formulation by product identity and application event. Retain active ingredients and product identities before aggregation. Original quantity method: measured or invoiced product mass by formulation, summed by field and converted to the reference flow Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; kg nutrient; L; m3; ha | each event | complete crop cycle | all represented fields | per declared reference flow | invoices; labels; calibrated meters; field logs |
+| `cp_harvest_output_records` | `canary_seed_field_production` | grain and removed residue | weighbridge, yield monitor, moisture test, bale record | field_id; harvest_date; grain_mass; grain_moisture; impurity; residue_mass; residue_moisture; residue_fate; destination | reconcile accepted grain and each residue destination to field area and crop cycle; Raw aggregation and attribution: sum accepted grain and each residue fate separately | kg; percent; ha | each harvest | complete crop cycle | all represented fields | per declared reference flow | scale or yield-monitor calibration; moisture tests; destination evidence |
+| `cp_field_emission_activity` | `canary_seed_field_production` | emissions to air and water | nutrient, soil, weather, residue, drainage, and emission-model records | fertilizer_N; organic_N; residue_N; application_method; soil; climate; drainage; factor_set; model_version | Within each compatible route/product/state, calculate attributable raw totals by field first. Aggregate final intensity = sum(attributable raw quantities) * declared reference quantity / sum(matched accepted final outputs). When source quantities are per-ha rates e_h and y_h, first recover raw totals as e_h*area and y_h*area; do not area-weight field totals again. A per-product intensity is weighted by its matched output, not area or an unweighted mean. Apply existing allocation once, preserve period/throughput and all source-unit conversions, and keep incompatible routes separate. | kg N; kg emission; ha | each event and crop-cycle calculation | complete crop cycle | all represented fields | per declared reference flow | source records; factor provenance; model file; nitrogen-balance review |
+| `cp_residue_and_waste_fate` | `canary_seed_field_production` | retained and removed residues | field residue log, bale ticket, burn or incorporation record | field_id; residue_mass; dry_matter; fate; destination; date | link residue fate to the same harvest and field records used for yield; Raw aggregation and attribution: sum by fate; exclude retained residue from co-product outputs | kg; percent; ha | each field and harvest | complete crop cycle | all represented fields | per declared reference flow | field records; destination receipts; residue calculation evidence |
+| `cp_conditioning_records` | `canary_seed_grain_conditioning` | incoming grain, energy, accepted grain, screenings, rejects | batch ticket, scale, moisture test, electricity or heat meter, destination record | batch_id; incoming_mass; incoming_moisture; electricity; heat; accepted_mass; accepted_moisture; screenings; rejects | reconcile matched conditioning batches and meters to accepted output; Raw aggregation and attribution: sum matched batches; allocate shared meters by time or processed mass; close wet-mass balance | kg; percent; kWh; MJ | each batch or meter period | all pre-gate conditioning | all included equipment and batches | per declared reference flow | calibrated scales and moisture meters; meter reconciliation |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_area_to_reference_flow` | field flows | crop-cycle amount per hectare / marketable grain yield per hectare × 1,000 kg | flow amount; area; same-cycle grain mass | amount per 1,000 kg reference grain |  |
+| `calc_nutrient_content` | fertilizer and amendment inputs | product mass × declared nutrient fraction; preserve N, P2O5, and K2O reporting bases | product identity; mass; assay; reporting basis | nutrient amount by source |  |
+| `calc_managed_soil_n2o` | soil N2O | apply selected IPCC tier or regional method to fertilizer N, organic N, returned-residue N, volatilization, and leaching pathways | nitrogen activity; residue fate; soil and climate; factors | kg N2O by pathway | `ipcc-2019-managed-soils` |
+| `calc_ammonia_volatilization` | ammonia to air | calculate by fertilizer type, application method, timing, and applicable factor | nitrogen product records; application details; factors | kg NH3 | `emep-eea-2023-guidebook` |
+| `calc_nitrate_loss` | nitrate to water | apply selected regional drainage or leaching method to nitrogen activity and hydrological records | nitrogen activity; soil; drainage; climate; factors | kg NO3- | `ipcc-2019-managed-soils` |
+| `calc_conditioning_mass_balance` | grain conditioning | incoming wet grain = accepted grain + useful screenings + rejects + moisture and other measured losses within uncertainty | masses; moisture; loss records | reconciled outputs per accepted grain | `mass-balance-identity` |
+| `calc_moisture_adjustment` | grain and residue mass | convert between as-received and declared dry-matter bases using measured moisture; retain original and converted values | mass; moisture; target basis | adjusted mass | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_emission_activity`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_product_identity` | reference product | Confirm canary seed rather than wheat, rye, mixed cereal, or another bird-seed component; retain cultivar, intended use, state, and hand-off. | crop, lot, grade, and sales records |
+| `dq_temporal_alignment` | all foreground rows | Use inputs, harvest, yield, emissions, residue, and conditioning records from the same crop cycle; disclose proxy years. | dated field and batch records |
+| `dq_mass_and_moisture` | grain, residue, and conditioning | Retain scale or yield-monitor calibration and moisture measurements for every basis conversion. | calibration and moisture-test records |
+| `dq_quality_and_impurity` | grain outputs | Retain inspection or laboratory evidence for impurity, dockage, treated-seed status, variety, odour, damage, and intended-use quality. | grading or laboratory records |
+| `dq_completeness` | process map and flows | Reconcile every field and conditioning batch and distinguish zero, not applicable, proxy, and missing values. | field roster; batch reconciliation |
+| `dq_identity_resolution` | parameterized and unmapped flows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | identity review record |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validation_reference_output` | terminal output | Exactly one terminal canary seed grain output equals 1,000 kg after scaling, uses the fixed reference UUID, and declares moisture and quality qualifiers. |  |
+| `validation_process_route` | process map | Include field production once; include conditioning only before farm-gate hand-off and avoid double counting embedded energy, incoming grain, or rejects. |  |
+| `validation_crop_cycle_reconciliation` | field inventory | Area, inputs, harvest outputs, residue fates, and emissions refer to the same fields and crop cycle. |  |
+| `validation_nitrogen_balance` | nitrogen inventory | Reconcile nutrient content, returned and removed residue nitrogen, and emission pathways with methods and factors disclosed. | `ipcc-2019-managed-soils` |
+| `validation_quality_state` | grain identity and output | State whether grain is gross harvested, cleaned, dried, or otherwise conditioned; keep impurity and moisture bases consistent with the declared reference state. | `cgc-canary-seed-grading-2026` |
+| `validation_conditioning_balance` | conditioning | Reconcile incoming grain with accepted grain, useful screenings, rejects, moisture loss, and other measured losses within uncertainty. | `mass-balance-identity` |
+| `validation_flow_identity` | every flow | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | foreground canary seed grain production dataset |
+| downstream_use | `secondary_dataset`; `background_dataset` after review and publication |
+| allowed_use | farm-gate LCA of canary seed grain and downstream systems preserving declared geography, moisture, impurity, residue, allocation, and conditioning context |
+| excluded_use | certified seed, whole-crop forage or silage, milling, prepared bird feed, or another crop without reviewed proxy decision |
+| required_metadata | geography; cultivar or variety; crop year; area; yield; moisture; impurity; intended use; seeding; nutrients; crop protection; fuel; irrigation; residue fate; conditioning; allocation; identity resolution |
+| required_quality_disclosure | foreground coverage; proxy inputs; missing records; range exceedances; emission methods; meter and mass-balance reconciliations; grade or laboratory evidence |
+| update_trigger | new reviewed canary seed evidence, material route change, revised emission method, changed concrete flow identity verification|
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `saskatchewan-canary-seed-guide` | official_guidance | Government of Saskatchewan, Canary Seed specialty crop guidance, https://www.saskatchewan.ca/business/agriculture-natural-resources-and-industry/agribusiness-farmers-and-ranchers/crops-and-irrigation/field-crops/specialty-crops/canary-seed | crop identity, production route, seeding context, and field-management disclosure |
+| `cgc-canary-seed-grading-2026` | official_guidance | Canadian Grain Commission, Official Grain Grading Guide, Chapter 23: Canary seed, effective August 1, 2026, https://www.grainscanada.gc.ca/en/grain-quality/official-grain-grading-guide/23-canary-seed/grading.html | clean-sample definition, impurity, treated-seed, variety, quality, conditioning, and grading qualifiers |
+| `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | soil N2O, residue nitrogen, volatilization and leaching pathways, and double-counting controls |
+| `emep-eea-2023-guidebook` | method_factor | European Environment Agency, EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023 | agricultural ammonia and air-emission method context |
+| `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines | allocation hierarchy and disclosure |
+| `mass-balance-identity` | method_factor | Conservation of mass applied to matched canary seed conditioning batches | moisture adjustment, conditioning mass balance, and validation |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |

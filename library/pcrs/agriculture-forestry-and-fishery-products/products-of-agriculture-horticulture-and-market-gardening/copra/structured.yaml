@@ -1,10 +1,1365 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "01492"
-  title: "Copra"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.copra"
+  classification_refs: "CPC 3.0: 01492 Copra; mapping relation: exact"
+  covered_products: "Dried coconut kernel before oil extraction"
+  excluded_products: "Whole fresh coconut, oil, press cake and meal"
+  representative_product: "Copra at producer or primary-conditioning hand-off"
+  production_route: "Coconut production, separate harvest, opening, kernel removal, sun/solar/smoke/hot-air/kiln or hybrid drying, and grading"
+  market_state: "Stable dried kernel; moisture reported on wet basis unless converted"
+functional_unit:
+  what: "Copra before oil extraction"
+  how_much: "1 kg"
+  how_well: "Measured moisture, drying route, grade and contamination status declared"
+  how_long_or_cycle: "One production lot linked to crop period and drying run"
+  reference_flow_link: "copra_accepted_output"
+system_boundary:
+  rules:
+    - rule_id: before_oil_extraction
+      applies_to: "all routes"
+      rule: "End at graded dry kernel hand-off; exclude crushing, pressing, extraction, refining and press-cake handling."
+      source_ids:
+        - fao-coconut-postharvest-compendium
+    - rule_id: separate_harvest
+      applies_to: "harvest"
+      rule: "Record harvest separately from biological production and conditioning."
+      source_ids:
+        - fao-coconut-postharvest-compendium
+    - rule_id: drying_gate
+      applies_to: "drying"
+      rule: "Start at opened nuts or fresh kernel; record route and end at measured stable copra moisture."
+      source_ids:
+        - fao-coconut-postharvest-compendium
+        - fao-aflatoxin-copra
+    - rule_id: route_separation
+      applies_to: "drying"
+      rule: "Keep sun, solar, smoke, hot-air, kiln and hybrid route energy and output separate before output-weighted aggregation."
+      source_ids:
+        - fao-coconut-postharvest-compendium
+boundary_abstraction:
+  declared_starting_condition: "established coconut palms entering the assessed crop period"
+  starting_condition_role: "avoid repeating plantation establishment"
+  product_classification_scope: "mature coconuts and internal kernel intermediates leading to copra"
+  recursive_input_rule: "record purchased same-category material once with upstream dataset and hand-off"
+  upstream_dataset_requirement: "geography, technology, crop phase, moisture and non-overlap"
+  disclosure: "crop phase, harvest, drying route, moisture, grade, storage and hand-off"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Copra"
+    uuid: "65b49595-596f-42a7-91f4-d3722df073de"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "dried kernel"
+    - "moisture value and basis"
+    - "drying route and heat source"
+    - grade
+    - hand-off
+    - "before oil extraction"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure as-received mass and report moisture separately."
+  - id: moisture_basis
+    applies_to: "kernel and copra"
+    required_property_ref:
+      name: "mass fraction"
+      uuid: ""
+    required_unit: "% wet basis"
+    rule: "Use water mass divided by as-received mass; label and convert dry-basis results."
+  - id: dry_matter
+    applies_to: "material balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg dry matter"
+    rule: "as-received mass × (1 − wet-basis moisture fraction)."
+process_map:
+  - id: coconut_production
+    name: "Managed coconut production"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground node"
+    quantitative_reference: "kg output"
+  - id: coconut_harvest
+    name: "Coconut harvest and field transfer"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground node"
+    quantitative_reference: "kg output"
+  - id: copra_drying
+    name: "Nut opening, kernel removal and drying"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground node"
+    quantitative_reference: "kg output"
+  - id: copra_grading
+    name: "Copra grading and hand-off"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground node"
+    quantitative_reference: "kg output"
+process_inventory:
+  - id: coconut_production
+    label: "Managed coconut production"
+    inputs:
+      product:
+        - row_id: crop_nutrients
+          role: "Fertilizer, urea input"
+          name: "Fertilizer, urea"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg mature coconuts."
+          amount:
+            expression: "Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges: []
+        - row_id: crop_nutrients_monoammonium_phosphate
+          role: "Fertilizer, monoammonium phosphate input"
+          name: "Fertilizer, monoammonium phosphate"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg mature coconuts."
+          amount:
+            expression: "Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges: []
+        - row_id: crop_nutrients_potassium_chloride
+          role: "Fertilizer, potassium chloride input"
+          name: "Fertilizer, potassium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg mature coconuts."
+          amount:
+            expression: "Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges: []
+        - row_id: crop_nutrients_cattle_manure
+          role: "Cattle manure, as applied input"
+          name: "Cattle manure, as applied"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg mature coconuts."
+          amount:
+            expression: "Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges: []
+        - row_id: crop_nutrients_agricultural_limestone
+          role: "Agricultural limestone input"
+          name: "Agricultural limestone"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg mature coconuts."
+          amount:
+            expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges: []
+        - row_id: irrigation_water
+          role: "Irrigation water, groundwater input"
+          name: "Irrigation water, groundwater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Include this one exchange only when Irrigation water, groundwater is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity. Raw activity or stage basis: per 1,000 kg mature coconuts; zero when inactive."
+          amount:
+            expression: "Measured quantity of Irrigation water, groundwater used by this process and declared period; record not applicable only when the actual route excludes it."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges: []
+        - row_id: crop_energy
+          role: "Electricity, medium voltage input"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg mature coconuts."
+          amount:
+            expression: "Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges: []
+        - row_id: crop_energy_diesel
+          role: "Diesel fuel input"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg mature coconuts."
+          amount:
+            expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mature_coconut
+          role: "Mature whole coconuts"
+          name: "Internal intermediate — mature whole coconut"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg process output."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: field_residue
+          role: "Field residues and spoiled fruit"
+          name: "Deferred destination-specific residue identity"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg mature coconuts."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_production
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "500"
+                unit: "kg"
+                basis: "per 1,000 kg mature coconuts"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: coconut_harvest
+    label: "Coconut harvest and field transfer"
+    inputs:
+      product:
+        - row_id: mature_coconut_input
+          role: "Mature coconut from production"
+          name: "Internal intermediate — mature whole coconut"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg delivered nuts."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_harvest
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1300"
+                unit: "kg"
+                basis: "per 1,000 kg delivered nuts"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: harvest_energy
+          role: "Electricity, medium voltage input"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg delivered nuts."
+          amount:
+            expression: "Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_harvest
+              source_ids: []
+            ranges: []
+        - row_id: harvest_energy_diesel
+          role: "Diesel fuel input"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg delivered nuts."
+          amount:
+            expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_harvest
+              source_ids: []
+            ranges: []
+        - row_id: field_transport
+          role: "Field-to-dryer transport service"
+          name: "Foreground-selected freight service"
+          flow_type: "product"
+          property_unit: "Transport work / t km"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg delivered nuts; zero when inactive. Calculate transport work from net transported mass in tonnes multiplied by actual loaded distance in kilometres. Disclose empty returns and payload allocation; do not add a transport service if its complete burden is already in the same contractor operation."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "transport_service"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_harvest
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "500"
+                unit: "t·km"
+                basis: "per 1,000 kg delivered nuts; zero when inactive"
+                basis_kind: "transport_service"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: harvested_nuts
+          role: "Harvested whole nuts"
+          name: "Internal intermediate — harvested whole coconuts"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg process output."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coconut_harvest
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: copra_drying
+    label: "Nut opening, kernel removal and drying"
+    inputs:
+      product:
+        - row_id: harvested_nuts_input
+          role: "Harvested whole nuts"
+          name: "Internal intermediate — harvested whole coconuts"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg ungraded copra."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_drying
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1500"
+                upper: "8000"
+                unit: "kg"
+                basis: "per 1,000 kg ungraded copra"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_water
+          role: "Conditioning process water"
+          name: "Foreground-selected process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg ungraded copra; zero when inactive. Retain metered water volume separately and convert it to kg using documented density and conditions; kg = m3 × density in kg/m3. Do not also count the same delivered water as a second resource withdrawal."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_drying
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "m3"
+                basis: "per 1,000 kg ungraded copra; zero when inactive"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drying_energy
+          role: "Electricity, medium voltage input"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg ungraded copra by route."
+          amount:
+            expression: "Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_drying
+              source_ids: []
+            ranges: []
+        - row_id: drying_energy_diesel
+          role: "Diesel fuel input"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg ungraded copra by route."
+          amount:
+            expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_drying
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ungraded_copra
+          role: "Ungraded dried kernel"
+          name: "Internal intermediate — ungraded copra"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: sampled dryer output."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_drying
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "5"
+                upper: "12"
+                unit: "% wet-basis moisture"
+                basis: "sampled dryer output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: drying_reject
+          role: "Drying rejects"
+          name: "Unresolved until reject destination and treatment are recorded"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg ungraded copra."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_drying
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg dry matter"
+                basis: "per 1,000 kg ungraded copra"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: copra_grading
+    label: "Copra grading and hand-off"
+    inputs:
+      product:
+        - row_id: ungraded_copra_input
+          role: "Ungraded copra"
+          name: "Internal intermediate — ungraded copra"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg accepted copra."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_grading
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1400"
+                unit: "kg"
+                basis: "per 1,000 kg accepted copra"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: grading_energy
+          role: "Electricity, medium voltage input"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted copra."
+          amount:
+            expression: "Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_grading
+              source_ids: []
+            ranges: []
+        - row_id: grading_energy_diesel
+          role: "Diesel fuel input"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted copra."
+          amount:
+            expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_grading
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: copra_accepted_output
+          role: "Accepted copra at hand-off"
+          name: "Copra"
+          flow_type: "product"
+          flow_ref:
+            uuid: "65b49595-596f-42a7-91f4-d3722df073de"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Original reference-state unit annotation: Mass or applicable service property / declared unit Raw output measurement and reconciliation: measured or reconciled amount for the linked lot Raw activity or stage basis: one reference flow."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_grading
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "one reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: downgraded_copra
+          role: "Downgraded copra"
+          name: "Deferred grade- and destination-specific copra identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg accepted copra."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_grading
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "400"
+                unit: "kg"
+                basis: "per 1,000 kg accepted copra"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: grading_reject
+          role: "Grading rejects"
+          name: "Unresolved until rework, recovery or disposal destination is recorded"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure by lot or calculate from linked foreground records. Internal, deferred, or unresolved status explains why no external UUID is assigned. Raw activity or stage basis: per 1,000 kg accepted copra."
+          amount:
+            expression: "measured or reconciled amount for the linked lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copra_grading
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg"
+                basis: "per 1,000 kg accepted copra"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: avoid_allocation
+    applies_to: "all nodes"
+    rule: "Subdivide by site, crop period, route and lot; use direct measurement first."
+    source_ids: []
+  - rule_id: multi_output
+    applies_to: "production and drying"
+    rule: "Enumerate accepted, downgraded, husk, shell, residue and waste hand-offs; use dry-matter mass only when physical causality cannot be established."
+    source_ids: []
+  - rule_id: internal_fuel
+    applies_to: "husk or shell fuel"
+    rule: "Count internal transfer and combustion once; do not also claim sold co-product output."
+    source_ids: []
+  - rule_id: rework
+    applies_to: "rejects"
+    rule: "Record rework, downgrade, recovery or disposal and incremental burdens once; exclude rejected mass from accepted output."
+    source_ids: []
+  - rule_id: multi_period
+    applies_to: "crop and storage periods"
+    rule: "Link events to the affected period and prevent double attribution to batch and annual totals."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_coconut_production
+      process_id: "coconut_production"
+      flow_role: "all cards"
+      record_type: "lot and meter records"
+      raw_fields: "identity, mass, moisture, route, energy, destination"
+      collection_method: "linked weighing, meters and logs; Raw aggregation and attribution: sum by identity then normalize"
+      unit: "declared"
+      frequency: "each lot/run"
+      temporal_coverage: "representative period"
+      site_scope: "each site/route"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibration, invoices, traceability"
+    - protocol_id: cp_coconut_harvest
+      process_id: "coconut_harvest"
+      flow_role: "all cards"
+      record_type: "lot and meter records"
+      raw_fields: "identity, mass, moisture, route, energy, destination"
+      collection_method: "linked weighing, meters and logs; Raw aggregation and attribution: sum by identity then normalize"
+      unit: "declared"
+      frequency: "each lot/run"
+      temporal_coverage: "representative period"
+      site_scope: "each site/route"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibration, invoices, traceability"
+    - protocol_id: cp_copra_drying
+      process_id: "copra_drying"
+      flow_role: "all cards"
+      record_type: "lot and meter records"
+      raw_fields: "identity, mass, moisture, route, energy, destination"
+      collection_method: "linked weighing, meters and logs; Raw aggregation and attribution: sum by identity then normalize"
+      unit: "declared"
+      frequency: "each lot/run"
+      temporal_coverage: "representative period"
+      site_scope: "each site/route"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibration, invoices, traceability"
+    - protocol_id: cp_copra_grading
+      process_id: "copra_grading"
+      flow_role: "all cards"
+      record_type: "lot and meter records"
+      raw_fields: "identity, mass, moisture, route, energy, destination"
+      collection_method: "linked weighing, meters and logs; Raw aggregation and attribution: sum by identity then normalize"
+      unit: "declared"
+      frequency: "each lot/run"
+      temporal_coverage: "representative period"
+      site_scope: "each site/route"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibration, invoices, traceability"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "coconut_production"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
+  calculation_rules:
+    - id: calc_moisture
+      applies_to: "kernel"
+      rule: "100 × (wet mass − oven-dry mass) / wet mass"
+      inputs:
+        - "wet and dry sample mass"
+      output: "% wet-basis moisture"
+      source_ids:
+        - fao-coconut-postharvest-compendium
+    - id: calc_dry_matter
+      applies_to: "lots"
+      rule: "mass × (1 − moisture/100)"
+      inputs:
+        - "mass and moisture"
+      output: "kg dry matter"
+      source_ids: []
+    - id: calc_transport
+      applies_to: "field transfer"
+      rule: "tonnes × loaded distance"
+      inputs:
+        - mass
+        - distance
+      output: "t·km"
+      source_ids: []
+    - id: calc_route_mix
+      applies_to: "route aggregate"
+      rule: "output-weighted sum of route inventories"
+      inputs:
+        - "route inventory and output"
+      output: "aggregate"
+      source_ids: []
+    - id: husk_shell_identity_and_fate
+      applies_to: "copra_drying"
+      rule: "For the original husk_shell collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults."
+      inputs:
+        - cp_copra_drying
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Confirm dried kernel before oil extraction and required qualifiers."
+      evidence: "lot, moisture and dispatch records"
+    - id: dq_route
+      applies_to: "drying"
+      requirement: "Separate route, heat source, smoke contact and run mode."
+      evidence: "dryer logs"
+    - id: dq_balance
+      applies_to: "processes"
+      requirement: "Reconcile as-received and dry-matter inputs, outputs, rejects and losses."
+      evidence: "mass-balance sheet"
+    - id: dq_completeness
+      applies_to: "conditional cards"
+      requirement: "Report evidenced zero when inactive."
+      evidence: "completeness review"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference"
+    rule: "Fail whole fresh coconut, fresh meat, oil, press cake or meal and any fresh/unprocessed description lacking dry-state qualifiers."
+    source_ids:
+      - fao-coconut-postharvest-compendium
+  - rule_id: validate_moisture
+    applies_to: "copra"
+    rule: "Require measured value, basis, method and lot; investigate values outside 5–12% wet-basis screen."
+    source_ids:
+      - fao-coconut-postharvest-compendium
+      - fao-aflatoxin-copra
+  - rule_id: validate_route
+    applies_to: "drying"
+    rule: "Require route, heat source, smoke contact, time and route-specific energy."
+    source_ids:
+      - fao-coconut-postharvest-compendium
+  - rule_id: validate_nutrients
+    applies_to: "nutrient inputs"
+    rule: "Require one atomic product exchange per fertilizer or amendment actually used, with recorded quantity, composition and independently verified or disclosed unresolved identity."
+    source_ids: []
+  - rule_id: validate_bindings
+    applies_to: "cards"
+    rule: "Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable."
+    source_ids: []
+  - rule_id: validate_rework
+    applies_to: "rejects"
+    rule: "Require destination and keep rejects out of accepted output."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground copra production and primary-conditioning dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "oil-mill input systems requiring representative dried kernel"
+  excluded_use: "fresh coconut, food coconut, coconut oil, press cake or meal"
+  required_metadata: "geography; crop phase; drying route; heat source; moisture method and basis; grade; hand-off; allocation; destinations"
+  required_quality_disclosure: "coverage, measurement, sampling, route shares and mass balance"
+  update_trigger: "change in identity, hand-off, drying technology, moisture rule, route mix or primary data"
+data_sources:
+  - id: "fao-coconut-postharvest-compendium"
+    type: "official_guidance"
+    reference: "FAO, Coconut: Post-harvest Operations, https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_Coconut.pdf"
+    used_for: "identity, drying route, moisture, process boundary and quality"
+  - id: "fao-aflatoxin-copra"
+    type: "official_guidance"
+    reference: "FAO, HACCP Manual, Example 3: Copra cake and meal, https://www.fao.org/4/y1390e/y1390e0l.htm"
+    used_for: "route-dependent safe moisture, mould prevention and validation"
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f1a18e281bf5287e64e014070aa9cece923b9d33b830aff6a939162ebd4cc029"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_2678"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 2678
+          line: 55
+          column: 1
+        end:
+          offset: 4123
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | established coconut palms entering the assessed crop period |\n| starting_condition_role | avoid repeating plantation establishment |\n| product_classification_scope | mature coconuts and internal kernel intermediates leading to copra |\n| recursive_input_rule | record purchased same-category material once with upstream dataset and hand-off |\n| upstream_dataset_requirement | geography, technology, crop phase, moisture and non-overlap |\n| disclosure | crop phase, harvest, drying route, moisture, grade, storage and hand-off |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `before_oil_extraction` | all routes | End at graded dry kernel hand-off; exclude crushing, pressing, extraction, refining and press-cake handling. | `fao-coconut-postharvest-compendium` |\n| `separate_harvest` | harvest | Record harvest separately from biological production and conditioning. | `fao-coconut-postharvest-compendium` |\n| `drying_gate` | drying | Start at opened nuts or fresh kernel; record route and end at measured stable copra moisture. | `fao-coconut-postharvest-compendium`; `fao-aflatoxin-copra` |\n| `route_separation` | drying | Keep sun, solar, smoke, hot-air, kiln and hybrid route energy and output separate before output-weighted aggregation. | `fao-coconut-postharvest-compendium` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 185
+              line: 8
+              column: 1
+            end:
+              offset: 192
+              line: 8
+              column: 8
+          text: "# Copra"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 2678
+              line: 55
+              column: 1
+            end:
+              offset: 2699
+              line: 55
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_31725"
+      family: "allocation"
+      span:
+        start:
+          offset: 31725
+          line: 723
+          column: 1
+        end:
+          offset: 32577
+          line: 733
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `avoid_allocation` | all nodes | Subdivide by site, crop period, route and lot; use direct measurement first. |  |\n| `multi_output` | production and drying | Enumerate accepted, downgraded, husk, shell, residue and waste hand-offs; use dry-matter mass only when physical causality cannot be established. |  |\n| `internal_fuel` | husk or shell fuel | Count internal transfer and combustion once; do not also claim sold co-product output. |  |\n| `rework` | rejects | Record rework, downgrade, recovery or disposal and incremental burdens once; exclude rejected mass from accepted output. |  |\n| `multi_period` | crop and storage periods | Link events to the affected period and prevent double attribution to batch and annual totals. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 185
+              line: 8
+              column: 1
+            end:
+              offset: 192
+              line: 8
+              column: 8
+          text: "# Copra"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 31725
+              line: 723
+              column: 1
+            end:
+              offset: 31765
+              line: 723
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_42960"
+      family: "validation"
+      span:
+        start:
+          offset: 42960
+          line: 774
+          column: 1
+        end:
+          offset: 44131
+          line: 785
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | reference | Fail whole fresh coconut, fresh meat, oil, press cake or meal and any fresh/unprocessed description lacking dry-state qualifiers. | `fao-coconut-postharvest-compendium` |\n| `validate_moisture` | copra | Require measured value, basis, method and lot; investigate values outside 5–12% wet-basis screen. | `fao-coconut-postharvest-compendium`; `fao-aflatoxin-copra` |\n| `validate_route` | drying | Require route, heat source, smoke contact, time and route-specific energy. | `fao-coconut-postharvest-compendium` |\n| `validate_nutrients` | nutrient inputs | Require one atomic product exchange per fertilizer or amendment actually used, with recorded quantity, composition and independently verified or disclosed unresolved identity. |  |\n| `validate_bindings` | cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_rework` | rejects | Require destination and keep rejects out of accepted output. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 185
+              line: 8
+              column: 1
+            end:
+              offset: 192
+              line: 8
+              column: 8
+          text: "# Copra"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 42960
+              line: 774
+              column: 1
+            end:
+              offset: 42982
+              line: 774
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "before_oil_extraction"
+      identity_kind: "explicit"
+      unit_id: "normative_2678"
+      source_span:
+        start:
+          offset: 3410
+          line: 72
+          column: 1
+        end:
+          offset: 3600
+          line: 72
+          column: 191
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "separate_harvest"
+      identity_kind: "explicit"
+      unit_id: "normative_2678"
+      source_span:
+        start:
+          offset: 3601
+          line: 73
+          column: 1
+        end:
+          offset: 3745
+          line: 73
+          column: 145
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "drying_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_2678"
+      source_span:
+        start:
+          offset: 3746
+          line: 74
+          column: 1
+        end:
+          offset: 3930
+          line: 74
+          column: 185
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "route_separation"
+      identity_kind: "explicit"
+      unit_id: "normative_2678"
+      source_span:
+        start:
+          offset: 3931
+          line: 75
+          column: 1
+        end:
+          offset: 4121
+          line: 75
+          column: 191
+    - pointer: "/allocation_rules/0"
+      rule_id: "avoid_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_31725"
+      source_span:
+        start:
+          offset: 31838
+          line: 727
+          column: 1
+        end:
+          offset: 31954
+          line: 727
+          column: 117
+    - pointer: "/allocation_rules/1"
+      rule_id: "multi_output"
+      identity_kind: "explicit"
+      unit_id: "normative_31725"
+      source_span:
+        start:
+          offset: 31955
+          line: 728
+          column: 1
+        end:
+          offset: 32148
+          line: 728
+          column: 194
+    - pointer: "/allocation_rules/2"
+      rule_id: "internal_fuel"
+      identity_kind: "explicit"
+      unit_id: "normative_31725"
+      source_span:
+        start:
+          offset: 32149
+          line: 729
+          column: 1
+        end:
+          offset: 32281
+          line: 729
+          column: 133
+    - pointer: "/allocation_rules/3"
+      rule_id: "rework"
+      identity_kind: "explicit"
+      unit_id: "normative_31725"
+      source_span:
+        start:
+          offset: 32282
+          line: 730
+          column: 1
+        end:
+          offset: 32430
+          line: 730
+          column: 149
+    - pointer: "/allocation_rules/4"
+      rule_id: "multi_period"
+      identity_kind: "explicit"
+      unit_id: "normative_31725"
+      source_span:
+        start:
+          offset: 32431
+          line: 731
+          column: 1
+        end:
+          offset: 32575
+          line: 731
+          column: 145
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_42960"
+      source_span:
+        start:
+          offset: 43055
+          line: 778
+          column: 1
+        end:
+          offset: 43261
+          line: 778
+          column: 207
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_moisture"
+      identity_kind: "explicit"
+      unit_id: "normative_42960"
+      source_span:
+        start:
+          offset: 43262
+          line: 779
+          column: 1
+        end:
+          offset: 43455
+          line: 779
+          column: 194
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_route"
+      identity_kind: "explicit"
+      unit_id: "normative_42960"
+      source_span:
+        start:
+          offset: 43456
+          line: 780
+          column: 1
+        end:
+          offset: 43601
+          line: 780
+          column: 146
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_nutrients"
+      identity_kind: "explicit"
+      unit_id: "normative_42960"
+      source_span:
+        start:
+          offset: 43602
+          line: 781
+          column: 1
+        end:
+          offset: 43825
+          line: 781
+          column: 224
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_bindings"
+      identity_kind: "explicit"
+      unit_id: "normative_42960"
+      source_span:
+        start:
+          offset: 43826
+          line: 782
+          column: 1
+        end:
+          offset: 44031
+          line: 782
+          column: 206
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_42960"
+      source_span:
+        start:
+          offset: 44032
+          line: 783
+          column: 1
+        end:
+          offset: 44129
+          line: 783
+          column: 98
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_2678"
+      source_span:
+        start:
+          offset: 2678
+          line: 55
+          column: 1
+        end:
+          offset: 2699
+          line: 55
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_2678"
+      source_span:
+        start:
+          offset: 2727
+          line: 59
+          column: 1
+        end:
+          offset: 3317
+          line: 66
+          column: 90
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_31725"
+      source_span:
+        start:
+          offset: 31725
+          line: 723
+          column: 1
+        end:
+          offset: 31765
+          line: 723
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_42960"
+      source_span:
+        start:
+          offset: 42960
+          line: 774
+          column: 1
+        end:
+          offset: 42982
+          line: 774
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f1a18e281bf5287e64e014070aa9cece923b9d33b830aff6a939162ebd4cc029"
+  generated_content_sha256: "sha256:6b273d130d2232840c18fd2926cd073d50f3c6e1b5a9a7ec6aa7da6ef40b0cb8"

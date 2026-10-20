@@ -1,8 +1,699 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.asparagus
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Asparagus
+
+## 1. Scope and Applicability
+
+This PCR covers commercial production of fresh, unprocessed asparagus spears from establishment of a perennial stand through annual field management, harvest, grading, trimming, optional washing and packaging, and hand-off at the farm gate. Establishment burdens shall be linked to the productive years of the same stand. Nursery planting material sold as a product, processed asparagus, distribution beyond the farm gate, retail, cooking, and consumption are excluded.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.asparagus |
+| classification_refs | CPC 3.0:01211 Asparagus; mapping relation: exact |
+| covered_products | Fresh, unprocessed green, white, or purple asparagus spears at farm gate |
+| excluded_products | Asparagus seed, crowns or transplants sold as planting material, and canned, frozen, pickled, dried, cooked, or otherwise processed asparagus |
+| representative_product | Marketable fresh asparagus spears, trimmed and graded for the declared market |
+| production_route | Perennial stand establishment, annual managed production, repeated spear harvest, and farm-gate preparation |
+| market_state | Fresh, unprocessed produce at farm gate, loose or in declared primary packaging |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Marketable fresh asparagus spears at farm gate |
+| How much | 1,000 kg |
+| How well | Fresh, unprocessed, and saleable under declared grade, colour, size, trimming, and defect criteria |
+| How long or cycle | One declared harvest year, with establishment attributed across the declared productive stand life |
+| reference_flow_link | asparagus_farm_gate_output |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1000 |
+| Reference product flow | Asparagus `3a8d74d8-77a2-4242-b9d3-c0d1b2141b81` |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | farm-gate hand-off; production geography; production year and stand age; colour route (green/white/purple); harvest period; grade and size criteria; trimming state; washed or unwashed; packaging state |
+
+When constructing a foreground data package, the items listed in `Required qualifiers` must be declared in dataset metadata, process notes, reference flow comment, product description, or an equivalent data package field. Missing required qualifiers make the reference flow definition incomplete for that data package.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_product_mass` | harvested and farm-gate asparagus | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Keep gross harvested, marketable fresh, rejected fresh, and dry residue masses distinct. |
+| `area_normalization` | establishment and field-year records | Area and mass | ha and kg | Record quantities by field and year before normalizing them to marketable output from the corresponding stand and year. |
+| `nutrient_basis` | fertilizer inputs | Mass | kg N, kg P2O5, or kg K2O | Convert product mass only from documented nutrient concentration and preserve each nutrient basis. |
+| `planting_material_count` | crowns and transplants | Number of items | plant | Record viable units; do not infer mass from count without a documented conversion. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Prepared agricultural field receiving crowns or transplants, with prior land use and excluded pre-plant operations disclosed |
+| starting_condition_role | Beginning of perennial stand establishment and productive-life attribution |
+| product_classification_scope | Fresh asparagus under CPC 3.0:01211 through farm-gate hand-off |
+| recursive_input_rule | Purchased asparagus planting material is a distinct upstream product input and is linked once rather than recreated inside this PCR. |
+| upstream_dataset_requirement | Require upstream datasets for planting material, fertilizers, amendments, crop-protection products, irrigation water, energy, and packaging when used. |
+| disclosure | Declare prior land use, establishment year, stand age, productive-life assumption, irrigation system, nutrient basis, residue fate, harvest and grading method, washing, cooling, and packaging. |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_perennial_stand` | establishment and productive years | Include establishment and represented productive years; attribute establishment burdens using the declared stand life and output without double-counting replacement planting. | `osu-asparagus-production`; `uc-asparagus-production` |
+| `boundary_farm_gate` | harvest and handling | End at transfer of marketable fresh asparagus at farm gate; include on-farm grading, trimming, washing, cooling, and packaging when performed before transfer. | `penn-state-asparagus-production`; `umn-asparagus-harvest` |
+| `boundary_field_emissions` | managed soil and residues | Include applicable direct and indirect nitrogen emissions and returned-residue nitrogen using one declared method, avoiding double counting. | `ipcc-2019-managed-soils` |
+| `boundary_residue_fate` | fern and rejected material | Distinguish field return, feed, composting, treatment, productive use, and disposal; an unspecified residue is not a co-product. | `umn-asparagus-harvest`; `ipcc-2019-managed-soils` |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `stand_establishment` | Perennial stand establishment | required | once per established stand | foreground establishment | established productive area |
+| `annual_field_management` | Annual asparagus field management | required | each represented production year | foreground managed biological production | managed hectare-year and harvest-ready spear mass |
+| `harvest_and_farm_gate_preparation` | Harvest and farm-gate preparation | required | each represented harvest year | foreground harvest, grading, and hand-off | 1,000 kg marketable fresh asparagus |
+
+### Process: Perennial stand establishment (`stand_establishment`)
+
+#### Inputs
+
+##### Product flows
+
+###### Urea fertilizer (`stand_establishment_agricultural_nutrient_inputs_urea`)
+
+**Collection scope and applicability for stand_establishment_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
+Raw activity or stage basis: per hectare established; converted to 1,000 kg marketable asparagus using same-stand lifetime output.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_establishment_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Ammonium sulfate fertilizer (`stand_establishment_agricultural_nutrient_inputs_ammonium_sulfate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_establishment_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Triple superphosphate fertilizer (`stand_establishment_agricultural_nutrient_inputs_triple_superphosphate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Triple superphosphate fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_establishment_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-fertilizer-identities`
+
+###### Potassium chloride fertilizer (`stand_establishment_agricultural_nutrient_inputs_potassium_chloride`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Potassium chloride fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_establishment_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-fertilizer-identities`
+
+###### Cattle manure applied as fertilizer (`stand_establishment_agricultural_nutrient_inputs_cattle_manure`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Cattle manure applied as fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_establishment_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-organic-nutrients`
+
+###### Composted plant residues applied to soil (`stand_establishment_agricultural_nutrient_inputs_plant_compost`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Composted plant residues applied to soil
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_establishment_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-organic-nutrients`
+
+###### Establishment irrigation water (`establishment_irrigation_water`)
+
+Record delivered establishment irrigation separately from rainfall and annual irrigation.
+
+- Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
+- Amount rule: Meter delivered water by field and source.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare established.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `uc-ipm-asparagus-irrigation`
+- Range: Provisional establishment irrigation screen
+  - Range role: Default estimate (`default_estimate`)
+  - Lower: 0
+  - Upper: 15240
+  - Unit: m3/ha established
+  - Basis: broad first-pass establishment water range pending field-meter records
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Established productive asparagus stand (`established_stand_output`)
+
+This internal hand-off records accepted productive area and is not the reference product.
+
+- Selected flow: Established productive asparagus stand
+- Flow property / unit: Area / ha
+- Amount rule: Accepted area after failed plants and replacements are reconciled.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per establishment campaign.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `osu-asparagus-production`
+
+##### Waste flows
+
+##### Elementary flows
+
+### Process: Annual asparagus field management (`annual_field_management`)
+
+#### Inputs
+
+##### Product flows
+
+###### Urea fertilizer (`annual_field_management_agricultural_nutrient_inputs_urea`)
+
+**Collection scope and applicability for annual_field_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
+Raw activity or stage basis: per managed hectare-year; converted to 1,000 kg marketable asparagus using same field-year output.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_year_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Ammonium sulfate fertilizer (`annual_field_management_agricultural_nutrient_inputs_ammonium_sulfate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_year_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Triple superphosphate fertilizer (`annual_field_management_agricultural_nutrient_inputs_triple_superphosphate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Triple superphosphate fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_year_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-fertilizer-identities`
+
+###### Potassium chloride fertilizer (`annual_field_management_agricultural_nutrient_inputs_potassium_chloride`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Potassium chloride fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_year_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-fertilizer-identities`
+
+###### Cattle manure applied as fertilizer (`annual_field_management_agricultural_nutrient_inputs_cattle_manure`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Cattle manure applied as fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_year_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-organic-nutrients`
+
+###### Composted plant residues applied to soil (`annual_field_management_agricultural_nutrient_inputs_plant_compost`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Composted plant residues applied to soil
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_field_year_records` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `osu-asparagus-production`; `uc-ipm-asparagus-fertilization`; `fao-organic-nutrients`
+
+###### Annual irrigation water (`annual_irrigation_water`)
+
+Record delivered water separately from rainfall, with source and irrigation technology declared.
+
+- Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
+- Amount rule: Meter delivered irrigation water by field-year.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per managed hectare-year; converted to 1,000 kg marketable asparagus using same field-year output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `uc-ipm-asparagus-irrigation`
+- Range: Regional annual irrigation screen
+  - Range role: Typical range (`typical_range`)
+  - Lower: 4570
+  - Upper: 15240
+  - Unit: m3/ha-year
+  - Basis: annual applied irrigation across documented production regions
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `uc-ipm-asparagus-irrigation`
+
+###### Purchased field electricity (`field_electricity_input`)
+
+Record purchased electricity for irrigation and field operations separately from water volume and fuel.
+
+- Selected flow: Purchased electricity
+- Flow property / unit: Energy / kWh
+- Amount rule: Meter or allocate electricity to the field-year without counting pumping twice.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per managed hectare-year; converted to 1,000 kg marketable asparagus using same field-year output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_year_records`
+- Sources:
+- Range: Provisional electricity screen
+  - Range role: Default estimate (`default_estimate`)
+  - Lower: 0
+  - Upper: 5000
+  - Unit: kWh/ha-year
+  - Basis: broad first-pass range dependent on irrigation lift and mechanization
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Harvest-ready asparagus spears in field (`harvest_ready_spears_output`)
+
+This internal hand-off is fresh spear mass ready for harvest, before farm-gate grading and trimming.
+
+- Selected flow: Harvest-ready asparagus spears in field
+- Flow property / unit: Mass / kg fresh spears
+- Amount rule: Gross harvested mass plus separately measured field losses.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per managed hectare-year; converted to 1,000 kg marketable asparagus using same field-year output.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_harvest_records`
+- Sources: `osu-asparagus-production`; `uc-small-farms-asparagus`
+- Range: Productive-year yield screen
+  - Range role: Typical range (`typical_range`)
+  - Lower: 560
+  - Upper: 4480
+  - Unit: kg fresh spears/ha-year
+  - Basis: early through mature productive years
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `osu-asparagus-production`; `uc-small-farms-asparagus`
+
+##### Waste flows
+
+###### Senesced fern and asparagus field residue (`fern_residue_output`)
+
+Record physical residue mass by destination, distinguishing field incorporation, removal, burning, composting, and other treatment.
+
+- Selected flow: Senesced asparagus fern and field residue
+- Flow property / unit: Mass / kg dry matter
+- Amount rule: Measure or estimate dry matter and nitrogen content by destination.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per managed hectare-year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `umn-asparagus-harvest`; `ipcc-2019-managed-soils`
+- Range: Provisional fern-residue screen
+  - Range role: Default estimate (`default_estimate`)
+  - Lower: 0
+  - Upper: 15000
+  - Unit: kg dry matter/ha-year
+  - Basis: broad first-pass senesced-biomass range pending dry-matter and destination records
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+###### Direct nitrous oxide from managed soil (`direct_n2o_air_output`)
+
+Calculate direct N2O from synthetic and organic nitrogen and returned residue nitrogen as a separate atmospheric output.
+
+- Selected flow: Nitrous oxide to ambient air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Apply the declared applicable IPCC or accepted regional method and preserve N2O-N to N2O conversion.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Scenario-specific (`scenario_specific`)
+Raw activity or stage basis: per 1,000 kg marketable asparagus; nitrogen input is the calculation driver.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_year_records`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Method screening interval for managed-soil N2O
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 50
+  - Unit: kg N2O/ha-year
+  - Basis: non-negative first-pass interval pending site-specific nitrogen activity and factor selection
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Harvest and farm-gate preparation (`harvest_and_farm_gate_preparation`)
+
+#### Inputs
+
+##### Product flows
+
+###### Harvest-ready asparagus spears (`harvest_ready_spears_input`)
+
+Use the internal hand-off from the same field-year and reconcile it to product and losses.
+
+- Selected flow: Harvest-ready asparagus spears in field
+- Flow property / unit: Mass / kg fresh spears
+- Amount rule: Equal the corresponding `harvest_ready_spears_output` before harvest losses.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per harvest campaign.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_harvest_records`
+- Sources: `osu-asparagus-production`; `umn-asparagus-harvest`
+
+###### Washing water (`washing_water_input`)
+
+Include make-up water only when washing occurs before farm-gate transfer.
+
+- Selected flow: Washing water
+- Flow property / unit: Volume / m3
+- Amount rule: Meter make-up and recirculated water and retain wastewater linkage.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg marketable asparagus.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_handling_records`
+- Sources:
+- Range: Provisional washing-water screen
+  - Range role: Default estimate (`default_estimate`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: m3/1,000 kg marketable asparagus
+  - Basis: broad first-pass make-up and recirculated water range pending handling-meter records
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Marketable fresh asparagus at farm gate (`asparagus_farm_gate_output`)
+
+This is trimmed, graded, fresh, unprocessed asparagus transferred at the declared farm gate.
+
+- Selected flow: Asparagus `3a8d74d8-77a2-4242-b9d3-c0d1b2141b81`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+Raw output measurement and reconciliation: Verified scale mass after excluding harvest, trim, and reject losses.
+
+- Amount rule: 1000 kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: 1,000 kg marketable fresh asparagus.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_handling_records`
+- Sources: `penn-state-asparagus-production`; `osu-asparagus-production`
+
+##### Waste flows
+
+###### Rejected and trimmed asparagus (`rejected_asparagus_output`)
+
+Record rejected spears and trimmings by physical state and destination.
+
+- Selected flow: Rejected and trimmed fresh asparagus material
+- Flow property / unit: Mass / kg fresh material
+- Amount rule: Measure reject and trim mass and declare field return, feed, composting, treatment, or disposal.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg marketable asparagus.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_handling_records`
+- Sources: `osu-asparagus-production`
+- Range: Provisional reject screen
+  - Range role: Default estimate (`default_estimate`)
+  - Lower: 0
+  - Upper: 300
+  - Unit: kg/1,000 kg marketable asparagus
+  - Basis: broad first-pass range pending grade and trim records
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_establishment_over_life` | stand establishment | Attribute establishment burdens across actual represented productive years and marketable output; disclose lifetime, failed area, replacement, and early termination without double counting. | `osu-asparagus-production`; `uc-asparagus-production` |
+| `allocation_market_and_rejects` | harvest preparation | Reconcile incoming spear mass to marketable asparagus and rejected or trimmed material; treat rejects as waste unless a documented product specification, buyer, quantity, and destination establish a co-product. | `osu-asparagus-production` |
+| `allocation_secondary_output` | valorized residue | For an intentional secondary product, report quantity and hand-off and apply an explicitly justified allocation or substitution method; no default economic value or avoided burden applies. |  |
+
+Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `primary_packaging_input_specific_input` | `cp_handling_records` | Operation harvest_and_farm_gate_preparation: Record flexible bands, sleeves, and bags supplied with the product by material; record rigid trays and crates separately. Original quantity method: Measure packaging issued to transferred product and identify returnable packaging separately. |
+| `rigid_packaging_input_specific_input` | `cp_handling_records` | Operation harvest_and_farm_gate_preparation: Record rigid trays and crates supplied with the product by material and return cycle. Original quantity method: Measure packaging issued to transferred product, and record returnable-container turns separately. |
+
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_establishment_records` | `stand_establishment` | planting material, nutrients, water, and accepted area | field, purchase, application, and meter records | field_id; date; planting_material_type; units_planted; failed_units; product_mass; nutrient_concentration; irrigation_volume; established_area | reconcile purchases and applications to each establishment field; Raw aggregation and attribution: sum by field and preserve failures and replacements | plant; kg; m3; ha | each operation | complete establishment campaign | every represented field | per declared reference flow | invoices, labels, meters, field maps, and acceptance records |
+| `cp_field_year_records` | `annual_field_management` | nutrients, water, electricity, residues, and emission activity | field-year log, invoice, meter, and application record | field_id; year; stand_age; area; product_identity; product_mass; nutrient_concentration; irrigation_volume; electricity; residue_mass; dry_matter; residue_nitrogen; destination | reconcile all records to the same field-year; Raw aggregation and attribution: sum by field-year before reference-flow normalization | ha; kg; kg nutrient; m3; kWh | each event and annual close | full year including postharvest fern management | every represented productive field | per declared reference flow | invoices, labels, analyses, meters, and disposition records |
+| `cp_harvest_records` | `harvest_and_farm_gate_preparation` | harvest-ready and gross harvested spears | harvest log and scale record | field_id; harvest_date; harvest_pass; gross_mass; field_loss; harvest_method; area | link every harvest lot to field and date; Raw aggregation and attribution: sum by field-year without merging stand ages before normalization | kg; ha | each harvest pass | complete harvest window | every represented field | per declared reference flow | calibrated scales and harvest tickets |
+| `cp_handling_records` | `harvest_and_farm_gate_preparation` | water, packaging, marketable output, and rejects | lot, scale, meter, packaging, and waste records | lot_id; source_field; gross_input; wash_water; packaging_material; packaging_mass; marketable_mass; grade; colour; trim_state; reject_mass; reject_reason; destination | preserve lot-level mass and utility reconciliation through transfer; Raw aggregation and attribution: reconcile input, product, rejects, and mass change before aggregation `primary_packaging_input_specific_input`: Operation harvest_and_farm_gate_preparation: Record flexible bands, sleeves, and bags supplied with the product by material; record rigid trays and crates separately. Original quantity method: Measure packaging issued to transferred product and identify returnable packaging separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `rigid_packaging_input_specific_input`: Operation harvest_and_farm_gate_preparation: Record rigid trays and crates supplied with the product by material and return cycle. Original quantity method: Measure packaging issued to transferred product, and record returnable-container turns separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; m3 | each lot or shift | complete harvest and packing period | every represented handling line | per declared reference flow | calibrated scales, meters, grade inspection, and destination receipts |
+| `cp_phase1_environment_coverage` | stand_establishment | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_establishment_attribution` | establishment | Divide establishment quantity by attributed lifetime marketable output of the same stand and update expected years with actual years. | establishment quantity; cohort; productive-life assumption; annual output | establishment burden per kg marketable asparagus | `osu-asparagus-production`; `uc-asparagus-production` |
+| `calc_nutrient_equivalent` | fertilizer inputs | Product mass multiplied by documented nutrient fraction equals kg N, P2O5, or K2O. | product mass; nutrient concentration; area | nutrient-equivalent input | `uc-ipm-asparagus-fertilization`; `osu-asparagus-production` |
+| `calc_field_normalization` | annual inputs | Final field-year contribution = attributable complete field-year quantity / matched marketable asparagus output in kg * 1,000 kg. The quotient before scaling is a per-kg intensity only. Add establishment contributions already expressed per kg multiplied by 1,000 once; never divide an already normalized contribution by output again. | field-year quantity; marketable mass | quantity per 1,000 kg reference product |  |
+| `calc_product_balance` | harvest and handling | Gross harvested mass plus or minus measured mass change equals marketable product plus rejects and trimmings. | gross, marketable, reject, trim, and mass-change records | reconciled output quantities |  |
+| `calc_managed_soil_emissions` | managed-soil nitrogen emissions | Apply the declared applicable IPCC or accepted regional equations to synthetic, organic, and returned-residue nitrogen; preserve conversions and prevent double counting. | nitrogen activity data; factors; climate and management qualifiers | direct and indirect nitrogen emissions | `ipcc-2019-managed-soils` |
+| `planting_material_input_identity_and_fate` | `stand_establishment` | For the original planting_material_input collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. Retained source-specific collection screen: 14800–34600 plants/ha; basis: viable planting units per established hectare. Apply only to the matching concrete form, route and numerator unit, not to all alternatives or final normalized exchange. | `cp_establishment_records` | Identity-specific exchanges and reconciled activity records | `osu-asparagus-production`; `penn-state-asparagus-production` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_field_year_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | actual managed-production nodes | For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_product_identity` | reference product | Preserve farm-gate state, colour route, grade, size, trim, washing, packaging, geography, production year, and stand age. | lot specification and field records |
+| `dq_period_linkage` | establishment and annual management | Link every field-year to one establishment cohort and disclose replacements, abandonment, productive years, and termination. | field map, planting record, and production history |
+| `dq_mass_balance` | harvest and handling | Reconcile harvest-ready, gross, marketable, rejected, and trimmed masses and explain differences. | calibrated scales and lot records |
+| `dq_input_completeness` | all foreground inputs | Preserve nutrient basis, irrigation source, electricity coverage, packaging material, and residue destination for every represented field or lot. | invoices, labels, meters, and logs |
+| `dq_method_transparency` | calculations | Record method version, factors, productive-life denominator, exclusions, and replacement of provisional estimates. | calculation file and review record |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validation_reference_identity` | reference product | Use the verified Asparagus UUID, mass property, mass unit group, kg, and all required qualifiers. |  |
+| `validation_handoffs` | process map | Link establishment to each field-year and make harvest-ready output equal its harvest input before losses. |  |
+| `validation_mass_balance` | harvest and handling | Reconcile marketable output, rejects, trimmings, and mass change to gross harvested input within declared uncertainty. |  |
+| `validation_nutrients_emissions` | annual management | Keep N, P2O5, and K2O distinct, document emission factors, and prevent returned-residue nitrogen double counting. | `ipcc-2019-managed-soils` |
+| `validation_parameterized_flows` | parameterized rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+| `validation_unmapped_flows` | unmapped rows | Planting material, internal stand and spear states, fern residue, and rejects remain explicit coverage requirements until exact compatible identities are supplied. |  |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | foreground agricultural production dataset for fresh asparagus at farm gate |
+| downstream_use | `secondary_dataset`; `background_dataset` after review and publication |
+| allowed_use | fresh-asparagus crop and supply-chain studies with compatible geography, stand age, product state, and route |
+| excluded_use | nursery planting material, processed asparagus, post-farm distribution, or comparisons omitting perennial establishment |
+| required_metadata | geography; field area; establishment cohort; stand age; year; productive-life assumption; colour route; harvest and grade; irrigation; nutrient basis; residue fate; washing; cooling; packaging; farm-gate hand-off |
+| required_quality_disclosure | primary-data coverage; scale and meter quality; lifetime attribution; mass balance; data gaps; provisional ranges; emission method; concrete flow identity verification; unmapped identities |
+| update_trigger | verified identity, reviewed quantitative evidence, product specification, lifetime attribution, or managed-soil method changes |
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `osu-asparagus-production` | extension_guidance | Oklahoma State University Extension, Asparagus Production, HLA-6018, https://extension.okstate.edu/fact-sheets/asparagus-production | stand life, establishment, planting density, nutrients, harvest, yield, and rejects |
+| `uc-ipm-asparagus-irrigation` | extension_guidance | University of California Statewide IPM Program, Asparagus: Irrigation, https://ipm.ucanr.edu/agriculture/asparagus/irrigation/ | irrigation systems and annual applied-water range |
+| `uc-ipm-asparagus-fertilization` | extension_guidance | University of California Statewide IPM Program, Asparagus: Fertilization, UC ANR Publication 3435, https://ipm.ucanr.edu/agriculture/asparagus/fertilization/ | establishment and maintenance nutrient ranges |
+| `uc-asparagus-production` | extension_guidance | University of California ANR, Asparagus Production in California, Publication 7234, https://anrcatalog.ucanr.edu/pdf/7234.pdf | perennial production route and establishment boundary |
+| `uc-small-farms-asparagus` | extension_guidance | University of California Small Farms Network, Asparagus, https://ucanr.edu/program/uc-small-farms-network/asparagus | production-year yield progression |
+| `penn-state-asparagus-production` | extension_guidance | Penn State Extension, Asparagus Production, https://extension.psu.edu/asparagus-production | fresh market state, planting density, grade, and packaging |
+| `umn-asparagus-harvest` | extension_guidance | University of Minnesota Extension, Harvesting Asparagus, https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/harvesting-asparagus | harvest boundary and postharvest fern management |
+| `ipcc-2019-managed-soils` | official_guidance | IPCC, 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | managed-soil nitrogen emissions and residue nitrogen |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

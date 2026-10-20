@@ -1,8 +1,1201 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.tea-leaves
 language: en-US
-status: scaffold
+status: candidate
+content_maturity: authored_methodology
+translation_status: aligned
 sync_with: pcr.zh-CN.md
 ---
 
-# Tea leaves
+# Tea leaves and processed tea at the declared primary-processing gate
+
+## 1. Scope and Applicability
+
+This PCR covers managed cultivation of *Camellia sinensis*, plucking of tender shoots and leaves, green-leaf reception, named primary tea-processing routes, grading, storage, and hand-off of dry tea at a declared primary-processing gate. It is written for tea leaves classified as CPC 3.0 01620 and uses the verified platform product flow `Tea` as the reference identity for the processed tea hand-off.
+
+The route alternatives are explicit rather than universal. Green tea uses enzyme inactivation or fixation, optional rolling or shaping, and drying; black tea uses withering, rolling or maceration, oxidation, and drying; oolong tea uses withering, tumbling or partial aeration, rolling, partial oxidation, and drying; white tea uses withering and drying without a required rolling or oxidation step; yellow tea uses enzyme inactivation, yellowing, and drying; dark tea uses enzyme inactivation, rolling, piling or post-fermentation, and drying. A dataset must select one named route for each lot.
+
+This PCR excludes herbal or fruit infusions, tea beverages, extracts, concentrates, instant tea, scented or flavoured tea, decaffeination, consumer brewing, packaging presentation, retail, and downstream distribution. It does not select a residual or n.e.c. product category.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.tea-leaves |
+| classification_refs | CPC 3.0: 01620 Tea leaves; mapping relation: narrower |
+| covered_products | Named dry tea products made only from *Camellia sinensis*: green, black, oolong, white, yellow, and dark tea, with the selected primary-processing route disclosed |
+| excluded_products | Herbal or fruit infusions; tea beverages; extracts; concentrates; instant tea; scented or flavoured tea; decaffeinated tea; consumer-prepared tea; packaged retail presentation |
+| representative_product | Dry made tea from plucked *Camellia sinensis* shoots and leaves |
+| production_route | Managed perennial tea plantation, plucking, green-leaf handling, route-specific primary processing, drying, grading, storage, and primary-processing gate hand-off |
+| market_state | Dry, graded tea at the declared primary-processing gate, with tea type, moisture, grade, lot, route, and storage condition disclosed |
+
+The verified platform identity is `Tea` rather than a farm-gate fresh-leaf flow. The PCR therefore keeps CPC 01620 as the coverage classification while declaring a processed-tea gate so that the platform identity and the methodology boundary are not silently conflated.
+
+## 3. Reference Flow
+
+### Functional unit
+
+| Field | Value |
+| --- | --- |
+| What | Dry made tea delivered at the declared primary-processing gate |
+| How much | 1 kg |
+| How well | Named tea type; moisture and grade declared; produced only from *Camellia sinensis* leaves, buds, and shoots |
+| How long or cycle | One complete tea production cycle and the reporting period covering plantation management, plucking, processing, grading, and gate storage |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+### Reference flow object
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Tea |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | *Camellia sinensis*; named tea type; dry made-tea condition; grade; moisture; lot or campaign; declared primary-processing gate; packaging excluded |
+
+The platform `Tea` flow has no treatment-standard route or gate metadata. The declared PCR gate is therefore the post-primary-processing, post-grading, pre-packaging hand-off of dry tea. Fresh tea leaves, withered leaves, oxidized leaves, and process residues remain route-specific foreground states and are not assigned the finished-tea UUID merely because they share a product family.
+
+Each foreground dataset must explicitly select one actual route, declared gate, product state and output row. Reconcile the selected terminal route with `reference_product_at_declared_handoff`; normalize that handoff output to the reference quantity and retain preceding-stage outputs as measured transfers. Raw weighing, mass reconciliation and lot traceability requirements continue to apply.
+
+The sole reference output is `reference_product_at_declared_handoff`, receiving the selected actual route product at the declared gate. Existing route-output ids identify the source and physical state; they are no longer individually fixed to the reference quantity.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `measurement_01` | reference product and all dry-tea product states | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Report the reference flow and product-state amounts on a mass basis; retain wet-basis or dry-basis moisture records separately. |
+| `measurement_02` | fresh leaf, withered leaf, and dried tea conversion | Mass | kg fresh material and kg dry material | Record the actual state before conversion and calculate state-to-state yields from lot mass and moisture rather than applying an unreferenced universal factor. |
+| `measurement_03` | fertilizer and crop-protection inputs | Mass of nutrient or formulated product | kg nutrient or kg product | Keep nutrient mass separate from formulated product mass and keep active ingredient or product identity in the foreground record. |
+| `measurement_04` | water, fuel, and electricity | Volume, energy, or mass as supplied | L, m3, MJ, kWh, or kg | Preserve the supplied unit and convert only through a declared density, heating value, meter conversion, or supplier factor. |
+| `measurement_05` | perennial plantation attribution | Mass and area-time | kg, m2, and m2·year | Link establishment, replacement, pruning, land occupation, and termination records to the production period and allocate them only once to the tea output. |
+
+## 5. System Boundary
+
+The foreground boundary starts with the managed tea plantation and its establishment or replacement records for the reporting period. It includes field inputs, land occupation, plantation maintenance, plucking, collection, green-leaf handling, selected primary-processing route, drying, grading, storage to the declared gate, process rejects, residues, direct emissions, wastewater where generated, and all allocation decisions required to reconcile the lot.
+
+The boundary ends when dry, graded tea crosses the declared primary-processing gate before packaging presentation, retail, downstream distribution, consumer brewing, or beverage preparation. Background datasets for electricity, fuels, fertilizer products, crop-protection products, water supply, and treatment services are outside the foreground PCR boundary but are required when the foreground package uses them.
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Managed *Camellia sinensis* plantation and the reported reporting-period inputs, land occupation, harvest records, or a documented upstream plantation dataset |
+| starting_condition_role | The production context that supplies fresh tea shoots and leaves to the independent plucking and collection node |
+| product_classification_scope | CPC 3.0: 01620 Tea leaves; named tea products from *Camellia sinensis* only |
+| recursive_input_rule | If a same-category tea product is supplied as an input to a later tea route, record it as an upstream tea dataset with its gate and quality state; do not recursively include its plantation or primary-processing burdens inside the receiving lot |
+| upstream_dataset_requirement | Use an upstream dataset when plantation, fresh-leaf supply, or a pre-processed tea intermediate is outside the foreground operator's reporting boundary; disclose UUID, route, gate, geography, period, and quality state |
+| disclosure | Declare tea type, route, plantation phase, fresh-leaf or dry-tea basis, grade, moisture, rejected fraction, residue destination, storage duration, and whether packaging is excluded |
+
+### Boundary Rules
+
+| rule_id | applies_to | source_ids | rule |
+| --- | --- | --- | --- |
+| `boundary_01` | plantation_to_gate | `iso-20715-2023-tea-classification`; `iso-14044-2006` | Include the managed plantation, plucking, selected primary-processing route, drying, grading, and gate storage needed to produce the declared dry tea reference flow. |
+| `boundary_02` | route_selection | `iso-20715-2023-tea-classification`; `fao-jmpr-tea-processing-2016` | Select one named tea route per lot and include only the route states that occur; do not count withering, oxidation, rolling, or yellowing when the selected route does not use that state. |
+| `boundary_03` | gate_definition | `iso-14044-2006` | The declared gate is after primary processing, drying, grading, and included storage, and before packaging presentation, retail, downstream distribution, consumer brewing, or beverage preparation. |
+| `boundary_04` | recursive_same_category_input | `mass-balance-identity` | Same-category upstream tea input is a declared dataset input and must not be expanded recursively inside the receiving tea process. |
+| `boundary_05` | direct_emissions_and_residues | `fao-jmpr-tea-processing-2016`; `ipcc-2019-refinement-afolu` | Record direct field and processing emissions, wastewater, dust, residues, rejects, and their destinations when they cross the foreground boundary or are required for mass reconciliation. |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `tea_plantation_management` | Managed tea plantation management | `required` | Every tea lot requires a declared plantation source or upstream plantation dataset. | perennial biological production | per reporting period and 1 kg dry tea |
+| `tea_plucking_collection` | Plucking and green-leaf collection | `required` | Every lot requires a harvest or plucking record and a green-leaf hand-off. | independent harvest and capture | kg fresh leaf collected |
+| `tea_green_leaf_handling` | Green-leaf reception and primary conditioning | `required` | Include reception, temporary holding, cooling or ventilation, and the first raw-to-prepared hand-off. | primary conditioning | kg fresh leaf received and kg conditioned leaf |
+| `tea_route_processing` | Route-specific tea processing and drying | `required` | Select exactly one named route: green, black, oolong, white, yellow, or dark tea. | material treatment and stabilization | kg dry tea output |
+| `tea_grading_storage_gate` | Grading, storage, and primary-processing gate | `required` | Include grading and storage until the declared dry-tea gate; exclude packaging presentation. | grading, storage, and hand-off | 1 kg dry tea reference flow |
+| declared_reference_handoff | Product Measurement at Declared Handoff | required |  | foreground | reference_product_at_declared_handoff |
+
+### Route alternatives
+
+It does not create separate PCR identities. The alternatives are mutually exclusive per lot and coexist across the category:
+
+| route_id | selected route states | omitted states that must not be counted | route delta and hand-off |
+| --- | --- | --- | --- |
+| `green_tea_route` | fixation or enzyme inactivation; optional rolling or shaping; drying | oxidation and piling are not counted unless documented as a separate process | dry green tea crosses to grading after drying |
+| `black_tea_route` | withering; rolling or maceration; oxidation; drying | fixation as a green-tea step is not counted | dry black tea crosses to grading after drying |
+| `oolong_tea_route` | withering; tumbling or partial aeration; rolling; partial oxidation; drying | full black-tea oxidation and green-tea fixation are not counted | dry oolong tea crosses to grading after drying |
+| `white_tea_route` | harvesting; withering; drying | rolling, full oxidation, and fixation are not counted | dry white tea crosses to grading after drying |
+| `yellow_tea_route` | fixation; yellowing; drying | black-tea oxidation is not counted | dry yellow tea crosses to grading after drying |
+| `dark_tea_route` | fixation; rolling; piling or post-fermentation; drying | the black-tea oxidation state is not counted as a substitute for piling or post-fermentation | dry dark tea crosses to grading after drying |
+
+### Process: Managed tea plantation management (`tea_plantation_management`)
+
+#### Inputs
+
+##### Product flows
+
+###### Tea planting material and replacement stock (`tea_planting_material`)
+
+Record seed, cuttings, nursery plants, or replacement planting stock used to establish or replace the managed tea plantation. Do not apply this input to mature plantation periods unless a replacement event is recorded.
+
+- Selected flow: Tea planting material (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: measured planting material by establishment or replacement event
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Range: Provisional planting-stock screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.20
+  - Unit: kg planting material/kg dry tea
+  - Basis: reporting-period replacement and establishment burden normalized to dry tea
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Fertilizer, urea input (`tea_plantation_management_agricultural_nutrient_inputs`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+
+###### Fertilizer, monoammonium phosphate input (`tea_plantation_management_agricultural_nutrient_inputs_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+
+###### Fertilizer, potassium chloride input (`tea_plantation_management_agricultural_nutrient_inputs_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+
+###### Cattle manure, as applied input (`tea_plantation_management_agricultural_nutrient_inputs_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+
+###### Agricultural limestone input (`tea_plantation_management_agricultural_nutrient_inputs_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+###### Irrigation and field water (`tea_field_water_input`)
+
+Record irrigation, fertigation carrier water, and other field water supplied within the plantation boundary. Rainfall is recorded as a site descriptor when relevant but is not treated as a purchased product input.
+
+- Selected flow: Irrigation water (route-specific UUID unresolved)
+- Flow property / unit: Volume / L
+- Amount rule: metered or estimated field water by block and period
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Range: Provisional field-water screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1,500
+  - Unit: L/kg dry tea
+  - Basis: irrigation and fertigation carrier water; replace with meter or irrigation records
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`tea_plantation_energy_input`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+
+###### Diesel fuel input (`tea_plantation_energy_input_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+
+##### Elementary flows
+
+###### Agricultural land occupation (`tea_land_occupation`)
+
+Record land area, plantation phase, reporting period, and productive tea output used to allocate land occupation to the reference flow.
+
+- Selected flow: Agricultural land occupation
+- Flow property / unit: Area-time / m2·year
+- Amount rule: measured managed area multiplied by the reporting period and allocated by declared tea output
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field_activity_records`
+- Range: Provisional land-occupation screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0.1
+  - Upper: 20
+  - Unit: m2·year/kg dry tea
+  - Basis: productive plantation area and reporting-period yield
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+#### Outputs
+
+##### Product flows
+
+###### Managed tea shoots available for plucking (`tea_shoots_on_bush`)
+
+Record the intended tender-shoot and leaf output from the managed plantation before the independent plucking node. The collected hand-off must be reconciled to harvested fresh leaf.
+
+- Selected flow: Tender tea shoots and leaves (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: measured or calculated shoot output available to the plucking campaign
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_harvest_output_records`
+- Range: Provisional fresh-shoot availability screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 3.0
+  - Upper: 12.0
+  - Unit: kg fresh shoots/kg dry tea
+  - Basis: plantation output reconciled to the selected dry-tea route
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Pruned or removed plantation biomass (`tea_plantation_residue`)
+
+Record prunings, removed branches, weeds, and non-product biomass separately from harvested tea shoots, including destination and any recovered use.
+
+- Selected flow: Tea plantation biomass residue (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: measured or estimated residue mass by operation and destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_residue_destination_records`
+- Range: Provisional plantation-residue screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 3.0
+  - Unit: kg residue/kg dry tea
+  - Basis: pruning and removed biomass; record composting, field return, combustion, or disposal destination
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Plucking and green-leaf collection (`tea_plucking_collection`)
+
+#### Inputs
+
+##### Product flows
+
+###### Tender tea shoots available for plucking (`tea_plucking_source`)
+
+The plucking node receives the intended shoot state from the managed plantation and must record the collection campaign and hand-off to green-leaf handling.
+
+- Selected flow: Tender tea shoots and leaves (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: mass of source shoots assigned to the plucking campaign
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest_output_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+###### Electricity, medium voltage (`tea_plucking_energy`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg fresh leaf collected and converted to 1 kg dry tea.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_activity_records`
+
+###### Diesel fuel (`tea_plucking_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg fresh leaf collected and converted to 1 kg dry tea.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_activity_records`
+
+#### Outputs
+
+##### Product flows
+
+###### Fresh tea leaves collected for processing (`tea_fresh_leaf_collected`)
+
+The collected output is fresh *Camellia sinensis* leaf, bud, and shoot material transferred to green-leaf handling. It is not the finished `Tea` reference flow.
+
+- Selected flow: Fresh tea leaves collected (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed fresh leaf at the receiving or collection hand-off
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest_output_records`
+
+The cited guidance does not establish this broad numerical interval for all represented routes. Use matched lot measurements and moisture/loss balances; report quantitative screening unavailable until route-specific evidence supports bounds. Do not substitute the deleted range for a measured yield or loss.
+
+##### Waste flows
+
+###### Plucking loss and non-tea material (`tea_plucking_loss`)
+
+Record dropped leaves, unsuitable shoots, foreign material, and field loss separately from the intended collected output and state the destination.
+
+- Selected flow: Plucking loss and non-tea material (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: measured or reconciled loss by plucking campaign
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_harvest_output_records`
+- Range: Provisional plucking-loss screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.8
+  - Unit: kg loss/kg dry tea
+  - Basis: dropped, rejected, or non-tea material at harvest
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Green-leaf reception and primary conditioning (`tea_green_leaf_handling`)
+
+#### Inputs
+
+##### Product flows
+
+###### Fresh tea leaves received (`tea_green_leaf_input`)
+
+The primary-conditioning node receives the raw collected state, confirms lot identity, records time from plucking to reception, and creates a prepared leaf state for the selected route.
+
+- Selected flow: Fresh tea leaves collected (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed fresh leaf received by lot
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_processing_batch_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+###### Green-leaf handling water (`tea_green_leaf_water`)
+
+Record water used for cleaning, dust suppression, or conditioning only when it crosses the boundary. Dry handling with no water is a valid zero record.
+
+- Selected flow: Green-leaf handling water (route-specific UUID unresolved)
+- Flow property / unit: Volume / L
+- Amount rule: metered or batch-estimated water use
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_field_activity_records`
+- Range: Provisional green-leaf handling water screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: L/kg dry tea
+  - Basis: water crossing the handling boundary; dry handling may be zero
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+#### Outputs
+
+##### Product flows
+
+###### Prepared green leaf for route processing (`tea_prepared_leaf`)
+
+This prepared intermediate is an intended process output state and is handed to the selected route. It must not be counted again as finished tea.
+
+- Selected flow: Prepared green tea leaf (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed conditioned leaf after reception, cooling, ventilation, or temporary holding
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_processing_batch_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+##### Waste flows
+
+###### Green-leaf reception reject and handling loss (`tea_green_leaf_reject`)
+
+Record damaged, overheated, contaminated, or otherwise rejected green leaf. State whether it is returned to field composting, routed to recovery, downgraded, or discarded.
+
+- Selected flow: Green-leaf reception reject (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed or reconciled reject mass by lot
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_residue_destination_records`
+- Range: Provisional green-leaf reject screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.5
+  - Unit: kg reject/kg dry tea
+  - Basis: incoming-lot rejection and handling loss
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+### Process: Route-specific tea processing and drying (`tea_route_processing`)
+
+#### Inputs
+
+##### Product flows
+
+###### Prepared green leaf entering the selected route (`tea_route_leaf_input`)
+
+Record the prepared leaf state entering one and only one named route. The route is indexed by lot or campaign and the input must reconcile to the preceding hand-off.
+
+- Selected flow: Prepared green tea leaf (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed route input by batch or campaign
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_processing_batch_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+##### Waste flows
+
+#### Outputs
+
+##### Product flows
+
+###### Withered leaf intermediate (`tea_withered_leaf`)
+
+Use only for black, oolong, and white routes where withering is documented. Withered leaf is a prepared intermediate and is not an additional final product.
+
+- Selected flow: Withered tea leaf (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed post-withering intermediate by batch
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_processing_batch_records`
+- Range: Withered-leaf intermediate screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 2.0
+  - Upper: 6.5
+  - Unit: kg withered leaf/kg dry tea
+  - Basis: route-specific moisture loss and handling loss
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Enzyme-inactivated or fixed leaf intermediate (`tea_fixed_leaf`)
+
+Use only for green, yellow, or dark routes where heat treatment or enzyme inactivation is documented. This is a route state, not the finished reference flow.
+
+- Selected flow: Enzyme-inactivated tea leaf (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed post-fixation intermediate by batch
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_processing_batch_records`
+- Range: Fixed-leaf intermediate screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1.5
+  - Upper: 6.5
+  - Unit: kg fixed leaf/kg dry tea
+  - Basis: route-specific moisture and handling loss
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Rolled, macerated, or shaped leaf intermediate (`tea_rolled_leaf`)
+
+Use only when the selected named route includes rolling, maceration, shaping, or equivalent cell-disruption treatment. Do not add it to white tea unless the lot record documents a permitted additional treatment.
+
+- Selected flow: Rolled, macerated, or shaped tea leaf (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed post-rolling or post-shaping intermediate by batch
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_processing_batch_records`
+- Range: Rolled-leaf intermediate screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1.3
+  - Upper: 5.5
+  - Unit: kg rolled or shaped leaf/kg dry tea
+  - Basis: route-specific pre-drying intermediate
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Oxidized or partially oxidized leaf intermediate (`tea_oxidized_leaf`)
+
+Use only for black and oolong routes where aeration or enzymatic oxidation is documented. Record the oxidation state and duration as batch metadata; do not call it fermentation unless the operational process is reported as such.
+
+- Selected flow: Oxidized or partially oxidized tea leaf (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed post-oxidation intermediate by batch
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_processing_batch_records`
+- Range: Oxidized-leaf intermediate screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1.2
+  - Upper: 5.0
+  - Unit: kg oxidized leaf/kg dry tea
+  - Basis: route-specific pre-drying intermediate
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Dry made tea before grading (`tea_dried_made_tea`)
+
+The drying output is the stabilized usable state handed to grading. The fixed platform `Tea` identity is applied only to this dry product state and later gate output.
+
+- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- Flow property / unit: Mass / kg
+- Amount rule: weighed dry made tea after the final drying step
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_processing_batch_records`
+- Sources: `iso-20715-2023-tea-classification`
+
+The cited guidance does not establish this broad numerical interval for all represented routes. Use matched lot measurements and moisture/loss balances; report quantitative screening unavailable until route-specific evidence supports bounds. Do not substitute the deleted range for a measured yield or loss.
+
+##### Waste flows
+
+
+###### Route-specific tea processing residue and dust (`tea_processing_residue`)
+
+Record leaf fragments, stems, dust, sweepings, sludge, and other residual states separately. A sold tea-grade fraction is an intended output, not waste; a discarded fraction requires a destination.
+
+- Selected flow: Tea processing residue and dust (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: measured residue mass by batch and destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_residue_destination_records`
+- Range: Provisional processing-residue screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.50
+  - Unit: kg residue/kg dry tea
+  - Basis: leaf fragments, stems, dust, and treatment residuals
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+
+###### Processing and drying loss (`tea_processing_loss`)
+
+Record mass lost through handling, dust, trim, evaporation beyond the measured moisture change, or rejected material, and link each fraction to rework, recovery, composting, energy recovery, or disposal.
+
+- Selected flow: Tea processing and drying loss (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: Measure or use representative sampling for the actual identified rejected/spilled/otherwise lost material and its evidenced destination. A component mass balance may estimate that stream only when all other product, residue, water, stock and transfer terms are supported, compatible and mutually exclusive, with uncertainty disclosed. Keep unexplained balance residual as an investigation/evidence gap, never automatically a waste output, dry-matter loss, vapour or emission. Separate every actual material/state/destination and preserve retained/reworked material as paired transfer or stock; normalize supported exported quantities once to accepted final output.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_processing_batch_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+##### Elementary flows
+
+###### Carbon dioxide, fossil, to air (`tea_drying_direct_emissions`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+###### Carbon dioxide, biogenic, to air (`tea_drying_direct_emissions_co2_biogenic`)
+
+Record Carbon dioxide, biogenic, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Carbon dioxide, biogenic, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, biogenic, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+###### Methane, to air (`tea_drying_direct_emissions_ch4`)
+
+Record Methane, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Methane, to air
+- Flow property / unit: Mass / kg CH4
+- Amount rule: Measured or method-calculated mass of Methane, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+###### Dinitrogen monoxide, to air (`tea_drying_direct_emissions_n2o`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+###### Particulate matter, particle size unspecified, to air (`tea_drying_direct_emissions_dust`)
+
+Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Particulate matter, particle size unspecified, to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+### Process: Grading, storage, and primary-processing gate (`tea_grading_storage_gate`)
+
+Storage duration is a lot-level process parameter, not a flow exchange. Calculate it from storage start and end records under `cp_quality_and_storage_records`; retain storage condition and lot status, and use 0–180 days as a provisional QA screen only for storage before the declared gate.
+
+#### Inputs
+
+##### Product flows
+
+###### Dry made tea received for grading (`tea_grading_input`)
+
+The grading node receives the stabilized dry product and classifies it into declared grade or destination states. It is separate from primary processing because the grade states and hand-offs are independent outputs.
+
+- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- Flow property / unit: Mass / kg
+- Amount rule: weighed dry tea received by lot
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_quality_and_storage_records`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+###### Electricity, medium voltage (`tea_grading_energy`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_activity_records`
+
+###### Diesel fuel (`tea_grading_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_activity_records`
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted primary tea grade at gate (`tea_primary_grade_output`)
+
+This is an intended output state. The final gate output must carry the selected tea type, grade, moisture, lot, route, and storage condition.
+
+- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: weighed accepted grade output
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1 kg dry tea reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_quality_and_storage_records`
+- Sources: `iso-20715-2023-tea-classification`
+- Range: Accepted-grade output reconciliation range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0.60
+  - Upper: 1.00
+  - Unit: kg accepted tea/kg graded input
+  - Basis: grade-dependent accepted fraction
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Marketable secondary tea grade (`tea_secondary_grade_output`)
+
+This is an intended output state when it is sold or transferred as tea. Record the second tea-grade or destination state with its own hand-off; it must not be silently treated as waste.
+
+- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- Flow property / unit: Mass / kg
+- Amount rule: weighed secondary marketable tea output by grade
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1 kg dry tea reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_quality_and_storage_records`
+- Range: Secondary-grade output screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.40
+  - Unit: kg secondary tea/kg graded input
+  - Basis: independently weighed marketable secondary grade
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Recovered tea dust or small-particle tea product (`tea_recovered_fraction_output`)
+
+This is an intended output state only when it is sold or transferred as tea. Otherwise route it through the residue or reject card with its destination and burden treatment.
+
+- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- Flow property / unit: Mass / kg
+- Amount rule: weighed recovered tea fraction by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1 kg dry tea reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_residue_destination_records`
+- Range: Recovered tea-fraction screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.20
+  - Unit: kg recovered tea product/kg graded input
+  - Basis: only the fraction with a declared tea-product hand-off
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Dry tea gate output (`tea_gate_output`)
+
+This is the single reference-flow hand-off used for downstream LCA modelling. It is the post-grading dry tea amount after accounting for any declared secondary grades, recovered tea product, rejects, and storage losses.
+
+- Selected flow: Tea `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: accepted dry tea crossing the declared gate, normalized to 1 kg
+
+- Amount rule: measured net transfer mass, retaining lot, actual product state and moisture basis; reconcile to the final reference output at the declared handoff
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1 kg dry tea reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_quality_and_storage_records`
+- Sources: `mass-balance-identity`
+
+No fixed numerical screening bound is prescribed for this row. Derive any lot-specific consistency bound from measured incoming quantities, moisture, stocks, losses and uncertainty on the stated basis. Conservation alone supplies no universal yield, water-use or measurement-tolerance interval. Until compatible evidence is available, report quantitative range screening as unavailable; do not clip measurements or substitute an assumed value.
+
+##### Waste flows
+
+###### Off-spec tea, rejects, and storage loss (`tea_reject_or_storage_loss`)
+
+Identify every rejected or off-spec state and declare whether it is reworked, downgraded, recovered, returned to an upstream route, composted, used for energy recovery, or discarded. Do not count unresolved rejects as accepted tea output.
+
+- Selected flow: Off-spec tea and storage loss (route-specific UUID unresolved)
+- Flow property / unit: Mass / kg
+- Amount rule: weighed rejected, downgraded, damaged, or lost material by lot and storage period
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per 1 kg dry tea reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_residue_destination_records`
+- Range: Off-spec and storage-loss screening range
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 0.30
+  - Unit: kg rejected or lost tea/kg graded input
+  - Basis: grading rejects, handling loss, and storage loss before gate
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+###### Particulate matter, particle size unspecified, to air (`tea_storage_emissions`)
+
+Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea reference flow.
+
+- Selected flow: Particulate matter, particle size unspecified, to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `storage_duration`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
+This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
+#### Inputs
+##### Product flows
+###### Actual route product at handoff (`actual_route_product_for_handoff`)
+Record the accepted product delivered by the actual terminal route and reconcile it with handoff weighing and lot records.
+- Selected flow: Tea
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted net product mass at the actual handoff, normalized to the reference quantity; do not sum preceding-stage quantities, other routes or co-products
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+This measurement node adds no waste inputs.
+##### Elementary flows
+This measurement node adds no resource inputs.
+#### Outputs
+##### Product flows
+###### Reference product at declared handoff (`reference_product_at_declared_handoff`)
+- Selected flow: Tea
+- Flow property / unit: Mass / kg
+- Amount rule: 1 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_declared_reference_handoff`
+Confirm the product UUID independently for the actual state. Until confirmed, retain unresolved identity instead of inheriting a UUID from a preceding stage or another route.
+- Range: Handoff quantity normalization identity
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 1
+  - Upper: 1
+  - Unit: kg/kg net handoff mass of the same state
+  - Basis: normalization of the measured net mass of the same handoff state; not a physical-operation yield
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `declared-handoff-measurement-definition`
+
+##### Waste flows
+Record actual losses at the operation where they occur; do not duplicate them here.
+##### Elementary flows
+Record actual emissions at the operation where they occur; do not duplicate them here.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | applies_to | source_ids | rule |
+| --- | --- | --- | --- |
+| `allocation_01` | plantation_phase | `iso-14044-2006`; `ipcc-2019-refinement-afolu` | Attribute perennial establishment, replacement, land occupation, and plantation management to the reporting-period tea output using the declared period and output basis; do not allocate the same phase burden again at processing. |
+| `allocation_02` | route_batch | `iso-14044-2006`; `mass-balance-identity` | Index inputs, outputs, cleaning, drying, changeover, and rejects by route, batch, campaign, or reporting period so shared runs cannot be counted twice. |
+| `allocation_03` | marketable_tea_outputs | `iso-14044-2006` | Enumerate the accepted primary grade, marketable secondary grade, and recovered tea fraction when each is an intended tea output. Decision: use subdivision and direct measurement first; when outputs are physically inseparable, use allocation by measured dry tea mass as the default fallback, and disclose any economic allocation only as a documented sensitivity. Apply one method consistently to the affected process. |
+| `allocation_04` | residues_and_rejects | `iso-14044-2006`; `mass-balance-identity` | A residue is not a co-product merely because it has a possible use. Treat it as an intended output only when there is a declared hand-off, destination, and product-quality record; otherwise retain the producing process burden and route it as residue or waste. |
+| `allocation_05` | route_alternatives | `iso-20715-2023-tea-classification` | Green, black, oolong, white, yellow, and dark routes are mutually exclusive per lot. Do not combine route burdens or assign oxidation, rolling, withering, fixation, or piling to a lot without route evidence. |
+| `allocation_06` | multi_period_attribution | `iso-14044-2006`; `ipcc-2019-refinement-afolu` | Link establishment, replacement, pruning, termination, inputs, outputs, and storage events to a reporting period or phase and prevent double attribution across periods. |
+| `allocation_07` | rework_and_rejects | `mass-balance-identity` | Rework loops, downgrades, recovery, and boundary exits must link back to the producing node; accepted tea output excludes unresolved rejects and rejected material cannot be counted at two hand-offs. |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_field_activity_records` | `tea_plantation_management`; `tea_plucking_collection`; `tea_green_leaf_handling`; `tea_grading_storage_gate` | plantation area and phase; field inputs; water; energy; land occupation | field register, invoice, application record, meter, GIS, and activity log | area; phase; cultivar; input_product; amount; nutrient_content; water; fuel; electricity; date; operation; reporting_period | reconcile physical inputs and operations to each block, activity, and crop cycle; Raw aggregation and attribution: sum by physical identity, block, activity, and period; calculate nutrient mass without merging products | m2; m2·year; kg; L; MJ; kWh; date | each event and annual reporting period | establishment, replacement, productive crop cycle, harvest campaign, and reporting period | all included plantation blocks and associated pre-gate activities | per declared reference flow | invoices; labels; calibrated meters; field logs; GIS or block register |
+| `cp_harvest_output_records` | `tea_plantation_management`; `tea_plucking_collection` | shoots; fresh leaf; harvested mass; harvest loss; receiving hand-off | weigh ticket, plucking register, yield record, and green-leaf receiving log | block; cultivar; plucking_date; shoot_standard; fresh_mass; harvest_loss; receiving_time; lot_id | reconcile harvested and received mass to the plucking lot and dry-tea route; Raw aggregation and attribution: preserve one-to-one plantation-to-green-leaf linkage and close harvested mass = received mass + loss | kg; date-time; lot identifier | every plucking lot and hand-off | complete crop cycle and harvest campaign | all harvested lots entering a selected route | per declared reference flow | calibrated scale; lot log; receiving record; moisture or quality record |
+| `cp_processing_batch_records` | `tea_green_leaf_handling`; `tea_route_processing` | green leaf; route intermediates; dry made tea; processing residues; utility inputs | batch sheet, scale, moisture test, process log, utility meter, and fuel record | route; batch_id; input_state; intermediate_state; process_step; moisture; output; loss; fuel; electricity; water; operating_condition ; actual material/state/destination; representative stream measurement; all other component/stock terms; unexplained residual and uncertainty| reconcile each batch, route state, utility reading, moisture result, and mass balance; Raw aggregation and attribution: aggregate only after route, batch, utility, and mass reconciliation | kg; %; h; °C; L; MJ; kWh | every batch or campaign | reception through selected primary-processing route and drying | every selected route, batch, and processing facility within the gate | per declared reference flow | calibrated scale and moisture meter; batch sheet; meter reconciliation; route log |
+| `cp_quality_and_storage_records` | `tea_grading_storage_gate` | accepted grade; secondary grade; recovered tea product; rejects; storage; gate output | grading log, sieve record, scale, warehouse log, and quality record | grade; destination; accepted_mass; secondary_mass; recovered_mass; reject_mass; storage_start; storage_end; condition; loss; gate_date | enumerate every grade and destination, then reconcile storage duration, loss, and gate hand-off; Raw aggregation and attribution: enumerate intended outputs and rejects; aggregate duration and quality by lot; exclude downstream logistics | kg; grade; day; temperature; humidity; date | every graded or stored lot | post-drying grading through the declared gate | all output destinations and storage included before the declared gate | per declared reference flow | calibrated scale; sieve or grading record; warehouse log; gate release record |
+| `cp_residue_destination_records` | `tea_plantation_management`; `tea_plucking_collection`; `tea_green_leaf_handling`; `tea_route_processing`; `tea_grading_storage_gate` | pruning residue; harvest loss; process residue; reject; rework; recovery; disposal | residue log, waste transfer record, recovery invoice, and rework log | residue_state; amount; destination; recovery; rework; compost; disposal; producing_process; lot_id | link every residue or reject to its producing process and final destination; Raw aggregation and attribution: retain producing process and final disposition; do not double-count material returned or recovered | kg; destination; lot identifier | every batch, operation, or disposition event | crop cycle, harvest campaign, route batch, grading, and storage periods | all residue, reject, rework, and recovered-fraction destinations within the gate | per declared reference flow | residue ledger; transfer note; recovery invoice; rework record; destination evidence |
+| `cp_emission_records` | `tea_plantation_management`; `tea_green_leaf_handling`; `tea_route_processing`; `tea_grading_storage_gate` | named emissions to air, water, or soil; storage dust; treatment outputs | measurement record, factor calculation, treatment log, and emission record | substance; medium; source; factor; measurement; treatment; reporting_period; lot_id | report measured or calculated emissions with the named substance, medium, source, and method; Raw aggregation and attribution: aggregate by substance, medium, source, lot, and period; do not use broad unspecified categories | kg substance | each event or reporting-period calculation | field operations, processing, drying, grading, and included storage | all field and processing emission sources within the declared boundary | per declared reference flow | measurement record; factor provenance; treatment log; model version; QA review |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
+| `cp_phase1_environment_coverage` | tea_plantation_management | managed environmental coverage by actual node | site/activity/method ledger | actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
+
+### Calculation rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_01` | tea_route_processing | Calculate route yield as dry tea mass divided by fresh leaf mass and retain both wet-basis and dry-basis moisture records. | fresh leaf mass, moisture, dry tea mass | fresh-to-dry yield ratio with measured moisture basis |  |
+| `calc_02` | tea_plantation_management | Allocate area-time and phase burdens to the declared tea output for the reporting period without double attribution across establishment, replacement, and productive phases. | area, period, plantation phase, output | area-time and phase burdens attributed once to reporting-period output |  |
+| `calc_03` | tea_plantation_management | Convert formulated fertilizer products to nutrient mass for N, P, and K records while preserving product identity for background datasets. | nutrient product records and nutrient content | separate product quantities and declared nutrient-component masses |  |
+| `calc_04` | route-wide processes | Reconcile each batch by mass balance; unresolved difference is a validation finding and cannot be silently assigned to accepted tea. | batch inputs, intermediates, outputs, residues, losses | reconciled batch mass balance and unexplained differences |  |
+| `calc_05` | tea_grading_storage_gate | Classify primary grade, secondary grade, recovered tea product, residue, reject, rework, and disposal according to the declared hand-off. | grade outputs and destinations | intended output, residue, reject and rework classification by destination |  |
+| `calc_06` | route-wide shared operations | Allocate shared services to route and period records using the documented operational basis; prevent shared-run burdens from appearing in more than one product system. | route, batch, energy, changeover, storage period | shared-service burdens attributed once by route, batch and period |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_emission_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Data quality requirements
+
+| rule_id | Requirement |
+| --- | --- |
+| `quality_01` | Confirm *Camellia sinensis*, named tea type, route, lot, grade, moisture basis, and declared gate for every reference-flow dataset. |
+| `quality_02` | Prefer measured weights, meter records, invoices, batch sheets, and named input records; mark modelled values and provisional ranges explicitly. |
+| `quality_03` | Cover all included plantation blocks, plucking lots, processing batches, grades, residues, rejects, storage periods, and route changes in the reporting period. |
+| `quality_04` | Use the same mass basis and unit conversions across fresh leaf, intermediates, dry tea, residues, and rejects; document density, heating value, or meter conversion where used. |
+| `quality_05` | Disclose route-specific omissions, zero inputs, unresolved identities, upstream datasets, and all material exclusions from the gate. |
+| `quality_06` | Replace provisional reasoned ranges with site records or source-backed evidence before a final reviewed or published dataset is issued. |
+
+### Environmental Coverage Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | actual managed-production nodes | For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output. | cp_phase1_environment_coverage | attributed native environmental quantities per matched final reference | `review-ipcc-soils-2019` |
+
+## 9. Validation Rules
+
+| rule_id | applies_to | source_ids | rule |
+| --- | --- | --- | --- |
+| `validation_01` | identity | `iso-20715-2023-tea-classification` | The dataset must identify *Camellia sinensis*, one named tea type, one route, the dry-tea state, and the declared primary-processing gate. |
+| `validation_02` | reference_flow | `mass-balance-identity` | The reference output must use `Tea` `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`, Mass `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`, and 1 kg unless a reviewed identity correction is issued. |
+| `validation_03` | route_completeness | `iso-20715-2023-tea-classification`; `fao-tea-chain-processing` | Exactly one named route must be selected. Every included route state must have a preceding input, a following hand-off, and a recorded output or loss; inapplicable states must not be counted. |
+| `validation_04` | plantation_and_harvest | `ipcc-2019-refinement-afolu` | Plantation phase, management inputs, plucking source, fresh-leaf output, and harvest loss must be linked to the same reporting period and lot or an identified upstream dataset. |
+| `validation_05` | batch_and_changeover | `mass-balance-identity` | Batch, campaign, or continuous-run boundaries must link inputs, outputs, cleaning, changeover, yield, and shared services; no shared-run burden may be counted twice. |
+| `validation_06` | outputs_and_allocation | `iso-14044-2006` | Every intended output and hand-off must be enumerated. Marketable secondary tea is separated from residue; one output cannot be counted at two hand-offs. |
+| `validation_07` | rejects_and_rework | `mass-balance-identity` | Every rejected or off-spec state must have a rework, downgrade, recovery, disposal, or boundary-exit path. Accepted output excludes unresolved rejects. |
+| `validation_08` | mass_balance | `mass-balance-identity` | Fresh leaf, route intermediates, dry tea, grade outputs, residues, rejects, storage losses, and declared evaporation or moisture changes must reconcile within the documented tolerance. |
+| `validation_09` | data_quality | `iso-14044-2006` | Missing material records, unresolved route selection, missing gate qualifiers, unsupported range substitutions, and unexplained mass-balance differences are findings that block reviewed or published use. |
+| `validation_10` | period_attribution | `ipcc-2019-refinement-afolu`; `iso-14044-2006` | Establishment, replacement, productive phase, termination, inputs, outputs, and storage events must be linked to periods and must not be attributed twice. |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | `secondary_dataset` for a foreground tea production package that has passed identity, route, mass-balance, and data-quality validation |
+| downstream_use | Construction of tea-related LCA process and lifecyclemodel projections at the declared primary-processing gate |
+| allowed_use | Named tea type and route matching the declared gate, geography, reporting period, grade, moisture basis, and included plantation-to-gate scope |
+| excluded_use | Herbal or fruit infusions, tea beverages, extracts, concentrates, instant tea, scented or flavoured tea, decaffeination, consumer brewing, packaging presentation, retail, or downstream logistics |
+| required_metadata | Reference flow UUIDs; tea type; route; gate; geography; plantation phase; period; lot or campaign; fresh-leaf and dry-tea basis; moisture; grade; residue destinations; reject treatment; storage duration; background dataset links |
+| required_quality_disclosure | Measured versus calculated values; provisional ranges; route coverage; plantation and harvest coverage; mass-balance tolerance; unresolved identities; exclusions; allocation method |
+| update_trigger | Change in route, grade system, gate, plantation phase, input formulation, processing technology, storage practice, background identity, or evidence-backed range |
+
+## 11. Data Sources
+
+| source_id | title | type | reference | used_for |
+| --- | --- | --- | --- | --- |
+| `iso-20715-2023-tea-classification` | ISO 20715:2023 Tea — Classification of tea types | `standard` | https://www.iso.org/standard/75419.html | named tea types, route states, and product identity |
+| `iso-11287-2011-green-tea` | ISO 11287:2011 Green tea — Definition and basic requirements | `standard` | https://www.iso.org/standard/51540.html | green-tea route and scope exclusion for further processing |
+| `iso-3720-2011-black-tea` | ISO 3720:2011 Black tea — Definition and basic requirements | `standard` | https://www.iso.org/standard/51541.html | black-tea route and product identity |
+| `fao-jmpr-tea-processing-2016` | FAO JMPR manual, Appendix X | official_guidance | FAO (2016), Submission and evaluation of pesticide residues data for the estimation of maximum residue levels in food and feed, 3rd edition, Appendix X, printed pp. 256–259; https://www.fao.org/fileadmin/templates/agphome/documents/Pests_Pesticides/JMPR/Manual/FAO_manual_3rd_edition_Final.pdf | Specific tea sample-processing route and moisture context only; no universal commercial tea-yield interval |
+| `fao-tea-chain-processing` | Agroindustrial system model of the Argentine tea chain | `official_guidance` | https://www.fao.org/fileadmin/templates/est/meetings/IGGtea21/Presentation-MarketReportArgentina.pdf | harvest, withering, rolling, oxidation, drying, classification, and packing decomposition |
+| `agris-black-tea-processing-2017` | Effect of rolling methods and storage on volatile constituents of Turkish black tea | `literature` | https://doi.org/10.1002/ffj.3385 | black-tea processing sequence and storage relevance |
+| `ipcc-2019-refinement-afolu` | 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, AFOLU | `method_factor` | https://efdb.ipcc-nggip.iges.or.jp/public/2019rf/index.html | perennial production phase, direct emissions, and attribution context |
+| `iso-14044-2006` | ISO 14044:2006 Environmental management — Life cycle assessment — Requirements and guidelines | `standard` | https://committee.iso.org/standard/38498.html | boundary, allocation, data quality, and validation rules |
+| `mass-balance-identity` | Conservation-of-mass identity for lot reconciliation | `method_factor` | Method identity: incoming mass = intended outputs + residues + rejects + declared losses | mass-balance calculations and validation |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default. |
