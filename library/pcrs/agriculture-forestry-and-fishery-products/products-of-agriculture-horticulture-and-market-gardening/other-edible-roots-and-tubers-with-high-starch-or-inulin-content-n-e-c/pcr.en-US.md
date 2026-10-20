@@ -40,7 +40,7 @@ Routes may coexist in the category, but one dataset selects one actual route and
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Unresolved: no category-compatible harvested CPC 01599 mass flow was confirmed |
+| Reference product flow | Accepted harvested whole edible root or tuber of the declared single high-starch/inulin species (UUID unresolved) |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
