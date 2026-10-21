@@ -1,4 +1,5 @@
 import type {DocPage,Download,Language,PcrRecord,SiteManifest} from './types.ts';
+import {decodeSiteMetadata} from './site-wire.ts';
 type Data=Record<string,unknown>;
 const record=(value:unknown):value is Data=>value!==null&&typeof value==='object'&&!Array.isArray(value);
 const strings=(value:unknown):value is string[]=>Array.isArray(value)&&value.every(item=>typeof item==='string');
@@ -23,4 +24,4 @@ function page(value:unknown):value is DocPage {
 export function assertSiteManifest(value:unknown):asserts value is SiteManifest {
  if(!record(value)||value.schemaVersion!==1||!['sourceCommit','sourceDate','generatorVersion','origin','defaultLocale'].every(key=>typeof value[key]==='string')||!Array.isArray(value.languages)||!value.languages.every(language)||!Array.isArray(value.records)||!value.records.every(pcrRecord)||!Array.isArray(value.pages)||!value.pages.every(page)||!Array.isArray(value.domains)||!value.domains.every(domain=>record(domain)&&typeof domain.slug==='string'&&textMap(domain.title)&&finite(domain.count))||!Array.isArray(value.coverage)||!value.coverage.every(coverage=>record(coverage)&&typeof coverage.system==='string'&&typeof coverage.version==='string'&&record(coverage.summary)&&Object.values(coverage.summary).every(finite)&&textMap(coverage.url)&&typeof coverage.downloadUrl==='string')||!record(value.counts)||!['pcrs','pages','sourceBytes','languages'].every(key=>finite((value.counts as Data)[key]))||(value.historicalRecords!==undefined&&(!Array.isArray(value.historicalRecords)||!value.historicalRecords.every(pcrRecord)))||(value.categoryTitles!==undefined&&(!record(value.categoryTitles)||!Object.values(value.categoryTitles).every(textMap))))throw new TypeError('Invalid generated PCR site manifest.');
 }
-export function parseSiteManifest(text:string|Uint8Array):SiteManifest {const raw:unknown=JSON.parse(typeof text==='string'?text:new TextDecoder().decode(text));assertSiteManifest(raw);return raw;}
+export function parseSiteManifest(text:string|Uint8Array):SiteManifest {const raw:unknown=decodeSiteMetadata(JSON.parse(typeof text==='string'?text:new TextDecoder().decode(text)));assertSiteManifest(raw);return raw;}

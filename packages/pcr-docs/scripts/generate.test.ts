@@ -445,7 +445,11 @@ test("metadata summaries describe the page they belong to, and report title-only
       { encoding: "utf8", maxBuffer: 4 * 1024 * 1024 },
     );
     assert.equal(result.status, 0, result.stderr);
-    const site = parseSiteManifest(fs.readFileSync(path.join(output, ".generated/site.json")));
+    const siteBytes=fs.readFileSync(path.join(output, ".generated/site.json"));
+    const siteWire:unknown=JSON.parse(siteBytes.toString('utf8'));
+    assert.ok(isUnknownRecord(siteWire)&&isUnknownRecord(siteWire.downloadTransport)&&Array.isArray(siteWire.downloadTransport.urls));
+    assert.ok(siteWire.downloadTransport.urls.length>0,'inline originals are stored once in generated metadata');
+    const site = parseSiteManifest(siteBytes);
     const report = parseReport(fs.readFileSync(path.join(output, ".generated/report.json")));
 
     for (const page of site.pages) {

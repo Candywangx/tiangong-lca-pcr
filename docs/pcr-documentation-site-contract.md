@@ -453,6 +453,16 @@ still must satisfy fewer than 20,000 files, less than 25 MB per file and the
 existing measured memory/build gates; browser qualification verifies native
 downloads against canonical bytes.
 
+The internal `.generated/site.json` transport stores each repeated inline
+download URL once in a versioned `downloadTransport` table. Only download `url`
+values use bounded integer references; `parseSiteManifest` restores complete URLs
+before validating the unchanged site DTO. Legacy uncompressed metadata remains
+readable. Duplicate/invalid tables, out-of-range references and conflicting
+transport fields fail closed. This internal deduplication avoids constructing a
+single expanded JSON string beyond the JavaScript runtime limit; it does not
+remove page content, original bytes, downloads or required context. Emitted page
+links remain ordinary native download URLs and are verified against source.
+
 ### Inspector data transport
 
 The field inspector groups complete generated records into versioned JSON packs,

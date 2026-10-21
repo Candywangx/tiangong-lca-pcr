@@ -51,6 +51,7 @@ import { SUMMARY_LIMIT, catalogSummary, documentSummary } from "./summaries.ts";
 import { searchTerms } from "../lib/search-terms.ts";
 import { encodeSearchEntries, SEARCH_SCORE_SLOTS } from "../lib/search-wire.ts";
 import { encodeLanguageSearchShards } from "./search-payload.ts";
+import { serializeSiteMetadata } from "../lib/site-wire.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { values: options } = parseArgs({
   options: {
@@ -1087,7 +1088,7 @@ async function generate() {
   const recordDataPacking = writeRecordDataPacks(stage, [...manifest.records, ...manifest.historicalRecords]);
   json("record-data-packing.json", recordDataPacking);
   console.log(JSON.stringify({event: "record-data-packing", ...recordDataPacking}));
-  json("site.json", manifest);
+  write("site.json", serializeSiteMetadata(manifest));
   json("report.json", report);
   json("public/version.json", {
     sourceCommit: commit,
