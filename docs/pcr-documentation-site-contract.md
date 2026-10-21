@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-20"
-lastReviewedCommit: "623239f3b89f335ee5461b422378cf709a8228f3"
-lastReviewedNote: "Reconciled Candy main PCR additions and same-source web-build handoff with the CPC 01/02/03 content repairs and 120-minute job limits. Preserved both sides of the methodology and CI contracts; regenerated combined catalog/coverage artifacts. Local PCR and focused checks pass; full hosted Linux qualification remains required."
+lastReviewedAt: "2026-10-21"
+lastReviewedCommit: "40e87795369c6fdb29e1cf4f0835b5dc4ad82a75"
+lastReviewedNote: "Scoped search-only v5 migration for CPC04 PR #26: shared dictionary and physical packing preserve native logical indexes, full result records and ranking. Download packaging, methodology, classifications, CI and budgets remain unchanged; fresh validation is recorded separately."
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -109,6 +109,26 @@ structured data are separate artifacts read only at build time. Physical downloa
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
+
+### Lossless search transport
+
+Search wire v5 uses one first-encounter term dictionary and one physical index pack per
+language. Physical packing must preserve every original logical index, term order,
+score slot, posting, complete result record and logical per-index candidate limit.
+Tokenization, the 30-candidate limit per logical index, URL deduplication and final
+ranking are unchanged. The Worker retains v1-v4 and ungrouped v5 compatibility;
+malformed metadata fails closed and allows a clean retry.
+
+The generator verifies restored native-index and full-record SHA-256 fingerprints
+against their pre-encoding values. Each language's retained 20,000,000-byte raw and
+4,000,000-byte gzip search budgets charge each physical pack once plus its complete
+dictionary-bearing manifest. Provider file, memory and source-fidelity gates remain
+independent and unchanged. This search-only transport does not alter download
+eligibility, inline size bounds, inspector packing, source content or page layout.
+
+After a complete export, `node packages/pcr-docs/scripts/search-v5-corpus-audit.ts`
+checks shipped bytes, exact native/record restoration, same-corpus v4/v5 sizes and
+ordered query comparisons. Historical audits do not qualify a new corpus or commit.
 
 ### Page summaries
 
