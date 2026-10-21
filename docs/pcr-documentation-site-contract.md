@@ -418,6 +418,19 @@ duplicates, slot positions, trailing nulls and complete engine export strings.
 Non-safe or negative restored IDs, impossible masks, incorrect posting counts,
 unpaired or foreign encoding flags fail initialization and remain retryable.
 
+Search manifest version 5 additionally owns one exact per-language `terms`
+dictionary, ordered by descending frequency across the unchanged shard inventory
+with first-encounter order breaking ties. Marked `termReferences: true` maps store
+dictionary indices in their existing term positions; records, terms, posting
+order, score slots and shard membership remain unchanged. Optional per-map
+`postingBases` subtract the smallest numeric first posting ID from each numeric
+posting list's first delta. Mixed/string posting lists remain verbatim. The reader
+restores the base before reconstructing numeric IDs and rejects invalid indices,
+duplicate/non-string dictionary entries, unsafe bases/overflow and foreign flags.
+Generation verifies every restored engine export string exactly. Both raw and
+gzip totals include the complete v5 dictionary-bearing manifest as well as every
+shard; the existing 20 MB/4 MB language limits are not increased.
+
 The Worker continues to read v1/v2, the existing nested v3 and original flat v4;
 it decodes marked maps strictly by declared version and encoding flags. Generation
 verifies exact original engine export strings before publishing every shard and

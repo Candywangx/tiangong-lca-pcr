@@ -3,8 +3,12 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-for (const schemaVersion of [1, 2, 3, 4]) for (const [scenario, description] of [
+for (const schemaVersion of [1, 2, 3, 4, 5]) for (const [scenario, description] of [
   ...(schemaVersion === 4 ? [['flat-v4-roundtrip', 'worker retains the original flat v4 reader']] : []),
+  ...(schemaVersion === 5 ? [
+    ['dictionary-metadata','worker rejects malformed shared dictionaries and permits a valid retry'],
+    ['term-metadata','worker rejects invalid term references and posting bases before importing'],
+  ] : []),
   ['mask-metadata', 'worker rejects incompatible mask/delta metadata and permits a valid retry'],
   ['wire-roundtrip', 'worker imports every export string exactly and preserves complete result records'],
   ['entry-format-retry', 'worker rejects entries from the wrong wire format and permits a valid retry'],

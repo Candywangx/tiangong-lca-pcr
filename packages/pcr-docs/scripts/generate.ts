@@ -50,6 +50,7 @@ import {
 import { SUMMARY_LIMIT, catalogSummary, documentSummary } from "./summaries.ts";
 import { searchTerms } from "../lib/search-terms.ts";
 import { encodeSearchEntries, SEARCH_SCORE_SLOTS } from "../lib/search-wire.ts";
+import { encodeLanguageSearchShards } from "./search-payload.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { values: options } = parseArgs({
   options: {
@@ -988,6 +989,7 @@ async function generate() {
       doc.record.id = String(i);
     });
     const shards: SearchShard[] = [];
+    const pending: {wire:ReturnType<typeof encodeSearchEntries>;records:SearchResult[]}[] = [];
     let bucket: SearchDocument[] = [],
       bytes = 0;
     async function flush() {
@@ -1005,10 +1007,20 @@ async function generate() {
           throw new Error("Unsupported serialized search export: " + language + "/" + key);
         entries[key] = parsed;
       });
-      const payload = JSON.stringify({
-        ...encodeSearchEntries(entries, 4),
-        records: bucket.map((d) => d.record),
-      });
+      pending.push({wire:encodeSearchEntries(entries,4),records:bucket.map(d=>d.record)});
+      bucket = [];
+      bytes = 0;
+    }
+    for (const doc of docs) {
+      const size = Buffer.byteLength(doc.text);
+      if (bytes + size > 2_000_000) await flush();
+      bucket.push(doc);
+      bytes += size;
+    }
+    await flush();
+    const encoded = encodeLanguageSearchShards(pending.map(item=>item.wire));
+    for (const [position,item] of pending.entries()) {
+      const payload = JSON.stringify({...encoded.shards[position],records:item.records});
       if (Buffer.byteLength(payload) > 20_000_000)
         throw new Error("Search shard exceeds 20MB: " + language);
       const url =
@@ -1022,26 +1034,20 @@ async function generate() {
         url,
         bytes: Buffer.byteLength(payload),
         gzipBytes: gzipSync(payload, { level: 9 }).length,
-        records: bucket.length,
+        records: item.records.length,
         sha256: sha256(payload),
       });
-      bucket = [];
-      bytes = 0;
     }
-    for (const doc of docs) {
-      const size = Buffer.byteLength(doc.text);
-      if (bytes + size > 2_000_000) await flush();
-      bucket.push(doc);
-      bytes += size;
-    }
-    await flush();
-    json("public/search/" + language + "/manifest.json", {
-      schemaVersion: 4,
+    const searchManifest = {
+      schemaVersion: 5,
       language,
+      terms:encoded.terms,
       shards,
-    });
-    const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, 0);
-    const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, 0);
+    };
+    json("public/search/" + language + "/manifest.json", searchManifest);
+    const manifestPayload = JSON.stringify(searchManifest);
+    const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, 0) + Buffer.byteLength(manifestPayload);
+    const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, 0) + gzipSync(manifestPayload,{level:9}).length;
     console.log(JSON.stringify({event: "search-index-size", language, rawBytes, gzipBytes, shards: shards.length, records: docs.length}));
     if (rawBytes > 20_000_000 || gzipBytes > 4_000_000)
       throw new Error(
