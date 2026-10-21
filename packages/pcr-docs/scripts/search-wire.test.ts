@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { Index } from 'flexsearch';
 import { searchTerms } from '../lib/search-terms.ts';
-import { encodeSearchEntries, decodeSearchEntries } from '../lib/search-wire.ts';
+import { encodeSearchEntries, decodeSearchEntries, createSearchTermDictionary, readSearchTermDictionary } from '../lib/search-wire.ts';
 
 test('sparse score slots restore exact real engine exports, order, IDs and multilingual matches', async () => {
   const index = new Index({ tokenize: 'strict', encode: (value: unknown) => searchTerms(value, 'en-US') });
@@ -140,68 +140,73 @@ test('v4 columnar maps restore exact term order and reject malformed column leng
     [['old', [null, null, null, null, null, null, null, null, [2]]]], 'previous v4 wire remains readable');
 });
 
-async function termReferenceEncoder() {
-  const module = await import('../lib/search-wire.ts');
-  const encode: unknown = Reflect.get(module, 'encodeSearchTermReferences');
-  assert.equal(typeof encode, 'function', 'v5 shared dictionary encoder must be available');
-  return encode as (wire: ReturnType<typeof encodeSearchEntries>, terms: readonly string[]) => ReturnType<typeof encodeSearchEntries> & {termReferences: true; postingBases?: Record<string, number>};
-}
-interface DecoderWire {entries: unknown; sparseMaps: unknown; scoreMasks?: unknown; postingDeltas?: unknown; columnarMaps?: unknown; termReferences?: unknown; postingBases?: unknown}
-const decodeV5 = (wire: DecoderWire, terms: unknown, version = 5) =>
-  Reflect.apply(decodeSearchEntries, undefined, [wire.entries, wire.sparseMaps, version, wire.scoreMasks, wire.postingDeltas, wire.columnarMaps, wire.termReferences, terms, wire.postingBases]) as Record<string, unknown[]>;
+test('v5 joined terms preserve empty terms, Unicode, literal spaces, exact posting arrays and native fallback', () => {
+  const names = ['', '__proto__', 'constructor', '珊瑚', 'café', '😀', '\n', 'a\\b', '', ...Array.from({length: 2000}, (_, i) => `term-${i}`)];
+  const vector = [null, [], null, null, null, null, null, null, [Number.MAX_SAFE_INTEGER, 0, 0, 99, 2]];
+  const original = {'1.map': names.map(term => [term, vector]), '2.map': ['has space', '空 格', ''].map(term => [term, vector]), '1.reg': [0, 'constructor'], 'foreign.map': [null]};
+  const expected = JSON.stringify(original), wire = JSON.parse(JSON.stringify(encodeSearchEntries(original, 5)));
+  assert.equal(wire.joinedTerms, true); assert.ok(wire.columnarMaps.includes('1.map'));
+  assert.equal(typeof wire.entries['1.map'][0], 'string');
+  assert.ok(Array.isArray(wire.entries['2.map'][0]), 'Terms containing separators retain their original array');
+  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 5, wire.scoreMasks, wire.postingDeltas, wire.columnarMaps, wire.joinedTerms)), expected);
+  assert.equal(JSON.stringify(original), expected, 'Encoding must not mutate source');
+  assert.throws(() => decodeSearchEntries(wire.entries, wire.sparseMaps, 4, true, true, wire.columnarMaps, true), /Invalid serialized/);
+  for (const flag of [undefined, false, null, 1, 'true']) assert.throws(() => decodeSearchEntries(wire.entries, wire.sparseMaps, 5, true, true, wire.columnarMaps, flag), /Invalid serialized/);
+});
 
-test('v5 dictionary references and numeric posting bases preserve exact real exports and multilingual query results', async () => {
-  const encode = await termReferenceEncoder();
+test('v5 rejects missing/excess joined terms, foreign flags and malformed columns before import', () => {
+  for (const columns of [['', [], []], ['two terms', [4864], [[1]]], ['one', [4864, 4864], [[1], [2]]], ['x', null, []], ['x', [4864], []], ['x', [4864], [[1]], 'extra'], [null, [4864], [[1]]], ['x', [5120], [[1]]]])
+    assert.throws(() => decodeSearchEntries({'1.map': columns}, ['1.map'], 5, true, true, ['1.map'], true), /Invalid serialized/);
+  assert.deepEqual(decodeSearchEntries({'1.map': ['', [4864], [[1]]]}, ['1.map'], 5, true, true, ['1.map'], true)['1.map'], [['', [null, null, null, null, null, null, null, null, [1]]]]);
+  assert.deepEqual(decodeSearchEntries({'1.map': [[], [], []]}, ['1.map'], 5, true, true, ['1.map'], true)['1.map'], []);
+});
+
+test('v5 real multilingual exports preserve every engine string and ordered query result', async () => {
   for (const language of ['en-US', 'zh-CN']) {
     const options = {tokenize: 'strict' as const, resolution: 9, encode: (value: unknown) => searchTerms(value, language)};
     const index = new Index(options), loaded = new Index(options);
-    const texts = Array.from({length: 50}, (_, n) => `Wheat café 小麦种子 玻璃 安全 pcr_rule_boundary term_${n}`);
-    texts.forEach((text, id) => index.add(id + 10000, text));
+    for (let i = 0; i < 300; i++) index.add(i * 13, `${'wheat 珊瑚 小麦 '.repeat(i % 5 + 1)}边界 pcr_rule_boundary café ${i}`);
     const original: Record<string, unknown[]> = {};
-    await index.export((key, value) => {const parsed: unknown = JSON.parse(value); assert.ok(Array.isArray(parsed)); original[key] = parsed;});
-    const v4 = encodeSearchEntries(original, 4);
-    const terms = [...new Set(Object.entries(original).filter(([key]) => v4.sparseMaps.includes(key)).flatMap(([, rows]) => rows.map(row => (row as [string])[0])))].reverse();
-    const wire = encode(v4, terms), restored = decodeV5(JSON.parse(JSON.stringify(wire)) as typeof wire, terms);
-    assert.equal(wire.termReferences, true); assert.ok(wire.postingBases && Object.values(wire.postingBases).every(base => base >= 10000));
+    await index.export((key, value) => {original[key] = JSON.parse(value);});
+    const wire = JSON.parse(JSON.stringify(encodeSearchEntries(original, 5)));
+    const restored = decodeSearchEntries(wire.entries, wire.sparseMaps, 5, wire.scoreMasks, wire.postingDeltas, wire.columnarMaps, wire.joinedTerms);
     assert.equal(JSON.stringify(restored), JSON.stringify(original));
     for (const [key, value] of Object.entries(restored)) loaded.import(key, JSON.stringify(value));
-    for (const query of [...new Set(texts.flatMap(text => searchTerms(text, language))), 'wheat seed', '小麦种子', 'notpresent'])
-      assert.deepEqual(loaded.search(query, {limit: 30}), index.search(query, {limit: 30}), query);
-    assert.equal(JSON.stringify(decodeSearchEntries(v4.entries, v4.sparseMaps, 4, true, true, v4.columnarMaps)), JSON.stringify(original), 'v5 encoding must not mutate v4 input');
+    for (const query of ['wheat', '小麦', '珊瑚', 'pcr_rule_boundary', 'café', 'missing']) assert.deepEqual(loaded.search(query, {limit: 30}), index.search(query, {limit: 30}));
   }
 });
 
-test('v5 handles sparse rows, columnar maps, empty dictionaries, hostile terms, mixed and maximum safe IDs', async () => {
-  const encode = await termReferenceEncoder();
-  const max = Number.MAX_SAFE_INTEGER;
-  const entries = {'1.map': [['__proto__', 4864, [100, -98, 0, 1]], ['constructor', 4864, ['id', 2]], ['文献\n"', 4864, []], ['', 0]], '1.reg': [100, 'id'], 'foreign.map': [['native', []]]};
-  const v4 = {entries, sparseMaps: ['1.map'], scoreMasks: true as const, postingDeltas: true as const};
-  const terms = ['', 'constructor', '__proto__', '文献\n"'];
-  const wire = encode(v4, terms); assert.equal(wire.postingBases?.['1.map'], 100);
-  assert.deepEqual(wire.entries['foreign.map'], entries['foreign.map']);
-  assert.deepEqual(decodeV5(wire, terms), decodeSearchEntries(entries, ['1.map'], 4, true, true));
-  const extreme = encode({entries: {'1.map': [['x', 4864, [max, -max, max, -max]]]}, sparseMaps: ['1.map'], scoreMasks: true, postingDeltas: true}, ['x']);
-  assert.equal(extreme.postingBases?.['1.map'], max);
-  assert.deepEqual(decodeV5(extreme, ['x'])['1.map'], [['x', [null, null, null, null, null, null, null, null, [max, 0, max, 0]]]]);
-  const mixedOnly = encode({entries: {'1.map': [['x', 4864, ['str', 1]]]}, sparseMaps: ['1.map'], scoreMasks: true, postingDeltas: true}, ['x']);
-  assert.equal(mixedOnly.postingBases, undefined);
-  const empty = encode(encodeSearchEntries({}, 4), []); assert.deepEqual(Object.keys(decodeV5(empty, [])), []);
+test('v5 shared dictionary restores exact cross-shard term order, literal spaces, duplicate native terms and all posting types', () => {
+  const slots = [null, [], null, null, null, null, null, null, [Number.MAX_SAFE_INTEGER, 0, 0, 9]];
+  const inputs: Record<string, unknown[]>[] = [
+    {'1.reg':[0,1], '1.map':[['alpha',slots],['珊瑚',slots],['has space',slots],['',slots],['__proto__',slots],['constructor',slots],['😀',slots],['',slots]], 'foreign.map':[null]},
+    {'1.reg':[9,'id'], '1.map':[['珊瑚',slots],['alpha',slots],['new', [null,null,null,null,null,null,null,null,['mixed',7]]]]},
+  ];
+  const before = inputs.map(input => JSON.stringify(input));
+  const dictionary = createSearchTermDictionary(inputs);
+  assert.deepEqual(dictionary.slice(0,4),['alpha','珊瑚','has space','']);
+  assert.equal(new Set(dictionary).size,dictionary.length);
+  let negative = false;
+  inputs.forEach((original, index) => {
+    const wire = JSON.parse(JSON.stringify(encodeSearchEntries(original,5,dictionary)));
+    assert.equal(wire.dictionaryTerms,true);
+    for(const key of wire.columnarMaps ?? []) negative ||= wire.entries[key][0].some((id: number) => id < 0);
+    assert.equal(JSON.stringify(decodeSearchEntries(wire.entries,wire.sparseMaps,5,true,true,wire.columnarMaps,true,dictionary,true)),before[index]);
+    assert.equal(JSON.stringify(original),before[index]);
+  });
+  assert.equal(negative,true,'Cross-shard encounter order must exercise descending references');
+  assert.throws(()=>encodeSearchEntries(inputs[0]!,4,dictionary),/Invalid serialized/);
+  assert.throws(()=>encodeSearchEntries(inputs[0]!,5,['missing']),/Invalid serialized/);
 });
 
-test('v5 rejects missing or malformed dictionary metadata, invalid indices and unsafe posting bases', async () => {
-  const encode = await termReferenceEncoder();
-  const wire = encode({entries: {'1.map': [['x', 4864, [10]]], '1.reg': [10]}, sparseMaps: ['1.map'], scoreMasks: true, postingDeltas: true}, ['x']);
-  for (const dictionary of [undefined, null, {}, ['x', 'x'], [1], [null], []]) assert.throws(() => decodeV5(wire, dictionary), /Invalid serialized/);
-  for (const flag of [false, null, 1, 'true', {}]) assert.throws(() => decodeV5({...wire, termReferences: flag}, ['x']), /Invalid serialized/);
-  for (const version of [3, 4, 6]) assert.throws(() => decodeV5(wire, ['x'], version), /Invalid serialized/);
-  for (const index of [-1, 0.5, 1, Number.MAX_SAFE_INTEGER, '0', null, {}])
-    assert.throws(() => decodeV5({...wire, entries: {'1.map': [[index, 4864, [0]]]}}, ['x']), /Invalid serialized/);
-  for (const postingBases of [null, [], true, {'1.reg': 1}, {'missing.map': 1}, {'1.map': -1}, {'1.map': 1.5}, {'1.map': Number.MAX_SAFE_INTEGER + 1}, {'1.map': '1'}])
-    assert.throws(() => decodeV5({...wire, postingBases}, ['x']), /Invalid serialized/);
-  assert.throws(() => decodeV5({...wire, entries: {'1.map': [[0, 4864, [Number.MAX_SAFE_INTEGER]]]}}, ['x']), /Invalid serialized/);
-  assert.throws(() => decodeV5({...wire, entries: {'1.map': [[0, 4864, [-11]]]}}, ['x']), /Invalid serialized/);
-  assert.throws(() => decodeV5({...wire, scoreMasks: undefined}, ['x']), /Invalid serialized/);
-  assert.throws(() => decodeV5({...wire, termReferences: undefined}, ['x']), /Invalid serialized/);
-  assert.throws(() => encode(encodeSearchEntries({'1.map': [['x', [null, null, null, null, null, null, null, null, [1]]]]}, 4), []), /Invalid serialized/);
-  assert.throws(() => encode(encodeSearchEntries({}, 4), ['x', 'x']), /Invalid serialized/);
+test('v5 rejects malformed dictionaries, foreign dictionary flags and invalid word references before import', () => {
+  for(const dictionary of [null,{},[1],['same','same'],new Array(1)]) assert.throws(()=>readSearchTermDictionary(dictionary),/Invalid serialized/);
+  const entries = {'1.map':[[[0],[4864],[[1]]]]};
+  for(const dictionary of [undefined,null,{},[1],['same','same']]) assert.throws(()=>decodeSearchEntries(entries,['1.map'],5,true,true,['1.map'],true,dictionary,true),/Invalid serialized/);
+  for(const refs of [[-1],[1],[0.5],['0'],[null],[Number.MAX_SAFE_INTEGER],[Number.MAX_SAFE_INTEGER,1]]) {
+    const columns=[refs,refs.map(()=>4864),refs.map(()=>[1])];
+    assert.throws(()=>decodeSearchEntries({'1.map':columns},['1.map'],5,true,true,['1.map'],true,['word'],true),/Invalid serialized/);
+  }
+  for(const flag of [undefined,false,null,1]) assert.throws(()=>decodeSearchEntries({'1.map':[[0],[4864],[[1]]]},['1.map'],5,true,true,['1.map'],true,['word'],flag),/Invalid serialized/);
+  assert.throws(()=>decodeSearchEntries({},[],4,true,true,undefined,undefined,['word'],true),/Invalid serialized/);
 });

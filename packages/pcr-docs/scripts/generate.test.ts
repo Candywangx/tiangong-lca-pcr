@@ -223,19 +223,19 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.equal(search.schemaVersion, 5, "new indexes retain exact shared terms, score masks and posting deltas");
-      assert.ok(Array.isArray(search.terms) && search.terms.every(term=>typeof term==='string'));
-      assert.equal(new Set(search.terms).size,search.terms.length);
+      assert.equal(search.schemaVersion, 5, "new indexes pack logical shards with a shared dictionary");
       assert.equal(search.language, language);
       assert.ok(Array.isArray(search.shards) && search.shards.length > 0);
       for (const shard of search.shards) {
         assert.ok(isUnknownRecord(shard) && typeof shard.url === "string");
-        const data: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", shard.url), "utf8"));
+        const packed: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", shard.url), "utf8"));
+        assert.ok(isUnknownRecord(packed) && packed.schemaVersion === 5 && Array.isArray(packed.indexes) && typeof shard.entry === "number");
+        const data: unknown = packed.indexes[shard.entry];
         assert.ok(isUnknownRecord(data) && isUnknownRecord(data.entries));
         assert.ok(Object.values(data.entries).length > 0);
         assert.ok(Object.values(data.entries).every(Array.isArray), "exports must not be nested JSON strings");
         const index = new Index({tokenize: "strict", encode: (value: unknown) => searchTerms(value, language)});
-        for (const [key, payload] of Object.entries(decodeSearchEntries(data.entries, data.sparseMaps, 5, data.scoreMasks, data.postingDeltas, data.columnarMaps,data.termReferences,search.terms,data.postingBases))) index.import(key, JSON.stringify(payload));
+        for (const [key, payload] of Object.entries(decodeSearchEntries(data.entries, data.sparseMaps, 5, data.scoreMasks, data.postingDeltas, data.columnarMaps, data.joinedTerms, search.termDictionary, data.dictionaryTerms))) index.import(key, JSON.stringify(payload));
         assert.ok(index.search("wheat", {limit: 30}).length > 0, "Generated v5 exports remain readable by the pinned engine");
       }
       const currentPages = recordPages(site, site.records[0]!, language);
@@ -446,9 +446,9 @@ test("metadata summaries describe the page they belong to, and report title-only
     );
     assert.equal(result.status, 0, result.stderr);
     const siteBytes=fs.readFileSync(path.join(output, ".generated/site.json"));
-    const siteWire:unknown=JSON.parse(siteBytes.toString('utf8'));
+    const siteWire:unknown=JSON.parse(siteBytes.toString("utf8"));
     assert.ok(isUnknownRecord(siteWire)&&isUnknownRecord(siteWire.downloadTransport)&&Array.isArray(siteWire.downloadTransport.urls));
-    assert.ok(siteWire.downloadTransport.urls.length>0,'inline originals are stored once in generated metadata');
+    assert.ok(siteWire.downloadTransport.urls.length>0,"inline originals are stored once in generated metadata");
     const site = parseSiteManifest(siteBytes);
     const report = parseReport(fs.readFileSync(path.join(output, ".generated/report.json")));
 
