@@ -54,7 +54,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- |
 | reference_mass | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 采用切割及必要试验后首次放行平衡状态1kg实际产品净质量。Q为所选批次唯一首次放行质量。排除可移除包装和表面污染，保留产品内真实泡孔气碳。 |
 | volume_conversion | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 质量为主基准。若需m3，对同一实际配置同状态测外体积和净质量，声明实测体积密度及透明换算。名义95或来源2023实测91kg/m3不是本场址密度。不从无关流次级属性推密度。 |
-| single_normalization | all inventory rows | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 原始采集不除。convert_raw和attribute_raw先形成A_j，normalize_exchange再执行一次A_j/Q。清单及采集基准均为每1kg参考流；卡片及汇总只引用同一结果。Q=0保留原始负荷且不出单位结果。 |
+| single_normalization | all inventory rows | 各行实际物理属性 | 各行实际物理单位 | 原始采集不除。convert_raw和attribute_raw先形成A_j，normalize_exchange再执行一次A_j/Q。清单及采集基准均为每1kg参考流；卡片及汇总只引用同一结果。Q=0保留原始负荷且不出单位结果。 Q的单位为kg参考产品，A_j保留各交换自身属性及分子单位。公共分母形成各行单位/kg参考产品，例如电力MJ/kg、天然气m3/kg，不把所有分子转换成Mass/kg。 |
 
 ## 5. 系统边界
 

@@ -76,7 +76,7 @@ Clariant US20160060463A1第0034段及表1–2提供这些物料、热溶解后�
 | --- | --- |
 | declared_starting_condition | 接收各自明确规格的蜡、白电油、真实公用工程及包装，携带其上游清单；不假设场内合成蜡。 |
 | starting_condition_role | 物理前景交接门，链接采购投入负荷而非清零。 |
-| product_classification_scope | 仅经限定的CPC3.0:35333溶剂膏子集；拟narrower关系，待接受。 |
+| product_classification_scope | 仅经限定的CPC3.0:35333溶剂膏子集；narrower分类关联已由classifications/mappings/cpc-3.0-to-pcr.yaml及docs/adr/0424-accept-polishes-and-creams-for-footwear-furniture-floors-coachwork-glass-or-metal.md接受。PCR仍为candidate/authored；独立科学与翻译审查仍待完成，未批准发布。 |
 | recursive_input_rule | 外购成膏或外部配制蜡是携带既有负荷的整份商品投入；不得用组成子账重造采购，或把再熔融当首次制造。 |
 | upstream_dataset_requirement | 逐项匹配真实成分形态/路线/等级及供应商用量基准、地理和时间；宽身份不验证背景供应商。 |
 | disclosure | 配方/SKU、保留溶剂及实测固含/水、真实密度/相态及接收用途、场址/期间、P/G/R/Q、库存与负荷沿革、公用工程、控制、包装/物流、原生限制、分配及缺口。 |

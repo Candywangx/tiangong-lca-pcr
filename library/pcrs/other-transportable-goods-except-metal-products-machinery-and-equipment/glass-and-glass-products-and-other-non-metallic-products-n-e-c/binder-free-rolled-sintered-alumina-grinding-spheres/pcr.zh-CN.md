@@ -22,7 +22,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.binder-free-rolled-sintered-alumina-grinding-spheres |
-| classification_refs | CPC:3.0:37299; narrower |
+| classification_refs | CPC:3.0:37291; narrower |
 | covered_products | 一个品级完整实心未施釉高纯氧化铝研磨球 |
 | excluded_products | 排除空心陶瓷壳、将空心喷雾生料颗粒作为成品、氧化铝原料粉、熔融磨粒、结合磨轮、氧化锆/硅酸锆/滑石瓷/玻璃/钢介质、柱形/卫星形介质、耐火填料或支撑球、坩埚、电绝缘子、餐厨瓷、装饰瓷、卫生陶瓷和建筑陶瓷。添加结合剂/烧结助剂配方、等静压及溶胶凝胶路线须重新评估适用性并记录真实新增交换，不属于本无结合剂滚制路线。采购成品球再包装不能替代制造。 |
 | representative_product | 经首次放行的无结合剂滚制烧结氧化铝球 |
@@ -67,7 +67,7 @@ translation_status: aligned
 | --- | --- |
 | declared_starting_condition | 整份外购未烧结高纯氧化铝粉，真实供货形态与水分；各供水分开 |
 | starting_condition_role | foreground_material_receipt |
-| product_classification_scope | CPC 37299的窄范围候选；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
+| product_classification_scope | CPC 37291的窄范围候选；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | recursive_input_rule | 外购同类烧结球作制粉介质须兼容上游负荷；内部自产转移抵消且保留继承负荷与服务，不替代新球制造 |
 | upstream_dataset_requirement | 匹配整份物料化学/晶相/供货形态、品级、路线、供方地域及广延单位；不重复配方子组分或供方已含工序 |
 | disclosure | 从未烧结粉到首次放行；完整声明供方/厂内制粉分界及原队列后续服务。摇篮到门须适配上游并显式合并 |
@@ -75,6 +75,7 @@ translation_status: aligned
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
 | b_route | manufacture | 从整份外购未烧结粉到完整烧结球首次放行的所有真实操作均纳入，包括图1所示实际厂内制粉以及真实烧后后加工/测试。声明供方制粉及适配上游负荷，不得用成品球采购替代制造。 | `cn111116183a-alumina-spheres-2020`; `union-process-grinding-media`; `jrc-ceramic-bref-2007` |
+| b_classification | applicability | 完整实心烧结氧化铝球是CPC3.0:37291较窄范围内的技术用途研磨介质；已有明确技术用途时不使用37299兜底类。保留无结合剂加水滚制路线，以及耐火填料/支撑球、粉体和结合磨轮等排除项。已接受关联以规范映射及修正决定为准；烧成温度或氧化铝成分本身不证明耐火终端用途，原生UUID身份另行判断。 | `unsd-cpc3-explanatory-2025`; `wco-hs2022-ceramics`; `union-process-grinding-media`; `cafc-schlumberger-2017` |
 | b_stock | manufacturing numerator | 逐交换保留期初期末原料、在制品及未归属非在制物料存储的继承负荷向量，并纳入全部失败、零产出、保温、启停、待机、清理和返工。已放行期末成品已在Q内，不能扣其制造负荷或另加为产出。 明确区分存量修正前毛接收入池与已扣存量消耗，保留已含修正，仅核对尚未纳入向量，不对相同原料存量重复修正。独立记录各原料WIP非WIP期初期末实物量及完整继承交换向量。 | `cn111116183a-alumina-spheres-2020`; `union-process-grinding-media`; `jrc-ceramic-bref-2007` |
 | b_service | original cohort | 已放行产品制造负荷保留在原队列Qc。仅记录观察时段H内真实后续包装、仓储、搬运、发运、退回、复验及新增清洗/返工；复验、退货与重发不形成产量。合并时内部Q移交抵消一次。 实际放行后修复重磨复烧须有适用制造商设计许可、整牌号边界继续适用、实测新增移除材料及水相、规定复验及验收或废弃处置。专利烧结前修生球不是破损烧成介质可恢复的许可。 | `cn111116183a-alumina-spheres-2020`; `union-process-grinding-media`; `jrc-ceramic-bref-2007` |
 | b_atomic | all exchanges | 每份真实外购制剂、材料、燃料、载体、包装、废物和真实物种均为原子行。任何实际未列交换须以具体身份和去向新增，不能藏入other或零集合。整份制剂采购一次，含量/水/活性物仅子账；厂内配制则保留每种真实外购物料和工序。 | `cn111116183a-alumina-spheres-2020`; `union-process-grinding-media`; `jrc-ceramic-bref-2007` |
@@ -1320,3 +1321,6 @@ translation_status: aligned
 | union-process-grinding-media | handbook | Union Process, Grinding Media, ©2017 brochure; https://www.unionprocess.com.cn/uploads/soft/UP_YMJZ_EN.pdf ; complete six-page brochure, material/form comparisons | 已制造研磨介质身份、材质/形状反例、选择与分级。商品品级与专利案例不同，不提供单件质量、等效研磨服务或默认配方。 |
 | jrc-ceramic-bref-2007 | official_guidance | European Commission, Ceramic Manufacturing Industry BREF, August 2007; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/cer_bref_0807.pdf ; sections 2.3.8.1–2.3.8.9 and adjacent alternatives | 定性支持供货材料边界、技术陶瓷制备、烧结、实际硬加工与最终检验。行业案例和图示不是统一配方、能耗/排放因子或分配规则。 |
 | jrc-ilcd-detailed-2010 | official_guidance | European Commission JRC, ILCD Handbook General guide—Detailed guidance, First edition March 2010; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf ; sections 7.9.2–7.9.3 | 归因情景先细分和交换特定决定性物理因果，再对剩余部分用共同门口市场价值。下述原始数据、存量与队列核算是本PCR明确的采集要求，不是ILCD已报告的观测数据。 |
+| unsd-cpc3-explanatory-2025 | official_guidance | UNSD; Central Product Classification version 3.0 explanatory notes; 30 June 2025; pp. 182–183. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 支持已接受较窄分类关联的官方类别说明；不声称取得逐项CPC3.0–HS对照表。 |
+| wco-hs2022-ceramics | official_guidance | World Customs Organization; HS 2022 Chapter 69; note 1(a), headings 6903 and 6909. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1369_2022e.pdf?la=en | 结合真实产品范围判断耐火与技术陶瓷边界；不自动指定六位子目或材料性能默认值。 |
+| cafc-schlumberger-2017 | official_guidance | US Court of Appeals for the Federal Circuit; Schlumberger Technology Corp. v. United States, No. 2015-2076; decided 9 January 2017; p. 12. https://www.cafc.uscourts.gov/opinions-orders/15-2076.opinion.1-6-2017.1.pdf | 作为EN6909技术研磨球示例的历史公布原文依据；案件审理支撑剂，不为本PCR作归类、不提供现行CPC3.0–HS对照表，也不设材料性能默认值。 |

@@ -2,7 +2,7 @@
 title: Accept binder-free alumina grinding spheres
 docType: decision
 scope: repo
-status: accepted
+status: superseded
 authoritative: true
 owner: tiangong-lca-pcr
 language: en
@@ -10,6 +10,8 @@ lastReviewedAt: 2026-10-20
 ---
 
 # Accept binder-free alumina grinding spheres
+
+> Classification association superseded by [docs/adr/2026-correct-alumina-crucible-and-grinding-sphere-classification.md](2026-correct-alumina-crucible-and-grinding-sphere-classification.md) on 2026-10-21T11:30:02Z. The 37299 association below is historical; the current accepted narrower association is CPC 3.0 37291. The retained methodology, source and identity limitations are not promoted to scientific or translation approval.
 
 Accept a `narrower` association from CPC 3.0 `37299` to `pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.binder-free-rolled-sintered-alumina-grinding-spheres`.
 

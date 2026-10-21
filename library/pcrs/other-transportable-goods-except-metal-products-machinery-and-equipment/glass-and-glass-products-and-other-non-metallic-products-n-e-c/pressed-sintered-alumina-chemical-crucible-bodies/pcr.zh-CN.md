@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.pressed-sintered-alumina-chemical-crucible-bodies |
-| classification_refs | CPC 3.0:37291; narrower scope; 较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
+| classification_refs | CPC 3.0:37340; narrower scope; 较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 压制烧结的名义95%氧化铝化学用未涂层空坩埚体 |
 | excluded_products | 瓷质硅酸盐; 高纯氧化铝不同路线; 石英; SiC; 氮化物; 金属; 试剂; 已装设备; 餐厨装饰; 电绝缘; 研磨介质; 其他农业或包装容器 |
 | representative_product | Morgan Sintox FA支持95%氧化铝材料、化学坩埚终端及压制能力；无保证工厂配方 |
@@ -64,7 +64,7 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | declared_starting_condition | 未成形实际供货氧化铝及配料，或完整未烧压制颗粒料；厂内配制单列 |
 | starting_condition_role | foreground_gate |
-| product_classification_scope | CPC3.0:37291 narrower chemical alumina crucible body |
+| product_classification_scope | CPC3.0:37340 narrower chemical alumina crucible body |
 | recursive_input_rule | 外购同类别已烧体另披露路线；内部回料仅内部转移抵消 |
 | upstream_dataset_requirement | 匹配实际整份供货状态、供应地及属性的上游负荷一次；未知不填零 |
 | disclosure | 实际设计/材料/表面、起始供货、制造工序、首次放行Q、原队列服务H、历史向量、全部缺失与身份限制 |
@@ -73,6 +73,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | b_full | foreground | 从实际未成形氧化铝与独立供货配料，或一种完整未烧颗粒料开始；纳入接收运输、调制、研磨、厂内造粒及喷雾干燥、压制、生坯或预烧加工、干燥、脱脂、烧结、冷却、硬加工、清洗、试验、废物处理和首次质量放行。外购已烧坩埚再包装不属于本制造路线。 | `jrc-ceramic-bref-2007`; `morgan-sintox-fa-2013` |
 | b_form | applicability | 这是名义95%氧化铝化学坩埚类别中未涂层压制氧化物陶瓷体的明确技术综合。Morgan支持材料类别、化学坩埚终端及压制能力；BREF支持适用的粉体至烧成体阶段。不声称某厂使用每个列出选项或固定配方。实际涂层、表面状态及工厂路线必须有证据。瓷质硅酸盐、SiC、氮化物、石英、金属及已组装设备须另审适用性。 | `jrc-ceramic-bref-2007`; `morgan-sintox-fa-2013` |
+| b_classification | applicability | 完整已烧成的名义95%氧化铝化学坩埚体属于CPC3.0:37340其他耐火陶瓷制品分支的较窄产品，不属于未烧制分支，也不按37291非耐火技术陶瓷申报。已接受关联以规范映射及修正决定为准；耐火用途由Morgan与声明的化学/热学范围正面证明，不单凭氧化铝含量推断。原生UUID身份另行判断。 | `unsd-cpc3-explanatory-2025`; `wco-hs2022-ceramics`; `morgan-sintox-fa-2013` |
 | b_stocks | manufacturing numerator | 保留全部原料、WIP、未分配非WIP储存的期初期末逐交换负荷向量。当期负荷包含失败、零产出、启停、闲置、清理、试验、重工和治理。期末已放行FG已在Q内；不得扣其制造负荷或再作为产量增加。内部转移抵消，实际再处理负荷保留。 | `jrc-ceramic-bref-2007`; `jrc-ilcd-allocation-2010` |
 | b_service | original-cohort service | 制造负荷随首次放行队列保留。后续仓储、包装、搬运、发运、返回、复验及实际增量重工为独立观测服务，使用原队列Qc与观测H。交付或复验不造新产量。追踪FG实物ID及实际状态变化；合并抵消内部坩埚体移交，保留外部总交换。 | `jrc-ceramic-bref-2007`; `jrc-ilcd-allocation-2010` |
 | b_atomic | every exchange | 每种真实材料、整份外购制剂、载体、燃料、气体物种、包装制品、资产更换件及废物均须独立原子交换和真实适用状态。建模前补充实际未列交换；不存在、零、低于检出限和未知不同。不得藏入other或给未计量流赋零。空气总量与子物种不得重复；不由COD、VOC、总卤素或PM推定特定物种。 | `jrc-ceramic-bref-2007` |
@@ -1539,3 +1540,5 @@ sync_with: pcr.en-US.md
 | jrc-ceramic-bref-2007 | official_guidance | European Commission; Reference Document on Best Available Techniques in the Ceramic Manufacturing Industry; August2007; §2.3.8 pp75–84 and §3.3.8 pp130–134. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/cer_bref_0807.pdf | 氧化物陶瓷从未烧原料至烧结精加工的通用工序、公辅、废物及排放识别；图2.28/2.29与相邻反例；电瓷特例数值不转用 |
 | morgan-sintox-fa-2013 | extension_guidance | Morgan Advanced Materials; Sintox FA (Mac-A950R-1) Data Sheet; copyright2013; complete one-page specification. https://www.morgantechnicalceramics.com/media/y14by1i3/sintox-fa.pdf | 真实95%氧化铝材料类别、压制能力及化学坩埚终端；试样数值不作工厂默认或组件保证 |
 | jrc-ilcd-allocation-2010 | official_guidance | European Commission JRC; ILCD Handbook General guide for Life Cycle Assessment Detailed guidance; first edition March2010; §7.9.2–7.9.3 pp255–272. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf | 归因分配时先独立或虚拟划分，再逐交换决定性物理因果，真实余量才按同门同状态同期市场价值；不是陶瓷工业配方证据 |
+| unsd-cpc3-explanatory-2025 | official_guidance | UNSD; Central Product Classification version 3.0 explanatory notes; 30 June 2025; pp. 182–183. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 支持已接受较窄分类关联的官方类别说明；不声称取得逐项CPC3.0–HS对照表。 |
+| wco-hs2022-ceramics | official_guidance | World Customs Organization; HS 2022 Chapter 69; note 1(a), headings 6903 and 6909. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1369_2022e.pdf?la=en | 结合真实产品范围判断耐火与技术陶瓷边界；不自动指定六位子目或材料性能默认值。 |

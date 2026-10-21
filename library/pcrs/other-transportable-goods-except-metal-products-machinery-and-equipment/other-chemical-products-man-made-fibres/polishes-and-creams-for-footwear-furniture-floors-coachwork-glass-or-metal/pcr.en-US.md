@@ -76,7 +76,7 @@ Every required qualifier must be declared in the dataset or equivalent product/p
 | --- | --- |
 | declared_starting_condition | Receipt of separately specified waxes, white spirit, actual utilities and packaging with their upstream inventories; no onsite wax synthesis assumed. |
 | starting_condition_role | Physical foreground handover, with purchased-input burdens linked rather than reset. |
-| product_classification_scope | Only the qualified solvent paste subset of CPC3.0:35333; proposed narrower relation, acceptance pending. |
+| product_classification_scope | Only the qualified solvent paste subset of CPC3.0:35333; the narrower classification association is accepted by classifications/mappings/cpc-3.0-to-pcr.yaml and docs/adr/0424-accept-polishes-and-creams-for-footwear-furniture-floors-coachwork-glass-or-metal.md. The PCR remains candidate/authored; independent scientific and translation review remain pending and publication is not approved. |
 | recursive_input_rule | Bought finished paste or an externally prepared wax blend is a whole commercial input with its prior burden; do not recreate that procurement from component subledgers or treat remelting as first manufacture. |
 | upstream_dataset_requirement | Match each actual ingredient state/route/grade and supplier quantity basis, geography and time; broad identity does not validate a background provider. |
 | disclosure | Recipe/SKU, retained solvent and measured solids/water, actual density/state and intended receiver use, site/period, P/G/R/Q, stocks and burden lineage, utilities, controls, packaging/logistics, native limits, allocation and gaps. |
