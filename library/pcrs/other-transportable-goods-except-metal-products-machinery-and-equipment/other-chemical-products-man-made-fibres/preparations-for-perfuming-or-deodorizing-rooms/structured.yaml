@@ -1,10 +1,967 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "35331"
-  title: "Preparations for perfuming or deodorizing rooms"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.preparations-for-perfuming-or-deodorizing-rooms"
+  classification_refs: "CPC 3.0 35331; narrower"
+  covered_products: "Water/ethanol/DPnP/fragrance aerosol with nitrogen propellant in conventional tinplate cans"
+  excluded_products: "Bulk fragrance; body perfume alone; gel/substrate/candle/adsorbent/BOV/LPG routes; purification service"
+  representative_product: "One actual SKU/formulation and container system, uniquely first released"
+  production_route: "Purchased ingredient blending; liquid filling; valve crimping; gas pressure filling; actual testing and packing; first quality release"
+  market_state: "Pressurised finished aerosol; net contents including retained nitrogen, packaging burden included separately"
+functional_unit:
+  what: "Supply a qualified room-fragrance aerosol preparation"
+  how_much: "1 kg"
+  how_well: "Actual accepted composition and pressure-container specification; no assumed disinfectant efficacy, odour removal equivalence or purification service"
+  how_long_or_cycle: "One first production-quality-release event; no default service life, room area, dose or shelf life"
+  reference_flow_link: "finished_aerosol"
+system_boundary:
+  rules:
+    - rule_id: boundary_production
+      applies_to: "aerosol"
+      rule: "Include receiving/storage, blending, transfer, can filling, valve crimping, nitrogen charging, actual pressure/leak/quality tests, packing and first release, cleaning, failed runs and all upstream burdens. Retain actual heat/fuel/refrigerant/laboratory consumables with separate atomic exchanges if present; this representative electric route never licenses their omission."
+      source_ids:
+        - ep3481439-aerosol
+        - zigler-nitrogen-filling
+    - rule_id: boundary_cohort
+      applies_to: "aerosol"
+      rule: "Finished warehouse/handling/dispatch is a separate raw ledger for the same released cohort when included. Eliminate its internal receipt from production on consolidation, retain its actual attributable burdens, and never add closing finished goods of Q as another production output. No automatic equivalence of released and delivered kg."
+      source_ids: []
+    - rule_id: boundary_use
+      applies_to: "reference product"
+      rule: "Use-stage spraying, room exposure, device power, lifetime, area, deodorization/disinfection/air-cleaning function and end-of-life are outside this production inventory and need separate evidence and boundaries. Do not move real manufacturing test sprays or packaging into the excluded use stage."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased complete ingredients, supplied gaseous nitrogen, finished empty pressure packaging and their carried opening inventory burdens at the formulation/filling site"
+  starting_condition_role: "Receiving and physical formulation/filling, not upstream manufacture as an omitted free input"
+  product_classification_scope: "CPC 3.0 35331; narrower"
+  recursive_input_rule: "A purchased room-fragrance premix is one whole commercial input with full upstream formulation burdens, not an unburdened same-category shortcut. It changes the selected separately charged route and needs an explicit boundary revision, without duplicate constituent procurement."
+  upstream_dataset_requirement: "Match actual complete supplied form, concentration, grade, route, gas state, geography and delivery; retain upstream chemical synthesis, gas separation/compression, packaging fabrication/coating/printing and transport burdens"
+  disclosure: "Declare production-release gate separately from warehouse/dispatch, physical cohort, actual packaging/tests/cleaning, shared utilities, storage/handling, exclusions, allocation and complete opening/closing WIP/stock burdens"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Preparations for perfuming or deodorizing rooms"
+    uuid: "377fa3df-04b2-4d8c-8d71-27f049e0d10e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "SKU and formulation revision"
+    - "complete supplied feed/mixture composition"
+    - "actual co-solvent isomers/grade"
+    - "retained nitrogen and fill state"
+    - "pressure-can/valve material and compatibility"
+    - "net/gross/tare method"
+    - "first quality-release gate"
+    - "site and period"
+    - "WIP and stock cohort genealogy"
+    - "upstream route/geography/provider basis"
+    - "actual test and emission speciation"
+    - cut-offs
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is the unique positive net contents mass first newly quality-released in the matched production period/cohort, including retained propellant and carrier water, excluding all container/packaging tare. Q is not dispatch mass."
+  - id: single_basis
+    applies_to: "all inventory denominators"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert complete attributable raw numerators to their own units, then normalize once to positive Q; retain energy and emission units. Integrated gas/liquid volume receives no additional time multiplier."
+process_map:
+  - id: aerosol
+    name: "Formulation, pressure filling and quality release"
+    inclusion: "required"
+    inclusion_condition: "Selected conventional nitrogen aerosol route; actual operations documented"
+    role: "foreground"
+    quantitative_reference: "finished_aerosol"
+process_inventory:
+  - id: aerosol
+    label: "Formulation, pressure filling and quality release"
+    inputs:
+      product:
+        - row_id: ethanol
+          role: "Purchased ethanol feed"
+          name: "Supplied ethanol feed solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Native Product/Mass identity is ethanol CAS64-17-5, production mix at plant, with no specified concentration, grade, route or geography. The native class35499 is a classification debt, not evidence for a different molecule or a residual-only chemical identity. Use one complete purchased ethanol supply, including actual water and denaturants when present, with verified composition/provider reconciliation; do not silently bind a pure-ethanol provider to a hydrous or denatured formulation. Water and denaturants in that supply are non-additive constituent subledgers. Other purchased denaturants need separate cards. The generic ethanol molecular candidate is not bound to this whole commercial solution pending complete supply-state identity; this auxiliary gap does not change the finished reference. No native coefficient is a density."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ep3481439-aerosol
+            ranges: []
+        - row_id: dpnp
+          role: "DPnP co-solvent charge"
+          name: "Dipropylene glycol n-propyl ether"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the complete supplied DPnP grade with actual isomer distribution, assay, carrier and impurities. DPM (methyl ether), DPG (unetherified glycol), ethylene glycol ethers and propylene-glycol n-propyl ether are different identities and cannot substitute. The patent identifies DPnP but establishes no supplier grade, density or actual charge. UUID remains unbound."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ep3481439-aerosol
+            ranges: []
+        - row_id: fragrance
+          role: "Purchased fragrance oil blend"
+          name: "Fragrance mixture"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2fb8cc73-e146-4ff5-a9c4-76a98611a010"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Native Product/Mass, generic at plant, purchased fragrance oil blend, with no CAS, fixed composition, grade, geographic location or quantitative properties beyond reference Mass factor1. This is one purchased whole mixture, not duplicate procurement of its individual constituents. Obtain complete supplier composition and carrier basis for upstream matching, mass/element balances and actual emitted-species identification. A scent name does not supply these data."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ep3481439-aerosol
+            ranges: []
+        - row_id: formulation_water
+          role: "Separately added formulation water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Native Product/Mass, CAS7732-18-5, production mix at plant; name-route specifies ion exchange or reverse osmosis, pure substance. Comment additionally mentions distillation and production/consumption supply; no numerical quality standard or geography is specified. Restrict this binding to actually matched purchased ion-exchange/RO deionised water. Distilled-only water or onsite treatment requires its own verified identity and complete treatment inventory. Exclude water already inside purchased ethanol/fragrance from this separate procurement row."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ep3481439-aerosol
+            ranges: []
+        - row_id: nitrogen
+          role: "Gaseous nitrogen propellant supply"
+          name: "Compressed nitrogen propellant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure actual supplied gas mass, purity, pressure, temperature, delivery and production route; include line charging, purge, failed filling and retained propellant. The native air-separation N2 candidate has reference Mass coefficient1.25 without a volume property or stated density conditions; it is not adopted and never used as density. A bottling inerting make-up/vented gas is not this retained propellant supply. No liquid-N2/vaporization route, gas charge, pressure or gas-to-liquid volume ratio is presumed."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - zigler-nitrogen-filling
+            ranges: []
+        - row_id: can
+          role: "Purchased pressure-rated can body"
+          name: "Printed tinplate aerosol can body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One complete supplied pressure-rated tinplate can body with its integral ends, actual tin/steel, coating and printing. Record whole article mass and upstream fabrication/printing, without also procuring its steel, tin and coating constituent masses. Food-canning can identities do not establish pressure suitability. No default can mass or recycled fraction."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ep3481439-aerosol
+            ranges: []
+        - row_id: valve
+          role: "Purchased aerosol dispensing valve"
+          name: "Aerosol dispensing valve assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actually supplied valve assembly including its dip tube, mounting cup and seals when supplied together; describe its metal/polymer/elastomer bill of materials and upstream assembly. Do not count constituent procurement a second time. This conventional valve is not a bag-on-valve; a bag requires a distinct material and pressure-boundary review."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - zigler-nitrogen-filling
+            ranges: []
+        - row_id: actuator
+          role: "Purchased spray actuator"
+          name: "Polypropylene aerosol actuator"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this separately purchased moulded actuator with actual resin/additives, mass and manufacture. It is not included in valve mass for this route. A different polymer or inseparable supplied article requires a corrected identity and procurement ledger."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: cap
+          role: "Purchased protective overcap"
+          name: "Polypropylene aerosol overcap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One separately supplied moulded PP cap, actual mass/composition and upstream manufacture. Record rejects and inventory movement; no assumed piece mass or shared resin procurement."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton"
+          name: "Printed corrugated fibreboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual single shipping carton, including integral printing and closure supplied as part of that article; match fibre composition and converting burden. Separately purchased tape, pallet, label or stretch film needs its own atomic card when used; never hide them in carton mass."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_water
+          role: "Purchased water for cleaning and tests"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use separately metered purchased ion-exchange/RO DI water only, subject to the complete native limitations stated in formulation_water: Product/Mass, CAS7732-18-5, plant production mix, no fixed quality standard/geography; comment also mentions distillation and consumer supply. Include actual washing and pressure/leak-test water makeup and losses; internal recirculation is not another purchase. A different actual water quality needs a separate corrected exchange."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Site electricity"
+          name: "Purchased alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter blending, pumping, ventilation, compressed-air generation, pressure/testing, cleaning, laboratory, holding and handling with reconciled shared services. Native <1kV grid-average consumption candidate explicitly has locationOfSupply CN; leave this row unbound for an unspecified actual location/voltage/mix rather than imposing those conditions. Compressor electricity is counted here when compressed air is generated onsite, not again as purchased compressed air."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_aerosol
+          role: "First quality-released filled aerosol contents"
+          name: "Preparations for perfuming or deodorizing rooms"
+          flow_type: "product"
+          flow_ref:
+            uuid: "377fa3df-04b2-4d8c-8d71-27f049e0d10e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Native Product/Mass, manufactured finished product, production mix at plant; no CAS, recipe, phase, grade, geography or locationOfSupply is specified and reference Mass factor is1. The binding is conditional identity for this measured finished aerosol, not a recipe, provider, pressure rating or deodorization performance. Q includes all net formulation and retained nitrogen at first quality release and excludes every packaging tare. Packaging burdens remain included. The generic UUID also does not make a bulk intermediate a second terminal reference."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - ep3481439-aerosol
+            ranges: []
+      waste:
+        - row_id: liquid_residue
+          role: "Rejected bulk liquid removed for treatment"
+          name: "Waste aqueous ethanol DPnP fragrance formulation"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual segregated bulk liquid waste stream, net whole-mixture mass, complete composition and receiving treatment interface. Exclude internal rework until it actually leaves; whole waste mass and separately assayed constituent contents are not additive waste exchanges."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_losses
+              source_ids: []
+            ranges: []
+        - row_id: wash_effluent
+          role: "Collected washing effluent"
+          name: "Wastewater from aerosol formulation cleaning"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately collected wash/test drainage sent to offsite treatment, with carrier water, dissolved chemicals and solids characterized. Do not also claim the same contained species as direct water emissions. Onsite treatment requires a complete added treatment inventory and separately measured final species/medium."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_losses
+              source_ids: []
+            ranges: []
+        - row_id: rejected_filled_can
+          role: "Rejected intact aerosol can transferred to treatment"
+          name: "Waste filled aerosol can"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One intact discarded physical article, including its measured retained contents and container, only where transferred intact. Keep tare/content/component subledgers. If onsite de-gassing or separation occurs, replace this intact handover with actual separately released gas, liquid and separated scrap streams and burdens; never record both whole article and its contained mass again."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_losses
+              source_ids: []
+            ranges: []
+        - row_id: carton_scrap
+          role: "Segregated carton rejects"
+          name: "Waste corrugated fibreboard carton"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual carton scrap separately weighed and transferred to its documented recipient. Recovery is not an automatic avoided-production credit; alternative separated packaging scrap requires additional actual atomic cards."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_losses
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ethanol_air
+          role: "Actual ethanol released to air"
+          name: "Ethanol, air emission"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record independently measured ethanol mass released after actual capture, including fugitive transfer and rejected/testing sprays. Identify actual air subcompartment and fossil/biogenic origin if the characterization requires it. Total VOC, COD and closure residual do not identify ethanol. Do not count captured liquid here."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_losses
+              source_ids: []
+            ranges: []
+        - row_id: dpnp_air
+          role: "Actual DPnP released to air"
+          name: "Dipropylene glycol n-propyl ether, air emission"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use independently supported DPnP species mass and air medium; no DPM/DPG surrogate or residual allocation. Actual perfume constituents released to air each require an additional chemically specific card after supplier/species identification; a generic fragrance-emission bundle is prohibited. No absence of those species is inferred from this representative list."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_losses
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_air
+          role: "Actual nitrogen vented to air"
+          name: "Dinitrogen, air emission"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure actual nitrogen-only purge/charging/test losses with independent gas composition and conditions; retained propellant remains in Q. Ambient air passed through onsite pneumatics is not all nitrogen propellant loss; disclose its separately metered physical passage and treat any actual lubricant aerosol as its own species. A product-N2 UUID is not an elementary-air UUID."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_losses
+              source_ids: []
+            ranges: []
+        - row_id: water_air
+          role: "Actual water evaporated to air"
+          name: "Water vapour, air emission"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Independently establish evaporated water and medium from water/ventilation measurements; do not fit it and an unknown solvent outlet to the same closure residual. Water carried in product/waste remains in those ledgers. Physical blending and gas dissolution do not form stoichiometric reaction water."
+          amount:
+            expression: "Actual attributable converted raw-period amount divided once by positive newly accepted net contents kg, as specified in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_losses
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "all inventory rows"
+    rule: "Use direct cohort/batch metering first. Allocate only genuinely shared burdens by measured causal drivers, with totals, driver units and reconciliation disclosed. No default economic or mass percentage is provided."
+    source_ids: []
+  - rule_id: allocation_returns
+    applies_to: "aerosol"
+    rule: "Failed and zero-output runs, rework and returns retain their actual burdens. Internal recovery is not external co-production; reaccepting an already released lot creates no new Q. Waste recovery has no automatic avoided-product credit. Document any real co-product separately with its actual physical mass, fate and allocation."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material
+      process_id: "aerosol"
+      flow_role: "Complete commercial ingredients and nitrogen"
+      record_type: "batch_material_records"
+      raw_fields: "owner: material custodian; period; cohort; lot; supplier; all identity/route/grade/geography; supplied mass; assay basis; complete constituent fractions; gas pressure/temperature/composition; density source and conditions; opening/closing raw stores; issue/return; WIP burdens"
+      collection_method: "Use calibrated weighing, receipt/charge records and supplier composition. Reconcile receipts, uncharged stores and actual issues as separate linked views, not additive purchases. Meter nitrogen mass independently of catalog coefficients and distinguish retained gas from purges. Whole formulations are one procurement; constituents are non-additive subledgers. Retain complete converted raw numerators and attributable opening/closing carried burdens without division. period_normalization alone divides once by Q; card formulas and aggregation_rule name the same final reporting operation. Q=0 retains the complete raw/burden pool without a normalized value."
+      unit: "kg; mass fraction; m3 with actual gas conditions"
+      frequency: "Every receipt/issue and batch"
+      temporal_coverage: "Complete actual period with earlier/later carry links"
+      site_scope: "Same physical route/site/SKU and cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; receipts; certificates; full composition; stock reconciliation"
+    - protocol_id: cp_packaging
+      process_id: "aerosol"
+      flow_role: "Each separately supplied packaging article"
+      record_type: "packaging_records"
+      raw_fields: "owner: packaging engineer; lot; bill of materials; pressure rating; whole article/tare mass; separately purchased items; rejects; opening/closing stock; supplier manufacture/printing/coating; compatibility test"
+      collection_method: "Weigh representative actual articles with uncertainty and reconcile counts/masses, issues and scrap. Validate valve/can/actuator interfaces, retained contents and actual test rejection records. Include real extra labels, film, tape or pallets with separate exchanges. Retain complete converted raw numerators and attributable opening/closing carried burdens without division. period_normalization alone divides once by Q; card formulas and aggregation_rule name the same final reporting operation. Q=0 retains the complete raw/burden pool without a normalized value."
+      unit: "kg; item count with measured mass conversion"
+      frequency: "Each packaging lot and filling batch"
+      temporal_coverage: "Complete actual period and stock-linked cohorts"
+      site_scope: "Same physical route/site/SKU and cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Tare sampling; bills of materials; compatibility and pressure/test records"
+    - protocol_id: cp_services
+      process_id: "aerosol"
+      flow_role: "Actual utilities cleaning testing handling storage"
+      record_type: "meter_and_service_records"
+      raw_fields: "owner: utilities engineer; meter interval; voltage/location/mix; compression service; water; actual heat/fuel/refrigerants; test/cleaning/lab/ventilation; shared drivers; failures; warehouse/dispatch cohort links; opening/closing carried burdens"
+      collection_method: "Submeter complete operations including startup/idle/failure, air compression and actual hot-water testing if present. Record either purchased compressed-air service or onsite compression resources, never both for the same service. Add every actual thermal/fuel/lab input as a specific exchange rather than assuming the electric representative list is complete. Keep actual matching finished-cohort storage/dispatch burdens in a separate linked ledger. Retain complete converted raw numerators and attributable opening/closing carried burdens without division. period_normalization alone divides once by Q; card formulas and aggregation_rule name the same final reporting operation. Q=0 retains the complete raw/burden pool without a normalized value."
+      unit: "kWh; kg; original service units"
+      frequency: "Each meter interval/service event"
+      temporal_coverage: "Full actual period including zero-output and warehouse cohort intervals"
+      site_scope: "Same site and attributable actual product route/cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meters; invoices; allocation reconciliation; warehouse/handling records"
+    - protocol_id: cp_release
+      process_id: "aerosol"
+      flow_role: "Unique first production-quality release and inventories"
+      record_type: "quality_release_and_mass_records"
+      raw_fields: "owner: independent quality officer; period; formulation/container revision; lot/event genealogy; first-release decision; gross/tare/net contents and retained gas; rework/return; failed lots; opening/closing unreleased WIP; WIP carried burdens; separate released-finished stock/dispatch records"
+      collection_method: "Weigh actual accepted filled articles and subtract matched actual packaging tare. Define Q solely as net contents newly first quality-released during the selected production period/cohort, positive and counted once. Old-stock dispatch, internal transfers, return/reinspection/reacceptance do not create Q. Reconcile production charges and opening unreleased WIP against Q, closing unreleased WIP and actual losses; released closing finished goods already belong to Q and are not added again. Warehouse ledger separately reconciles opening released stock plus receipt of Q against dispatch, closing stock and losses, with internal production receipt cancelled on consolidation; retain matching actual burdens. Retain complete converted raw numerators and attributable opening/closing carried burdens without division. period_normalization alone divides once by Q; card formulas and aggregation_rule name the same final reporting operation. Q=0 retains the complete raw/burden pool without a normalized value."
+      unit: "kg"
+      frequency: "Every release event and cut-off"
+      temporal_coverage: "Whole actual period and linked opening/closing cohort history"
+      site_scope: "Same actual SKU/container/route and declared release gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Independent release certificate; calibrated gross/tare; failed/rework genealogy; WIP/warehouse reconciliation"
+    - protocol_id: cp_losses
+      process_id: "aerosol"
+      flow_role: "Each physical waste and actual emitted species"
+      record_type: "weighing_speciation_monitoring"
+      raw_fields: "owner: environmental metrology officer; actual period/cohort; whole waste/tare/contents; recipient; composition; captured/released species; air/water subcompartment; integrated volume or rate/time; gas temperature/pressure/wet basis; concentrations; uncertainty/detection limits; opening/closing held wastes and carried burdens"
+      collection_method: "Use weighing manifests and independently validated species-specific measurements, including failed/zero-output runs, filling leaks and actual test sprays. No generic VOC/fragrance bundle, COD or mass residual establishes actual species. Retain complete measured water and elemental balances separately from independently evidenced chemistry. Integrated volume is not multiplied by duration again; account intact waste can or its separated outlets once. Retain complete converted raw numerators and attributable opening/closing carried burdens without division. period_normalization alone divides once by Q; card formulas and aggregation_rule name the same final reporting operation. Q=0 retains the complete raw/burden pool without a normalized value."
+      unit: "kg; m3 with conditions; species kg/m3; h only for rate integration"
+      frequency: "Each waste movement and monitoring interval"
+      temporal_coverage: "Full period including failed/testing/cleaning and carried burdens"
+      site_scope: "Same physical site/product route/cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Waste manifest; selective assays; capture/vent monitoring; uncertainty; independent closure investigation"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Convert and attribute the complete raw-period numerator of each exchange; divide once by positive Q defined only by first production-quality release in cp_release. Carry opening WIP burdens in and documented closing unreleased WIP burdens out. Retain failures, zero-output runs, all rework/returns and matched actual testing, packaging, storage, handling/dispatch burdens. Q is not deliveries; closing released finished goods of Q are not another production output or another closing production-WIP subtraction. A separate warehouse ledger cancels internal handover on consolidation and retains matching burdens without renormalizing already normalized factors. Q=0 preserves the full raw/burden pool without a normalized result."
+      inputs:
+        - cp_material
+        - cp_packaging
+        - cp_services
+        - cp_release
+        - cp_losses
+      output: "Exchange amount per 1 kg reference flow"
+      source_ids: []
+    - id: raw_conversion
+      applies_to: "all inventory rows"
+      rule: "Use calibrated mass or independently evidenced volume times density at matched composition and conditions; convert pieces using actual measured article mass. Integrate rate times actual duration only for rate records. An integrated gas/liquid volume receives concentration or justified density conversion, no extra time factor. No native factor1.25 or secondary coefficient is a measured density."
+      inputs:
+        - cp_material
+        - cp_packaging
+        - cp_services
+        - cp_losses
+      output: "Converted raw quantities before normalization"
+      source_ids: []
+    - id: mixture_subledger
+      applies_to: "ethanol; fragrance; dpnp; nitrogen"
+      rule: "Constituent mass equals complete supplied commercial input mass times its compatible independently assayed mass fraction. Carrier water, solvents and impurities reconcile within that input, not another purchase. Do not treat v/v as w/w. Retained nitrogen is part of net product contents; total gas charged also includes measured losses."
+      inputs:
+        - cp_material
+        - cp_release
+      output: "Non-additive constituent ledger"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "all inventory rows"
+      rule: "Maintain separate formulation/propellant, packaging and utility/ambient-air physical ledgers and independent elemental/water subledgers. Production charges plus opening unreleased WIP equal Q plus closing unreleased WIP, actual wastes/emissions and documented net transfers; net contents exclude packaging, so reconcile packaging to accepted-product tare and actual scrap separately. For an intact rejected filled can, only its separately measured contents enter the formulation/propellant ledger and its tare enters the packaging ledger; neither is added again beside the whole waste exchange. Internal recirculation cancels. Finished-stock warehouse balance is separate and must not add Q closing stock twice. Physical mixing/gas dissolution establishes no reaction yield or reaction water. Any actual chemistry or species/water formation/consumption needs independent evidence, never COD or fitting two unknown outlets to one residual."
+      inputs:
+        - cp_material
+        - cp_packaging
+        - cp_services
+        - cp_release
+        - cp_losses
+      output: "Independent physical elemental water and species ledgers"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all inventory rows"
+      requirement: "Retain complete native names, route/grade/form, geography and property/unit restrictions in actual dataset matching. Ordinary auxiliary UUID/provider gaps require later verified binding, not surrogate chemicals or zero burdens."
+      evidence: "Full native records; supplier certificates; provider applicability"
+    - id: period
+      applies_to: "all inventory rows"
+      requirement: "Complete matched periods and positive unique Q; trace failed batches, returns, opening/closing WIP and every carried burden. Distinguish first release from actual net delivery and do not discard real warehouse/dispatch burdens."
+      evidence: "Cohort genealogy; full raw ledgers; warehouse reconciliation"
+    - id: actual_product
+      applies_to: "reference product"
+      requirement: "Qualify actual formula, phase stability, can/valve compatibility, net contents and actual pressure/leak/release criteria using responsible laboratory/quality owners. Patent or equipment examples do not establish a real site recipe, certified safety or fragrance/disinfection function."
+      evidence: "Actual validated tests; composition; container specifications"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "finished_aerosol"
+    rule: "Require the unique terminal Product output finished_aerosol to match reference UUID, Mass/kg and net contents at first quality release in both languages. An intermediate sharing a generic UUID remains visible and cannot be renamed or hidden to evade selection."
+    source_ids: []
+  - rule_id: validate_full_period
+    applies_to: "all inventory rows"
+    rule: "Check complete raw attribution, WIP/finished-stock distinction, carried burdens, failure/rework and one normalization; check physical/element/water balances independently from species. Unknown emissions or missing operations remain findings, never fitted residuals or assumed zero."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "reference product"
+    rule: "Confirm actual nitrogen conventional-pressure route and packaging. No area, lifetime, dose, disinfectant efficacy, purification service, recipe/operating default or universal full-leaf mapping follows from kg production."
+    source_ids:
+      - ep3481439-aerosol
+      - zigler-nitrogen-filling
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Production inventory input to an explicitly scoped room-fragrance aerosol lifecycle model"
+  allowed_use: "Same actual physical route/formulation/container state and declared production-release gate, with measured complete inventory"
+  excluded_use: "Universal perfume/air-freshener service, bulk-concentrate equivalence, delivery-gate substitution, dose/lifetime/area or disinfection/purification claims"
+  required_metadata: "Reference qualifiers; native restrictions; actual recipe/container revision; site/period; Q gate; raw ledgers; WIP/stock genealogy; upstream providers and actual operations"
+  required_quality_disclosure: "Unbound auxiliary identities/providers; measured gaps; uncertainty; source limits; actual added exchanges; emission speciation completeness and allocation"
+  update_trigger: "Changed composition/co-solvent/propellant, substrate/container/valve, route/site, gate, provider basis, test/quality criterion or actual operations"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, pp.171–172, 35323/35331. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification headings only; no physical method distinction, accepted edge, recipe or full-leaf coverage is established."
+  - id: "ep3481439-aerosol"
+    type: "literature"
+    reference: "European Patent Office, EP3481439B1, Air freshening formulation, aerosol product and method of freshening the air, 7 June 2023, paragraphs0013–0038 and claims1–10, PDF pp.2–4. https://data.epo.org/publication-server/rest/v1.0/publication-dates/20230607/patents/EP3481439NWB1/document.pdf"
+    used_for: "Primary patent supports surfactant-free water/ethanol/DPnP/fragrance plus gas/container route choices. This selected nitrogen/tinplate route is a bounded synthesis of those choices, not a reported factory recipe or demonstrated site. No percentages, pressure, volume ratio, particle size, duration, yield, energy, corrosion inhibitor dose, performance or legal approval is adopted. The optional inhibitor is not presumed; actual use requires its specific extra exchange."
+  - id: "zigler-nitrogen-filling"
+    type: "handbook"
+    reference: "ZIGLER, Semi-automatic CO2/N2 Filling Machine Z-2013, manufacturer PDF, snapshot 16 October 2026, PDF pp.1–2. https://zigler.eu/wp-content/uploads/2022/03/SEMI-AUTOMATIC_CO2N2_FILLING_MACHINE_Z-2013_EN.pdf"
+    used_for: "Primary equipment description establishes gaseous nitrogen filling through a crimped valve and pneumatic services as technically available; no actual factory uses this model by assumption. CO2/BOV compatibility is not adopted as the selected product. No capacity, fill pressure, air consumption, temperature or supply specification becomes an LCI default; actual onsite air-compression and test loads require measurement."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f60a508a7db10ec212948b21b920695d4c5b794efe8cbab475a82cb818a93969"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5318"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5318
+          line: 57
+          column: 1
+        end:
+          offset: 7836
+          line: 76
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased complete ingredients, supplied gaseous nitrogen, finished empty pressure packaging and their carried opening inventory burdens at the formulation/filling site |\n| starting_condition_role | Receiving and physical formulation/filling, not upstream manufacture as an omitted free input |\n| product_classification_scope | CPC 3.0 35331; narrower |\n| recursive_input_rule | A purchased room-fragrance premix is one whole commercial input with full upstream formulation burdens, not an unburdened same-category shortcut. It changes the selected separately charged route and needs an explicit boundary revision, without duplicate constituent procurement. |\n| upstream_dataset_requirement | Match actual complete supplied form, concentration, grade, route, gas state, geography and delivery; retain upstream chemical synthesis, gas separation/compression, packaging fabrication/coating/printing and transport burdens |\n| disclosure | Declare production-release gate separately from warehouse/dispatch, physical cohort, actual packaging/tests/cleaning, shared utilities, storage/handling, exclusions, allocation and complete opening/closing WIP/stock burdens |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_production | aerosol | Include receiving/storage, blending, transfer, can filling, valve crimping, nitrogen charging, actual pressure/leak/quality tests, packing and first release, cleaning, failed runs and all upstream burdens. Retain actual heat/fuel/refrigerant/laboratory consumables with separate atomic exchanges if present; this representative electric route never licenses their omission. | `ep3481439-aerosol`; `zigler-nitrogen-filling` |\n| boundary_cohort | aerosol | Finished warehouse/handling/dispatch is a separate raw ledger for the same released cohort when included. Eliminate its internal receipt from production on consolidation, retain its actual attributable burdens, and never add closing finished goods of Q as another production output. No automatic equivalence of released and delivered kg. |  |\n| boundary_use | reference product | Use-stage spraying, room exposure, device power, lifetime, area, deodorization/disinfection/air-cleaning function and end-of-life are outside this production inventory and need separate evidence and boundaries. Do not move real manufacturing test sprays or packaging into the excluded use stage. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 278
+              line: 9
+              column: 1
+            end:
+              offset: 356
+              line: 9
+              column: 79
+          text: "# Nitrogen-pressurised aqueous ethanol/DPnP room-fragrance aerosol manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5318
+              line: 57
+              column: 1
+            end:
+              offset: 5339
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28089"
+      family: "allocation"
+      span:
+        start:
+          offset: 28089
+          line: 400
+          column: 1
+        end:
+          offset: 28832
+          line: 407
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_direct | all inventory rows | Use direct cohort/batch metering first. Allocate only genuinely shared burdens by measured causal drivers, with totals, driver units and reconciliation disclosed. No default economic or mass percentage is provided. |  |\n| allocation_returns | aerosol | Failed and zero-output runs, rework and returns retain their actual burdens. Internal recovery is not external co-production; reaccepting an already released lot creates no new Q. Waste recovery has no automatic avoided-product credit. Document any real co-product separately with its actual physical mass, fate and allocation. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 278
+              line: 9
+              column: 1
+            end:
+              offset: 356
+              line: 9
+              column: 79
+          text: "# Nitrogen-pressurised aqueous ethanol/DPnP room-fragrance aerosol manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28089
+              line: 400
+              column: 1
+            end:
+              offset: 28129
+              line: 400
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40642"
+      family: "validation"
+      span:
+        start:
+          offset: 40642
+          line: 436
+          column: 1
+        end:
+          offset: 41690
+          line: 444
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | finished_aerosol | Require the unique terminal Product output finished_aerosol to match reference UUID, Mass/kg and net contents at first quality release in both languages. An intermediate sharing a generic UUID remains visible and cannot be renamed or hidden to evade selection. |  |\n| validate_full_period | all inventory rows | Check complete raw attribution, WIP/finished-stock distinction, carried burdens, failure/rework and one normalization; check physical/element/water balances independently from species. Unknown emissions or missing operations remain findings, never fitted residuals or assumed zero. |  |\n| validate_scope | reference product | Confirm actual nitrogen conventional-pressure route and packaging. No area, lifetime, dose, disinfectant efficacy, purification service, recipe/operating default or universal full-leaf mapping follows from kg production. | `ep3481439-aerosol`; `zigler-nitrogen-filling` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 278
+              line: 9
+              column: 1
+            end:
+              offset: 356
+              line: 9
+              column: 79
+          text: "# Nitrogen-pressurised aqueous ethanol/DPnP room-fragrance aerosol manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40642
+              line: 436
+              column: 1
+            end:
+              offset: 40664
+              line: 436
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_production"
+      identity_kind: "explicit"
+      unit_id: "normative_5318"
+      source_span:
+        start:
+          offset: 6665
+          line: 72
+          column: 1
+        end:
+          offset: 7123
+          line: 72
+          column: 459
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_cohort"
+      identity_kind: "explicit"
+      unit_id: "normative_5318"
+      source_span:
+        start:
+          offset: 7124
+          line: 73
+          column: 1
+        end:
+          offset: 7496
+          line: 73
+          column: 373
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_use"
+      identity_kind: "explicit"
+      unit_id: "normative_5318"
+      source_span:
+        start:
+          offset: 7497
+          line: 74
+          column: 1
+        end:
+          offset: 7834
+          line: 74
+          column: 338
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_28089"
+      source_span:
+        start:
+          offset: 28202
+          line: 404
+          column: 1
+        end:
+          offset: 28464
+          line: 404
+          column: 263
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_returns"
+      identity_kind: "explicit"
+      unit_id: "normative_28089"
+      source_span:
+        start:
+          offset: 28465
+          line: 405
+          column: 1
+        end:
+          offset: 28830
+          line: 405
+          column: 366
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_40642"
+      source_span:
+        start:
+          offset: 40737
+          line: 440
+          column: 1
+        end:
+          offset: 41044
+          line: 440
+          column: 308
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_full_period"
+      identity_kind: "explicit"
+      unit_id: "normative_40642"
+      source_span:
+        start:
+          offset: 41045
+          line: 441
+          column: 1
+        end:
+          offset: 41377
+          line: 441
+          column: 333
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_40642"
+      source_span:
+        start:
+          offset: 41378
+          line: 442
+          column: 1
+        end:
+          offset: 41688
+          line: 442
+          column: 311
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5318"
+      source_span:
+        start:
+          offset: 5318
+          line: 57
+          column: 1
+        end:
+          offset: 5339
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5318"
+      source_span:
+        start:
+          offset: 5367
+          line: 61
+          column: 1
+        end:
+          offset: 6592
+          line: 68
+          column: 241
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28089"
+      source_span:
+        start:
+          offset: 28089
+          line: 400
+          column: 1
+        end:
+          offset: 28129
+          line: 400
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40642"
+      source_span:
+        start:
+          offset: 40642
+          line: 436
+          column: 1
+        end:
+          offset: 40664
+          line: 436
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f60a508a7db10ec212948b21b920695d4c5b794efe8cbab475a82cb818a93969"
+  generated_content_sha256: "sha256:6c214b355311cb4d25fbcdd3decf6f58578470817af35217ff9fd9f3cc7184d4"

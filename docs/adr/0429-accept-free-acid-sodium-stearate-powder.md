@@ -1,0 +1,27 @@
+---
+title: Accept free-acid sodium stearate powder
+docType: decision
+scope: repo
+status: accepted
+authoritative: true
+owner: tiangong-lca-pcr
+language: en
+lastReviewedAt: 2026-10-20
+---
+
+# Accept free-acid sodium stearate powder
+
+Accept a `narrower` association from CPC 3.0 `35321` to `pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.sodium-stearate-soap-powder`.
+
+The narrower method uses confirmed vegetable-origin free C18 stearic acid and a whole supplied50% aqueous NaOH preparation to make sodium stearate powder by actual neutralisation, water removal/finishing, inspection, packaging, storage and net accepted factory delivery. EPA historical industrial route, the complete patent reaction/example/figures and real Sigma terminal are complementary sources, not one supplier SKU/factory/recipe. Pure-acid neutralisation forms one mole H2O per independently established reacted mole and no glycerol; glyceride saponification and mixed fatty-acid soap are different routes. Patent glycerol/additive/brine examples, nominal moisture/energy/air/temperature/yield, producerester metadata versus actual carboxylate formula, ambient shipping versus cool storage are bounded context, not default recipe, water quantity, density, performance, certification or allocation choice. Reaction extent/residual assays and actual wet/dry state remain independent measurements; formed water is not another purchase or automatically all vapour.
+
+The net-delivery Q is retained. Independent review completes separate manufacturing/FG/combined gross physical records, real external returns and original delivery reversals, actual rework/moisture/phase changes and opening/closing inherited vectors. A gross custody view is not another product output beside the unique1kg net reporting view. Packaging body and lid each have all five external directions and mutually exclusive empty/attached/reusable stocks; reuse/allocation never reduces gross article movement. Steam heat/MJ and actual supply/condensate water masses/state/enthalpy are distinct, with actual charge/loss destinations and one upstream provider owner. Non-WIP loops/equipment/fluids carry their own quantities and every inherited exchange vector; no repeated full charge, arbitrary lifetime or duplicate stock consumption. Actual dryer N2/O2/Ar/atmosphericCO2/water gross crossings use real composition/state measurements, not fixed air fractions; water outlet is actual ordinary gaseous H2O, with condensation/liquid/aerosol/retention separately evidenced. Matched net accepted quantity and historical correction genealogy are preserved rather than changing this PCR to first-release Q. ILCD supplies explicitly applicable attributional subdivision and exchange-specific causality before genuine residual same-gate market value, not an arbitrary physical/economic choice or recycling credit.
+
+Root independently examined the complete bilingual changes and additionally removed the all-inventory Mass/kg requirement from carried energy vectors, confined wet-supply/species mass constraints to material scopes, and preserved each actual exchange unit and the net denominator. Every row still uses one raw B_i/Q after actual conversion/attribution/stock history. No empirical numbers or mass-energy substitute were introduced. Four adopted identities (Soap,50% whole NaOH, route-limited DI water and ordinary-air H2O vapour) have fresh actual membership, exact publicstate100 complete native payloads, every referenced property/version/group/version/reference-unit chain and exact official Chinese displays. Broad soap is not proof of C18 grade; DI water ion-exchange/RO route is not arbitrary distillation. All33 rows were actually queried and27 unresolved concrete auxiliaries remain ordinary data duties.
+
+Root rehashed261 sealed reviewer artifacts,257 old evidence files and frozen intake, then verified current checked34 explicit-root double sync,171 complete finite checks/0 skipped/findings,1625 direct raw/typed comparisons, schemas/current source/content fingerprints and complete3 normative units/11 bindings/23 span checks per language. Final33 cards and15 qualifiers per language remain aligned;32 missing-range warnings and four structural diagnostics per language are retained. Sciencepending_controller/Chinesealigned/unpublished candidate gates remain. This narrower association is not complete35321 coverage, measured factory inventory, scientific/translation approval, publication or full-library/remote qualification.
+
+
+Independent controller review checked raw state-100 flow records, official bilingual names, types, media and property-to-unit-group chains, with any source metadata inconsistency retained explicitly for clarification. Physical identity does not establish supplier/background compatibility or actual quantities. The record remains unpublished `candidate/authored_methodology`, author-aligned in Chinese and pending independent scientific review. This association neither covers the complete classification leaf nor approves scientific methodology, empirical completeness or publication.
+
+Decision-maker: `codex-direct-controller-independent-review`; UTC decision time: `2026-10-20T14:14:22Z`. Normal serial alias/catalog/coverage rebuilding, deterministic projection and consumer checks, and full repository validation remain required before local handoff. Bilingual PCR source locators preserve the limits of each source.
