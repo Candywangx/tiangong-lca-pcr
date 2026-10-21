@@ -439,6 +439,20 @@ full records, tokenization, scores, ranking, 2 MB text buckets and 20 MB raw/4 M
 gzip budgets are unchanged. No dependency or remote service is added, and wire
 compression does not claim to reduce the restored engine's resident memory.
 
+### Bounded native downloads
+
+Current unpublished `candidate/authored_methodology` records without release
+history may embed their required-language Markdown originals as native downloads
+through 96 KiB per file; manifest downloads retain their separate 16 KiB limit.
+This bounded transport preserves original filenames, bytes and hashes. Larger,
+published, optional-language and release artifacts remain physical downloads.
+Both languages, original content and search coverage remain complete. Increasing
+inline eligibility reduces the independent export file count while increasing
+page payload; it does not reduce total exported storage. The complete export
+still must satisfy fewer than 20,000 files, less than 25 MB per file and the
+existing measured memory/build gates; browser qualification verifies native
+downloads against canonical bytes.
+
 ### Inspector data transport
 
 The field inspector groups complete generated records into versioned JSON packs,
