@@ -1,0 +1,921 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.compression-moulded-nbr-seals"
+  classification_refs: "CPC 3.0:36270; proposed narrower; acceptance remains external"
+  covered_products: "Specified unbonded solid sulfur-cured NBR O-ring or moulded gasket SKU"
+  excluded_products: "Hard rubber and routes excluded in section 1"
+  representative_product: "A specified manually trimmed compression-moulded NBR O-ring"
+  production_route: "Purchased uncured compound receipt → preform preparation → electric compression cure → cooling → manual tear trim → inspection → quality release and actual packing"
+  market_state: "Quality-released finished solid elastomer seal, at plant CN; intended for assembly installation, not installed service"
+functional_unit:
+  what: "Provide the declared seal geometry and material for a specified sealing duty"
+  how_much: "1 kg net newly quality-released seals"
+  how_well: "Actual SKU drawing, dimensions/tolerances, cure condition, hardness, defect and application-specific acceptance tests; no generic pressure rating"
+  how_long_or_cycle: "A matched complete reporting period; service life and replacement frequency require application evidence"
+  reference_flow_link: "product"
+system_boundary:
+  rules:
+    - rule_id: boundary_line
+      applies_to: "seal_line"
+      rule: "Include preparation, electric press heating and hydraulics, all cure/cool-down emissions, cooling, manual trim, inspection, actual packing and quality release. Exclude post-release warehouse/dispatch operations from this production gate while retaining their independent physical and carried-burden ledgers. Keep stage-specific meters and physical links within one integrated process; do not duplicate an intermediate reference product. Add actual maintenance materials, cleaners, release agent, compressed-air imports, refrigerant, transport, waste and additional emitted species as individually measured atomic rows before quantitative use. A named card is not a universal recipe."
+      source_ids:
+        - trelleborg-custom-rubber
+        - epa-rubber-2008
+    - rule_id: boundary_stock
+      applies_to: "seal_line"
+      rule: "Q is newly quality-released net production, never Q plus closing FG. Preserve opening/closing WIP quantities, compositions and complete inherited burdens; subtract closing WIP burdens and carry them forward, include consumed opening-WIP burdens, and include actual cohort rejects/rework. Released FG is an output of this gate even when stored: carry its full burdens in the FG ledger without subtracting it from Q. Dispatching opening FG is not new Q. Keep actual net/gross shipments and removable packaging attached to WIP/FG/shipments in independent physical ledgers; internal links balance equally at both ends."
+      source_ids:
+        - ilcd-handbook-2010
+    - rule_id: boundary_air
+      applies_to: "all air rows"
+      rule: "Map measured species and receiving compartments individually. These two organic cards are conditional examples, not an exhaustive emission list. Screen the actual supplier formulation, cure system, residual monomers, auxiliaries and controls; record each detected or justified release. Total VOC/TOC is a reconciliation observation, not another additive elementary mass beside its constituents. Determine actual particulate presence; where present add measured disjoint particle-size bins, captured dust waste separately, never nested totals. No on-site combustion is assumed; actual combustion requires a separate fuel/boiler boundary and primary measurement."
+      source_ids:
+        - epa-rubber-2008
+        - epa-method18-2017
+boundary_abstraction:
+  declared_starting_condition: "Purchased ready-to-cure NBR compound accepted at factory; formulation, cure system, water/solvent and incoming burden identity declared"
+  starting_condition_role: "foreground_starting_condition"
+  product_classification_scope: "Only moulded NBR seals within 36270; no whole-leaf or hard-rubber claim"
+  recursive_input_rule: "Purchased cured seals are inputs with their own full upstream datasets; they cannot be reclassified as uncured compound or new manufacturing output. Internal preforms/WIP are linked transfers, not recursive new supply."
+  upstream_dataset_requirement: "Link composition-compatible cradle-to-gate compound, electricity, water and packaging providers plus actual inbound transport. Without provider compatibility the quantitative model remains incomplete; UUID identity alone is insufficient."
+  disclosure: "Actual factory, technology, period, cohort, incoming state, cut-offs, missing identities, provider limits and separate WIP/FG/packing/dispatch ledgers"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Sealing elements"
+    uuid: "a9943e4e-1a21-412c-859e-df09a2b5ee6f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "SKU/drawing"
+    - "NBR grade/formulation and sulfur cure"
+    - "unbonded/unreinforced/uncoated state"
+    - "geometry/tolerances"
+    - "cure/trim/inspection"
+    - "actual supplier and facility CN"
+    - "low-voltage electric route"
+    - "net new release Q"
+    - "period/WIP/FG inherited burdens"
+    - "packaging and dispatch gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Net seal mass excludes removable packaging; weigh the accepted specified SKU with calibrated tare subtraction. Count/volume records require measured SKU-specific net mass/density; no assumed item mass. All inventory amounts use per 1 kg reference flow."
+  - id: state_compatibility
+    applies_to: "water; electricity; compound"
+    required_property_ref:
+      name: "actual row reference property"
+      uuid: ""
+    required_unit: "kg; MJ"
+    rule: "Preserve actual native reference properties and reference units; secondary properties are not universal density/energy factors. Formula basis, active content and whole-mixture supply mass must remain distinct."
+process_map:
+  - id: seal_line
+    name: "Integrated compression moulding, trim and release"
+    inclusion: "required"
+    inclusion_condition: "Within declared route; retain stage ledgers"
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: seal_line
+    label: "Integrated compression moulding, trim and release"
+    inputs:
+      product:
+        - row_id: compound
+          role: "Purchased uncured NBR seal compound"
+          name: "Uncured sulfur-curable NBR seal compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One supplied solid compound, including its actual filler, curatives and process aids. Collect supplier formulation/grade, NBR fraction, additive identities, cure system, carrier water/solvent and acceptance records. It is neither pure NBR polymer nor a tyre compound. The whole supplied compound crosses this boundary once; its incorporated constituents are not added again as foreground inputs. Require a composition-compatible upstream compound dataset; unresolved UUID does not remove its burdens."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - trelleborg-custom-rubber
+                - epa-rubber-2008
+            ranges: []
+        - row_id: electricity
+          role: "Metered press and auxiliary electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Chinese consumer-side grid-average electricity below 1 kV only, matching the native voltage, supply location and route. Include electric press heat, hydraulics, preparation, extraction ventilation, cooling and actual finishing/inspection/handling attributable to the released cohort. Record machine states, warm-up, idle and rejected cycles. Meter kWh; convert to MJ with the physical unit identity 1 kWh = 3.6 MJ. The native property is Net calorific value; it does not authorize a fuel heating-value conversion. Verify actual supply and provider boundary before use; do not apply this UUID to medium/high voltage or a specific generation technology."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - trelleborg-custom-rubber
+            ranges: []
+        - row_id: water
+          role: "Cooling-loop make-up water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Conditional on an actual water-cooled system. This treated municipal-water identity includes industrial supply; it is not direct environmental abstraction, deionized water or a cooling service. Meter fresh external make-up, not internal recirculation. Record actual quality and provider. Convert measured liquid volume with measured temperature-dependent density, not the native secondary screening coefficient as a universal density. Air-cooled lines document absence."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - trelleborg-reynosa
+            ranges: []
+        - row_id: film
+          role: "PE protective liner"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Only actual single-material PE film, CAS 9002-88-4; verify grade, additives, thickness and supplier background. Preserve the physical film identity despite the native luggage-classification defect disclosed in the manifest. Weigh film attached to the quality-released cohort and actual packaging losses; split any adhesive, closure, label or other polymer into its own row. No PET equivalence is inferred from its mention as a competing material."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - trelleborg-custom-rubber
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated paperboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if used: one complete actual corrugated carton, excluding separately inventoried liner. Collect fibre mix, coatings, adhesives, board structure, tare and provider. Do not assume the fixed primary/recycled-fibre composition of an available database carton. A generic packaging bundle cannot replace this specific box."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - trelleborg-custom-rubber
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: product
+          role: "Quality-released finished NBR seal"
+          name: "Sealing elements"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a9943e4e-1a21-412c-859e-df09a2b5ee6f"
+          property_unit: "Mass / kg"
+          description: "The sole reference output. The broad native identity covers O-rings/gaskets/seals, at plant CN and intended for installation during assembly. Here it is strictly one unbonded, unreinforced, uncoated, solid sulfur-cured NBR seal SKU made by compression moulding, manually tear-trimmed, quality released at the factory. It is not an installation service, hard rubber, metal gasket or assembled bonded component. Q counts newly quality-released net seal mass once, excluding removable packaging and pre-existing finished stock; finished warehouse transfers and shipments do not create another reference output."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_release
+              source_ids:
+                - trelleborg-custom-rubber
+                - trelleborg-reynosa
+            ranges: []
+      waste:
+        - row_id: uncured_scrap
+          role: "Discarded uncured NBR compound"
+          name: "Uncured NBR seal-compound scrap for external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual contaminated, expired or unusable uncured compound leaving for a specified receiver. Record actual formulation, moisture, contamination and treatment acceptance. Reusable clean preforms returned inside the same line are internal physical transfers, not waste exports, avoided production credits or new purchased compound."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - trelleborg-custom-rubber
+            ranges: []
+        - row_id: cured_scrap
+          role: "Cured flash and rejected seals"
+          name: "Waste rubber"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b4818cb7-cbef-403a-9fc3-a12fe8baf092"
+          property_unit: "Mass / kg"
+          description: "Actual solid cured NBR flash and rejects leaving as waste, with composition, contamination and receiver conditions. The native broad waste includes non-tyre rubber products and has no tyre-only treatment restriction; it does not prove a recycling technology or credit. Keep uncured scrap distinct. Cured trim cannot return as uncured compound by simple milling; any actual reclaim transformation needs a separately measured process and full burdens."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - trelleborg-custom-rubber
+                - epa-rubber-2008
+            ranges: []
+        - row_id: cooling_blowdown
+          role: "Cooling-water blowdown to treatment"
+          name: "Cooling-loop blowdown water for external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual blowdown exported to a treatment operator. Measure water and dissolved/suspended constituents, additives, contamination, mass/volume, receiver and treatment route. It is a technosphere waste transfer, not direct freshwater emission, not manganese-residue wash water and not clean condensate. If an actual outlet goes directly to the environment, replace this transfer with separately characterized liquid water and each measured pollutant in its actual receiving medium; do not count both for the same water."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - epa-rubber-2008
+            ranges: []
+      elementary:
+        - row_id: acetone_air
+          role: "Acetone crossing to outdoor air"
+          name: "acetone"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9520-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional screening card, not a claim that every NBR cure emits acetone. Use only when actual formulation/process screening and analyte-specific measurement establish CAS 67-64-1 crossing the facility boundary to unspecified outdoor air. Include captured outlet and fugitive release once, after actual controls; do not use indoor, water, soil, long-term or correction flows. Native identity has no fossil/biogenic split; it is chemical species mass, not carbon equivalent."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-rubber-2008
+                - epa-method18-2017
+            ranges: []
+        - row_id: cs2_air
+          role: "Carbon disulphide crossing to outdoor air"
+          name: "carbon disulphide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9245-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual detection or a justified compound-specific balance for CAS 75-15-0 from the actual sulfur cure system; no generic factor or positive release is prescribed. This is carbon disulphide, not carbon dioxide or hydrogen sulfide. Confirm unspecified outdoor-air receiving compartment and analyte-appropriate detector/recovery. Do not subtract a capture amount again from a post-control measured outlet."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-rubber-2008
+                - epa-method18-2017
+            ranges: []
+        - row_id: water_vapour
+          role: "Water evaporated to outdoor air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual water evaporation crossing to unspecified outdoor air from the declared cooling/conditioning system. Establish it from measured water balance and stock changes with uncertainty; unexplained imbalance is not evaporation. Do not invent stoichiometric water from sulfur crosslinking. Native water-vapour records assigned to water or soil are rejected for this outlet."
+          amount:
+            expression: "Measured raw cohort numerator reported once per reference flow under section 8; retain the row-specific applicability and unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - epa-rubber-2008
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "seal_line"
+    rule: "Use submetering and actual batch/cycle records to separate this SKU and direct flows first, including warm-up, idle, rejects, extraction and cooling. If remaining shared burdens require allocation, test determining physical causality with measured press time/state/energy relationships; identical mass alone does not prove causality. Only the causally inseparable remainder may use documented market-value allocation under the attributional ILCD hierarchy, with all affected outputs, prices, period and sensitivity. No arbitrary physical/economic choice or fixed share."
+    source_ids:
+      - ilcd-handbook-2010
+  - rule_id: allocation_physical
+    applies_to: "all exchanges"
+    rule: "Keep full physical mass/water/carbon/constituent ledgers and separately record the attributed environmental-burden ledger. Allocation never scales an actual coproduct, waste, water or internal transfer amount in the physical process map. Saleable off-grade output requires an additional real product row, its actual gate/value and a justified allocation decision; disposal scrap receives no automatic substitution credit. Rework inside the line retains energy and material burdens."
+    source_ids:
+      - ilcd-handbook-2010
+  - rule_id: asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "seal_line"
+      flow_role: "product"
+      record_type: "release_and_stock"
+      raw_fields: "SKU; lot; drawing; NBR grade; cure system; test results; time; newly released net seal mass; tare; opening/closing WIP and FG quantities; return/rework histories; gross/net shipments"
+      collection_method: "Quality and weighing staff use calibrated scales, remove packaging tare, reconcile unique release decisions and reversal links. Distinguish new release, reinspection and warehouse transfers; never count the same lot twice. Preserve inherited burdens by cohort in linked upstream records, separately from raw mass. Sum raw newly accepted net masses to obtain Q; retain raw WIP/FG/dispatch ledgers separately. Reporting basis is per 1 kg reference flow; no division during collection."
+      unit: "kg"
+      frequency: "each release and stock movement"
+      temporal_coverage: "one complete matched reporting period"
+      site_scope: "factory release gate and linked WIP/FG stores"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lot release and reversal trace; balance closure"
+    - protocol_id: cp_material
+      process_id: "seal_line"
+      flow_role: "compound; uncured_scrap; cured_scrap"
+      record_type: "material_and_waste"
+      raw_fields: "row_id; lot; supplier; full formulation and NBR fraction; measured carbon content and dry/wet basis by constituent; sulfur/accelerators; filler/oil; moisture; carrier; net delivered/returned mass; opening/closing raw/WIP stock; internal preform returns; cured scrap; receiver"
+      collection_method: "Material custodian and lab weigh each concrete supply and waste separately. Reconcile invoice, batch issue, formulation certificate, reuse/contamination state and waste acceptance. Record raw stage links with equal transfer mass; internal reuse has no second purchase. Preserve raw masses by row/lot and stock changes, without division. Reporting basis is per 1 kg reference flow."
+      unit: "kg"
+      frequency: "each receipt/issue/waste movement"
+      temporal_coverage: "same period and cohort as cp_release"
+      site_scope: "receipt through quality release"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; composition tests; receipts; receiver records"
+    - protocol_id: cp_energy
+      process_id: "seal_line"
+      flow_role: "electricity"
+      record_type: "meter_records"
+      raw_fields: "meter_id; voltage; supply location; provider boundary; start/end kWh; timestamp; press state; cycle count; hot/cold start; idle; rejected cycle; auxiliary share evidence"
+      collection_method: "Energy engineer reads calibrated meters/submeters for press heat, hydraulics and all actual auxiliary stages. Separate imported supply from internal electricity distribution; preserve physical meter readings and supplier geography/voltage. Sum compatible raw meter intervals by stage and preserve shared-use evidence; no normalization. Reporting basis is per 1 kg reference flow."
+      unit: "kWh"
+      frequency: "each shift/batch and meter interval"
+      temporal_coverage: "same period and cohort as cp_release"
+      site_scope: "production and attributable auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; overlap check; supplier voltage definition"
+    - protocol_id: cp_water
+      process_id: "seal_line"
+      flow_role: "water; cooling_blowdown; water_vapour"
+      record_type: "water_balance"
+      raw_fields: "row_id; meter; temperature; density; volume/mass; quality; stock; internal circulation; blowdown; measured evaporation basis; additives; receiving operator/medium; sampling uncertainty"
+      collection_method: "Water engineer meters external make-up and actual external outlets, records liquid inventory and any material moisture, verifies density and constituent assays. Identify transfers to treatment separately from direct emissions. Unexplained water balance remains a gap. Retain raw water quantities and states separately; exclude recirculation from external demand. No division; reporting basis is per 1 kg reference flow."
+      unit: "kg; m3; kg/m3"
+      frequency: "each meter interval and representative water test"
+      temporal_coverage: "same period and cohort as cp_release"
+      site_scope: "actual cooling and external water outlets"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; water assays; receiver contract; balance uncertainty"
+    - protocol_id: cp_pack
+      process_id: "seal_line"
+      flow_role: "film; carton"
+      record_type: "packaging_records"
+      raw_fields: "row_id; component; supplier; composition; tare; delivered/returned/used mass; damaged packaging; packaging attached to WIP/FG; packaging on gross shipments; release-cohort link"
+      collection_method: "Packing staff weigh each actual component and reconcile receipts, stocks, losses and packing on each cohort. Removable packaging is outside seal net mass but its attributable supply/loss burden remains included. Later shipping packaging is explicitly located beyond this production-release gate or brought into a declared extended boundary with separate records. Keep component raw masses, stocks and gross-shipment reconciliation independently; no normalization. Reporting basis is per 1 kg reference flow."
+      unit: "kg"
+      frequency: "each component delivery and packing batch"
+      temporal_coverage: "same period and linked cohort as cp_release"
+      site_scope: "packing at release gate and separate downstream ledger"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "tare tests; purchase specs; stock/dispatch records"
+    - protocol_id: cp_air
+      process_id: "seal_line"
+      flow_role: "acetone_air; cs2_air; actual additional species"
+      record_type: "speciated_emission_records"
+      raw_fields: "species/CAS; row_id; emission point; medium; recipe/cure; sampling interval; concentration; compound-vs-carbon basis; exhaust volume/flow; T/P; wet/dry basis; detection limit; blanks; calibration; recovery; control state; uncaptured route"
+      collection_method: "Environmental engineer and competent laboratory survey actual formulation/cure/auxiliaries, select analyte-appropriate sampling and calibrated standards, and retain measured post-control outlets and justified fugitives separately. Method 18 scope excludes polymeric, polymerizing and very low-vapour-pressure analytes; use validated alternative methods for excluded species/particles. Preserve nondetects and uncertainty; no universal half-detection-limit substitution. Retain raw species concentration, compatible exhaust state/volume and operating-time strata separately. No normalization or duplicate captured/fugitive totals; reporting basis is per 1 kg reference flow."
+      unit: "kg/m3; m3; h; kg"
+      frequency: "representative cure/cool/idle states and each actual recipe/control change"
+      temporal_coverage: "same period and cohort as cp_release"
+      site_scope: "all actual stacks and fugitive facility-boundary paths"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "full lab reports; standard recovery; operating-state representativeness; uncertainty"
+  calculation_rules:
+    - id: release_q
+      applies_to: "product"
+      rule: "Q = sum of newly quality-released net seal mass, with linked reversal corrections; Q > 0. Do not add opening/closing finished stock or dispatches to Q."
+      inputs:
+        - cp_release
+      output: "Q"
+      source_ids:
+        - trelleborg-custom-rubber
+    - id: period_burdens
+      applies_to: "all rows"
+      rule: "Construct each raw cohort numerator A_i in its matching exchange unit before normalization; inherited burdens mean the complete same-flow inventory vector embedded in each WIP cohort, not an added scalar impact score: actual attributable period exchanges + inherited burdens of consumed opening WIP - complete burdens carried by closing WIP. Preserve corresponding physical constituent/water balances and internal transfers; do not subtract released FG or multiply physical outputs by allocation shares. Keep prior-released returned FG/rework burdens separately and avoid creating new Q for reinspection. Retain all attributable exchanges from failed or rejected batches, rework, warm-up, idle and zero-output intervals in the complete matched-period cohort numerator; selecting only successful production intervals must not discard these burdens."
+      inputs:
+        - cp_release
+        - cp_material
+        - cp_energy
+        - cp_water
+        - cp_pack
+        - cp_air
+      output: "A_i"
+      source_ids:
+        - ilcd-handbook-2010
+    - id: physical_balances
+      applies_to: "raw physical ledgers"
+      rule: "For production material, water and carbon independently: opening raw/WIP stock + actual external inputs + actual incoming rework = closing raw/WIP stock + all actual released physical outputs + actual external waste/emission outputs. Use measured constituent/carbon fractions on compatible wet/dry bases and include residual uncertainty, never force closure into an invented emission. Newly released Q is one released output; prior-released FG rework is segregated with its original cohort and is not new Q. Separate FG ledger: opening FG + new-release receipts + actual FG returns = actual dispatches + closing FG + actual FG losses/rework transfers. Track attached packaging separately. These are physical ledgers before allocation, not scaled burdens."
+      inputs:
+        - cp_release
+        - cp_material
+        - cp_water
+        - cp_pack
+        - cp_air
+      output: "reconciled raw ledgers"
+      source_ids:
+        - ilcd-handbook-2010
+    - id: energy_units
+      applies_to: "electricity"
+      rule: "A_MJ = 3.6 × A_kWh; apply only to electrical energy on the same meter boundary, then include in the raw cohort numerator."
+      inputs:
+        - cp_energy
+      output: "A_MJ"
+      source_ids: []
+    - id: liquid_mass
+      applies_to: "water; cooling_blowdown"
+      rule: "A_kg = V_m3 × rho_kg_per_m3 for the actual measured liquid state; retain temperature, quality and uncertainty."
+      inputs:
+        - cp_water
+      output: "A_kg"
+      source_ids: []
+    - id: air_species
+      applies_to: "each measured air species"
+      rule: "For compatible species-mass concentration c and exhaust volume V, A_species = sum(c × V) over actual operating-state intervals plus independently measured/justified uncaptured releases. If using volume flow, integrate c × F × dt. Convert lab units explicitly; match T/P/wet-dry state; carbon-equivalent concentration requires species-specific conversion. Do not sum total VOC/TOC and constituent masses."
+      inputs:
+        - cp_air
+      output: "A_species"
+      source_ids:
+        - epa-method18-2017
+        - epa-rubber-2008
+    - id: report_once
+      applies_to: "all non-reference exchanges"
+      rule: "x_i = A_i / Q; A_i is the complete attributed raw cohort numerator in the row unit, Q is the newly quality-released seal mass in kg. Perform this division once only, after unit conversion, WIP burden reconciliation and justified allocation. Reference output is 1 kg; all reported exchange amounts use per 1 kg reference flow. Raw collection protocols perform no division. When Q is not positive, retain the complete raw numerator, stock and operating-period records for review; do not divide, report a zero-burden normalized dataset, or borrow a positive denominator from a different period or cohort."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+      output: "x_i"
+      source_ids:
+        - ilcd-handbook-2010
+    - id: asset_manufacture_share
+      applies_to: "existing capital/reusable manufacture attribution"
+      rule: "For each included original asset manufacture vector B, f_current = u_current / D only after the persistent ledger verifies the supported whole installed-service denominator, all beneficiaries and prior assigned shares. Attribute f_current * B once to the actual beneficiary before the existing single reference normalization. Check prior_shares + all current/new beneficiary shares <= 1; carry the remaining original balance. Capacity revisions reconcile the historical ledger. Full physical asset/packaging mass and actual gross stocks/returns never receive f_current. Unknown D or history leaves the final attributed result unavailable, without suppressing actual repair/replacement/service burdens."
+      inputs:
+        - asset_id
+        - original_B
+        - u_current
+        - D
+        - historical_beneficiaries
+        - prior_shares
+        - capacity_evidence
+      output: "conserved attributed manufacture vector"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_raw
+      applies_to: "all exchanges"
+      requirement: "Use real site/SKU/supplier measurements, matched time coverage and documented uncertainty; missing values are not defaults or zeros. Collect full formulation and all material/air/water outputs before declaring a complete model."
+      evidence: "Raw records linked to cp_release cohort"
+    - id: dq_native
+      applies_to: "all UUID rows"
+      requirement: "Flow identity and compatible quantified background are separate checks. Retain current source/version, full native limitations, medium/property/unit chain, provider geography/voltage/composition and explicit unresolved issues."
+      evidence: "Native readback and supplier evidence"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference and all rows"
+    rule: "Verify specified NBR/sulfur cure, unbonded geometry, compression/electric route and manual trimming. Resolve each real exchange identity with exact native name/CAS/state/route/medium/property/unit and compatible provider before quantitative use; an auxiliary UUID gap stays explicit. Reject substituted tyre, hard-rubber, bonded, alternate-polymer or wrong-voltage records."
+    source_ids:
+      - trelleborg-custom-rubber
+      - trelleborg-reynosa
+  - rule_id: validate_balance
+    applies_to: "seal_line"
+    rule: "Check Q against unique new releases and net mass; audit raw material/constituent, water, WIP, FG, packaging and dispatch ledgers separately, with uncertainty. Internal links cancel once. Preserve full physical coproduct/waste outputs and distinct burden allocation. Any unclosed balance or missing actual species/provider makes the quantitative data package incomplete, not zero."
+    source_ids:
+      - ilcd-handbook-2010
+  - rule_id: validate_measurement
+    applies_to: "all inventory"
+    rule: "Require raw records, calibration, composition/provider compatibility, stage coverage, correct unit conversions and single final normalization in both languages. Conditional absence needs route/measurement evidence; nondetection needs detection limits and uncertainty. Do not infer lifecycle approval, functional equivalence or a completed site inventory from this authored method."
+    source_ids:
+      - epa-method18-2017
+      - ilcd-handbook-2010
+  - rule_id: validate_asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_process_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacturing burdens of the specified route/SKU with provider and measurement completeness disclosed"
+  excluded_use: "Whole 36270 coverage, hard rubber, other cure/polymer/forming routes and service-life/functional equivalence claims"
+  required_metadata: "Reference qualifiers; factory/period; release gate; stock and cohort links; provider boundaries; all actual flows; justified allocation; unit conversions"
+  required_quality_disclosure: "Authored method requires independent scientific review. Foreground measurements and auxiliary identities/providers may remain unavailable; disclose those gaps and do not present an incomplete quantitative dataset as validated."
+  update_trigger: "Changed NBR grade/formulation/cure, forming/trim route, supply voltage/provider, release gate, measured species, allocation or original-method evidence"
+data_sources:
+  - id: "trelleborg-custom-rubber"
+    type: "handbook"
+    reference: "Trelleborg Sealing Solutions, Optimizing the Production of Custom Rubber Components, undated publisher whitepaper, pp.5 and 9. https://www.trelleborg.com/seals/-/media/tss-media-repository/tss_website/services-and-tools/technical-library/whitepapers/mnr_customrubberpart_whitepaper.pdf"
+    used_for: "Compression preforms, heat/pressure and manual tear trimming; alternate routes distinguished. No recipe, quantity or settings defaults."
+  - id: "trelleborg-reynosa"
+    type: "handbook"
+    reference: "Trelleborg Sealing Solutions, Reynosa Manufacturing Capabilities, undated official page snapshot 2026-10-16, Strengths/Products/Materials. https://www.trelleborg.com/de-de/seals/about-us/manufacturing-capabilities/reynosa"
+    used_for: "Producer NBR and seal capabilities; one plant, no cross-product recipe or quantitative generalisation."
+  - id: "epa-rubber-2008"
+    type: "official_guidance"
+    reference: "US EPA, DRAFT Final AP-42 Section 4.12 Manufacture of Rubber Products, November 2008, pp.4.12-2, 4.12-9, 4.12-16–17. https://www.epa.gov/sites/default/files/2020-10/documents/d04s12.pdf"
+    used_for: "Historical process and measurement limitations, sulfur-containing NBR example only. No recipe, numerical settings, emission factors, generic nondetect rule or tyre spray use adopted."
+  - id: "epa-method18-2017"
+    type: "official_guidance"
+    reference: "US EPA Method 18, Measurement of Gaseous Organic Compound Emissions by Gas Chromatography, Internet text 8/2/2017, sections1–2 and full method. https://www.epa.gov/sites/default/files/2017-08/documents/method_18.pdf"
+    used_for: "Analyte-specific identification/calibration and analytical exclusions; historical Internet text is not a claim of current legal compliance. No emission presence or factor established."
+  - id: "ilcd-handbook-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook General guide for LCA – Detailed guidance, First edition March 2010, sections7.9.2–7.9.3, PDF pp.275–277 and 283. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision and physical-causality-first allocation hierarchy, transparent inventory accounting. Cohort stock accounting is this PCR operational rule, not an industrial default."
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version3.0 Structure, 30 June2025, code36270. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Broad classification context only; does not create PCR identity or establish accepted coverage."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b8ed85319ab09124c45a3fa719662440bc68dda92ce2e7f8c01901c06a69e37c"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4725"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4725
+          line: 60
+          column: 1
+        end:
+          offset: 8064
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased ready-to-cure NBR compound accepted at factory; formulation, cure system, water/solvent and incoming burden identity declared |\n| starting_condition_role | foreground_starting_condition |\n| product_classification_scope | Only moulded NBR seals within 36270; no whole-leaf or hard-rubber claim |\n| recursive_input_rule | Purchased cured seals are inputs with their own full upstream datasets; they cannot be reclassified as uncured compound or new manufacturing output. Internal preforms/WIP are linked transfers, not recursive new supply. |\n| upstream_dataset_requirement | Link composition-compatible cradle-to-gate compound, electricity, water and packaging providers plus actual inbound transport. Without provider compatibility the quantitative model remains incomplete; UUID identity alone is insufficient. |\n| disclosure | Actual factory, technology, period, cohort, incoming state, cut-offs, missing identities, provider limits and separate WIP/FG/packing/dispatch ledgers |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_line | seal_line | Include preparation, electric press heating and hydraulics, all cure/cool-down emissions, cooling, manual trim, inspection, actual packing and quality release. Exclude post-release warehouse/dispatch operations from this production gate while retaining their independent physical and carried-burden ledgers. Keep stage-specific meters and physical links within one integrated process; do not duplicate an intermediate reference product. Add actual maintenance materials, cleaners, release agent, compressed-air imports, refrigerant, transport, waste and additional emitted species as individually measured atomic rows before quantitative use. A named card is not a universal recipe. | trelleborg-custom-rubber; epa-rubber-2008 |\n| boundary_stock | seal_line | Q is newly quality-released net production, never Q plus closing FG. Preserve opening/closing WIP quantities, compositions and complete inherited burdens; subtract closing WIP burdens and carry them forward, include consumed opening-WIP burdens, and include actual cohort rejects/rework. Released FG is an output of this gate even when stored: carry its full burdens in the FG ledger without subtracting it from Q. Dispatching opening FG is not new Q. Keep actual net/gross shipments and removable packaging attached to WIP/FG/shipments in independent physical ledgers; internal links balance equally at both ends. | ilcd-handbook-2010 |\n| boundary_air | all air rows | Map measured species and receiving compartments individually. These two organic cards are conditional examples, not an exhaustive emission list. Screen the actual supplier formulation, cure system, residual monomers, auxiliaries and controls; record each detected or justified release. Total VOC/TOC is a reconciliation observation, not another additive elementary mass beside its constituents. Determine actual particulate presence; where present add measured disjoint particle-size bins, captured dust waste separately, never nested totals. No on-site combustion is assumed; actual combustion requires a separate fuel/boiler boundary and primary measurement. | epa-rubber-2008; epa-method18-2017 |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 10
+              column: 1
+            end:
+              offset: 351
+              line: 10
+              column: 73
+          text: "# Compression-moulded unbonded NBR seals from purchased uncured compound"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4725
+              line: 60
+              column: 1
+            end:
+              offset: 4746
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_20771"
+      family: "allocation"
+      span:
+        start:
+          offset: 20771
+          line: 283
+          column: 1
+        end:
+          offset: 23779
+          line: 292
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_direct | seal_line | Use submetering and actual batch/cycle records to separate this SKU and direct flows first, including warm-up, idle, rejects, extraction and cooling. If remaining shared burdens require allocation, test determining physical causality with measured press time/state/energy relationships; identical mass alone does not prove causality. Only the causally inseparable remainder may use documented market-value allocation under the attributional ILCD hierarchy, with all affected outputs, prices, period and sensitivity. No arbitrary physical/economic choice or fixed share. | ilcd-handbook-2010 |\n| allocation_physical | all exchanges | Keep full physical mass/water/carbon/constituent ledgers and separately record the attributed environmental-burden ledger. Allocation never scales an actual coproduct, waste, water or internal transfer amount in the physical process map. Saleable off-grade output requires an additional real product row, its actual gate/value and a justified allocation decision; disposal scrap receives no automatic substitution credit. Rework inside the line retains energy and material burdens. | ilcd-handbook-2010 |\n| asset_manufacture_conservation | existing capital/reusable manufacture attribution | Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 10
+              column: 1
+            end:
+              offset: 351
+              line: 10
+              column: 73
+          text: "# Compression-moulded unbonded NBR seals from purchased uncured compound"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 20771
+              line: 283
+              column: 1
+            end:
+              offset: 20811
+              line: 283
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36511"
+      family: "validation"
+      span:
+        start:
+          offset: 36511
+          line: 328
+          column: 1
+        end:
+          offset: 38705
+          line: 338
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference and all rows | Verify specified NBR/sulfur cure, unbonded geometry, compression/electric route and manual trimming. Resolve each real exchange identity with exact native name/CAS/state/route/medium/property/unit and compatible provider before quantitative use; an auxiliary UUID gap stays explicit. Reject substituted tyre, hard-rubber, bonded, alternate-polymer or wrong-voltage records. | trelleborg-custom-rubber; trelleborg-reynosa |\n| validate_balance | seal_line | Check Q against unique new releases and net mass; audit raw material/constituent, water, WIP, FG, packaging and dispatch ledgers separately, with uncertainty. Internal links cancel once. Preserve full physical coproduct/waste outputs and distinct burden allocation. Any unclosed balance or missing actual species/provider makes the quantitative data package incomplete, not zero. | ilcd-handbook-2010 |\n| validate_measurement | all inventory | Require raw records, calibration, composition/provider compatibility, stage coverage, correct unit conversions and single final normalization in both languages. Conditional absence needs route/measurement evidence; nondetection needs detection limits and uncertainty. Do not infer lifecycle approval, functional equivalence or a completed site inventory from this authored method. | epa-method18-2017; ilcd-handbook-2010 |\n| validate_asset_manufacture_conservation | existing capital/reusable manufacture attribution | For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 10
+              column: 1
+            end:
+              offset: 351
+              line: 10
+              column: 73
+          text: "# Compression-moulded unbonded NBR seals from purchased uncured compound"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36511
+              line: 328
+              column: 1
+            end:
+              offset: 36533
+              line: 328
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_line"
+      identity_kind: "explicit"
+      unit_id: "normative_4725"
+      source_span:
+        start:
+          offset: 5902
+          line: 75
+          column: 1
+        end:
+          offset: 6660
+          line: 75
+          column: 759
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_4725"
+      source_span:
+        start:
+          offset: 6661
+          line: 76
+          column: 1
+        end:
+          offset: 7329
+          line: 76
+          column: 669
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_air"
+      identity_kind: "explicit"
+      unit_id: "normative_4725"
+      source_span:
+        start:
+          offset: 7330
+          line: 77
+          column: 1
+        end:
+          offset: 8061
+          line: 77
+          column: 732
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_20771"
+      source_span:
+        start:
+          offset: 20884
+          line: 287
+          column: 1
+        end:
+          offset: 21510
+          line: 287
+          column: 627
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_20771"
+      source_span:
+        start:
+          offset: 21511
+          line: 288
+          column: 1
+        end:
+          offset: 22055
+          line: 288
+          column: 545
+    - pointer: "/allocation_rules/2"
+      rule_id: "asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_20771"
+      source_span:
+        start:
+          offset: 22056
+          line: 289
+          column: 1
+        end:
+          offset: 23776
+          line: 289
+          column: 1721
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_36511"
+      source_span:
+        start:
+          offset: 36606
+          line: 332
+          column: 1
+        end:
+          offset: 37075
+          line: 332
+          column: 470
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_36511"
+      source_span:
+        start:
+          offset: 37076
+          line: 333
+          column: 1
+        end:
+          offset: 37511
+          line: 333
+          column: 436
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_36511"
+      source_span:
+        start:
+          offset: 37512
+          line: 334
+          column: 1
+        end:
+          offset: 37975
+          line: 334
+          column: 464
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_36511"
+      source_span:
+        start:
+          offset: 37976
+          line: 335
+          column: 1
+        end:
+          offset: 38702
+          line: 335
+          column: 727
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4725"
+      source_span:
+        start:
+          offset: 4725
+          line: 60
+          column: 1
+        end:
+          offset: 4746
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4725"
+      source_span:
+        start:
+          offset: 4774
+          line: 64
+          column: 1
+        end:
+          offset: 5829
+          line: 71
+          column: 168
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_20771"
+      source_span:
+        start:
+          offset: 20771
+          line: 283
+          column: 1
+        end:
+          offset: 20811
+          line: 283
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36511"
+      source_span:
+        start:
+          offset: 36511
+          line: 328
+          column: 1
+        end:
+          offset: 36533
+          line: 328
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b8ed85319ab09124c45a3fa719662440bc68dda92ce2e7f8c01901c06a69e37c"
+  generated_content_sha256: "sha256:1ed44a78099e2f7c464bfe9ec680fdb62c67613fff3cf14b9d759f00f8b50c67"

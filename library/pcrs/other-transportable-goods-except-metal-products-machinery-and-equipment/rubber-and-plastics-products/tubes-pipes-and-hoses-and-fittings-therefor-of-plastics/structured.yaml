@@ -1,10 +1,2287 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "36320"
-  title: "Tubes, pipes and hoses, and fittings therefor, of plastics"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.tubes-pipes-and-hoses-and-fittings-therefor-of-plastics"
+  classification_refs: "CPC 3.0:36320; narrower method subset; no accepted edge implied"
+  covered_products: "Non-crosslinked single-layer black PE100/PE100-RC solid-wall circular plain-end straight pipe"
+  excluded_products: "Bought-finished-only assembly; fittings; coils; profile or foam wall; reinforcement; multilayers; crosslinked PE; other polymers or vulcanized rubber; natural-resin colour blending; co-extruded stripes; medical or sterile claims"
+  representative_product: "Straight black PE100 solid-wall pipe from already stabilized black compound; independent supplier/pipe examples do not establish a shared SKU"
+  production_route: "Receipt and actual conditioning; vacuum transfer; single-screw melt extrusion and screen; vacuum sizing and water cooling; haul-off; indent marking; cutting; inspection and first release; separate actual onward services"
+  market_state: "Newly first quality-released bare plain-end straight pipe; linked actual bundling/storage/dispatch service account; no installation or use stage"
+functional_unit:
+  what: "Supply pipe for a declared fluid-conveyance duty under its actual accepted specification"
+  how_much: "1 kg newly first quality-released net bare straight pipe in its actual supplied material state"
+  how_well: "Actual approved grade geometry tolerances marking and duty-specific quality evidence; mass is not a universal hydraulic performance unit"
+  how_long_or_cycle: "One matched reporting period for first-release production with linked historical stocks and actual separately bounded onward services; no service-life promise"
+  reference_flow_link: "product"
+system_boundary:
+  rules:
+    - rule_id: boundary_full_route
+      applies_to: "all inventory rows"
+      rule: "Include receipt/storage and actual drying, feeding, screw-drive and band-heat extrusion, melt screen changes, vacuum sizing, tank/spray cooling, stress relaxation, haul-off, indent marking, cutting, cleaning, actual quality tests and first release. Keep actual interstage masses/meters even when aggregated into pipe_manufacture. No energy/yield/temperature default or purchased-finished-pipe shortcut."
+      source_ids:
+        - ppi-pe-manufacturing
+        - borealis-black-pe100-compound
+    - rule_id: boundary_service
+      applies_to: "pipe_service"
+      rule: "Retain actual bundling, packaging, storage, handling and factory loading/dispatch in a separate service ledger by served lot, dates, service driver and linked production history. Opening FG retains its prior production vector; closing FG already belongs to first-release Q and is not another output. Distinguish observed service-to-period-end from complete-to-dispatch service; do not invent future service for unshipped stock or claim a dispatch endpoint for it."
+      source_ids:
+        - ppi-pe-manufacturing
+        - ilcd-allocation-2010
+    - rule_id: boundary_cohorts
+      applies_to: "all inventory rows"
+      rule: "Keep failures, zero-output runs, start/stop, idle, cleaning, rejected material, actual recycling and rework. Opening/closing raw stock and WIP carry quantities, composition/state, completion and the full inherited vector of every exchange with source cohorts. Previously released FG rework keeps its original production history and only its real incremental rework/service, never another first release or wholesale reassignment to current Q. Separately held non-raw/non-WIP utility, cooling-water, oil and installed-article/charge stores also retain disjoint opening/closing physical quantities and every inherited exchange vector under cp_stocks/cohort_vectors. Retained media may provide real service without mass loss: establish assigned and remaining service burden from actual history, not a default lifetime or repeated full charge. A physical receipt, internal issue, return, retained stock and actual consumption are distinct; an already corrected consumption record is never stock-corrected again."
+      source_ids:
+        - ppi-pe-manufacturing
+        - ilcd-allocation-2010
+    - rule_id: boundary_actual_atomic
+      applies_to: "all inventory rows"
+      rule: "Cards are concrete possible exchanges, not a common bill. Before quantitative use add every actual missing material, formulation, ink/foil, cleaner, treatment chemical, fuel, refrigerant, gas species, package component, captured dust, wastewater-treatment sludge or utility export as its own atomic card with actual process/receiver/property. Retain a specific physical/chemical name when UUID is unresolved. Absence needs affirmative route/measurement evidence; unmeasured is not zero."
+      source_ids:
+        - ppi-pe-manufacturing
+        - borealis-black-pe100-compound
+    - rule_id: boundary_utilities
+      applies_to: "all utility rows"
+      rule: "Actual external chilled water and warm return retain gross mass, thermal state, enthalpy, destination and supplier water/energy conventions. Internal loops cancel; treat water loss make-up separately. An electric extrusion line does not imply steam, boiler, fuel combustion or purchased heat. Include any actual such system through separate exchanges before data use and prevent double-counting utility supply and its own electricity."
+      source_ids:
+        - ppi-pe-manufacturing
+    - rule_id: boundary_physical_gates
+      applies_to: "all physical ledgers"
+      rule: "Use three consistent raw physical gates: manufacturing stocks to quality release; FG warehouse to gross physical dispatch; consolidated manufacture plus FG after cancelling Q and all internal transfers. Packaging has a separate per-component gate. Physical masses and relevant carbon/other elements close before burden allocation; allocation factors do not shrink real coproducts, wastes, carriers or returned utility water."
+      source_ids:
+        - ilcd-allocation-2010
+boundary_abstraction:
+  declared_starting_condition: "Complete black stabilized PE100 compound pellets received for pipe manufacture plus actual utilities consumables and individually identified packing components"
+  starting_condition_role: "material_inputs"
+  product_classification_scope: "Only the section1 straight solid-wall PE100 pipe subset of CPC3.0 36320"
+  recursive_input_rule: "Bought finished pipe is a separately identified input to another route; it cannot replace pellet-to-pipe manufacture. Internal regrind and returns retain histories and cancel physical handoffs once; no recursive new output."
+  upstream_dataset_requirement: "Use compatible upstream inventories for the complete compound and each real utility consumable packaging and waste receiver. A UUID is identity only. Internal separately modelled utility supply needs real producer inventory and meter-overlap reconciliation."
+  disclosure: "Disclose actual site period recipe/grade supply form foreground gate and service horizon; outsourced steps; stocks failed runs rework and all measured flows; packaging/utility ownership and backgrounds; missing data and uncertainty"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Plastic pipes"
+    uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual PE100 or PE100-RC compound grade and whole supplied formulation"
+    - "single solid black annular wall without reinforcement or crosslinking"
+    - "actual straight length OD wall thickness SDR and plain-end configuration"
+    - "actual duty and approved material/product acceptance specification"
+    - "actual conditioning extrusion vacuum sizing cooling and indent-marking route"
+    - "first quality-release gate Q and unique lot decision with reversal history"
+    - "measured net pipe mass or independently measured matched linear mass"
+    - "matched period with all failures rework WIP and per-exchange inherited vectors"
+    - "finished-goods stock history and separate onward service horizon"
+    - "actual component packaging balance and gross physical shipment quantities"
+    - "actual site supply geography provider and utility delivery boundaries"
+    - "generic plastic pipe identity only with verified PE100 scope and no PEX PB PVC ABS substitution"
+    - "actual waste treatment air species receiving medium and uncertainty"
+reference_flows:
+  []
+measurement_rules:
+  - id: release_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Q is unique newly first quality-released net bare pipe mass. Do not add shipments, closing FG, returned previously released pipe or repeat inspection. Product is 1 kg per 1 kg reference flow; linked service accounts never redefine Q."
+  - id: measured_mass
+    applies_to: "reference product and mass-based physical ledgers"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated net lot weighing excluding detachable packaging. Length conversion needs separately measured lambda = same-configuration net sample mass / measured sample length in kg/m; retain grade OD wall SDR moisture configuration calibration and sampling uncertainty. Count conversion needs measured mass for that actual pipe/configuration. Never infer density from a native secondary factor or assume one item is 1 kg."
+  - id: whole_formulation
+    applies_to: "black_compound"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Acquire the complete supplied black compound once. Polymer carbon black stabilizer assay and carrier/free water are non-additive constituent subledgers; retained moisture is not a second purchase. Keep free/adhering moisture, carrier water, any independently demonstrated structural/crystalline water, actual reaction-formed water and vapour/liquid phase transfers in distinct non-additive water subledgers. Ordinary PE physical forming creates no presumed structural or reaction water; actual oxidation, hydrated additives or chemical treatment need independent species/state/reaction evidence, never a fitted residual."
+  - id: numerator_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: ""
+      uuid: ""
+    required_unit: ""
+    rule: "Preserve each raw numerator in its real unit. Convert kWh to MJ once by 3.6; liquids/gases need independently measured density at actual material composition and state. Integrated volumes are already cumulative; integrate a true rate with matched duration only. Convert units then attribute raw burdens then use report_once, with no pre-division in collection."
+  - id: zero_release
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: ""
+      uuid: ""
+    required_unit: ""
+    rule: "If Q = 0 preserve actual materials energy failures wastes stocks and inherited vectors. No per-unit result is issued and later shipping/retesting cannot supply a fictitious denominator. Unknown balances or unsupported relationships remain unresolved."
+process_map:
+  - id: pipe_manufacture
+    name: "Pellet-to-pipe manufacture through first quality release"
+    inclusion: "required"
+    inclusion_condition: "Only the declared black-compound route; preserve separate stage raw records"
+    role: "foreground"
+    quantitative_reference: "product"
+  - id: pipe_service
+    name: "Actual post-release packing storage and factory dispatch"
+    inclusion: "required"
+    inclusion_condition: "Retain actual served cohorts and separately disclosed service horizon; no second product output"
+    role: "supporting_service"
+    quantitative_reference: "product"
+process_inventory:
+  - id: pipe_manufacture
+    label: "Pellet-to-pipe manufacture through first quality release"
+    inputs:
+      product:
+        - row_id: black_compound
+          role: "Complete supplied black pipe compound"
+          name: "Black stabilized PE100 pipe compound pellets"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the complete externally supplied PE100/PE100-RC black compound pellets received and consumed, exemplified by BorSafe HE3490-LS-H: HDPE hexene copolymer with incorporated carbon black and stabilizers. Retain actual grade, lot, composition and supplied moisture. This is one purchased formulation; polymer, carbon black, stabilizers and water are constituent subledgers, never additional purchases. Generic polyethylene resin does not establish this whole formulation. Natural resin plus separately purchased concentrate is outside this bounded route. Supplier density, carbon-black fraction and processing temperatures are typical source-product information, not mandatory inventory values. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - borealis-black-pe100-compound
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: line_electricity
+          role: "Manufacturing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Collect actual receipt/vacuum transfer, any required electric drying, screw drive and heater bands, screen changer, vacuum sizing, cooling pumps/chiller, haul-off, indent marking, saw, mechanical cleaning and quality-test electricity. Include start-up, shutdown, idle and failed batches; retain separate stage meters and avoid summing a mother meter with its included submeters. Native identity is CN grid-average alternating current below 1 kV, consumption mix to user, Product flow; it is neither generation at plant nor transmission/voltage-transformation service. Match actual geography, voltage, delivery boundary and provider before use; otherwise resolve the actual electricity flow. Its native reference property is Net calorific value with energy reference MJ; this is an electricity quantity convention, not heat or fuel consumption. Convert recorded kWh to MJ by 3.6 once; do not add fictitious steam or boiler fuel. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ppi-pe-manufacturing
+                - borealis-black-pe100-compound
+            ranges: []
+        - row_id: makeup_water
+          role: "Treated cooling and test make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collect actual external make-up supplied to local cooling tanks, vacuum equipment, cleaning and water-based testing as distinct raw stage quantities. Internal recirculation is not another purchase. Keep cooling/test water stocks and losses separate from pipe moisture and never infer evaporation solely from a balance with another unknown. The native Process Water Product record has Mass/kg and no fixed supply geography or treatment route. It describes treated industrial water, not a particular supplier, untreated abstraction, steam or a water-quality/heat factor. Verify actual source, treatment, quality and availability boundary. Different grades or suppliers require separate exchanges; record each material density at its own measured state. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: external_chilled_water
+          role: "Externally supplied chilled water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on a real external or separately modelled utility-water circuit crossing this unit boundary. Record gross supplied water mass, actual inlet temperature/pressure, outlet state, enthalpy and supplier water/energy accounting agreement. Pair its actual return with warm_water_return; do not count the same loop as purchased make-up, purchased cooling service and on-site chiller electricity simultaneously. If cooling is wholly on-site this crossing is absent and on-site electricity/make-up remain. The native Process Water Product record has Mass/kg and no fixed supply geography or treatment route. It describes treated industrial water, not a particular supplier, untreated abstraction, steam or a water-quality/heat factor. Verify actual source, treatment, quality and availability boundary. Different grades or suppliers require separate exchanges; record each material density at its own measured state. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: screen_mesh
+          role: "Replaceable stainless-steel melt screen"
+          name: "Wire Mesh"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f225c346-5bf4-489e-9342-9e1dcedca6ae"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where installed, weigh the actual woven stainless-steel extrusion screen replaced over the matched production period; retain alloy, aperture, construction and service history. The native Product/Mass record permits interlocked metal-wire mesh including stainless steel but fixes neither alloy nor supplier. Do not use it for polymer filter media, solid breaker plates or a whole machine. Balance clean mesh steel separately from polymer retained on spent screens; no fixed lifetime or throughput replacement factor. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: mineral_lubricant
+          role: "Complete mineral-oil machinery lubricant"
+          name: "Mineral-oil machinery lubricant formulation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on the actual machinery consuming this identified mineral-oil lubricant. Weigh supplied formulation and stock changes, preserving additives as non-additive composition records and actual disposition to used oil, wipes or leaks. A PAO/total-synthesis native oil is not interchangeable. Other actual lubricants or hydraulic fluids require their own specific cards; do not hide them in this card or assume absence from missing invoices. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: cotton_cloth
+          role: "Dry cotton wiping cloth"
+          name: "Cotton wiping cloth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "If used in actual mechanical cleaning, record new/reused cloth mass, net use and contamination. No solvent cleaning or cotton consumption is assumed. Identify any real separately purchased cleaner as its complete formulation with a separate card and actual energy, liquid/air losses and wastes before quantitative data use. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: compressed_air
+          role: "Metered utility compressed air"
+          name: "Compressed air for pellet handling"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only where an actual metered utility compressed-air supply enters pellet handling; record pressure, temperature, humidity, integrated volume or mass and measured composition. An internal utility supplier must supply its actual compressor/dryer inventory including electricity, condensate and losses; exclude that same compressor load from line_electricity when already included in this supply. Electric vacuum transfer instead retains its actual motor energy. No generic air factor, fixed dry-air composition or assumed compressor is authorized. Resolve each actual discharged species and any oil aerosol separately. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: prior_fg_rework_in
+          role: "Previously released pipe transferred into actual rework"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual previously released pipe transferred from its FG cohort into compatible, permitted manufacturing rework. Measure bare mass and preserve the original full inherited vector plus separately identified increments; no new virgin purchase or Q. Native Product is a hollow plastic pipe, production mix at plant, Mass/kg, with no fixed CAS, actual polymer grade, geometry, forming route, provider or geography. PEX/PB/PVC/ABS examples in synonyms/comments do not authorize replacing this qualified non-crosslinked black PE100 straight solid-wall configuration. This row tracks this same physical article and its actual state/history; it is not another supplier inventory or a new first release."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stocks
+              source_ids:
+                - ilcd-allocation-2010
+                - ppi-pe-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: product
+          role: "First quality-released plain-end straight pipe"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the sole reference row: Q is newly first quality-released net bare PE100 pipe mass after cooling, cutting, indent marking and the actual applicable quality-release decision. The representative state is a single solid black annular wall, plain ends, straight supplied lengths without attached fittings. Measure actual lot net pipe mass excluding detachable packaging/caps and test/destructively sampled or rejected material. Q includes same-cohort closing finished goods; later shipping, return, reinspection or re-release cannot create another first output. The native Plastic pipes record defines a generic hollow plastic cylinder at plant; its PEX/PB/PVC/ABS examples do not establish PE100 grade, crosslinking, dimensions, pressure class, service life or a supplier inventory. Use only for the qualified non-crosslinked PE100 solid-wall pipe in this method, with actual grade and supply conformity; do not substitute those example polymers. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - ppi-pe-manufacturing
+                - agru-black-straight-pipe
+            ranges: []
+        - row_id: downgraded_pipe
+          role: "Actually usable downgraded straight pipe"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a separately evidenced saleable pipe co-function, with declared downgraded duty, quality, actual state, quantity and common-process exit value; it is not the conforming reference output Q. Material sent as waste stays waste even when a fee or sale receipt exists. The native Plastic pipes record defines a generic hollow plastic cylinder at plant; its PEX/PB/PVC/ABS examples do not establish PE100 grade, crosslinking, dimensions, pressure class, service life or a supplier inventory. Use only for the qualified non-crosslinked PE100 solid-wall pipe in this method, with actual grade and supply conformity; do not substitute those example polymers. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - ilcd-allocation-2010
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: sold_regrind
+          role: "Actually sold black PE100 regrind"
+          name: "Black PE100 compound regrind"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when an independently specified usable supplied regrind is actually produced and crosses the boundary as a co-function; record accepted composition, contamination, form, mass, buyer use, exit condition and value. Do not assume all purge/swarf is saleable or turn internal reuse into output. Separate waste treatment and any further reprocessing; no automatic avoided-virgin-polymer credit or recycled-content claim. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: warm_water_return
+          role: "Actual utility-water return"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional paired physical return from external_chilled_water, not wastewater or imaginary steam condensate. Record actual returned mass, temperature, pressure and enthalpy; reconcile make-up, evaporation, carryout and stock change. Preserve provider ownership/energy/water agreements and actual return destination; no default negative heat credit. A wholly internal loop cancels within the unit and is not external supply/return. The native Process Water Product record has Mass/kg and no fixed supply geography or treatment route. It describes treated industrial water, not a particular supplier, untreated abstraction, steam or a water-quality/heat factor. Verify actual source, treatment, quality and availability boundary. Different grades or suppliers require separate exchanges; record each material density at its own measured state. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: prior_fg_rework_out
+          role: "Previously released pipe returned after actual rework"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual compatible previously released pipe handed back to its original FG cohort after permitted rework. Independently measure surviving mass, true loss and states; match the service receipt pair, without relabelling this as new first release. Native Product is a hollow plastic pipe, production mix at plant, Mass/kg, with no fixed CAS, actual polymer grade, geometry, forming route, provider or geography. PEX/PB/PVC/ABS examples in synonyms/comments do not authorize replacing this qualified non-crosslinked black PE100 straight solid-wall configuration. This row tracks this same physical article and its actual state/history; it is not another supplier inventory or a new first release."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stocks
+              source_ids:
+                - ilcd-allocation-2010
+                - ppi-pe-manufacturing
+            ranges: []
+      waste:
+        - row_id: purge_waste
+          role: "Discarded black compound purge"
+          name: "Black PE100 compound purge waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh start-up/shutdown, changeover and failed-run purge actually sent to treatment; retain composition, contamination, stock and destination. Internally reground/reused portions cancel at consolidation with their inherited burdens and actual grinding loss/energy; do not apply a fixed recovery share. The cleaned waste-at-recycling-plant native candidate does not identify this untreated factory purge. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: rejected_pipe_waste
+          role: "Discarded rejected pipe"
+          name: "Rejected black PE100 pipe waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh nonconforming pipe and destructive-test remains actually leaving as waste; retain reason, lot, composition, recycling/treatment route and related failed production burdens. Do not count it in Q, suppress its upstream burdens or infer a saleable pipe merely from its shape. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: saw_chip_waste
+          role: "Discarded pipe saw chips"
+          name: "Black PE100 pipe saw-chip waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the distinct collected saw-chip stream actually leaving; identify metal contamination and dust capture separately. It is not virgin resin, cleaned recycling-plant feed or automatically a co-product. Retain internal recycling only as an internal handoff with actual effort and inherited vectors. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: spent_screen
+          role: "Spent polymer-loaded steel screen"
+          name: "Spent stainless-steel extrusion screen"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One discarded contaminated screen article. Weigh gross screen plus independently determine steel, retained compound, moisture and actual contaminants as non-additive constituent records; retain actual treatment or return. Polymer stripped into a different waste stream is another exchange and cannot also remain in this gross article mass. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: used_oil
+          role: "Used mineral machinery oil"
+          name: "Used mineral-oil machinery lubricant"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual waste from mineral_lubricant. Measure spent formulation including contamination, separately recording water or solids content and actual treatment. Oil on a discarded wipe is already part of that wipe and cannot be counted twice; other oil formulations need distinct cards. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: spent_cloth
+          role: "Spent cotton wiping cloth"
+          name: "Spent contaminated cotton wiping cloth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual cotton cleaning. Weigh discarded cotton article with identified retained compound/oil/moisture; component subledgers reconcile to whole mass. Keep actual wash/reuse burdens and wastewater where laundering occurs; no assumed incineration or zero burden. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: cooling_bleed
+          role: "Actual cooling-water bleed to treatment"
+          name: "Spent cooling-tank bleed water"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual external discharge to the declared treatment receiver. Measure wet mass/volume with state-specific density, temperature, polymer solids and chemicals independently. If treatment is foreground, add its actual inputs, sludge and each effluent species; a treatment-bound wastewater is not an elementary emission. COD/TOC/total VOC are indicators, not chemical masses or fitting residuals. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: test_effluent
+          role: "Actual water-based quality-test effluent"
+          name: "Water-based pipe-test effluent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual exhausted or cleaning water from the tests used by the declared specification, including occasional/destructive qualification tests attributable to the cohort. Keep actual receiver and composition; do not invent a hydrotest for every pipe or use pressure-test water as pipe production. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Actual ordinary-water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Ordinary H2O only, CAS 7732-18-5, actual gas phase and air destination. Independently determine evaporation/drying contribution by measured gas flow and inlet/outlet humidity with pressure, temperature and dry/wet basis; separate the measured carrier contribution from new process evaporation, and cancel it in environmental accounting only under the matched elementary-boundary conditions below; retain actual gross gas-phase physical streams and independent condensate/liquid/aerosol destinations. Do not infer reaction water in physical thermoplastic forming or identify isotope-labelled water from a polluted synonym list. Bind only the independently confirmed actual receiving compartment; more specific air/indoor/long-term/water destinations require distinct identities. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. Environmental carrier cancellation is conditional on independently measured paired elementary withdrawals and releases over the same declared foreground/supplier boundary, never a Product compressed-air inlet alone while upstream withdrawal remains. Otherwise retain the actual gross environmental outlet and disclose unresolved matching. Gross physical inlet/outlet and phase/stock ledgers remain regardless; actual net uptake needs a separately compatible Resource input, not negative air emission. Atmospheric-origin CO2 is not fossil/biogenic process generation or a sequestration credit. Native water vapour, CAS7732-18-5, Elementary flow, emissions to air unspecified, Mass/kg. No fixed geography/technology or extra property is specified. Only independently identified actual ordinary species at this actual compartment may bind; mixed/isotope/ion/non-vapour synonyms do not authorize a different substance or phase. Other real compartments need distinct verified identities. UUID does not establish occurrence, source amount, provider or environmental carrier cancellation."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ppi-pe-manufacturing
+                - borealis-black-pe100-compound
+            ranges: []
+        - row_id: compound_dust
+          role: "Actual black compound particulate to air"
+          name: "Black PE100 compound particulate to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured uncaptured solid particulate from handling/cutting at the actual air destination, with size distribution, composition and method uncertainty. Do not bind ethylene monomer, pure carbon black or a generic particle class without checking chemical/particle structure. Captured dust remains a distinct waste or internal return. Measure actual volatile species independently; particulate, total mass closure, TOC, VOC and COD cannot substitute for one another. Add each detected chemical species and receiver as its own card before data use; an unresolved assay is incomplete inventory rather than zero. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: nitrogen_air
+          role: "Nitrogen from actual utility-air exhaust"
+          name: "dinitrogen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aad2-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual utility-air crossing/exhaust: one nitrogen species (CAS 7727-37-9) at the declared air receiver. Collect measured supplied/exhausted composition and mass with cp_air/cp_emissions; no fixed air fractions. Retain gross carrier quantities for physical closure, distinguish background air returned from net newly generated/consumed species and avoid reporting ambient displacement as new process generation. For on-site compression inside the chosen model include the actual upstream utility inventory and each real intake, condensate and emission; no imaginary fuel combustion. Additional actual species and different destinations need separate cards. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. Environmental carrier cancellation is conditional on independently measured paired elementary withdrawals and releases over the same declared foreground/supplier boundary, never a Product compressed-air inlet alone while upstream withdrawal remains. Otherwise retain the actual gross environmental outlet and disclose unresolved matching. Gross physical inlet/outlet and phase/stock ledgers remain regardless; actual net uptake needs a separately compatible Resource input, not negative air emission. Atmospheric-origin CO2 is not fossil/biogenic process generation or a sequestration credit. Native dinitrogen, CAS7727-37-9, Elementary flow, emissions to air unspecified, Mass/kg. No fixed geography/technology or extra property is specified. Only independently identified actual ordinary species at this actual compartment may bind; mixed/isotope/ion/non-vapour synonyms do not authorize a different substance or phase. Other real compartments need distinct verified identities. UUID does not establish occurrence, source amount, provider or environmental carrier cancellation."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: oxygen_air
+          role: "Oxygen from actual utility-air exhaust"
+          name: "oxygen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9745-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual utility-air crossing/exhaust: one oxygen species (CAS 7782-44-7) at the declared air receiver. Collect measured supplied/exhausted composition and mass with cp_air/cp_emissions; no fixed air fractions. Retain gross carrier quantities for physical closure, distinguish background air returned from net newly generated/consumed species and avoid reporting ambient displacement as new process generation. For on-site compression inside the chosen model include the actual upstream utility inventory and each real intake, condensate and emission; no imaginary fuel combustion. Additional actual species and different destinations need separate cards. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. Environmental carrier cancellation is conditional on independently measured paired elementary withdrawals and releases over the same declared foreground/supplier boundary, never a Product compressed-air inlet alone while upstream withdrawal remains. Otherwise retain the actual gross environmental outlet and disclose unresolved matching. Gross physical inlet/outlet and phase/stock ledgers remain regardless; actual net uptake needs a separately compatible Resource input, not negative air emission. Atmospheric-origin CO2 is not fossil/biogenic process generation or a sequestration credit. Native oxygen, CAS7782-44-7, Elementary flow, emissions to air unspecified, Mass/kg. No fixed geography/technology or extra property is specified. Only independently identified actual ordinary species at this actual compartment may bind; mixed/isotope/ion/non-vapour synonyms do not authorize a different substance or phase. Other real compartments need distinct verified identities. UUID does not establish occurrence, source amount, provider or environmental carrier cancellation."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: argon_air
+          role: "Argon from actual utility-air exhaust"
+          name: "argon"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a350-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual utility-air crossing/exhaust: one argon species (CAS 7440-37-1) at the declared air receiver. Collect measured supplied/exhausted composition and mass with cp_air/cp_emissions; no fixed air fractions. Retain gross carrier quantities for physical closure, distinguish background air returned from net newly generated/consumed species and avoid reporting ambient displacement as new process generation. For on-site compression inside the chosen model include the actual upstream utility inventory and each real intake, condensate and emission; no imaginary fuel combustion. Additional actual species and different destinations need separate cards. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. Environmental carrier cancellation is conditional on independently measured paired elementary withdrawals and releases over the same declared foreground/supplier boundary, never a Product compressed-air inlet alone while upstream withdrawal remains. Otherwise retain the actual gross environmental outlet and disclose unresolved matching. Gross physical inlet/outlet and phase/stock ledgers remain regardless; actual net uptake needs a separately compatible Resource input, not negative air emission. Atmospheric-origin CO2 is not fossil/biogenic process generation or a sequestration credit. Native argon, CAS7440-37-1, Elementary flow, emissions to air unspecified, Mass/kg. No fixed geography/technology or extra property is specified. Only independently identified actual ordinary species at this actual compartment may bind; mixed/isotope/ion/non-vapour synonyms do not authorize a different substance or phase. Other real compartments need distinct verified identities. UUID does not establish occurrence, source amount, provider or environmental carrier cancellation."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: carbon_dioxide_air
+          role: "Carbon dioxide from actual utility-air exhaust"
+          name: "Carbon dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual utility-air crossing/exhaust: one carbon dioxide species (CAS 124-38-9) at the declared air receiver. Collect measured supplied/exhausted composition and mass with cp_air/cp_emissions; no fixed air fractions. Retain gross carrier quantities for physical closure, distinguish background air returned from net newly generated/consumed species and avoid reporting ambient displacement as new process generation. For on-site compression inside the chosen model include the actual upstream utility inventory and each real intake, condensate and emission; no imaginary fuel combustion. Additional actual species and different destinations need separate cards. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. Environmental carrier cancellation is conditional on independently measured paired elementary withdrawals and releases over the same declared foreground/supplier boundary, never a Product compressed-air inlet alone while upstream withdrawal remains. Otherwise retain the actual gross environmental outlet and disclose unresolved matching. Gross physical inlet/outlet and phase/stock ledgers remain regardless; actual net uptake needs a separately compatible Resource input, not negative air emission. Atmospheric-origin CO2 is not fossil/biogenic process generation or a sequestration credit."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+  - id: pipe_service
+    label: "Actual post-release packing storage and factory dispatch"
+    inputs:
+      product:
+        - row_id: service_electricity
+          role: "Post-release handling and storage electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Keep packing, actual warehouse/handling, electric lifting/charging and factory loading electricity in a separate post-release service account with lot, date and occupancy/load evidence. Attribute it to the physical served cohorts, including opening finished goods; first-release Q is unchanged. A closing released pipe is already in Q and can only accumulate real further service. Retain historical production burden vectors rather than recreating production on shipment. Native identity is CN grid-average alternating current below 1 kV, consumption mix to user, Product flow; it is neither generation at plant nor transmission/voltage-transformation service. Match actual geography, voltage, delivery boundary and provider before use; otherwise resolve the actual electricity flow. Its native reference property is Net calorific value with energy reference MJ; this is an electricity quantity convention, not heat or fuel consumption. Convert recorded kWh to MJ by 3.6 once; do not add fictitious steam or boiler fuel. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: pp_strap
+          role: "Polypropylene bundle strap"
+          name: "Polypropylene strapping band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Confirm actual PP composition and complete supplied strap form. A steel baling-band search candidate is incompatible; PET/steel bands need separate cards. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. This input row is actual new external acquisition only. External usable returns received, gross outward carriage and separate outward returns are the distinct named rows below; internal reuse is not another purchase."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: wood_bearer
+          role: "Wooden bundle bearer"
+          name: "Solid-wood pipe bundle bearer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Confirm actual solid-wood piece, species/moisture and treatment where relevant; do not assume a pallet or plywood article. Reusable pieces retain stock and actual cycle/service history without invented lifetime. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. This input row is actual new external acquisition only. External usable returns received, gross outward carriage and separate outward returns are the distinct named rows below; internal reuse is not another purchase."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: hdpe_cap
+          role: "Detachable protective HDPE end cap"
+          name: "HDPE protective pipe end cap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a real detachable transport-protection cap, with actual polymer/form and net component mass. It is excluded from pipe Q, does not establish a moulded fitting function, and is not covered by raw resin or generic finished pipe identity. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. This input row is actual new external acquisition only. External usable returns received, gross outward carriage and separate outward returns are the distinct named rows below; internal reuse is not another purchase."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: pe_wrap
+          role: "LDPE protective bundle film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "If actually used as verified LDPE film, record complete supplied film mass and roll/core distinction. Native CAS9002-88-4, generic PE-film basename/synonyms and branching description agree with polyethylene; its isolated CPC29220 luggage classification is anomalous and is not proof of packaging compatibility. The comment mentions PET as a rival material, not the selected polymer. Native Product/Mass identity fixes no LDPE grade, thickness, stretch function, additives, supply geography or provider. Verify them; do not apply to PET, TPT, coated or barrier laminate. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. This input row is actual new external acquisition only. External usable returns received, gross outward carriage and separate outward returns are the distinct named rows below; internal reuse is not another purchase."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: kraft_tag
+          role: "Uncoated kraft-paper bundle tag"
+          name: "Uncoated kraft-paper hang tag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "If actually used, weigh the complete uncoated non-adhesive paper tag. An adhesive label, tie cord, ink, coated paper or polymer tag is a different actual exchange and needs an added card; no common package bill is prescribed. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided. This input row is actual new external acquisition only. External usable returns received, gross outward carriage and separate outward returns are the distinct named rows below; internal reuse is not another purchase."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_in
+          role: "Internal first-release pipe receipt"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual internal Q handoff paired exactly with product in the same cohort, with the original inherited vector. Cancel both internal entries at consolidation; do not buy finished pipe or add production again. Native Product is a hollow plastic pipe, production mix at plant, Mass/kg, with no fixed CAS, actual polymer grade, geometry, forming route, provider or geography. PEX/PB/PVC/ABS examples in synonyms/comments do not authorize replacing this qualified non-crosslinked black PE100 straight solid-wall configuration. This row tracks this same physical article and its actual state/history; it is not another supplier inventory or a new first release."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-allocation-2010
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: fg_return
+          role: "Physical external returned pipe"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual bare pipe received back from outside, with original release/cohort and original dispatch reversal recorded separately. Trace history and real incremental services, not new Q, negative manufacturing or assumed repairability. Native Product is a hollow plastic pipe, production mix at plant, Mass/kg, with no fixed CAS, actual polymer grade, geometry, forming route, provider or geography. PEX/PB/PVC/ABS examples in synonyms/comments do not authorize replacing this qualified non-crosslinked black PE100 straight solid-wall configuration. This row tracks this same physical article and its actual state/history; it is not another supplier inventory or a new first release."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-allocation-2010
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: fg_rework_return
+          role: "Internal receipt of reworked prior pipe"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual return from prior_fg_rework_out to the original FG account; pair independently weighed mass and unchanged historical genealogy plus real increments. Cancel the internal pair, keep lost material at its real destination, and create no Q. Native Product is a hollow plastic pipe, production mix at plant, Mass/kg, with no fixed CAS, actual polymer grade, geometry, forming route, provider or geography. PEX/PB/PVC/ABS examples in synonyms/comments do not authorize replacing this qualified non-crosslinked black PE100 straight solid-wall configuration. This row tracks this same physical article and its actual state/history; it is not another supplier inventory or a new first release."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-allocation-2010
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: return_in_pp_strap
+          role: "Usable external return received: Polypropylene bundle strap"
+          name: "Polypropylene strapping band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual external return of this same usable physical article, with original ownership and inherited vector; not a new purchase. Confirm actual PP composition and complete supplied strap form. A steel baling-band search candidate is incompatible; PET/steel bands need separate cards. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_in_wood_bearer
+          role: "Usable external return received: Wooden bundle bearer"
+          name: "Solid-wood pipe bundle bearer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual external return of this same usable physical article, with original ownership and inherited vector; not a new purchase. Confirm actual solid-wood piece, species/moisture and treatment where relevant; do not assume a pallet or plywood article. Reusable pieces retain stock and actual cycle/service history without invented lifetime. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_in_hdpe_cap
+          role: "Usable external return received: Detachable protective HDPE end cap"
+          name: "HDPE protective pipe end cap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual external return of this same usable physical article, with original ownership and inherited vector; not a new purchase. Only a real detachable transport-protection cap, with actual polymer/form and net component mass. It is excluded from pipe Q, does not establish a moulded fitting function, and is not covered by raw resin or generic finished pipe identity. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_in_pe_wrap
+          role: "Usable external return received: LDPE protective bundle film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual external return of this same usable physical article, with original ownership and inherited vector; not a new purchase. If actually used as verified LDPE film, record complete supplied film mass and roll/core distinction. Native CAS9002-88-4, generic PE-film basename/synonyms and branching description agree with polyethylene; its isolated CPC29220 luggage classification is anomalous and is not proof of packaging compatibility. The comment mentions PET as a rival material, not the selected polymer. Native Product/Mass identity fixes no LDPE grade, thickness, stretch function, additives, supply geography or provider. Verify them; do not apply to PET, TPT, coated or barrier laminate. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_in_kraft_tag
+          role: "Usable external return received: Uncoated kraft-paper bundle tag"
+          name: "Uncoated kraft-paper hang tag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual external return of this same usable physical article, with original ownership and inherited vector; not a new purchase. If actually used, weigh the complete uncoated non-adhesive paper tag. An adhesive label, tie cord, ink, coated paper or polymer tag is a different actual exchange and needs an added card; no common package bill is prescribed. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: gross_pipe_dispatch
+          role: "Gross physical bare-pipe dispatch"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual gross outward bare-pipe mass by original cohort, including reshipments. Do not reduce physical carriage by external returns or burden allocation; dispatch is not another manufactured reference product. Native Product is a hollow plastic pipe, production mix at plant, Mass/kg, with no fixed CAS, actual polymer grade, geometry, forming route, provider or geography. PEX/PB/PVC/ABS examples in synonyms/comments do not authorize replacing this qualified non-crosslinked black PE100 straight solid-wall configuration. This row tracks this same physical article and its actual state/history; it is not another supplier inventory or a new first release."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-allocation-2010
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: fg_to_rework
+          role: "FG pipe handed into manufacturing rework"
+          name: "Plastic pipes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554160db-a4c7-4728-87d7-0c72981e69cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual FG-to-manufacturing handoff paired with prior_fg_rework_in, at measured state/mass and original full vector. Only actually allowed compatible rework; other real inputs/outputs require their own named cards before use. Native Product is a hollow plastic pipe, production mix at plant, Mass/kg, with no fixed CAS, actual polymer grade, geometry, forming route, provider or geography. PEX/PB/PVC/ABS examples in synonyms/comments do not authorize replacing this qualified non-crosslinked black PE100 straight solid-wall configuration. This row tracks this same physical article and its actual state/history; it is not another supplier inventory or a new first release."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-allocation-2010
+                - ppi-pe-manufacturing
+            ranges: []
+        - row_id: out_pp_strap
+          role: "Gross outward carriage: Polypropylene bundle strap"
+          name: "Polypropylene strapping band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole article carried with gross physical pipe dispatch, including old FG and reshipments; do not net it against pipe returns, allocation or internal reuse. Confirm actual PP composition and complete supplied strap form. A steel baling-band search candidate is incompatible; PET/steel bands need separate cards. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_out_pp_strap
+          role: "Separate external return outward: Polypropylene bundle strap"
+          name: "Polypropylene strapping band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separate return of the usable article to an external owner, distinct from carriage with pipe dispatch; events and destinations are mutually exclusive. Confirm actual PP composition and complete supplied strap form. A steel baling-band search candidate is incompatible; PET/steel bands need separate cards. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: out_wood_bearer
+          role: "Gross outward carriage: Wooden bundle bearer"
+          name: "Solid-wood pipe bundle bearer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole article carried with gross physical pipe dispatch, including old FG and reshipments; do not net it against pipe returns, allocation or internal reuse. Confirm actual solid-wood piece, species/moisture and treatment where relevant; do not assume a pallet or plywood article. Reusable pieces retain stock and actual cycle/service history without invented lifetime. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_out_wood_bearer
+          role: "Separate external return outward: Wooden bundle bearer"
+          name: "Solid-wood pipe bundle bearer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separate return of the usable article to an external owner, distinct from carriage with pipe dispatch; events and destinations are mutually exclusive. Confirm actual solid-wood piece, species/moisture and treatment where relevant; do not assume a pallet or plywood article. Reusable pieces retain stock and actual cycle/service history without invented lifetime. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: out_hdpe_cap
+          role: "Gross outward carriage: Detachable protective HDPE end cap"
+          name: "HDPE protective pipe end cap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole article carried with gross physical pipe dispatch, including old FG and reshipments; do not net it against pipe returns, allocation or internal reuse. Only a real detachable transport-protection cap, with actual polymer/form and net component mass. It is excluded from pipe Q, does not establish a moulded fitting function, and is not covered by raw resin or generic finished pipe identity. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_out_hdpe_cap
+          role: "Separate external return outward: Detachable protective HDPE end cap"
+          name: "HDPE protective pipe end cap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separate return of the usable article to an external owner, distinct from carriage with pipe dispatch; events and destinations are mutually exclusive. Only a real detachable transport-protection cap, with actual polymer/form and net component mass. It is excluded from pipe Q, does not establish a moulded fitting function, and is not covered by raw resin or generic finished pipe identity. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: out_pe_wrap
+          role: "Gross outward carriage: LDPE protective bundle film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole article carried with gross physical pipe dispatch, including old FG and reshipments; do not net it against pipe returns, allocation or internal reuse. If actually used as verified LDPE film, record complete supplied film mass and roll/core distinction. Native CAS9002-88-4, generic PE-film basename/synonyms and branching description agree with polyethylene; its isolated CPC29220 luggage classification is anomalous and is not proof of packaging compatibility. The comment mentions PET as a rival material, not the selected polymer. Native Product/Mass identity fixes no LDPE grade, thickness, stretch function, additives, supply geography or provider. Verify them; do not apply to PET, TPT, coated or barrier laminate. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_out_pe_wrap
+          role: "Separate external return outward: LDPE protective bundle film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separate return of the usable article to an external owner, distinct from carriage with pipe dispatch; events and destinations are mutually exclusive. If actually used as verified LDPE film, record complete supplied film mass and roll/core distinction. Native CAS9002-88-4, generic PE-film basename/synonyms and branching description agree with polyethylene; its isolated CPC29220 luggage classification is anomalous and is not proof of packaging compatibility. The comment mentions PET as a rival material, not the selected polymer. Native Product/Mass identity fixes no LDPE grade, thickness, stretch function, additives, supply geography or provider. Verify them; do not apply to PET, TPT, coated or barrier laminate. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: out_kraft_tag
+          role: "Gross outward carriage: Uncoated kraft-paper bundle tag"
+          name: "Uncoated kraft-paper hang tag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole article carried with gross physical pipe dispatch, including old FG and reshipments; do not net it against pipe returns, allocation or internal reuse. If actually used, weigh the complete uncoated non-adhesive paper tag. An adhesive label, tie cord, ink, coated paper or polymer tag is a different actual exchange and needs an added card; no common package bill is prescribed. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: return_out_kraft_tag
+          role: "Separate external return outward: Uncoated kraft-paper bundle tag"
+          name: "Uncoated kraft-paper hang tag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separate return of the usable article to an external owner, distinct from carriage with pipe dispatch; events and destinations are mutually exclusive. If actually used, weigh the complete uncoated non-adhesive paper tag. An adhesive label, tie cord, ink, coated paper or polymer tag is a different actual exchange and needs an added card; no common package bill is prescribed. For this individual component retain opening empty stock, attached WIP/finished-goods stock and reusable stock, new external receipts, external returns received, closing stocks, physical gross-shipment carryout, empty returns outward and waste. Internal reuse cancels. Quantify actual component-specific acquisition/service burden without counting returned articles as new purchases, adding packaging to Q or creating an automatic co-product. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        - row_id: pp_strap_waste
+          role: "Discarded polypropylene bundle strap"
+          name: "Discarded polypropylene strapping band"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this specific component actually discarded. Weigh wet/gross article and retain contamination and destination separately; reconcile its material-specific packaging balance. This is a waste stream, not its raw polymer/wood/paper input or an unspecified packaging-waste collection. Do not count the same attached component as both shipped and discarded. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: wood_bearer_waste
+          role: "Discarded wooden bundle bearer"
+          name: "Discarded solid-wood pipe bundle bearer"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this specific component actually discarded. Weigh wet/gross article and retain contamination and destination separately; reconcile its material-specific packaging balance. This is a waste stream, not its raw polymer/wood/paper input or an unspecified packaging-waste collection. Do not count the same attached component as both shipped and discarded. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: hdpe_cap_waste
+          role: "Discarded detachable protective hdpe end cap"
+          name: "Discarded hdpe protective pipe end cap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this specific component actually discarded. Weigh wet/gross article and retain contamination and destination separately; reconcile its material-specific packaging balance. This is a waste stream, not its raw polymer/wood/paper input or an unspecified packaging-waste collection. Do not count the same attached component as both shipped and discarded. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: pe_wrap_waste
+          role: "Discarded ldpe protective bundle film"
+          name: "Discarded polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this specific component actually discarded. Weigh wet/gross article and retain contamination and destination separately; reconcile its material-specific packaging balance. This is a waste stream, not its raw polymer/wood/paper input or an unspecified packaging-waste collection. Do not count the same attached component as both shipped and discarded. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: kraft_tag_waste
+          role: "Discarded uncoated kraft-paper bundle tag"
+          name: "Discarded uncoated kraft-paper hang tag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this specific component actually discarded. Weigh wet/gross article and retain contamination and destination separately; reconcile its material-specific packaging balance. This is a waste stream, not its raw polymer/wood/paper input or an unspecified packaging-waste collection. Do not count the same attached component as both shipped and discarded. Both this card and the protocol reporting basis refer to the same single report_once calculation in section 8; raw collection remains undivided."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ppi-pe-manufacturing
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: service_pipe_waste
+          role: "Discarded previously released pipe"
+          name: "Discarded previously released black PE100 pipe"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual whole pipe or mutually exclusive pipe material discarded from FG/returned-pipe custody, by original cohort, actual composition/moisture and receiver/treatment. Keep its historical vector and real handling/treatment increments. Do not duplicate waste already recorded in manufacturing rework, assume a recovery credit, or create/erase Q."
+          amount:
+            expression: "Measured converted and attributed raw cohort numerator reported once per reference flow under the sole reporting calculation in section 8; retain this row applicability and unit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ppi-pe-manufacturing
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_context
+    applies_to: "all inventory rows"
+    rule: "This is attributional manufacturing inventory for the declared decision context when allocation is required. Apply ILCD sections7.9.2/7.9.3 within their situation limitations: establish why applicable subdivision/virtual subdivision and where relevant substitution/system expansion do not avoid allocation. No free choice between allocation/substitution, consequential claim or whole ILCD/PEF compliance is made."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_subdivision
+    applies_to: "all inventory rows"
+    rule: "First assign exclusive measured recipe, equipment, test, rework and packing burdens directly to their lot/function; subdivide or virtually subdivide actual line and service records. Then identify determining physical causality separately for each remaining exchange. Neither equal mass nor a convenient clock share is a universal key. A shared cooling/transport/storage driver must explain actual heat removal, limiting load/volume, occupancy and time as relevant; correlate-only drivers are insufficient."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_residual
+    applies_to: "only genuinely residual shared burdens"
+    rule: "Only where no determining physical causal relation remains identifiable use the relative contemporaneous market value of real co-functions at the same joint unit-process exit, in their actual quantity, quality and conditioning. Document gate, price source/period, grade, moisture, transport/packaging/conditioning adjustments and uncertainty/sensitivity. Do not apply retail delivered prices to untreated purge, allocate direct-assigned flows again, use fixed shares or multiply physical outputs by burden fractions."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_recycle
+    applies_to: "returns and secondary outputs"
+    rule: "Distinguish actual usable downgraded pipe, supplied regrind, waste sent to treatment, external utility return and customer return by their physical function and real destination/value. Internal same-material reuse retains inherited burdens plus measured effort/loss; it has no new purchase/output or automatic avoided-production credit. External recycling/end-of-life allocation needs its own justified consistent convention and any required additional evidence; this PCR imports no ILCD recycling-loop formula or fixed recycled-content factor."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_conservation
+    applies_to: "all burden vectors"
+    rule: "For each exchange the sum of burdens assigned to all real functions/cohorts and retained stocks equals the pre-allocation inventory. Keep first-production history, transferred WIP, existing FG and actual incremental rework/service distinct. Empty reusable packaging is not a new co-function; allocate only its actual acquisition/reconditioning/service with a documented conserved history."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "pipe_manufacture"
+      flow_role: "product"
+      record_type: "release_records"
+      raw_fields: "lot; grade; OD; wall; SDR; length; calibrated net pipe mass; detachable tare; first-release time and decision; unique item/lot IDs; reversal and reinspection links"
+      collection_method: "Quality staff and weighing operator reconcile traceable first release to actual accepted specification and calibrated net mass; remove caps/wrapping and exclude destructive samples. Record raw positive first releases and true reversals only, separately from warehouse/dispatch quantities. No division in collection."
+      unit: "kg; m"
+      frequency: "each actual first-release/reversal event"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "quality release gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; acceptance reports; unique release history"
+    - protocol_id: cp_materials
+      process_id: "pipe_manufacture"
+      flow_role: "black_compound"
+      record_type: "whole_formulation_records"
+      raw_fields: "row_id; supplier; complete grade/formulation; batch; receipt/issue/return mass; free/adhering moisture; carrier water; independently demonstrated structural/crystalline water; actual reaction-water evidence; polymer and carbon-black assays; carbon and relevant element basis; retained carrier; source cohort"
+      collection_method: "Weigh and reconcile real whole-compound procurement/consumption, invoices and grade certificates, sampling supplied state and constituent fractions independently. Do not book ingredient assays as purchases or use a supplier typical property as site measurement. Preserve raw masses and composition without division."
+      unit: "kg; mass fraction"
+      frequency: "each lot and changed supply"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "receipt through extrusion and internal reuse"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "supplier certificates; scale calibration; independent composition/moisture evidence"
+    - protocol_id: cp_energy
+      process_id: "pipe_manufacture"
+      flow_role: "line_electricity"
+      record_type: "stage_meter_records"
+      raw_fields: "meter ID; parent/submeter; supply country; voltage; provider boundary; start/end kWh; timestamp; stage; load and operating state; failure/idle/start-stop; served cohort"
+      collection_method: "Energy engineer reads calibrated interval meters and actual electric drying/heating/motors/chiller/tests; inventory actual dedicated and shared utilities. Reconcile meter hierarchy and any separately modelled compressed-air/cooling supply. Retain complete raw kWh, including unsuccessful operation, without normalization."
+      unit: "kWh"
+      frequency: "each meter interval and operating-state change"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "all actual production auxiliaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; overlap proof; supply contract; operation logs"
+    - protocol_id: cp_water
+      process_id: "pipe_manufacture"
+      flow_role: "makeup_water; external_chilled_water; warm_water_return"
+      record_type: "water_and_heat_records"
+      raw_fields: "row_id; utility owner; source/treatment; supply/return mass or volume; density; temperature; pressure; enthalpy; water/energy agreement; tank stock; internal recirculation; evaporation evidence; contamination; receiver"
+      collection_method: "Water engineer meters each actual external water supply/outlet and stocks; independently measure water state/density and evaporation or humidity where used. Retain gross loop supply and actual return separately; no double counting internal circulation, no arbitrary return credit and no water-density substitution for another fluid. Keep raw quantities, not per-unit amounts."
+      unit: "kg; m3; kg/m3; degC; kPa; kJ/kg"
+      frequency: "each meter interval and representative state sample"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "cooling/testing and actual utility-water crossings"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; water assays; thermal records; supplier accounting agreement"
+    - protocol_id: cp_maintenance
+      process_id: "pipe_manufacture"
+      flow_role: "screen_mesh; mineral_lubricant; cotton_cloth"
+      record_type: "consumable_records"
+      raw_fields: "row_id; material/formulation; received/issued/returned mass; clean and contaminated mass; stock; replacement cause; alloy; polymer loading; lubricant composition; reused article history; actual cleaner identity"
+      collection_method: "Maintenance staff weigh each physical consumable and actual contaminated output, reconcile inventories and service/reuse records; lab separates composition subledgers without double procurement. Record any real unlisted cleaner/oil as its own supply, never a generic maintenance total. Retain raw quantities without division."
+      unit: "kg"
+      frequency: "each receipt/use/replacement"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "actual maintenance and cleaning stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "receipts; formulation/alloy evidence; scale/tare records; receiver history"
+    - protocol_id: cp_air
+      process_id: "pipe_manufacture"
+      flow_role: "compressed_air"
+      record_type: "utility_air_records"
+      raw_fields: "provider; compressor model/boundary; gross integrated volume or actual rate; duration; T; P; humidity; dry/wet basis; measured species fractions; mass/density; upstream electricity; condensate; purge/leak; receiving point"
+      collection_method: "Utility operator measures actual supplied/exhausted air and matched compressor/dryer records. Match actual T/P/composition and distinguish cumulative volume from rate before conversion. No default air mixture or electricity factor. Every actual condensate and species destination remains traceable in its own ledger/card; preserve raw values without division."
+      unit: "kg; m3; m3/h; h; kPa; degC"
+      frequency: "each actual supply interval and state"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "actual utility supply and pellet handling"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; composition/humidity report; compressor inventory; overlap reconciliation"
+    - protocol_id: cp_outputs
+      process_id: "pipe_manufacture"
+      flow_role: "downgraded_pipe; sold_regrind"
+      record_type: "secondary_output_records"
+      raw_fields: "row_id; lot; actual quality/form; wet/dry mass; contamination; first/previous release status; buyer or receiver; actual function; exit gate; date; contemporaneous value; further conditioning transport and packing"
+      collection_method: "Output custodian weighs the actual separately specified usable outputs and verifies function/state with independent receipt/contract evidence. Retain unsold stocks, rejected secondary goods and treatment destinations separately. Economic evidence is for genuinely residual allocation only; collect physical raw totals unchanged."
+      unit: "kg; actual currency"
+      frequency: "each actual output/stock movement"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "actual joint-process exit and subsequent steps distinguished"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighing; supply/receiver specification; contemporaneous price provenance"
+    - protocol_id: cp_waste
+      process_id: "pipe_manufacture"
+      flow_role: "purge_waste; rejected_pipe_waste; saw_chip_waste; spent_screen; used_oil; spent_cloth; cooling_bleed; test_effluent"
+      record_type: "atomic_waste_records"
+      raw_fields: "row_id; lot/source stage; raw wet/gross mass; tare; stock; water/solids; polymer carbon-black steel oil fractions; captured dust separately; receiver and treatment; return/reuse links; uncertainty"
+      collection_method: "Waste custodian and laboratory identify/weigh each actual stream and independently assay relevant water/material/element fractions. Retain receiver manifests and actual treatment acceptance. Never bind untreated factory waste to cleaned recycling-plant feed or infer an emission from waste carbon/COD alone. Collect raw quantities before allocation and normalization."
+      unit: "kg; m3; kg/m3; mass fraction"
+      frequency: "each waste movement and representative composition sample"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "all actual treatment-bound streams"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; lab report; waste manifests; destination contract"
+    - protocol_id: cp_emissions
+      process_id: "pipe_manufacture"
+      flow_role: "water_vapour; compound_dust; nitrogen_air; oxygen_air; argon_air; carbon_dioxide_air"
+      record_type: "species_and_particle_records"
+      raw_fields: "row_id; species/CAS or particle structure; stage; intake/outlet receiver; gross and net quantity; concentration; integrated volume or flow rate; duration; T; P; humidity; dry/wet and compound/carbon basis; controls; blank; detection limit; recovery; uncertainty"
+      collection_method: "Competent laboratory selects validated analyte/particle-appropriate methods and representative receipt/extrusion/cooling/cutting/cleaning/idle/failure states. Independently identify actual species and post-control/fugitive paths; no source emission factor or generic VOC-to-species mass. Preserve paired carrier intakes/outlets and actual H2O, carbon and particulate assays; nondetect is an interval with method uncertainty, not an automatic zero. Retain raw fields; no pre-division."
+      unit: "kg; kg/m3; m3; m3/h; h; mass fraction"
+      frequency: "representative operating-state intervals and every changed material/control"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "all actual exhaust/fugitive and intake paths"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "full method validation; lab results; calibration; sample recovery; uncertainty"
+    - protocol_id: cp_stocks
+      process_id: "pipe_manufacture"
+      flow_role: "all physical and inherited-vector ledgers"
+      record_type: "cohort_stock_records"
+      raw_fields: "cohort; row_id; raw/WIP/FG/utility state; opening/closing quantity; composition; completion stage; prior release; full inherited same-flow vector; internal transfer; rework; external return; original dispatch/reversal; loss; gross shipment each_disjoint_nonraw_nonWIP_stock; physical_open_close_quantity_composition; every_inherited_exchange_vector; current_external_receipts; actual_issues_returns_losses; evidenced_service_and_remaining_potential; no_overlap_with_raw_WIP_FG_or_packaging"
+      collection_method: "Stock controller links calibrated counts/masses and historical exchange vectors to each cohort at each gate, including raw stock, WIP, FG and actual tanks. Retain equal physical transfer links and the complete vector per exchange, not an impact score or assumed current-period recipe. Isolate old-FG incremental rework/service and first-release reversal history. No division in collection. For each separately held utility/fluid/oil/installed store reconcile opening inherited vector + new external receipt/service burden - closing evidenced remaining vector - true unconsumed outward transfers once before attribution; keep losses and real supplied service burden, and never double an internal issue, prior assigned FG history or a raw/WIP/package correction. Preserve material-specific physical ledgers independently of these burden vectors."
+      unit: "kg; original exchange units"
+      frequency: "period opening/closing and every linked transfer"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "manufacturing FG and consolidated gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "historical vectors; transfer/reversal audit; stocktake; calibration"
+    - protocol_id: cp_service
+      process_id: "pipe_service"
+      flow_role: "fg_in; fg_return; fg_rework_return; gross_pipe_dispatch; fg_to_rework; service_pipe_waste; service_electricity"
+      record_type: "post_release_service_records"
+      raw_fields: "lot/cohort; original release date/Q; service time horizon; opening/closing FG; gross shipment; customer return; served volume/area/load and time; warehouse/packing/loading meter; prior carried vector; actual incremental rework/service actual_bare_pipe_handoff_return_dispatch_loss_quantities; paired_rework_links; mutually_exclusive_physical_destinations; original_Q_and_full_inherited_vector; permitted_configuration_and_acceptance; actual_added_removed_material_water_species_rows"
+      collection_method: "Warehouse/energy staff meter actual services by served lot and collect causally determining driver evidence. Retain old-FG histories; separate incomplete period-end service from actually completed dispatch service. Transfers, shipping/retests and returns do not create first Q. Raw service and vector entries remain separate from production with no division. Weigh each bare-pipe movement and actual loss at its real state; pair internal Q and both rework handoffs, separate external physical returns from original dispatch reversals, and retain each original cohort Q/history. Any actual added material/water/cleaner or removed stream in rework must first have its own concrete atomic card/protocol and measured destination. Only actual compatible permitted rework and acceptance apply; no assumed repair success or extension of life."
+      unit: "kWh; actual service driver units"
+      frequency: "each service interval and stock/dispatch/return event"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "packing warehouse handling and actual factory loading"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meters; time/load evidence; shipment/return links; historical vector"
+    - protocol_id: cp_packaging
+      process_id: "pipe_service"
+      flow_role: "pp_strap; wood_bearer; hdpe_cap; pe_wrap; kraft_tag; component-specific waste Every named acquisition, usable-return receipt, gross carriage, separate outward-return and waste event for each listed form is collected separately."
+      record_type: "individual_component_stock_records"
+      raw_fields: "row_id; component ID/composition; owner; tare; moisture/contamination; opening empty attached-WIP attached-FG reusable stocks; new purchases; external returns received; closing same stocks; gross-shipment carryout; external empty returns outward; waste; internal reuse; acquisition/service burden vector"
+      collection_method: "Packing staff identify and weigh each actual packaging component independently and reconcile the complete per-component stock equation in calculation rules. Every stock piece occupies one mutually exclusive location/state. Retain actual reuse/repair history; issue/return is not purchase/credit. Detachable caps, film, straps, wood and tags remain outside bare pipe Q; any real additional component needs its own card. Retain raw totals without division. Each named purchase row records only new external acquisition; returned articles received, gross shipment carriage and separate outward returns use distinct rows with mutually exclusive events. Physical return/transfer does not purchase the article again; inherited acquisition/service vectors are tracked separately from physical mass. Each actual inbound resin/consumable package form must likewise be specifically identified and receive its own actual direction cards before quantitative use, even if upstream already includes its burden. Actual packaging repair or water gain/loss needs separately named actual material/phase rows and independent measurements; never hold wet tare constant by assumption."
+      unit: "kg; actual measured counts with tare"
+      frequency: "each component movement and period stocktake"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "empty attached WIP/FG reusable and external movements"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "component specification; measured tare; stock balance; actual reuse/return receipts"
+    - protocol_id: cp_quality
+      process_id: "pipe_manufacture"
+      flow_role: "product and actual test samples"
+      record_type: "specification_quality_records"
+      raw_fields: "grade certificate; drawing; OD; wall; ovality; length; marking method; defect observations; actual duty/standard edition; material incoming tests; actual sampling and destructive-test mass; acceptance decision; rejects; calibration"
+      collection_method: "Quality staff verify actual approved incoming compound, production control and finished product requirements using current applicable product evidence. PPI historical ASTM examples and Borealis typical properties are not blanket certification or a test schedule; no mandatory hydrotest per pipe is invented. Link acceptance and sample disposition to unique release; collect raw records only."
+      unit: "actual measured test units; kg"
+      frequency: "actual specification-required frequency and every reject"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "incoming through first release"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "approved specification; complete test reports; calibration; decision/rejection trace"
+    - protocol_id: cp_allocation
+      process_id: "pipe_manufacture"
+      flow_role: "exchange-specific shared burdens"
+      record_type: "allocation_evidence_records"
+      raw_fields: "row_id; function/cohort; exclusive stage evidence; shared physical total; determining cause; driver quantity/time; residual reason; common exit condition; actual quantity; contemporaneous price; conditioning/transport/packaging adjustments; uncertainty; conserved vector"
+      collection_method: "Method owner first documents direct/virtual subdivision and actual determining physical causality per exchange; only genuinely residual burdens receive same-exit actual-state market-value evidence. Retain the original physical totals and full allocation ledger with sensitivity, no default shares or credits; collection records are raw and undivided."
+      unit: "original exchange units; actual driver and currency units"
+      frequency: "each changed function/driver/price period"
+      temporal_coverage: "One complete matched reporting period with original cohort history where used"
+      site_scope: "actual joint unit-process gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "driver measurements; exit-state evidence; price provenance; conservation/sensitivity"
+  calculation_rules:
+    - id: release_q
+      applies_to: "product"
+      rule: "Q = sum of measured net bare pipe newly first quality-released for the matched cohort with true linked release reversals; require Q > 0 for reporting. Closing FG is already in Q; never add dispatches, returns, reinspection or stock balances to Q."
+      inputs:
+        - cp_release
+        - cp_quality
+      output: "Q"
+      source_ids:
+        - ppi-pe-manufacturing
+        - agru-black-straight-pipe
+    - id: physical_gates
+      applies_to: "raw physical ledgers"
+      rule: "Manufacturing: opening line stocks (raw/WIP/actual utility stocks) + actual external physical inputs + FG transferred to rework = closing line stocks + Q transferred to FG + reworked prior FG returned to FG + actual other product/waste/elementary outputs and external utility returns. FG: opening FG + Q + external returned pipe + prior-FG rework returned = closing FG + gross physical bare-pipe dispatch + FG sent to rework + actual FG loss/waste. Consolidated: cancel Q and both rework handoffs; opening line+FG stocks + external physical inputs + external returned pipe = closing line+FG stocks + gross physical bare-pipe dispatch + other external outputs. Include actual carrier gas/water gross masses in physical gates; this consolidated equation is the pipe/manufacturing-material-and-utility ledger, excluding the separately balanced packaging components. Add every component packaging_balance equation to obtain the complete material/utility-plus-packaging external physical gate; cancel internal attachment/reuse transfers, and include each actual packaging receipt, stock, gross-shipment carryout, outward return and waste once. Apply independent total wet/dry-material and carbon/relevant-element subbalances using real measured fractions, retaining uncertainty; never fit two unknowns to one residual."
+      inputs:
+        - cp_stocks
+        - cp_release
+        - cp_materials
+        - cp_water
+        - cp_air
+        - cp_waste
+        - cp_emissions
+      output: "raw physical and constituent ledgers"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: cohort_vectors
+      applies_to: "all inventory rows"
+      rule: "Construct raw A_i for the first-release production cohort from its actual attributable exchanges + inherited same-exchange burdens of consumed opening raw stock/WIP - complete same-exchange vectors retained in closing raw stock/WIP. Reconcile actual intermediate transfers and apply justified subdivision/allocation to the remaining shared burdens. Keep previously released FG history and its real incremental rework/service with that original cohort, not current new Q. Preserve all failure/start-stop/idle/cleanup burdens and each co-function vector; physical output masses remain unallocated. Service has its own raw vector A_service_i for the actual served cohort/horizon and never subtracts closing FG from first-production Q. Also include opening minus closing UNASSIGNED vectors of the disjoint non-raw/non-WIP utility/fluid/oil/installed stores and actual unconsumed outward transfers defined in cp_stocks. New external receipts enter once before that correction; if actual measured consumption already includes a correction, prove equivalence and do not repeat it. Stock losses retain burden, and remaining service potential requires evidence without a lifetime default. Already assigned prior-FG vectors are carried traces, not repurchased materials or credits. Physical movement cards use actual event mass separately, not this burden allocation as a physical-mass multiplier."
+      inputs:
+        - cp_stocks
+        - cp_materials
+        - cp_energy
+        - cp_water
+        - cp_air
+        - cp_waste
+        - cp_emissions
+        - cp_service
+        - cp_packaging
+        - cp_allocation
+      output: "A_i and separately bounded A_service_i"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: unit_conversion
+      applies_to: "all raw numerators"
+      rule: "Convert mass prefixes explicitly; for the same electricity boundary raw A_MJ = 3.6 × recorded A_kWh. For a measured liquid volume use A_kg = V_m3 × independently measured rho_kg_per_m3 of that material at its real state; do not assume water density for oil or concentrated formulations. Preserve units, conditions and uncertainty before cohort attribution."
+      inputs:
+        - cp_energy
+        - cp_water
+        - cp_maintenance
+      output: "converted raw numerators"
+      source_ids: []
+    - id: species_mass
+      applies_to: "each actual species and receiving path"
+      rule: "For compatible species-mass concentration c and cumulative exhaust volume V use raw mass = sum(c × V) by operating-state interval; V is already integrated. For a genuine rate F integrate c × F × dt over the matched duration. Match T/P/humidity and compound-versus-carbon basis; species-specific conversion requires actual formula/composition. Keep gross carrier intake/outlet and independently determined process contribution distinct; no fixed air composition, VOC-as-one-species, COD-to-chemical assumption or nondetect-to-zero default."
+      inputs:
+        - cp_air
+        - cp_emissions
+      output: "raw species masses and actual contributions"
+      source_ids: []
+    - id: packaging_balance
+      applies_to: "each actual packaging component"
+      rule: "For each component independently: opening empty + opening attached-WIP + opening attached-FG + opening reusable stock + new purchases + external returns received = closing empty + closing attached-WIP + closing attached-FG + closing reusable stock + carryout on gross physical shipments + external returns outward + actual waste. Locations/states are mutually exclusive; internal reuse/reattachment cancels. Verify composition/tare/moisture separately. Preserve real acquisition and carried service vectors; returns are not new purchases or credits and packaging never enters bare-pipe Q."
+      inputs:
+        - cp_packaging
+        - cp_stocks
+        - cp_service
+      output: "component-specific conserved physical and burden ledgers"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: service_history
+      applies_to: "pipe_service"
+      rule: "Record actual post-release service by original production cohort and observation horizon; retain inherited FG vector, real return/reversal of its original shipment record and actual incremental inspection/rework/packing/handling. No shipping or reinspection creates new Q. A service subtotal for a prior cohort keeps that cohort denominator if known; missing original Q/vector makes that subtotal incomplete, not assignable to current Q. Disclose separately whether each cohort service is observed-to-period-end or complete-to-actual-dispatch."
+      inputs:
+        - cp_service
+        - cp_stocks
+        - cp_packaging
+      output: "separate cohort service history"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: report_once
+      applies_to: "all non-reference exchanges"
+      rule: "x_i = A_i / Q; A_i is the complete converted and attributed raw numerator in the specific row unit and selected production cohort, Q is that cohort newly first quality-released bare pipe mass in kg. Execute this division exactly once after stock-vector reconciliation and justified allocation. Reference output is 1 kg; collection protocols retain undivided raw fields. A separately reported matched-cohort service amount uses this same one rule on its separate raw service numerator and original cohort Q; do not divide x_i again or pool old-cohort service with current Q. Q = 0 retains real loads with no unit result. For the separately identified physical handoff, return, gross dispatch and packaging acquisition/exit rows, A_i is that actual event quantity for the tracked cohort, not an allocated burden vector or repeated supplier purchase. Keep inherited upstream/service vectors separately, cancel internal pairs and never add these gross reconciliation views to the net reference product again."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+      output: "x_i"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: asset_manufacture_share
+      applies_to: "existing capital/reusable manufacture attribution"
+      rule: "For each included original asset manufacture vector B, f_current = u_current / D only after the persistent ledger verifies the supported whole installed-service denominator, all beneficiaries and prior assigned shares. Attribute f_current * B once to the actual beneficiary before the existing single reference normalization. Check prior_shares + all current/new beneficiary shares <= 1; carry the remaining original balance. Capacity revisions reconcile the historical ledger. Full physical asset/packaging mass and actual gross stocks/returns never receive f_current. Unknown D or history leaves the final attributed result unavailable, without suppressing actual repair/replacement/service burdens."
+      inputs:
+        - asset_id
+        - original_B
+        - u_current
+        - D
+        - historical_beneficiaries
+        - prior_shares
+        - capacity_evidence
+      output: "conserved attributed manufacture vector"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_route
+      applies_to: "all rows"
+      requirement: "Confirm actual compound grade/whole supply, single annular wall, straight/plain-end form, non-crosslinked state, electric extrusion/vacuum cooling and indent marking; document excluded-route checks."
+      evidence: "Approved product/material specification and stage records"
+    - id: dq_raw
+      applies_to: "all rows"
+      requirement: "Use actual complete site/period/cohort records, calibration, sampling representativeness and uncertainty; preserve failed and zero-output periods and every missing value explicitly."
+      evidence: "Raw protocols with original units and logs"
+    - id: dq_native
+      applies_to: "all UUID rows"
+      requirement: "Verify full native basename/synonyms/comment/CAS, fixed route/form/geography/medium/type and all properties plus exact referenced property/unit-group chain. Identity does not prove grade/provider compatibility or a quantified background inventory. Retain anomaly and unresolved restrictions with the data package."
+      evidence: "Exact native originals and actual provider supply specification"
+    - id: dq_balance
+      applies_to: "all physical gates"
+      requirement: "Independently close material water relevant elements and individual packaging balances before burden allocation; do not use one residual for reaction water and volatile mass or use TOC/COD/VOC as a named compound mass."
+      evidence: "Independent assays and uncertainty-aware gross physical ledgers"
+    - id: dq_vectors
+      applies_to: "stock rework and services"
+      requirement: "Carry each exchange vector with original raw/WIP/FG cohort and completion state; reconcile internal transfers, prior shipment reversals and only real incremental rework. Unknown historical vectors cannot be approximated as current recipe without explicit evidence and disclosed uncertainty."
+      evidence: "Historical stock/cohort and service records"
+    - id: dq_sources
+      applies_to: "all cited constraints"
+      requirement: "Separate historical general manufacturing guidance, supplier-specific typical data, live product-form evidence and general attributional LCA method. They do not establish one shared contemporary factory, a universal recipe/test regime or approval."
+      evidence: "Complete source originals with scope and counterexamples"
+    - id: dq_conditional
+      applies_to: "each conditional exchange"
+      requirement: "Demonstrate actual absence or measure occurrence; actual unlisted supplies/wastes/species require added atomic cards. Missing auxiliary UUID or ordinary provider data remains a disclosed identity/measurement gap and cannot erase a real flow or certify quantitative completeness."
+      evidence: "Actual route survey meter/sample records and receiver evidence"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "reference product"
+    rule: "Confirm the section1 product, starting formulation and full manufacturing route, first-release Q and actual duty/acceptance specification. Do not treat all CPC36320 products or mass-only hydraulic equivalence as covered."
+    source_ids:
+      - ppi-pe-manufacturing
+      - borealis-black-pe100-compound
+      - agru-black-straight-pipe
+      - un-cpc3-notes
+  - rule_id: validate_units
+    applies_to: "all inventory rows"
+    rule: "Check all raw numerator conversions, same physical reference gate, exact selected reference row, finite measurement completeness and single report_once division in both languages. Missing actual conversion or unsupported unknowns remain incomplete rather than passing."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_stocks
+    applies_to: "all physical and burden ledgers"
+    rule: "Independently reconcile manufacturing, FG and consolidated raw physical gates and every per-exchange inherited burden vector. Q cancels internally at consolidation, closing FG is not extra production, and return/reinspection does not add Q. Retain all failures start-stop idle cleanup and actual rework; no allocated physical mass or fabricated balancing species."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_packaging
+    applies_to: "each actual packaging component"
+    rule: "Require the full component-specific opening empty/attached-WIP/attached-FG/reusable plus new purchase plus external return received equation against closing stocks, gross-shipment carryout, outward return and waste. Internal reuse cancels; detachable packaging is outside Q and is not a default co-product or credit."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_species
+    applies_to: "all actual air water and waste paths"
+    rule: "Use species-/particle-appropriate validated methods, receiver/compartment identity, gross carrier and net-generation distinction, independent water/element evidence and detection-limit uncertainty. No residual-fitting two unknowns, integrated-volume times duration, density from native secondary properties or VOC/COD-as-species shortcut. Unknown real species blocks completeness of that data package."
+    source_ids:
+      - ppi-pe-manufacturing
+      - borealis-black-pe100-compound
+  - rule_id: validate_native
+    applies_to: "all UUID rows"
+    rule: "Verify native identity against the full qualified physical role and actual provider. Enforce CN below-1kV consumption-mix restriction for adopted electricity and treated-water restriction for water; generic pipe/mesh/PE-film references do not establish grade, geometry, pressure, alloy, LDPE stretch function or provider. Disclose the isolated PE-film luggage classification anomaly without substituting PET or a different particle/route/CAS."
+    source_ids:
+      - ppi-pe-manufacturing
+  - rule_id: validate_allocation
+    applies_to: "all allocated exchanges"
+    rule: "Check dedicated/virtual subdivision then exchange-specific determining physical causality, then only truly residual same-exit actual-state contemporaneous value. Preserve 100-percent burden-vector conservation and separately disclosed service history; no free physical/economic choice, fixed share or automatic recycling credit."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_process_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacture of the specified qualified PE100 straight pipe at first quality release with compatible complete-compound background; separately bounded actual cohort packing/storage/dispatch services"
+  excluded_use: "Whole CPC36320 coverage; fitting manufacture; installation/use/end-of-life claims; net-delivery denominator; pressure/service-life equivalence; complete-to-dispatch claim for unshipped stock"
+  required_metadata: "All reference qualifiers; site and period; first-release and service horizons; whole formulation; actual measured route and all exchanges; full stock vectors and raw gates; provider/utility agreements; justified allocation and actual packaging histories"
+  required_quality_disclosure: "State scientific-review and translation status truthfully; disclose unresolved auxiliary identities/provider data and missing site measurements separately from a real product/method gap. An authored method is not a complete measured factory inventory; missing vectors/species or unsupported measurements prevent quantitative completeness. No mapping/publication approval follows from engineering checks."
+  update_trigger: "Changed compound supply/grade formulation wall/marking route geometry duty gate service horizon utility source actual species treatment recycling convention allocation or controlling source evidence"
+data_sources:
+  - id: "ppi-pe-manufacturing"
+    type: "handbook"
+    reference: "Plastics Pipe Institute. Handbook of Polyethylene Pipe, second edition 2008, Chapter4, full publisher PDF pp.105–123; visible pp.106–108 and110–115 and121–123. https://www.plasticpipe.org/common/Uploaded%20files/1-PPI/Manuals-Design%20Guides/Handbook%20of%20PE%20Pipe/SECOND_EDITION_HANDBOOK_OF_PE_PIPE_2008/Chapter_4__-_PE_Pipe_and_Fittings_Manufacturing/Chapter%204%20-%20PE%20Pipe%20and%20Fittings%20Manufacturing.pdf"
+    used_for: "Physical extrusion/sizing/cooling/marking/cutting/handling and QA structure; natural-resin blending, coiling, profile wall and fittings as counterexamples. Historical general method only; no numeric defaults or LCA allocation. Visible original controls over hidden overlapping PDF text."
+  - id: "borealis-black-pe100-compound"
+    type: "handbook"
+    reference: "Borealis. BorSafe HE3490-LS-H Product Data Sheet, 11.07.2023 Ed.4, complete pp.1–3. https://www.borealisgroup.com/download?ids=141974"
+    used_for: "Complete black stabilized HDPE compound pellets for pipe extrusion; grade-specific processing/storage cautions and typical-property disclaimer. No actual plant recipe, density, range, emission factor or shared AGRU supply claim."
+  - id: "agru-black-straight-pipe"
+    type: "handbook"
+    reference: "AGRU. AGRULINE PE100/PE100-RC Piping System, Pipes, code705, Pipe5m extruded PE100-RC black, complete four-page manufacturer export dated2026-10-16. https://www.agru.at/en/products/agruline/product-catalogue?cHash=d39ed544c060fcc498a262adfd397325&tx_agruproducts_products%5Baction%5D=exportBtm&tx_agruproducts_products%5Bcatid%5D=05_05_06_006&tx_agruproducts_products%5Bcontroller%5D=Product"
+    used_for: "Real straight supplied pipe and solid annular-wall endpoint, with ventilation/SDR distinctions. Unlabelled Weight unit is not used; no pressure/recipe/marking/packaging factor or Borealis-grade linkage inferred."
+  - id: "ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC. ILCD Handbook, General guide for LCA, Detailed guidance, first edition March2010, complete sections7.9.2–7.9.3, PDF pp.275–292 (printed255–272). https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional allocation context, subdivision/virtual subdivision, exchange-specific determining physical causality then residual actual-process-exit market values and inventory conservation. Cohort/gate/packaging equations are this PCR operational collection rules, not quoted industrial rules. No recycling-loop formula or full-program conformity imported."
+  - id: "un-cpc3-notes"
+    type: "official_guidance"
+    reference: "UN Statistics Division. CPC Version3.0 Explanatory Notes, 30June2025, original pp.176–179 and repository raw Structure CSV, codes36230/36310/36320/36330/36950/36990. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Original classification titles and adjacent residual categories only; no manufacturing method, scientific approval, whole-leaf applicability or accepted mapping evidence."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d2b1a869ae22587681a9effc4b46e4a1cf4cb8699342aba60fb4edf6eebf65c4"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_9482"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 9482
+          line: 67
+          column: 1
+        end:
+          offset: 14517
+          line: 89
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Complete black stabilized PE100 compound pellets received for pipe manufacture plus actual utilities consumables and individually identified packing components |\n| starting_condition_role | material_inputs |\n| product_classification_scope | Only the section1 straight solid-wall PE100 pipe subset of CPC3.0 36320 |\n| recursive_input_rule | Bought finished pipe is a separately identified input to another route; it cannot replace pellet-to-pipe manufacture. Internal regrind and returns retain histories and cancel physical handoffs once; no recursive new output. |\n| upstream_dataset_requirement | Use compatible upstream inventories for the complete compound and each real utility consumable packaging and waste receiver. A UUID is identity only. Internal separately modelled utility supply needs real producer inventory and meter-overlap reconciliation. |\n| disclosure | Disclose actual site period recipe/grade supply form foreground gate and service horizon; outsourced steps; stocks failed runs rework and all measured flows; packaging/utility ownership and backgrounds; missing data and uncertainty |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_full_route | all inventory rows | Include receipt/storage and actual drying, feeding, screw-drive and band-heat extrusion, melt screen changes, vacuum sizing, tank/spray cooling, stress relaxation, haul-off, indent marking, cutting, cleaning, actual quality tests and first release. Keep actual interstage masses/meters even when aggregated into pipe_manufacture. No energy/yield/temperature default or purchased-finished-pipe shortcut. | ppi-pe-manufacturing; borealis-black-pe100-compound |\n| boundary_service | pipe_service | Retain actual bundling, packaging, storage, handling and factory loading/dispatch in a separate service ledger by served lot, dates, service driver and linked production history. Opening FG retains its prior production vector; closing FG already belongs to first-release Q and is not another output. Distinguish observed service-to-period-end from complete-to-dispatch service; do not invent future service for unshipped stock or claim a dispatch endpoint for it. | ppi-pe-manufacturing; ilcd-allocation-2010 |\n| boundary_cohorts | all inventory rows | Keep failures, zero-output runs, start/stop, idle, cleaning, rejected material, actual recycling and rework. Opening/closing raw stock and WIP carry quantities, composition/state, completion and the full inherited vector of every exchange with source cohorts. Previously released FG rework keeps its original production history and only its real incremental rework/service, never another first release or wholesale reassignment to current Q. Separately held non-raw/non-WIP utility, cooling-water, oil and installed-article/charge stores also retain disjoint opening/closing physical quantities and every inherited exchange vector under cp_stocks/cohort_vectors. Retained media may provide real service without mass loss: establish assigned and remaining service burden from actual history, not a default lifetime or repeated full charge. A physical receipt, internal issue, return, retained stock and actual consumption are distinct; an already corrected consumption record is never stock-corrected again. | ppi-pe-manufacturing; ilcd-allocation-2010 |\n| boundary_actual_atomic | all inventory rows | Cards are concrete possible exchanges, not a common bill. Before quantitative use add every actual missing material, formulation, ink/foil, cleaner, treatment chemical, fuel, refrigerant, gas species, package component, captured dust, wastewater-treatment sludge or utility export as its own atomic card with actual process/receiver/property. Retain a specific physical/chemical name when UUID is unresolved. Absence needs affirmative route/measurement evidence; unmeasured is not zero. | ppi-pe-manufacturing; borealis-black-pe100-compound |\n| boundary_utilities | all utility rows | Actual external chilled water and warm return retain gross mass, thermal state, enthalpy, destination and supplier water/energy conventions. Internal loops cancel; treat water loss make-up separately. An electric extrusion line does not imply steam, boiler, fuel combustion or purchased heat. Include any actual such system through separate exchanges before data use and prevent double-counting utility supply and its own electricity. | ppi-pe-manufacturing |\n| boundary_physical_gates | all physical ledgers | Use three consistent raw physical gates: manufacturing stocks to quality release; FG warehouse to gross physical dispatch; consolidated manufacture plus FG after cancelling Q and all internal transfers. Packaging has a separate per-component gate. Physical masses and relevant carbon/other elements close before burden allocation; allocation factors do not shrink real coproducts, wastes, carriers or returned utility water. | ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 305
+              line: 10
+              column: 1
+            end:
+              offset: 376
+              line: 10
+              column: 72
+          text: "# Extruded black PE100 solid-wall straight pipe from purchased compound"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 9482
+              line: 67
+              column: 1
+            end:
+              offset: 9503
+              line: 67
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+        - span:
+            start:
+              offset: 305
+              line: 10
+              column: 1
+            end:
+              offset: 701
+              line: 14
+              column: 1
+          markdown: "# Extruded black PE100 solid-wall straight pipe from purchased compound\n\nAll normative rules below apply only to the declared complete-compound PE100 solid-wall straight-pipe route. The reference gate is unique first quality release; onward services keep their own cohort/horizon and cannot create production. Actual measured physical ledgers and inherited per-exchange burdens remain distinct.\n\n"
+    - unit_id: "normative_108576"
+      family: "allocation"
+      span:
+        start:
+          offset: 108576
+          line: 1034
+          column: 1
+        end:
+          offset: 113167
+          line: 1045
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_context | all inventory rows | This is attributional manufacturing inventory for the declared decision context when allocation is required. Apply ILCD sections7.9.2/7.9.3 within their situation limitations: establish why applicable subdivision/virtual subdivision and where relevant substitution/system expansion do not avoid allocation. No free choice between allocation/substitution, consequential claim or whole ILCD/PEF compliance is made. | ilcd-allocation-2010 |\n| allocation_subdivision | all inventory rows | First assign exclusive measured recipe, equipment, test, rework and packing burdens directly to their lot/function; subdivide or virtually subdivide actual line and service records. Then identify determining physical causality separately for each remaining exchange. Neither equal mass nor a convenient clock share is a universal key. A shared cooling/transport/storage driver must explain actual heat removal, limiting load/volume, occupancy and time as relevant; correlate-only drivers are insufficient. | ilcd-allocation-2010 |\n| allocation_residual | only genuinely residual shared burdens | Only where no determining physical causal relation remains identifiable use the relative contemporaneous market value of real co-functions at the same joint unit-process exit, in their actual quantity, quality and conditioning. Document gate, price source/period, grade, moisture, transport/packaging/conditioning adjustments and uncertainty/sensitivity. Do not apply retail delivered prices to untreated purge, allocate direct-assigned flows again, use fixed shares or multiply physical outputs by burden fractions. | ilcd-allocation-2010 |\n| allocation_recycle | returns and secondary outputs | Distinguish actual usable downgraded pipe, supplied regrind, waste sent to treatment, external utility return and customer return by their physical function and real destination/value. Internal same-material reuse retains inherited burdens plus measured effort/loss; it has no new purchase/output or automatic avoided-production credit. External recycling/end-of-life allocation needs its own justified consistent convention and any required additional evidence; this PCR imports no ILCD recycling-loop formula or fixed recycled-content factor. | ilcd-allocation-2010 |\n| allocation_conservation | all burden vectors | For each exchange the sum of burdens assigned to all real functions/cohorts and retained stocks equals the pre-allocation inventory. Keep first-production history, transferred WIP, existing FG and actual incremental rework/service distinct. Empty reusable packaging is not a new co-function; allocate only its actual acquisition/reconditioning/service with a documented conserved history. | ilcd-allocation-2010 |\n| asset_manufacture_conservation | existing capital/reusable manufacture attribution | Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 305
+              line: 10
+              column: 1
+            end:
+              offset: 376
+              line: 10
+              column: 72
+          text: "# Extruded black PE100 solid-wall straight pipe from purchased compound"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 108576
+              line: 1034
+              column: 1
+            end:
+              offset: 108616
+              line: 1034
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+        - span:
+            start:
+              offset: 305
+              line: 10
+              column: 1
+            end:
+              offset: 701
+              line: 14
+              column: 1
+          markdown: "# Extruded black PE100 solid-wall straight pipe from purchased compound\n\nAll normative rules below apply only to the declared complete-compound PE100 solid-wall straight-pipe route. The reference gate is unique first quality release; onward services keep their own cohort/horizon and cannot create production. Actual measured physical ledgers and inherited per-exchange burdens remain distinct.\n\n"
+    - unit_id: "normative_141782"
+      family: "validation"
+      span:
+        start:
+          offset: 141782
+          line: 1094
+          column: 1
+        end:
+          offset: 145564
+          line: 1107
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | reference product | Confirm the section1 product, starting formulation and full manufacturing route, first-release Q and actual duty/acceptance specification. Do not treat all CPC36320 products or mass-only hydraulic equivalence as covered. | ppi-pe-manufacturing; borealis-black-pe100-compound; agru-black-straight-pipe; un-cpc3-notes |\n| validate_units | all inventory rows | Check all raw numerator conversions, same physical reference gate, exact selected reference row, finite measurement completeness and single report_once division in both languages. Missing actual conversion or unsupported unknowns remain incomplete rather than passing. | ilcd-allocation-2010 |\n| validate_stocks | all physical and burden ledgers | Independently reconcile manufacturing, FG and consolidated raw physical gates and every per-exchange inherited burden vector. Q cancels internally at consolidation, closing FG is not extra production, and return/reinspection does not add Q. Retain all failures start-stop idle cleanup and actual rework; no allocated physical mass or fabricated balancing species. | ilcd-allocation-2010 |\n| validate_packaging | each actual packaging component | Require the full component-specific opening empty/attached-WIP/attached-FG/reusable plus new purchase plus external return received equation against closing stocks, gross-shipment carryout, outward return and waste. Internal reuse cancels; detachable packaging is outside Q and is not a default co-product or credit. | ilcd-allocation-2010 |\n| validate_species | all actual air water and waste paths | Use species-/particle-appropriate validated methods, receiver/compartment identity, gross carrier and net-generation distinction, independent water/element evidence and detection-limit uncertainty. No residual-fitting two unknowns, integrated-volume times duration, density from native secondary properties or VOC/COD-as-species shortcut. Unknown real species blocks completeness of that data package. | ppi-pe-manufacturing; borealis-black-pe100-compound |\n| validate_native | all UUID rows | Verify native identity against the full qualified physical role and actual provider. Enforce CN below-1kV consumption-mix restriction for adopted electricity and treated-water restriction for water; generic pipe/mesh/PE-film references do not establish grade, geometry, pressure, alloy, LDPE stretch function or provider. Disclose the isolated PE-film luggage classification anomaly without substituting PET or a different particle/route/CAS. | ppi-pe-manufacturing |\n| validate_allocation | all allocated exchanges | Check dedicated/virtual subdivision then exchange-specific determining physical causality, then only truly residual same-exit actual-state contemporaneous value. Preserve 100-percent burden-vector conservation and separately disclosed service history; no free physical/economic choice, fixed share or automatic recycling credit. | ilcd-allocation-2010 |\n| validate_asset_manufacture_conservation | existing capital/reusable manufacture attribution | For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 305
+              line: 10
+              column: 1
+            end:
+              offset: 376
+              line: 10
+              column: 72
+          text: "# Extruded black PE100 solid-wall straight pipe from purchased compound"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 141782
+              line: 1094
+              column: 1
+            end:
+              offset: 141804
+              line: 1094
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+        - span:
+            start:
+              offset: 305
+              line: 10
+              column: 1
+            end:
+              offset: 701
+              line: 14
+              column: 1
+          markdown: "# Extruded black PE100 solid-wall straight pipe from purchased compound\n\nAll normative rules below apply only to the declared complete-compound PE100 solid-wall straight-pipe route. The reference gate is unique first quality release; onward services keep their own cohort/horizon and cannot create production. Actual measured physical ledgers and inherited per-exchange burdens remain distinct.\n\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_full_route"
+      identity_kind: "explicit"
+      unit_id: "normative_9482"
+      source_span:
+        start:
+          offset: 10775
+          line: 82
+          column: 1
+        end:
+          offset: 11278
+          line: 82
+          column: 504
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_service"
+      identity_kind: "explicit"
+      unit_id: "normative_9482"
+      source_span:
+        start:
+          offset: 11279
+          line: 83
+          column: 1
+        end:
+          offset: 11825
+          line: 83
+          column: 547
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_cohorts"
+      identity_kind: "explicit"
+      unit_id: "normative_9482"
+      source_span:
+        start:
+          offset: 11826
+          line: 84
+          column: 1
+        end:
+          offset: 12921
+          line: 84
+          column: 1096
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_actual_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_9482"
+      source_span:
+        start:
+          offset: 12922
+          line: 85
+          column: 1
+        end:
+          offset: 13512
+          line: 85
+          column: 591
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_9482"
+      source_span:
+        start:
+          offset: 13513
+          line: 86
+          column: 1
+        end:
+          offset: 14014
+          line: 86
+          column: 502
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_physical_gates"
+      identity_kind: "explicit"
+      unit_id: "normative_9482"
+      source_span:
+        start:
+          offset: 14015
+          line: 87
+          column: 1
+        end:
+          offset: 14515
+          line: 87
+          column: 501
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_context"
+      identity_kind: "explicit"
+      unit_id: "normative_108576"
+      source_span:
+        start:
+          offset: 108689
+          line: 1038
+          column: 1
+        end:
+          offset: 109170
+          line: 1038
+          column: 482
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_108576"
+      source_span:
+        start:
+          offset: 109171
+          line: 1039
+          column: 1
+        end:
+          offset: 109749
+          line: 1039
+          column: 579
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_108576"
+      source_span:
+        start:
+          offset: 109750
+          line: 1040
+          column: 1
+        end:
+          offset: 110356
+          line: 1040
+          column: 607
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_108576"
+      source_span:
+        start:
+          offset: 110357
+          line: 1041
+          column: 1
+        end:
+          offset: 110981
+          line: 1041
+          column: 625
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_108576"
+      source_span:
+        start:
+          offset: 110982
+          line: 1042
+          column: 1
+        end:
+          offset: 111444
+          line: 1042
+          column: 463
+    - pointer: "/allocation_rules/5"
+      rule_id: "asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_108576"
+      source_span:
+        start:
+          offset: 111445
+          line: 1043
+          column: 1
+        end:
+          offset: 113165
+          line: 1043
+          column: 1721
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 141877
+          line: 1098
+          column: 1
+        end:
+          offset: 142233
+          line: 1098
+          column: 357
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_units"
+      identity_kind: "explicit"
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 142234
+          line: 1099
+          column: 1
+        end:
+          offset: 142567
+          line: 1099
+          column: 334
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_stocks"
+      identity_kind: "explicit"
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 142568
+          line: 1100
+          column: 1
+        end:
+          offset: 143010
+          line: 1100
+          column: 443
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 143011
+          line: 1101
+          column: 1
+        end:
+          offset: 143409
+          line: 1101
+          column: 399
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 143410
+          line: 1102
+          column: 1
+        end:
+          offset: 143927
+          line: 1102
+          column: 518
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_native"
+      identity_kind: "explicit"
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 143928
+          line: 1103
+          column: 1
+        end:
+          offset: 144431
+          line: 1103
+          column: 504
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 144432
+          line: 1104
+          column: 1
+        end:
+          offset: 144835
+          line: 1104
+          column: 404
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 144836
+          line: 1105
+          column: 1
+        end:
+          offset: 145562
+          line: 1105
+          column: 727
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_9482"
+      source_span:
+        start:
+          offset: 9482
+          line: 67
+          column: 1
+        end:
+          offset: 9503
+          line: 67
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_9482"
+      source_span:
+        start:
+          offset: 9531
+          line: 71
+          column: 1
+        end:
+          offset: 10702
+          line: 78
+          column: 249
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_108576"
+      source_span:
+        start:
+          offset: 108576
+          line: 1034
+          column: 1
+        end:
+          offset: 108616
+          line: 1034
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_141782"
+      source_span:
+        start:
+          offset: 141782
+          line: 1094
+          column: 1
+        end:
+          offset: 141804
+          line: 1094
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d2b1a869ae22587681a9effc4b46e4a1cf4cb8699342aba60fb4edf6eebf65c4"
+  generated_content_sha256: "sha256:f1930e3fcb2309c0245e6a2947ee638b1c256ab7482289f0683f22f0d679d683"

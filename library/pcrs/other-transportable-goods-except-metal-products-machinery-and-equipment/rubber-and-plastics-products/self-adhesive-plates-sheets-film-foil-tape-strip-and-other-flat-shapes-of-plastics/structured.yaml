@@ -1,10 +1,1657 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "36920"
-  title: "Self-adhesive plates, sheets, film, foil, tape, strip and other flat shapes, of plastics"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.self-adhesive-plates-sheets-film-foil-tape-strip-and-other-flat-shapes-of-plastics"
+  classification_refs: "CPC3.0 36920; narrower proposed context only"
+  covered_products: "Clear single-sided self-wound BOPP carton-sealing tape with dried aqueous acrylic PSA"
+  excluded_products: "Other36920 flat shapes and every excluded route in section1; paper PSA labels and plain film are distinct"
+  representative_product: "One declared tape construction and width/length configuration; no mandatory brand or nominal source dimensions"
+  production_route: "Purchased one-side-corona BOPP web plus whole coater-ready aqueous acrylic PSA; direct coating; electric drying; cooling; slitting/rewinding; first release"
+  market_state: "First-released net tape including actual residual moisture; removable cores and all packaging excluded; separately recorded actual post-release services"
+functional_unit:
+  what: "Provide pressure-applied carton-sealing tape of the declared construction"
+  how_much: "1 kg reference flow"
+  how_well: "Meet declared lot-specific peel/tack/shear/unwind and dimensional acceptance tests; no universal performance or certification implied"
+  how_long_or_cycle: "One new manufacturing first-release event; service life and carton performance are not established"
+  reference_flow_link: "released_tape"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "all processes"
+      rule: "Include the complete stated manufacture and actual post-release services. In the selected electric route no burner combustion, external steam, boiler or recovery device is presumed. If genuinely used, separately name each fuel, heat/steam supply, return water, auxiliary and actual species with supplier energy/water agreement; assess changed-route applicability before modelling."
+      source_ids:
+        - tepu-electric-tape-coater
+        - epa-pstl-1982
+    - rule_id: boundary_supply
+      applies_to: "backing; psa_preparation"
+      rule: "Require one-side-treated tape-grade BOPP with untreated reverse and confirmed PSA anchorage/unwind. PCT2 both-side treatment is not equivalent. EPA solvent-line release-coat statements do not force an extra back coat onto this back-treatment-free web. Whole purchased preparation counts once, with actual solids/water/residuals child balances; a complete externally prepared formulation is not the same as separately buying its neat ingredients."
+      source_ids:
+        - cosmo-pct-tape-film
+        - basf-psa-solutions
+        - epa-pstl-1982
+    - rule_id: boundary_q
+      applies_to: "released_tape"
+      rule: "Q equals the sum of uniquely identified NEW first-accepted net tape masses. Track reject, destructive-test and unaccepted WIP separately; retests, customer returns, reopening or redelivery create no new Q. Q=0 periods retain all true loads and no unit result. Closing FG already released is inside Q, not an additional manufacturing output."
+      source_ids:
+        - louis-bopp-water-tape
+    - rule_id: boundary_stock
+      applies_to: "all inventory rows"
+      rule: "Maintain each raw-material and WIP lot in its true physical state with opening mass plus real receipts/transfers minus actual consumption/export equals closing mass. WIP includes wet coated web, adhesive in tanks/lines, dried jumbo web and unaccepted slit rolls. Carry a vector for EVERY upstream and foreground exchange; inherit opening vectors, add actual current increments, transfer internal vectors once, and retain closing vectors. Never reset failed starts, zero-output batches, idle, start/stop, cleanup or rework to zero; internal recirculation is neither new purchase nor burden-free scrap. Separately retain actual dryer-tank/cooling-circuit water and equipment charges, their opening/closing quantities and each inherited exchange vector whenever these are not already included in raw/WIP stocks. Identify the stock location and eliminate overlaps; a circulating water charge is not new output."
+      source_ids: []
+    - rule_id: boundary_fg
+      applies_to: "dispatched_tape; returned_tape; fg_electricity"
+      rule: "FG physical gate: openingFG + newFirstReleaseQ + externalReturnedTape = closingFG + grossOutwardTapeG + actualFGWaste. Preserve lot IDs and original burden vectors; opening FG is not new production. Keep post-release service raw loads and measured drivers by actual lot and period, including storage, packing, handling, dispatch and real incremental return rework. Cohort services go to that cohort; opening/returned-lot services retain their own accounts. Combined physical gates cancel internal Q transfers, never add Q and closingFG as independent production. Pending future services are disclosed incomplete, not estimated zero."
+      source_ids: []
+    - rule_id: boundary_pack
+      applies_to: "all packaging rows"
+      rule: "For EACH actual core/carton/film/pallet and additional distinct packaging article: opening empty stock + opening attachedWIP + opening attachedFG + opening reusable stock + new external purchase + externalReturnReceived = closing empty + closing attachedWIP + closing attachedFG + closing reusable + packaging accompanying gross physical dispatch + actual externalReturnSent + waste. Received supplier-attached articles are external receipts in their real form, not hidden free stock. Outward cards keep dispatch and return destinations separately. Internal reuse cancels; packaging is neither Q nor new purchase each cycle nor automatic co-product. Include actual inbound/returnable drums or IBC as separate whole articles where present."
+      source_ids: []
+    - rule_id: boundary_species
+      applies_to: "water_vapour; ammonia_air; wastewater"
+      rule: "Close total physical wet/dry mass AND relevant C/H/O/N or other element accounts separately from species/reaction evidence at manufacturing, FG and combined gates. Water in wet PSA is already part of its purchase. Distinguish retained free water, evaporated water, liquid effluent, tank water, condensate and any independently evidenced reaction/structural water; no reaction is presumed for simple drying. Never solve two unknown water/VOC masses with one residual or infer chemical masses from COD/TVOC. Measure actual residual monomers/other volatiles separately and create each real species/destination card before use. Internal recirculated exhaust/heat/water is not an external supply or release."
+      source_ids:
+        - epa-pstl-1982
+    - rule_id: boundary_air
+      applies_to: "all elementary outputs"
+      rule: "EPA Figure4.2.2.9-1 describes a solvent/burner line and Table4.2.2.9-1 assumes the solvent entirelyVOC; none of its factors, control efficiencies, historic market shares or low/zero-VOC wording is transferable as a waterborne-electric default. Collect actual species and size-resolved PM after actual controls with uncertainty/detection limits. No solvent-recovery, oxidation or ozone process is presumed absent/operating solely from a marketing label; actual occurrence requires its complete atomic inventory and applicability review."
+      source_ids:
+        - epa-pstl-1982
+boundary_abstraction:
+  declared_starting_condition: "Purchased complete qualified BOPP tape web and whole aqueous acrylic PSA; actual lot/site supply forms and raw/WIP/FG stocks"
+  starting_condition_role: "foreground_gate_to_gate"
+  product_classification_scope: "Narrow plastic self-adhesive BOPP carton tape subset; CPC36920 title supplies no recipe"
+  recursive_input_rule: "Purchased already adhesive tape is not uncoated backing. External returned tape retains original lot burden; internal transfers/rework are linked without repurchase or new Q."
+  upstream_dataset_requirement: "Link actual complete backing including skins/corona and actual whole wet PSA to compatible upstream datasets; actual energy/water/packaging supply and waste treatment linked once"
+  disclosure: "Manufacturing first-release and FG custody/service gates remain separate; disclose actual outside supply, omitted stages, conditions, uncertainties and unresolved compatibility"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Packing tape"
+    uuid: "e79513bf-1a03-4444-b0f5-9d545f0f43f6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "backing polymer and coextruded skin/additive composition"
+    - "supplier grade and declared supply location"
+    - "treated adhesive side and untreated reverse"
+    - "treatment date and retained surface compatibility"
+    - "whole PSA formulation and as-received wet state"
+    - "PSA batch solids and water assays"
+    - "residual volatile species and residual moisture"
+    - "dry adhesive coat mass and tape thickness"
+    - "roll width and length configuration"
+    - "peel tack shear and unwind test methods and acceptance limits"
+    - "conditioning and first-release gate definition"
+    - "electric heater water-tank and actual cooling configuration"
+    - "raw and WIP opening closing inventories by lot"
+    - "first-release lot IDs and Q in kg"
+    - "FG opening closing and gross dispatch return lot history"
+    - "each packaging article tare and full custody history"
+    - "full operating-period failures idle cleaning and rework"
+    - "each exchange inherited burden vector"
+    - "supplier-specific upstream links and cutoff disclosure"
+    - "uncertainty and missing evidence"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use actual accepted net tape mass including retained moisture; subtract measured core and all packaging tare; never infer kg per roll from source thickness or a secondary density."
+  - id: whole_preparation
+    applies_to: "psa_preparation"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Wet whole preparation is purchased once; solids and carrier water are child composition accounts. Actual onsite ingredients require separate purchase rows and actual mixing energy/losses plus renewed applicability review."
+  - id: raw_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Declared numerator property"
+      uuid: ""
+    required_unit: "original unit"
+    rule: "Before allocation convert real raw units to each single flow unit: actual kWh times3.6 toMJ; only rates are integrated over actual intervals; integrated liquid/gas volumes receive no second time factor. Mass from volume requires independently measured density of that actual substance at its own temperature/pressure/composition, never assumed water density or a secondary flow-property factor."
+  - id: raw_not_unit_result
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Declared numerator property"
+      uuid: ""
+    required_unit: "original unit"
+    rule: "Collection stores undivided raw numerator only; allocation and inherited-vector reconciliation precede the sole report_once operation. Cards and aggregation refer to that same operation without dividing again."
+process_map:
+  - id: tape_production
+    name: "Receipt/coating/electric drying/slitting/first release plus separate actual FG services"
+    inclusion: "required"
+    inclusion_condition: "selected physical route"
+    role: "foreground"
+    quantitative_reference: "1 kg net first-release tape; actual FG services separately attributed"
+process_inventory:
+  - id: tape_production
+    label: "Receipt/coating/electric drying/slitting/first release plus separate actual FG services"
+    inputs:
+      product:
+        - row_id: backing
+          role: "Untreated-reverse BOPP backing web"
+          name: "Plastic Film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8c3dd40c-a22b-48b5-bdec-7da4d3282bfa"
+          property_unit: "Mass / kg"
+          description: "One purchased complete plain transparent tape-grade BOPP web with one corona-treated adhesive side and an untreated back-treatment-free reverse. Native identity is Product flow at plant; no CAS, fixed polymer, grade, dimensions, surface treatment, geography, synonyms or general comment is supplied; only Mass with reference factor1 is present. Its36390 classification is a broad other-plastics-film context, not proof of the actual BOPP construction, foam or adhesive grade. The generic native record alone does not establish whether the actual treated/coextruded web belongs to a more specific classification. Use the UUID only for this declared complete BOPP web; independently qualify the supplier, polymer/coextruded skins, additives, surface retention, anchorage and unwind. Upstream supply includes film formation and supplier treatment; do not repurchase resin or count coating as purchased finished tape."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cosmo-pct-tape-film
+                - tepu-electric-tape-coater
+            ranges: []
+        - row_id: psa_preparation
+          role: "Whole coater-ready acrylic PSA preparation"
+          name: "Coater-ready aqueous acrylic pressure-sensitive adhesive preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchase one complete aqueous acrylic PSA formulation on its as-received wet-mass basis. Supplier batch/SDS/composition and compatibility testing must distinguish it from lamination glue, a neat polymer, a dry powder, optical adhesive and UV hotmelt. Assayed solids, carrier water, stabilizers and residual monomers are child accounts within this mass, not additional purchases. BASF establishes coater-ready capability; its named specialty/graphic products are not an automatic carton-tape recipe. No onsite polymerization or recipe blending is assumed."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - basf-psa-solutions
+                - tepu-electric-tape-coater
+            ranges: []
+        - row_id: electricity
+          role: "Manufacturing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter real receipt handling, pumping, mixing for homogeneity, coating drives, electric drying heaters/fans, pneumatic compressor, cooling and slitting/rewinding plus failed runs, warm-up, idle and cleaning. Native Product flow is point-of-use alternating current on1MJ basis with reference property Net calorific value; voltage, supply technology, generation mix, provider geography, delivery boundary and line-loss allocation are unspecified. All other native identity qualifiers are absent; it is not proof of a specific grid or low-voltage provider. Keep conversion and supplier attribution explicit and avoid counting the same compressor/heater electricity twice."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - tepu-electric-tape-coater
+            ranges: []
+        - row_id: water
+          role: "Purchased liquid water"
+          name: "Purchased liquid process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure each physical water supply for the electric oven water tank, cleaning and actual cooling makeup; keep purpose subaccounts without summing internal recirculation as new supply. The representative coater-ready preparation has no onsite formulation dilution. Actual dilution requires renewed applicability review and its own real water purchase, excluding carrier water already inside psa_preparation; it must not be hidden or treated as an automatically permitted adjustment. Water quality, source and measurement state must be declared; additional distinct supplies require their own atomic cards. No purchased steam, boiler or condensate is implied by a water tank."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - tepu-electric-tape-coater
+            ranges: []
+        - row_id: knife
+          role: "Replacement slitting knife"
+          name: "Steel slitting knife"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual replacement whole knife mass attributable to these rolls; retain alloy, coating, service interval and measured remaining stock. Do not assume one new blade per roll."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: wipe
+          role: "Cleaning wipe"
+          name: "Cellulose cleaning wipe"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual whole supplied cellulose wipe and its water/adhesive contamination separately at disposal; another fibre or chemical-treated wipe requires a distinct card."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: lubricant
+          role: "Mineral lubricating-oil preparation"
+          name: "Formulated mineral lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual machine/air-compressor service input as one complete supplied oil preparation; actual losses, retained charge and spent oil must reconcile. A permanent fill is not repurchased each campaign. Other oil chemistry requires a separate identity."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: core
+          role: "Paperboard winding core"
+          name: "Cardboard tube or Paper core"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78bf7f6e-519e-4b3d-82f0-eda15b2fee61"
+          property_unit: "Mass / kg"
+          description: "One complete supplied winding core; record its real paperboard/adhesive composition and empty/attached/reusable stocks. It is excluded from net tape Q despite remaining in the sold roll. Apply the separate packaging custody balance in boundary_pack. Native Product is one paperboard cylinder/paper core at plant, Mass/kg, with no CAS, fixed dimensions, fibre ratio, adhesive grade, treatment route, provider or supply geography. Use only the actual complete winding core including its own adhesive construction; verify grade, net tare, moisture and supplier independently. It is not raw paperboard, a metal/wood core, tape net mass or evidence of a fixed kg/item."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - tepu-electric-tape-coater
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated cardboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One complete actual carton used for tape rolls; composition/provider and tare must be documented. No unspecified packaging-family UUID is assigned. Apply the separate packaging custody balance in boundary_pack."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: wrap
+          role: "Polyethylene transport film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied transport wrapping film. Distinguish new film, reusable sheets and supplier-attached incoming film; none belongs in net Q. Apply the separate packaging custody balance in boundary_pack. Native Product is polyethylene film CAS9002-88-4, production mix at plant, Mass/kg. No branch-density class, fixed grade, thickness, additive recipe, forming route, provider or geography is specified. The luggage CPC29220 classification conflicts with the coherent PE-film identity and remains a disclosed taxonomy defect; it is not evidence for a luggage product or another polymer. Bind only actual complete PE wrapping film, with grade/additives and provider boundary verified. Do not substitute PET, PVC, resin granulate or an unverified multilayer/adhesive film."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: pallet
+          role: "Wooden transport pallet"
+          name: "Wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual whole wooden pallet with real wood/fastener composition and reuse history. Do not divide by an invented lifetime or automatically credit a returned pallet. Apply the separate packaging custody balance in boundary_pack."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: returned_tape
+          role: "Previously released returned tape"
+          name: "Packing tape"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e79513bf-1a03-4444-b0f5-9d545f0f43f6"
+          property_unit: "Mass / kg"
+          description: "Actual external customer returns only; keep original delivery ID, mass, historical burden vector and reason. Native BOPP-film Packing tape at plant is Product flow with only reference Mass factor1; no CAS, species, fixed grade, adhesive recipe, dimensions, geography, synonyms or general comment is supplied. Its electrical-energy CPC code is a taxonomy defect inconsistent with the coherent BOPP tape physical identity. Qualify this single-sided waterborne acrylic tape independently; the UUID proves neither recipe nor supplier. Returned or retested tape never becomes new first-release Q; any true incremental rework is separately assigned to the returned lot."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - louis-bopp-water-tape
+            ranges: []
+        - row_id: fg_electricity
+          role: "Finished-goods service electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Retain real FG storage, electric handling, wrapping and dispatch services in a separate lot service ledger; allocate each raw exchange between opening-stock lots and newly released lots. Native point-of-use AC Product flow uses1MJ reference property Net calorific value; provider, voltage, generation technology/mix, geography, delivery boundary and line losses are unspecified, not evidence of a particular supplier. Include actual conversion and source attribution. Historical manufacture is not charged anew; unresolved future service remains incomplete scope, not zero."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fg
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_tape
+          role: "New first-quality-released net tape"
+          name: "Packing tape"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e79513bf-1a03-4444-b0f5-9d545f0f43f6"
+          property_unit: "Mass / kg"
+          description: "Reference output at the manufacturing first-release gate is new accepted single-sided clear BOPP tape carrying dried waterborne acrylic PSA; include measured retained moisture but exclude removable core and every packaging article. Native identity is BOPP-film Packing tape at plant, Product flow, reference Mass factor1; no CAS, fixed dimensions, recipe, grade, supplier geography, synonyms or general comment exists, and no other property is declared. The native electrical-energy CPC classification is a disclosed isolated taxonomy error; it cannot establish a power exchange or prove methodology. Independently qualify film/adhesive, peel, tack, shear, unwind and actual acceptance tests. This is a virtual gate output; do not also add closing FG to Q."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - louis-bopp-water-tape
+                - cosmo-pct-tape-film
+            ranges: []
+        - row_id: dispatched_tape
+          role: "Gross physical dispatch of tape"
+          name: "Packing tape"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e79513bf-1a03-4444-b0f5-9d545f0f43f6"
+          property_unit: "Mass / kg"
+          description: "Record actual gross outward net tape mass G in the FG custody/service ledger, including shipments from opening FG and redelivery of returns. It is not a second manufacturing output or Q. Native BOPP-film Packing tape at plant is Product flow with reference Mass factor1 and no other property; no CAS, fixed grade/dimensions, adhesive recipe, geography, synonyms or general comment is given. Its electricity CPC classification is an isolated taxonomy defect; the physical BOPP tape identity remains conditional on verified single-sided aqueous-acrylic compatibility and supplier/quality evidence. Combined gates cancel internal first-release transfers."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - louis-bopp-water-tape
+            ranges: []
+        - row_id: out_core
+          role: "Outward Paperboard winding core"
+          name: "Cardboard tube or Paper core"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78bf7f6e-519e-4b3d-82f0-eda15b2fee61"
+          property_unit: "Mass / kg"
+          description: "Measure this single physical packaging article accompanying gross dispatch or actual external return. Preserve separate destination/ownership subaccounts; do not net customer tape returns against packaging custody, count internal reuse as outward supply, include this in Q or automatically declare a co-product. Native Product is one paperboard cylinder/paper core at plant, Mass/kg, with no CAS, fixed dimensions, fibre ratio, adhesive grade, treatment route, provider or supply geography. Use only the actual complete winding core including its own adhesive construction; verify grade, net tare, moisture and supplier independently. It is not raw paperboard, a metal/wood core, tape net mass or evidence of a fixed kg/item."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: out_carton
+          role: "Outward Corrugated cardboard shipping carton"
+          name: "Corrugated cardboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure this single physical packaging article accompanying gross dispatch or actual external return. Preserve separate destination/ownership subaccounts; do not net customer tape returns against packaging custody, count internal reuse as outward supply, include this in Q or automatically declare a co-product."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: out_wrap
+          role: "Outward Polyethylene transport wrapping film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Measure this single physical packaging article accompanying gross dispatch or actual external return. Preserve separate destination/ownership subaccounts; do not net customer tape returns against packaging custody, count internal reuse as outward supply, include this in Q or automatically declare a co-product. Native Product is polyethylene film CAS9002-88-4, production mix at plant, Mass/kg. No branch-density class, fixed grade, thickness, additive recipe, forming route, provider or geography is specified. The luggage CPC29220 classification conflicts with the coherent PE-film identity and remains a disclosed taxonomy defect; it is not evidence for a luggage product or another polymer. Bind only actual complete PE wrapping film, with grade/additives and provider boundary verified. Do not substitute PET, PVC, resin granulate or an unverified multilayer/adhesive film."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: out_pallet
+          role: "Outward Wooden transport pallet"
+          name: "Wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure this single physical packaging article accompanying gross dispatch or actual external return. Preserve separate destination/ownership subaccounts; do not net customer tape returns against packaging custody, count internal reuse as outward supply, include this in Q or automatically declare a co-product."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: condensate
+          role: "Externally returned liquid condensate"
+          name: "Returned liquid water condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional only where a real external product-return agreement exists. Record actual liquid temperature, pressure, quantity, enthalpy/reference state, receiver and supplier water/energy accounting. Electric oven water-vapour release or internal collected water does not imply externally purchased steam or a condensate credit; actual wastewater belongs in its waste card."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: bare_trim
+          role: "Uncoated BOPP web trim"
+          name: "Uncoated BOPP web trim"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Bare web trim and leader scrap only; keep actual polymer/skin composition and destination. Coated tape is not bare PP recyclate."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: coated_trim
+          role: "Acrylic-PSA-coated BOPP tape scrap"
+          name: "Acrylic-PSA-coated BOPP tape scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Reject rolls, trim and destructive tests leaving manufacture, plus separately tagged post-release FG damage. Keep substrate, adhesive solids and retained-water child accounts; no pristine-polymer identity or automatic recycling credit."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: adhesive_residue
+          role: "Wet acrylic PSA coagulum"
+          name: "Wet acrylic PSA coagulum"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One actual wet filtered coagulum/sludge stream with measured water/solids and contamination; deposited adhesive is excluded from wastewater solids when removed here. Distinct sludge streams need distinct cards."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Acrylic-PSA-contaminated aqueous cleaning effluent"
+          name: "Acrylic-PSA-contaminated aqueous cleaning effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whole wet aqueous effluent crossing to an external treatment system, with temperature, water, suspended solids and actual dissolved species subledgers. COD/TOC are indicators, not independently weighed chemical species. Onsite treatment must be expanded with every actual input/output before use."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - epa-pstl-1982
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent formulated mineral lubricating oil"
+          name: "Spent formulated mineral lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual externally discarded oil with water/adhesive contamination and original charge history; oil retained in equipment is not a disposal output."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_knife
+          role: "Spent steel slitting knife"
+          name: "Spent steel slitting knife"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One real spent blade, including adhering coating in its composition subaccount; do not duplicate that adhering mass in tape scrap."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_wipe
+          role: "Acrylic-PSA-contaminated cellulose wipe"
+          name: "Acrylic-PSA-contaminated cellulose wipe"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whole contaminated wipe with actual wipe/water/adhesive masses; captured adhesive is not an air emission or additional sludge mass."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_core
+          role: "Discarded Paperboard winding core"
+          name: "Waste Paperboard winding core"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual discarded whole article with its composition, contamination and destination. Attached residue belongs to this whole wet waste or is separately removed and weighed, never both. Distinguish reusable stock and external returns."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: waste_carton
+          role: "Discarded Corrugated cardboard shipping carton"
+          name: "Waste Corrugated cardboard shipping carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual discarded whole article with its composition, contamination and destination. Attached residue belongs to this whole wet waste or is separately removed and weighed, never both. Distinguish reusable stock and external returns."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: waste_wrap
+          role: "Discarded Polyethylene transport wrapping film"
+          name: "Waste Polyethylene transport wrapping film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual discarded whole article with its composition, contamination and destination. Attached residue belongs to this whole wet waste or is separately removed and weighed, never both. Distinguish reusable stock and external returns."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: waste_pallet
+          role: "Discarded Wooden transport pallet"
+          name: "Waste Wooden transport pallet"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual discarded whole article with its composition, contamination and destination. Attached residue belongs to this whole wet waste or is separately removed and weighed, never both. Distinguish reusable stock and external returns."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Water vapour to outdoor air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measure or independently reconcile actual water evaporating from adhesive, electric-oven tank and cleaning after retention, condensate and liquid effluent. Preserve phase and actual air compartment. This is physical evaporation, not polymerization reaction water. Unresolved volatile-organic mass cannot be fitted simultaneously with water from one residual. Native CAS 7732-18-5; Elementary flow, emissions to air unspecified, Mass/kg. Bind only independently measured actual species or the stated particle fraction at that compartment. Do not infer an emission from the UUID, ammonia from pH/latex, or a chemical mass from TVOC/COD. Particle cutpoint conventions must match the actual measurement with disjoint bins; cumulative PM10 is not the >10 fraction and total PM is not an extra emission. Actual indoor, water, soil, long-term or more specific air compartments require a separately verified identity."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids:
+                - tepu-electric-tape-coater
+                - epa-pstl-1982
+            ranges: []
+        - row_id: ammonia_air
+          role: "Conditional ammonia to outdoor air"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only where actual supplied-preparation composition and species-specific exhaust/fugitive measurements establish ammonia release; do not infer from generic latex, pH or total VOC. Measured identity and nitrogen balance remain independent checks. Other actual volatile species each require their own card and source evidence. Native CAS 7664-41-7; Elementary flow, emissions to air unspecified, Mass/kg. Bind only independently measured actual species or the stated particle fraction at that compartment. Do not infer an emission from the UUID, ammonia from pH/latex, or a chemical mass from TVOC/COD. Particle cutpoint conventions must match the actual measurement with disjoint bins; cumulative PM10 is not the >10 fraction and total PM is not an extra emission. Actual indoor, water, soil, long-term or more specific air compartments require a separately verified identity."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids: []
+            ranges: []
+        - row_id: pm25
+          role: "Particulate matter smaller than2.5 micrometres to outdoor air"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual slitting/core-handling/cleaning dust after collection; retain the nonoverlapping size fraction, polymer/paper/adhesive composition, source and actual receiving air compartment. Captured dust is a separate atomic waste when present, not an air emission. No total-PM plus fraction double counting or default emission factor. Native particle interval particles (PM2.5); Elementary flow, emissions to air unspecified, Mass/kg. Bind only independently measured actual species or the stated particle fraction at that compartment. Do not infer an emission from the UUID, ammonia from pH/latex, or a chemical mass from TVOC/COD. Particle cutpoint conventions must match the actual measurement with disjoint bins; cumulative PM10 is not the >10 fraction and total PM is not an extra emission. Actual indoor, water, soil, long-term or more specific air compartments require a separately verified identity."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids: []
+            ranges: []
+        - row_id: pmcoarse
+          role: "Particulate matter from2.5 to10 micrometres to outdoor air"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual slitting/core-handling/cleaning dust after collection; retain the nonoverlapping size fraction, polymer/paper/adhesive composition, source and actual receiving air compartment. Captured dust is a separate atomic waste when present, not an air emission. No total-PM plus fraction double counting or default emission factor. Native particle interval particles (PM2.5 - PM10); Elementary flow, emissions to air unspecified, Mass/kg. Bind only independently measured actual species or the stated particle fraction at that compartment. Do not infer an emission from the UUID, ammonia from pH/latex, or a chemical mass from TVOC/COD. Particle cutpoint conventions must match the actual measurement with disjoint bins; cumulative PM10 is not the >10 fraction and total PM is not an extra emission. Actual indoor, water, soil, long-term or more specific air compartments require a separately verified identity."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids: []
+            ranges: []
+        - row_id: pmover10
+          role: "Particulate matter larger than10 micrometres to outdoor air"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual slitting/core-handling/cleaning dust after collection; retain the nonoverlapping size fraction, polymer/paper/adhesive composition, source and actual receiving air compartment. Captured dust is a separate atomic waste when present, not an air emission. No total-PM plus fraction double counting or default emission factor. Native particle interval particles (> PM10); Elementary flow, emissions to air unspecified, Mass/kg. Bind only independently measured actual species or the stated particle fraction at that compartment. Do not infer an emission from the UUID, ammonia from pH/latex, or a chemical mass from TVOC/COD. Particle cutpoint conventions must match the actual measurement with disjoint bins; cumulative PM10 is not the >10 fraction and total PM is not an extra emission. Actual indoor, water, soil, long-term or more specific air compartments require a separately verified identity."
+          amount:
+            expression: "Measured undivided raw cohort numerator; use the sole section8 reporting operation after unit conversion and attribution; preserve this card scope and original unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_scope
+    applies_to: "all inventory rows"
+    rule: "This is attributional process modelling only where allocation is justified rather than substitution. Establish the actual co-functions and decision context; industrial equipment/product evidence alone does not authorize LCA allocation or credits."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: allocation_dedicated
+    applies_to: "all inventory rows"
+    rule: "First use dedicated measurement and real or virtual subdivision: assign specific backing, PSA, failed-roll burden, slit waste, extra rework and downstream packaging/services to their actual product/lot before sharing any residual. Keep full inherited vectors and complete-period reconciliation."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: allocation_causal
+    applies_to: "all inventory rows"
+    rule: "For each remaining exchange independently identify and substantiate the determining physical causal relationship. Actual coating area times measured coat load, evaporation duty, metered run duration at comparable intensity or occupied space-time may support particular flows only when their causal condition is demonstrated. Material embodiment alone does not allocate process losses. No universal mass/area/time key across all exchanges and no arbitrary physical/economic choice."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: allocation_residual
+    applies_to: "all inventory rows"
+    rule: "Only for a genuinely inseparable residual after the preceding steps, explain why no determining physical causality can be established and use contemporaneous representative market values of actual co-products in their actual amounts/quality/state at the SAME common-process gate. Remove later packaging/transport/conditioning value or derive the gate value transparently; do not use retail tape prices against untreated scrap value. State zero/negative values and uncertainties rather than silently clipping them. Allocated exchange vectors must sum to the unallocated vector; no fixed percentages."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: allocation_recovery
+    applies_to: "all waste and packaging rows"
+    rule: "Internal clean recovery and returnables are physical recirculation with inherited burdens, not co-product credits. Actual external scrap classification/treatment and zero/negative-value gates require explicit evidence and a separate documented waste/recycling method consistent with scope; the selected ILCD sections do not supply a tape-specific recycling formula or avoided-virgin-production credit. Do not apply an automatic burden-free scrap rule or recovery fraction."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "tape_production"
+      flow_role: "released_tape; returned_tape"
+      record_type: "release and return ledger"
+      raw_fields: "lot; construction; roll ID; gross mass; actual core/pack tare; net kg; first-release time; test records; prior-release/delivery ID; genuine reversal"
+      collection_method: "Calibrated weighing of accepted tape and real tare; deduplicate first releases; trace original return/retest/rework and linked genuine release reversals, not a second release. Store raw Q evidence undivided; pass to release_q; never divide inventory in collection."
+      unit: "kg"
+      frequency: "each roll or verified same-configuration lot"
+      temporal_coverage: "complete study period including zero-output batches"
+      site_scope: "same declared plant and construction"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale/tare calibration; actual test acceptance; immutable release/return IDs"
+    - protocol_id: cp_material
+      process_id: "tape_production"
+      flow_role: "backing; psa_preparation; knife; wipe; lubricant"
+      record_type: "material and WIP raw records"
+      raw_fields: "supplier; batch; supply form; actual received/issued/returned weights; raw/WIP opening/closing; wet/dry state; assays; grade/SDS; original per-flow vectors; measured loss; route"
+      collection_method: "Weigh/stock-reconcile every whole supplied article/preparation; assay solids/water/residuals as child accounts; trace WIP stages and each exchange vector; include failed, cleanup and real incremental rework records. Store undivided stock-corrected raw quantities; no Q division; construct attributed A_i under cohort_vectors and section7 before report_once."
+      unit: "kg"
+      frequency: "each lot and inventory cutoff"
+      temporal_coverage: "complete production and stock interval"
+      site_scope: "supplier lots and actual line"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; stocktakes; supplier composition; assay methods; vector transfer ledger"
+    - protocol_id: cp_energy
+      process_id: "tape_production"
+      flow_role: "electricity"
+      record_type: "meter records"
+      raw_fields: "meter ID; start/end integrated readings; original unit; actual power/time intervals when rate-based; electric oven/fans; compressor; heating configuration; operating mode; affected lots; provider attribution"
+      collection_method: "Meter actual manufacture and shared circuits; do not substitute rated machine power times assumed utilization; include warm-up, failed starts, idle, cleanup and all actual dryer tank heating. Subdivide overlaps; retain original energy unit. Retain raw energy undivided; convert using raw_conversion and attribute once under section7; report_once is the only Q normalization."
+      unit: "kWh or MJ"
+      frequency: "continuous meter plus each operating-mode event"
+      temporal_coverage: "whole period not selected successful hours"
+      site_scope: "actual line/shared utilities with meters scoped"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; clock alignment; full mode logs; circuit reconciliation"
+    - protocol_id: cp_water
+      process_id: "tape_production"
+      flow_role: "water; condensate; wastewater"
+      record_type: "water and effluent ledger"
+      raw_fields: "supply ID; function; integrated volume or actual rate/time; independent density; temperature; pressure; composition; tank/cooling opening/closing; retained water; condensate receiver; effluent analyses; enthalpy boundary; opening tank/cooling inherited exchange vectors; closing tank/cooling inherited exchange vectors"
+      collection_method: "Measure actual supplied liquid/tank makeup and outlets; independently assay wet PSA water and wastewater; record internal recirculation separately. Distinguish real external Product return from waste. Retain actual thermal state and any supplier water/energy convention; no assumed steam. Store raw numerator only; compatible volume/density/rate conversion under raw_conversion before attribution and report_once; no collection division. Reconcile separately accounted tank/cooling stocks and their inherited vectors without duplicating raw/WIP or PSA carrier-water subaccounts."
+      unit: "kg or measured m3"
+      frequency: "meter intervals and each drain/return"
+      temporal_coverage: "full operating and cleanup period"
+      site_scope: "each actual supply and outlet"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "flowmeter/scale calibration; substance-state density; laboratory results; return agreement"
+    - protocol_id: cp_pack
+      process_id: "tape_production"
+      flow_role: "all packaging rows"
+      record_type: "separate article custody ledger"
+      raw_fields: "article ID; actual composition; tare; owner; empty stock; attachedWIP; attachedFG; reusable stock; opening/closing; purchases; externalReturnReceived; withGrossDispatch; externalReturnSent; waste; internal reuse count"
+      collection_method: "Independently weigh and reconcile EACH whole core/carton/film/pallet plus any actually used additional packaging article. Record incoming supplier-attached/returnable packaging as true receipts; trace all destinations and retained stocks; separate new purchases from repeated reuse. Raw per-article balance under boundary_pack; no division here; attributable actual cohort packaging numerator uses report_once only once."
+      unit: "kg"
+      frequency: "each custody movement plus inventory cutoffs"
+      temporal_coverage: "same complete physical period"
+      site_scope: "all inbound and outbound packaging custody"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "article tare weighing; owner/custody documents; stocktakes; dispatch and waste receipts"
+    - protocol_id: cp_waste
+      process_id: "tape_production"
+      flow_role: "all waste rows"
+      record_type: "waste weighing and composition"
+      raw_fields: "atomic stream; stage; lot; wet mass; dry solids; water; actual species; contamination; collected dust if actual; destination; legal/economic condition; internal transfer IDs"
+      collection_method: "Weigh each real bare/coated/sludge/oil/blade/wipe stream separately; distinguish offsite waste from internally recovered WIP and FG waste; prevent duplicate adhered masses. Add one card for each actual captured dust/filter or other distinct waste. Raw waste quantities and child composition retained undivided; physical reconciliation and allocation precede the same report_once operation."
+      unit: "kg"
+      frequency: "each removal and waste-stock cutoff"
+      temporal_coverage: "full period including failed/cleanup batches"
+      site_scope: "actual boundary exit or waste holding stock"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh tickets; moisture/composition analysis; treatment/custody records; stock balance"
+    - protocol_id: cp_species
+      process_id: "tape_production"
+      flow_role: "all elementary outputs"
+      record_type: "species and phase-specific measurements"
+      raw_fields: "species; CAS when applicable; actual compartment; source; concentration; integrated exhaust volume or true flow rate/time; wet/dry T/P basis; retained/captured mass; actual controls; phase; detection limit; uncertainty; relevant elements"
+      collection_method: "Speciate actual oven/coating/cleanup emissions and nonoverlapping PM fractions. Match concentration and gas-volume reference state; subtract inlet background consistently. Full carrier-air intake/exhaust balances include air mass where needed; net emitted pollutant is not whole exhaust. Independently quantify water phase change and organic residuals. Store raw concentration/volume/rate evidence only; raw_conversion creates actual species numerators before attribution and report_once; integrated volume is not multiplied by time again."
+      unit: "kg with original measured units retained"
+      frequency: "representative campaigns plus full operation/mode reconciliation"
+      temporal_coverage: "same whole-period emissions scope"
+      site_scope: "actual outdoor air outlet and fugitive sources"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling method; laboratory species identification; detection limits; compatible T/P/wet-dry evidence; independent material/element checks"
+    - protocol_id: cp_fg
+      process_id: "tape_production"
+      flow_role: "dispatched_tape; fg_electricity; returned_tape"
+      record_type: "FG custody and incremental service ledger"
+      raw_fields: "lot; original Q; original manufacture vector; openingFG; closingFG; gross dispatch; returns; prior delivery reversal; incremental rework; storage duration/space; actual electricity/handling/packing; raw unit"
+      collection_method: "Keep historical FG and current-release cohorts separately; full physical G/returns include all cohorts but reference results use only the matching cohort with its own original Q, never plantwide G divided by new Q. Reconcile actual external custody and real return-linked reversals. Meter actual FG services including electric handling and dispatch. Preserve their true period and causal drivers without assuming future services or reallocating old production to new Q. Raw cohort services remain undivided; allocation precedes report_once with that cohort original Q only; opening/returned-lot services never divide by unrelated new Q."
+      unit: "kg and each service original unit"
+      frequency: "each lot movement and service event"
+      temporal_coverage: "full declared FG service observation period"
+      site_scope: "actual factory FG gate and dispatch"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "lot/custody chain; original delivery IDs; meter records; physical stocktakes; service completeness disclosure"
+    - protocol_id: cp_allocation
+      process_id: "tape_production"
+      flow_role: "all inventory rows"
+      record_type: "allocation justification and raw vector ledger"
+      raw_fields: "exchange; cofunction; dedicated meters; virtual subdivisions; causal hypothesis; physical driver; residual; contemporaneous prices; gate quality/state; downstream value exclusions; signed/zero values; uncertainty"
+      collection_method: "Evidence each step of section7 independently for each exchange; distinguish physical stocks and burdens. Conserve the full raw vector across all allocations. Actual missing causality/price data remains unresolved, never an invented split. Store raw allocation inputs/undivided attributed A_i only; only report_once normalizes with Q."
+      unit: "each exchange original unit"
+      frequency: "each allocation period/configuration change"
+      temporal_coverage: "same complete exchange and market-value period"
+      site_scope: "same common-process gate and actual cofunctions"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "dedicated/subdivision proof; causal study; source prices and state; full sum-conservation audit"
+  calculation_rules:
+    - id: release_q
+      applies_to: "released_tape"
+      rule: "Q = sum of uniquely identified NEW first-quality-released net tape masses after genuine linked release reversal correction. Count/area records require independently measured same-construction mass conversion; no invented kg/roll or density. Closing FG, gross dispatch, reinspection and prior-released return/rework never add production."
+      inputs:
+        - cp_release
+      output: "Q"
+      source_ids:
+        - louis-bopp-water-tape
+    - id: raw_conversion
+      applies_to: "all inventory rows"
+      rule: "Convert original readings to each flow unit BEFORE attribution: kWh toMJ by3.6; stock-adjust whole preparation mass; actual liquid volume times independently measured compatible density; species concentration times compatible integrated gas volume; only true rates are integrated over time. No Q division here and no second time multiplier on integrated volume."
+      inputs:
+        - cp_material
+        - cp_energy
+        - cp_water
+        - cp_species
+        - cp_fg
+      output: "converted raw exchange quantities"
+      source_ids: []
+    - id: cohort_vectors
+      applies_to: "all inventory rows"
+      rule: "Construct undivided cohort numerator A_i from attributable real period exchanges plus the complete per-exchange inherited vectors of ALL opening WIP minus the complete vectors carried by closing WIP; correct raw stocks and cancel internal transfers/reuse. Retain every failed/start-stop/idle/cleanup and actual incremental rework load. Newly released closing FG already owns its manufacturing vector and is not subtracted as closing WIP. Apply section7 before reporting; historical FG manufacture is preserved separately. Include the opening and closing inherited vectors of separately accounted actual dryer-water/cooling/equipment stocks under boundary_stock, with no overlap with raw/WIP inventories."
+      inputs:
+        - cp_release
+        - cp_material
+        - cp_energy
+        - cp_water
+        - cp_waste
+        - cp_species
+        - cp_allocation
+      output: "A_i"
+      source_ids:
+        - ilcd-detailed-2010
+    - id: physical_gates
+      applies_to: "raw physical ledgers"
+      rule: "Manufacturing: opening raw/WIP + opening separately accounted in-process tank/cooling/equipment stocks + actual external material inputs + true prior-release rework transfers in = closing raw/WIP + closing separately accounted in-process stocks + new Q + all real other products/waste/species outputs + segregated prior-release rework returned to FG. Avoid overlap among raw, WIP and in-process stocks and count every input once. FG: openingFG + internal newQ + actual external returns + segregated rework receipts = closingFG + grossOutwardG + actualFGWaste + rework transfers out. Consolidation cancels matched internal Q/rework/packaging transfers, while retaining both cutoffs of separately accounted in-process stocks, external inputs/returns, gross dispatch, water Product returns and waste/emissions. Attached packages remain in their separate physical article ledgers and never in tape net mass. Close total wet/dry mass and relevant elements independently from actual species/phase evidence; keep full carrier-air intake/outlet when relevant."
+      inputs:
+        - cp_material
+        - cp_release
+        - cp_water
+        - cp_pack
+        - cp_waste
+        - cp_species
+        - cp_fg
+      output: "separate manufacturing FG and combined physical ledgers"
+      source_ids: []
+    - id: packaging_custody
+      applies_to: "all packaging rows"
+      rule: "Apply the complete per-article opening/closing empty/attachedWIP/attachedFG/reusable balance in boundary_pack using real external purchase/received return/outward shipment/sent return/waste. Cancel internal reuse and attachment; exclude all packaging from net Q and prohibit double purchase or automatic co-product. This is physical reconciliation without Q division."
+      inputs:
+        - cp_pack
+        - cp_fg
+      output: "balanced packaging custody subledgers"
+      source_ids: []
+    - id: service_vectors
+      applies_to: "fg_electricity; dispatched_tape; returned_tape"
+      rule: "Maintain each original cohort manufacturing vector and separately add actual matched FG-service and incremental return/rework vectors. Reverse a prior service/delivery entry only for a genuine linked reversal; reinspection/reshipment is not new production. Pass only current-cohort matched service A_i with its ORIGINAL Q to the same sole report_once operation as a separate supplement; old-cohort service never divides by new Q. Future unobserved services remain incomplete scope, not zero."
+      inputs:
+        - cp_fg
+        - cp_pack
+        - cp_allocation
+      output: "matched raw service A_i and cohort original Q"
+      source_ids:
+        - ilcd-detailed-2010
+    - id: report_once
+      applies_to: "all inventory rows"
+      rule: "For Q>0 report A_i / Q ONCE in the exchange numerator unit per1kg reference flow; A_i is the converted and attributed undivided cohort numerator, not a previously normalized intensity. Keep manufacturing and matched FG service results as distinct ledgers; internal first-release transfers cancel in consolidation. For Q=0 retain actual loads with no unit result. Cards and collection aggregation refer to this SAME reporting operation and never divide again. Reference output is1kg at released_tape."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+      output: "single-normalized exchange result"
+      source_ids: []
+    - id: asset_manufacture_share
+      applies_to: "existing capital/reusable manufacture attribution"
+      rule: "For each included original asset manufacture vector B, f_current = u_current / D only after the persistent ledger verifies the supported whole installed-service denominator, all beneficiaries and prior assigned shares. Attribute f_current * B once to the actual beneficiary before the existing single reference normalization. Check prior_shares + all current/new beneficiary shares <= 1; carry the remaining original balance. Capacity revisions reconcile the historical ledger. Full physical asset/packaging mass and actual gross stocks/returns never receive f_current. Unknown D or history leaves the final attributed result unavailable, without suppressing actual repair/replacement/service burdens."
+      inputs:
+        - asset_id
+        - original_B
+        - u_current
+        - D
+        - historical_beneficiaries
+        - prior_shares
+        - capacity_evidence
+      output: "conserved attributed manufacture vector"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify whole supplied identity, polymer/skin/PSA chemistry, surface/grade/state and native restrictions before dataset linking; UUID names alone and schema-valid shapes do not prove applicability."
+      evidence: "Direct native records; supplier/SDS/composition and compatibility tests"
+    - id: dq_quality
+      applies_to: "released_tape"
+      requirement: "Retain actual dimensional, peel, tack, shear, anchorage/unwind, conditioning and first-release criteria; do not transfer source nominal properties, regulatory claims or service life."
+      evidence: "Lot test reports and acceptance records"
+    - id: dq_complete
+      applies_to: "all inventory rows"
+      requirement: "Cover all operating modes, failed/zero-output lots, opening/closing raw/WIP/FG, internal recovery and inherited vectors; missing data is unknown, never an unsupported zero or pass."
+      evidence: "Full period logs and per-flow mass/vector reconciliation"
+    - id: dq_units
+      applies_to: "all inventory rows"
+      requirement: "Preserve original units and only supported explicit conversions; each real liquid/species density, phase and gas state is independently established; no fabricated roll mass."
+      evidence: "Calibration and substance-state methods"
+    - id: dq_emission
+      applies_to: "all elementary outputs"
+      requirement: "Identify each actual chemical species/outlet and nonoverlapping PM size fraction; indicators/total VOC or COD do not replace chemical masses. Report detection limits and unknown residuals."
+      evidence: "Analytical reports and separate elemental/water evidence"
+    - id: dq_fg
+      applies_to: "dispatched_tape; fg_electricity"
+      requirement: "Preserve original FG burden history, genuine delivery/return reversal and incremental rework; disclose actual service period and unfinished later service without allocating old stock to new Q."
+      evidence: "FG custody and service ledger with stocktakes"
+    - id: dq_pack
+      applies_to: "all packaging rows"
+      requirement: "Every actually present article needs its complete independent opening empty/attached/reusable and external custody balance; add incoming supplier containers and additional articles before data use."
+      evidence: "Per-article ownership and weighing records"
+    - id: dq_allocation
+      applies_to: "all inventory rows"
+      requirement: "Evidence dedicated/virtual subdivision then exchange-specific determining causality then residual same-gate contemporaneous market value; conserve all exchange vectors and disclose unresolved choices."
+      evidence: "cp_allocation; ilcd-detailed-2010"
+    - id: dq_provenance
+      applies_to: "all source-dependent rules"
+      requirement: "Use complete primary originals with headers/footnotes and neighboring alternate routes; technical synthesis is not one factory order or a universal numeric range."
+      evidence: "Declared source locators and limitations"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "all inventory rows"
+    rule: "Reject a claimed application outside the section1 physical construction or route without renewed applicability review and complete actual atomic exchanges. Ordinary provider/auxiliary-UUID gaps require data-package resolution, not invented bindings."
+    source_ids:
+      - cosmo-pct-tape-film
+      - basf-psa-solutions
+      - tepu-electric-tape-coater
+      - louis-bopp-water-tape
+  - rule_id: validate_quantity
+    applies_to: "all inventory rows"
+    rule: "Require consistent1kg net first-release reference, unique released_tape link, correct raw unit conversions, allocation before exactly one A_i/Q and Q0 load retention. Count/area-to-kg conversion without actual same-construction weighing fails; a numerical relationship that remains unknown cannot be called passing."
+    source_ids: []
+  - rule_id: validate_gates
+    applies_to: "all physical ledgers"
+    rule: "Require separate manufacturing, FG and combined wet/dry mass and relevant-element reconciliation plus independently evidenced species/water. Cancel internal Q/rework/packaging transfers. Closing FG is not added to production; gross physical dispatch remains real even when returns occur. A single residual cannot establish two unknown species. Explicitly check dryer-tank, cooling and other separately accounted in-process opening/closing quantities and vectors in manufacturing and consolidated gates, with no overlapping stock entries or fitted unknown losses."
+    source_ids: []
+  - rule_id: validate_evidence
+    applies_to: "all source-dependent rules"
+    rule: "No source default recipe/yield, EPA solvent factor or low/zero-VOC assumption, automatic waste credit, universal allocation percentage, unverified UUID compatibility, or unsupported chemistry/phase change is acceptable. Missing core boundary evidence or unreconciled quantities remain explicit unresolved findings, not manufactured passes."
+    source_ids:
+      - epa-pstl-1982
+      - ilcd-detailed-2010
+  - rule_id: validate_pack
+    applies_to: "all packaging rows"
+    rule: "Require the complete per-article boundary_pack balance including opening/closing attached WIP/FG and reusable stock, gross dispatch and both external return directions; no net-Q proxy, new purchase on every reuse, or automatic co-product."
+    source_ids: []
+  - rule_id: validate_data
+    applies_to: "all inventory rows"
+    rule: "Require collection protocol, all raw fields, method, unit, complete period, scope, aggregation and quality evidence plus full calculation Inputs/Output and source attribution. Report unmeasured emissions and unfinished service scope; finite measurement and projection checks establish engineering consistency only."
+    source_ids: []
+  - rule_id: validate_asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground gate-to-gate manufacture with separately stated matched FG services"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Compatible declared construction/site/period and upstream link; manufacture and actual service supplements kept distinct"
+  excluded_use: "All36920 coverage; comparative carton functional performance; medical/electrical certification; approved methodology; unobserved future service or end-of-life credit"
+  required_metadata: "All section3 qualifiers; native identity restrictions; lot and original Q; source/route; actual gate and service scope; upstream supplier boundaries"
+  required_quality_disclosure: "Raw unit and stock/vector completeness; unknowns; allocation evidence; species/phase and packaging reconciliation; actual quality tests; unfinished FG services"
+  update_trigger: "Changed film/skin/treatment or adhesive formulation; heat/recipe/printing/lining route; actual added flow; changed quality gate or supplier; new measurement or methodological evidence"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC Version3.0 Structure and Explanatory Notes30June2025; PDF177–179; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "36920 title and adjacent36330/36490/36910/36930 boundaries only; no recipe or mapping acceptance"
+  - id: "cosmo-pct-tape-film"
+    type: "handbook"
+    reference: "Cosmo Films Transparent Film (Tape-Textile Grade); complete PCT-1/PCT-1(HCL)/PCT-2 product section; https://www.cosmofilms.com/productlist/transparent-label-over-lamination-industrial-films"
+    used_for: "Real purchased coextruded tape web; single-side corona/untreated reverse/back-treatment-free supply; both-side-treated counterexample; no universal dimensions/grade compatibility"
+  - id: "basf-psa-solutions"
+    type: "handbook"
+    reference: "BASF Solutions for Pressure-Sensitive Adhesives; complete PDF2–5 with printed3–8 labels/specialty/graphic/masking tables; https://www.basf.com/dam/jcr:af4f1f47-5762-36bc-97b9-ab5d4358ec87/basf/www/hk/documents/en/products-industries/dispersions/adhesives/BASF_PSA_brochure_EN.pdf"
+    used_for: "Whole coater-ready aqueous acrylic supply capability and coating methods; distinguish named paper/graphic/specialty and UV formulations; no same-SKU carton recipe or numeric defaults"
+  - id: "tepu-electric-tape-coater"
+    type: "handbook"
+    reference: "Dongguan Tepu Automation TP-1000mm BOPP tape coating machine with10m electric heating oven; complete product description/specification/application/raw material/FAQ; https://www.teputapemachine.com/product_detail/1441356532388933632.html"
+    used_for: "BOPP film/glue/paper-core supply to electric-heater water-tank drying/slitting/rewinding and compressor; gas/printing alternatives; nominal ratios/daily water/ratings and machinery packing are not tape-inventory defaults"
+  - id: "louis-bopp-water-tape"
+    type: "handbook"
+    reference: "Louis Adhesive Tapes OPP Acrylic Water Based Tape No.430/440/450/P83/P84/P85/P86; complete one-page product sheet including table and custom-size note; https://louistapes.com/wp-content/uploads/2020/01/OPP-Acrylic-Water-Based-Tape.pdf"
+    used_for: "Independent actual BOPP water-acrylic carton-sealing tape endpoint/roll/core state; multiple grades and custom sizes; no universal thickness/weight/service life or quality certification"
+  - id: "epa-pstl-1982"
+    type: "official_guidance"
+    reference: "US EPA AP-42 Section4.2.2.9 Pressure Sensitive Tapes and Labels8/82 reformatted1/95; complete PDF1–7 including Figure4.2.2.9-1 and Table4.2.2.9-1 with all notes; https://www.epa.gov/sites/default/files/2020-10/documents/c4s02_2j.pdf"
+    used_for: "Pressure-sensitive web/coating/exhaust topology and explicit solvent/burner/primer-release/control countercontext; no transfer of solvent VOC factors/control efficiencies/old low-zero VOC or market-share claims to aqueous electric tape"
+  - id: "ilcd-detailed-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC ILCD Handbook General guide for LCA Detailed guidance First edition March2010; sections7.9.2–7.9.3 PDF275–292 printed255–272 including conditions/examples/footnotes/provisions; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional allocation scenario only; dedicated/virtual subdivision then exchange-specific determining physical causality then residual same-gate market value and sum conservation; no generic recycling or avoided-production credit"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:3de433d10520ff8db73b9ae5e1bb71cb8ceb6e663ff873188aa88da73a488f33"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8052"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8052
+          line: 66
+          column: 1
+        end:
+          offset: 14379
+          line: 90
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased complete qualified BOPP tape web and whole aqueous acrylic PSA; actual lot/site supply forms and raw/WIP/FG stocks |\n| starting_condition_role | foreground_gate_to_gate |\n| product_classification_scope | Narrow plastic self-adhesive BOPP carton tape subset; CPC36920 title supplies no recipe |\n| recursive_input_rule | Purchased already adhesive tape is not uncoated backing. External returned tape retains original lot burden; internal transfers/rework are linked without repurchase or new Q. |\n| upstream_dataset_requirement | Link actual complete backing including skins/corona and actual whole wet PSA to compatible upstream datasets; actual energy/water/packaging supply and waste treatment linked once |\n| disclosure | Manufacturing first-release and FG custody/service gates remain separate; disclose actual outside supply, omitted stages, conditions, uncertainties and unresolved compatibility |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | all processes | Include the complete stated manufacture and actual post-release services. In the selected electric route no burner combustion, external steam, boiler or recovery device is presumed. If genuinely used, separately name each fuel, heat/steam supply, return water, auxiliary and actual species with supplier energy/water agreement; assess changed-route applicability before modelling. | tepu-electric-tape-coater; epa-pstl-1982 |\n| boundary_supply | backing; psa_preparation | Require one-side-treated tape-grade BOPP with untreated reverse and confirmed PSA anchorage/unwind. PCT2 both-side treatment is not equivalent. EPA solvent-line release-coat statements do not force an extra back coat onto this back-treatment-free web. Whole purchased preparation counts once, with actual solids/water/residuals child balances; a complete externally prepared formulation is not the same as separately buying its neat ingredients. | cosmo-pct-tape-film; basf-psa-solutions; epa-pstl-1982 |\n| boundary_q | released_tape | Q equals the sum of uniquely identified NEW first-accepted net tape masses. Track reject, destructive-test and unaccepted WIP separately; retests, customer returns, reopening or redelivery create no new Q. Q=0 periods retain all true loads and no unit result. Closing FG already released is inside Q, not an additional manufacturing output. | louis-bopp-water-tape |\n| boundary_stock | all inventory rows | Maintain each raw-material and WIP lot in its true physical state with opening mass plus real receipts/transfers minus actual consumption/export equals closing mass. WIP includes wet coated web, adhesive in tanks/lines, dried jumbo web and unaccepted slit rolls. Carry a vector for EVERY upstream and foreground exchange; inherit opening vectors, add actual current increments, transfer internal vectors once, and retain closing vectors. Never reset failed starts, zero-output batches, idle, start/stop, cleanup or rework to zero; internal recirculation is neither new purchase nor burden-free scrap. Separately retain actual dryer-tank/cooling-circuit water and equipment charges, their opening/closing quantities and each inherited exchange vector whenever these are not already included in raw/WIP stocks. Identify the stock location and eliminate overlaps; a circulating water charge is not new output. |  |\n| boundary_fg | dispatched_tape; returned_tape; fg_electricity | FG physical gate: openingFG + newFirstReleaseQ + externalReturnedTape = closingFG + grossOutwardTapeG + actualFGWaste. Preserve lot IDs and original burden vectors; opening FG is not new production. Keep post-release service raw loads and measured drivers by actual lot and period, including storage, packing, handling, dispatch and real incremental return rework. Cohort services go to that cohort; opening/returned-lot services retain their own accounts. Combined physical gates cancel internal Q transfers, never add Q and closingFG as independent production. Pending future services are disclosed incomplete, not estimated zero. |  |\n| boundary_pack | all packaging rows | For EACH actual core/carton/film/pallet and additional distinct packaging article: opening empty stock + opening attachedWIP + opening attachedFG + opening reusable stock + new external purchase + externalReturnReceived = closing empty + closing attachedWIP + closing attachedFG + closing reusable + packaging accompanying gross physical dispatch + actual externalReturnSent + waste. Received supplier-attached articles are external receipts in their real form, not hidden free stock. Outward cards keep dispatch and return destinations separately. Internal reuse cancels; packaging is neither Q nor new purchase each cycle nor automatic co-product. Include actual inbound/returnable drums or IBC as separate whole articles where present. |  |\n| boundary_species | water_vapour; ammonia_air; wastewater | Close total physical wet/dry mass AND relevant C/H/O/N or other element accounts separately from species/reaction evidence at manufacturing, FG and combined gates. Water in wet PSA is already part of its purchase. Distinguish retained free water, evaporated water, liquid effluent, tank water, condensate and any independently evidenced reaction/structural water; no reaction is presumed for simple drying. Never solve two unknown water/VOC masses with one residual or infer chemical masses from COD/TVOC. Measure actual residual monomers/other volatiles separately and create each real species/destination card before use. Internal recirculated exhaust/heat/water is not an external supply or release. | epa-pstl-1982 |\n| boundary_air | all elementary outputs | EPA Figure4.2.2.9-1 describes a solvent/burner line and Table4.2.2.9-1 assumes the solvent entirelyVOC; none of its factors, control efficiencies, historic market shares or low/zero-VOC wording is transferable as a waterborne-electric default. Collect actual species and size-resolved PM after actual controls with uncertainty/detection limits. No solvent-recovery, oxidation or ozone process is presumed absent/operating solely from a marketing label; actual occurrence requires its complete atomic inventory and applicability review. | epa-pstl-1982 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 332
+              line: 10
+              column: 1
+            end:
+              offset: 427
+              line: 10
+              column: 96
+          text: "# Waterborne acrylic pressure-sensitive BOPP carton-sealing tape by electric coating and drying"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8052
+              line: 66
+              column: 1
+            end:
+              offset: 8073
+              line: 66
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_52741"
+      family: "allocation"
+      span:
+        start:
+          offset: 52741
+          line: 654
+          column: 1
+        end:
+          offset: 57017
+          line: 665
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_scope | all inventory rows | This is attributional process modelling only where allocation is justified rather than substitution. Establish the actual co-functions and decision context; industrial equipment/product evidence alone does not authorize LCA allocation or credits. | ilcd-detailed-2010 |\n| allocation_dedicated | all inventory rows | First use dedicated measurement and real or virtual subdivision: assign specific backing, PSA, failed-roll burden, slit waste, extra rework and downstream packaging/services to their actual product/lot before sharing any residual. Keep full inherited vectors and complete-period reconciliation. | ilcd-detailed-2010 |\n| allocation_causal | all inventory rows | For each remaining exchange independently identify and substantiate the determining physical causal relationship. Actual coating area times measured coat load, evaporation duty, metered run duration at comparable intensity or occupied space-time may support particular flows only when their causal condition is demonstrated. Material embodiment alone does not allocate process losses. No universal mass/area/time key across all exchanges and no arbitrary physical/economic choice. | ilcd-detailed-2010 |\n| allocation_residual | all inventory rows | Only for a genuinely inseparable residual after the preceding steps, explain why no determining physical causality can be established and use contemporaneous representative market values of actual co-products in their actual amounts/quality/state at the SAME common-process gate. Remove later packaging/transport/conditioning value or derive the gate value transparently; do not use retail tape prices against untreated scrap value. State zero/negative values and uncertainties rather than silently clipping them. Allocated exchange vectors must sum to the unallocated vector; no fixed percentages. | ilcd-detailed-2010 |\n| allocation_recovery | all waste and packaging rows | Internal clean recovery and returnables are physical recirculation with inherited burdens, not co-product credits. Actual external scrap classification/treatment and zero/negative-value gates require explicit evidence and a separate documented waste/recycling method consistent with scope; the selected ILCD sections do not supply a tape-specific recycling formula or avoided-virgin-production credit. Do not apply an automatic burden-free scrap rule or recovery fraction. | ilcd-detailed-2010 |\n| asset_manufacture_conservation | existing capital/reusable manufacture attribution | Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 332
+              line: 10
+              column: 1
+            end:
+              offset: 427
+              line: 10
+              column: 96
+          text: "# Waterborne acrylic pressure-sensitive BOPP carton-sealing tape by electric coating and drying"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 52741
+              line: 654
+              column: 1
+            end:
+              offset: 52781
+              line: 654
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_75887"
+      family: "validation"
+      span:
+        start:
+          offset: 75887
+          line: 710
+          column: 1
+        end:
+          offset: 79139
+          line: 722
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | all inventory rows | Reject a claimed application outside the section1 physical construction or route without renewed applicability review and complete actual atomic exchanges. Ordinary provider/auxiliary-UUID gaps require data-package resolution, not invented bindings. | cosmo-pct-tape-film; basf-psa-solutions; tepu-electric-tape-coater; louis-bopp-water-tape |\n| validate_quantity | all inventory rows | Require consistent1kg net first-release reference, unique released_tape link, correct raw unit conversions, allocation before exactly one A_i/Q and Q0 load retention. Count/area-to-kg conversion without actual same-construction weighing fails; a numerical relationship that remains unknown cannot be called passing. |  |\n| validate_gates | all physical ledgers | Require separate manufacturing, FG and combined wet/dry mass and relevant-element reconciliation plus independently evidenced species/water. Cancel internal Q/rework/packaging transfers. Closing FG is not added to production; gross physical dispatch remains real even when returns occur. A single residual cannot establish two unknown species. Explicitly check dryer-tank, cooling and other separately accounted in-process opening/closing quantities and vectors in manufacturing and consolidated gates, with no overlapping stock entries or fitted unknown losses. |  |\n| validate_evidence | all source-dependent rules | No source default recipe/yield, EPA solvent factor or low/zero-VOC assumption, automatic waste credit, universal allocation percentage, unverified UUID compatibility, or unsupported chemistry/phase change is acceptable. Missing core boundary evidence or unreconciled quantities remain explicit unresolved findings, not manufactured passes. | epa-pstl-1982; ilcd-detailed-2010 |\n| validate_pack | all packaging rows | Require the complete per-article boundary_pack balance including opening/closing attached WIP/FG and reusable stock, gross dispatch and both external return directions; no net-Q proxy, new purchase on every reuse, or automatic co-product. |  |\n| validate_data | all inventory rows | Require collection protocol, all raw fields, method, unit, complete period, scope, aggregation and quality evidence plus full calculation Inputs/Output and source attribution. Report unmeasured emissions and unfinished service scope; finite measurement and projection checks establish engineering consistency only. |  |\n| validate_asset_manufacture_conservation | existing capital/reusable manufacture attribution | For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 332
+              line: 10
+              column: 1
+            end:
+              offset: 427
+              line: 10
+              column: 96
+          text: "# Waterborne acrylic pressure-sensitive BOPP carton-sealing tape by electric coating and drying"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 75887
+              line: 710
+              column: 1
+            end:
+              offset: 75909
+              line: 710
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 9151
+          line: 81
+          column: 1
+        end:
+          offset: 9611
+          line: 81
+          column: 461
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_supply"
+      identity_kind: "explicit"
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 9612
+          line: 82
+          column: 1
+        end:
+          offset: 10163
+          line: 82
+          column: 552
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_q"
+      identity_kind: "explicit"
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 10164
+          line: 83
+          column: 1
+        end:
+          offset: 10561
+          line: 83
+          column: 398
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 10562
+          line: 84
+          column: 1
+        end:
+          offset: 11513
+          line: 84
+          column: 952
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_fg"
+      identity_kind: "explicit"
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 11514
+          line: 85
+          column: 1
+        end:
+          offset: 12216
+          line: 85
+          column: 703
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 12217
+          line: 86
+          column: 1
+        end:
+          offset: 12999
+          line: 86
+          column: 783
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_species"
+      identity_kind: "explicit"
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 13000
+          line: 87
+          column: 1
+        end:
+          offset: 13781
+          line: 87
+          column: 782
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "boundary_air"
+      identity_kind: "explicit"
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 13782
+          line: 88
+          column: 1
+        end:
+          offset: 14377
+          line: 88
+          column: 596
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_52741"
+      source_span:
+        start:
+          offset: 52854
+          line: 658
+          column: 1
+        end:
+          offset: 53165
+          line: 658
+          column: 312
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_dedicated"
+      identity_kind: "explicit"
+      unit_id: "normative_52741"
+      source_span:
+        start:
+          offset: 53166
+          line: 659
+          column: 1
+        end:
+          offset: 53529
+          line: 659
+          column: 364
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_causal"
+      identity_kind: "explicit"
+      unit_id: "normative_52741"
+      source_span:
+        start:
+          offset: 53530
+          line: 660
+          column: 1
+        end:
+          offset: 54076
+          line: 660
+          column: 547
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_52741"
+      source_span:
+        start:
+          offset: 54077
+          line: 661
+          column: 1
+        end:
+          offset: 54743
+          line: 661
+          column: 667
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_52741"
+      source_span:
+        start:
+          offset: 54744
+          line: 662
+          column: 1
+        end:
+          offset: 55294
+          line: 662
+          column: 551
+    - pointer: "/allocation_rules/5"
+      rule_id: "asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_52741"
+      source_span:
+        start:
+          offset: 55295
+          line: 663
+          column: 1
+        end:
+          offset: 57015
+          line: 663
+          column: 1721
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_75887"
+      source_span:
+        start:
+          offset: 75982
+          line: 714
+          column: 1
+        end:
+          offset: 76365
+          line: 714
+          column: 384
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_75887"
+      source_span:
+        start:
+          offset: 76366
+          line: 715
+          column: 1
+        end:
+          offset: 76729
+          line: 715
+          column: 364
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_gates"
+      identity_kind: "explicit"
+      unit_id: "normative_75887"
+      source_span:
+        start:
+          offset: 76730
+          line: 716
+          column: 1
+        end:
+          offset: 77339
+          line: 716
+          column: 610
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_75887"
+      source_span:
+        start:
+          offset: 77340
+          line: 717
+          column: 1
+        end:
+          offset: 77768
+          line: 717
+          column: 429
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_75887"
+      source_span:
+        start:
+          offset: 77769
+          line: 718
+          column: 1
+        end:
+          offset: 78051
+          line: 718
+          column: 283
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_data"
+      identity_kind: "explicit"
+      unit_id: "normative_75887"
+      source_span:
+        start:
+          offset: 78052
+          line: 719
+          column: 1
+        end:
+          offset: 78410
+          line: 719
+          column: 359
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_75887"
+      source_span:
+        start:
+          offset: 78411
+          line: 720
+          column: 1
+        end:
+          offset: 79137
+          line: 720
+          column: 727
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 8052
+          line: 66
+          column: 1
+        end:
+          offset: 8073
+          line: 66
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8052"
+      source_span:
+        start:
+          offset: 8101
+          line: 70
+          column: 1
+        end:
+          offset: 9078
+          line: 77
+          column: 194
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_52741"
+      source_span:
+        start:
+          offset: 52741
+          line: 654
+          column: 1
+        end:
+          offset: 52781
+          line: 654
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_75887"
+      source_span:
+        start:
+          offset: 75887
+          line: 710
+          column: 1
+        end:
+          offset: 75909
+          line: 710
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3de433d10520ff8db73b9ae5e1bb71cb8ceb6e663ff873188aa88da73a488f33"
+  generated_content_sha256: "sha256:34024a8d9736e1f65f952319ed5edbd31deb3a91e3598d552872648df36ae7e5"
