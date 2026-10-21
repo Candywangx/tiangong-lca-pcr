@@ -1,3 +1,4 @@
+import {serializeSiteMetadata} from "../lib/site-wire.ts";
 import {isUnknownRecord,unknownField,errorMessage} from "../../pcr-core/src/types.ts";
 import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResult} from "../lib/types.ts";
 import type {BuilderManifest} from "../../../builder/lib/types.ts";
@@ -1062,7 +1063,7 @@ async function generate() {
   const recordDataPacking = writeRecordDataPacks(stage, [...manifest.records, ...manifest.historicalRecords]);
   json("record-data-packing.json", recordDataPacking);
   console.log(JSON.stringify({event: "record-data-packing", ...recordDataPacking}));
-  json("site.json", manifest);
+  write("site.json", serializeSiteMetadata(manifest));
   json("report.json", report);
   json("public/version.json", {
     sourceCommit: commit,

@@ -1,10 +1,1786 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "36390"
-  title: "Other plates, sheets, film, foil and strip, of plastics"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.other-plates-sheets-film-foil-and-strip-of-plastics"
+  classification_refs: "CPC 3.0 36390; narrower"
+  covered_products: "Unfaced rigid closed-cell CO2/ethanol-extruded GPPS flat boards"
+  excluded_products: "Non-cellular sheet; EPS bead foam; rubber; profiles/pipes; faced panels; chemically blown or flame-retarded variants"
+  representative_product: "Cut flat XPS board supplied as wrapped bundles; no board-to-building functional equivalence presumed"
+  production_route: "Purchased raw formulations to physical extrusion expansion; cooling/cutting; conditioning; actual net dispatch"
+  market_state: "Actual accepted factory-dispatch board state with residual cell gas disclosed"
+functional_unit:
+  what: "Supply the declared unfaced XPS board as a material intermediate"
+  how_much: "1 kg net accepted dispatched board excluding packaging"
+  how_well: "Declared dimensions and tested thermal/compression properties at actual conditioning state; kg does not establish equal insulation service"
+  how_long_or_cycle: "One declared production/delivery accounting period with linked historical stocks and returns; no assumed building service life"
+  reference_flow_link: "delivered_board"
+system_boundary:
+  rules:
+    - rule_id: b_complete
+      applies_to: "all inventory rows"
+      rule: "Include all operations from actual purchased raw-material supply through net accepted factory dispatch, with upstream datasets for each external input and real transport/service boundary. Manufacturing is complete physical foam conversion; do not stop at film wrapping. Add each actual drying input, fuel, purchased heat, refrigerant, treatment chemical, capture medium, discharge species or additional packaging as a separate named card with its own supply state and collection protocol. Unknown occurrence is an open dataset requirement, not zero or an unnamed other stream."
+      source_ids:
+        - finnfoam-xps-2021
+        - gabriel-xps-masterbatches
+    - rule_id: b_terminal
+      applies_to: "all inventory rows"
+      rule: "Use Q only at actual net accepted factory dispatch. P is first quality-released board, not delivered output. Keep manufacturing, FG and combined physical gates separate: P transferred internally cancels in the combined gate. Closing FG may contain current P and its inherited burdens; do not add that stock again as production. No delivery, repeat acceptance or reinspection creates new P. Reject Q<=0 for unit results while retaining all actual loads and signed corrections."
+      source_ids:
+        - finnfoam-xps-2021
+    - rule_id: b_stock
+      applies_to: "all inventory rows"
+      rule: "Tag every WIP, trim/regrind and FG cohort with physical mass, polymer/formulation composition, CO2/ethanol retained mass and a vector of raw exchange burdens. Record opening and closing stock at both gates, failed and zero-output lots, startup/shutdown, idle, cleanup, purges, destructive tests and rework. Carry actual historical vectors without replacing them with the current product average. Distinguish real new increments from internal transfers and sold/rejected material."
+      source_ids:
+        - finnfoam-xps-2021
+        - jrc-ilcd-2010
+    - rule_id: b_gas_water
+      applies_to: "all inventory rows"
+      rule: "Keep each real species and destination independent: CO2 and ethanol in board cells, vents, fugitives, recovered material, condensate and wastewater; residual styrene and PS particles where present. Physical foaming itself has no stoichiometric reaction water. Moisture, free liquid, vapour and any structurally bound water require their own evidence. Do not fit CO2 and ethanol to a single total-mass residual. Purchased CO2 and its eventual release are different exchanges and never an automatic credit."
+      source_ids:
+        - finnfoam-xps-2021
+        - gabriel-xps-masterbatches
+    - rule_id: b_returns
+      applies_to: "all inventory rows"
+      rule: "For each actual customer return link the original dispatch, original delivered mass R0 and original per-exchange burden vector. Reverse that original delivery exactly once; measure current returned physical mass independently, including age-related gas loss, damage and contamination. Returned historical burdens are transfers, not new purchases or new production; add only real inspection/rework/transport increments and record subsequent fate. Untraceable reversals make net-delivery data incomplete; do not invent historical burdens."
+      source_ids:
+        - jrc-ilcd-2010
+    - rule_id: b_recursion
+      applies_to: "all inventory rows"
+      rule: "Do not purchase internal board scrap again. If an external same-category XPS input actually occurs, distinguish raw recycled material from already finished board and disclose its inherited upstream scope. Outside waste or chemically recycled polymer cannot silently inherit this virgin-GPPS physical route. Include actual collection and reprocessing; no automatic displaced-virgin credit."
+      source_ids:
+        - finnfoam-xps-2021
+        - jrc-ilcd-2010
+boundary_abstraction:
+  declared_starting_condition: "Purchased GPPS granules and complete commercial formulations with CO2/ethanol at actual supply state"
+  starting_condition_role: "foreground_entry"
+  product_classification_scope: "CPC 3.0 36390; narrower"
+  recursive_input_rule: "Paired internal regrind cancels; actual external XPS inputs require state and upstream-burden disclosure"
+  upstream_dataset_requirement: "Each actual external supply needs a compatible independently bounded upstream dataset; flow identity is not a provider"
+  disclosure: "Exact physical route; actual supply forms; net dispatch Q; complete WIP/FG/return vectors; utility and packaging boundaries; residual cell gases"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Foamed Plastic"
+    uuid: "3a86ddd1-28f8-45ba-9255-74a405e09f03"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual polymer grade and GPPS identity"
+    - "complete commercial formulation grades and constituent assays"
+    - "CO2 origin and supply state"
+    - "ethanol purity and water content"
+    - "absence of chemical blowing agent and added flame retardant"
+    - "closed-cell unfaced board construction"
+    - "board dimensions and directly measured mass/density state"
+    - "thermal and compression performance with test basis"
+    - "actual site and electricity supply"
+    - "manufacturing and FG accounting periods"
+    - "dispatch gate and acceptance criteria"
+    - "conditioning age and retained CO2/ethanol"
+    - "WIP/FG cohorts and inherited exchange vectors"
+    - "gross dispatch and original-delivery reversal links"
+    - "individual packaging forms and reuse boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use actual net accepted dispatched board mass, excluding all transport packaging, at recorded age, temperature and residual-gas state. Weigh calibrated gross and tare separately. Q = G - R0; G is accepted outward board mass and R0 is traceably reversed original delivered mass, not current return weight. Keep P, WIP and FG distinct under cp_stock and cp_stock_delivery."
+  - id: normalize_control
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: ""
+      uuid: ""
+    required_unit: ""
+    rule: "Collect only raw readings and records. Convert original units/rates, reconcile stock vectors and assign shared exchanges before the single normalize_once operation. Inventory cards and protocol aggregation refer to the same operation; neither divides again. Q<=0 retains raw loads without a unit result. No unmeasured loss, future factory amount or missing UUID is an observed zero."
+  - id: state_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: ""
+      uuid: ""
+    required_unit: ""
+    rule: "Use kg for physical mass. If a raw liquid or gas record is an integrated volume, multiply only by independently established density at that substance composition, pressure and temperature; do not multiply by time again. Integrate genuine rates over time before conversion; convert kWh and MJ on one stated meter boundary, never mixing electricity with thermal duty. Counted boards or pallets need directly measured configuration mass, never a guessed item mass or a density inferred from an unrelated flow coefficient."
+process_map:
+  - id: manufacture
+    name: "Raw supply to extruded cut quality-released board"
+    inclusion: "required"
+    inclusion_condition: "All actual manufacturing operations and internal recovery"
+    role: "foreground"
+    quantitative_reference: "P kg internal first release; normalize to net dispatch through cohort vectors"
+  - id: delivery
+    name: "Conditioning FG storage packaging and net dispatch"
+    inclusion: "required"
+    inclusion_condition: "All actual stock and dispatch events including returns"
+    role: "reference_process"
+    quantitative_reference: "Q kg actual net accepted dispatch"
+process_inventory:
+  - id: manufacture
+    label: "Raw supply to extruded cut quality-released board"
+    inputs:
+      product:
+        - row_id: gpps
+          role: "Virgin GPPS granules"
+          name: "polystyrene (general purpose) granulate (GPPS)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19f11e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Whole purchased GPPS granules only. Native identity specifies general-purpose granulate and Product flow with Mass; no CAS, synonyms, grade, process route, geography, purity or extra properties are provided. Match actual molecular-weight distribution and extrusion grade through supplier records. HIPS, SBS, EPS beads and crosslinked styrene resins are incompatible; this UUID is not an upstream process or a quantity."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: carbon_dioxide
+          role: "Liquid carbon dioxide physical blowing agent"
+          name: "Liquid carbon dioxide for polymer foaming"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the whole delivered industrial CO2 supply and actual purity, origin, pressure and liquid state. No UUID is adopted: inspected liquid-CO2 candidate fixes a welding proxy and Mass*time, which cannot identify this kg exchange. Do not substitute welding shielding gas, chemical-industry waste or an elementary emission. Recovered industrial CO2 is not a negative emission or an automatic avoided-production credit."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: ethanol
+          role: "Unformulated ethanol co-blowing agent"
+          name: "Ethanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "df7bb021-85c3-4d72-ad46-29e83afe64e2"
+          property_unit: "Mass / kg"
+          description: "Native identity is ethanol, CAS 64-17-5, volatile liquid, production mix at plant, Product flow with Mass; route, grade, purity and geography are unspecified and there are no extra properties. Use only for separately supplied unformulated ethanol. Record assay and incidental water as composition subaccounts of the same purchase, never second purchases. A deliberately aqueous or denatured formulation needs its own whole-formulation row and compatible identity; this UUID does not identify such a recipe or fermentation/fuel/extraction route."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: colour_masterbatch
+          role: "Purchased polystyrene colour masterbatch"
+          name: "Polystyrene-carried colour masterbatch for XPS boards"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One complete commercial pigment/carrier formulation, measured as delivered pellets. Declare its exact supplier grade, pigment identities and carrier composition; do not infer the pigment from board colour. Carrier and pigment assays are subaccounts and not additional GPPS or pigment purchases. This supply choice is a transparent technical synthesis of the board and masterbatch sources, not evidence that Finnfoam uses a named Gabriel grade. On-site compounding instead requires every actually purchased pigment and carrier plus real mixing energy and losses as separate cards."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+                - gabriel-xps-masterbatches
+            ranges: []
+        - row_id: nucleating_masterbatch
+          role: "Conditional inorganic nucleating pellets"
+          name: "Polystyrene-carried inorganic nucleating masterbatch SB 78690 NU"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only if this whole supplied formulation or a separately qualified equivalent is actually charged. Historical supplier sheet specifies polystyrene carrier and fine purified inorganic filler, not the filler chemical identity. It discusses halogenated propellants and chemical-nucleator alternatives; it does not prove a current CO2/ethanol recipe. Obtain compatibility trials and current composition before using the named grade. No chemical gas generation is assigned to inorganic filler, and no carrier or filler mass is purchased twice."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - gabriel-xps-masterbatches
+            ranges: []
+        - row_id: modifier
+          role: "Conditional polymeric melt lubricant concentrate"
+          name: "Styrene-polymer processing-aid masterbatch PS 78330 MOD"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A separate whole purchased formulation only where actually used and trial-qualified. Historical processing-aid guidance does not establish its amount, current supplier composition or a guaranteed energy saving. Exclude chemically decomposing blowing-agent concentrates from this physical-only route; actual use triggers a separately evidenced reaction inventory and scope review."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - gabriel-xps-masterbatches
+            ranges: []
+        - row_id: electricity_mfg
+          role: "Manufacturing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter receiving, optional feed drying, dosing, melting, screw drive, gas dosing, cooling/chilling, cutting, grinding, extraction and cleaning. Keep failed runs, startup, shutdown and idle consumption; recycled trim is not free processing. Shared circuits follow the exchange-specific attribution decision. No generic steam or boiler is presumed."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: cooling_water
+          role: "External cooling-water supply"
+          name: "Liquid cooling water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional external utility-water inlet only. Internal circulation is not repeated purchase or freshwater withdrawal. Record temperature, pressure, quality and supplier water/energy agreement; compare water-only supply with a supplied cooling service to prevent duplicate refrigeration power. Use measured water mass or independently verified water density at the recorded state."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: gear_oil
+          role: "Conditional gearbox lubricant makeup"
+          name: "Mineral gearbox lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include actual makeup or replacement attributable to equipment service; identify exact formulation. Do not treat internal oil circulation as new consumption or hide lubricants in electricity."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: freight
+          role: "Incoming road-freight service"
+          name: "Diesel-lorry road freight transport"
+          flow_type: "product"
+          property_unit: "Mass*distance / t*km"
+          description: "Actual incoming road legs only; retain loaded mass, distance, loading and relevant empty movement. Exclude legs already included in the chosen upstream supply boundary. Add each actually used rail or sea service separately; a tkm is not a mass flow or a kg product conversion."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transport
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: board_handoff
+          role: "Manufactured board handoff to conditioning and delivery"
+          name: "Foamed Plastic"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a86ddd1-28f8-45ba-9255-74a405e09f03"
+          property_unit: "Mass / kg"
+          description: "Internal first quality-release transfer P only, not the denominator Q. Narrow native broad closed/open-cell rigid/flexible resin-foam identity to unfaced rigid closed-cell XPS extruded with CO2 and ethanol, without added flame retardant or chemical blowing agent. Native Product/Mass has no CAS, route, grade, performance, geography or extra property. The native non-cellular 36330 classification contradicts its consistently cellular names, synonyms and comment: disclose this isolated classification defect, never use it as classification evidence. Identity is not a supplier process, density, thermal performance or equivalence proof. Carry each raw-exchange burden vector and gas state into FG."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stock
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: water_return
+          role: "External cooling-water return"
+          name: "Returned liquid cooling water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a real external Product return at its measured mass and thermal state, paired with the inlet and supplier agreement. Internal exchanger return cancels inside the system. Exported sensible heat requires actual inlet/outlet temperatures and enthalpy evidence; it is neither negative water nor automatic useful-heat coproduct."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+      waste:
+        - row_id: waste_board
+          role: "Externally discarded XPS offcuts"
+          name: "Waste unfaced XPS board offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual unrecycled cut pieces, rejected boards and purges of the same documented material state leaving as this waste stream. Internally ground/re-extruded material is paired in the stock ledger and cancels; external disposal, recycling and any separately sold secondary output retain their real status and destination. Never assume zero because a case source reports full internal recovery."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: waste_dust
+          role: "Captured XPS cutting dust"
+          name: "Captured polystyrene foam dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Collected particulate waste measured independently from board offcuts and uncaptured air emissions. Actual return to the melt is an internal stock transfer with real collection/grinding burden, not external recycling or a new virgin input."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: waste_bag
+          role: "Empty raw-material PE sack"
+          name: "Waste polyethylene raw-material sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One emptied supplier sack stream, where present; count actual empty sack mass and retained residue separately. If purchased material data include its packaging, do not purchase that sack again. Keep sacks distinct from finished-board wrapping."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: waste_oil
+          role: "Conditional spent gearbox oil"
+          name: "Spent mineral gearbox lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual separately collected oil for external handling; reconcile makeup, equipment stock and leakage. Add independently identified leakage species and receiving medium if it occurs."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: cooling_blowdown
+          role: "Conditional cooling-water blowdown"
+          name: "Cooling-circuit aqueous blowdown"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste stream only when sent to external wastewater treatment. Report actual composition and destination; a direct environmental discharge instead requires each measured constituent as elementary flows with no duplicated treated-water flow. COD is an indicator and cannot identify a chemical mass."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+      elementary:
+        - row_id: co2_air_mfg
+          role: "Foaming CO2 to air"
+          name: "Carbon dioxide to air from physical blowing agent"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure species-specific vent, fugitive and pre-handoff conditioning losses; distinguish fossil/recovered/biogenic supply origin with evidence. CO2 retained in cells is a physical product subaccount, not an emission at the same time or a sequestration credit."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: ethanol_air_mfg
+          role: "Foaming ethanol to air"
+          name: "Ethanol to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure actual ethanol mass by concentration and exhaust volume at matched state or independently supported species balance. Do not equate total VOC, a carbon-equivalent response, or total board mass loss to ethanol. Captured ethanol and dissolved ethanol remain separate destinations."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: styrene_air
+          role: "Conditional residual styrene to air"
+          name: "Styrene to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include only measured or independently estimated residual monomer release from heating/melt handling; identify CAS 100-42-5 and uncertainty. It cannot be inferred from total VOC or assumed equal to the PS input."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: ps_air
+          role: "Uncaptured polymer dust to air"
+          name: "Polystyrene particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual uncaptured polystyrene particle mass only; total particulate sampling needs composition attribution and size evidence. Do not convert a concentration limit into an observed emission or sum captured dust twice."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: water_vapour
+          role: "Conditional cooling/drying water vapour"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual evaporation only, including measured feed moisture where drying occurs. This physical route has no presumed reaction water or structural water generation; bound moisture, liquid water and vapour remain independent states."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+  - id: delivery
+    label: "Conditioning FG storage packaging and net dispatch"
+    inputs:
+      product:
+        - row_id: fg_in
+          role: "Board from manufacturing and opening FG"
+          name: "Foamed Plastic"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a86ddd1-28f8-45ba-9255-74a405e09f03"
+          property_unit: "Mass / kg"
+          description: "Physical lot transfer from current P or opening FG only, with separate inherited per-exchange burdens and residual CO2/ethanol. Same native broad foam identity and classification defect as board_handoff; no fixed polymer grade, density, route, geography, supply mix or other property is implied. Current P is not increased by delivery or reinspection. This internal product input cancels board_handoff in the combined system and is never a second purchase."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stock_delivery
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: returned_board
+          role: "Actual returned board"
+          name: "Foamed Plastic"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a86ddd1-28f8-45ba-9255-74a405e09f03"
+          property_unit: "Mass / kg"
+          description: "Customer-returned physical XPS of this exact scope only. Keep current returned mass and condition distinct from original delivered mass R0 and original burden vector being reversed. Same broad Product/Mass foam identity and native classification defect apply; mixed contaminated demolition waste, EPS bead foam and faced panels cannot use this row. Reinspection creates no production; only actual additional rework adds new burden."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stock_delivery
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: wrap
+          role: "Board bundle PE wrapping film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "One purchased PE wrapping film. Native CAS 9002-88-4, production mix at plant, Product/Mass; no grade, thickness, branching, recycled content, geography or extra properties. The comment distinguishes competing PET, not a PET constituent; native luggage/leather classification is isolated metadata debt. Confirm supplier composition and wrapping form; multilayer/PET films require a separate identity. Opening empty/attached stock and external returns are not new purchases."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: pallet
+          role: "Conditional reusable wooden pallet"
+          name: "Reusable wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include actual pallet supply and lifetime/service accounting if used; collect physical mass and unique reuse histories. Count use, purchases, returns and end-of-life separately; do not assume a fixed trips-per-pallet factor or convert item counts to kg without weighing the actual configuration."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: strap
+          role: "Conditional polypropylene bundle strap"
+          name: "Polypropylene transport strapping"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual separately supplied PP strap only; no combined packaging-material row. Obtain actual formulation and mass, and reconcile the strap independently of film and pallet."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: label
+          role: "Conditional paper bundle label"
+          name: "Self-adhesive paper identification label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One complete supplied paper/adhesive label, not separate paper and adhesive purchases. Retain peel-off liner as its own actual waste stream when present."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: electricity_delivery
+          role: "Conditioning storage and dispatch electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual storage ventilation, conditioning, wrapping, handling and loading after handoff; include idle and failed dispatches and real return/rework increments. Allocate dedicated circuits before shared consumption. Count incoming P once; current closing FG retains its inherited burdens."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_delivery
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_board
+          role: "Net accepted dispatched XPS reference product"
+          name: "Foamed Plastic"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a86ddd1-28f8-45ba-9255-74a405e09f03"
+          property_unit: "Mass / kg"
+          description: "The only reference row: net delivery at the declared factory dispatch gate, excluding packaging. Q is actual accepted outward board mass G less traceable reversals of original delivered board mass R0; current return mass is a distinct physical ledger. Native broad foam Product/Mass identity has no CAS, grade, geography, fixed technology or extra property; narrow it to unfaced closed-cell GPPS boards, physically blown with CO2/ethanol, no added flame retardant and no chemical blowing concentrate, actual dimensions, performance and residual cell gas. Native non-cellular 36330 classification is inconsistent with all cellular identity text and is not adopted as coverage evidence. This UUID establishes neither thermal equivalence nor an upstream provider. Board mass includes its actual remaining gas at dispatch; it is not dry-resin mass or an assumed density conversion."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_stock_delivery
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: out_wrap
+          role: "Outbound Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Actual packaging leaving with gross physical shipments or returning externally, tracked by separate destination and status subledger. It is not net board Q, a second purchase or an automatic coproduct. Opening and closing empty/attached/reusable stock remain explicit. Same PE-film native limitations as wrap: CAS 9002-88-4; production mix at plant; no grade, thickness, recycled content, geography or additional property; luggage classification is inconsistent metadata and PET is only a comparison. Actual compatible single PE film only."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: out_pallet
+          role: "Outbound Reusable wooden transport pallet"
+          name: "Reusable wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual packaging leaving with gross physical shipments or returning externally, tracked by separate destination and status subledger. It is not net board Q, a second purchase or an automatic coproduct. Opening and closing empty/attached/reusable stock remain explicit."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: out_strap
+          role: "Outbound Polypropylene transport strapping"
+          name: "Polypropylene transport strapping"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual packaging leaving with gross physical shipments or returning externally, tracked by separate destination and status subledger. It is not net board Q, a second purchase or an automatic coproduct. Opening and closing empty/attached/reusable stock remain explicit."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: out_label
+          role: "Outbound Self-adhesive paper identification label"
+          name: "Self-adhesive paper identification label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual packaging leaving with gross physical shipments or returning externally, tracked by separate destination and status subledger. It is not net board Q, a second purchase or an automatic coproduct. Opening and closing empty/attached/reusable stock remain explicit."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+      waste:
+        - row_id: waste_wrap
+          role: "Waste polyethylene wrapping film"
+          name: "Waste polyethylene wrapping film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the actual separately identified waste stream sent to its documented destination. Include handling of opening FG, failed shipments and returns; internal reuse/rework is paired and cancels physically, but its real added burdens remain."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: waste_pallet
+          role: "Waste wooden pallet"
+          name: "Waste wooden pallet"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the actual separately identified waste stream sent to its documented destination. Include handling of opening FG, failed shipments and returns; internal reuse/rework is paired and cancels physically, but its real added burdens remain."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: waste_strap
+          role: "Waste polypropylene strapping"
+          name: "Waste polypropylene strapping"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the actual separately identified waste stream sent to its documented destination. Include handling of opening FG, failed shipments and returns; internal reuse/rework is paired and cancels physically, but its real added burdens remain."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: waste_label
+          role: "Waste paper identification label"
+          name: "Waste paper identification label"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the actual separately identified waste stream sent to its documented destination. Include handling of opening FG, failed shipments and returns; internal reuse/rework is paired and cancels physically, but its real added burdens remain."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: waste_liner
+          role: "Silicone-coated paper label release liner"
+          name: "Silicone-coated paper label release liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the actual separately identified waste stream sent to its documented destination. Include handling of opening FG, failed shipments and returns; internal reuse/rework is paired and cancels physically, but its real added burdens remain."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: rejected_fg
+          role: "Rejected unfaced XPS board"
+          name: "Rejected unfaced XPS board"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the actual separately identified waste stream sent to its documented destination. Include handling of opening FG, failed shipments and returns; internal reuse/rework is paired and cancels physically, but its real added burdens remain."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stock_delivery
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+      elementary:
+        - row_id: co2_air_fg
+          role: "CO2 from FG conditioning and storage"
+          name: "Carbon dioxide to air from physical blowing agent"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure CO2 loss from actual manufacturing cohorts and opening FG up to dispatch or other exit, retaining closing FG cell-gas stock. Do not copy the case report of complete CO2 loss in one month; age, state, temperature, ventilation and origin are actual records. This is not combustion CO2."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species_delivery
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+        - row_id: ethanol_air_fg
+          role: "Ethanol from FG conditioning and storage"
+          name: "Ethanol to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual ethanol release only, with independent species concentration/volume or retained-species evidence and inherited opening/closing FG amounts. The case source omits some downstream ethanol impacts; that is not a permission to omit real foreground ethanol. Keep un-emitted delivered ethanol in the board subaccount for downstream disclosure."
+          amount:
+            expression: "a_i, the single final result defined in section 8; do not divide again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species_delivery
+              source_ids:
+                - finnfoam-xps-2021
+            ranges: []
+allocation_rules:
+  - rule_id: a_context
+    applies_to: "all inventory rows"
+    rule: "The hierarchy applies within the declared attributional scenario to actual residual multifunctionality; complete preceding conditions remain part of every allocation rule."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_scenario
+    applies_to: "all inventory rows"
+    rule: "Apply these allocation rules only to an attributional inventory in a declared scenario requiring partitioning; they do not establish a consequential substitution model or a product comparison. The industrial sources support manufacturing and supply forms, not this allocation hierarchy."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_subdivide
+    applies_to: "all inventory rows"
+    rule: "First assign dedicated meters, batches, formulation purchases, waste measurements and transport/service records to their specific product. Subdivide physically distinguishable operations; use evidenced virtual subdivision for exclusive exchanges when complete subdivision is infeasible. Keep the reason, data and residual shared pool for each exchange; do not allocate a whole factory uniformly."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_causality
+    applies_to: "all inventory rows"
+    rule: "For every genuinely residual shared exchange identify the determining physical causal relationship: quantify how changes in the delivered functions change that exchange, including throughput/heat duty for melting or chilling and occupancy-duration for storage where supported. A convenient mass, volume, time or energy ratio alone is not causal proof. Use different justified criteria for different exchanges; preserve complete pool reconciliation and uncertainty."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_residual_value
+    applies_to: "all inventory rows"
+    rule: "Only if a residual exchange has no identifiable determining physical causality, document that conclusion and use contemporaneous market values of the co-functions at the same common process gate and actual state, quantity, quality and packaging condition. Remove separately attributable downstream finishing before comparison. Record quantities, values, period, currency, gate, evidence and sensitivity. Missing or negative/ambiguous values require review rather than a fabricated ratio. Never choose physical or economic allocation freely."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_recovery
+    applies_to: "all inventory rows"
+    rule: "Internal regrind and reusable packaging are transfers with real handling burden, not coproducts or avoided virgin supply. Classify actual secondary outputs by function, quality, ownership, destination and waste/product status; subdivision and the preceding exchange-specific hierarchy apply only to genuine co-functions. Do not import the case EPD annual mass shares, zero production-waste assumption, incineration credits or one-month emission assumption."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted. For each existing collection protocol that attributes manufacture of included production, packaging or observed-service assets across uses in this route (excluding amortization of the manufactured reference product itself), additionally retain a durable asset identity, its measured full physical mass and acquisition/installation/retirement stock history, original manufacture burden vector, all historical and current beneficiaries, matched-unit service readings, the evidenced whole installed-service denominator D, supported remaining-service basis and uncertainty, prior assigned shares and remaining original manufacture balance. Carry the ledger across reporting windows and custody/provider changes. Collect actual repair, replacement, recovery and treatment separately; these records do not normalize physical movements or create an additional asset purchase. These are added fields and conservation obligations for the existing applicable protocols, not a new assumed capital inventory."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_exchange
+      process_id: "manufacture"
+      flow_role: "individual material and waste"
+      record_type: "weighing; purchase; issue; waste"
+      raw_fields: "row_id; supplier grade; lot; original quantity and unit; assay; date; opening and closing raw stock; actual issues; waste ticket; destination"
+      collection_method: "Use calibrated weighing and traceable delivery/issue/return tickets. Reconcile whole purchased formulations once and maintain constituent subaccounts. Record every actual stream and non-occurrence evidence separately; retain raw totals before attribution or normalization."
+      unit: "kg; original units"
+      frequency: "each lot and event"
+      temporal_coverage: "complete actual reporting interval including failed/idle periods"
+      site_scope: "actual line and stores"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; invoices; stock reconciliation; tickets; formulation assay"
+    - protocol_id: cp_energy
+      process_id: "manufacture"
+      flow_role: "individual electricity and actual additional utility"
+      record_type: "meter readings; machine logs"
+      raw_fields: "meter_id; row_id; start/end readings; time interval; original unit; equipment state; shared pool; activity driver; supply boundary"
+      collection_method: "Read submeter differences and real power logs; integrate actual rate samples once. Attribute dedicated circuits before justified shared-pool decisions. Collect startup, idle, cleanup, cooling, regrinding and dispatch records without dividing by output. Add actual fuel/heat/refrigerant rows separately if present."
+      unit: "kWh; MJ; original units"
+      frequency: "continuous meters and every state transition"
+      temporal_coverage: "same complete periods as stock ledger"
+      site_scope: "line and actual utility/warehouse boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; energy reconciliation; pool decision evidence"
+    - protocol_id: cp_energy_delivery
+      process_id: "delivery"
+      flow_role: "individual electricity and actual additional utility"
+      record_type: "meter readings; machine logs"
+      raw_fields: "meter_id; row_id; start/end readings; time interval; original unit; equipment state; shared pool; activity driver; supply boundary"
+      collection_method: "Read submeter differences and real power logs; integrate actual rate samples once. Attribute dedicated circuits before justified shared-pool decisions. Collect startup, idle, cleanup, cooling, regrinding and dispatch records without dividing by output. Add actual fuel/heat/refrigerant rows separately if present."
+      unit: "kWh; MJ; original units"
+      frequency: "continuous meters and every state transition"
+      temporal_coverage: "same complete periods as stock ledger"
+      site_scope: "line and actual utility/warehouse boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; energy reconciliation; pool decision evidence"
+    - protocol_id: cp_water
+      process_id: "manufacture"
+      flow_role: "cooling-water inlet return and blowdown"
+      record_type: "water meter; thermal state; treatment ticket"
+      raw_fields: "row_id; mass or integrated volume; rate flag; temperature; pressure; composition; density evidence; inlet/outlet; internal circulation; evaporation; blowdown; supplier water-energy agreement"
+      collection_method: "Measure each external water port and thermal state independently; distinguish internal recycle from external Product return and waste to treatment from environmental discharge. Use an actual matched-state density or direct mass. Do not assume a steam system or copy nonexistent condensate."
+      unit: "kg; degC; original units"
+      frequency: "each actual operating interval"
+      temporal_coverage: "complete manufacturing periods"
+      site_scope: "actual external utility ports"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "water balance; state measurements; supplier contract; density source"
+    - protocol_id: cp_stock
+      process_id: "manufacture"
+      flow_role: "P WIP FG delivery and return burden vectors"
+      record_type: "calibrated weighing; cohort ledger; dispatch records"
+      raw_fields: "cohort_id; configuration; raw opening/closing WIP; raw opening/closing FG; trim and regrind; P; G; original delivery R0; current returned mass; original burden vector by row; incremental rework; retained CO2 and ethanol; age; rejects; destination"
+      collection_method: "Weigh every lot on calibrated scales at handoff and dispatch and retain gross/tare records; link all stock and return events to unique original cohorts. Preserve the historical raw exchange vector independently of current purchases. Record original dispatch reversal and current returned physical state separately; reconcile manufacture, FG and combined gates before allocating any remaining pool."
+      unit: "kg; original exchange units"
+      frequency: "every handoff dispatch return and reporting boundary"
+      temporal_coverage: "current period plus actual historical cohort records"
+      site_scope: "line FG stores and actual factory dispatch gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated gross/tare; cohort traceability; full vector rollforward; acceptance and return evidence"
+    - protocol_id: cp_stock_delivery
+      process_id: "delivery"
+      flow_role: "P WIP FG delivery and return burden vectors"
+      record_type: "calibrated weighing; cohort ledger; dispatch records"
+      raw_fields: "cohort_id; configuration; raw opening/closing WIP; raw opening/closing FG; trim and regrind; P; G; original delivery R0; current returned mass; original burden vector by row; incremental rework; retained CO2 and ethanol; age; rejects; destination"
+      collection_method: "Weigh every lot on calibrated scales at handoff and dispatch and retain gross/tare records; link all stock and return events to unique original cohorts. Preserve the historical raw exchange vector independently of current purchases. Record original dispatch reversal and current returned physical state separately; reconcile manufacture, FG and combined gates before allocating any remaining pool."
+      unit: "kg; original exchange units"
+      frequency: "every handoff dispatch return and reporting boundary"
+      temporal_coverage: "current period plus actual historical cohort records"
+      site_scope: "line FG stores and actual factory dispatch gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated gross/tare; cohort traceability; full vector rollforward; acceptance and return evidence"
+    - protocol_id: cp_species
+      process_id: "manufacture"
+      flow_role: "each chemical species and receiving medium"
+      record_type: "species measurements; retained-product tests; exhaust records"
+      raw_fields: "species; CAS; phase; origin; medium; point; concentration and response basis; original gas/liquid volume; rate flag; time; temperature; pressure; moisture correction; independently measured retained mass; capture; uncertainty"
+      collection_method: "Use species-selective sampling with calibrated flow measurement and matched pressure/temperature/moisture basis; retain integrated volume as volume. Independently measure retained gases and composition over relevant ages. Establish independent total mass and carbon/other relevant elemental closure without assigning two unknowns from one residual. Total VOC/COD/TOC/PM indicators are not chemical identities."
+      unit: "kg; measured concentration; original volume/rate units"
+      frequency: "representative operating states plus each conditioning age window"
+      temporal_coverage: "all manufacture and FG intervals including idle and failures"
+      site_scope: "actual vents fugitive points stocks and external ports"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; speciation; sampling/state basis; independent assays; capture evidence; balance uncertainty"
+    - protocol_id: cp_species_delivery
+      process_id: "delivery"
+      flow_role: "each chemical species and receiving medium"
+      record_type: "species measurements; retained-product tests; exhaust records"
+      raw_fields: "species; CAS; phase; origin; medium; point; concentration and response basis; original gas/liquid volume; rate flag; time; temperature; pressure; moisture correction; independently measured retained mass; capture; uncertainty"
+      collection_method: "Use species-selective sampling with calibrated flow measurement and matched pressure/temperature/moisture basis; retain integrated volume as volume. Independently measure retained gases and composition over relevant ages. Establish independent total mass and carbon/other relevant elemental closure without assigning two unknowns from one residual. Total VOC/COD/TOC/PM indicators are not chemical identities."
+      unit: "kg; measured concentration; original volume/rate units"
+      frequency: "representative operating states plus each conditioning age window"
+      temporal_coverage: "all manufacture and FG intervals including idle and failures"
+      site_scope: "actual vents fugitive points stocks and external ports"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; speciation; sampling/state basis; independent assays; capture evidence; balance uncertainty"
+    - protocol_id: cp_pack
+      process_id: "delivery"
+      flow_role: "each film pallet strap label and waste"
+      record_type: "individual packaging stock and destination ledger"
+      raw_fields: "packaging_id; composition; original units; measured configuration mass; opening empty; opening attached WIP/FG; opening reusable; purchases; external return received; closing empty/attached/reusable; gross physical shipment; external return out; waste; internal reuse"
+      collection_method: "Weigh and reconcile each packaging form separately, including incoming supplier packaging and attached stock when relevant. Distinguish gross physical shipments from net board Q and external return receipts from purchases. Internal reuse cancels in the physical equation and carries its real service burden. No fixed reuse count or item-to-kg guess."
+      unit: "kg; original units"
+      frequency: "each packaging transaction and stock boundary"
+      temporal_coverage: "same delivery reporting interval and linked cohort histories"
+      site_scope: "actual empty attached and reusable stores"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighing; individual stock balance; return and waste records; service-life evidence"
+    - protocol_id: cp_transport
+      process_id: "manufacture"
+      flow_role: "one actual incoming road service"
+      record_type: "freight tickets; route and loading records"
+      raw_fields: "leg_id; material lot; mode; original mass; route distance; loading; empty movement; provider boundary; inherited delivery scope"
+      collection_method: "Retain actual leg records and distinguish service activity from vehicle fuel already covered by a provider. Convert kg to tonnes and distance to km before attribution; collect raw activity only. Add other real transport modes as separate atomic service rows."
+      unit: "t*km; original units"
+      frequency: "each incoming delivery leg"
+      temporal_coverage: "actual supply reporting interval"
+      site_scope: "actual supplier-to-foreground logistics boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "waybills; routing; loading; no overlap with supplied input dataset"
+  calculation_rules:
+    - id: normalize_once
+      applies_to: "gpps; carbon_dioxide; ethanol; colour_masterbatch; nucleating_masterbatch; modifier; electricity_mfg; cooling_water; gear_oil; freight; board_handoff; water_return; waste_board; waste_dust; waste_bag; waste_oil; cooling_blowdown; co2_air_mfg; ethanol_air_mfg; styrene_air; ps_air; water_vapour; fg_in; returned_board; wrap; pallet; strap; label; electricity_delivery; out_wrap; out_pallet; out_strap; out_label; waste_wrap; waste_pallet; waste_strap; waste_label; waste_liner; rejected_fg; co2_air_fg; ethanol_air_fg"
+      rule: "a_i = A_i / Q. A_i is the raw exchange numerator after actual unit conversion, attribution and inherited stock/return corrections; Q is net accepted dispatch in kg. Execute this one division only when Q>0. Each card and aggregation field references this same result; delivered_board is the 1 kg reference identity, not a second division."
+      inputs:
+        - A_i
+        - Q
+        - cp_stock_delivery
+      output: "a_i"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: raw_unit_conversion
+      applies_to: "all inventory rows"
+      rule: "Convert original measured quantity into the row unit before attribution. Integrated liquid/gas volume times an independently evidenced matched-state density gives mass; true rate requires integration over the actual time interval first. Do not use total VOC or COD as a specific chemical mass, count as mass, or a secondary flow coefficient as physical density."
+      inputs:
+        - original_quantity
+        - original_unit
+        - state
+        - density_evidence
+        - rate_flag
+      output: "converted_raw_amount"
+      source_ids:
+        - finnfoam-xps-2021
+    - id: stock_vector_rollforward
+      applies_to: "all inventory rows"
+      rule: "For each exchange i retain opening WIP/FG/regrind burdens, current attributable additions and traceable return burden reversals; reconcile them to closing WIP/FG/regrind, gross delivered cohorts and other real exits at the same gates. A_i for net delivery is gross delivered historical/current vector less the exact original vector of reversed deliveries, including real incremental rework only once. Do not expense all current production when some remains in closing stock; do not erase opening burdens or substitute current average burdens."
+      inputs:
+        - opening_vectors
+        - current_raw_additions
+        - closing_vectors
+        - gross_dispatch_vectors
+        - reversed_original_vectors
+        - real_other_exit_vectors
+      output: "A_i"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: net_delivery_gate
+      applies_to: "delivered_board"
+      rule: "Q = G - R0, in kg at the declared accepted dispatch state. G is gross accepted outward product mass excluding packaging. R0 is the original delivered mass for traceable delivery reversals, not the current physical returned mass. Preserve cohort and period links and signed corrections; if Q<=0 retain loads without a unit result."
+      inputs:
+        - G
+        - R0
+        - cp_stock_delivery
+      output: "Q"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: physical_gates
+      applies_to: "all inventory rows"
+      rule: "Manufacturing: opening physical WIP/regrind plus actual material inputs and physical returns equals closing WIP/regrind plus handoff P plus waste and individual emissions. FG: opening FG plus P plus current physical customer returns equals closing FG plus gross physical outbound board plus rejects and individual storage emissions. Combine by cancelling internal P and paired internal transfers. Packaging is outside board mass, balanced separately. Independently reconcile polymer/material composition and relevant elements; cell-gas exchange and measured moisture remain explicit."
+      inputs:
+        - opening_physical_stocks
+        - actual_inputs
+        - actual_returns
+        - closing_physical_stocks
+        - P
+        - gross_physical_outputs
+        - species_outputs
+      output: "gate_balance_residuals"
+      source_ids:
+        - finnfoam-xps-2021
+    - id: packaging_balance
+      applies_to: "wrap; pallet; strap; label; out_wrap; out_pallet; out_strap; out_label; waste_wrap; waste_pallet; waste_strap; waste_label; waste_liner; waste_bag"
+      rule: "For each packaging form: opening empty + opening attached WIP/FG + opening reusable + purchases + external return received = closing empty + closing attached WIP/FG + closing reusable + packaging with gross physical shipments + external return out + waste. Cancel internal reuse; preserve destination subledgers and actual handling burden. Never divide gross packaging departures by a supposed net-package count or put them inside board Q."
+      inputs:
+        - opening_pack_stocks
+        - pack_purchases
+        - external_returns_in
+        - closing_pack_stocks
+        - gross_pack_departures
+        - external_returns_out
+        - pack_waste
+      output: "individual_pack_balance"
+      source_ids:
+        - finnfoam-xps-2021
+        - jrc-ilcd-2010
+    - id: species_closure
+      applies_to: "all inventory rows"
+      rule: "For each species separately reconcile opening retained stock + purchased constituent content + actual formation/transfer = closing retained stock + delivered content + waste/treatment/recovery + measured release + actual destruction. This physical route has no assumed chemical formation. Use independently measured retained CO2 and ethanol or independent species measurements; one total mass loss cannot solve both. Keep air/water ingress and displaced cell gas explicit if material. Neither COD nor carbon balance alone proves molecular species."
+      inputs:
+        - species_inputs
+        - independent_retained_assays
+        - species_measurements
+        - actual_destinations
+      output: "species_residuals"
+      source_ids:
+        - finnfoam-xps-2021
+        - gabriel-xps-masterbatches
+    - id: asset_manufacture_share
+      applies_to: "existing capital/reusable manufacture attribution"
+      rule: "For each included original asset manufacture vector B, f_current = u_current / D only after the persistent ledger verifies the supported whole installed-service denominator, all beneficiaries and prior assigned shares. Attribute f_current * B once to the actual beneficiary before the existing single reference normalization. Check prior_shares + all current/new beneficiary shares <= 1; carry the remaining original balance. Capacity revisions reconcile the historical ledger. Full physical asset/packaging mass and actual gross stocks/returns never receive f_current. Unknown D or history leaves the final attributed result unavailable, without suppressing actual repair/replacement/service burdens."
+      inputs:
+        - asset_id
+        - original_B
+        - u_current
+        - D
+        - historical_beneficiaries
+        - prior_shares
+        - capacity_evidence
+      output: "conserved attributed manufacture vector"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Confirm actual material supply form, entire formulation and native identity restrictions. An auxiliary UUID/provider gap requires completion before quantitative use but does not by itself negate the authored core route. EPS granules, welding CO2 proxies and chemically decomposing concentrates cannot be accepted through a name/classification match."
+      evidence: "direct native restrictions; supplier specifications; raw assay; source-specific trials"
+    - id: dq_period
+      applies_to: "all inventory rows"
+      requirement: "Use actual site, technology, dates, complete periods and cohort histories; do not treat the historical 2019 EPD as current certification or its three-site supply mixes as the current factory. Preserve all failed acquisition/query/registration records outside canonical content and never interpret failure as no match."
+      evidence: "meter periods; full stock histories; primary originals; original acquisition versus present extraction"
+    - id: dq_closure
+      applies_to: "all inventory rows"
+      requirement: "Report independent physical mass, relevant elemental and species balances with measurement uncertainty and investigation of residuals. Do not fit several unknown losses to one residual or turn missing measurements into zero. Keep process/FG/combined gates and each packaging balance consistent."
+      evidence: "calibrated raw measurements; independent assays; reconciliation and uncertainty"
+    - id: dq_sources
+      applies_to: "all inventory rows"
+      requirement: "Distinguish qualitative route evidence, historical supplied-form examples and actual foreground quantities. No published recipe percentage, density, energy saving, total recovery or emission fraction is a default. Different suppliers are not the same SKU or factory. Scientific review and translation review remain separate from projection and measurement checks."
+      evidence: "complete original context; actual supplier and foreground evidence; applicability record"
+validation_rules:
+  - rule_id: v_evidence_scope
+    applies_to: "all inventory rows"
+    rule: "Validation evaluates complete evidence and declared relationships. Real unknowns remain incomplete and require review; a schema or finite check cannot turn them into established factory facts."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: v_scope
+    applies_to: "all inventory rows"
+    rule: "Verify the exact scoped polymer, supply forms, physical CO2/ethanol route, absent facings/reinforcement/chemical blowing/added flame retardant, and all required qualifiers. Do not assert full CPC 36390 coverage or accept the native erroneous 36330 code as positive mapping."
+    source_ids:
+      - un-cpc3-2025
+      - finnfoam-xps-2021
+      - gabriel-xps-masterbatches
+  - rule_id: v_quantity
+    applies_to: "all inventory rows"
+    rule: "Confirm net accepted dispatch Q, exactly one linked reference output and one execution of normalize_once, raw-only collection, real original-unit conversions and complete attribution. Q<=0, untraceable original delivery reversals, missing historical vectors or unknown critical species relations prevent a defensible unit result; preserve actual data and report incompleteness."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: v_balances
+    applies_to: "all inventory rows"
+    rule: "Reconcile complete physical mass and relevant elements independently of species closure at manufacture, FG and combined gates; include retained gases, evaporation, returns, all stocks and every waste destination. Investigate nonclosure against uncertainty, not arbitrary fixed tolerance or fitted losses. External water returns require actual thermal state and supplier agreement."
+    source_ids:
+      - finnfoam-xps-2021
+  - rule_id: v_packaging
+    applies_to: "all inventory rows"
+    rule: "For each actual packaging form check opening/closing empty, attached and reusable stock, purchases, external returns, gross physical departures and waste. Internal reuse cancels physically and retains actual service burden. Packaging is excluded from net board Q; never net its gross departures against board returns."
+    source_ids:
+      - finnfoam-xps-2021
+      - jrc-ilcd-2010
+  - rule_id: v_allocation
+    applies_to: "all inventory rows"
+    rule: "Inspect each residual shared exchange for dedicated assignment/subdivision, virtual subdivision, determining physical causality, and only then actual common-gate contemporaneous market value. Require documented residual pools and sensitivity; no fixed split, free choice or automatic recycling/carbon/energy credit."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: v_completeness
+    applies_to: "all inventory rows"
+    rule: "Check every typed flow card, description, qualifier, protocol cell, formula input/output, source field and source-id list against canonical Markdown, including full normative unit/heading/ancestor context and native restrictions. A schema/current-fingerprint or finite measurement pass does not establish source applicability, factory completeness, scientific approval or translation review. Report missing rows, evidence, unsupported relations and site data explicitly."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: validate_asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Actual scoped material supply only; preserve net delivery and retained cell gas"
+  allowed_use: "Compatible physically extruded unfaced XPS board supply with actual grade and state disclosure"
+  excluded_use: "Generic all-plastics coverage; structural/faced assemblies; alternative blowing chemistries; equal thermal service claims from mass alone"
+  required_metadata: "actual polymer grade and GPPS identity; complete commercial formulation grades and constituent assays; CO2 origin and supply state; ethanol purity and water content; absence of chemical blowing agent and added flame retardant; closed-cell unfaced board construction; board dimensions and directly measured mass/density state; thermal and compression performance with test basis; actual site and electricity supply; manufacturing and FG accounting periods; dispatch gate and acceptance criteria; conditioning age and retained CO2/ethanol; WIP/FG cohorts and inherited exchange vectors; gross dispatch and original-delivery reversal links; individual packaging forms and reuse boundary"
+  required_quality_disclosure: "Historical versus actual sources; full route and allocation decisions; missing auxiliary identities/providers; stock and species uncertainty; unresolved measurements and omitted scope"
+  update_trigger: "Changed supply formulation or blowing chemistry; added FR/facing; changed dispatch gate; new recovery route; source revision or identity contradiction"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure and Explanatory Notes, 30 June 2025, PDF p.177 and adjacent pp.176–178; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Title-only classification context and narrower cellular-board residual interpretation; not manufacturing evidence or accepted mapping."
+  - id: "finnfoam-xps-2021"
+    type: "literature"
+    reference: "Finnfoam Oy / AB / UAB, Finnfoam XPS Insulation, RTS_113_21, published 2021-06-10, data year 2019, pp.2–6; expired 2026-06-04; https://finnfoam.lt/wp-content/uploads/2023/03/finnfoamxps_rts-epd_113-21.pdf"
+    used_for: "Historical raw-material-to-board route and conditioning/packaging evidence; independent foreground protocols control amounts. Do not transfer its allocation, emission omissions, zero-scrap, density or downstream-credit assumptions."
+  - id: "gabriel-xps-masterbatches"
+    type: "handbook"
+    reference: "Gabriel-Chemie, Additive and Colour Preparations for Extruded Polystyrene Foams, collected sheets dated 1994–2010, pp.2–8 and 15–20; https://gabriel-chemie.com/storage/xps-foam_en.pdf"
+    used_for: "Whole supplied colour/inorganic nucleator/polymeric processing-aid formulations; physical versus chemical nucleation and historical halogenated/FR counterexamples. No same-SKU or CO2-recipe/dosage approval."
+  - id: "jrc-ilcd-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook General guide for LCA — Detailed guidance, first edition March 2010, section 7.9, PDF pp.275–288 / printed pp.255–268; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision and exchange-specific determining causality followed by residual common-gate market value. PCR stock/return and collection rules are explicit operational requirements, not measured factory facts from ILCD."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:8bbfea9dc51ee5f5c097a4f5bae51458ea01cc61dd60cfbca806cda8cf7b17e1"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6378"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6378
+          line: 59
+          column: 1
+        end:
+          offset: 10631
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased GPPS granules and complete commercial formulations with CO2/ethanol at actual supply state |\n| starting_condition_role | foreground_entry |\n| product_classification_scope | CPC 3.0 36390; narrower |\n| recursive_input_rule | Paired internal regrind cancels; actual external XPS inputs require state and upstream-burden disclosure |\n| upstream_dataset_requirement | Each actual external supply needs a compatible independently bounded upstream dataset; flow identity is not a provider |\n| disclosure | Exact physical route; actual supply forms; net dispatch Q; complete WIP/FG/return vectors; utility and packaging boundaries; residual cell gases |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_complete | all inventory rows | Include all operations from actual purchased raw-material supply through net accepted factory dispatch, with upstream datasets for each external input and real transport/service boundary. Manufacturing is complete physical foam conversion; do not stop at film wrapping. Add each actual drying input, fuel, purchased heat, refrigerant, treatment chemical, capture medium, discharge species or additional packaging as a separate named card with its own supply state and collection protocol. Unknown occurrence is an open dataset requirement, not zero or an unnamed other stream. | `finnfoam-xps-2021`; `gabriel-xps-masterbatches` |\n| b_terminal | all inventory rows | Use Q only at actual net accepted factory dispatch. P is first quality-released board, not delivered output. Keep manufacturing, FG and combined physical gates separate: P transferred internally cancels in the combined gate. Closing FG may contain current P and its inherited burdens; do not add that stock again as production. No delivery, repeat acceptance or reinspection creates new P. Reject Q<=0 for unit results while retaining all actual loads and signed corrections. | `finnfoam-xps-2021` |\n| b_stock | all inventory rows | Tag every WIP, trim/regrind and FG cohort with physical mass, polymer/formulation composition, CO2/ethanol retained mass and a vector of raw exchange burdens. Record opening and closing stock at both gates, failed and zero-output lots, startup/shutdown, idle, cleanup, purges, destructive tests and rework. Carry actual historical vectors without replacing them with the current product average. Distinguish real new increments from internal transfers and sold/rejected material. | `finnfoam-xps-2021`; `jrc-ilcd-2010` |\n| b_gas_water | all inventory rows | Keep each real species and destination independent: CO2 and ethanol in board cells, vents, fugitives, recovered material, condensate and wastewater; residual styrene and PS particles where present. Physical foaming itself has no stoichiometric reaction water. Moisture, free liquid, vapour and any structurally bound water require their own evidence. Do not fit CO2 and ethanol to a single total-mass residual. Purchased CO2 and its eventual release are different exchanges and never an automatic credit. | `finnfoam-xps-2021`; `gabriel-xps-masterbatches` |\n| b_returns | all inventory rows | For each actual customer return link the original dispatch, original delivered mass R0 and original per-exchange burden vector. Reverse that original delivery exactly once; measure current returned physical mass independently, including age-related gas loss, damage and contamination. Returned historical burdens are transfers, not new purchases or new production; add only real inspection/rework/transport increments and record subsequent fate. Untraceable reversals make net-delivery data incomplete; do not invent historical burdens. | `jrc-ilcd-2010` |\n| b_recursion | all inventory rows | Do not purchase internal board scrap again. If an external same-category XPS input actually occurs, distinguish raw recycled material from already finished board and disclose its inherited upstream scope. Outside waste or chemically recycled polymer cannot silently inherit this virgin-GPPS physical route. Include actual collection and reprocessing; no automatic displaced-virgin credit. | `finnfoam-xps-2021`; `jrc-ilcd-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 301
+              line: 10
+              column: 1
+            end:
+              offset: 371
+              line: 10
+              column: 71
+          text: "# Unfaced CO2/ethanol-extruded polystyrene foam boards at net delivery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6378
+              line: 59
+              column: 1
+            end:
+              offset: 6399
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_46483"
+      family: "allocation"
+      span:
+        start:
+          offset: 46483
+          line: 748
+          column: 1
+        end:
+          offset: 51976
+          line: 760
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_context | all inventory rows | The hierarchy applies within the declared attributional scenario to actual residual multifunctionality; complete preceding conditions remain part of every allocation rule. | `jrc-ilcd-2010` |\n| a_scenario | all inventory rows | Apply these allocation rules only to an attributional inventory in a declared scenario requiring partitioning; they do not establish a consequential substitution model or a product comparison. The industrial sources support manufacturing and supply forms, not this allocation hierarchy. | `jrc-ilcd-2010` |\n| a_subdivide | all inventory rows | First assign dedicated meters, batches, formulation purchases, waste measurements and transport/service records to their specific product. Subdivide physically distinguishable operations; use evidenced virtual subdivision for exclusive exchanges when complete subdivision is infeasible. Keep the reason, data and residual shared pool for each exchange; do not allocate a whole factory uniformly. | `jrc-ilcd-2010` |\n| a_causality | all inventory rows | For every genuinely residual shared exchange identify the determining physical causal relationship: quantify how changes in the delivered functions change that exchange, including throughput/heat duty for melting or chilling and occupancy-duration for storage where supported. A convenient mass, volume, time or energy ratio alone is not causal proof. Use different justified criteria for different exchanges; preserve complete pool reconciliation and uncertainty. | `jrc-ilcd-2010` |\n| a_residual_value | all inventory rows | Only if a residual exchange has no identifiable determining physical causality, document that conclusion and use contemporaneous market values of the co-functions at the same common process gate and actual state, quantity, quality and packaging condition. Remove separately attributable downstream finishing before comparison. Record quantities, values, period, currency, gate, evidence and sensitivity. Missing or negative/ambiguous values require review rather than a fabricated ratio. Never choose physical or economic allocation freely. | `jrc-ilcd-2010` |\n| a_recovery | all inventory rows | Internal regrind and reusable packaging are transfers with real handling burden, not coproducts or avoided virgin supply. Classify actual secondary outputs by function, quality, ownership, destination and waste/product status; subdivision and the preceding exchange-specific hierarchy apply only to genuine co-functions. Do not import the case EPD annual mass shares, zero production-waste assumption, incineration credits or one-month emission assumption. | `jrc-ilcd-2010` |\n| asset_manufacture_conservation | existing capital/reusable manufacture attribution | Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted. For each existing collection protocol that attributes manufacture of included production, packaging or observed-service assets across uses in this route (excluding amortization of the manufactured reference product itself), additionally retain a durable asset identity, its measured full physical mass and acquisition/installation/retirement stock history, original manufacture burden vector, all historical and current beneficiaries, matched-unit service readings, the evidenced whole installed-service denominator D, supported remaining-service basis and uncertainty, prior assigned shares and remaining original manufacture balance. Carry the ledger across reporting windows and custody/provider changes. Collect actual repair, replacement, recovery and treatment separately; these records do not normalize physical movements or create an additional asset purchase. These are added fields and conservation obligations for the existing applicable protocols, not a new assumed capital inventory. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 301
+              line: 10
+              column: 1
+            end:
+              offset: 371
+              line: 10
+              column: 71
+          text: "# Unfaced CO2/ethanol-extruded polystyrene foam boards at net delivery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 46483
+              line: 748
+              column: 1
+            end:
+              offset: 46523
+              line: 748
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_71090"
+      family: "validation"
+      span:
+        start:
+          offset: 71090
+          line: 803
+          column: 1
+        end:
+          offset: 74720
+          line: 816
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_evidence_scope | all inventory rows | Validation evaluates complete evidence and declared relationships. Real unknowns remain incomplete and require review; a schema or finite check cannot turn them into established factory facts. | `jrc-ilcd-2010` |\n| v_scope | all inventory rows | Verify the exact scoped polymer, supply forms, physical CO2/ethanol route, absent facings/reinforcement/chemical blowing/added flame retardant, and all required qualifiers. Do not assert full CPC 36390 coverage or accept the native erroneous 36330 code as positive mapping. | `un-cpc3-2025`; `finnfoam-xps-2021`; `gabriel-xps-masterbatches` |\n| v_quantity | all inventory rows | Confirm net accepted dispatch Q, exactly one linked reference output and one execution of normalize_once, raw-only collection, real original-unit conversions and complete attribution. Q<=0, untraceable original delivery reversals, missing historical vectors or unknown critical species relations prevent a defensible unit result; preserve actual data and report incompleteness. | `jrc-ilcd-2010` |\n| v_balances | all inventory rows | Reconcile complete physical mass and relevant elements independently of species closure at manufacture, FG and combined gates; include retained gases, evaporation, returns, all stocks and every waste destination. Investigate nonclosure against uncertainty, not arbitrary fixed tolerance or fitted losses. External water returns require actual thermal state and supplier agreement. | `finnfoam-xps-2021` |\n| v_packaging | all inventory rows | For each actual packaging form check opening/closing empty, attached and reusable stock, purchases, external returns, gross physical departures and waste. Internal reuse cancels physically and retains actual service burden. Packaging is excluded from net board Q; never net its gross departures against board returns. | `finnfoam-xps-2021`; `jrc-ilcd-2010` |\n| v_allocation | all inventory rows | Inspect each residual shared exchange for dedicated assignment/subdivision, virtual subdivision, determining physical causality, and only then actual common-gate contemporaneous market value. Require documented residual pools and sensitivity; no fixed split, free choice or automatic recycling/carbon/energy credit. | `jrc-ilcd-2010` |\n| v_completeness | all inventory rows | Check every typed flow card, description, qualifier, protocol cell, formula input/output, source field and source-id list against canonical Markdown, including full normative unit/heading/ancestor context and native restrictions. A schema/current-fingerprint or finite measurement pass does not establish source applicability, factory completeness, scientific approval or translation review. Report missing rows, evidence, unsupported relations and site data explicitly. | `jrc-ilcd-2010` |\n| validate_asset_manufacture_conservation | existing capital/reusable manufacture attribution | For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 301
+              line: 10
+              column: 1
+            end:
+              offset: 371
+              line: 10
+              column: 71
+          text: "# Unfaced CO2/ethanol-extruded polystyrene foam boards at net delivery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 71090
+              line: 803
+              column: 1
+            end:
+              offset: 71112
+              line: 803
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_6378"
+      source_span:
+        start:
+          offset: 7220
+          line: 74
+          column: 1
+        end:
+          offset: 7885
+          line: 74
+          column: 666
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_terminal"
+      identity_kind: "explicit"
+      unit_id: "normative_6378"
+      source_span:
+        start:
+          offset: 7886
+          line: 75
+          column: 1
+        end:
+          offset: 8421
+          line: 75
+          column: 536
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_6378"
+      source_span:
+        start:
+          offset: 8422
+          line: 76
+          column: 1
+        end:
+          offset: 8975
+          line: 76
+          column: 554
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_gas_water"
+      identity_kind: "explicit"
+      unit_id: "normative_6378"
+      source_span:
+        start:
+          offset: 8976
+          line: 77
+          column: 1
+        end:
+          offset: 9570
+          line: 77
+          column: 595
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_returns"
+      identity_kind: "explicit"
+      unit_id: "normative_6378"
+      source_span:
+        start:
+          offset: 9571
+          line: 78
+          column: 1
+        end:
+          offset: 10162
+          line: 78
+          column: 592
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_recursion"
+      identity_kind: "explicit"
+      unit_id: "normative_6378"
+      source_span:
+        start:
+          offset: 10163
+          line: 79
+          column: 1
+        end:
+          offset: 10629
+          line: 79
+          column: 467
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_context"
+      identity_kind: "explicit"
+      unit_id: "normative_46483"
+      source_span:
+        start:
+          offset: 46596
+          line: 752
+          column: 1
+        end:
+          offset: 46822
+          line: 752
+          column: 227
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_scenario"
+      identity_kind: "explicit"
+      unit_id: "normative_46483"
+      source_span:
+        start:
+          offset: 46823
+          line: 753
+          column: 1
+        end:
+          offset: 47165
+          line: 753
+          column: 343
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_46483"
+      source_span:
+        start:
+          offset: 47166
+          line: 754
+          column: 1
+        end:
+          offset: 47618
+          line: 754
+          column: 453
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_46483"
+      source_span:
+        start:
+          offset: 47619
+          line: 755
+          column: 1
+        end:
+          offset: 48140
+          line: 755
+          column: 522
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_residual_value"
+      identity_kind: "explicit"
+      unit_id: "normative_46483"
+      source_span:
+        start:
+          offset: 48141
+          line: 756
+          column: 1
+        end:
+          offset: 48743
+          line: 756
+          column: 603
+    - pointer: "/allocation_rules/5"
+      rule_id: "a_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_46483"
+      source_span:
+        start:
+          offset: 48744
+          line: 757
+          column: 1
+        end:
+          offset: 49256
+          line: 757
+          column: 513
+    - pointer: "/allocation_rules/6"
+      rule_id: "asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_46483"
+      source_span:
+        start:
+          offset: 49257
+          line: 758
+          column: 1
+        end:
+          offset: 51974
+          line: 758
+          column: 2718
+    - pointer: "/validation_rules/0"
+      rule_id: "v_evidence_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 71185
+          line: 807
+          column: 1
+        end:
+          offset: 71439
+          line: 807
+          column: 255
+    - pointer: "/validation_rules/1"
+      rule_id: "v_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 71440
+          line: 808
+          column: 1
+        end:
+          offset: 71815
+          line: 808
+          column: 376
+    - pointer: "/validation_rules/2"
+      rule_id: "v_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 71816
+          line: 809
+          column: 1
+        end:
+          offset: 72249
+          line: 809
+          column: 434
+    - pointer: "/validation_rules/3"
+      rule_id: "v_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 72250
+          line: 810
+          column: 1
+        end:
+          offset: 72690
+          line: 810
+          column: 441
+    - pointer: "/validation_rules/4"
+      rule_id: "v_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 72691
+          line: 811
+          column: 1
+        end:
+          offset: 73086
+          line: 811
+          column: 396
+    - pointer: "/validation_rules/5"
+      rule_id: "v_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 73087
+          line: 812
+          column: 1
+        end:
+          offset: 73460
+          line: 812
+          column: 374
+    - pointer: "/validation_rules/6"
+      rule_id: "v_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 73461
+          line: 813
+          column: 1
+        end:
+          offset: 73991
+          line: 813
+          column: 531
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 73992
+          line: 814
+          column: 1
+        end:
+          offset: 74718
+          line: 814
+          column: 727
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6378"
+      source_span:
+        start:
+          offset: 6378
+          line: 59
+          column: 1
+        end:
+          offset: 6399
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6378"
+      source_span:
+        start:
+          offset: 6427
+          line: 63
+          column: 1
+        end:
+          offset: 7147
+          line: 70
+          column: 162
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_46483"
+      source_span:
+        start:
+          offset: 46483
+          line: 748
+          column: 1
+        end:
+          offset: 46523
+          line: 748
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_71090"
+      source_span:
+        start:
+          offset: 71090
+          line: 803
+          column: 1
+        end:
+          offset: 71112
+          line: 803
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8bbfea9dc51ee5f5c097a4f5bae51458ea01cc61dd60cfbca806cda8cf7b17e1"
+  generated_content_sha256: "sha256:e565eb377e8baeab74ea7aa718b0d1908fac1bf07812648d9837114ca81b4a2b"

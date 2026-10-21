@@ -1,10 +1,1044 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "35491"
-  title: "Biodiesel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.biodiesel"
+  classification_refs: "CPC 3.0 35491; narrower candidate scope, no accepted mapping asserted"
+  covered_products: "Neat bulk soybean fatty-acid methyl esters from refined soybean oil; continuous sodium-methoxide catalysis, sulfuric-acid neutralisation, water washing and drying"
+  excluded_products: "HVO/renewable-diesel hydrocarbons; ethyl/propyl esters; alcohol fuels; fossil diesel; diesel blends; mixed/waste-oil feeds; acid-esterification or enzyme routes; distilled glycerol; drum/IBC supply"
+  representative_product: "Unblended soybean methyl ester liquid, accepted for declared biodiesel specification, loaded in bulk"
+  production_route: "Refined-oil receipt → serial CSTR transesterification/decanting → methanol recovery → acid/water washing → drying/polishing → released-tank storage → bulk loading; crude glycerol demethanolisation/neutralisation"
+  market_state: "Whole actual supplied liquid at plant loading hose; residual water/methanol and quality retained, not pure ester-active mass"
+functional_unit:
+  what: "Neat bulk soybean FAME biodiesel at actual net loading handover"
+  how_much: "1 kg"
+  how_well: "Actual accepted fuel specification, methyl-ester/oxygen assay and whole supplied state declared; no generic performance equivalence"
+  how_long_or_cycle: "One net supply at the loading gate; no combustion/service life reference"
+  reference_flow_link: "delivered_biodiesel"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "sme_site"
+      rule: "Include receipt/storage, reaction/separation, methanol rectification, wash/dry/polish, crude-glycerol conditioning to its actual gate, utilities, cleaning, rework, finished storage and loading. Split any actual additional chemical, fuel, packaging component, waste and elementary species into its own row before using a dataset; absent rows do not license a cut-off."
+      source_ids:
+        - nrel-biodiesel-technology-2004
+        - desmet-biodiesel-process
+        - desmet-cstr-transesterification
+        - desmet-methanol-recovery
+    - rule_id: boundary_stocks
+      applies_to: "all inventory rows"
+      rule: "Keep raw period and cohort ledgers including failed/zero-output runs, returns and opening/closing raw materials, WIP, recovered alcohol/oil and finished goods. Transfer existing burdens with stocks; do not charge current deliveries for untouched closing stocks or omit the opening stock burdens actually delivered."
+      source_ids: []
+    - rule_id: boundary_upstream
+      applies_to: "refined_oil"
+      rule: "This route consumes refined virgin soybean oil with inherited cultivation/extraction/refining burdens. Waste oil is excluded. Any proposed waste-feed extension requires evidence of prior use, legal/physical waste state, collection/pretreatment, inherited burdens and allocation system; never apply universal zero burden."
+      source_ids:
+        - nrel-biodiesel-technology-2004
+        - jrc-ilcd-allocation-2010
+boundary_abstraction:
+  declared_starting_condition: "Externally refined soybean oil and separately supplied reagents/utilities at biodiesel-site receipt; full upstream burdens retained"
+  starting_condition_role: "foreground collection start, not burden-free cradle"
+  product_classification_scope: "Neat soybean FAME subset of CPC 3.0 35491 only"
+  recursive_input_rule: "Same-category returned or purchased biodiesel retains origin and inherited burdens. Internal transfer cancels; purchased product is not new onsite production."
+  upstream_dataset_requirement: "Match oil cultivation/extraction/refining, actual country/land-use accounting and co-product allocation; match complete catalyst/acid formulation, methanol production mix, water and utilities. No waste cut-off inferred from price or name."
+  disclosure: "Declare actual supply state, gate, geography, operations, stock/carryover basis, recovery interfaces, allocations and unresolved providers. Downstream road transport, use and combustion are outside the loading gate."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Biodiesel"
+    uuid: "888cd344-bb70-40b9-86d8-5a490a89718a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "refined soybean oil origin and actual feed water/FFA/glyceride assays"
+    - "continuous sodium methoxide route and whole supplied catalyst/acid compositions"
+    - "neat methyl-ester identity and declared acceptance specification with actual oxygen assay"
+    - "net-delivery loading gate and same-cohort Q with return reconciliation"
+    - "site geography and supplier/utility compatibility"
+    - "reporting period and opening/closing WIP and finished stocks with carried burdens"
+    - "physical methanol/oil recovery and actual glycerol/waste states"
+    - "allocation hierarchy and gate-specific evidence without automatic credit"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use whole net delivered biodiesel mass, excluding tanker and transport packaging; Q is actual net delivery, not fresh production or ester-active content."
+  - id: whole_solutions
+    applies_to: "material inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Purchased oil, catalyst and acid solutions are whole external inputs. Assays form nested constituent/water ledgers without duplicate procurement."
+  - id: volume_conversion
+    applies_to: "volume records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use actual matched liquid density and temperature for volume-to-mass conversion. Integrated volume has no extra duration multiplier. Energy-referenced fuel requires an actual compatible reference and matched measured LHV before conversion to mass; no secondary flow coefficient supplies density or LHV."
+  - id: electricity_units
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 3.6 MJ/kWh. This exact unit conversion is not a thermal efficiency or fuel calorific value. Steam heat requires actual supply/return enthalpy and a matching provider reference."
+process_map:
+  - id: sme_site
+    name: "Soybean methyl-ester joint production and bulk delivery"
+    inclusion: "required"
+    inclusion_condition: "Selected refined-oil/continuous-methoxide/water-wash route"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: sme_site
+    label: "Soybean methyl-ester joint production and bulk delivery"
+    inputs:
+      product:
+        - row_id: refined_oil
+          role: "Refined soybean oil feed"
+          name: "Soya bean oil, refined"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a113893c-4722-4285-b86e-fddcc8b54e46"
+          property_unit: "Mass / kg"
+          description: "Receive refined soybean oil as the complete supplied oil, with actual water, free fatty acids, glycerides, phosphorus and insolubles assays. The native finished-oil production-mix identity has no specified supply geography or purity; upstream cultivation, extraction and refining must match the actual provider."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - nrel-biodiesel-technology-2004
+                - desmet-biodiesel-process
+            ranges: []
+        - row_id: fresh_methanol
+          role: "Separately purchased methanol makeup"
+          name: "Methanol (market average)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "adbc8430-7937-4ade-b7a5-cb1797dda661"
+          property_unit: "Mass / kg"
+          description: "Account only separately acquired methanol withdrawn to the system, retaining purity and water assay. This CAS 67-56-1 market-average native identity describes coal gasification, coal coking and natural-gas production with pipeline/tank supply; it does not establish the actual mix, geography or provider burdens. Methanol already in catalyst solution and recovered internal methanol are not another purchase. Native supply geography is unspecified; the industrial-standard and pipeline/tank description does not establish a specific supplier grade or measured composition."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - nrel-biodiesel-technology-2004
+                - desmet-methanol-recovery
+            ranges: []
+        - row_id: methoxide_solution
+          role: "Whole commercial catalyst solution"
+          name: "Sodium methoxide solution in methanol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh the actual purchased sodium methoxide-in-methanol solution, with supplier concentration, residual water and impurities. Active sodium methoxide and methanol carrier are composition subledgers, not two additional external exchanges; no 25% or 30% concentration or in-situ NaOH preparation is prescribed."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+        - row_id: sulfuric_solution
+          role: "Whole neutralising acid solution"
+          name: "Sulfuric acid solution for catalyst neutralisation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This selected variant uses actual sulfuric acid solution for catalyst/soap-phase treatment and, where documented, acidified washing. Record whole supplied solution and actual H2SO4/water assay; do not substitute a fixed concentrated acid grade or an acid-esterification feed route."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+        - row_id: soft_water
+          role: "Wash and cleaning water"
+          name: "Softened process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record externally supplied softened water used for ester washing, cleaning and actual makeup. Retain branch meters, treatment provider and water quality; internal wash-water reuse is a transfer and the report example is not a water-use factor."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+        - row_id: electricity
+          role: "Grid electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Cover pumps, agitation, separation, vacuum, cooling, recovery, tanks, cleaning, handling and loading. This native identity is CN, 1–35 kV, grid-average consumption mix to user; use it only for that actual supply. The native energy-property label does not make electricity a combustible fuel or establish a fuel LHV. Other supply requires a separately verified identity and provider."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+        - row_id: heating_steam
+          role: "Indirect heating steam"
+          name: "Steam supplied to indirect biodiesel-process heaters"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meter actual external steam for reaction heating, methanol recovery, drying and tank heating, with pressure, temperature, phase/dryness and incoming enthalpy. Retain condensate-return state; steam is not a direct material reactant or an unspecified heat/fuel bundle."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - nrel-biodiesel-technology-2004
+                - desmet-methanol-recovery
+            ranges: []
+        - row_id: filter_medium
+          role: "Conditional polypropylene filter replacement"
+          name: "Polypropylene liquid polishing filter medium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the actual polishing filter is polypropylene; retain SKU, mass, replacement and retained-liquid records. A different actual polymer or an added adsorbent requires its own atomic row; no dry-wash resin route is covered by this water-wash profile."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_biodiesel
+          role: "Accepted net bulk biodiesel delivery"
+          name: "Biodiesel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "888cd344-bb70-40b9-86d8-5a490a89718a"
+          property_unit: "Mass / kg"
+          description: "The only terminal reference output is actual net bulk soybean FAME delivered at the plant loading hose, excluding tanker tare and returned quantities under the matched-cohort reconciliation. Record release certificate, actual oxygen assay, ester identity, residual methanol/water/glycerides and loading condition. It is not the newly released production quantity or closing tank inventory. The selected native Product is a factory production mix with the full-name characteristic “Oxygen content 11%”, no supplied assay tolerance, and unspecified supply geography/CAS. Retain that characteristic and the actual assay/compatibility decision without treating it as a measured default. Its broad comment includes methyl, ethyl and propyl esters; this row permits soybean methyl esters only, and does not adopt the native drop-in/clean/biodegradable marketing claims."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gate
+              source_ids:
+                - nrel-biodiesel-technology-2004
+                - desmet-biodiesel-process
+            ranges: []
+        - row_id: crude_glycerol
+          role: "Actually marketable crude glycerol co-product"
+          name: "Demethanolised crude glycerol solution from soybean biodiesel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include as Product only with actual receiver acceptance and evidence of a usable traded crude solution. Measure the whole wet solution, glycerol/water/methanol/salts/soap/fat assay and gate, not theoretical pure glycerol or a fixed 80–85% grade. Pharmaceutical refining is outside this route. Unsaleable material is a distinct waste transfer, never this row plus waste for the same quantity."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+        - row_id: returned_condensate
+          role: "Actual external condensate return"
+          name: "Condensate returned to external steam supplier"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only actual external return, with mass, temperature and enthalpy; internal circulation cancels. The supply contract determines heat accounting; return is not automatically a saleable co-product, avoided-water credit or wastewater discharge."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+      waste:
+        - row_id: aqueous_effluent
+          role: "Exported aqueous effluent"
+          name: "Biodiesel wash wastewater exported for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure actual exported wash/cleaning/recovery wastewater after internal reuse, with water, methanol, glycerol, oil, salts, pH and receiver records. COD/TOC may describe treatment demand but cannot identify species, supply a missing mass or determine reaction water. No zero-effluent marketing claim proves absence."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - nrel-biodiesel-technology-2004
+                - desmet-methanol-recovery
+            ranges: []
+        - row_id: salt_sludge
+          role: "Discarded neutralisation sludge"
+          name: "Wet sodium-salt and soap separation sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Retain the actual single sludge stream with wet mass, water, sodium, sulfate, residual organics and treatment destination. Do not assume fertilizer saleability or subtract a pure-salt product credit; if the measured material differs, resolve its own identity before use."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+        - row_id: waste_glycerol
+          role: "Conditional discarded crude glycerol"
+          name: "Unmarketable crude glycerol solution for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Use only for actual discarded crude-glycerol solution, retaining composition, rejection and destination. Keep it separate from saleable crude_glycerol and internal reprocessing; saleable versus waste classification requires evidence, not a negative/positive price rule alone."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - nrel-biodiesel-technology-2004
+                - jrc-ilcd-allocation-2010
+            ranges: []
+        - row_id: offspec_ester
+          role: "Final discarded ester"
+          name: "Discarded off-specification soybean methyl ester mixture"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include final off-spec ester discarded after actual recovery decisions, including delivery returns. Internal return, retesting or rework is not external waste and creates no new output; retain all rework burdens and stock carryover."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+        - row_id: spent_filter
+          role: "Spent polypropylene filter"
+          name: "Spent polypropylene biodiesel polishing filter medium"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "For actual filter_medium replacement only, measure spent medium with retained ester, water and solids and the receiving treatment. Do not also place the same retained liquid in another discarded-liquid row."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+      elementary:
+        - row_id: methanol_air
+          role: "Actual methanol air release"
+          name: "Methanol emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Capture speciated methanol from vents, tanks, loading and fugitive losses after recovery/control. Retain direct measurement or validated site-specific calculation, medium and abatement boundary; no total VOC or unrecovered-alcohol residual establishes this species amount."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - nrel-biodiesel-technology-2004
+                - desmet-methanol-recovery
+            ranges: []
+        - row_id: water_vapour
+          role: "Actual evaporated water release"
+          name: "Water vapour emitted to air from biodiesel drying"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include actual uncondensed water discharged to air, separating co-emitted methanol. Recovered condensate is internal or an actual liquid outlet; water phase change is not chemical production of water."
+          amount:
+            expression: "A_i / Q, reported once; A_i is the matched unnormalised delivery-cohort quantity and Q is net delivered kg; see section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - nrel-biodiesel-technology-2004
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_unallocated
+    applies_to: "joint production"
+    rule: "Retain complete unallocated physical joint-output records first, including the actual wet crude glycerol, wastes and losses. Internal methanol/oil recovery is neither an external co-product nor an avoided-purchase credit. A waste-treatment fee alone does not settle product status."
+    source_ids:
+      - nrel-biodiesel-technology-2004
+      - jrc-ilcd-allocation-2010
+  - rule_id: allocation_causal
+    applies_to: "shared burdens"
+    rule: "Select attributional allocation, first subdividing measured ester-only, glycerol-only and shared operations. Assign direct burdens and demonstrate determining physical causality per remaining flow; wet mass share or theoretical stoichiometry alone is not a causal allocation model. Preserve the evidence and sensitivity."
+    source_ids:
+      - jrc-ilcd-allocation-2010
+  - rule_id: allocation_residual
+    applies_to: "inseparable residual burdens"
+    rule: "Only after documenting why subdivision and physical causality cannot resolve a residual, use the actual market values of all usable co-functions in their actual state at the same joint-process exit. Retain contemporaneous quantities, net gate receipts/contract values, moisture/quality, conditioning and transport adjustments and sensitivity. Do not apply a generic biodiesel:glycerol mass-price ratio, the 2004 price example, pure-glycerol prices or negative weights; missing/unstable values require review before numerical use."
+    source_ids:
+      - jrc-ilcd-allocation-2010
+  - rule_id: allocation_no_credit
+    applies_to: "derived reference dataset"
+    rule: "Keep waste-treatment burdens with the responsible process. No automatic glycerol, salt, methanol, oil or carbon substitution credit. Do not combine allocated burdens with a second avoided-product credit. Report unallocated multi-output and allocated biodiesel views separately so physical coproduct mass is never reduced to hide an allocation."
+    source_ids:
+      - jrc-ilcd-allocation-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_gate
+      process_id: "sme_site"
+      flow_role: "bulk reference delivery"
+      record_type: "delivery and inventory reconciliation"
+      raw_fields: "lot/cohort ID; release and loading dates; gross/tare/net kg; accepted shipments; returns and resupply IDs; opening/closing WIP and finished kg; inherited burden vectors; new first-acceptance production kg"
+      collection_method: "Owner: loading and quality managers. Weigh actual net loading on calibrated equipment and reconcile signed acceptance/returns by unique physical lot. Keep new release, internal transfers and net delivery as separate unnormalised records; include actually delivered opening finished stock and leave undelivered finished stock with its carried burdens."
+      unit: "kg"
+      frequency: "each loading/return and inventory close"
+      temporal_coverage: "one declared matched reporting period and stock cohorts"
+      site_scope: "actual soybean-FAME site and loading hose"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; certificates; signed loads/returns; stock ledger"
+    - protocol_id: cp_material
+      process_id: "sme_site"
+      flow_role: "external feed and reagent withdrawals"
+      record_type: "metered material ledger"
+      raw_fields: "receipt/withdrawal kg; opening/closing stock; supplier SKU and complete formulation; oil water/FFA/glycerides; acid and catalyst active fraction/carrier; temperature/density; spills; failed-run/rework IDs"
+      collection_method: "Owner: stores and process engineer. Retain unnormalised receipts, actual withdrawals and stock movements for the complete matched period, including unsuccessful operations; distinguish purchased whole solutions from their nested constituents. Attribute stocks and carried burdens by lot without dividing by Q."
+      unit: "kg"
+      frequency: "each receipt/withdrawal and assay"
+      temporal_coverage: "same period and cohorts as cp_gate"
+      site_scope: "feed, reagent and filter stores and actual unit branches"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighing; supplier certificate; assays; stock logs"
+    - protocol_id: cp_utilities
+      process_id: "sme_site"
+      flow_role: "electricity and steam/condensate"
+      record_type: "meters and state records"
+      raw_fields: "start/end kWh; steam kg; supply/return pressure/temperature/dryness/enthalpy; timestamps; integrated volume or rate/duration flag; operation owner; idle/startup/failure/rework/tank/loading loads"
+      collection_method: "Owner: utilities engineer. Retain raw totals by operation and complete period, including support and zero-output loads. Distinguish integrated meter readings from rates; record condensate state and meter allocation evidence. Collection performs no Q division."
+      unit: "kWh; kg; pressure; temperature; kJ/kg"
+      frequency: "continuous meters and each period close"
+      temporal_coverage: "same period and stock-burden cohorts"
+      site_scope: "reaction/recovery/finishing and actual storage/loading utilities"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; bills; enthalpy basis; submeter reconciliation"
+    - protocol_id: cp_outputs
+      process_id: "sme_site"
+      flow_role: "co-products and waste outlets"
+      record_type: "outlet mass and acceptance records"
+      raw_fields: "stream and lot IDs; whole wet kg; water/methanol/glycerol/ester/oil/soap/salts assay; receiver and sale/rejection status; inventories and inherited burdens; treatment records; actual net gate values"
+      collection_method: "Owner: co-product sales and environmental managers. Retain each actual physical outlet and composition before any allocation; separate sold crude glycerol from discarded solution and distinguish internal recycle from external transfers. Preserve raw unnormalised period quantities and stock burdens, including rejected runs."
+      unit: "kg"
+      frequency: "each outlet/assay and stock close"
+      temporal_coverage: "same matched period and cohorts"
+      site_scope: "actual outlet gate and receiving facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "receiver certificates; lab methods; waste manifests; invoices"
+    - protocol_id: cp_emissions
+      process_id: "sme_site"
+      flow_role: "methanol and water air outlets"
+      record_type: "speciated air monitoring"
+      raw_fields: "source ID; medium; concentration; actual wet/dry gas volume; sampling duration only for rates; control efficiency evidence; methanol/water separately; startup/tank/loading/fugitive coverage"
+      collection_method: "Owner: environmental engineer. Retain direct measured mass or validated concentration with matched integrated gas volume and reference conditions; use rate times duration only when raw data are rates. Keep raw numerator, detection limits and unresolved species without residual fitting or division by Q."
+      unit: "kg"
+      frequency: "campaign/continuous per actual source"
+      temporal_coverage: "same reporting period including nonproductive periods"
+      site_scope: "controlled and fugitive air outlets"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling plan; calibration; detection limits; gas basis"
+    - protocol_id: cp_recovery
+      process_id: "sme_site"
+      flow_role: "internal methanol/oil and species balances"
+      record_type: "recycle, reaction and stock audit"
+      raw_fields: "gross reactor charges; fresh reagent; carrier methanol; recovered methanol/oil kg and assay; loop start/end inventory; phase outlet kg and water; actual glycerides/FFA/soap/salts/glycerol/ester species; independent reaction/speciation evidence"
+      collection_method: "Owner: process chemist. Record raw internal movements, assays and actual chemistry independently of whole-stream closure. Ester exchange produces glycerol without net reaction water; FFA methyl esterification is a different water-producing reaction excluded here. Methoxide protonation, hydroxide neutralisation/hydrolysis and phase evaporation have different species/water effects; prove actual species and extents before calculation."
+      unit: "kg"
+      frequency: "each operating/stock interval and assay"
+      temporal_coverage: "matched complete period and cohorts"
+      site_scope: "each reactor, separator, recovery and tank interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "assay methods; PFD; independent chemistry records; uncertainty"
+  calculation_rules:
+    - id: raw_units
+      applies_to: "all inventory rows"
+      rule: "Convert raw units before normalization: mass from traceable weighing or matched volume times measured density; kWh times 3.6 gives MJ; a rate times duration gives an integrated quantity, whereas an integrated volume is used once. Steam heat is measured mass times actual supply-minus-return enthalpy when that is the provider basis."
+      inputs:
+        - cp_material
+        - cp_utilities
+        - cp_emissions
+      output: "raw compatible numerator totals"
+      source_ids: []
+    - id: cohort_carryover
+      applies_to: "all inventory rows"
+      rule: "Keep physical production and delivery stock equations separate. For the matched product/route/state, production receipts enter finished stocks only once. Net supplied Q comes from signed loading less reconciled same-cohort returns, with repeated delivery of the same retained lot not counted twice. Derive delivery-attributable unnormalised burden vectors from actual current burdens plus inherited opening WIP/finished/return burdens, less burdens retained in closing WIP/finished stocks and separately assigned other co-functions. Preserve waste/loss/rework burdens with their responsible cohort; do not subtract a physical closing mass directly from an energy or other burden numerator. Unresolved cohort attribution blocks a numerical result."
+      inputs:
+        - cp_gate
+        - cp_material
+        - cp_utilities
+        - cp_outputs
+        - cp_recovery
+      output: "unnormalised delivery-cohort vectors and Q"
+      source_ids: []
+    - id: normalize_delivery
+      applies_to: "all inventory rows"
+      rule: "a_i = A_i / Q; A_i is each reconciled unnormalised delivery-cohort exchange or attributable burden and Q is actual accepted net bulk delivery in kg; report this division once and require Q positive. The resulting reference row is 1 kg. Card amount expressions and protocol aggregation_rule name this same reporting operation, not additional divisions. Keep the complete unallocated joint-output balance and separately disclose the allocated biodiesel view; do not apply allocation a second time in the provider or subtract a second coproduct credit."
+      inputs:
+        - A_i
+        - Q
+        - cp_gate
+        - cp_material
+        - cp_utilities
+        - cp_outputs
+        - cp_emissions
+        - cp_recovery
+      output: "inventory per 1 kg reference flow"
+      source_ids:
+        - jrc-ilcd-allocation-2010
+    - id: physical_species
+      applies_to: "all inventory rows"
+      rule: "Reconcile complete external wet masses and internal stocks with uncertainty, then independently reconcile C/H/O/Na/S and actual molecular species across glycerides, methyl esters, methanol, glycerol, fatty acids, soaps, salts and water. An ideal triglyceride-plus-methanol equation supports reaction identity only, never observed yield. Protonating sodium methoxide or reacting it with residual FFA yields methanol rather than automatically forming water; hydroxide, acid-esterification and hydrolysis routes have different water terms and must not be substituted. Determine chemical water formation/consumption from independently identified actual reactions/extents and phase water from measured phase records; never solve unknown reaction water and unknown outlet from one residual or COD."
+      inputs:
+        - cp_recovery
+        - cp_material
+        - cp_outputs
+        - cp_emissions
+      output: "separate mass, element, species and water audits"
+      source_ids:
+        - nrel-biodiesel-technology-2004
+  data_quality_requirements:
+    - id: quality_gate
+      applies_to: "all inventory rows"
+      requirement: "Retain complete matched raw records, calibration, traceable state/assay and stock burden genealogy. Zero is demonstrated absence, not missing data. Failed runs remain in coverage; Q=0 prevents a per-kg result."
+      evidence: "cp_gate; cp_material; cp_utilities; cp_outputs; cp_emissions; cp_recovery"
+    - id: quality_identity
+      applies_to: "native rows and providers"
+      requirement: "Verify whole names, route, medium, property reference and supplier compatibility. Biodiesel native oxygen-content 11% is a declared identity characteristic with no assay tolerance supplied; retain the actual oxygen test and compatibility decision, never a measured default. General native description includes ethyl/propyl esters but this PCR is methyl-only; native geography is unspecified."
+      evidence: "supplier and native identity review; assay certificates"
+    - id: quality_evidence
+      applies_to: "all rows"
+      requirement: "NREL is a 2004 technology report covering industrial options and separate laboratory exercises, not a plant inventory. Desmet documents industrial hardware/feed flexibility and recovery feasibility, not audited yields, zero discharges, specifications or site consumption. Collect all actual amounts; no numerical operating range is imported."
+      evidence: "nrel-biodiesel-technology-2004, desmet-biodiesel-process, desmet-cstr-transesterification, desmet-methanol-recovery"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "delivered_biodiesel"
+    rule: "Require a unique Product terminal row consistent with reference_flow_link and the Mass reference. Reject HVO, fossil diesel, blended fuel, alcohol or incompatible ester identity."
+    source_ids:
+      - nrel-biodiesel-technology-2004
+  - rule_id: validate_quantity
+    applies_to: "all inventory rows"
+    rule: "Require positive matched Q, complete raw-period and inherited stock burdens, unique return/resupply reconciliation and one normalization. New release plus closing finished stock is not a second production output; actual delivery and release must not be equated."
+    source_ids: []
+  - rule_id: validate_chemistry
+    applies_to: "cp_recovery"
+    rule: "Reject theoretical-yield factors, duplicate formulation constituents, COD/residual-fitted species or water, omitted failed runs or unverified internal-recovery credits. Require independent species/phase evidence and uncertainty-aware mass/element closure."
+    source_ids:
+      - nrel-biodiesel-technology-2004
+  - rule_id: validate_allocation
+    applies_to: "joint production"
+    rule: "Require actual glycerol/residue market or waste state, gate-matched allocation evidence and an unallocated physical balance. Missing causal/residual value evidence prevents numerical use; it is not resolved by generic prices or wet mass shares."
+    source_ids:
+      - jrc-ilcd-allocation-2010
+  - rule_id: validate_completeness
+    applies_to: "all inventory rows"
+    rule: "Record checks performed, skipped and findings; missing auxiliary providers, actual site data, added atomic flows or native compatibility remain explicit gaps. The PCR does not certify fuel specification, scientific approval or TIDAS schema conformity."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "One kg net bulk supplied soybean FAME at the declared loading gate with inherited stocks and reviewed allocation; multi-output view retained separately"
+  allowed_use: "Declared matching route, feedstock, quality, geography, period and provider basis only"
+  excluded_use: "Universal biodiesel/HVO/fossil-diesel proxy; diesel-blend composition; fuel combustion; pure glycerol; automatic waste-feed credits; plant factors from laboratory examples"
+  required_metadata: "Q delivery gate; new-release and stock reconciliation; feed/formulation assay; route; location; period; oxygen/specification evidence; recovery; coproduct/waste status; allocation; native/provider limits"
+  required_quality_disclosure: "Raw completeness; WIP/finished-stock carried burdens; failed/zero-output/rework coverage; chemical/phase water evidence; uncertainty; unresolved identities and no unsupported factors"
+  update_trigger: "Feed/route/gate/specification, catalyst/acid formulation, provider geography, recovery or coproduct market/treatment changes"
+data_sources:
+  - id: "nrel-biodiesel-technology-2004"
+    type: "handbook"
+    reference: "Van Gerpen, Shanks, Pruszko, Clements and Knothe, Biodiesel Production Technology, NREL/SR-510-36244, July 2004, https://docs.nlr.gov/docs/fy04osti/36244.pdf"
+    used_for: "Printed pp. 1–6, 30–36, 75–77 and 79: triglyceride/FFA distinction; refined soy feed; base/catalyst solution; industrial reaction/separation/wash/dry and methanol/glycerol operations. Whole report includes laboratory exercises, ideal triolein, dated prices and illustrative quantities; none are adopted as plant yield, recipe, dose, effluent factor or acceptance specification."
+  - id: "desmet-biodiesel-process"
+    type: "literature"
+    reference: "Desmet, Biodiesel, publisher page, https://www.desmet.com/en/biofuel/biodiesel"
+    used_for: "Industrial continuous methylester technology and refined vegetable/soybean feed feasibility; not audited factory factors, actual site geography, guaranteed 100% yield or zero effluent."
+  - id: "desmet-cstr-transesterification"
+    type: "literature"
+    reference: "Desmet, Transesterification, publisher page, https://www.desmet.com/en/biofuel/biodiesel/transesterification"
+    used_for: "Serial industrial CSTR/decanter and glycerine separation configuration; equipment capacities and performance marketing are not foreground values or proof of selected catalyst chemistry."
+  - id: "desmet-methanol-recovery"
+    type: "literature"
+    reference: "Desmet, Methanol rectification, publisher page, https://www.desmet.com/en/biofuel/biodiesel/methanol-rectification"
+    used_for: "Physical methanol rectification/condensation and internal reuse; no 100% recovery, zero emission/wastewater or energy factor is imported."
+  - id: "jrc-ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for LCA — Detailed guidance, first edition March 2010, §7.9.3, printed pp.257–258, https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional allocation of inseparable multifunctional operations: virtual subdivision/determining physical causality then residual market value at actual process-exit state. Not a biodiesel-specific allocation fraction, waste cut-off, energy credit, price or compliance certification; the sawmill example continuing later is not used."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f118a19d050622d42ea9c4b305c0a3f8407d72da0f445d34de29adbb5b36eaef"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5801"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5801
+          line: 59
+          column: 1
+        end:
+          offset: 8291
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Externally refined soybean oil and separately supplied reagents/utilities at biodiesel-site receipt; full upstream burdens retained |\n| starting_condition_role | foreground collection start, not burden-free cradle |\n| product_classification_scope | Neat soybean FAME subset of CPC 3.0 35491 only |\n| recursive_input_rule | Same-category returned or purchased biodiesel retains origin and inherited burdens. Internal transfer cancels; purchased product is not new onsite production. |\n| upstream_dataset_requirement | Match oil cultivation/extraction/refining, actual country/land-use accounting and co-product allocation; match complete catalyst/acid formulation, methanol production mix, water and utilities. No waste cut-off inferred from price or name. |\n| disclosure | Declare actual supply state, gate, geography, operations, stock/carryover basis, recovery interfaces, allocations and unresolved providers. Downstream road transport, use and combustion are outside the loading gate. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_operations | sme_site | Include receipt/storage, reaction/separation, methanol rectification, wash/dry/polish, crude-glycerol conditioning to its actual gate, utilities, cleaning, rework, finished storage and loading. Split any actual additional chemical, fuel, packaging component, waste and elementary species into its own row before using a dataset; absent rows do not license a cut-off. | `nrel-biodiesel-technology-2004`, `desmet-biodiesel-process`, `desmet-cstr-transesterification`, `desmet-methanol-recovery` |\n| boundary_stocks | all inventory rows | Keep raw period and cohort ledgers including failed/zero-output runs, returns and opening/closing raw materials, WIP, recovered alcohol/oil and finished goods. Transfer existing burdens with stocks; do not charge current deliveries for untouched closing stocks or omit the opening stock burdens actually delivered. |  |\n| boundary_upstream | refined_oil | This route consumes refined virgin soybean oil with inherited cultivation/extraction/refining burdens. Waste oil is excluded. Any proposed waste-feed extension requires evidence of prior use, legal/physical waste state, collection/pretreatment, inherited burdens and allocation system; never apply universal zero burden. | `nrel-biodiesel-technology-2004`, `jrc-ilcd-allocation-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 240
+              line: 9
+              column: 1
+            end:
+              offset: 327
+              line: 9
+              column: 88
+          text: "# Bulk soybean fatty-acid methyl ester biodiesel by continuous base transesterification"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5801
+              line: 59
+              column: 1
+            end:
+              offset: 5822
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_25492"
+      family: "allocation"
+      span:
+        start:
+          offset: 25492
+          line: 376
+          column: 1
+        end:
+          offset: 27434
+          line: 385
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_unallocated | joint production | Retain complete unallocated physical joint-output records first, including the actual wet crude glycerol, wastes and losses. Internal methanol/oil recovery is neither an external co-product nor an avoided-purchase credit. A waste-treatment fee alone does not settle product status. | `nrel-biodiesel-technology-2004`, `jrc-ilcd-allocation-2010` |\n| allocation_causal | shared burdens | Select attributional allocation, first subdividing measured ester-only, glycerol-only and shared operations. Assign direct burdens and demonstrate determining physical causality per remaining flow; wet mass share or theoretical stoichiometry alone is not a causal allocation model. Preserve the evidence and sensitivity. | `jrc-ilcd-allocation-2010` |\n| allocation_residual | inseparable residual burdens | Only after documenting why subdivision and physical causality cannot resolve a residual, use the actual market values of all usable co-functions in their actual state at the same joint-process exit. Retain contemporaneous quantities, net gate receipts/contract values, moisture/quality, conditioning and transport adjustments and sensitivity. Do not apply a generic biodiesel:glycerol mass-price ratio, the 2004 price example, pure-glycerol prices or negative weights; missing/unstable values require review before numerical use. | `jrc-ilcd-allocation-2010` |\n| allocation_no_credit | derived reference dataset | Keep waste-treatment burdens with the responsible process. No automatic glycerol, salt, methanol, oil or carbon substitution credit. Do not combine allocated burdens with a second avoided-product credit. Report unallocated multi-output and allocated biodiesel views separately so physical coproduct mass is never reduced to hide an allocation. | `jrc-ilcd-allocation-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 240
+              line: 9
+              column: 1
+            end:
+              offset: 327
+              line: 9
+              column: 88
+          text: "# Bulk soybean fatty-acid methyl ester biodiesel by continuous base transesterification"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 25492
+              line: 376
+              column: 1
+            end:
+              offset: 25532
+              line: 376
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37969"
+      family: "validation"
+      span:
+        start:
+          offset: 37969
+          line: 417
+          column: 1
+        end:
+          offset: 39589
+          line: 427
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | delivered_biodiesel | Require a unique Product terminal row consistent with reference_flow_link and the Mass reference. Reject HVO, fossil diesel, blended fuel, alcohol or incompatible ester identity. | `nrel-biodiesel-technology-2004` |\n| validate_quantity | all inventory rows | Require positive matched Q, complete raw-period and inherited stock burdens, unique return/resupply reconciliation and one normalization. New release plus closing finished stock is not a second production output; actual delivery and release must not be equated. |  |\n| validate_chemistry | cp_recovery | Reject theoretical-yield factors, duplicate formulation constituents, COD/residual-fitted species or water, omitted failed runs or unverified internal-recovery credits. Require independent species/phase evidence and uncertainty-aware mass/element closure. | `nrel-biodiesel-technology-2004` |\n| validate_allocation | joint production | Require actual glycerol/residue market or waste state, gate-matched allocation evidence and an unallocated physical balance. Missing causal/residual value evidence prevents numerical use; it is not resolved by generic prices or wet mass shares. | `jrc-ilcd-allocation-2010` |\n| validate_completeness | all inventory rows | Record checks performed, skipped and findings; missing auxiliary providers, actual site data, added atomic flows or native compatibility remain explicit gaps. The PCR does not certify fuel specification, scientific approval or TIDAS schema conformity. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 240
+              line: 9
+              column: 1
+            end:
+              offset: 327
+              line: 9
+              column: 88
+          text: "# Bulk soybean fatty-acid methyl ester biodiesel by continuous base transesterification"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37969
+              line: 417
+              column: 1
+            end:
+              offset: 37991
+              line: 417
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_5801"
+      source_span:
+        start:
+          offset: 6977
+          line: 74
+          column: 1
+        end:
+          offset: 7506
+          line: 74
+          column: 530
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_stocks"
+      identity_kind: "explicit"
+      unit_id: "normative_5801"
+      source_span:
+        start:
+          offset: 7507
+          line: 75
+          column: 1
+        end:
+          offset: 7867
+          line: 75
+          column: 361
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_5801"
+      source_span:
+        start:
+          offset: 7868
+          line: 76
+          column: 1
+        end:
+          offset: 8289
+          line: 76
+          column: 422
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_unallocated"
+      identity_kind: "explicit"
+      unit_id: "normative_25492"
+      source_span:
+        start:
+          offset: 25605
+          line: 380
+          column: 1
+        end:
+          offset: 25997
+          line: 380
+          column: 393
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_causal"
+      identity_kind: "explicit"
+      unit_id: "normative_25492"
+      source_span:
+        start:
+          offset: 25998
+          line: 381
+          column: 1
+        end:
+          offset: 26388
+          line: 381
+          column: 391
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_25492"
+      source_span:
+        start:
+          offset: 26389
+          line: 382
+          column: 1
+        end:
+          offset: 27004
+          line: 382
+          column: 616
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_25492"
+      source_span:
+        start:
+          offset: 27005
+          line: 383
+          column: 1
+        end:
+          offset: 27432
+          line: 383
+          column: 428
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_37969"
+      source_span:
+        start:
+          offset: 38064
+          line: 421
+          column: 1
+        end:
+          offset: 38324
+          line: 421
+          column: 261
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_37969"
+      source_span:
+        start:
+          offset: 38325
+          line: 422
+          column: 1
+        end:
+          offset: 38634
+          line: 422
+          column: 310
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_chemistry"
+      identity_kind: "explicit"
+      unit_id: "normative_37969"
+      source_span:
+        start:
+          offset: 38635
+          line: 423
+          column: 1
+        end:
+          offset: 38964
+          line: 423
+          column: 330
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_37969"
+      source_span:
+        start:
+          offset: 38965
+          line: 424
+          column: 1
+        end:
+          offset: 39283
+          line: 424
+          column: 319
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_37969"
+      source_span:
+        start:
+          offset: 39284
+          line: 425
+          column: 1
+        end:
+          offset: 39587
+          line: 425
+          column: 304
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5801"
+      source_span:
+        start:
+          offset: 5801
+          line: 59
+          column: 1
+        end:
+          offset: 5822
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5801"
+      source_span:
+        start:
+          offset: 5850
+          line: 63
+          column: 1
+        end:
+          offset: 6904
+          line: 70
+          column: 233
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_25492"
+      source_span:
+        start:
+          offset: 25492
+          line: 376
+          column: 1
+        end:
+          offset: 25532
+          line: 376
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37969"
+      source_span:
+        start:
+          offset: 37969
+          line: 417
+          column: 1
+        end:
+          offset: 37991
+          line: 417
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f118a19d050622d42ea9c4b305c0a3f8407d72da0f445d34de29adbb5b36eaef"
+  generated_content_sha256: "sha256:1c5a3d9efc34be8cd674b06b091e19a7ff99f40b74731a287e44a5909e5f8a37"

@@ -3,6 +3,20 @@ import assert from "node:assert/strict";
 import { summarizeExportFiles } from "./export-size.ts";
 import { INLINE_MANIFEST_LIMIT, INLINE_MARKDOWN_LIMIT, inlineDownloadUrl, decodeInlineDownloadUrl } from "./raw-download.ts";
 
+test('candidate required-language originals through 96 KiB retain exact native downloads', () => {
+  const directory='library/pcrs/domain/category/item/';
+  const manifest={path:directory+'manifest.yaml',bytes:Buffer.from('status: candidate\ncontent_maturity: authored_methodology\n')};
+  for(const language of ['en-US','zh-CN'])for(const size of [60*1024,80*1024,96*1024]){
+    const header=Buffer.from('\ufeff# 原文🙂 / source\r\n');const original=Buffer.concat([header,Buffer.alloc(size-header.length,32)]);
+    const source=directory+`pcr.${language}.md`;const url=inlineDownloadUrl(source,original,false,manifest);
+    assert.ok(url,`${size} byte candidate original needs bounded native transport`);assert.deepEqual(decodeInlineDownloadUrl(url),original);
+    assert.equal(inlineDownloadUrl(source,original,true,manifest),undefined);
+    assert.equal(inlineDownloadUrl(source,original,false,{...manifest,bytes:Buffer.from('status: published\ncontent_maturity: authored_methodology\n')}),undefined);
+  }
+  assert.equal(inlineDownloadUrl(directory+'pcr.en-US.md',Buffer.alloc(96*1024+1),false,manifest),undefined);
+  assert.throws(()=>decodeInlineDownloadUrl('data:application/octet-stream;base64,'+Buffer.alloc(96*1024+1).toString('base64')),/inline download/iu);
+});
+
 test('medium required-language downloads preserve original Unicode bytes within candidate eligibility', () => {
   const directory = 'library/pcrs/domain/category/item/';
   const manifest = Buffer.from('status: candidate\ncontent_maturity: authored_methodology\n');
