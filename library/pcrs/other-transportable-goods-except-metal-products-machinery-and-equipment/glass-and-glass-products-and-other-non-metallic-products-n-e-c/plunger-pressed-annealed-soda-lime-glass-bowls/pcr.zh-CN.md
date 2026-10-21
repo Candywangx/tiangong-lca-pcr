@@ -20,7 +20,7 @@ BREF、Mosser与La Rochere构成跨独立原始来源的透明技术综合，不
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.plunger-pressed-annealed-soda-lime-glass-bowls |
-| classification_refs | CPC3.0:37193; 仅透明钠钙模压碗较窄路线; 无已接受映射 |
+| classification_refs | CPC3.0:37193; 仅透明钠钙模压碗较窄路线; 较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 完成日池炉/柱塞/火抛光/退火制造的一个声明透明整体敞口钠钙玻璃碗配置 |
 | excluded_products | 全部boundary_scope排除项; 不覆盖整叶餐厨/盥洗/办公/装饰产品 |
 | representative_product | 有声明图纸和真实试验的裸退火敞口食用碗; 独立PERIGORD目录仅为终端证据 |

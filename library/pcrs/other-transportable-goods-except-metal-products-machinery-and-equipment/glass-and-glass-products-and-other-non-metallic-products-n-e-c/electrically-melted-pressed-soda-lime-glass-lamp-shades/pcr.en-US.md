@@ -26,7 +26,7 @@ JRC raw-batch/electric-melting/lamp-pressing mechanisms, independent EPA press/c
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.electrically-melted-pressed-soda-lime-glass-lamp-shades |
-| classification_refs | CPC3.0:37196; narrower product/route subset; no accepted mapping |
+| classification_refs | CPC3.0:37196; narrower product/route subset; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Bare clear uncoloured soda-lime pressed annealed luminaire shades within section1 |
 | excluded_products | All adjacent glass products/open bulb envelopes/complete lamps and secondary finishing/assembly routes in section1 |
 | representative_product | One real clear soda-lime pressed annealed shade with drawing-defined as-moulded finished rim/flange |

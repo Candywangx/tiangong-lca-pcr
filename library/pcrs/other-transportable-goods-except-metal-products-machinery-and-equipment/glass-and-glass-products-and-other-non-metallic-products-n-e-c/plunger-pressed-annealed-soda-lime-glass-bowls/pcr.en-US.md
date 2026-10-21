@@ -20,7 +20,7 @@ BREF, Mosser and La Rochere form a transparent technical synthesis across indepe
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.plunger-pressed-annealed-soda-lime-glass-bowls |
-| classification_refs | CPC3.0:37193; narrower pressed clear soda-lime bowl route only; no accepted mapping |
+| classification_refs | CPC3.0:37193; narrower pressed clear soda-lime bowl route only; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | One declared clear monolithic open soda-lime bowl configuration after complete day-tank/plunger/fire-finish/anneal manufacture |
 | excluded_products | All boundary_scope exclusions; no whole-leaf table/kitchen/toilet/office/decorative coverage |
 | representative_product | Bare annealed open serving bowl with declared drawing and actual tests; independent PERIGORD catalogue is terminal evidence only |

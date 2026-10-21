@@ -20,7 +20,7 @@ Excludes raw MgO/magnesite powder unfired shapes monolithic castables carbon/res
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.pressed-fired-periclase-refractory-bricks |
-| classification_refs | CPC 3.0:37320; narrower; no accepted mapping |
+| classification_refs | CPC 3.0:37320; narrower; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Dense bare uncoated natural-magnesite-derived periclase constructional refractory bricks with aqueous magnesium sulfate temporary binder and ceramic firing |
 | excluded_products | Raw powder; unfired/monolithic goods; carbon-bonded or pitch-impregnated shapes; siliceous-earth insulation; crucibles; non-refractory bricks; deliberate chromite/doloma/spinel routes; metal-cased/reinforced ware |
 | representative_product | UNIDO chapterVI M-A natural DBM-A periclase/calcium-silicate brick; a 1986 primary trial with actual terminal/phase tests rather than a current SKU default |

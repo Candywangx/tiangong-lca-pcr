@@ -30,7 +30,7 @@ JRC supplies full batch/melting/roller/annealing context; Pilkington independent
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.rolled-patterned-soda-lime-glass-sheets |
-| classification_refs | CPC3.0:37112; narrower semantic context only; no accepted mapping |
+| classification_refs | CPC3.0:37112; narrower semantic context only; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Unworked annealed continuously double-rolled uncoloured non-wired soda-lime patterned stock sheets within section1 |
 | excluded_products | Exclude float/tin-bath forming; ground or polished faces; drawn or blown sheets; table casting; wired glass; body-tinted, opacified or borosilicate compositions; dedicated photovoltaic cover products; tempering or heat strengthening; laminating; coating including online coating or SO2 surface treatment; mirrors; insulating glazing assemblies; drilling, edge polishing or fabrication beyond unworked stock-sheet cutting; installation/use/end of life. A real changed route requires renewed applicability and all actual atomic exchanges, never an assumed zero. A pattern embossed into hot glass is not an added coating. Unworked annealed sheets establish no safety-glazing rating. [jrc-glass-bref-2013; pilkington-texture; un-cpc3-2025] |
 | representative_product | One declared pattern/composition/thickness-profile sheet configuration; no mandatory brand or dimension |

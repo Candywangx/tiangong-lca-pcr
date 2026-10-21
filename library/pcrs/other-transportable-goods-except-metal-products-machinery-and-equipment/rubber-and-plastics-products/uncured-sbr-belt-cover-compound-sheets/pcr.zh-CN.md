@@ -26,7 +26,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.uncured-sbr-belt-cover-compound-sheets |
-| classification_refs | CPC 3.0 36220; 仅本较窄子集，科学审查及正向映射待定 |
+| classification_refs | CPC 3.0 36220; 仅本较窄子集，较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 独立外售的SBR基炭黑填充可硫磺硫化未硫化无骨架输送带覆盖胶片材 |
 | excluded_products | 基胶聚合物、轮胎/翻胎内部中间物、camelback、再生胶及硫化制品，及§1其他排除项 |
 | representative_product | 有完整真实配方与硫化体系、逐批检验及独立发运记录的黑色胶片 |

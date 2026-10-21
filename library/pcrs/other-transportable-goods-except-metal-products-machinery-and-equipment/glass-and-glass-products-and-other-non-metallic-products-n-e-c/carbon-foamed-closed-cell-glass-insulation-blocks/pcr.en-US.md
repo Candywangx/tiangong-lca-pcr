@@ -20,7 +20,7 @@ The complete publisher sources form a transparent technical synthesis without cl
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.carbon-foamed-closed-cell-glass-insulation-blocks |
-| classification_refs | CPC3.0:37117; narrower carbon-black foamed uncoated block subset only; no accepted mapping |
+| classification_refs | CPC3.0:37117; narrower carbon-black foamed uncoated block subset only; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Uncoated closed-cell cellular-glass rectangular insulation blocks/slabs after full carbon-black foaming route and first quality release |
 | excluded_products | Faced or coated boards; granulate/gravel; open-cell acoustic products; cold-bonded agglomerates; glass wool/fibres; pressed solid bricks; insulating glazing; mirrors; stock sheets; tempered panes; installed assemblies; carbonate-only glycerine/waterglass or SiC foaming routes |
 | representative_product | One actual declared uncoated closed-cell block/slab configuration at first release; no mandatory brand dimension or recipe |

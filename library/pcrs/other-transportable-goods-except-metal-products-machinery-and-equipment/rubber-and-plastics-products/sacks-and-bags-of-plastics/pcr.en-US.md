@@ -25,7 +25,7 @@ Q is newly first-quality-released net bag mass. Same-batch closing FG is already
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.sacks-and-bags-of-plastics |
-| classification_refs | CPC3.0 36410; narrower candidate; no accepted mapping here. |
+| classification_refs | CPC3.0 36410; narrower candidate; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | The section1 clear empty flat monolayer virgin-LDPE open-mouth bottom-heat-sealed bag from complete pellet conversion. |
 | excluded_products | All section1 exclusions; resin and unconverted film are distinct terminal products. |
 | representative_product | One specified plain flat bag with measured dimensions/gauge and declared acceptance performance; no assumed SKU mass. |

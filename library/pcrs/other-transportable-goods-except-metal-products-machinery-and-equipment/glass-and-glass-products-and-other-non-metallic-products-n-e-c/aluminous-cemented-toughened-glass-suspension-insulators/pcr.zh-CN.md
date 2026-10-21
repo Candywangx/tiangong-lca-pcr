@@ -22,7 +22,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.aluminous-cemented-toughened-glass-suspension-insulators |
-| classification_refs | CPC 3.0:37197；较窄的完整无RTV胶装悬式单元子集；不表示映射接受 |
+| classification_refs | CPC 3.0:37197；较窄的完整无RTV胶装悬式单元子集；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 第1节指定的完整单元 |
 | excluded_products | 终端排除裸/未组装玻璃壳或盘、整串绝缘子及线路金具组件、瓷/陶瓷/复合绝缘子、退火针式玻璃绝缘子、槽舌连接型式、可锻铸铁帽、磷青铜锁紧件、直流专用/带锌套变型、RTV玻璃涂层、陶瓷坯体制造、浮法/安全玻璃及其他玻璃制品、厂内锻造/铸造/镀锌，以及安装/使用/寿命终结。外购预制组件保留其完整上游成型/表面处理负荷。真实新增配方组分、制剂、燃料、冷却介质、化学处理或排放物种，在完成数据包前都须新增独立原子交换并评估适用性；实际交换不得藏入零值或其他集合。 |
 | representative_product | 首次质量放行的完整帽销玻璃悬式单元 |

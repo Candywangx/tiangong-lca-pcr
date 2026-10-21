@@ -22,7 +22,7 @@ Exclude motorcycle, bicycle, sport, firefighting, military/police or ballistic h
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.safety-headgear |
-| classification_refs | CPC3.0:36971; narrower route context; no accepted mapping established |
+| classification_refs | CPC3.0:36971; narrower route context; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | One specified complete single-shot HDPE industrial helmet with purchased suspension |
 | excluded_products | Every product and route excluded in section1 |
 | representative_product | Configured industrial hard hat; JSP is independent constituent evidence only |

@@ -30,7 +30,7 @@ JRC提供完整配料/熔化/压辊/退火背景；Pilkington独立证明压延�
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.rolled-patterned-soda-lime-glass-sheets |
-| classification_refs | CPC3.0:37112；仅较窄语义背景；无接受映射 |
+| classification_refs | CPC3.0:37112；仅较窄语义背景；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 第1节内未经加工、退火、连续双辊压延的无色无夹丝钠钙花纹原片 |
 | excluded_products | 排除浮法/锡浴成片、表面研磨/抛光、拉制或吹制片材、平台浇铸、夹丝玻璃、本体着色/乳浊或硼硅组成、专用光伏盖板、钢化/半钢化、夹层、镀膜（含在线镀膜或SO2表面处理）、镜面、中空玻璃组件、钻孔/磨边或超过未经加工原片划切的深加工，以及安装/使用/寿命末期。实际路线变化须重新判断适用性并完整列出实际原子交换，不能假定为零。热玻璃压印花纹不是添加镀层。未经加工退火片不建立安全玻璃等级。[jrc-glass-bref-2013; pilkington-texture; un-cpc3-2025] |
 | representative_product | 一种声明花纹/组成/厚度分布的玻璃片配置；无强制品牌或尺寸 |

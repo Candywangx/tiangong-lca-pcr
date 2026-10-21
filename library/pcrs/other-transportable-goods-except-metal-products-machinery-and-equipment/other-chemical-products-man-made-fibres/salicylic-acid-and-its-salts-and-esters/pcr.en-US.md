@@ -19,7 +19,7 @@ Exclude sodium and other salicylate salts, methyl and other salicylate esters, a
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.salicylic-acid-and-its-salts-and-esters |
-| classification_refs | CPC 3.0 35210; narrower; free solid acid only; positive mapping not accepted here |
+| classification_refs | CPC 3.0 35210; narrower; free solid acid only; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml; scientific review remains pending |
 | covered_products | Technical solid salicylic acid with declared actual assay, moisture and impurities |
 | excluded_products | Salts; esters; isomers; drug formulations; crude wet cake; solvent-suspension and HCl routes |
 | representative_product | Technical 2-hydroxybenzoic acid powder, CAS 69-72-7 |

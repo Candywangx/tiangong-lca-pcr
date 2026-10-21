@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.pressed-sintered-alumina-chemical-crucible-bodies |
-| classification_refs | CPC 3.0:37291; narrower scope; no accepted mapping |
+| classification_refs | CPC 3.0:37291; narrower scope; 较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 压制烧结的名义95%氧化铝化学用未涂层空坩埚体 |
 | excluded_products | 瓷质硅酸盐; 高纯氧化铝不同路线; 石英; SiC; 氮化物; 金属; 试剂; 已装设备; 餐厨装饰; 电绝缘; 研磨介质; 其他农业或包装容器 |
 | representative_product | Morgan Sintox FA支持95%氧化铝材料、化学坩埚终端及压制能力；无保证工厂配方 |

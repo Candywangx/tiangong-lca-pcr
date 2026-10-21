@@ -19,7 +19,7 @@ Exclude petroleum lubricating oils and base oils/esters themselves, standalone a
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.lubricating-preparations-and-preparations-of-a-kind-used-for-the-oil-or-grease-treatmen-377cfc53 |
-| classification_refs | CPC 3.0 35430; narrower; only the aqueous ethylene-glycol antifreeze subset; no mapping acceptance established |
+| classification_refs | CPC 3.0 35430; narrower; only the aqueous ethylene-glycol antifreeze subset; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Physically blended and diluted aqueous Si-OAT ethylene-glycol antifreeze with declared formulation, concentration and delivery state |
 | excluded_products | Petroleum lubricant/base oil/ester; standalone additive; hydraulic liquid; propylene-glycol/glycerol product; aircraft deicer; reclaimed fluid; onsite reaction route |
 | representative_product | A declared aqueous dilution of a compatible G40 concentrate intermediate prepared from G140K SC and ethylene glycol |

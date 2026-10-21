@@ -26,7 +26,7 @@ The evidence is a bounded synthesis of independent primary sources, not a claim 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.uncured-sbr-belt-cover-compound-sheets |
-| classification_refs | CPC 3.0 36220; this narrower subset only; scientific review and positive mapping pending |
+| classification_refs | CPC 3.0 36220; this narrower subset only; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Externally supplied unreinforced black sulfur-curable uncured SBR-based belt-cover compound sheets |
 | excluded_products | Base polymers, tyre/retread intermediates, camelback, reclaimed rubber, cured articles and other exclusions in §1 |
 | representative_product | Black sheet with complete actual recipe/cure package, batch inspection and independent dispatch evidence |

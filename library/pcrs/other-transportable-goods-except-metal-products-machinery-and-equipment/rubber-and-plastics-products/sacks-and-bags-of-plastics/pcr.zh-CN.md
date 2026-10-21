@@ -25,7 +25,7 @@ Q为新增首次质量放行袋净质量，同批期末成品已计入Q。真实
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.sacks-and-bags-of-plastics |
-| classification_refs | CPC3.0 36410；较窄候选；本稿无已接受映射。 |
+| classification_refs | CPC3.0 36410；较窄候选；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 第1节完整粒料转化的透明空平口单层原生LDPE开口底热封袋。 |
 | excluded_products | 第1节全部排除项；树脂和未制袋膜是不同终端产品。 |
 | representative_product | 一种规定的无印刷平口袋，实测尺寸/厚度并声明验收性能；不假定SKU质量。 |

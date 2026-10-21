@@ -67,7 +67,7 @@ Every required qualifier must be declared in actual dataset metadata or equivale
 | --- | --- |
 | declared_starting_condition | Whole purchased unfired high-purity alumina powder in actual supplied form/moisture; separate real water supplies |
 | starting_condition_role | foreground_material_receipt |
-| product_classification_scope | Narrow candidate within CPC 37299; no accepted mapping established |
+| product_classification_scope | Narrow candidate within CPC 37299; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | recursive_input_rule | Bought same-category sintered balls used as milling media need compatible upstream burdens; internal self-produced transfers cancel with inherited burden/service retained and never replace new-ball manufacture |
 | upstream_dataset_requirement | Match whole material chemistry/phase/supplied form, grade, route, supplier geography and extensive unit without duplicate formulation subcomponents or supplier-included operations |
 | disclosure | Unfired powder through first release; disclose supplier/on-site preparation split and original-cohort subsequent services. Cradle-to-gate needs compatible upstream links and explicit consolidation |

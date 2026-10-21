@@ -67,7 +67,7 @@ translation_status: aligned
 | --- | --- |
 | declared_starting_condition | 整份外购未烧结高纯氧化铝粉，真实供货形态与水分；各供水分开 |
 | starting_condition_role | foreground_material_receipt |
-| product_classification_scope | CPC 37299的窄范围候选；未建立已接受映射 |
+| product_classification_scope | CPC 37299的窄范围候选；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | recursive_input_rule | 外购同类烧结球作制粉介质须兼容上游负荷；内部自产转移抵消且保留继承负荷与服务，不替代新球制造 |
 | upstream_dataset_requirement | 匹配整份物料化学/晶相/供货形态、品级、路线、供方地域及广延单位；不重复配方子组分或供方已含工序 |
 | disclosure | 从未烧结粉到首次放行；完整声明供方/厂内制粉分界及原队列后续服务。摇篮到门须适配上游并显式合并 |

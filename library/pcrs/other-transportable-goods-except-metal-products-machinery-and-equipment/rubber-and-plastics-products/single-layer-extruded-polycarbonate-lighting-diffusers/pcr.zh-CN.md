@@ -22,7 +22,7 @@ Condale的真实PC扩散件及制造能力与Covestro的粒料工艺资料构成
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.single-layer-extruded-polycarbonate-lighting-diffusers |
-| classification_refs | CPC3.0:36960; 窄子集；未接受映射 |
+| classification_refs | CPC3.0:36960; 窄子集；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 一款指定的单层原生PC室内灯具切长扩散罩 |
 | excluded_products | 整灯; LED及驱动; 电气壳体; 绝缘配件; 通用建筑型材; 片材再成型; 其他聚合物或PC共混物; 外部再生料; 增强或发泡; 多层或UV共挤; 厂内树脂或扩散母粒配混; 注塑; 涂装或印刷; 粘接或装配; 户外或医疗认证用途; 实际偏离需完整适用性复核 |
 | representative_product | 具有明确配套灯具的裸乳白或磨砂PC扩散罩；不固定品牌和尺寸 |

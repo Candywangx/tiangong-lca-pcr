@@ -28,7 +28,7 @@ Exclude filled or chemically modified PTFE; expanded or structured PTFE; paste l
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.compression-sintered-virgin-ptfe-flat-gaskets |
-| classification_refs | CPC3.0:36990; narrower proposed context only; no accepted mapping |
+| classification_refs | CPC3.0:36990; narrower proposed context only; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | One-piece unfilled non-expanded virgin-PTFE flat annular industrial gaskets within section1 |
 | excluded_products | Exclude filled or chemically modified PTFE; expanded or structured PTFE; paste lubricant extrusion; ram or isostatic moulding; hot coining/water quench; purchased sheet/billet conversion; sheet skiving and sheet-cut gaskets; melt injection; elastomer or metal-composite seals; spring-energized seals; welded segments; resin synthesis; coatings/printing; medical implantation; oxygen-service cleaning; fuel-fired sintering; bought-finished-gasket repacking; installation/use/end of life. A real departure requires renewed applicability and complete atomic exchanges. |
 | representative_product | One actual drawing-specific conventional solid PTFE ring; no fixed brand or dimensions |

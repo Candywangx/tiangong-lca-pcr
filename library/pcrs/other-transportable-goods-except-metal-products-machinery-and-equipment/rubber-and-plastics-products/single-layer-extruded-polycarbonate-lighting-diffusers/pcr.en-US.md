@@ -22,7 +22,7 @@ Exclude complete luminaires, LEDs/drivers, electrical enclosures, insulating fit
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.single-layer-extruded-polycarbonate-lighting-diffusers |
-| classification_refs | CPC3.0:36960; narrower subset; no accepted mapping |
+| classification_refs | CPC3.0:36960; narrower subset; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | One specified single-layer virgin-PC indoor luminaire diffuser cut to length |
 | excluded_products | Complete luminaires; LEDs and drivers; electrical enclosures; insulating fittings; generic building profiles; formed sheet; other polymers or PC blends; external recyclate; reinforcement or foam; multilayer or UV coextrusion; onsite resin or diffuser-masterbatch compounding; injection moulding; coating or printing; bonding or assembly; outdoor or medically certified uses; actual departures require complete applicability review |
 | representative_product | A bare opal/frosted PC diffuser dedicated to its declared lighting host; no fixed brand or dimensions |

@@ -20,7 +20,7 @@ Excludes silicate porcelain quartz glass SiC nitride metal crucibles raw reagent
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.pressed-sintered-alumina-chemical-crucible-bodies |
-| classification_refs | CPC 3.0:37291; narrower scope; no accepted mapping |
+| classification_refs | CPC 3.0:37291; narrower scope; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Pressed sintered nominal95% alumina uncoated empty chemical-crucible bodies |
 | excluded_products | Silicate porcelain; distinct high-purity alumina routes; quartz; SiC; nitrides; metal; reagents; loaded equipment; cookware/decoration; electrical insulation; grinding media; other agricultural/packing vessels |
 | representative_product | Morgan Sintox FA supports95% alumina material chemical-crucible terminal and pressing capability; no guaranteed plant recipe |

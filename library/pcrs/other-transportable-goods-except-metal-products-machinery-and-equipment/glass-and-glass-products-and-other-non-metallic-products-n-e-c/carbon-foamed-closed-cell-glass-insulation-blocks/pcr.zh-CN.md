@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.carbon-foamed-closed-cell-glass-insulation-blocks |
-| classification_refs | CPC3.0:37117; 仅较窄炭黑发泡未覆面块板子集; 不声明已接受映射 |
+| classification_refs | CPC3.0:37117; 仅较窄炭黑发泡未覆面块板子集; 较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 完整炭黑发泡路线及首次质量放行后的未覆面闭孔泡沫玻璃保温矩形块板 |
 | excluded_products | 覆面涂层板; 骨料碎石; 开孔吸声品; 冷粘团聚体; 玻璃棉纤维; 实心压砖; 中空玻璃; 镜; 原片; 钢化片; 已安装组件; 仅碳酸盐甘油水玻璃或SiC发泡路线 |
 | representative_product | 首次放行的一种实际声明未覆面闭孔块板配置; 不强制品牌尺寸配方 |

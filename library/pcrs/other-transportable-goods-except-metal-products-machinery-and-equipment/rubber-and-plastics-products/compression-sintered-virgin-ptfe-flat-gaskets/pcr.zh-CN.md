@@ -28,7 +28,7 @@ Daikin证明常规颗粒粉及冷压自由烧结工艺；Teadit独立描述冷�
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.compression-sintered-virgin-ptfe-flat-gaskets |
-| classification_refs | CPC3.0:36990；仅较窄拟议语义背景；无已接受映射 |
+| classification_refs | CPC3.0:36990；仅较窄拟议语义背景；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 第1节范围内一体未填充非膨体原生PTFE工业环形平垫 |
 | excluded_products | 排除填充或化学改性PTFE、膨体或结构化PTFE、带糊膏润滑剂挤出、柱塞或等静压成型、热压整形/水淬、外购板/坯加工、旋切板及板材冲切垫片、熔融注塑、弹性体或金属复合密封、弹簧蓄能密封、分段焊接、树脂合成、涂印、植入医疗、氧气用途专门清洗、燃料烧结、外购成品重包装以及安装使用报废；实际偏离须重审适用性并补齐原子交换。 |
 | representative_product | 一种实际图纸规定的常规实心PTFE垫环；无固定品牌或尺寸 |

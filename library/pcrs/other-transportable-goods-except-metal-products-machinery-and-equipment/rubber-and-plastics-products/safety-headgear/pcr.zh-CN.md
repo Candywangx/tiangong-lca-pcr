@@ -22,7 +22,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.safety-headgear |
-| classification_refs | CPC3.0:36971；窄于该叶的工艺情境；不建立 accepted mapping |
+| classification_refs | CPC3.0:36971；窄于该叶的工艺情境；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 一种明确配置的完整 HDPE 单射工业安全帽及其外购悬挂 |
 | excluded_products | 第1节全部产品与路线排除项 |
 | representative_product | 明确配置的工业硬壳安全帽；JSP 仅为独立组分实例 |

@@ -22,7 +22,7 @@ The complete manufacturer originals establish the component assembly and manufac
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.aluminous-cemented-toughened-glass-suspension-insulators |
-| classification_refs | CPC 3.0:37197; narrower complete uncoated cemented suspension-unit subset; no mapping acceptance |
+| classification_refs | CPC 3.0:37197; narrower complete uncoated cemented suspension-unit subset; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Complete unit specified in section1 |
 | excluded_products | Exclude bare/unassembled glass shells or discs as terminals, whole insulator strings and line hardware assemblies, porcelain/ceramic/composite insulators, annealed pin-type glass, clevis-and-tongue couplings, malleable-iron caps, phosphor-bronze locking clips, DC-specific/zinc-sleeved variants, RTV-coated glass, ceramic body manufacture, float/safety glazing, other glass articles, onsite metal forging/casting/galvanizing and installation/use/end of life. Purchased prepared components retain their full upstream forming/finishing burdens. An actual additional recipe ingredient, formulation, fuel, cooling medium, chemical treatment or emitted species requires its own atomic exchange and applicability assessment before dataset completion. No omitted actual exchange may hide in zero or an other bundle. |
 | representative_product | First quality-released complete cap-and-pin glass suspension unit |

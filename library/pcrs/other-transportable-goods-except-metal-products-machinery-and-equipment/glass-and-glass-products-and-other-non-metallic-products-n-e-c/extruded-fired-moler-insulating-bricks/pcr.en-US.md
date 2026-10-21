@@ -20,7 +20,7 @@ Excludes quartz/quartzite silica bricks ordinary clay building bricks high-alumi
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.extruded-fired-moler-insulating-bricks |
-| classification_refs | CPC 3.0:37310 (narrower semantic scope; no accepted mapping) |
+| classification_refs | CPC 3.0:37310 (narrower semantic scope; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending) |
 | covered_products | extruded fired bare moler insulating bricks with natural clay and actual sawdust pore formation |
 | excluded_products | ordinary silica/clay bricks high-alumina refractories and other excluded phase/terminal families above |
 | representative_product | actual fired machined porous moler backup insulation brick |

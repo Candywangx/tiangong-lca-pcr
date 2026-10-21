@@ -22,7 +22,7 @@ translation_status: aligned
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.hot-formed-open-borosilicate-glass-ampoules |
-| classification_refs | CPC3.0:37195窄子集背景，不表示已接受映射 |
+| classification_refs | CPC3.0:37195窄子集背景，较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | §1范围裸透明I型B型机械刻痕开口安瓿 |
 | excluded_products | 仅未加工管/初级制造；瓶罐/玻壳/压模日用或通用实验室器皿；注射器/药瓶/卡式瓶；棕色/涂印/OPC点/CBR/封口D型；灭菌/灌封药物；成品重包装；使用/寿终 |
 | representative_product | 一真实图纸/容量/验收配置的首次放行产品，不定品牌/尺寸/质量 |

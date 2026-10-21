@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.extruded-fired-moler-insulating-bricks |
-| classification_refs | CPC 3.0:37310 (narrower semantic scope; no accepted mapping) |
+| classification_refs | CPC 3.0:37310 (narrower semantic scope; 较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成) |
 | covered_products | 天然含黏土 moler 与真实木屑造孔的挤出烧成裸隔热砖 |
 | excluded_products | 普通硅砖黏土砖高铝耐材及其他上述不同物相终端 |
 | representative_product | 真实烧成并各面机加工的多孔 moler 背衬隔热砖 |

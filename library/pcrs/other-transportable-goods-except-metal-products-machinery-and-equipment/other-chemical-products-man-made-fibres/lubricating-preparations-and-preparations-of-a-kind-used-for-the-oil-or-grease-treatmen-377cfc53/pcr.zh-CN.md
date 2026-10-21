@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.lubricating-preparations-and-preparations-of-a-kind-used-for-the-oil-or-grease-treatmen-377cfc53 |
-| classification_refs | CPC 3.0 35430; narrower; 仅为水性乙二醇防冻制剂子集，不建立映射接受 |
+| classification_refs | CPC 3.0 35430; narrower; 仅为水性乙二醇防冻制剂子集，较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 物理混配并稀释的 Si-OAT 乙二醇水性防冻液，声明具体配方、浓度与交付状态 |
 | excluded_products | 石油润滑油/基础油/酯；独立添加剂；液压液；丙二醇/甘油产品；航空除冰液；废液再生；现场反应路线 |
 | representative_product | G140K SC 与乙二醇混配成兼容 G40 浓缩中间体后，再以去离子水稀释成声明浓度的水性防冻液 |

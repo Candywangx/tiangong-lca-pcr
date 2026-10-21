@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.pressed-fired-periclase-refractory-bricks |
-| classification_refs | CPC 3.0:37320; narrower; 无接受映射 |
+| classification_refs | CPC 3.0:37320; narrower; 较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 天然菱镁矿来源、硫酸镁水溶临时结合、陶瓷烧成的致密裸无涂层方镁石建筑耐火砖 |
 | excluded_products | 原料粉; 未烧/不定形品; 碳结合或沥青浸渍品; 硅质土隔热品; 坩埚; 非耐火砖; 主动配制铬铁矿/白云石质/尖晶石路线; 金属包壳/增强品 |
 | representative_product | UNIDO第VI章M-A天然DBM-A方镁石/钙硅酸盐砖; 1986年有真实终端/物相测试的一次试验而非当代型号默认 |

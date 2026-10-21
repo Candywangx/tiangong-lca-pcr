@@ -22,7 +22,7 @@ These complete primary product/equipment sources form a transparent technical sy
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.hot-formed-open-borosilicate-glass-ampoules |
-| classification_refs | CPC3.0:37195 narrower context only; no accepted mapping |
+| classification_refs | CPC3.0:37195 narrower context only; accepted narrower association is governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its decision record; scientific review remains pending |
 | covered_products | Bare clear Type I open Form B mechanically scored ampoules within section1 |
 | excluded_products | Unworked tube/primary manufacture alone; jars/envelopes/pressed household or generic laboratory ware; syringes/vials/cartridges; amber/coated/printed/OPC-dot/CBR/closed D; sterilized/filled/sealed medicine; finished-ampoule repacking; use/end of life |
 | representative_product | One actual drawing/capacity/acceptance configuration at first release; no mandatory brand/dimension/mass |

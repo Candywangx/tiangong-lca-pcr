@@ -19,7 +19,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.salicylic-acid-and-its-salts-and-esters |
-| classification_refs | CPC 3.0 35210; narrower; 仅覆盖游离固体酸，不接受正映射 |
+| classification_refs | CPC 3.0 35210; narrower; 仅覆盖游离固体酸，已接受较窄关联，以 classifications/mappings/cpc-3.0-to-pcr.yaml 为准；科学审查仍待完成 |
 | covered_products | 工业固体水杨酸，实际声明含量、水分及杂质 |
 | excluded_products | 盐；酯；异构体；药品制剂；粗湿滤饼；溶剂悬浮及盐酸路线 |
 | representative_product | 邻羟基苯甲酸工业粉末，CAS 69-72-7 |

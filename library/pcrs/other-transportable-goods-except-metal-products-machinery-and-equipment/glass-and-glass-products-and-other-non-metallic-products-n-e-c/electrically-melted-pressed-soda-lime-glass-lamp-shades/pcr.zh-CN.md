@@ -26,7 +26,7 @@ JRC原料、电熔及灯具压制机制，独立EPA压制冷却退火检验，�
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.electrically-melted-pressed-soda-lime-glass-lamp-shades |
-| classification_refs | CPC3.0:37196；较窄产品路线子集；不表示接受映射 |
+| classification_refs | CPC3.0:37196；较窄产品路线子集；较窄关联已接受，以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其决策记录为准；科学审查仍待完成 |
 | covered_products | 本第1节路线的透明无色钠钙模压退火裸件灯具灯罩 |
 | excluded_products | 第1节全部相邻玻璃、灯泡壳、成灯及后加工/装配路线 |
 | representative_product | 一项真实按图成形口沿/法兰的透明钠钙模压退火灯罩 |
