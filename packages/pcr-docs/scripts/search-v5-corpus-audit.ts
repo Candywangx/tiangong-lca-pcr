@@ -11,10 +11,11 @@ import { encodeSearchEntries, decodeSearchEntries, readSearchTermDictionary, SEA
 import type { SearchWireEntries } from '../lib/search-wire.ts';
 type AuditRecord = Record<string, unknown> & {content: string};
 type RebuiltIndex = SearchWireEntries & {records: AuditRecord[]};
-interface PhysicalPack {bytes: Buffer; data: Record<string, unknown>; rebuilt: (RebuiltIndex | undefined)[]; gzipBytes: number}
+interface PhysicalPack {bytes: Buffer; data: Record<string, unknown>; rebuilt: (RebuiltIndex | undefined)[]; legacy: (RebuiltIndex | undefined)[]; gzipBytes: number}
 interface CorpusReport {
   language: string; logical_shards: number; physical_packs: number; dictionary_terms: number;
   records: number; export_keys: number; v4: {rawBytes: number; gzipBytes: number}; v5: {rawBytes: number; gzipBytes: number};
+  legacy_v5: {rawBytes: number; gzipBytes: number}; gzip_saved_from_legacy_v5: number;
   gzip_saved_bytes: number; gzip_reduction_percent: number; exact_roundtrip: true;
   matching_query_comparisons: number; native_export_hashes_sha256: string; full_record_hashes_sha256: string;
 }
@@ -45,7 +46,7 @@ for (const language of ['en-US', 'zh-CN']) {
       const bytes=fs.readFileSync(path.join(exportRoot,shard.url));
       const data: unknown = JSON.parse(bytes.toString('utf8'));
       assert.ok(isUnknownRecord(data));
-      pack={bytes,data,rebuilt:[],gzipBytes:gzipSync(bytes,{level:9}).length}; physical.set(shard.url,pack);
+      pack={bytes,data,rebuilt:[],legacy:[],gzipBytes:gzipSync(bytes,{level:9}).length}; physical.set(shard.url,pack);
       raw5+=bytes.length; gzip5+=pack.gzipBytes;
     }
     assert.equal('sha256:'+hash(pack.bytes),shard.sha256);
@@ -54,16 +55,18 @@ for (const language of ['en-US', 'zh-CN']) {
     const data=logicalIndex(pack.data, shard.entry);
     assert.ok(Array.isArray(data.records) && data.records.every((record: unknown): record is AuditRecord => isUnknownRecord(record) && typeof record.content === 'string'));
     assert.equal(data.records.length,shard.records);
-    const native=decodeSearchEntries(data.entries,data.sparseMaps,5,data.scoreMasks,data.postingDeltas,data.columnarMaps,data.joinedTerms,dictionary,data.dictionaryTerms);
+    const native=decodeSearchEntries(data.entries,data.sparseMaps,5,data.scoreMasks,data.postingDeltas,data.columnarMaps,data.joinedTerms,dictionary,data.dictionaryTerms,data.integerColumns);
     if (shard.nativeSha256) assert.equal('sha256:'+hash(JSON.stringify(native)),shard.nativeSha256);
     if (shard.recordsSha256) assert.equal('sha256:'+hash(JSON.stringify(data.records)),shard.recordsSha256);
     const v4=encodeSearchEntries(native,4);
     const native4=decodeSearchEntries(v4.entries,v4.sparseMaps,4,v4.scoreMasks,v4.postingDeltas,v4.columnarMaps);
     assert.equal(JSON.stringify(native4),JSON.stringify(native));
-    const rebuilt={...encodeSearchEntries(native,5,dictionary),records:data.records};
+    const rebuilt={...encodeSearchEntries(native,5,dictionary,{compactIntegers:data.integerColumns!==undefined}),records:data.records};
+    const legacy={...encodeSearchEntries(native,5,dictionary),records:data.records};
+    assert.equal(JSON.stringify(decodeSearchEntries(legacy.entries,legacy.sparseMaps,5,legacy.scoreMasks,legacy.postingDeltas,legacy.columnarMaps,legacy.joinedTerms,dictionary,legacy.dictionaryTerms)),JSON.stringify(native));
     assert.equal(JSON.stringify(rebuilt),JSON.stringify(data));
-    if (shard.entry===undefined) assert.equal(JSON.stringify(rebuilt),pack.bytes.toString('utf8'));
-    else {assert.ok(typeof shard.entry === 'number');assert.equal(pack.rebuilt[shard.entry],undefined);pack.rebuilt[shard.entry]=rebuilt;}
+    if (shard.entry===undefined) {assert.equal(JSON.stringify(rebuilt),pack.bytes.toString('utf8'));pack.legacy[0]=legacy;}
+    else {assert.ok(typeof shard.entry === 'number');assert.equal(pack.rebuilt[shard.entry],undefined);pack.rebuilt[shard.entry]=rebuilt;pack.legacy[shard.entry]=legacy;}
     const baseline=JSON.stringify({...v4,records:data.records});
     raw4+=Buffer.byteLength(baseline);gzip4+=gzipSync(baseline,{level:9}).length;
     keys+=Object.keys(native).length;records+=data.records.length;
@@ -81,8 +84,21 @@ for (const language of ['en-US', 'zh-CN']) {
   }
   // The dictionary-bearing manifest is real transport, charged in full to v5's budget.
   if(manifest.termDictionary!==undefined){raw5+=manifestBytes.length;gzip5+=gzipSync(manifestBytes,{level:9}).length;}
+  let legacyRaw=0,legacyGzip=0;
+  const legacyPacks=new Map<string,{bytes:number;gzipBytes:number;sha256:string}>();
+  for(const [url,pack]of physical){
+    const bytes=JSON.stringify(Array.isArray(pack.data.indexes)?{schemaVersion:5,indexes:pack.legacy}:pack.legacy[0]);
+    const sizes={bytes:Buffer.byteLength(bytes),gzipBytes:gzipSync(bytes,{level:9}).length,sha256:'sha256:'+hash(bytes)};
+    legacyPacks.set(url,sizes);legacyRaw+=sizes.bytes;legacyGzip+=sizes.gzipBytes;
+  }
+  const legacyManifest=JSON.stringify({...manifest,shards:manifest.shards.map(shard=>{
+    assert.ok(isUnknownRecord(shard)&&typeof shard.url==='string');
+    const sizes=legacyPacks.get(shard.url);assert.ok(sizes);
+    return {...shard,...sizes};
+  })});
+  legacyRaw+=Buffer.byteLength(legacyManifest);legacyGzip+=gzipSync(legacyManifest,{level:9}).length;
   assert.ok(raw5<=20_000_000&&gzip5<=4_000_000,language+' budget');
-  report.push({language,logical_shards:manifest.shards.length,physical_packs:physical.size,dictionary_terms:dictionary?.length??0,records,export_keys:keys,v4:{rawBytes:raw4,gzipBytes:gzip4},v5:{rawBytes:raw5,gzipBytes:gzip5},gzip_saved_bytes:gzip4-gzip5,gzip_reduction_percent:(gzip4-gzip5)/gzip4*100,exact_roundtrip:true,matching_query_comparisons:queries,native_export_hashes_sha256:hash(JSON.stringify(exportHashes)),full_record_hashes_sha256:hash(JSON.stringify(recordHashes))});
+  report.push({language,logical_shards:manifest.shards.length,physical_packs:physical.size,dictionary_terms:dictionary?.length??0,records,export_keys:keys,v4:{rawBytes:raw4,gzipBytes:gzip4},v5:{rawBytes:raw5,gzipBytes:gzip5},legacy_v5:{rawBytes:legacyRaw,gzipBytes:legacyGzip},gzip_saved_from_legacy_v5:legacyGzip-gzip5,gzip_saved_bytes:gzip4-gzip5,gzip_reduction_percent:(gzip4-gzip5)/gzip4*100,exact_roundtrip:true,matching_query_comparisons:queries,native_export_hashes_sha256:hash(JSON.stringify(exportHashes)),full_record_hashes_sha256:hash(JSON.stringify(recordHashes))});
 }
 fs.mkdirSync('.reports',{recursive:true});
 fs.writeFileSync('.reports/search-v5-corpus.json',JSON.stringify(report,null,2)+'\n');
