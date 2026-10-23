@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: "46e1291309f7ed5596b1e295cecffd302628714c"
-lastReviewedNote: "PCR #141: reviewed lossless v5 physical search packs of at most 16 original v4 logical shards, source/byte/hash validation, atomic retry and physical-asset-plus-manifest accounting under unchanged 20 MB / 4 MB budgets. 217 docs tests, 11 strict projects / 425 authored files and six bounded real Chromium/Firefox/WebKit Worker cases pass. Replay restores all 86 captured aaf4 logical wires, native entries and complete records exactly. Final name-corrected full-corpus generation, Next export, resource/file limits, sealed-product and hosted qualification remain pending; no canonical methodology, ranking, logical partition, approval, dependencies or production state changed. PCR #143 composition retains all 57 PR139 candidates and 1248 complete accepted edges (1399 material records, 1693 aliases) with reviewed PCR141 names and search v5. Canonical contribution bytes and reviewed transport bytes are preserved. Final exact-source full hosted qualification, PR138-before-PR139 merge order, workspace integration and publication remain required."
+lastReviewedCommit: 6e777572a3be2646610a5585f9568875b51a9f7d
+lastReviewedNote: "PCR #141: reviewed bounded filename/content-digest React keys for generated downloads after exact 1457-record export analysis identified avoidable inline-URI key duplication. Existing constructors and 3334 rendered lists have no sibling-key collisions. Native hrefs, filenames, hashes, no-JavaScript downloads, artifact ordering, 16/80 KiB eligibility, complete HTML/RSC/source content and all budgets are unchanged. Eight existing SSR checks and the site TypeScript project pass. Storage savings remain a forecast until a fresh complete build; provider admission, complete hosted qualification, workspace integration and publication remain pending. PCR #143 composition preserves its 57 additional candidates and the reviewed incoming runtime/canonical bytes; exact-source full CI and PR138-first ordering remain required."
 ---
 
 # TianGong LCA PCR Library
